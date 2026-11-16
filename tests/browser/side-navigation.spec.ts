@@ -20,8 +20,12 @@ for (const platform of ['react', 'vue3']) {
     const clear = 'rgba(0, 0, 0, 0)';
     expect(await home.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe(clear);
     expect(await tasks.evaluate(el => getComputedStyle(el).backgroundColor)).toBe(clear);
+    const ink = await tasks.evaluate(el => getComputedStyle(el).color);
     await tasks.hover();
     await expect.poll(() => tasks.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe(clear);
+    // Hover is a lighter wash than the current page's fill and leaves the text alone, so it never reads as the selection.
+    expect(await tasks.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe(await home.evaluate(el => getComputedStyle(el).backgroundColor));
+    expect(await tasks.evaluate(el => getComputedStyle(el).color)).toBe(ink);
     // The badge sits at the end of the row and is part of the link's name.
     const badge = tasks.locator('.kjun-navigation-badge');
     await expect(badge).toHaveText('12');
@@ -56,9 +60,13 @@ for (const platform of ['react', 'vue3']) {
     await expect(page.getByTestId('log')).toHaveText('');
     await child.click();
     await expect(child).toHaveAttribute('aria-current', 'page');
-    // Closed over the current page, the parent keeps the place: stronger text, no fill of its own.
+    // Closed over the current page, the parent keeps the place with the same fill, also under the pointer.
+    // Read the fill once the hover-to-selected transition has settled into an opaque colour.
+    await expect.poll(() => child.evaluate(el => getComputedStyle(el).backgroundColor)).toMatch(/^rgb\(/);
+    const selectedFill = await child.evaluate(el => getComputedStyle(el).backgroundColor);
     await parent.click();
     await expect(parent).toHaveAttribute('data-current-within', '');
+    await expect.poll(() => parent.evaluate(el => getComputedStyle(el).backgroundColor)).toBe(selectedFill);
     // A long label keeps one line.
     const long = nav.getByRole('link', { name: /아주 긴 이름/ });
     expect((await long.boundingBox())!.height).toBe(40);
@@ -146,9 +154,17 @@ for (const platform of ['react', 'vue3']) {
     expect(Math.round((await home.locator('.kjun-side-navigation-icon').boundingBox())!.x - side.x)).toBe(12);
     expect((await home.locator('.kjun-side-navigation-label').boundingBox())!.width).toBeLessThanOrEqual(1);
     await expect(nav.getByRole('group', { name: '문서' })).toBeVisible();
-    // A count moves onto the icon's corner, inside the row.
-    const tasks = nav.getByRole('link', { name: /할 일/ }), badge = (await tasks.locator('.kjun-side-navigation-glyph > .kjun-navigation-badge').boundingBox())!;
+    // A count would cover the icon on its corner, so it shrinks to a dot inside the row; the link's name keeps the number.
+    const tasks = nav.getByRole('link', { name: /할 일/ }), mark = tasks.locator('.kjun-side-navigation-glyph > .kjun-navigation-badge');
+    await expect(mark).toHaveAttribute('data-dot');
+    await expect(mark).toHaveText('');
+    await expect(tasks).toHaveAccessibleName(/12/);
+    const badge = (await mark.boundingBox())!;
     expect(badge.x + badge.width).toBeLessThanOrEqual(side.x + side.width);
+    // With the titles hidden, each later group starts under a hairline the icon's width, centred in the gap.
+    const lines = await nav.evaluate(el => [...el.children].map(group => { const line = getComputedStyle(group, '::before');
+      return line.content === 'none' ? null : [line.width, line.height, line.insetInlineStart]; }));
+    expect(lines).toEqual([null, ['20px', '1px', '12px'], ['20px', '1px', '12px'], ['20px', '1px', '12px']]);
     // The parent holding the current page takes the fill; no chevron, and its child's dot sits on its icon.
     const parent = nav.getByRole('button', { name: /^프로젝트/ });
     expect(await parent.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
@@ -214,6 +230,11 @@ test('native: SideNavigation starts with the current page\'s parent open', async
   const nav = page.getByRole('navigation', { name: '작업 공간' });
   await expect(nav.getByRole('button', { name: '프로젝트' })).toHaveAttribute('aria-expanded', 'true');
   await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toHaveAttribute('aria-current', 'page');
+  // Closed over the current page, the parent takes the selection fill, as it does while collapsed.
+  const parent = nav.getByRole('button', { name: /^프로젝트/ });
+  await parent.click();
+  await page.mouse.move(800, 600);
+  await expect.poll(() => parent.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
 });
 
 test('native: SideNavigation keeps loose items apart from a group and stands a closed parent for its children', async ({ page }) => {
@@ -235,6 +256,10 @@ test('native: SideNavigation collapsed shows icons only and widens to open a par
   await expect(nav.getByText('홈', { exact: true })).toHaveCount(0);
   const parent = nav.getByRole('button', { name: /^프로젝트/ });
   expect(await parent.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
+  // The count on the icon's corner shrinks to a dot; the name keeps the number.
+  const tasks = nav.getByRole('link', { name: /할 일/ });
+  await expect(tasks.getByText('12', { exact: true })).toHaveCount(0);
+  await expect(tasks).toHaveAccessibleName(/12/);
   await parent.click();
   await expect(page.getByTestId('log')).toHaveText('wide');
   await expect(parent).toHaveAttribute('aria-expanded', 'true');

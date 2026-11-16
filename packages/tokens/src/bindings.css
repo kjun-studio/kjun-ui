@@ -1008,6 +1008,7 @@
   --_kjun-state-opacity-tint-control: 0.08;
   --_kjun-state-opacity-tint-hover: 0.12;
   --_kjun-state-opacity-tint-active: 0.16;
+  --_kjun-state-opacity-hover-soft: 0.5;
   --_kjun-state-opacity-muted: 0.55;
   --_kjun-state-focus-width: 2px;
   --_kjun-state-focus-offset: 2px;

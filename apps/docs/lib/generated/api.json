@@ -21390,7 +21390,7 @@
       },
       {
         "name": "role",
-        "type": "\"label\" | \"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"labelStrong\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\"",
+        "type": "\"label\" | \"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"labelStrong\" | \"control\" | \"bodyLg\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\"",
         "required": false,
         "default": "—",
         "description": "Typography role for type=\"line\"; omit it to take the surrounding text's line height."
@@ -21457,7 +21457,7 @@
       },
       {
         "name": "role",
-        "type": "\"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"label\" | \"labelStrong\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
+        "type": "\"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"label\" | \"labelStrong\" | \"control\" | \"bodyLg\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
         "required": false,
         "default": "—",
         "description": "Typography role for type=\"line\"; omit it to take the surrounding text's line height."
@@ -21522,7 +21522,7 @@
       },
       {
         "name": "role",
-        "type": "\"label\" | \"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"labelStrong\" | \"control\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
+        "type": "\"label\" | \"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"labelStrong\" | \"control\" | \"bodyLg\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
         "required": false,
         "default": "—",
         "description": "Typography role for type=\"line\"."
@@ -24950,6 +24950,20 @@
         "required": false,
         "default": "—",
         "description": "Clamp to this many lines with an ellipsis; the full text stays in the DOM."
+      },
+      {
+        "name": "numeric",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Fixed-width digits, so amounts in a column line up. Size and weight stay the variant's."
+      },
+      {
+        "name": "decoration",
+        "type": "\"lineThrough\"",
+        "required": false,
+        "default": "—",
+        "description": "\"lineThrough\" strikes the text, e.g. a price before a discount."
       }
     ],
     "events": [],
@@ -24995,6 +25009,41 @@
         "required": false,
         "default": "—",
         "description": "Clamp to this many lines with an ellipsis; the full text stays in the DOM."
+      },
+      {
+        "name": "numeric",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Fixed-width digits, so amounts in a column line up. Size and weight stay the variant's."
+      },
+      {
+        "name": "decoration",
+        "type": "\"lineThrough\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"lineThrough\" strikes the text, e.g. a price before a discount."
+      },
+      {
+        "name": "title",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Browser tooltip, e.g. the full sentence of a clamped text."
+      },
+      {
+        "name": "lang",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "dir",
+        "type": "\"auto\" | \"ltr\" | \"rtl\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       },
       {
         "name": "ref",
@@ -25052,7 +25101,7 @@
         "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextVariant | undefined",
         "required": false,
         "default": "—",
-        "description": "Typography role; every size, line height and weight comes from tokens.typography."
+        "description": "Typography role; every size, line height and weight comes from tokens.typography.\n\"inherit\" is for a KjunText nested in another: it keeps the outer text's size, weight and, with the default tone, color."
       },
       {
         "name": "tone",
@@ -25074,6 +25123,20 @@
         "required": false,
         "default": "—",
         "description": "Clamp to this many lines with an ellipsis (numberOfLines)."
+      },
+      {
+        "name": "numeric",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Fixed-width digits, so amounts in a column line up. Size and weight stay the variant's."
+      },
+      {
+        "name": "decoration",
+        "type": "\"lineThrough\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"lineThrough\" strikes the text, e.g. a price before a discount."
       },
       {
         "name": "style",

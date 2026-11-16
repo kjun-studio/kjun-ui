@@ -1,5 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { navigationLabel } from "../../../shared/package-runtime/navigation-badge";
+import { tintColor } from "../../../shared/package-runtime/alert-tone";
+import { navigationBadge, navigationLabel } from "../../../shared/package-runtime/navigation-badge";
 import { isPlainNavigationClick, isSideParent, sideNavigationInitial, sideNavigationOpensElsewhere, sideNavigationSections, sideNavigationWithCurrentParents,
   sideParentHasBadge, sideParentHoldsCurrent, toggleSideParent, type SideNavigationDestination as WebDestination,
   type SideNavigationEntry as Entry, type SideNavigationGroup as Group, type SideNavigationItem as Item, type SideNavigationParent as Parent } from "../../../shared/package-runtime/side-navigation";
@@ -70,8 +71,10 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   const slop = (height: number) => { const reach = Math.max(0, (tokens.native.minimumTouchTarget - height) / 2); return { top: reach, bottom: reach }; };
   const box = (height: number, child: boolean) => ({ height, ...(collapsed ? { width: geometry.paddingX * 2 + geometry.iconSize } : {}), flexDirection: "row" as const, alignItems: "center" as const, gap: geometry.gap, borderRadius: geometry.radius,
     paddingEnd: geometry.paddingX, paddingStart: geometry.paddingX + (child ? geometry.iconSize + geometry.gap : 0) });
+  // Hover is half the app's hover fill and leaves the text as it is, so it never reads as a stronger mark than the current page.
+  const hover = (typeof colors.hover === "string" && tintColor(colors.hover, tokens.states.opacity.hoverSoft)) || colors.hover;
   const fill = (selected: boolean, disabled: boolean | undefined, { pressed, hovered }: PressState) =>
-    selected ? colors.selectedBg : disabled ? "transparent" : pressed ? colors.active : hovered ? colors.hover : "transparent";
+    selected ? colors.selectedBg : disabled ? "transparent" : pressed ? colors.active : hovered ? hover : "transparent";
   const ink = (lit: boolean) => lit ? colors.text : colors.textSecondary;
   const label = (text: string, strong: boolean, lit: boolean) => !collapsed && <KText numberOfLines={1} ellipsizeMode="tail"
     style={{ ...typeStyle("control"), flex: 1, minWidth: 0, fontWeight: strong ? typeStyle("control").fontWeight : typeStyle("body").fontWeight, color: ink(lit) }}>{text}</KText>;
@@ -98,8 +101,9 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
         onNavigate?.(item.key, event); if (selected) onReselect?.(item.key, event);
       }}
       style={(state: PressState) => ({ ...box(height, child), backgroundColor: fill(selected, item.disabled, state), opacity: item.disabled ? tokens.states.opacity.disabled : 1 })}>
-      {(state: PressState) => { const lit = selected || (!item.disabled && !!(state.pressed || state.hovered)); return <>
-        {!child && glyph(item.icon, item.label, selected, lit, corner(item.badge, fill(selected, item.disabled, state)))}
+      {(state: PressState) => { const lit = selected || (!item.disabled && state.pressed); return <>
+        {/* On the icon's corner a count would cover the icon, so it shrinks to a dot; the link's name keeps the number. */}
+        {!child && glyph(item.icon, item.label, selected, lit, corner(navigationBadge(item.badge) ? true : undefined, fill(selected, item.disabled, state)))}
         {label(item.label, selected, lit)}
         {!collapsed && <NavigationBadgeMark badge={item.badge} />}
         {!collapsed && elsewhere && <KjunIcon name="external-link" size={geometry.chevronSize} color={colors.textTertiary} />}
@@ -111,14 +115,14 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
     const shown = open.includes(item.key) && !collapsed, dot = !shown && sideParentHasBadge(item);
     // A hidden set of children is stood for by its parent, so the place in the menu is never lost.
     const within = !shown && sideParentHoldsCurrent(item, value);
-    // While collapsed the parent is the only mark of the current page, so it takes the selection fill.
-    const under = (state: PressState) => fill(within && collapsed, item.disabled, state);
+    // It takes the selection fill, open or collapsed, so the menu always shows where you are.
+    const under = (state: PressState) => fill(within, item.disabled, state);
     return <View key={item.key} style={{ gap: geometry.itemGap }}>
       {named(item.label, <Pressable key={item.key} focusRingInset hitSlop={slop(geometry.itemHeight)} disabled={item.disabled} accessibilityRole="button"
         accessibilityLabel={dot ? navigationLabel(item.label, true, m.newContent) : item.label}
         accessibilityState={{ disabled: !!item.disabled, expanded: shown }} onPress={() => collapsed ? reveal(item.key) : toggle(item.key)}
         style={(state: PressState) => ({ ...box(geometry.itemHeight, false), backgroundColor: under(state), opacity: item.disabled ? tokens.states.opacity.disabled : 1 })}>
-        {(state: PressState) => { const lit = within || (!item.disabled && !!(state.pressed || state.hovered)); return <>
+        {(state: PressState) => { const lit = within || (!item.disabled && state.pressed); return <>
           {glyph(item.icon, item.label, false, lit, dot && corner(true, under(state)))}
           {label(item.label, within, lit)}
           {!collapsed && dot && <NavigationBadgeMark badge={true} />}
@@ -132,6 +136,9 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
     {sideNavigationSections(items).map((section, index) => <View key={index} role={section.title ? "group" : undefined} accessibilityLabel={section.title}
       // Loose items after a group, and (with titles hidden) every later group, keep a title's distance from what is above.
       style={{ gap: geometry.itemGap, marginTop: index && (!section.title || collapsed) ? geometry.titlePaddingTop : 0 }}>
+      {/* Icons only, the titles are hidden: a hairline the icon's width in the middle of the gap marks the boundary. */}
+      {!!index && collapsed && <View pointerEvents="none" style={{ position: "absolute", top: -(geometry.titlePaddingTop + tokens.border.defaultWidth) / 2,
+        start: geometry.paddingX, width: geometry.iconSize, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
       {!!section.title && !collapsed && <KText accessibilityRole="header" style={{ ...typeStyle("caption"), fontWeight: typeStyle("control").fontWeight, color: colors.textTertiary,
         paddingTop: index ? geometry.titlePaddingTop : 0, paddingBottom: geometry.titlePaddingBottom - geometry.itemGap, paddingHorizontal: geometry.paddingX }}>{section.title}</KText>}
       {section.items.map(row)}

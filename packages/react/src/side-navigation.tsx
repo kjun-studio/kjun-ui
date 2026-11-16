@@ -70,7 +70,8 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
         onNavigate?.(item.key, event);
         if (selected) onReselect?.(item.key, event);
       }}>
-      {!child && glyph(item.icon, item.label, selected, shown)}
+      {/* On the icon's corner a count would cover the icon, so it shrinks to a dot; the link's name keeps the number. */}
+      {!child && glyph(item.icon, item.label, selected, mark && badge("", true))}
       <span className={labelClass}>{item.label}</span>
       {!collapsed && shown}
       {!collapsed && elsewhere && <KjunIcon name="external-link" className="kjun-side-navigation-trailing" size={geometry.chevronSize} />}

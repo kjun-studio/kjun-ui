@@ -2747,7 +2747,7 @@
       "title": "Text",
       "docs": "/components/text",
       "category": "layout",
-      "differences": "세 플랫폼 모두 variant·tone·align·maxLines를 사용합니다. as는 웹 전용이며 Native는 제목 역할에 header 접근성 역할을, maxLines에 numberOfLines를 씁니다. 웹 기본 tone은 감싼 영역의 글자색을 따르고, Native 기본 tone은 text 색입니다.",
+      "differences": "세 플랫폼 모두 variant·tone·align·maxLines·numeric·decoration을 사용합니다. as와 title·lang·dir은 웹 전용이며 Native는 제목 역할에 header 접근성 역할을, maxLines에 numberOfLines를 씁니다. 웹 기본 tone은 감싼 영역의 글자색을 따르고, Native 기본 tone은 text 색입니다. Native의 inherit는 다른 KjunText 안에 넣었을 때 바깥 글자의 크기·굵기·색을 따릅니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

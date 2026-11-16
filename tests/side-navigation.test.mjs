@@ -38,8 +38,15 @@ test("the current item is a fill and a weight, never an accent stripe", async ()
   const current = rules.find(rule => rule.trim().startsWith(".kjun-side-navigation-item[aria-current]{"));
   assert.match(current, /background:var\(--_kjun-color-selected-bg\)/);
   assert.match(current, /font-weight:var\(--_kjun-type-control-weight\)/);
+  // The only pseudo-element is the collapsed menu's group boundary: a horizontal hairline in the divider colour on a group,
+  // never a mark on an item.
+  const boundary = (rule) => /^\s*\.kjun-side-navigation\[data-collapsed\] > \.kjun-side-navigation-section[^{]*::before\s*\{/.test(rule) && !rule.split("{")[0].includes("-item");
+  const lines = rules.filter(boundary);
+  assert.equal(lines.length, 1);
+  assert.match(lines[0], /height:var\(--_kjun-border-default-width\);background:var\(--_kjun-color-divider\)/);
   for (const rule of rules) {
-    assert.doesNotMatch(rule, /border-(left|inline-start)|::before|::after/, rule.trim().slice(0, 60));
+    assert.doesNotMatch(rule, /border-(left|inline-start)/, rule.trim().slice(0, 60));
+    if (!boundary(rule)) assert.doesNotMatch(rule, /::before|::after/, rule.trim().slice(0, 60));
     assert.doesNotMatch(rule.split("{")[1] ?? "", /\d+px/, rule.trim().slice(0, 60));
   }
 });

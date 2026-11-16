@@ -36,7 +36,7 @@ export const extensions: Record<string, GuideAuthor> = {
   },
   KjunSideNavigation: {
     parts: [p("현재 목적지", "앱의 value가 현재 목적지를 결정합니다. 선택 배경색 면과 굵은 글자로 표시합니다.", '[aria-current="page"]'), t("다른 목적지", "웹에서는 링크, Native에서는 앱 이동 요청입니다. 배지는 항목 끝에 놓입니다.", "활동"), t("묶음 제목", "12px 3차 글자색으로 구역을 나눕니다.", "문서"), t("부모 항목", "여닫는 버튼이며 스스로 이동하지 않습니다. 하위 항목은 부모 글자가 시작하는 선에 놓입니다.", "프로젝트")], related: "app-screen",
-    states: [{ id: "current", label: "목적지 변경", description: "소비자가 활동을 현재 위치로 제공합니다.", values: { destination: "activity" } }, { id: "child", label: "하위 목적지", description: "현재 목적지의 부모는 열린 채로 시작합니다.", values: { destination: "checkout" } }, { id: "long", label: "긴 이름", description: "한 줄에서 말줄임하고 배지는 끝에 남습니다.", settings: { long: true } }, { id: "collapsed", label: "아이콘만 표시", description: "앱이 폭을 줄이고 collapsed를 줍니다. 이름은 툴팁으로, 배지는 아이콘 모서리에 표시합니다.", settings: { collapsed: true } }],
+    states: [{ id: "current", label: "목적지 변경", description: "소비자가 활동을 현재 위치로 제공합니다.", values: { destination: "activity" } }, { id: "child", label: "하위 목적지", description: "현재 목적지의 부모는 열린 채로 시작합니다.", values: { destination: "checkout" } }, { id: "long", label: "긴 이름", description: "한 줄에서 말줄임하고 배지는 끝에 남습니다.", settings: { long: true } }, { id: "collapsed", label: "아이콘만 표시", description: "앱이 폭을 줄이고 collapsed를 줍니다. 이름은 툴팁으로, 배지는 아이콘 모서리의 점으로 표시합니다.", settings: { collapsed: true } }],
   },
   KjunPressable: {
     parts: [p("누름 영역", "앱이 준 모양 그대로 통째로 누릅니다. 눌림 표시는 내용 위에 덮는 글자색 막입니다.", '[role="button"]'), t("내용", "앱이 넣은 표시용 콘텐츠입니다. 버튼이나 링크는 넣지 않습니다.", "교토 3박 4일")], related: "app-screen",

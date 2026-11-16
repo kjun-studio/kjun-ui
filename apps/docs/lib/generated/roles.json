@@ -1056,7 +1056,9 @@
     "upstreamAliases": [
       "--info"
     ],
-    "implementationFiles": []
+    "implementationFiles": [
+      "packages/tokens/src/layout.css"
+    ]
   },
   {
     "role": "infoAccent",
@@ -1252,6 +1254,7 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
+      "packages/tokens/src/extensions.css",
       "packages/tokens/src/list.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/table-narrow.css",
@@ -1260,6 +1263,7 @@
       "packages/native/src/floating-panel.tsx",
       "packages/native/src/list.tsx",
       "packages/native/src/navigation.tsx",
+      "packages/native/src/side-navigation.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/table-cards.tsx",
@@ -1612,6 +1616,7 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/extensions.css",
+      "packages/tokens/src/layout.css",
       "packages/tokens/src/web.css",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx"
@@ -1627,6 +1632,7 @@
       "--on-success"
     ],
     "implementationFiles": [
+      "packages/tokens/src/layout.css",
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx"
     ]
@@ -1641,6 +1647,7 @@
       "--on-warning"
     ],
     "implementationFiles": [
+      "packages/tokens/src/layout.css",
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx"
     ]

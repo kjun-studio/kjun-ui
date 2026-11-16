@@ -71,7 +71,8 @@ export const KjunSideNavigation = defineComponent({
             emit("navigate", item.key, event);
             if (selected) emit("reselect", item.key, event);
           }}>
-          {child ? null : glyph(item.icon, item.label, selected, shown)}
+          {/* On the icon's corner a count would cover the icon, so it shrinks to a dot; the link's name keeps the number. */}
+          {child ? null : glyph(item.icon, item.label, selected, mark ? badge("", true) : null)}
           <span class={labelClass}>{item.label}</span>
           {collapsed ? null : shown}
           {!collapsed && elsewhere ? <KjunIcon name="external-link" class="kjun-side-navigation-trailing" size={geometry.chevronSize} /> : null}
