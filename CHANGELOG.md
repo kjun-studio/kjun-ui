@@ -30,8 +30,8 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
 - **React `KjunCheckbox`·`KjunRadio` `id`·`inputRef`**: 바깥 `<label htmlFor>`와 연결하거나, 검증 실패 때 입력으로 포커스를 옮길 수 있습니다.
 - **React `KjunFormGroup`·`KjunFilterGroup`·`KjunAlert` `className`**: 감싸는 `div` 없이 앱의 레이아웃에 배치합니다. 클래스는 루트에 KJUN 클래스 뒤로 붙습니다. Vue 3의 `class`와 React `KjunCard`의 `className`은 이미 같은 동작입니다.
 - **Native `KjunDrawer` `renderScrollView`**: 드로어 본문을 앱의 스크롤 부품(`FlatList` 등)으로 그립니다. 드로어가 자기 `ScrollView`에 주던 속성을 그대로 넘겨받습니다. `children`은 선택이 되었습니다.
-- **새 컴포넌트 `KjunPressable` (Native)**: 버튼·카드·목록 행이 아닌 영역을 누르게 합니다(지도 미리보기, 사진 칸). 모양은 앱이 `style`로 정하고, KJUN은 눌림 표시·포커스 링·`button` 역할·비활성·최소 터치 영역을 맡습니다. 눌림 표시는 내용 위에 글자색 막을 덮는 방식이라(hover 0.08, 누름 0.16) 사진 위에서도 보입니다. `pressEffect="none"`, `focusRingInset`이 선택지입니다.
-- **새 컴포넌트 `KjunSideNavigation` (Vue 3·React)**: 화면 옆에 세로로 놓는 메뉴입니다. 항목은 하단 내비게이션과 같은 형식(`items`·`value`·`onNavigate`·`onReselect`)이고, 묶음 제목과 한 단계의 하위 항목을 가질 수 있습니다. 현재 항목은 선택 배경색 채움과 굵은 글자로 표시합니다. 부모 항목은 여닫는 버튼이며 현재 페이지의 부모는 열린 채로 시작합니다. 열린 부모는 `expanded`·`onExpandedChange`(Vue `v-model:expanded`)로 앱이 쥘 수도 있습니다.
+- **새 컴포넌트 `KjunPressable`**: 버튼·카드·목록 행이 아닌 영역을 누르게 합니다(지도 미리보기, 사진 칸. Vue 3·React·Native). 모양은 앱이 `style`(웹은 `class`도)로 정하고, KJUN은 눌림 표시·포커스 링·`button` 역할·비활성을 맡습니다. Native는 최소 터치 영역도 맡습니다. 눌림 표시는 내용 위에 글자색 막을 덮는 방식이라(hover 0.08, 누름 0.16) 사진 위에서도 보입니다. `pressEffect="none"`, `focusRingInset`이 선택지입니다.
+- **새 컴포넌트 `KjunSideNavigation`**: 화면 옆에 세로로 놓는 메뉴입니다(Vue 3·React·Native). 넓은 화면용이며 휴대폰에서는 하단 내비게이션을 씁니다. Native는 보이는 높이를 웹과 같게 두고 터치 영역만 44px로 넓힙니다. 항목은 하단 내비게이션과 같은 형식(`items`·`value`·`onNavigate`·`onReselect`)이고, 묶음 제목과 한 단계의 하위 항목을 가질 수 있습니다. 현재 항목은 선택 배경색 채움과 굵은 글자로 표시합니다. 부모 항목은 여닫는 버튼이며 현재 페이지의 부모는 열린 채로 시작합니다. 열린 부모는 `expanded`·`onExpandedChange`(Vue `v-model:expanded`)로 앱이 쥘 수도 있습니다.
 
 ## 0.21.0 — 2026-11-14
 

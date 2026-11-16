@@ -903,6 +903,17 @@
       ]
     },
     {
+      "name": "KjunSideNavigation",
+      "category": "navigation",
+      "aliases": [
+        "사이드 내비게이션",
+        "사이드바 메뉴",
+        "옆 메뉴",
+        "세로 탐색"
+      ],
+      "useCases": []
+    },
+    {
       "name": "KjunBottomActionBar",
       "category": "layout",
       "aliases": [
@@ -965,6 +976,17 @@
       "useCases": [
         "범용 목록"
       ]
+    },
+    {
+      "name": "KjunPressable",
+      "category": "actions",
+      "aliases": [
+        "누름 영역",
+        "프레서블",
+        "터치 영역",
+        "클릭 영역"
+      ],
+      "useCases": []
     },
     {
       "name": "KjunSlider",

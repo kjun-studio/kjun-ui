@@ -42,7 +42,9 @@ test("the current item is a fill and a weight, never an accent stripe", async ()
   }
 });
 
-test("React and Vue 3 build the same menu from the shared runtime", async () => {
+test("every platform builds the same menu from the shared runtime", async () => {
+  const native = await read("packages/native/src/side-navigation.tsx");
+  for (const part of ["sideNavigationSections(", "sideNavigationCurrentParents(", "toggleSideParent(", 'name="chevron-down"', "tokens.native.minimumTouchTarget"]) assert.ok(native.includes(part), "native " + part);
   for (const platform of ["react", "vue3"]) {
     const component = await read(`packages/${platform}/src/side-navigation.tsx`);
     for (const part of ["sideNavigationSections(", "sideNavigationCurrentParents(", "toggleSideParent(", 'name="chevron-down"', "kjun-side-navigation-children", "data-current-within"]) assert.ok(component.includes(part), platform + " " + part);

@@ -148,6 +148,7 @@ export type {
 export * from "./list";
 export * from "./app-navigation";
 export * from "./side-navigation";
+export * from "./pressable";
 export * from "./media";
 export * from "./chip";
 export * from "./fab";

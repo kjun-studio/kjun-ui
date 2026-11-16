@@ -205,6 +205,9 @@ export const kjunPropValues = Object.freeze({
     placement: Object.freeze(["bottom","bottom-end","bottom-start","left","right","top","top-end","top-start"] as const),
     width: Object.freeze(["sm","md","lg"] as const),
   }),
+  KjunPressable: Object.freeze({
+    pressEffect: Object.freeze(["none","overlay"] as const),
+  }),
   KjunProgress: Object.freeze({
     shape: Object.freeze(["bar","circle"] as const),
     size: Object.freeze(["sm","md","lg"] as const),

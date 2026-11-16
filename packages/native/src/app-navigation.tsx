@@ -61,7 +61,7 @@ export interface NavigationDestination { key: string; label: string; href?: stri
   badge?: NavigationBadge; disabled?: boolean }
 // The ring that cuts a badge out of the icon is a border here (a box-shadow outside the box on Web), so the box grows by it.
 // On an icon it sits on the icon's top end corner; beside a text label it follows the text in the row, taking room.
-function NavigationBadgeMark({ badge, ring, iconSize }: { badge: NavigationDestination["badge"]; ring: ColorValue; iconSize?: number }) {
+export function NavigationBadgeMark({ badge, ring, iconSize }: { badge: NavigationDestination["badge"]; ring: ColorValue; iconSize?: number }) {
   const { colors } = useKjunStyles();
   const geometry = tokens.extensions.navigationBadge;
   const width = tokens.border.controlWidth;

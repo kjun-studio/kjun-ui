@@ -497,3 +497,17 @@ set("Text", {
   tabIndex: "포커스 순서입니다. -1이면 Tab으로는 닿지 않고 코드로만 포커스를 줄 수 있습니다.",
   role: "요소의 접근성 역할입니다. 상태 문구라면 status처럼 내용의 뜻에 맞는 역할을 줍니다.",
 }, "react");
+set("Pressable", {
+  pressEffect: { default: '"overlay"', summary: "눌림 표시 방식입니다. overlay는 마우스를 올리거나 누를 때 내용 위에 글자색 막을 덮어(0.08, 0.16) 사진과 글 위 어디서나 보입니다. none은 막을 그리지 않으며, 내용이 스스로 눌림을 그릴 때만 씁니다." },
+  focusRingInset: { default: "false", summary: "키보드 포커스 링을 영역 안쪽에 그립니다. 화면 끝까지 닿는 영역이나 넘침을 자르는 부모 안에서 바깥 링이 잘릴 때 씁니다." },
+  ariaLabel: "화면 낭독기가 읽는 이름입니다. 내용에 글자가 없으면(지도, 사진) 반드시 줍니다.",
+  disabled: { default: "false", summary: "누름을 막고 내용을 흐리게 표시합니다. 화면 낭독기에는 비활성으로 알립니다." },
+});
+set("SideNavigation", {
+  expanded: { summary: "열린 부모 항목의 key 목록입니다. 생략하면 컴포넌트가 스스로 기억하며, 현재 목적지의 부모를 연 채로 시작합니다. 주면 앱이 관리합니다(Vue v-model:expanded)." },
+});
+for (const platform of ["react", "native"]) set("SideNavigation", {
+  onReselect: "현재 목적지를 다시 눌렀을 때 호출합니다(onNavigate 다음). 목록을 맨 위로 올리거나 새로 고칠 때 씁니다.",
+  onExpandedChange: "부모 항목을 여닫을 때 다음 key 목록으로 호출합니다. expanded를 주었다면 받은 값을 반영합니다.",
+}, platform);
+

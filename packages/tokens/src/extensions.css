@@ -318,6 +318,18 @@
   .kjun-bottom-action-content > .kjun-navigation-actions { flex:0 1 auto; }
 }
 
+/* KjunPressable: an area that presses, with no shape of its own (the app gives radius, padding and background). The
+   press layer is a text-coloured tint over the content, so it shows on a photo as well as on text and never reads as
+   disabled, which is a loss of opacity. The layer and the focus ring follow the corners the app gave. */
+.kjun-pressable{position:relative;display:block;min-width:0;color:inherit;text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.kjun-pressable::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--_kjun-color-text);opacity:0;pointer-events:none;transition:opacity var(--_kjun-motion-control) var(--_kjun-ease-out)}
+@media (hover:hover){.kjun-pressable:not([aria-disabled=true],[data-press-effect=none]):hover::after{opacity:var(--_kjun-state-opacity-tint-control)}}
+.kjun-pressable:not([aria-disabled=true],[data-press-effect=none]):active::after{opacity:var(--_kjun-state-opacity-tint-active)}
+.kjun-pressable[aria-disabled=true]{opacity:var(--_kjun-state-opacity-disabled);cursor:default}
+.kjun-scope .kjun-pressable:focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
+.kjun-scope .kjun-pressable[data-focus-inset]:focus-visible{outline-offset:var(--_kjun-state-focus-inset-offset)}
+@media (prefers-reduced-motion: reduce){.kjun-pressable::after{transition:none}}
+
 /* KjunSideNavigation: a vertical menu for the side of a wide screen. Items start at the start edge (a button centres
    its label), the current destination takes the selection fill and a stronger weight, and a parent opens one level of
    children under its label. It paints no surface of its own and fills the width the app gives it. */

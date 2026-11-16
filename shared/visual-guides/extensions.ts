@@ -34,6 +34,14 @@ export const extensions: Record<string, GuideAuthor> = {
     parts: [p("현재 목적지", "앱의 value가 현재 목적지를 결정합니다. 글자색 면에 채운 아이콘으로 반전합니다.", '[aria-current="page"]'), p("다른 목적지", "아이콘만 보이며 label을 접근성 이름으로 읽습니다.", '[aria-label="내 정보"]'), t("보조 수치", "위험 색 배지입니다. true는 점으로 표시합니다.", "3", true)], related: "app-screen",
     states: [{ id: "current", label: "목적지 변경", description: "소비자가 알림을 현재 위치로 제공합니다.", values: { destination: "activity" } }, { id: "keyboard", label: "키보드 표시", description: "기본 hideOnKeyboard=true로 탐색 영역을 숨깁니다.", settings: { keyboardVisible: true } }],
   },
+  KjunSideNavigation: {
+    parts: [p("현재 목적지", "앱의 value가 현재 목적지를 결정합니다. 선택 배경색 면과 굵은 글자로 표시합니다.", '[aria-current="page"]'), t("다른 목적지", "웹에서는 링크, Native에서는 앱 이동 요청입니다. 배지는 항목 끝에 놓입니다.", "활동"), t("묶음 제목", "12px 3차 글자색으로 구역을 나눕니다.", "문서"), t("부모 항목", "여닫는 버튼이며 스스로 이동하지 않습니다. 하위 항목은 부모 글자가 시작하는 선에 놓입니다.", "프로젝트")], related: "app-screen",
+    states: [{ id: "current", label: "목적지 변경", description: "소비자가 활동을 현재 위치로 제공합니다.", values: { destination: "activity" } }, { id: "child", label: "하위 목적지", description: "현재 목적지의 부모는 열린 채로 시작합니다.", values: { destination: "checkout" } }, { id: "long", label: "긴 이름", description: "한 줄에서 말줄임하고 배지는 끝에 남습니다.", settings: { long: true } }],
+  },
+  KjunPressable: {
+    parts: [p("누름 영역", "앱이 준 모양 그대로 통째로 누릅니다. 눌림 표시는 내용 위에 덮는 글자색 막입니다.", '[role="button"]'), t("내용", "앱이 넣은 표시용 콘텐츠입니다. 버튼이나 링크는 넣지 않습니다.", "교토 3박 4일")], related: "app-screen",
+    states: [{ id: "disabled", label: "비활성", description: "누름을 막고 내용을 흐리게 표시합니다.", settings: { disabled: true } }, { id: "plain", label: "눌림 표시 없음", description: "내용이 스스로 눌림을 그릴 때 막을 끕니다.", settings: { pressEffect: "none" } }],
+  },
   KjunBottomActionBar: {
     parts: [t("보조 설명", "14px·줄 높이 20px의 보조 설명입니다. 긴 설명은 줄바꿈합니다.", "저장하면 모든 기기에 적용됩니다.", true), t("주요 행동", "좁은 영역에서 확인 버튼이 남는 폭을 채웁니다. 저장 요청은 앱이 처리합니다.", "변경 사항 저장")], related: "app-screen",
     states: [{ id: "keyboard", label: "키보드 표시", description: "기본 hideOnKeyboard=false로 CTA를 유지합니다.", settings: { keyboardVisible: true } }],

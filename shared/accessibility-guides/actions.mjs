@@ -14,4 +14,5 @@ export default [
   ['KjunMenuButton', 'menu', 'disabled loading label', '작업 메뉴의 열기·항목 탐색·닫기', { button: '작업 메뉴' }],
   ['KjunRefreshButton', 'action', 'disabled loading targetName', '목록 갱신 버튼과 갱신 콜백', { event: 'message' }],
   ['KjunChip', 'remove', 'label removable disabled', '프로젝트 태그의 삭제 버튼', { button: '프로젝트 삭제' }],
+  ['KjunPressable', 'action', 'ariaLabel disabled', '지도 미리보기 영역의 Enter·Space 실행과 접근성 이름', { button: '추억 지도에서 보기', event: 'message', children: true }],
 ];

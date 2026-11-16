@@ -80,3 +80,44 @@ for (const platform of ['react', 'vue3']) {
     await expect(parent).toHaveAttribute('aria-expanded', 'false');
   });
 }
+
+// Native (React Native Web): the same menu drawn with Views. Rows keep Web's visible heights; the 44 touch target is
+// hitSlop, which a browser cannot show, so it is not covered here.
+test('native: SideNavigation marks the current destination, opens a parent and reports navigation', async ({ page }) => {
+  await openFixture(page, 'native', '', 'side-navigation');
+  const nav = page.getByRole('navigation', { name: '작업 공간' });
+  const home = nav.getByRole('link', { name: '홈' }), tasks = nav.getByRole('link', { name: /할 일/ });
+  await expect(home).toHaveAttribute('aria-current', 'page');
+  const side = await page.getByTestId('side').boundingBox(), box = await home.boundingBox();
+  expect(box!.width).toBe(side!.width);
+  expect(box!.height).toBe(40);
+  const clear = 'rgba(0, 0, 0, 0)';
+  expect(await home.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe(clear);
+  expect(await tasks.evaluate(el => getComputedStyle(el).backgroundColor)).toBe(clear);
+  await expect(tasks.getByText('12', { exact: true })).toBeVisible();
+  await tasks.click();
+  await expect(tasks).toHaveAttribute('aria-current', 'page');
+  await tasks.click();
+  await expect(page.getByTestId('log')).toHaveText('go:tasks go:tasks again:tasks');
+  await expect(nav.getByRole('group', { name: '문서' })).toBeVisible();
+  const parent = nav.getByRole('button', { name: '프로젝트' });
+  await expect(parent).toHaveAttribute('aria-expanded', 'false');
+  await parent.click();
+  await expect(parent).toHaveAttribute('aria-expanded', 'true');
+  const child = nav.getByRole('link', { name: '결제 화면 개선' });
+  await expect(child).toBeVisible();
+  await expect.poll(async () => (await child.boundingBox())!.height).toBe(36);
+  // A child's label starts where its parent's label starts.
+  const labelLeft = (text: string) => nav.getByText(text, { exact: true }).evaluate(el => el.getBoundingClientRect().left);
+  expect(Math.abs(await labelLeft('결제 화면 개선') - await labelLeft('프로젝트'))).toBeLessThan(1);
+  await expect(page.getByTestId('log')).toHaveText('go:tasks go:tasks again:tasks');
+  const billing = nav.getByRole('link', { name: '결제', exact: true });
+  await expect(billing).toHaveAttribute('aria-disabled', 'true');
+});
+
+test('native: SideNavigation starts with the current page\'s parent open', async ({ page }) => {
+  await openFixture(page, 'native', '?value=checkout', 'side-navigation');
+  const nav = page.getByRole('navigation', { name: '작업 공간' });
+  await expect(nav.getByRole('button', { name: '프로젝트' })).toHaveAttribute('aria-expanded', 'true');
+  await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toHaveAttribute('aria-current', 'page');
+});

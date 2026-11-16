@@ -11,6 +11,7 @@ export const captureFor = scene => captureProfiles[scene.captureType];
 const groups = [
   ['control', 456, ['KjunTabPane']],
   ['control', 464, ['KjunTopNavigation', 'KjunBottomNavigation', 'KjunFloatingNavigation', 'KjunPagination', 'KjunTabs']],
+  ['control', 240, ['KjunSideNavigation', 'KjunPressable']],
   ['desktop', 736, ['KjunKpiRow', 'KjunMarketTable', 'KjunMarketTableSkeleton']],
   ['small', null, ['KjunButton', 'KjunIcon', 'KjunButtonGroup', 'KjunFilterGroup', 'KjunIconToggle', 'KjunFab', 'KjunCopyButton', 'KjunRefreshButton', 'KjunExternalLink', 'KjunBadge', 'KjunChip', 'KjunBreadcrumb', 'KjunAvatar', 'KjunAnimatedNumber', 'KjunPriceCell', 'KjunSignedValue', 'KjunDeviation', 'KjunCollectionMark', 'KjunExecutionStatusBadge', 'KjunSpinner', 'KjunTooltip', 'KjunText', 'KjunStack', 'KjunInline']],
   ['control', 360, ['KjunRadio', 'KjunInput', 'KjunFormGroup', 'KjunFormActions', 'KjunTextarea', 'KjunCheckbox', 'KjunSwitch', 'KjunRadioGroup', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunDateRangePicker', 'KjunTimePicker', 'KjunColorPicker', 'KjunQuantityStepper', 'KjunSlider', 'KjunRangeSlider', 'KjunScrollFade', 'KjunImage', 'KjunCarousel', 'KjunProgressCell', 'KjunZoneGauge', 'KjunStackedBar', 'KjunSparkline', 'KjunSkeleton', 'KjunFormSkeleton', 'KjunProgress']],

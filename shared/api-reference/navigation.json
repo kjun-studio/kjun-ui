@@ -19,6 +19,32 @@
       "maxItems"
     ]
   },
+  "KjunSideNavigation": {
+    "vue3": [
+      "items",
+      "value",
+      "ariaLabel",
+      "expanded"
+    ],
+    "react": [
+      "items",
+      "value",
+      "ariaLabel",
+      "onNavigate",
+      "onReselect",
+      "expanded",
+      "onExpandedChange"
+    ],
+    "native": [
+      "items",
+      "value",
+      "ariaLabel",
+      "onNavigate",
+      "onReselect",
+      "expanded",
+      "onExpandedChange"
+    ]
+  },
   "KjunExternalLink": {
     "vue3": [
       "href",

@@ -61,6 +61,28 @@
       "shape"
     ]
   },
+  "KjunPressable": {
+    "vue3": [
+      "ariaLabel",
+      "disabled",
+      "pressEffect",
+      "focusRingInset"
+    ],
+    "react": [
+      "ariaLabel",
+      "disabled",
+      "pressEffect",
+      "focusRingInset"
+    ],
+    "native": [
+      "children",
+      "style",
+      "ariaLabel",
+      "disabled",
+      "pressEffect",
+      "focusRingInset"
+    ]
+  },
   "KjunButtonGroup": {
     "vue3": [
       "modelValue",
