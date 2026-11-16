@@ -61,10 +61,11 @@ export interface NavigationDestination { key: string; label: string; href?: stri
   badge?: NavigationBadge; disabled?: boolean }
 // The ring that cuts a badge out of the icon is a border here (a box-shadow outside the box on Web), so the box grows by it.
 // On an icon it sits on the icon's top end corner; beside a text label it follows the text in the row, taking room.
-export function NavigationBadgeMark({ badge, ring, iconSize }: { badge: NavigationDestination["badge"]; ring: ColorValue; iconSize?: number }) {
+// Without a ring (the end of a side navigation row, where nothing is overlapped) it is the bare badge with no offset.
+export function NavigationBadgeMark({ badge, ring, iconSize }: { badge: NavigationDestination["badge"]; ring?: ColorValue; iconSize?: number }) {
   const { colors } = useKjunStyles();
   const geometry = tokens.extensions.navigationBadge;
-  const width = tokens.border.controlWidth;
+  const width = ring === undefined ? 0 : tokens.border.controlWidth;
   const mark = navigationBadge(badge);
   if (!mark) return null;
   const size = mark.dot ? geometry.dotSize : geometry.minimumSize;
@@ -73,7 +74,7 @@ export function NavigationBadgeMark({ badge, ring, iconSize }: { badge: Navigati
       position: "absolute" as const, top: (mark.dot ? 0 : -geometry.offset) - width,
       // Counts and dots overlap only the icon's outer edge, clear of most of the glyph.
       start: iconSize - (mark.dot ? geometry.dotOverlap : geometry.overlap) - width,
-    } : { marginStart: geometry.offset - width, alignSelf: mark.dot ? "flex-start" as const : "center" as const }),
+    } : { marginStart: ring === undefined ? 0 : geometry.offset - width, alignSelf: mark.dot ? "flex-start" as const : "center" as const }),
     minWidth: size + 2 * width, minHeight: size + 2 * width,
     paddingHorizontal: mark.dot ? 0 : geometry.paddingX, borderRadius: geometry.radius,
     borderWidth: width, borderColor: ring, backgroundColor: colors.danger, alignItems: "center", justifyContent: "center",

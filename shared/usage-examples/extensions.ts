@@ -68,8 +68,8 @@ export function generate(input: UsageInput) {
       break;
     case 'KjunSideNavigation':
       content = b.group([b.node(b.native ? 'View' : 'div', { style: { width: b.vue ? '240px' : 240 } }, b.node(name, { ariaLabel: '작업 공간', value: b.state('destination', 'home'),
-        items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'activity', label: s.long ? '모든 프로젝트 활동 내역' : '활동', href: '#activity', icon: 'list', badge: 3 },
-          { title: '문서', items: [{ key: 'projects', label: '프로젝트', icon: 'folder', children: [{ key: 'brand', label: '브랜드 웹사이트', href: '#brand' }, { key: 'checkout', label: '결제 화면 개선', href: '#checkout' }] }, { key: 'archive', label: '보관함', href: '#archive', icon: 'archive' }] },
+        items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'activity', label: s.long ? '아주 긴 이름을 가진 프로젝트 활동 내역' : '활동', href: '#activity', icon: 'list', badge: 3 },
+          { title: '문서', items: [{ key: 'projects', label: '프로젝트', icon: 'folder', children: [{ key: 'brand', label: '브랜드 웹사이트', href: '#brand' }, { key: 'checkout', label: '결제 화면 개선', href: '#checkout' }] }, { key: 'archive', label: '보관함', href: '#archive', icon: 'box' }] },
           { title: '관리', items: [{ key: 'settings', label: '설정', href: '#settings', icon: 'settings', ...(s.disabled ? { disabled: true } : {}) }] }]),
         onNavigate: b.handler('navigate', 'key, event', (b.native ? '' : 'if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;\nevent.preventDefault();\n') + b.set('destination', 'key')),
       })), b.text(expr('"현재 위치: " + state.destination'))]);

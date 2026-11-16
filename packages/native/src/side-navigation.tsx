@@ -67,7 +67,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
       {(state: PressState) => <>
         {!!item.icon && <KjunIcon name={item.icon} filled={selected} size={geometry.iconSize} color={selected || state.pressed || state.hovered ? colors.text : colors.textSecondary} />}
         {label(item.label, selected, selected || (!item.disabled && !!(state.pressed || state.hovered)))}
-        <NavigationBadgeMark badge={item.badge} ring={fill(selected, item.disabled, state)} />
+        <NavigationBadgeMark badge={item.badge} />
       </>}
     </Pressable>;
   };

@@ -51,10 +51,10 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       // A sidebar column of a fixed width, as an app would give it; "활동" carries a badge and "문서" opens its children.
       return h("Stack", {}, [h("Box", { width: 240 }, h(name, { ariaLabel: "작업 공간", value: get("destination", "home"), items: [
         { key: "home", label: "홈", href: "#home", icon: "home" },
-        { key: "activity", label: settings.long ? "모든 프로젝트 활동 내역" : "활동", href: "#activity", icon: "list", badge: 3 },
+        { key: "activity", label: settings.long ? "아주 긴 이름을 가진 프로젝트 활동 내역" : "활동", href: "#activity", icon: "list", badge: 3 },
         { title: "문서", items: [
           { key: "projects", label: "프로젝트", icon: "folder", children: [{ key: "brand", label: "브랜드 웹사이트", href: "#brand" }, { key: "checkout", label: "결제 화면 개선", href: "#checkout" }] },
-          { key: "archive", label: "보관함", href: "#archive", icon: "archive" },
+          { key: "archive", label: "보관함", href: "#archive", icon: "box" },
         ] },
         { title: "관리", items: [{ key: "settings", label: "설정", href: "#settings", icon: "settings", disabled }] },
       ], onNavigate: (key: string, event: any) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return; event.preventDefault?.(); set("destination", key); } })),

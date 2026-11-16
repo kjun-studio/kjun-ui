@@ -49,6 +49,9 @@ for (const platform of ['react', 'vue3']) {
     const label = await parent.locator('.kjun-side-navigation-label').boundingBox(), childLabel = await child.locator('.kjun-side-navigation-label').boundingBox();
     expect(Math.abs(childLabel!.x - label!.x)).toBeLessThan(1);
     await expect.poll(async () => (await child.boundingBox())!.height).toBe(36);
+    // The first child sits the same 2 below its parent as every other row sits below the one before it.
+    const first = await nav.getByRole('link', { name: '브랜드 웹사이트' }).boundingBox(), parentBox = await parent.boundingBox();
+    expect(Math.round(first!.y - (parentBox!.y + parentBox!.height))).toBe(2);
     // Toggling the parent does not navigate.
     await expect(page.getByTestId('log')).toHaveText('');
     await child.click();
@@ -95,6 +98,10 @@ test('native: SideNavigation marks the current destination, opens a parent and r
   expect(await home.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe(clear);
   expect(await tasks.evaluate(el => getComputedStyle(el).backgroundColor)).toBe(clear);
   await expect(tasks.getByText('12', { exact: true })).toBeVisible();
+  // The badge is Web's size (16 tall, no ring around it) and ends at the row's inset.
+  const badge = await tasks.getByText('12', { exact: true }).locator('..').boundingBox(), row = await tasks.boundingBox();
+  expect(badge!.height).toBe(16);
+  expect(Math.round(row!.x + row!.width - (badge!.x + badge!.width))).toBe(12);
   await tasks.click();
   await expect(tasks).toHaveAttribute('aria-current', 'page');
   await tasks.click();
