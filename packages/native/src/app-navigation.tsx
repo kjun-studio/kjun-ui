@@ -14,6 +14,7 @@ import { KText, content } from "./internal";
 import { useKjunBottomBar, useKjunSafeArea, useKjunStyles } from "./provider";
 import { TopNavigationContext } from "./top-navigation-context";
 import { BottomActionBarContext } from "./bottom-action-bar-context";
+import { ActionShapeContext, ActionSizeContext } from "../../../shared/package-runtime/action-size";
 export interface KjunTopNavigationProps { title: string; description?: string; leading?: ReactNode; actions?: ReactNode;
   /** Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it. */
   safeArea?: boolean;
@@ -205,8 +206,10 @@ export interface KjunBottomActionBarProps { description?: string; children: Reac
   safeArea?: boolean;
   keyboardVisible?: boolean; hideOnKeyboard?: boolean;
   /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
-  surface?: boolean }
-export function KjunBottomActionBar({ description, children, safeArea = true, keyboardVisible = false, hideOnKeyboard = false, surface = true }: KjunBottomActionBarProps) {
+  surface?: boolean;
+  /** "floating" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills. */
+  variant?: "docked" | "floating" }
+export function KjunBottomActionBar({ description, children, safeArea = true, keyboardVisible = false, hideOnKeyboard = false, surface = true, variant = "docked" }: KjunBottomActionBarProps) {
   const { colors } = useKjunStyles(), insets = useKjunSafeArea();
   const [width, setWidth] = useState(0);
   const geometry = tokens.extensions.navigation;
@@ -214,6 +217,23 @@ export function KjunBottomActionBar({ description, children, safeArea = true, ke
   const wrapping = Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } as TextStyle : {};
   const reportHeight = useKjunBottomBar(!(keyboardVisible && hideOnKeyboard));
   if (keyboardVisible && hideOnKeyboard) return null;
+  if (variant === "floating") {
+    // Like Web: a capsule with KjunFloatingNavigation's offset, padding, outline and elevation. The bar keeps its place
+    // at the bottom and paints nothing around the capsule; the description and the actions always share one line.
+    const capsule = tokens.extensions.floatingNavigation, border = tokens.border.defaultWidth;
+    return <BottomActionBarContext.Provider value={description ? false : "fill"}>
+      <View onLayout={reportHeight} style={{ flexShrink: 0, minWidth: 0, maxWidth: "100%", paddingHorizontal: capsule.offset, paddingBottom: capsule.offset + (safeArea ? insets.bottom : 0) }}>
+        {/* The outline is a border inside the box (a ring outside it on Web), so the padding gives it back. */}
+        <View style={{ flexDirection: "row", alignItems: "center", gap: geometry.actionsGap, padding: capsule.padding - border, borderRadius: capsule.radius,
+          borderWidth: border, borderColor: colors.border, backgroundColor: colors.surface, boxShadow: shadowLayers(capsule.elevation, colors) }}>
+          {!!description && <KText numberOfLines={1} style={{ ...typeStyle("body"), color: colors.text, flex: 1, minWidth: 0, paddingLeft: capsule.textPaddingX }}>{description}</KText>}
+          <ActionSizeContext.Provider value="lg"><ActionShapeContext.Provider value="pill">
+            <View style={{ flexDirection: "row", alignItems: "center", gap: geometry.actionsGap, minWidth: 0, ...(description ? { flexShrink: 0 } : { flex: 1 }) }}>{content(children)}</View>
+          </ActionShapeContext.Provider></ActionSizeContext.Provider>
+        </View>
+      </View>
+    </BottomActionBarContext.Provider>;
+  }
   return <BottomActionBarContext.Provider value={!wide}>
     <View onLayout={event => { setWidth(event.nativeEvent.layout.width); reportHeight(event); }} style={{
       flexShrink: 0, minWidth: 0, maxWidth: "100%", backgroundColor: surface ? colors.surface : "transparent",

@@ -9,6 +9,8 @@ export const kjunIconsKey: InjectionKey<Readonly<Ref<KjunIconRegistry>>> = Symbo
 export const kjunPortalKey: InjectionKey<Readonly<Ref<HTMLElement | null>>> = Symbol("kjunPortal");
 /** A container's default size for buttons that leave `size` unset; an explicit size always wins. */
 export const kjunActionSizeKey: InjectionKey<Readonly<Ref<ButtonSize | null>>> = Symbol("kjunActionSize");
+/** A container that draws its buttons as pills (a floating action bar). */
+export const kjunActionShapeKey: InjectionKey<Readonly<Ref<"pill" | null>>> = Symbol("kjunActionShape");
 // Internal slot geometry; consuming applications still choose button variants.
 export const kjunTopNavigationKey: InjectionKey<{ controlSize: number; iconSize: number } | null> =
   Symbol("kjunTopNavigation");

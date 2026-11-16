@@ -19,6 +19,9 @@ export const kjunPropValues = Object.freeze({
     size: Object.freeze(["xs","sm","md","lg","xl"] as const),
     variant: Object.freeze(["danger","default","info","price-down","price-up","primary","secondary","success","warning"] as const),
   }),
+  KjunBottomActionBar: Object.freeze({
+    variant: Object.freeze(["docked","floating"] as const),
+  }),
   KjunBottomNavigation: Object.freeze({
     iconStyle: Object.freeze(["auto","filled","outline"] as const),
   }),

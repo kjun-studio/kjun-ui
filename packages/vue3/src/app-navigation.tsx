@@ -9,6 +9,7 @@ import { trackBottomBar } from "../../../shared/package-runtime/bottom-bar";
 import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
+import { KjunActionSize } from "./runtime/action-size";
 import { kjunTopNavigationKey } from "./runtime/keys";
 import { hasContent } from "./runtime/slots";
 
@@ -165,6 +166,8 @@ const kjunBottomActionBarProps = {
   hideOnKeyboard: { type: Boolean, default: false },
   /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
   surface: { type: Boolean, default: true },
+  /** "floating" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills. */
+  variant: { type: String as PropType<"docked" | "floating">, default: "docked" },
 } as const;
 export type KjunBottomActionBarProps = ExtractPublicPropTypes<typeof kjunBottomActionBarProps>;
 export const KjunBottomActionBar = defineComponent({
@@ -173,10 +176,15 @@ export const KjunBottomActionBar = defineComponent({
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     const bar = useBottomBar();
-    return () => props.keyboardVisible && props.hideOnKeyboard ? null : (
-      <div ref={bar} class="kjun-bottom-action-bar" data-surface={props.surface ? undefined : "false"} style={{ paddingBottom: `calc(${tokens.extensions.navigation.padding}px + ${webSafeBottom(props.safeArea)})` }}>
-        <div class="kjun-bottom-action-content">{props.description && <p>{props.description}</p>}<div class="kjun-navigation-actions">{slots.default?.()}</div></div>
-      </div>
-    );
+    return () => {
+      if (props.keyboardVisible && props.hideOnKeyboard) return null;
+      const floating = props.variant === "floating", inset = floating ? tokens.extensions.floatingNavigation.offset : tokens.extensions.navigation.padding;
+      const actions = <div class="kjun-navigation-actions">{slots.default?.()}</div>;
+      return (
+        <div ref={bar} class="kjun-bottom-action-bar" data-variant={floating ? "floating" : undefined} data-surface={props.surface ? undefined : "false"} style={{ paddingBottom: `calc(${inset}px + ${webSafeBottom(props.safeArea)})` }}>
+          <div class="kjun-bottom-action-content">{props.description && <p>{props.description}</p>}{floating ? <KjunActionSize size="lg" shape="pill">{() => actions}</KjunActionSize> : actions}</div>
+        </div>
+      );
+    };
   },
 });

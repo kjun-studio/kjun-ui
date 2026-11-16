@@ -7,6 +7,7 @@ import { tokens } from "@kjun-ui/tokens";
 import { useLayoutEffect, useState, type MouseEvent, type ReactNode } from "react";
 import { trackBottomBar } from "../../../shared/package-runtime/bottom-bar";
 import { KjunIcon } from "./button";
+import { ActionShapeContext, ActionSizeContext } from "../../../shared/package-runtime/action-size";
 import { TopNavigationContext } from "./top-navigation-context";
 export interface KjunTopNavigationProps { title: string; description?: string; leading?: ReactNode; actions?: ReactNode;
   /** Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it. */
@@ -109,9 +110,13 @@ export interface KjunBottomActionBarProps { description?: string; children: Reac
   safeArea?: boolean;
   keyboardVisible?: boolean; hideOnKeyboard?: boolean;
   /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
-  surface?: boolean }
-export function KjunBottomActionBar({ description, children, safeArea = true, keyboardVisible = false, hideOnKeyboard = false, surface = true }: KjunBottomActionBarProps) {
+  surface?: boolean;
+  /** "floating" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills. */
+  variant?: "docked" | "floating" }
+export function KjunBottomActionBar({ description, children, safeArea = true, keyboardVisible = false, hideOnKeyboard = false, surface = true, variant = "docked" }: KjunBottomActionBarProps) {
   const bar = useBottomBar();
   if (keyboardVisible && hideOnKeyboard) return null;
-  return <div ref={bar} className="kjun-bottom-action-bar" data-surface={surface ? undefined : "false"} style={{ paddingBottom: `calc(${tokens.extensions.navigation.padding}px + ${webSafeBottom(safeArea)})` }}><div className="kjun-bottom-action-content">{description && <p>{description}</p>}<div className="kjun-navigation-actions">{children}</div></div></div>;
+  const floating = variant === "floating", inset = floating ? tokens.extensions.floatingNavigation.offset : tokens.extensions.navigation.padding;
+  const actions = <div className="kjun-navigation-actions">{children}</div>;
+  return <div ref={bar} className="kjun-bottom-action-bar" data-variant={floating ? "floating" : undefined} data-surface={surface ? undefined : "false"} style={{ paddingBottom: `calc(${inset}px + ${webSafeBottom(safeArea)})` }}><div className="kjun-bottom-action-content">{description && <p>{description}</p>}{floating ? <ActionSizeContext.Provider value="lg"><ActionShapeContext.Provider value="pill">{actions}</ActionShapeContext.Provider></ActionSizeContext.Provider> : actions}</div></div>;
 }

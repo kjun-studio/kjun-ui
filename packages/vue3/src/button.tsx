@@ -3,7 +3,7 @@ import { defineComponent } from "./runtime/component";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { typeStyle } from "../../../shared/package-runtime/typography";
 import { useIcon } from "./runtime/icons";
-import { kjunActionSizeKey, kjunTopNavigationKey, kjunCardActionsKey } from "./runtime/keys";
+import { kjunActionShapeKey, kjunActionSizeKey, kjunTopNavigationKey, kjunCardActionsKey } from "./runtime/keys";
 import { hasContent } from "./runtime/slots";
 import { css } from "./runtime/style";
 
@@ -91,6 +91,7 @@ export const KjunButton = defineComponent({
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { attrs, slots, emit }) {
     const size = useActionSize(() => props.size, "md");
+    const inheritedShape = inject(kjunActionShapeKey, null);
     const busy = useMinimumLoading(() => props.loading);
     const navigation = inject(kjunTopNavigationKey, null);
     // Card header actions wrap long labels, like a button given wrap.
@@ -131,7 +132,7 @@ export const KjunButton = defineComponent({
             minWidth: content && !props.block && appWidth == null ? tokens.button.minWidths[s] : undefined,
             padding: iconOnly ? 0 : `0 ${suffixIcon ? iconSide : paddingX}px 0 ${prefixIcon ? iconSide : paddingX}px`,
             ...typeStyle(tokens.button.typography[s]),
-            borderRadius: props.shape !== "default" ? tokens.shape.pill : tokens.button.radii[s],
+            borderRadius: props.shape !== "default" || inheritedShape?.value === "pill" ? tokens.shape.pill : tokens.button.radii[s],
             gap: content ? tokens.button.contentGaps[s] : 0,
           }, (navigation || props.wrap || cardActions) && { height: "auto", maxWidth: "100%", paddingBlock: Math.max(0, (height - contentHeight) / 2) },
             props.variant === "link" && { height: "auto", minHeight: 0, minWidth: 0, width: "auto", padding: 0, borderRadius: 0 })}

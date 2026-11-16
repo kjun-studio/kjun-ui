@@ -9,3 +9,10 @@ export function useActionSize(requested: ButtonSize | undefined, fallback: Butto
   const inherited = useContext(ActionSizeContext);
   return requested ?? inherited ?? fallback;
 }
+
+/** A container that draws its buttons as pills (a floating action bar); a button's own circle or pill shape is unaffected. */
+export const ActionShapeContext = createContext<"pill" | null>(null);
+/** Whether a button rounds to a pill: by its own shape, or because its container says so. */
+export function useActionPill(shape: "default" | "circle" | "pill"): boolean {
+  return useContext(ActionShapeContext) === "pill" || shape !== "default";
+}

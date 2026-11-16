@@ -6,7 +6,7 @@ import { FormActionsContext } from "./form-actions-context";
 import { CardActionsContext } from "./card-actions-context";
 import { AlertActionsContext } from "./alert-actions-context";
 import { textTint } from "./text-tint";
-import { useActionSize } from "../../../shared/package-runtime/action-size";
+import { useActionPill, useActionSize } from "../../../shared/package-runtime/action-size";
 import { DataStateContentContext } from "./data-state-context";
 import { tokens,type ButtonSize,type ButtonVariant } from "@kjun-ui/tokens";
 import { useIcon } from "../../../shared/package-runtime/icon-context";
@@ -190,7 +190,7 @@ export function KjunButton(input: KjunButtonProps) {
   onPress,
   ...props
   } = input;
-  const size = useActionSize(input.size, declaredSize);
+  const size = useActionSize(input.size, declaredSize), pill = useActionPill(shape);
   const alertActions = useContext(AlertActionsContext);
   const { colors: c, fontFamily } = useKjunStyles();
   const busy = useMinimumLoading(loading);
@@ -270,14 +270,15 @@ export function KjunButton(input: KjunButtonProps) {
           minHeight: height,
           width: block ? "100%" : iconOnly || shape === "circle" ? height : undefined,
           alignSelf: block ? "stretch" : "flex-start",
-          flexGrow: compactActionBar && positive && hasContent ? 1 : undefined,
+          flexGrow: compactActionBar === "fill" ? (hasContent ? 1 : undefined) : compactActionBar && positive && hasContent ? 1 : undefined,
+          ...(compactActionBar === "fill" && hasContent ? { flexBasis: 0, minWidth: 0 } : {}),
           // A width set by the caller (fixed square controls) wins over the label minimum.
           minWidth: hasContent && !block && StyleSheet.flatten(style)?.width == null ? tokens.button.minWidths[size] : undefined,
           paddingHorizontal: iconOnly ? 0 : tokens.button.paddingX[size],
           // Icon glyphs carry their own side bearing, so the icon side takes a tighter inset.
           ...(!iconOnly && prefixIcon ? { paddingLeft: tokens.button.iconSidePaddingX[size] } : {}),
           ...(!iconOnly && suffixIcon ? { paddingRight: tokens.button.iconSidePaddingX[size] } : {}),
-          borderRadius: shape !== "default" ? tokens.shape.pill : tokens.button.radii[size],
+          borderRadius: pill ? tokens.shape.pill : tokens.button.radii[size],
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",

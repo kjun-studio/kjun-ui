@@ -318,6 +318,24 @@
   .kjun-bottom-action-content > .kjun-navigation-actions { flex:0 1 auto; }
 }
 
+/* variant="floating": a capsule detached from the screen edge, with KjunFloatingNavigation's offset, padding, outline
+   and elevation. The bar keeps its place at the bottom but paints nothing around the capsule. The description and
+   the actions always share one line, whatever the width: a capsule that wrapped would stop being one. */
+.kjun-bottom-action-bar[data-variant=floating] { background:transparent; padding:0 var(--_kjun-extension-floating-navigation-offset); }
+.kjun-bottom-action-bar[data-variant=floating] > .kjun-bottom-action-content {
+  flex-direction:row; align-items:center; justify-content:space-between; gap:var(--_kjun-extension-navigation-actions-gap);
+  padding:var(--_kjun-extension-floating-navigation-padding); border-radius:var(--_kjun-extension-floating-navigation-radius);
+  background:var(--_kjun-color-surface); box-shadow:0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border), var(--_kjun-floating-navigation-elevation);
+}
+.kjun-bottom-action-bar[data-variant=floating] > .kjun-bottom-action-content > p {
+  flex:1; padding-inline-start:var(--_kjun-extension-floating-navigation-text-padding-x); color:var(--_kjun-color-text);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.kjun-bottom-action-bar[data-variant=floating] > .kjun-bottom-action-content > .kjun-navigation-actions { flex:0 0 auto; flex-wrap:nowrap; }
+/* Without a description the labelled buttons share the capsule's width. */
+.kjun-bottom-action-bar[data-variant=floating] > .kjun-bottom-action-content > .kjun-navigation-actions:only-child { flex:1; }
+.kjun-bottom-action-bar[data-variant=floating] > .kjun-bottom-action-content > .kjun-navigation-actions:only-child > .kjun-button:has(.kjun-button-label:not(:empty)) { flex:1 1 0; min-width:0; }
+.kjun-bottom-action-bar[data-variant=floating] > .kjun-bottom-action-content > .kjun-navigation-actions:not(:only-child) > .kjun-button { flex-grow:0; }
 
 /* KjunFab: an action pinned to the viewport's bottom end, above page content and clear of the safe area and of docked
    bottom bars (their height arrives as --_kjun-bottom-bar on the provider scope; a bar with its own safe area already covers it). */

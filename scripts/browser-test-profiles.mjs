@@ -20,7 +20,7 @@ const componentGroups = {
   combobox: [...files('select-scroll', 'popup-escape', 'elevation-inputs'), ...fields, ...contracts, ...visuals],
   'search-input': [...files('search-input', 'elevation-inputs'), ...fields, ...contracts],
   input: [...files('input-design', 'input-plain', 'textarea-design', 'date-picker-design', 'interaction-states', 'search-input', 'quantity', 'feedback-input', 'elevation-inputs'), ...fields, ...contracts, ...visuals],
-  button: [...files('button-design', 'interaction-states', 'button-group-motion', 'form-actions', 'bottom-action-bar-design', 'menu-button', 'refresh-button', 'copy-button-feedback', 'icon-toggle', 'accessibility-components'), ...visuals],
+  button: [...files('button-design', 'interaction-states', 'button-group-motion', 'form-actions', 'bottom-action-bar-design', 'floating-bar', 'menu-button', 'refresh-button', 'copy-button-feedback', 'icon-toggle', 'accessibility-components'), ...visuals],
   form: [...files('form-actions', 'root-class', 'layout-primitives', 'input-design', 'interaction-states', 'feedback-input', 'quantity', 'bottom-action-bar-design'), ...fields, ...contracts],
   tabs: [...files('tabs-contract', 'tabs-design', 'accessibility-tabs', 'controlled-state', 'live-updates', 'component-motion', 'expanded', 'react-tabs-actions'), ...visuals],
   accordion: [...files('accordion-design', 'controlled-state', 'component-motion', 'expanded', 'accessibility-components'), ...visuals],

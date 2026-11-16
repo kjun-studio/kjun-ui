@@ -270,7 +270,8 @@
       "safeArea",
       "keyboardVisible",
       "hideOnKeyboard",
-      "surface"
+      "surface",
+      "variant"
     ],
     "react": [
       "description",
@@ -278,7 +279,8 @@
       "safeArea",
       "keyboardVisible",
       "hideOnKeyboard",
-      "surface"
+      "surface",
+      "variant"
     ],
     "native": [
       "description",
@@ -286,7 +288,8 @@
       "safeArea",
       "keyboardVisible",
       "hideOnKeyboard",
-      "surface"
+      "surface",
+      "variant"
     ]
   },
   "KjunImage": {

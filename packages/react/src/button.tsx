@@ -1,7 +1,7 @@
 import { typeStyle } from "./typography";
 import { TopNavigationContext } from "./top-navigation-context";
 import { CardActionsContext } from "./card-actions-context";
-import { useActionSize } from "../../../shared/package-runtime/action-size";
+import { useActionPill, useActionSize } from "../../../shared/package-runtime/action-size";
 import { tokens,type ButtonSize,type ButtonVariant } from "@kjun-ui/tokens";
 import { useIcon } from "../../../shared/package-runtime/icon-context";
 import {
@@ -112,7 +112,7 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
     } = props;
     // Card header actions wrap long labels, like a button given wrap.
     const wrap = useContext(CardActionsContext) || ownWrap;
-    const size = useActionSize(props.size, declaredSize);
+    const size = useActionSize(props.size, declaredSize), pill = useActionPill(shape);
     const busy = useMinimumLoading(loading);
     const hasContent =
       children !== undefined &&
@@ -153,7 +153,7 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
           minWidth: hasContent && !block && style?.width == null ? tokens.button.minWidths[size] : undefined,
           padding: iconOnly ? 0 : `0 ${suffixIcon ? iconSide : paddingX}px 0 ${prefixIcon ? iconSide : paddingX}px`,
           ...typeStyle(tokens.button.typography[size]),
-          borderRadius: shape !== "default" ? tokens.shape.pill : tokens.button.radii[size],
+          borderRadius: pill ? tokens.shape.pill : tokens.button.radii[size],
           gap: hasContent ? tokens.button.contentGaps[size] : 0,
           ...(navigation || wrap ? {
             height: 'auto', maxWidth: '100%',
