@@ -14,7 +14,7 @@ import { KText, content } from "./internal";
 import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { useKjunStyles } from "./provider";
 import type { TableColumn } from "./table-model";
-import { tableHeaderRows, tableSpans } from "../../../shared/package-runtime/table-columns";
+import { tableColumnWidth, tableHeaderRows, tablePercentWidth, tableSpans } from "../../../shared/package-runtime/table-columns";
 export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, groups, collapsed, toggleGroup, groupLabel, summary, edgeInset }: TableGridProps<Row, number>) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles();
@@ -28,12 +28,10 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
   const sides = (x: number, first: boolean, last: boolean) => ({ paddingLeft: flush && first ? 0 : x, paddingRight: flush && last ? 0 : x });
   const firstColumn = (index: number) => index === 0 && !selectable;
   const lastColumn = (index: number, span = 1) => index + span === visible.length && !expandable && !mover;
-  const naturalWidth = (col: TableColumn<Row>) =>
-    typeof col.width === "number"
-      ? col.width
-      : typeof col.width === "string" && /^\d+(px)?$/.test(col.width)
-      ? parseFloat(col.width)
-      : geometry.columnWidth;
+  // Like Web, a percent width is a share of the table's own width, so "30%" columns fit a narrow sheet instead of
+  // falling back to the default width and overflowing. The table is measured first, so it stays hidden for that frame.
+  const naturalWidth = (col: TableColumn<Row>) => tableColumnWidth(col.width, scroll.viewport, geometry.columnWidth);
+  const unmeasured = !scroll.viewport && visible.some((col) => tablePercentWidth(col.width) != null);
   // A reorderable table ends each row with its two move buttons (sm, side by side), after the expand toggle.
   const moverWidth = mover ? 2 * tokens.button.heights.sm + tokens.extensions.list.actionsGap + 2 * geometry.cellPadding.compact.x : 0;
   const utilityWidth = (selectable ? geometry.actionColumnWidth : 0) + (expandable ? geometry.actionColumnWidth : 0) + moverWidth;
@@ -224,7 +222,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
     summaryRow(state.rows, "total", "total"),
   ];
   return (
-        <View style={{ position: "relative", minWidth: 0, opacity: skeletonHidden ? 0 : undefined }} aria-hidden={skeletonHidden || undefined}>
+        <View style={{ position: "relative", minWidth: 0, opacity: skeletonHidden || unmeasured ? 0 : undefined }} aria-hidden={skeletonHidden || undefined}>
           <ScrollView horizontal style={{ maxHeight }} scrollEventThrottle={16}
             onLayout={(event) => { const viewport = event.nativeEvent.layout.width; setScroll((previous) => ({ ...previous, viewport })); }}
             onScroll={(event) => { const x = event.nativeEvent.contentOffset.x; setScroll((previous) => ({ ...previous, x })); }}>

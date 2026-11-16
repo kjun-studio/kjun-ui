@@ -50,3 +50,22 @@ export function tableSpans<Column>(columns: readonly Column[], span?: ((column: 
   }
   return spans;
 }
+
+/** A column width given as a share of the table ("30%"), as a fraction; null for any other width. */
+export function tablePercentWidth(width: number | string | null | undefined): number | null {
+  if (typeof width !== "string") return null;
+  const match = /^\s*(\d+(?:\.\d+)?)%\s*$/.exec(width);
+  return match ? Number(match[1]) / 100 : null;
+}
+
+/**
+ * A column's width in px where the platform lays columns out itself (Native): a number or "120px" as given, a
+ * percent as that share of the table's own width, like a 100%-wide table on Web, and the fallback for anything else.
+ * Until the table has been measured (`viewport` 0) a percent column takes the fallback too.
+ */
+export function tableColumnWidth(width: number | string | null | undefined, viewport: number, fallback: number): number {
+  if (typeof width === "number") return width;
+  if (typeof width === "string" && /^\d+(px)?$/.test(width)) return parseFloat(width);
+  const share = tablePercentWidth(width);
+  return share != null && viewport > 0 ? share * viewport : fallback;
+}
