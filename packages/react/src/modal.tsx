@@ -19,6 +19,9 @@ export interface KjunFormActionsProps {
   showCancel?: boolean;
   showConfirm?: boolean;
   cancelDisabled?: boolean;
+  /** The id of a form elsewhere on the page: the confirm button then submits it (Enter in a field submits it too), so a form in a
+   * modal body needs no hidden submit button. Handle the save in the form's submit event. */
+  form?: string;
   confirmDisabled?: boolean;
   loading?: boolean;
   variant?: Extract<ButtonVariant, "primary" | "danger" | "success">;
@@ -33,6 +36,7 @@ export function KjunFormActions({
   showCancel = true,
   showConfirm = true,
   cancelDisabled = false,
+  form,
   confirmDisabled = false,
   loading = false,
   variant = "primary",
@@ -65,6 +69,8 @@ export function KjunFormActions({
           variant={variant}
           disabled={confirmDisabled}
           loading={loading}
+          type={form ? "submit" : "button"}
+          form={form}
           onClick={onConfirm}
         >
           {confirmText}
@@ -92,6 +98,9 @@ export interface KjunModalProps {
   showCancelButton?: boolean;
   confirmText?: string;
   cancelText?: string;
+  /** The id of a form elsewhere on the page: the confirm button then submits it (Enter in a field submits it too), so a form in a
+   * modal body needs no hidden submit button. Handle the save in the form's submit event. */
+  form?: string;
   confirmDisabled?: boolean;
   loading?: boolean;
   noPadding?: boolean;
@@ -125,6 +134,7 @@ export function KjunModal({
   showCancelButton = true,
   confirmText,
   cancelText,
+  form,
   confirmDisabled = false,
   loading = false,
   noPadding = false,
@@ -227,6 +237,7 @@ export function KjunModal({
                   showConfirm={showConfirmButton}
                   cancelText={cancelText}
                   confirmText={confirmText}
+                  form={form}
                   confirmDisabled={confirmDisabled}
                   loading={loading}
                   variant={confirmVariant}

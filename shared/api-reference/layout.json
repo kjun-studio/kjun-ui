@@ -214,7 +214,8 @@
       "footerSize",
       "ariaLabel",
       "ariaDescribedBy",
-      "returnFocus"
+      "returnFocus",
+      "form"
     ],
     "react": [
       "open",
@@ -245,7 +246,8 @@
       "ariaLabel",
       "ariaDescribedBy",
       "onAfterClose",
-      "returnFocus"
+      "returnFocus",
+      "form"
     ],
     "native": [
       "open",

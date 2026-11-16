@@ -374,6 +374,7 @@ set("Drawer", {
 set("Drawer", { avoidKeyboard: { default:"true", summary:"화면 키보드가 패널을 가리지 않게 합니다. 아래 Drawer는 키보드 위로 올라가고 다른 위치는 높이를 줄입니다. 기기에서만 동작합니다." } }, "native");
 // 0.13.0 additions.
 set("Button RefreshButton", { shape: { default:'"default"', summary:'"circle"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다. "pill"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).' } });
+for (const platform of ["vue3", "react"]) set("FormActions Modal", { form: "페이지의 다른 곳에 있는 <form>의 id입니다. 확인 버튼이 그 폼을 제출하고, 입력칸에서 Enter를 눌러도 제출됩니다. 모달 본문의 폼에 숨은 제출 버튼을 둘 필요가 없습니다. 저장은 폼의 submit 이벤트에서 처리하세요." }, platform);
 set("ListRow", { trailingPosition: { default: '"side"', summary: "끝 칸 값의 자리입니다. side는 글 전체 옆의 별도 열이고, title은 제목과 같은 줄입니다. title이면 설명과 children이 값의 길이와 무관하게 글 폭 전체를 써서, 막대가 있는 행들의 끝선이 맞습니다." } });
 for (const platform of ["vue3", "react"]) set("ListRow", {
   target: "링크 행을 여는 위치입니다. \"_blank\"이면 새 탭에서 열고 rel을 따로 주지 않으면 noopener noreferrer를 붙입니다.",

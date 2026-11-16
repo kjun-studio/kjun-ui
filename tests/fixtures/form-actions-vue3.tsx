@@ -13,9 +13,10 @@ createApp(defineComponent(() => () => {
   return <K.KjunProvider><div style={{ padding: '16px' }}>
     <div data-testid="container" style={{ width: width + 'px', maxWidth: '100%' }}>
       {context === 'bar' ? <K.KjunBottomActionBar description="변경 사항을 저장하세요.">{actions}</K.KjunBottomActionBar>
-        : context === 'modal' ? <K.KjunModal open showFooter title="작업 확인" confirmText={config.confirmText} cancelText={config.cancelText} footerSize={config.size}
+        : context === 'modal' ? <K.KjunModal open showFooter title="작업 확인" confirmText={config.confirmText} cancelText={config.cancelText} footerSize={config.size} form={(config as any).form}
           onConfirm={() => record('confirm')} onCancel={() => record('cancel')}>내용</K.KjunModal> : actions}
     </div>
+    {(config as any).form && <form id={(config as any).form} onSubmit={(event: Event) => { event.preventDefault(); record('submit'); }}><input aria-label="이름" /></form>}
     <div data-testid="reference" style={{ marginTop: '24px' }}><K.KjunButton size={config.size} variant={config.variant}>{config.confirmText}</K.KjunButton></div>
     <output data-testid="events">{state.events.join(',')}</output>
     <output data-testid="config" hidden>{JSON.stringify(config)}</output>

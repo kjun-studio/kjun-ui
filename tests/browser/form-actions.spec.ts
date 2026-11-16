@@ -139,3 +139,26 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(errors).toEqual([]);
   });
 }
+
+for (const platform of ['react', 'vue3']) {
+  test(`${platform}: form links the confirm button to a form elsewhere on the page`, async ({ page }) => {
+    await openFixture(page, platform, '', 'form-actions');
+    const save = page.getByTestId('container').getByRole('button', { name: '저장' });
+    // Without form the confirm button never submits anything.
+    await expect(save).toHaveAttribute('type', 'button');
+    await page.evaluate(() => (window as any).configureActions({ form: 'profile-form' }));
+    await expect(save).toHaveAttribute('type', 'submit');
+    await expect(save).toHaveAttribute('form', 'profile-form');
+    await expect(page.getByTestId('container').getByRole('button', { name: '취소' })).toHaveAttribute('type', 'button');
+    await save.click();
+    await expect(page.getByTestId('events')).toHaveText('confirm,submit');
+    // Enter in a field submits the form through the linked button, with no hidden submit button inside it.
+    await page.getByRole('textbox', { name: '이름' }).press('Enter');
+    await expect(page.getByTestId('events')).toHaveText('confirm,submit,confirm,submit');
+    // KjunModal passes form to the confirm button of its own footer.
+    await page.evaluate(() => (window as any).configureActions({ context: 'modal' }));
+    const modalSave = page.getByRole('dialog').getByRole('button', { name: '저장' });
+    await expect(modalSave).toHaveAttribute('type', 'submit');
+    await expect(modalSave).toHaveAttribute('form', 'profile-form');
+  });
+}

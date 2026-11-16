@@ -19,6 +19,9 @@ const kjunFormActionsProps = {
   showCancel: { type: Boolean, default: true },
   showConfirm: { type: Boolean, default: true },
   cancelDisabled: { type: Boolean, default: false },
+  /** The id of a form elsewhere on the page: the confirm button then submits it (Enter in a field submits it too), so a form in a
+   * modal body needs no hidden submit button. Handle the save in the form's submit event. */
+  form: { type: String, default: undefined },
   confirmDisabled: { type: Boolean, default: false },
   loading: { type: Boolean, default: false },
   variant: { type: String as PropType<Extract<ButtonVariant, "primary" | "danger" | "success">>, default: "primary" },
@@ -40,7 +43,7 @@ export const KjunFormActions = defineComponent({
     return () => (
       <div class="kjun-form-actions" ref={root}>
         {props.showCancel && <KjunButton size={size.value} variant={props.cancelVariant} disabled={props.cancelDisabled} onClick={() => emit("cancel")}>{(props.cancelText ?? m.value.cancel)}</KjunButton>}
-        {props.showConfirm && <KjunButton size={size.value} variant={props.variant} disabled={props.confirmDisabled} loading={props.loading} onClick={() => emit("confirm")}>{(props.confirmText ?? m.value.save)}</KjunButton>}
+        {props.showConfirm && <KjunButton size={size.value} variant={props.variant} disabled={props.confirmDisabled} loading={props.loading} type={props.form ? "submit" : "button"} {...{ form: props.form }} onClick={() => emit("confirm")}>{(props.confirmText ?? m.value.save)}</KjunButton>}
       </div>
     );
   },
@@ -104,6 +107,9 @@ const kjunModalProps = {
   showCancelButton: { type: Boolean, default: true },
   confirmText: { type: String, default: undefined },
   cancelText: { type: String, default: undefined },
+  /** The id of a form elsewhere on the page: the confirm button then submits it (Enter in a field submits it too), so a form in a
+   * modal body needs no hidden submit button. Handle the save in the form's submit event. */
+  form: { type: String, default: undefined },
   confirmDisabled: { type: Boolean, default: false },
   loading: { type: Boolean, default: false },
   noPadding: { type: Boolean, default: false },
@@ -170,7 +176,7 @@ export const KjunModal = defineComponent({
                   <div class="kjun-modal-footer">
                     {hasContent(footer) ? footer : (
                       <KjunFormActions size={props.footerSize} cancelVariant="secondary" showCancel={props.showCancelButton} showConfirm={props.showConfirmButton}
-                        cancelText={(props.cancelText ?? m.value.cancel)} confirmText={(props.confirmText ?? m.value.confirm)} confirmDisabled={props.confirmDisabled} loading={props.loading}
+                        cancelText={(props.cancelText ?? m.value.cancel)} confirmText={(props.confirmText ?? m.value.confirm)} form={props.form} confirmDisabled={props.confirmDisabled} loading={props.loading}
                         variant={props.confirmVariant} onConfirm={() => emit("confirm")} onCancel={() => { emit("cancel"); close(); }} />
                     )}
                   </div>
