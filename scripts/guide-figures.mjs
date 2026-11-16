@@ -85,15 +85,21 @@ else {
   const figures = {},
     failures = [];
   try {
-    const page = await browser.newPage({
-      viewport: { width: 960, height: 760 },
-      deviceScaleFactor: 2,
-      reducedMotion: "reduce",
-    });
     const errors = [];
-    page.on("pageerror", (e) => errors.push(e.message));
+    const openPage = async () => {
+      const opened = await browser.newPage({
+        viewport: { width: 960, height: 760 },
+        deviceScaleFactor: 2,
+        reducedMotion: "reduce",
+      });
+      opened.on("pageerror", (e) => errors.push(e.message));
+      return opened;
+    };
+    let page = await openPage();
     for (const [index, { name, platform, spec, key }] of expected.entries()) {
-      try {
+      // One page takes every capture. If the browser kills it (memory pressure on a busy host), every later capture
+      // would fail with it, so a crashed page is replaced and that capture is taken once more.
+      for (let attempt = 0; ; attempt++) try {
         errors.length = 0;
         await page.goto(`${server.url}/previews/catalog-${platform}.html?component=${name}`);
         await page.locator(`[data-component="${name}"]`).waitFor();
@@ -166,9 +172,17 @@ else {
           })),
           parts: boxes.map((b) => ({ x: b.x - x, y: b.y - y, width: b.width, height: b.height })),
         };
+        break;
       } catch (error) {
+        if (attempt === 0 && /crashed|has been closed/i.test(error.message)) {
+          console.warn(`Anatomy capture page crashed at ${key}; reopening it and retrying once.`);
+          await page.close().catch(() => {});
+          page = await openPage();
+          continue;
+        }
         failures.push(key + ": " + error.message);
         console.error(failures.at(-1));
+        break;
       }
       if ((index + 1) % 30 === 0) console.log(`Anatomy capture ${index + 1}/${expected.length}`);
     }
