@@ -325,6 +325,12 @@
       "text": "text",
       "description": "textSecondary"
     },
+    "info": {
+      "background": "infoLight",
+      "border": "cardBorder",
+      "text": "text",
+      "description": "textSecondary"
+    },
     "subtle": {
       "background": "cardSubtleStart",
       "border": "cardSubtleBorder",
@@ -336,6 +342,12 @@
       "border": "cardBorder",
       "text": "onBrand",
       "description": "onBrand"
+    },
+    "brandSoft": {
+      "background": "brandSubtleBg",
+      "border": "cardBorder",
+      "text": "text",
+      "description": "textSecondary"
     },
     "glass": {
       "background": "glassBg",

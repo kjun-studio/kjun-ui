@@ -1256,6 +1256,12 @@
   --_kjun-card-description: var(--_kjun-color-text-secondary);
   --_kjun-card-border: var(--_kjun-color-card-border);
 }
+.kjun-scope .kjun-card[data-surface="info"] {
+  --_kjun-card-background: var(--_kjun-color-info-light);
+  --_kjun-card-text: var(--_kjun-color-text);
+  --_kjun-card-description: var(--_kjun-color-text-secondary);
+  --_kjun-card-border: var(--_kjun-color-card-border);
+}
 .kjun-scope .kjun-card[data-surface="subtle"] {
   --_kjun-card-background: var(--_kjun-color-card-subtle-start);
   --_kjun-card-text: var(--_kjun-color-text);
@@ -1266,6 +1272,12 @@
   --_kjun-card-background: var(--_kjun-color-brand);
   --_kjun-card-text: var(--_kjun-color-on-brand);
   --_kjun-card-description: var(--_kjun-color-on-brand);
+  --_kjun-card-border: var(--_kjun-color-card-border);
+}
+.kjun-scope .kjun-card[data-surface="brandSoft"] {
+  --_kjun-card-background: var(--_kjun-color-brand-subtle-bg);
+  --_kjun-card-text: var(--_kjun-color-text);
+  --_kjun-card-description: var(--_kjun-color-text-secondary);
   --_kjun-card-border: var(--_kjun-color-card-border);
 }
 .kjun-scope .kjun-card[data-surface="glass"] {

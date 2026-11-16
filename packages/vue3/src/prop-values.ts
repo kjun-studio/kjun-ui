@@ -41,7 +41,7 @@ export const kjunPropValues = Object.freeze({
     mediaPosition: Object.freeze(["start","top"] as const),
     padding: Object.freeze(["none","sm","md","lg"] as const),
     radius: Object.freeze(["none","sm","md","lg","xl"] as const),
-    surface: Object.freeze(["accent","brand","danger","default","glass","muted","subtle","success","warning"] as const),
+    surface: Object.freeze(["accent","brand","brandSoft","danger","default","glass","info","muted","subtle","success","warning"] as const),
   }),
   KjunCarousel: Object.freeze({
     bleed: Object.freeze(["none","sm","md","lg"] as const),

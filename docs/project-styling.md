@@ -296,18 +296,20 @@ export async function removeItem(id: string) {
 
 ## 카드 표면과 색상 역할
 
-`KjunCard`의 `surface="accent"`는 강조 배경, `surface="subtle"`은 은은한 강조 배경이며 `surface="brand"`는 브랜드 배경입니다. 실제 색상과 강도는 적용 프로젝트가 결정합니다.
+`KjunCard`의 `surface="accent"`는 강조 배경, `surface="subtle"`은 은은한 강조 배경이며 `surface="brand"`는 브랜드 배경, `surface="brandSoft"`는 브랜드 색을 옅게 깐 배경입니다. `success`·`warning`·`danger`·`info`는 의미 색을 옅게 깐 배경입니다. 실제 색상과 강도는 적용 프로젝트가 결정합니다.
 
 | 표면 | 연결할 선택 역할 |
 | --- | --- |
 | `accent` | `cardAccentStart` / `cardAccentEnd` |
 | `subtle` | `cardSubtleStart` / `cardSubtleEnd` / `cardSubtleBorder` |
 | `brand` | 배경은 `brand` / `brandHover`, 전경은 `onBrand` |
+| `brandSoft` | `brandSubtleBg` (달력 범위 띠·표 선택 도구 모음과 같은 역할) |
+| `success` · `warning` · `danger` · `info` | `successLight` · `warningLight` · `dangerLight` · `infoLight` |
 | `glass` | `glassBg` / `glassBorder` |
 
 테두리는 모든 표면에서 `border`로 선택하고, 그림자는 `elevation="flat"` 또는 `"raised"`로 선택합니다. 배경 선택과 테두리·그림자는 독립적입니다.
 
-Accent·Subtle의 Start를 생략하면 `secondary`, End를 생략하면 `surface`, `cardSubtleBorder`를 생략하면 `border`의 프로젝트 값을 사용합니다. 내부 CSS 클래스에 의존하지 말고 공개 `surface` 속성과 색상 역할을 연결하세요.
+Accent·Subtle의 Start를 생략하면 `secondary`, End를 생략하면 `surface`, `cardSubtleBorder`를 생략하면 `border`의 프로젝트 값을 사용합니다. `brandSubtleBg`와 `successLight`·`warningLight`·`dangerLight`·`infoLight`도 생략하면 `secondary`입니다. 그래서 이 역할들을 지정하지 않은 프로젝트에서는 `accent`·`subtle`·`brandSoft`와 의미 색 표면이 모두 `muted`와 같은 색으로 보입니다. 강조 표면을 쓰려면 해당 역할에 색을 지정하세요(예: `brandSubtleBg`에 브랜드 색을 15~20% 섞은 값). 내부 CSS 클래스에 의존하지 말고 공개 `surface` 속성과 색상 역할을 연결하세요.
 
 ## 유지하는 계약과 검증
 
