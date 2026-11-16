@@ -164,6 +164,18 @@
       "dotSize": { "$ref": "dimension.value8" },
       "dotOverlap": { "$ref": "dimension.value6" }
     },
+    "sideNavigation": {
+      "itemHeight": { "$ref": "button.heights.md" },
+      "childHeight": 36,
+      "iconSize": { "$ref": "iconSizes.large" },
+      "chevronSize": { "$ref": "iconSizes.default" },
+      "paddingX": { "$ref": "dimension.value12" },
+      "gap": { "$ref": "dimension.value12" },
+      "itemGap": { "$ref": "dimension.value2" },
+      "radius": { "$ref": "button.radii.md" },
+      "titlePaddingTop": { "$ref": "dimension.value16" },
+      "titlePaddingBottom": { "$ref": "dimension.value6" }
+    },
     "floatingNavigation": {
       "itemSize": 52,
       "iconSize": { "$ref": "dimension.value24" },
