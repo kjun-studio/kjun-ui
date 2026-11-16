@@ -2886,6 +2886,42 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
+    "name": "KjunSideNavigation",
+    "sources": {
+      "vue3": "packages/vue3/src/side-navigation.tsx",
+      "react": "packages/react/src/side-navigation.tsx",
+      "native": "packages/native/src/side-navigation.tsx"
+    },
+    "category": "navigation",
+    "kind": "component",
+    "owner": "KjunSideNavigation",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/side-navigation",
+    "tests": [
+      "tests/side-navigation.test.mjs",
+      "tests/browser/side-navigation.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
     "name": "KjunBottomActionBar",
     "sources": {
       "vue3": "packages/vue3/src/app-navigation.tsx",
@@ -3065,6 +3101,41 @@
       "tests/extensions.test.mjs",
       "tests/browser/docs/extensions.spec.ts",
       "tests/browser/docs/extension-races.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
+    "name": "KjunPressable",
+    "sources": {
+      "vue3": "packages/vue3/src/pressable.tsx",
+      "react": "packages/react/src/pressable.tsx",
+      "native": "packages/native/src/pressable.tsx"
+    },
+    "category": "actions",
+    "kind": "component",
+    "owner": "KjunPressable",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/pressable",
+    "tests": [
+      "tests/browser/pressable.spec.ts"
     ],
     "example": "previews/catalog/example-extensions.ts",
     "verificationEvidence": "docs/verification-v0.3.0.md"
