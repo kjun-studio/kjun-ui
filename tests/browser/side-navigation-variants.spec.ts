@@ -122,3 +122,22 @@ test('native: SideNavigation density="compact" shortens rows on Native Web and q
   await expect(count).toBeVisible();
   expect(await count.evaluate(el => getComputedStyle(el.parentElement!).backgroundColor)).toBe(clear);
 });
+
+// A dot at the end of a row sits in the row's middle, as on Web, in either density (not lifted to the top of the line).
+const dotOffset = (row: Locator) => row.evaluate(el => {
+  const box = el.getBoundingClientRect(), dot = [...el.querySelectorAll('div')].find(node => { const r = node.getBoundingClientRect();
+    return Math.round(r.width) === 8 && Math.round(r.height) === 8 && getComputedStyle(node).backgroundColor !== 'rgba(0, 0, 0, 0)'; });
+  if (!dot) return null;
+  const r = dot.getBoundingClientRect();
+  return Math.abs(r.top + r.height / 2 - (box.top + box.height / 2));
+});
+for (const query of ['', '&compact=1']) test(`native: SideNavigation centres a dot at the end of a row${query ? ' (compact)' : ''}`, async ({ page }) => {
+  await openFixture(page, 'native', '?value=checkout' + query, 'side-navigation');
+  const nav = page.getByRole('navigation', { name: '작업 공간' });
+  expect(await dotOffset(nav.getByRole('link', { name: /^브랜드 웹사이트/ }))).toBeLessThanOrEqual(1);
+  // A closed parent stands for its children's dot at the end of its own row.
+  const parent = nav.getByRole('button', { name: /^프로젝트/ });
+  await parent.click();
+  await expect(parent).toHaveAttribute('aria-expanded', 'false');
+  expect(await dotOffset(parent)).toBeLessThanOrEqual(1);
+});

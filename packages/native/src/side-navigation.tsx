@@ -128,11 +128,14 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   };
   // The row's fill, which a labelled rail paints on the indicator instead.
   const rowFill = (under: ColorValue) => labelled ? "transparent" : under;
+  // At the end of a row the badge sits in the row's middle, as on Web. The shared mark lifts a dot to the top of a text
+  // line (beside a bottom navigation label), so it is wrapped to centre the dot here.
+  const endMark = (badge: SideNavigationDestination["badge"]) => navigationBadge(badge) && <View style={{ alignSelf: "center" }}><NavigationBadgeMark badge={badge} /></View>;
   // At the end of a compact row a count is a quiet number; dots and the default density keep the badge.
   const trailing = (badge: SideNavigationDestination["badge"]) => {
     const mark = navigationBadge(badge);
     return compact && mark && !mark.dot ? <KText aria-hidden={true} style={{ ...typeStyle("caption"), fontVariant: ["tabular-nums"], color: colors.textTertiary }}>{mark.text}</KText>
-      : <NavigationBadgeMark badge={badge} />;
+      : endMark(badge);
   };
   // While collapsed the badge overlaps the icon, so its ring takes the row's fill (the surface under a clear row).
   const corner = (badge: SideNavigationDestination["badge"], under: ColorValue) =>
@@ -175,7 +178,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
         {(state: PressState) => { const lit = within || (!item.disabled && state.pressed); return <>
           {glyph(item.icon, item.label, false, lit, dot && corner(true, under(state)), under(state))}
           {label(item.label, within, lit)}
-          {!collapsed && dot && <NavigationBadgeMark badge={true} />}
+          {!collapsed && dot && endMark(true)}
           {!collapsed && <View style={shown ? { transform: [{ rotate: "180deg" }] } : undefined}><KjunIcon name="chevron-down" size={geometry.chevronSize} color={colors.textTertiary} /></View>}
         </>; }}
       </Pressable>)}
@@ -204,7 +207,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
       style={(state: PressState) => ({ height: groupHeight, flexDirection: "row" as const, alignItems: "center" as const, gap: geometry.gap, borderRadius: geometry.radius,
         paddingHorizontal: geometry.paddingX, backgroundColor: fill(within, false, state) })}>
       <KText numberOfLines={1} style={{ ...typeStyle("caption"), flex: 1, minWidth: 0, fontWeight: typeStyle("control").fontWeight, color: within ? colors.text : colors.textTertiary }}>{section.title}</KText>
-      {dot && <NavigationBadgeMark badge={true} />}
+      {dot && endMark(true)}
       <View style={shown ? { transform: [{ rotate: "180deg" }] } : undefined}><KjunIcon name="chevron-down" size={geometry.chevronSize} color={within ? colors.text : colors.textTertiary} /></View>
     </Pressable>;
   };
