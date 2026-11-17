@@ -232,7 +232,9 @@ for (const platform of ['react', 'vue3']) {
 for (const platform of NEW_CELLS) {
   test.describe(`${platform}: picker cells, redesigned`, () => {
     test.beforeEach(async ({ page }) => {
-      await page.clock.setFixedTime(new Date('2026-09-12T12:00:00'));
+      // React Native's Animated times its frames with Date.now, so a frozen clock would hold the Native popup's exit open: Native lets time run from the same moment.
+      if (platform === 'native') await page.clock.setSystemTime(new Date('2026-09-12T12:00:00'));
+      else await page.clock.setFixedTime(new Date('2026-09-12T12:00:00'));
       await openFixture(page, platform, '', 'date-picker-design');
     });
 

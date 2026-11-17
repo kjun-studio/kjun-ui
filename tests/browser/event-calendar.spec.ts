@@ -27,13 +27,22 @@ const role = (page: Page, name: string) => page.evaluate(name => {
   return color;
 }, name);
 // Pointer events as a finger (or mouse) would send them, from the middle of a cell.
-// React Native Web's responder system reads mouse and touch events, not pointer events: Native drags with the mouse, which it takes as a finger.
+// React Native Web's responder system reads touch (and mouse) events, not pointer events: Native gets touch events, which, as a browser sends them,
+// all target the element the finger went down on. (Its mouse path loses a drag that crosses into a sibling cell: RN Web finds no common ancestor there.)
 async function drag(cell: Locator, dx: number, dy: number, pointerType = 'touch') {
   if (native) {
-    const box = (await cell.boundingBox())!, mouse = cell.page().mouse, x = box.x + box.width / 2, y = box.y + box.height / 2;
-    await mouse.move(x, y); await mouse.down();
-    await mouse.move(x + dx / 2, y + dy / 2); await mouse.move(x + dx, y + dy);
-    await mouse.up();
+    await cell.evaluate((el, { dx, dy }) => {
+      const box = el.getBoundingClientRect(), x = box.x + box.width / 2, y = box.y + box.height / 2;
+      const fire = (type: string, cx: number, cy: number) => {
+        const touch = new Touch({ identifier: 21, target: el, clientX: cx, clientY: cy, pageX: cx + scrollX, pageY: cy + scrollY });
+        const active = type === 'touchend' ? [] : [touch];
+        el.dispatchEvent(new TouchEvent(type, { bubbles: true, cancelable: true, touches: active, targetTouches: active, changedTouches: [touch] }));
+      };
+      fire('touchstart', x, y);
+      fire('touchmove', x + dx / 2, y + dy / 2);
+      fire('touchmove', x + dx, y + dy);
+      fire('touchend', x + dx, y + dy);
+    }, { dx, dy });
     return;
   }
   await cell.evaluate((el, { dx, dy, pointerType }) => {
@@ -72,7 +81,9 @@ for (const platform of ['react', 'vue3', 'native']) {
   test.describe(platform, () => {
     test.beforeEach(async ({ page }) => {
       native = platform === 'native';
-      await page.clock.setFixedTime(new Date('2026-11-17T12:00:00'));
+      // React Native's Animated times its frames with Date.now, so Native lets time run from the same moment instead of freezing it.
+      if (native) await page.clock.setSystemTime(new Date('2026-11-17T12:00:00'));
+      else await page.clock.setFixedTime(new Date('2026-11-17T12:00:00'));
       await openFixture(page, platform, '', 'event-calendar');
       await expect(day(page, 'month', '2026-11-17')).toBeVisible();
     });

@@ -90,15 +90,20 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
   const swiped = useRef(false), guard = useRef<ReturnType<typeof setTimeout>>(undefined);
   const pan = useMemo(() => {
     const end = () => { clearTimeout(guard.current); guard.current = setTimeout(() => { swiped.current = false; }, calendar.pressGuard); };
+    // The step is decided when the move is claimed: the responder grant resets the gesture's dx and dy to zero.
+    let claimed: -1 | 0 | 1 = 0;
     return PanResponder.create({
       // Only a clearly horizontal move is claimed, so an outer vertical scroll keeps its gestures.
-      onMoveShouldSetPanResponder: (_, gesture) => latest.current.swipeable && swipeStep(gesture.dx, gesture.dy) !== 0,
+      onMoveShouldSetPanResponder: (_, gesture) => {
+        claimed = latest.current.swipeable ? swipeStep(gesture.dx, gesture.dy) : 0;
+        return claimed !== 0;
+      },
       // One swipe asks for one month (week); the rest of the gesture is ignored.
-      onPanResponderGrant: (_, gesture) => {
+      onPanResponderGrant: () => {
         clearTimeout(guard.current);
         swiped.current = true;
-        const delta = swipeStep(gesture.dx, gesture.dy);
-        if (delta) latest.current.step(delta);
+        if (claimed) latest.current.step(claimed);
+        claimed = 0;
       },
       onPanResponderTerminationRequest: () => true,
       onPanResponderRelease: end,
