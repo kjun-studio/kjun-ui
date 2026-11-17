@@ -7030,6 +7030,222 @@
       "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
     },
     {
+      "id": "KjunNumberInput.vue3.keyboard.v1",
+      "component": "KjunNumberInput",
+      "platform": "vue3",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "number",
+      "scenario": {},
+      "behavior": "숫자 입력의 쉼표 서식·Enter 확정과 오류 전환. 입력과 붙여넣기에서 숫자·소수점·부호만 남기고 쉼표를 붙여 보여 줍니다. Enter·blur에서 소수 자릿수를 채우고 범위를 확인합니다. 값은 쉼표 없는 문자열입니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "숫자 입력에 Tab으로 진입해 1234를 입력하고 Enter로 확정합니다.",
+      "expected": "입력란에 쉼표가 붙은 1,234가 보이고 값 상태는 쉼표 없는 1234입니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunNumberInput.vue3.labeling.v1",
+      "component": "KjunNumberInput",
+      "platform": "vue3",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "number",
+      "scenario": {},
+      "behavior": "숫자 입력의 쉼표 서식·Enter 확정과 오류 전환. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunNumberInput.vue3.focus.v1",
+      "component": "KjunNumberInput",
+      "platform": "vue3",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "number",
+      "scenario": {},
+      "behavior": "숫자 입력의 쉼표 서식·Enter 확정과 오류 전환. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunNumberInput.react.keyboard.v1",
+      "component": "KjunNumberInput",
+      "platform": "react",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "number",
+      "scenario": {},
+      "behavior": "숫자 입력의 쉼표 서식·Enter 확정과 오류 전환. 입력과 붙여넣기에서 숫자·소수점·부호만 남기고 쉼표를 붙여 보여 줍니다. Enter·blur에서 소수 자릿수를 채우고 범위를 확인합니다. 값은 쉼표 없는 문자열입니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "숫자 입력에 Tab으로 진입해 1234를 입력하고 Enter로 확정합니다.",
+      "expected": "입력란에 쉼표가 붙은 1,234가 보이고 값 상태는 쉼표 없는 1234입니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunNumberInput.react.labeling.v1",
+      "component": "KjunNumberInput",
+      "platform": "react",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "number",
+      "scenario": {},
+      "behavior": "숫자 입력의 쉼표 서식·Enter 확정과 오류 전환. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunNumberInput.react.focus.v1",
+      "component": "KjunNumberInput",
+      "platform": "react",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "number",
+      "scenario": {},
+      "behavior": "숫자 입력의 쉼표 서식·Enter 확정과 오류 전환. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunNumberInput.native.keyboard.v1",
+      "component": "KjunNumberInput",
+      "platform": "native",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "number",
+      "scenario": {},
+      "behavior": "숫자 입력의 쉼표 서식·Enter 확정과 오류 전환. 입력과 붙여넣기에서 숫자·소수점·부호만 남기고 쉼표를 붙여 보여 줍니다. Enter·blur에서 소수 자릿수를 채우고 범위를 확인합니다. 값은 쉼표 없는 문자열입니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "숫자 입력에 Tab으로 진입해 1234를 입력하고 Enter로 확정합니다.",
+      "expected": "입력란에 쉼표가 붙은 1,234가 보이고 값 상태는 쉼표 없는 1234입니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunNumberInput.native.labeling.v1",
+      "component": "KjunNumberInput",
+      "platform": "native",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "number",
+      "scenario": {},
+      "behavior": "숫자 입력의 쉼표 서식·Enter 확정과 오류 전환. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunNumberInput.native.focus.v1",
+      "component": "KjunNumberInput",
+      "platform": "native",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "number",
+      "scenario": {},
+      "behavior": "숫자 입력의 쉼표 서식·Enter 확정과 오류 전환. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "ariaLabel",
+        "min",
+        "max",
+        "disabled",
+        "error"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
       "id": "KjunQuantityStepper.vue3.keyboard.v1",
       "component": "KjunQuantityStepper",
       "platform": "vue3",
@@ -19867,32 +20083,32 @@
       "name": "@kjun-ui/tokens",
       "version": "0.21.0",
       "file": "kjun-ui-tokens-0.21.0.tgz",
-      "bytes": 148078,
-      "integrity": "sha512-3CDd0jGAU+cpU2n3oya5sUKuSpqpWYgmVcvyN0Z/aKbAN6k5jmue+ej2dbcPtMtdlnqFUP1nJIEf3uy4vgpRXw=="
+      "bytes": 148169,
+      "integrity": "sha512-qxfJBjKg9W5XV+dlchxm1uyQ9wExb7HS6HKpRpJYISlycQF/sZL1sKMJCtAjh+zev68r2hxdBwuQlqauK0de2w=="
     },
     {
       "name": "@kjun-ui/vue3",
       "version": "0.21.0",
       "file": "kjun-ui-vue3-0.21.0.tgz",
-      "bytes": 674659,
-      "integrity": "sha512-io4j2upY+4TSAhkIB9kmkKZwOHhaowu1fKzkTrFroHDEdHEggBazyJr7YQ8G0L3ceAkPRNseEdyVoSJIFhy7JA=="
+      "bytes": 685673,
+      "integrity": "sha512-a8v2Rmbs62fweSOUZ13m2l9nktdVwEjIqVxt02UUrZUD/fJYMZECWkqc8eUbwB0xA50TCsziZbS+JGMNCux7TA=="
     },
     {
       "name": "@kjun-ui/react",
       "version": "0.21.0",
       "file": "kjun-ui-react-0.21.0.tgz",
-      "bytes": 571397,
-      "integrity": "sha512-TJ5xTxBNNjTpCOwwkq0SPqAoyF2wm3s1+i14UeffOUztMECmOM8WTkH7aRr15kzqoxfNkdBGFjCsAQeKfbpSWA=="
+      "bytes": 581359,
+      "integrity": "sha512-Tn0h/kWZcbGeZH8+XtcuIW/4v+gNjuxv0uVFBC7WhaBrTdlyIkJZQTK7TVQUkJPGgEkgkv4kU272urb6Em3R1A=="
     },
     {
       "name": "@kjun-ui/native",
       "version": "0.21.0",
       "file": "kjun-ui-native-0.21.0.tgz",
-      "bytes": 1011137,
-      "integrity": "sha512-R3p0d9wx6dOEXqwAl9RpiJBMBp+OwZRcPLx4cN0p7Wx6XqJ4oSHb4ygYgVRxGyuKhPQpm9yWmNEhI+wGT4IxVw=="
+      "bytes": 1030362,
+      "integrity": "sha512-EvsFrxsSSO+drVVXybVbOEEN4XNXo2xo41U8/Tkl2O6OT6Divqeh43KWd4aGa03XaRrYmlsQ/uMNpsys46uKHw=="
     }
   ],
-  "definitionHash": "sha256-377e6abd1e5a83b01a32134048fc869d89f414fdb21ba2abaed7220f989792dc",
+  "definitionHash": "sha256-7e5dd80df7fe9a42783691b332095d096ad992c83f041a51192016a5a0adb9f5",
   "runs": [
     {
       "schemaVersion": 1,

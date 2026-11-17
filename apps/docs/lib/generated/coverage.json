@@ -1,11 +1,11 @@
 {
-  "total": 96,
+  "total": 97,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 96,
+      "provided": 97,
       "counts": {
-        "supported": 96,
+        "supported": 97,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 96,
+      "provided": 97,
       "counts": {
-        "supported": 96,
+        "supported": 97,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 96,
+      "provided": 97,
       "counts": {
         "supported": 0,
-        "preview": 96,
+        "preview": 97,
         "review": 0,
         "unsupported": 0
       },
@@ -1968,6 +1968,37 @@
       "recordId": "verification-v0.3.0"
     },
     {
+      "name": "KjunNumberInput",
+      "title": "NumberInput",
+      "docs": "/components/number-input",
+      "category": "inputs",
+      "differences": "웹은 inputMode를 정합니다(음수 허용이면 text, 소수가 있으면 decimal, 아니면 numeric). Native는 keyboardType을 정합니다(음수 허용이면 iOS는 numbers-and-punctuation, Android는 numeric, 아니면 decimal-pad 또는 number-pad). prefix·suffix는 웹이 ReactNode(Vue는 슬롯), Native가 문자열입니다. Escape로 편집을 마지막 확정값으로 되돌리는 동작은 웹과 하드웨어 키보드의 동작이며, 화면 키보드만 있는 Native 기기에는 해당하지 않습니다. Native는 React Native Web에서만 확인했고 기기 키보드·IME는 별도로 확인해야 합니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
       "name": "KjunPagination",
       "title": "Pagination",
       "docs": "/components/pagination",
@@ -3062,7 +3093,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 96
+      "componentCount": 97
     }
   ]
 }
