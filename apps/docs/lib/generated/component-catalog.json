@@ -3105,6 +3105,42 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
+    "name": "KjunAvatarGroup",
+    "sources": {
+      "vue3": "packages/vue3/src/avatar-group.tsx",
+      "react": "packages/react/src/avatar-group.tsx",
+      "native": "packages/native/src/avatar-group.tsx"
+    },
+    "category": "data-display",
+    "kind": "component",
+    "owner": "KjunAvatarGroup",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/avatar-group",
+    "tests": [
+      "tests/avatar-group.test.mjs",
+      "tests/browser/avatar-group.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
     "name": "KjunChip",
     "sources": {
       "vue3": "packages/vue3/src/chip.tsx",

@@ -538,6 +538,46 @@
       "textColor"
     ]
   },
+  "KjunAvatarGroup": {
+    "vue3": [
+      "items",
+      "max",
+      "total",
+      "size",
+      "shape",
+      "ariaLabel",
+      "ringColor",
+      "pressable",
+      "disabled"
+    ],
+    "react": [
+      "items",
+      "max",
+      "total",
+      "size",
+      "shape",
+      "ariaLabel",
+      "ringColor",
+      "pressable",
+      "disabled",
+      "onClick",
+      "className",
+      "style"
+    ],
+    "native": [
+      "items",
+      "max",
+      "total",
+      "size",
+      "shape",
+      "ariaLabel",
+      "ringColor",
+      "pressable",
+      "disabled",
+      "onPress",
+      "style"
+    ]
+  },
   "KjunChip": {
     "vue3": [
       "label",

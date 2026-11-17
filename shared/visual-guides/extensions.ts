@@ -64,6 +64,10 @@ export const extensions: Record<string, GuideAuthor> = {
     parts: [p("프로필 영역", "이미지가 없으면 이름의 첫 글자를 표시하며 접근성 이름은 전체 이름을 유지합니다.", '[aria-label="김하늘"]')], related: "generic-lists",
     states: [{ id: "photo", label: "사진", description: "실제 이미지 주소를 제공합니다.", settings: { imageState: "사진" } }, { id: "failure", label: "실패 대체", description: "사진 실패 시 이름의 첫 글자로 돌아갑니다.", settings: { imageState: "실패" } }],
   },
+  KjunAvatarGroup: {
+    parts: [p("그룹 이름", "그룹 전체를 이름 하나로 읽고 안의 아바타는 하나하나 읽지 않습니다.", '[aria-label="참여자 5명"]'), t("나머지 인원", "max를 넘는 사람 수입니다. 앞 아바타에 가리지 않는 부분 가운데에 숫자를 둡니다.", "+2")], related: "generic-lists",
+    states: [{ id: "many", label: "전체 128명", description: "total로 받은 전체 인원을 \"+99\"까지 표시합니다.", settings: { people: "128명" } }, { id: "pressable", label: "목록 열기", description: "그룹 전체가 버튼 하나가 됩니다.", settings: { people: "5명", pressable: true } }],
+  },
   KjunChip: {
     parts: [t("라벨", "표시하거나 삭제할 항목의 이름입니다.", "프로젝트"), p("삭제 요청", "누르면 소비자에게 삭제를 요청합니다. 패키지가 항목을 지우지는 않습니다.", '[aria-label="프로젝트 삭제"]', true)], related: "input-settings",
     states: [{ id: "without-remove", label: "삭제 없음", description: "removable=false로 삭제 버튼을 생략합니다.", settings: { removable: false } }],

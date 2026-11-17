@@ -19,4 +19,5 @@ export default [
   ['KjunCarousel', 'tab-order', 'ariaLabel index indicators', '영역 이름, 슬라이드 순서 읽기, 키보드 이동', {}],
   ['KjunImage', 'image', 'alt decorative', '프로젝트 표지의 대체 텍스트와 장식 모드', { text: '산과 하늘을 표현한 프로젝트 표지' }],
   ['KjunAvatar', 'image', 'name alt decorative', '김하늘 아바타의 대체 이름과 장식 모드', { text: '김하늘' }],
+  ['KjunAvatarGroup', 'image', 'ariaLabel total pressable', '참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기', { text: '참여자 5명' }],
 ];

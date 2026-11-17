@@ -114,6 +114,11 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       return h("Stack", {}, [h(name, { src: settings.imageState === "실패" ? "data:image/png;base64,invalid" : settings.imageState === "로딩" && !get("imageReady", false) ? undefined : sampleImage(get("imageVersion", 0)), alt: "산과 하늘을 표현한 프로젝트 표지", decorative: settings.decorative, aspectRatio: settings.aspectRatio, fit: settings.fit, onLoad: () => set("message", "이미지 로드 완료"), onError: () => set("message", "이미지 로드 실패") }, undefined, { fallback: settings.imageState === "로딩" && !get("imageReady", false) ? "이미지 주소를 준비합니다" : "이미지를 불러올 수 없습니다" }), settings.imageState === "로딩" && !get("imageReady", false) ? button("로컬 이미지 준비 · 2초", async () => { await new Promise(resolve => setTimeout(resolve, 2000)); set("imageReady", true); }) : null, button("이미지 주소 변경", () => set("imageVersion", get("imageVersion", 0) + 1))]);
     case "KjunAvatar":
       return h(name, { name: "김하늘", src: settings.imageState === "사진" ? sampleImage(0) : settings.imageState === "실패" ? "data:image/png;base64,invalid" : undefined, size: settings.size, shape: settings.shape, decorative: settings.decorative });
+    case "KjunAvatarGroup": {
+      const many = settings.people === "128명", count = settings.people === "3명" ? 3 : 5;
+      return h(name, { items: ["김하늘", "이서준", "박지우", "최민서", "정도윤"].slice(0, count).map((name, i) => ({ key: "p" + i, name })), max: 3, total: many ? 128 : undefined, ariaLabel: `참여자 ${many ? 128 : count}명`,
+        size: settings.size, shape: settings.shape, pressable: settings.pressable, disabled, ...action(() => set("message", "참여자 목록 열기")) });
+    }
     case "KjunChip":
       return h("Group", {}, [get("removed", false) ? button("태그 복원", () => set("removed", false)) : h(name, { label: settings.long ? "팀에서 함께 사용하는 프로젝트 분류" : "프로젝트", icon: "folder", removable: settings.removable, disabled, size: settings.size, onRemove: () => set("removed", true) })]);
     case "KjunSlider":

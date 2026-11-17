@@ -26,6 +26,7 @@ export function layout(name: string) {
     case 'KjunListSection': return <ActivityList />;
     case 'KjunListGroup': return <K.KjunListGroup><K.KjunListSection title="계정"><K.KjunListRow title="프로필" trailing="김하늘" chevron /></K.KjunListSection><K.KjunListSection title="알림" footer="이 기기에서만 적용됩니다."><K.KjunListRow title="푸시 알림" checked onCheckedChange={() => {}} /></K.KjunListSection></K.KjunListGroup>;
     case 'KjunListItem': return <K.KjunListSection title="화면"><K.KjunListItem><K.KjunText tone="secondary">화면 테마는 기기 설정을 따릅니다.</K.KjunText></K.KjunListItem><K.KjunListRow title="글자 크기" chevron /></K.KjunListSection>;
+    case 'KjunAvatarGroup': return row(<K.KjunAvatarGroup items={['김하늘', '이서준', '박지우', '최민서'].map((name, i) => ({ key: 'p' + i, name }))} max={3} total={12} size="lg" ariaLabel="참여자 12명" />);
     case 'KjunAvatar': return row(<><K.KjunAvatar name="김하늘" size="lg" /><K.KjunAvatar name="이서준" size="lg" /><K.KjunAvatar name="박지우" size="lg" shape="square" /></>);
     case 'KjunSplitPane': return <div style={{ height: 160 }}><K.KjunSplitPane ariaLabel="메시지 목록 크기" defaultSize={0.6} first={<K.KjunCard title="메시지 목록" subtitle="첫 패널" />} second={<K.KjunCard title="상세 내용" subtitle="둘째 패널" />} /></div>;
     case 'KjunCarousel': return <K.KjunCarousel ariaLabel="추천 콘텐츠" slideSize="peek" gap="sm">{['이번 주 추천', '팀 공간', '알림 정리'].map((title, i) => <K.KjunCard key={title} title={title} subtitle="새 소식을 확인하세요" border media={<K.KjunImage src={sampleImage(i)} alt="" decorative aspectRatio={2} lazy={false} />} />)}</K.KjunCarousel>;

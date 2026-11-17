@@ -138,6 +138,12 @@ export function generate(input: UsageInput) {
     }
     case 'KjunAvatar':
       content = b.node(name, { name: '김하늘', src: s.imageState === '사진' ? b.data('avatarUrl', sampleImage(0)) : s.imageState === '실패' ? 'data:image/png;base64,invalid' : undefined, ...b.props('size', 'shape', 'decorative') }); break;
+    case 'KjunAvatarGroup': {
+      const many = s.people === '128명', count = s.people === '3명' ? 3 : 5;
+      content = b.node(name, { items: b.data('people', ['김하늘', '이서준', '박지우', '최민서', '정도윤'].slice(0, count).map((name, i) => ({ key: 'p' + i, name }))), max: 3,
+        total: many ? 128 : undefined, ariaLabel: `참여자 ${many ? 128 : count}명`, ...b.props('size', 'shape', 'pressable', 'disabled'),
+        ...(s.pressable ? { [action]: notify('openPeople', '참여자 목록 열기') } : {}) }); break;
+    }
     case 'KjunChip': {
       b.state('removed', false);
       const chip = b.node(name, { label: s.long ? '팀에서 함께 사용하는 프로젝트 분류' : '프로젝트', icon: 'folder', ...b.props('removable', 'disabled', 'size'), onRemove: b.handler('remove', '', b.set('removed', 'true')) });
