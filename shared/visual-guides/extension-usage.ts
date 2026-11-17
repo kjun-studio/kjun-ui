@@ -5,4 +5,5 @@ export const extensionLayouts = [
   { id: "bottom-sheet", name: "GuideBottomSheet", title: "하단 Drawer · BottomSheet 레시피", description: "Drawer position=bottom으로 하단 패널을 엽니다. 스냅·드래그·끌어 닫기는 제공하지 않습니다. 내부 입력과 키보드의 가림 방지는 소비 화면의 별도 검증이 필요합니다." },
   { id: "thumbnail", name: "GuideThumbnail", title: "Thumbnail · 목록 이미지 레시피", description: "Image에 비율과 소비자 바깥 너비를 지정해 썸네일을 구성합니다. 정보를 전달하는 이미지는 대체 텍스트를 제공하고 실패해도 주변 설명을 유지합니다." },
   { id: "segmented-selection", name: "GuideSegmentedSelection", title: "SegmentedControl · 분할 선택 레시피", description: "ButtonGroup은 하나의 기준값을 선택합니다. FilterGroup의 필터 선택, Tabs의 패널 전환과 구분하고 역할이 같은 공개 API를 재사용합니다." },
+  { id: "transfer-form", name: "GuideTransferForm", title: "송금 폼 · 금액 입력 레시피", description: "NumberInput의 amount와 읽기 문구, FormGroup 도움말(잔액), 빠른 금액 버튼을 조합합니다. 버튼은 앱이 구성해 값을 더하며 컴포넌트에는 들어 있지 않습니다. 잔액을 넘는 금액은 앱이 막습니다." }
 ];

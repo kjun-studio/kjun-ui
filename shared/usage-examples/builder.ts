@@ -37,7 +37,7 @@ const kebab = (name: string) => name.replace(/[A-Z]/g, c => '-' + c.toLowerCase(
 export class Expression { constructor(public code: string) {} }
 /** Vue 3 components whose value is v-model (modelValue / update:modelValue). */
 export const vueModelComponents = new Set(['KjunInput', 'KjunTextarea', 'KjunCheckbox', 'KjunSwitch', 'KjunRadio', 'KjunRadioGroup', 'KjunButtonGroup', 'KjunFilterGroup',
-  'KjunSlider', 'KjunRangeSlider', 'KjunQuantityStepper', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunDateRangePicker', 'KjunTimePicker', 'KjunColorPicker', 'KjunTabs', 'KjunListSection']);
+  'KjunSlider', 'KjunRangeSlider', 'KjunQuantityStepper', 'KjunNumberInput', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunDateRangePicker', 'KjunTimePicker', 'KjunColorPicker', 'KjunTabs', 'KjunListSection']);
 class Handler extends Expression {}
 export const expr = (code: string) => new Expression(code);
 

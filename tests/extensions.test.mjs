@@ -3,9 +3,9 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { createNumberDomain, createSliderDomain, createTimeDomain, scaledDecimal, sliderKey } from "../packages/tokens/src/input-contract.ts";
 const json = file => JSON.parse(readFileSync(new URL("../" + file, import.meta.url), "utf8"));
-test("nineteen KJUN contracts extend the public catalog without duplicate recipe exports", () => {
+test("twenty KJUN contracts extend the public catalog without duplicate recipe exports", () => {
   const catalog = json("shared/component-catalog.json"),
-    names = ["Avatar", "BottomActionBar", "BottomNavigation", "Carousel", "Chip", "ColorPicker", "FloatingNavigation", "Image", "ListGroup", "ListRow", "ListSection", "QuantityStepper", "RangeSlider", "Slider", "SplitPane", "StackedBar", "TimePicker", "TopNavigation", "ZoneGauge"].map(n => "Kjun" + n),
+    names = ["Avatar", "BottomActionBar", "BottomNavigation", "Carousel", "Chip", "ColorPicker", "FloatingNavigation", "Image", "ListGroup", "ListRow", "ListSection", "NumberInput", "QuantityStepper", "RangeSlider", "Slider", "SplitPane", "StackedBar", "TimePicker", "TopNavigation", "ZoneGauge"].map(n => "Kjun" + n),
     additions = catalog.filter(entry => names.includes(entry.name));
   assert.equal(catalog.filter(entry => entry.kind !== "internal").length, 96);
   assert.deepEqual(additions.map(e => e.name).sort(), [...names].sort());

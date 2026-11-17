@@ -98,9 +98,9 @@ export async function verifyLabeling(page, d, note) {
   if (profile === 'data-state') await page.getByRole('button', { name: '조회 실패', exact: true }).click();
   await namedControls(page); note('실제 컨트롤의 이름과 모든 ID 참조 확인');
   // Field-like wrappers additionally exercise their public error state; this does not claim FormGroup propagation.
-  if (['select', 'search', 'date', 'time', 'stepper'].includes(profile) && d.component !== 'KjunCombobox') {
+  if (['select', 'search', 'date', 'time', 'stepper', 'number'].includes(profile) && d.component !== 'KjunCombobox') {
     await configure(page, { error: true });
-    const field = profile === 'stepper' ? page.getByRole('spinbutton') : controls(page).first();
+    const field = profile === 'stepper' ? page.getByRole('spinbutton') : profile === 'number' ? page.getByRole('textbox').first() : controls(page).first();
     await expect(field).toHaveAttribute('aria-invalid', 'true');
     await configure(page, { error: false });
     await expect(field).not.toHaveAttribute('aria-invalid', 'true');

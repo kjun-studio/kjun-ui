@@ -37,6 +37,15 @@ export function forms(b: RecipeBuilder): string | undefined {
         b.button('분류 초기화', b.handler('restoreTags', '', b.set('removedTags', '[]'))),
       ]);
     }
+    case 'GuideTransferForm': {
+      // Quick amounts are the app's own buttons: each adds to the value and stops at the balance.
+      const balance = 3420000;
+      const add = (label: string, step: number) => b.button(label, b.handler('add' + step, '', b.set('amount', 'String(Math.min(' + balance + ', (Number(' + b.read('amount') + ') || 0) + ' + step + '))')), { variant: 'secondary', size: 'sm' });
+      return b.stack([
+        b.node('KjunFormGroup', { label: '보낼 금액', hint: '잔액 3,420,000원' }, b.node('KjunNumberInput', { value: b.state('amount', ''), onValueChange: b.update('amount'), format: 'amount', suffix: '원', readingAid: true, min: 1000, max: balance, ariaLabel: '보낼 금액', placeholder: '0' })),
+        b.row([add('+1만', 10000), add('+5만', 50000), add('+10만', 100000), b.button('전액', b.handler('addAll', '', b.set('amount', 'String(' + balance + ')')), { variant: 'secondary', size: 'sm' })]),
+      ]);
+    }
     case 'GuideBottomSheet': {
       const open = b.state('open', false);
       return b.stack([

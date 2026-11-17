@@ -1132,6 +1132,25 @@
       ]
     },
     {
+      "name": "KjunNumberInput",
+      "category": "inputs",
+      "aliases": [
+        "숫자 입력",
+        "금액 입력",
+        "가격 입력",
+        "퍼센트 입력",
+        "단위 입력",
+        "Amount",
+        "Currency",
+        "Percent",
+        "NumberInput"
+      ],
+      "useCases": [
+        "송금 폼",
+        "설정 폼"
+      ]
+    },
+    {
       "name": "KjunText",
       "category": "layout",
       "aliases": [

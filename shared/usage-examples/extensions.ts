@@ -6,7 +6,7 @@ export function generate(input: UsageInput) {
   const action = b.native ? 'onPress' : 'onClick';
   const notify = (name: string, text: string) => b.handler(name, '', b.result(JSON.stringify(text)));
   const commit = () => b.handler('commit', 'value', b.result('"확정: " + value'));
-  let content: string;
+  let content: string, numberLabel = '';
   switch (name) {
     case 'KjunListSection':
       // A details section: label and value pairs that are read, not pressed, closed by an emphasized total.
@@ -209,12 +209,23 @@ export function generate(input: UsageInput) {
       content = b.node(name, { value: b.state('quantity', s.decimal ? 1.25 : 2), onValueChange: b.update('quantity'), min: s.negative ? -10 : 0, max: 10, step: s.decimal ? .1 : 1, precision: s.decimal ? 2 : 0,
         ...b.props('disabled', 'error', 'size', 'block'), ariaLabel: '주문 수량', onChangeCommit: commit(), onInvalidInput: b.handler('invalid', 'draft', b.result('"잘못된 수량: " + draft')),
       }); break;
+    case 'KjunNumberInput': {
+      // The wording follows the format; the value is a normalized string the app owns, and a range is checked when the edit is committed.
+      const unit = !!s.unit, format = unit ? 'number' : String(s.format ?? 'number'), decimals = unit ? Math.max(1, Number(s.decimals)) : Number(s.decimals) > 0 ? Number(s.decimals) : undefined;
+      const spec = unit ? { label: '몸무게', suffix: 'kg', value: '62.5', min: 0, max: 300 }
+        : format === 'amount' ? { label: '보낼 금액', suffix: '원', value: '1250000', min: 1000, max: undefined }
+        : format === 'percent' ? { label: '목표 수익률', suffix: undefined, value: '12.5', min: undefined, max: 100 }
+        : { label: '참여 인원', suffix: '명', value: '12', min: 1, max: 10000 };
+      numberLabel = spec.label;
+      content = b.node(name, { value: b.state('amount', spec.value), onValueChange: b.update('amount'), format: format === 'number' ? undefined : format, decimals, suffix: spec.suffix, min: spec.min, max: spec.max,
+        readingAid: s.readingAid ? true : undefined, align: s.align === 'end' ? 'end' : undefined, ...b.props('disabled', 'error', 'size'), ariaLabel: spec.label, onChangeCommit: commit() }); break;
+    }
     default: throw Error('기본 사용 코드 생성기 누락: ' + name);
   }
   // A visible label and error text so the error state never relies on the border color alone.
-  const fieldLabels: Record<string, [string, string]> = { KjunTimePicker: ['알림 시각', '알림 시각을 선택해 주세요.'], KjunColorPicker: ['라벨 색', '라벨 색을 선택해 주세요.'], KjunFileUpload: ['증빙 자료', '증빙 자료를 첨부해 주세요.'], KjunQuantityStepper: ['주문 수량', '주문 수량을 확인해 주세요.'] };
+  const fieldLabels: Record<string, [string, string]> = { KjunTimePicker: ['알림 시각', '알림 시각을 선택해 주세요.'], KjunColorPicker: ['라벨 색', '라벨 색을 선택해 주세요.'], KjunFileUpload: ['증빙 자료', '증빙 자료를 첨부해 주세요.'], KjunQuantityStepper: ['주문 수량', '주문 수량을 확인해 주세요.'], KjunNumberInput: [numberLabel, numberLabel + ' 값을 확인해 주세요.'] };
   if (fieldLabels[name]) content = b.node('KjunFormGroup', { label: fieldLabels[name][0], error: s.error ? fieldLabels[name][1] : '' }, content);
-  if (['KjunTimePicker', 'KjunColorPicker', 'KjunFileUpload', 'KjunQuantityStepper'].includes(name)) content = b.node(b.native ? 'View' : 'div', { style: { width: b.native ? 360 : '360px', maxWidth: '100%' } }, content);
+  if (['KjunTimePicker', 'KjunColorPicker', 'KjunFileUpload', 'KjunQuantityStepper', 'KjunNumberInput'].includes(name)) content = b.node(b.native ? 'View' : 'div', { style: { width: b.native ? 360 : '360px', maxWidth: '100%' } }, content);
   return b.finish(content);
 }
 

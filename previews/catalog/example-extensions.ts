@@ -170,6 +170,16 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
     }
     case "KjunQuantityStepper":
       return h("Box", { width: 360 }, h("KjunFormGroup", { label: "주문 수량", error: error ? "주문 수량을 확인해 주세요." : "" }, h(name, { value: get("quantity", settings.decimal ? 1.25 : 2), min: settings.negative ? -10 : 0, max: 10, step: settings.decimal ? .1 : 1, precision: settings.decimal ? 2 : 0, disabled, error, size: settings.size, block: settings.block, ariaLabel: "주문 수량", onValueChange: change("quantity"), onChangeCommit: (value: number) => set("message", "확정: " + value), onInvalidInput: (draft: string) => set("message", "잘못된 수량: " + draft) })));
+    case "KjunNumberInput": {
+      // The wording follows the format; the value is a normalized string ("1250000", "12.5") the app owns. Ranges are checked on commit.
+      const format = settings.unit ? "number" : settings.format;
+      const spec = settings.unit ? { label: "몸무게", suffix: "kg", value: "62.5", min: 0, max: 300 }
+        : format === "amount" ? { label: "보낼 금액", suffix: "원", value: "1250000", min: 1000 }
+        : format === "percent" ? { label: "목표 수익률", value: "12.5", max: 100 }
+        : { label: "참여 인원", suffix: "명", value: "12", min: 1, max: 10000 };
+      return h("Box", { width: 360 }, h("KjunFormGroup", { label: spec.label, error: error ? spec.label + " 값을 확인해 주세요." : "" }, h(name, { value: get("amount", spec.value), format, decimals: settings.unit ? Math.max(1, Number(settings.decimals)) : Number(settings.decimals) > 0 ? Number(settings.decimals) : undefined,
+        suffix: spec.suffix, min: spec.min, max: spec.max, readingAid: settings.readingAid, align: settings.align, size: settings.size, disabled, error, ariaLabel: spec.label, onValueChange: change("amount"), onChangeCommit: (value: string) => set("message", "확정: " + (value || "빈 값")) })));
+    }
   }
 }
 

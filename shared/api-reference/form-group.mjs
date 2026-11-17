@@ -2,7 +2,7 @@ import { detail, slot } from "./helpers.mjs";
 const common = {
   label: detail("입력의 목적을 설명하는 라벨입니다.", {
     연결: "FormGroup 안의 KJUN 입력은 필드 맥락을 받아 라벨과 도움말·오류를 연결합니다. 임의의 사용자 입력 요소에는 같은 연결을 직접 구현해야 합니다.",
-    "복합 입력": "QuantityStepper는 숫자 입력에 라벨·ID·오류·도움말·필수 정보를 연결합니다. TimePicker는 각 부분에 고유한 ID와 시·분·초 이름을 부여하고 도움말·오류를 공유합니다. 웹에서 연결된 라벨은 첫 번째 시 선택 컨트롤을 가리킵니다. Native DatePicker도 필드의 라벨·오류·도움말을 사용하며, Select 팝업의 검색창은 바깥 필드 맥락을 상속하지 않습니다.",
+    "복합 입력": "QuantityStepper와 NumberInput은 숫자 입력에 라벨·ID·오류·도움말·필수 정보를 연결합니다. TimePicker는 각 부분에 고유한 ID와 시·분·초 이름을 부여하고 도움말·오류를 공유합니다. 웹에서 연결된 라벨은 첫 번째 시 선택 컨트롤을 가리킵니다. Native DatePicker도 필드의 라벨·오류·도움말을 사용하며, Select 팝업의 검색창은 바깥 필드 맥락을 상속하지 않습니다.",
   }),
   required: detail("필수 표시와 자식 필드 맥락을 제공합니다.", {
     "입력 연결": "Input·Textarea는 이 상태를 상속합니다. React·Vue 3는 기본 required, Native Web은 aria-required로 필수 입력 의미를 전달합니다. React·Vue 2 입력에 명시한 required 값은 FormGroup보다 우선합니다.",

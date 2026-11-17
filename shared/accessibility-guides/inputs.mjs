@@ -17,5 +17,6 @@ export default [
   ['KjunTimePicker', 'time', 'ariaLabel precision disabled error', '시·분 선택 컨트롤과 시각 팝업', {}],
   ['KjunColorPicker', 'select', 'ariaLabel swatches custom alpha input clearable disabled error', '라벨 색 견본 묶음·채도와 명도·HEX 입력과 패널 닫기', {}],
   ['KjunFileUpload', 'upload', 'ariaLabel accept maxSize maxFiles multiple disabled', '증빙 자료의 파일 선택·행 삭제와 다시 시도·포커스 이동', {}],
+  ['KjunNumberInput', 'number', 'ariaLabel min max disabled error', '숫자 입력의 쉼표 서식·Enter 확정과 오류 전환', {}],
   ['KjunQuantityStepper', 'stepper', 'ariaLabel min max disabled error', '주문 수량의 키보드 편집과 증감 버튼', {}],
 ];

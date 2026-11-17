@@ -22,7 +22,7 @@ async function visit(page: Page, platform: string, component: string, palette = 
 
 for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: packed basic input examples render purpose, surface and bounded width`, async ({ page }) => {
-    for (const component of ['KjunInput', 'KjunTextarea', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunTimePicker', 'KjunQuantityStepper']) {
+    for (const component of ['KjunInput', 'KjunTextarea', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunTimePicker', 'KjunQuantityStepper', 'KjunNumberInput']) {
       await visit(page, platform, component);
       const control = page.locator('.catalog-render').locator('input, textarea, button, [role="button"]').first();
       await expect(control).toBeVisible();

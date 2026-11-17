@@ -25,6 +25,16 @@ export function renderRecipeExample(name: string, tools: ExampleTools): any {
         h("Group", {}, ["개인", "팀"].filter(tag => !get("removedTags", []).includes(tag)).map(tag => h("KjunChip", { label: settings.content === "긴 콘텐츠" ? tag + " 프로젝트의 모든 알림 분류" : tag, removable: true, onRemove: () => set("removedTags", [...get("removedTags", []), tag]) }))),
         button("분류 초기화", () => set("removedTags", [])),
       ]);
+    case "GuideTransferForm": {
+      // Quick amounts are the app's buttons beside the field: each adds to the value and stops at the balance.
+      const balance = 3420000, amount = get("amount", "");
+      const add = (step: number) => set("amount", String(Math.min(balance, (Number(amount) || 0) + step)));
+      return h("Box", { width: 360 }, h("Stack", {}, [
+        h("KjunFormGroup", { label: "보낼 금액", hint: "잔액 3,420,000원" }, h("KjunNumberInput", { value: amount, format: "amount", suffix: "원", readingAid: true, min: 1000, max: balance, ariaLabel: "보낼 금액", placeholder: "0", onValueChange: change("amount") })),
+        h("Group", {}, [["+1만", 10000], ["+5만", 50000], ["+10만", 100000]].map(([label, step]: any[]) => h("KjunButton", { variant: "secondary", size: "sm", ...action(() => add(step)) }, label))
+          .concat(h("KjunButton", { variant: "secondary", size: "sm", ...action(() => set("amount", String(balance))) }, "전액"))),
+      ]));
+    }
     case "GuideBottomSheet":
       return h("Stack", {}, [button("하단 패널 열기", () => set("open", true)), h("KjunDrawer", { open: get("open", false), onOpenChange: change("open"), position: "bottom", title: "알림 설정" }, h("Stack", {}, [h("Text", {}, "기존 Drawer의 하단 배치입니다. 드래그·스냅 제스처는 제공하지 않습니다."), h("KjunSwitch", { value: get("notify", true), onValueChange: change("notify"), label: "활동 알림 받기" })]), { footer: h("KjunButton", { ...action(() => set("open", false)) }, "설정 완료") })]);
     case "GuideThumbnail":

@@ -122,6 +122,8 @@ const colorPickerCallback = (key) => key === "onRecentColorsChange"
 const colorTriggerSlot = slot("트리거 안 내용을 직접 그립니다. 버튼과 접근성 이름은 KJUN이 맡습니다.", "{ value: string | null; open: boolean }");
 const carouselSlides = slot("슬라이드 목록입니다. 직접 자식 하나가 슬라이드 하나입니다.", "ReactNode", "슬라이드 안의 버튼·입력도 Tab으로 이동할 수 있습니다. 안의 입력에서는 화살표 키를 가로채지 않습니다.");
 const childProps = {
+  prefix: slot("숫자 앞에 붙는 단위 장식입니다.", "제공 데이터 없음", "화면 장식으로만 쓰이며 읽기 문구와 범위 문구에는 붙지 않습니다. 글자만 필요하면 prefix prop을 쓰세요."),
+  suffix: slot("숫자 뒤에 붙는 단위 장식입니다.", "제공 데이터 없음", "화면 장식으로만 쓰이며 읽기 문구와 범위 문구에는 붙지 않습니다. 글자만 필요하면 suffix prop을 쓰세요."),
   leading: slot("주 콘텐츠 앞쪽에 배치할 아이콘·이미지입니다.", "ReactNode", "ListRow에서는 기본 최소 40px 영역과 본문 간격 12px를 사용합니다. leadingSize를 지정하면 해당 정사각형 영역을 예약합니다. 아바타·이미지 자체 크기는 소비자가 지정하며 icon·iconColor·iconBackground는 무시합니다. 앞 영역에는 별도의 상호작용을 넣지 말고 actions에 배치하세요."),
   trailing: slot("행 뒤쪽의 보조 정보입니다.", "ReactNode", "수치·배지 등 표시용 콘텐츠만 넣으세요. 버튼은 actions로 분리합니다."),
   badge: slot("제목 바로 뒤에 붙이는 짧은 표시입니다(새 기능·베타·개수).", "ReactNode", "KjunBadge 같은 표시용 콘텐츠를 넣고, 제목 첫 줄 가운데에 맞춰 6px 뒤에 놓습니다. 긴 제목은 배지 앞에서 줄바꿈합니다. 화면 낭독기는 행 이름에서 제목 다음에 읽습니다(Native는 문자열·숫자일 때)."),
@@ -138,7 +140,29 @@ const topNavigationSlots = {
   leading: slot("뒤로 가기 등 앞쪽 탐색 행동입니다.", "ReactNode", "가용 폭의 최대 40%를 사용합니다. 내부 Button의 긴 라벨은 한 줄 말줄임하며, ariaLabel로 전체 목적을 제공하세요."),
   actions: slot("화면의 보조 행동 묶음입니다.", "ReactNode", "제목의 120px 기준 폭을 확보하기 어려우면 묶음 전체를 다음 줄로 배치합니다. 긴 Button 문구는 영역 안에서 줄바꿈합니다. Button·MenuButton·RefreshButton·IconToggle의 아이콘은 24px이며 최소 44px 컨트롤 영역을 사용합니다."),
 };
+const numberInputSummaries = platform => ({
+  format: { summary: "기본값 묶음을 고릅니다. number는 천 단위 쉼표·정수, amount는 같은 규칙에 앱이 suffix를 지정하는 금액, percent는 쉼표 없이 소수 1자리·음수 허용·\"%\"입니다. 동작은 갈라지지 않고 아래 개별 prop이 항상 프리셋을 덮습니다.", default: '"number"' },
+  decimals: { summary: "소수 자릿수 상한(0~6의 정수)입니다. 확정할 때 이 자릿수까지 0으로 채웁니다(3.5 → 3.50). 생략하면 format 프리셋(number·amount 0, percent 1)을 씁니다." },
+  grouping: { summary: "정수부에 천 단위 쉼표를 보입니다. 값에는 쉼표가 들어가지 않습니다. 생략하면 format 프리셋(percent만 false)을 씁니다." },
+  allowNegative: { summary: "음수를 받습니다. 허용하면 텍스트 어디에 -가 있어도 음수로 보고, 허용하지 않으면 -를 무시합니다. 생략하면 format 프리셋(percent만 true)을 씁니다. 음수를 받는 입력은 웹 inputMode가 text, Native 키보드가 iOS numbers-and-punctuation·Android numeric입니다." },
+  min: detail("허용하는 최솟값입니다.", { "동작": "편집 중에는 그대로 두고, 확정(blur·Enter)할 때 벗어나 있으면 오류 상태와 내장 문구(\"1,000원 이상 입력해 주세요\")를 보입니다. 값을 고치지 않으므로 거부는 앱이 정합니다. 편집 중 값이 범위로 돌아오면 오류를 바로 지웁니다. 오류 prop이나 FormGroup 오류가 있으면 그쪽이 우선합니다." }),
+  max: detail("허용하는 최댓값입니다.", { "동작": "min과 같습니다. 확정할 때 벗어나면 오류 상태와 내장 문구(\"100% 이하로 입력해 주세요\")를 보입니다." }),
+  prefix: { summary: platform === "vue3" ? "숫자 앞에 붙는 글자입니다. 노드가 필요하면 prefix 슬롯을 씁니다." : "숫자 앞에 붙는 단위 장식입니다. 문자열이 아니면 화면 장식으로만 쓰고 내장 문구에는 붙지 않습니다." },
+  suffix: { summary: platform === "vue3" ? "숫자 뒤에 붙는 글자입니다(예: \"원\", \"kg\"). 생략하면 format 프리셋(percent의 \"%\")을 씁니다. 노드가 필요하면 suffix 슬롯을 씁니다." : "숫자 뒤에 붙는 단위 장식입니다(예: \"원\", \"kg\"). 생략하면 format 프리셋(percent의 \"%\")을 씁니다. 문자열이면 읽기 문구와 범위 문구에도 붙습니다." },
+  readingAid: { summary: "정수부가 1만 이상일 때 입력 바로 아래에 \"1억 2,003만 5,000 원\" 같은 읽기 문구를 보입니다. suffix가 문자열이면 공백 뒤에 붙고, percent에서는 꺼집니다. 한국어 메시지에서만 만들며 화면 낭독기에는 aria-describedby로만 연결해 입력 중 계속 읽지 않습니다. FormGroup 도움말은 이 문구 아래 줄입니다.", default: "false" },
+  align: { summary: "숫자의 가로 정렬입니다. end는 숫자를 끝 쪽에 맞춥니다. 금액을 세로로 나열할 때 씁니다.", default: '"start"' },
+  size: { summary: "KjunInput과 같은 크기(sm·md·lg)입니다. 높이·글자·모서리가 같습니다.", default: '"md"' },
+  disabled: { summary: "입력을 막고 Tab 순서에서 뺍니다.", default: "false" },
+  readOnly: { summary: "값을 보여 주기만 하고 바꾸지 않습니다. 초점은 받습니다.", default: "false" },
+  error: { summary: "입력 영역을 오류로 표현합니다. 이 값이나 FormGroup 오류가 있으면 범위 밖 내장 문구보다 우선합니다.", default: "false" },
+  id: { summary: "실제 입력의 ID입니다. 외부 라벨과 명시적으로 연결할 때 사용합니다. FormGroup 안에서는 FormGroup이 정합니다." },
+  ariaLabel: { summary: "화면 낭독기가 읽는 이름입니다. 보이는 라벨이 없을 때 필요하며, FormGroup 라벨이 있으면 생략합니다." },
+  placeholder: { summary: "값이 비었을 때 보이는 안내 문구입니다. 값을 대신하지 않습니다." },
+  className: { summary: "루트(kjun-number-input)에 더할 클래스입니다." },
+  style: { summary: platform === "native" ? "루트 View에 더할 스타일입니다." : "루트에 더할 인라인 스타일입니다." },
+});
 const valueDescription = {
+  KjunNumberInput: "정규화된 값 문자열입니다. 빈 값은 \"\", 예는 \"1250000\"·\"-3.5\"·\"12.50\"이며 그룹 구분 문자(쉼표)는 없습니다. 퍼센트는 보이는 그대로라 화면의 12.5%가 \"12.5\"입니다.",
   KjunBottomNavigation: "현재 목적지의 key입니다. 실제 라우팅 결과에 따라 앱이 갱신합니다.",
   KjunFloatingNavigation: "현재 목적지의 key입니다. 실제 라우팅 결과에 따라 앱이 갱신합니다.",
   KjunSlider: "현재 숫자 값입니다. min~max 범위의 유한한 값을 전달합니다.",
@@ -221,6 +245,8 @@ const splitPaneCallbacks = {
 };
 const callback = (name, key, platform) => {
   if (name === "KjunSplitPane") return splitPaneCallbacks[key];
+  if (name === "KjunNumberInput" && key === "onValueChange") return event("값 변경을 소비자에게 알립니다.", "편집할 때마다. 확정이나 Escape로 보이는 값이 바뀌면(3.5 → 3.50) 그 값도 한 번 더 알려 value가 늘 화면과 같습니다", "string: 그룹 구분 문자가 없는 값(\"\", \"1250000\", \"-3.5\")", "반환값을 사용하지 않습니다.", "소비자가 value를 갱신합니다. 편집 중 값은 소수 자릿수를 채우지 않은 상태입니다.");
+  if (name === "KjunNumberInput" && key === "onChangeCommit") return event("편집이 확정됐음을 알립니다.", "blur 또는 Enter. 소수 자릿수를 채운 값으로, 값 변경 콜백 다음", "string: 소수 자릿수를 채운 값(\"12.50\")", "반환값을 사용하지 않습니다.", "저장·조회 등 확정이 필요한 작업에 쓰고, 범위 밖 값을 받아들일지는 앱이 정합니다.");
   if (key === "onOrderChange") return event("행을 옮긴 뒤의 새 순서를 알립니다.", "행의 위·아래 이동 버튼을 누를 때. 맨 위·맨 아래에서 더 갈 수 없는 방향과 reorderDisabled일 때는 발생하지 않습니다.", "(string | number)[]: 옮긴 뒤의 행 value 배열", "반환값을 사용하지 않습니다.", "소비자가 order를 갱신하고 그 순서로 행을 다시 그립니다. 갱신하지 않으면 행은 움직이지 않습니다. 저장도 소비자가 맡습니다.");
   if (key === "onReorder") return event("같은 이동을 자세히 알립니다.", "onOrderChange와 같은 시점", "{ value, from, to, order }: 옮긴 행의 value, 원래 위치와 새 위치(0부터), 새 순서", "반환값을 사용하지 않습니다.", "서버에 한 건의 이동만 보내는 식으로 쓸 때 사용합니다. order 갱신은 onOrderChange에서 합니다.");
   if (name === "KjunColorPicker") return colorPickerCallback(key);
@@ -274,6 +300,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (name === "KjunColorPicker" && key.startsWith("on")) entry = colorPickerCallback(key);
     else if (name === "KjunColorPicker" && key === "renderTrigger") entry = detail(colorPickerSummaries.renderTrigger, { "인자와 반환": "({ value: string | null; open: boolean }) => ReactNode", "접근성": "버튼과 이름(라벨, 현재 값)은 KJUN이 그대로 맡으므로 그린 내용에 같은 문구를 다시 읽히지 않게 aria-hidden을 주세요." });
     else if (name === "KjunColorPicker" && colorPickerSummaries[key]) entry = { summary: colorPickerSummaries[key] };
+    else if (name === "KjunNumberInput" && numberInputSummaries(platform)[key]) entry = { ...numberInputSummaries(platform)[key] };
     else if (name === "KjunCarousel" && carouselSummaries[key]) entry = { summary: carouselSummaries[key] };
     else if (name === "KjunCarousel" && key === "children") entry = carouselSlides;
     else if (name.endsWith("Slider") && key === "marks") entry = { type: "boolean | { value: number; label?: string }[]", ...detail("트랙 위 눈금입니다.", { "값": "true면 step마다 4px 점을 찍습니다(24개 이하일 때, 넘으면 개발 콘솔에 한 번 경고). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래(세로는 오른쪽)에 12px 라벨을 둡니다. 최솟값·최댓값은 트랙 끝이라 점 없이 라벨만 두고, 라벨은 트랙 끝에 맞춥니다. 라벨을 누르면 가까운 손잡이가 그 값으로 이동하고 확정됩니다.", "표시": "채움 구간 위의 점은 손잡이 색, 나머지는 3차 글자색입니다. 눈금은 장식이며 값과 조작은 그대로입니다." }) };
@@ -329,9 +356,9 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (name === "KjunRangeSlider" && platform === "vue3") props.modelValue.type = "[number, number]";
   const events = {}, slots = {};
   if (platform === "vue3") {
-    const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : name === "KjunAvatarGroup" ? { click: "onClick" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange", "update:expanded": "onExpandedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange", "update:order": "onOrderChange", reorder: "onReorder" } : {};
+    const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper", "KjunNumberInput"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : name === "KjunAvatarGroup" ? { click: "onClick" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange", "update:expanded": "onExpandedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange", "update:order": "onOrderChange", reorder: "onReorder" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
-    const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions", "expanded"], KjunListSection: ["actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"] }[name] || [];
+    const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions", "expanded"], KjunListSection: ["actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"], KjunNumberInput: ["prefix", "suffix"] }[name] || [];
     for (const key of slotNames) {
       if (name === "KjunColorPicker") { slots[key] = colorTriggerSlot; continue; }
       const definition = name === "KjunSplitPane" ? splitPaneSlots[key] : name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunCarousel" ? carouselSlides : name === "KjunListRow" && key === "default" ? listRowContent : childProps[key === "default" ? "children" : key];

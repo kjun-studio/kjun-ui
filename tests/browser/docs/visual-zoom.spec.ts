@@ -38,7 +38,7 @@ test(`${platform}: actual 200% browser zoom keeps long compositions and anatomy 
     expect(
       await page.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches),
     ).toBe(true);
-    for (const id of ["form", "toolbar", "assets", "generic-lists", "app-screen", "input-settings", "bottom-sheet", "thumbnail", "segmented-selection"]) {
+    for (const id of ["form", "toolbar", "assets", "generic-lists", "app-screen", "input-settings", "bottom-sheet", "thumbnail", "segmented-selection", "transfer-form"]) {
       await goToGuide(page, id, platform);
       const section = page.locator("#" + id);
       await section.getByRole("button", { name: "프리셋", exact: true }).click();

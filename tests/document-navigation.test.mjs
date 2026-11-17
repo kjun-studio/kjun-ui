@@ -10,7 +10,7 @@ const { documents } = JSON.parse(readFileSync('apps/docs/lib/generated/discovery
 test('every original guide section has one canonical page and a valid legacy destination', () => {
   const sections = guideTopics.flatMap(topic => topic.sections.map(([id]) => id));
   const expected = [...designSections, ...comparisons, ...layouts].map(item => item.id).concat('writing');
-  assert.equal(sections.length, 23);
+  assert.equal(sections.length, 24);
   assert.equal(new Set(sections).size, sections.length);
   assert.deepEqual(new Set(sections), new Set(expected));
   for (const topic of guideTopics) {

@@ -72,6 +72,12 @@ for (const platform of ['vue3', 'react', 'native']) {
         await expect(page.getByRole('switch')).not.toBeChecked();
       } else if (name === 'GuideThumbnail') {
         await expect(page.getByRole('img', { name: '산과 하늘 표지' })).toBeVisible();
+      } else if (name === 'GuideTransferForm') {
+        await page.getByRole('textbox', { name: '보낼 금액' }).fill('120000');
+        await page.getByRole('button', { name: '+5만', exact: true }).click();
+        await expect(page.getByRole('textbox', { name: '보낼 금액' })).toHaveValue('170,000');
+        await page.getByRole('button', { name: '전액', exact: true }).click();
+        await expect(page.getByRole('textbox', { name: '보낼 금액' })).toHaveValue('3,420,000');
       } else if (name === 'GuideSegmentedSelection') {
         await page.getByRole('button', { name: '월', exact: true }).click();
         await expect(page.getByText('선택한 조회 단위: month', { exact: true })).toBeVisible();

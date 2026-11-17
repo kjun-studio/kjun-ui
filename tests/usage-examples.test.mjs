@@ -24,8 +24,8 @@ test('shared setup is the common guide plus independent, composable additions', 
   }
 });
 test('every public component and feedback has an explicit independent usage generator', async () => {
-  assert.equal(usageTools.usageNames.length, 112);
-  assert.equal(usageTools.implementationNames.length, 15);
+  assert.equal(usageTools.usageNames.length, 114);
+  assert.equal(usageTools.implementationNames.length, 16);
   for (const name of usageTools.usageNames) for (const platform of platforms) {
     const generator = await usageTools.loadUsageGenerator(name);
     const configs = exampleDefinition(name).presets.map(preset => presetConfig(name, preset.id));

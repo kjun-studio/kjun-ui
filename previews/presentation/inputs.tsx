@@ -19,6 +19,7 @@ export function inputs(name: string) {
     case 'KjunColorPicker': return field(<K.KjunColorPicker value="#3B82F6" onValueChange={noop} swatches={['#EF4444', '#F97316', '#22C55E', '#3B82F6', '#8B5CF6']} clearable ariaLabel="라벨 색" />, '라벨 색');
     case 'KjunFileUpload': return field(<K.KjunFileUpload files={[{ id: 'b', name: '매장_외관_사진.jpg', size: 4404019, status: 'uploading', progress: 64 }]} accept=".pdf,image/*" maxSize={20971520} maxFiles={5} onSelect={noop} onRemove={noop} />, '증빙 자료');
     case 'KjunQuantityStepper': return field(<K.KjunQuantityStepper value={5} min={1} max={20} onValueChange={noop} ariaLabel="요청 수량" />, '요청 수량');
+    case 'KjunNumberInput': return field(<K.KjunNumberInput value="1250000" format="amount" suffix="원" readingAid onValueChange={noop} ariaLabel="보낼 금액" />, '보낼 금액');
     case 'KjunSlider': return <K.KjunSlider value={65} label="알림 음량" onValueChange={noop} />;
     case 'KjunRangeSlider': return <K.KjunRangeSlider value={[20, 80]} label="알림 범위" onValueChange={noop} />;
   }

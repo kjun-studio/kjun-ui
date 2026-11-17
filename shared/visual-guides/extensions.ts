@@ -114,4 +114,8 @@ export const extensions: Record<string, GuideAuthor> = {
     parts: [p("감소 버튼", "확정값에서 step을 뺍니다.", '[aria-label="수량 줄이기"]'), p("숫자 입력", "입력 문자열은 Enter·blur에서 숫자로 확정합니다.", '[role="spinbutton"]'), p("증가 버튼", "확정값에 step을 더합니다.", '[aria-label="수량 늘리기"]')], related: "input-settings",
     states: [{ id: "decimal", label: "소수 수량", description: "직접 입력은 소수 두 자리로 반올림하고 버튼은 0.1씩 증감합니다.", settings: { decimal: true }, values: { quantity: 1.25 } }],
   },
+  KjunNumberInput: {
+    parts: [p("숫자 입력", "쉼표·소수 자릿수·부호를 지키며 편집합니다. 값은 그룹 구분 문자가 없는 문자열입니다.", '[role="textbox"]'), t("단위 suffix", "서식이 붙이는 글자입니다. amount는 앱이 \"원\"을 지정하고 percent는 \"%\"가 기본입니다.", "원"), t("읽기 문구", "readingAid를 켜면 1만 이상일 때 입력 아래에 \"1억 2,003만 5,000 원\"처럼 읽어 줍니다.", "125만 원", true)], related: "transfer-form",
+    states: [{ id: "amount", label: "금액·읽기 보조", description: "쉼표와 단위, 입력 아래 읽기 문구를 함께 보입니다.", settings: { format: "amount", readingAid: true }, values: { amount: "1250000" } }, { id: "percent", label: "퍼센트", description: "보이는 그대로의 값이며 소수 한 자리를 채웁니다.", settings: { format: "percent" }, values: { amount: "12.5" } }, { id: "unit", label: "단위 suffix", description: "format은 number로 두고 suffix와 decimals만 지정합니다.", settings: { unit: true, decimals: 1 }, values: { amount: "62.5" } }],
+  },
 };

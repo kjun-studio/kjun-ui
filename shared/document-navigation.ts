@@ -11,7 +11,7 @@ export const guideTopics: GuideTopic[] = [
     description: '입력 항목과 선택 도구를 연결하고 저장·검증 흐름을 구성합니다.',
     aliases: ['입력 폼', '선택 기준', '버튼 배치', '취소 버튼', '긴 한국어 라벨'],
     useCases: ['저장 폼', '입력 검증', '수량 입력', '분할 선택'],
-    sections: [['form', '설정 폼'], ['selection', '선택 입력 비교'], ['input-settings', '시간·수량·범위'],
+    sections: [['form', '설정 폼'], ['selection', '선택 입력 비교'], ['input-settings', '시간·수량·범위'], ['transfer-form', '송금 폼·금액 입력'],
       ['segmented-selection', '분할 선택'], ['action-placement', '주요·취소 버튼 배치'],
       ['long-labels', '긴 한국어 라벨'], ['field-errors', '오류 메시지 위치']],
   },

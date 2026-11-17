@@ -145,6 +145,12 @@ export async function verifyKeyboard(page, d, note) {
     const before = await snapshot(page); await activate(page, page.getByRole('button', { name: '수량 늘리기', exact: true }).first(), 'Space');
     await stateChanged(page, before); note('수량 편집·확정·증가'); return;
   }
+  if (profile === 'number') {
+    const input = page.getByRole('textbox').first();
+    await tabTo(page, input); await input.fill('1234'); await page.keyboard.press('Enter');
+    await expect(input).toHaveValue('1,234');
+    note('숫자 편집·쉼표 서식·Enter 확정'); return;
+  }
   if (profile === 'table') {
     const checkbox = page.getByRole('checkbox').first(); await activate(page, checkbox, 'Space'); await expect(checkbox).toBeChecked();
     await activate(page, page.getByRole('button', { name: /행 확장|상세 보기/ }).nth(1));

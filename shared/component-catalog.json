@@ -3541,6 +3541,42 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
+    "name": "KjunNumberInput",
+    "sources": {
+      "vue3": "packages/vue3/src/number-input.tsx",
+      "react": "packages/react/src/number-input.tsx",
+      "native": "packages/native/src/number-input.tsx"
+    },
+    "category": "inputs",
+    "kind": "component",
+    "owner": "KjunNumberInput",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/number-input",
+    "tests": [
+      "tests/number-input.test.mjs",
+      "tests/browser/number-input.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
     "name": "KjunText",
     "category": "layout",
     "kind": "component",

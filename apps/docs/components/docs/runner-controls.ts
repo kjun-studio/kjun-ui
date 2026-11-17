@@ -1,9 +1,9 @@
 import { visibleControls, type ExampleControl, type Settings } from '../../../../shared/example-registry';
 import type { PlatformName } from '../../../../shared/demo-config';
 
-const appearance = new Set(['size', 'variant', 'tone', 'density', 'surface', 'padding', 'bodyPadding', 'radius', 'elevation', 'border', 'dividers', 'compact', 'striped', 'hoverable', 'block', 'fullWidth', 'fit', 'aspectRatio', 'shape', 'noPadding', 'responsive', 'mobileSummary']);
+const appearance = new Set(['size', 'variant', 'tone', 'density', 'surface', 'padding', 'bodyPadding', 'radius', 'elevation', 'border', 'dividers', 'compact', 'striped', 'hoverable', 'block', 'fullWidth', 'fit', 'aspectRatio', 'shape', 'align', 'noPadding', 'responsive', 'mobileSummary']);
 const state = new Set(['disabled', 'loading', 'error', 'readOnly', 'childDisabled', 'itemDisabled', 'empty', 'stale', 'queryState', 'imageState', 'response']);
-const behavior = new Set(['multiple', 'searchable', 'clearable', 'sortable', 'selectable', 'expandable', 'stickyHeader', 'minChars', 'debounce', 'animated', 'spin', 'removable', 'decimal', 'negative', 'precision', 'minuteStep', 'secondStep', 'bounded', 'preserveContent', 'skeleton', 'keyboardVisible', 'hideOnKeyboard', 'safeAreaTop', 'safeAreaBottom', 'required', 'validate', 'closable', 'duration', 'confirmAction']);
+const behavior = new Set(['multiple', 'searchable', 'clearable', 'sortable', 'selectable', 'expandable', 'stickyHeader', 'minChars', 'debounce', 'animated', 'spin', 'removable', 'decimal', 'negative', 'format', 'readingAid', 'decimals', 'precision', 'minuteStep', 'secondStep', 'bounded', 'preserveContent', 'skeleton', 'keyboardVisible', 'hideOnKeyboard', 'safeAreaTop', 'safeAreaBottom', 'required', 'validate', 'closable', 'duration', 'confirmAction']);
 
 export function runnerControlGroups(name: string, settings: Settings, platform: PlatformName) {
   const controls = visibleControls(name, settings, platform).filter(control => control.key !== 'comparison');
@@ -30,6 +30,7 @@ const hints: Record<string, string> = {
   KjunDateRangePicker: '달력을 열어 시작일과 종료일을 차례로 고른 뒤 적용해 보세요.',
   KjunFileUpload: '선택 영역을 눌러 파일을 고르거나 끌어다 놓아 보세요. 고른 파일은 바로 완료 상태로 들어가고, 설정에서 여러 상태를 볼 수 있습니다.',
   KjunColorPicker: '색 버튼을 눌러 견본을 고르거나, 설정에서 자유 선택·투명도·HEX 입력을 켜 보세요.',
+  KjunNumberInput: '숫자를 입력해 보세요. 서식을 바꾸면 쉼표·소수·단위가 달라지고, 읽기 보조는 1만 이상일 때 입력 아래에 보입니다.',
   KjunTimePicker: '시각을 선택해 보세요. 설정에서 초 단위와 허용 범위를 바꿀 수 있습니다.',
   KjunTable: '열 제목으로 정렬하고 행을 선택하거나 펼쳐 보세요.',
   KjunModal: '모달을 열어 입력·저장·닫기를 확인하세요. 레이어는 이 미리보기 안에서 열립니다.',

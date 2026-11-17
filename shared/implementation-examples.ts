@@ -11,6 +11,7 @@ export const implementationExamples: Record<string, { description: string; value
   GuideBottomSheet: { description: 'Drawer의 하단 배치와 열림 상태를 연결합니다. 내부 선택값은 패널을 닫아도 유지하며 스냅·드래그 동작을 추가하지 않습니다.' },
   GuideThumbnail: { description: '목록의 leading 영역에서 이미지 바깥 폭과 비율을 정합니다. 의미를 전달하는 이미지에는 대체 텍스트를 제공합니다.' },
   GuideSegmentedSelection: { description: 'ButtonGroup의 선택 요청을 하나의 기간 값에 연결합니다. 콘텐츠 패널 전환이나 복수 선택과 구분합니다.' },
+  GuideTransferForm: { description: '금액 입력에 읽기 문구와 잔액 안내를 붙이고, 빠른 금액 버튼은 앱이 Button으로 옆에 구성해 값을 더합니다. 송금 요청은 보내지 않는 로컬 예제입니다.' },
   GuideFieldErrors: { description: '권장 사례의 초기 오류 상태입니다. 재검증해도 입력값을 유지하고 FormGroup의 설명과 Input의 오류 표시를 함께 갱신합니다.', values: { email: 'team@', invalid: true } },
   GuideDeleteConfirmation: { description: '권장 사례처럼 삭제 대상과 결과를 명시하고 취소와 삭제를 분리합니다. 이 코드는 로컬 항목만 제거하며 실제 삭제 요청을 수행하지 않습니다.', values: { open: true, deleted: false } },
   GuideRefreshContext: { description: 'queryKey와 resultKey가 같은 갱신에서는 이전 결과와 선택을 유지합니다. 완료·실패 버튼은 서버 응답을 모의 적용합니다.', values: { phase: 'refreshing', selected: true } },

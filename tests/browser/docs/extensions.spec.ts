@@ -186,7 +186,7 @@ for (const platform of platforms) {
       expect(end!.y + end!.height).toBeLessThanOrEqual(action!.y);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     }
-    for (const name of ["GuideGenericLists", "GuideInputSettings", "GuideBottomSheet", "GuideThumbnail", "GuideSegmentedSelection"]) {
+    for (const name of ["GuideGenericLists", "GuideInputSettings", "GuideBottomSheet", "GuideThumbnail", "GuideSegmentedSelection", "GuideTransferForm"]) {
       await visit(page, platform, name, { content: "긴 콘텐츠" });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), name).toBe(true);
       if (name === "GuideBottomSheet") { await page.getByRole("button", { name: "하단 패널 열기" }).click(); await expect(page.getByRole("dialog").last()).toBeVisible(); await page.getByRole("button", { name: "설정 완료" }).click(); await expect(page.getByRole("dialog")).toHaveCount(0); }
