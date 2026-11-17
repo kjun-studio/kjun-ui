@@ -27,6 +27,7 @@ export type { KjunSearchInputProps } from "./search-input";
 export type { KjunDatePickerProps, KjunDateRangePickerProps, DateRangePreset } from "./date-picker";
 export type { KjunTimePickerProps } from "./time-picker";
 export type { DateRange } from "../../../shared/package-runtime/calendar";
+export type { KjunEventCalendarProps, DayMarks, DaySpan, HolidayTest } from "./event-calendar";
 export type { KjunModalProps, KjunFormActionsProps } from "./modal";
 export type { KjunDrawerProps } from "./drawer";
 export { useKjunFeedback } from "./feedback";

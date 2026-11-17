@@ -115,6 +115,10 @@ export const kjunPropValues = Object.freeze({
   KjunErrorBoundary: Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),
   }),
+  KjunEventCalendar: Object.freeze({
+    view: Object.freeze(["month","week"] as const),
+    weekStart: Object.freeze([0,1,2,3,4,5,6] as const),
+  }),
   KjunExecutionStatusBadge: Object.freeze({
     size: Object.freeze(["xs","sm","md","lg","xl"] as const),
   }),

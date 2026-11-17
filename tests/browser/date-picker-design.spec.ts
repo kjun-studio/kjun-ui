@@ -1,7 +1,7 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
-// Platforms that already draw the redesigned picker cells (squared picks, a pill for today, tones by data-tone). Tasks 5 and 6 add vue3 and native.
-const NEW_CELLS = ['react'];
+// Platforms that already draw the redesigned picker cells (squared picks, a pill for today, tones by data-tone). Task 6 adds native.
+const NEW_CELLS = ['react', 'vue3'];
 // A colour role as the browser computes it inside the KJUN scope.
 const role = (page: Page, name: string) => page.evaluate(name => {
   const probe = document.createElement('i');

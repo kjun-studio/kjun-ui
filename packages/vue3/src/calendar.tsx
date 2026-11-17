@@ -5,6 +5,7 @@ import {
   orderWeekdays, parseDate, pickMonth, pickYear, rangeRole, stepDisabled, stepTarget, todayIso, toIsoDate, yearChoices, yearGrid,
   yearOutside, type CalendarMode, type DateRange, type DateUnavailable, type WeekStart,
 } from "../../../shared/package-runtime/calendar";
+import { dayTone } from "../../../shared/package-runtime/event-calendar";
 import { nextTick, onMounted, ref, useId, watch, type PropType } from "vue";
 import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
@@ -17,6 +18,8 @@ export const calendarOptionProps = {
   weekStart: { type: Number as PropType<WeekStart>, default: 0 },
   /** Paints Sundays with the danger role, as Korean calendars do (default true). */
   markSunday: { type: Boolean, default: true },
+  /** Paints Saturdays with the info role (default true). */
+  markSaturday: { type: Boolean, default: true },
   /** Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one. */
   isDateUnavailable: { type: Function as PropType<DateUnavailable>, default: undefined },
 } as const;
@@ -79,7 +82,10 @@ export const CalendarView = defineComponent({
       const picking = !!props.range?.start && !props.range.end;
       const footer = calendarFooter({ range: !!props.range, apply: !!props.onApply, clearable: props.clearable,
         todayBlocked: isBlocked(today, props.min, props.max) || !!props.isDateUnavailable?.(today) });
-      const sunday = (weekday: number) => (props.markSunday && weekday === 0) || undefined;
+      const tone = (weekday: number) => {
+        const t = dayTone(weekday, { markSunday: props.markSunday, markSaturday: props.markSaturday, holiday: false });
+        return t === "text" ? undefined : t;
+      };
       return (
         <div class="kjun-calendar">
           <div ref={head} class="kjun-calendar-head">
@@ -116,23 +122,23 @@ export const CalendarView = defineComponent({
                 if (picking) preview.value = clampDate(next, props.min, props.max);
               }}>
               {orderWeekdays(labels.weekdays, weekStart).map((day, index) => (
-                <span key={day} class="kjun-calendar-weekday" data-sunday={sunday((index + weekStart) % 7)} aria-hidden="true">{day}</span>
+                <span key={day} class="kjun-calendar-weekday" data-tone={tone((index + weekStart) % 7)} aria-hidden="true">{day}</span>
               ))}
               {calendarDays(shown.year, shown.month, { value: props.value, range: props.range, min: props.min, max: props.max, today, weekStart,
                 unavailable: props.isDateUnavailable, preview: picking ? preview.value : undefined }).map(day => {
                 const role = props.range ? rangeRole(day) : null;
                 return (
-                  <button key={day.iso} type="button" class="kjun-calendar-day" data-iso={day.iso}
+                  <button key={day.iso} type="button" class="kjun-calendar-day" data-density="compact" data-iso={day.iso}
                     // Blocked days stay focusable so arrow keys can pass over them, as in the ARIA date picker pattern.
                     tabindex={day.iso === focus.value ? 0 : -1} aria-disabled={day.blocked || undefined}
                     aria-label={dateLabel(day.iso, scope.value)} aria-pressed={day.selected} aria-current={day.today ? "date" : undefined}
                     aria-describedby={role ? `${uid}-${role}` : undefined}
-                    data-sunday={sunday(day.weekday)} data-outside={day.outside || undefined} data-today={day.today || undefined}
+                    data-tone={tone(day.weekday)} data-outside={day.outside || undefined} data-today={day.today || undefined}
                     data-selected={day.selected || undefined} data-in-range={day.inRange || undefined}
                     data-range-start={day.rangeStart || undefined} data-range-end={day.rangeEnd || undefined}
                     onMouseenter={() => { if (picking && !day.blocked) preview.value = day.iso; }}
                     onClick={() => { if (day.blocked) return; focus.value = day.iso; preview.value = undefined; props.onSelect(day.iso); }}>
-                    {day.day}
+                    <span class="kjun-calendar-day-number">{day.day}</span>
                   </button>
                 );
               })}

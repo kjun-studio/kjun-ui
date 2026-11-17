@@ -35,7 +35,7 @@ const recordSlides = (target: Locator) => target.evaluate(el => {
 });
 const slides = (page: Page) => page.evaluate(() => ((window as any).slides as (string | null)[]).filter(Boolean));
 
-for (const platform of ['react']) {
+for (const platform of ['react', 'vue3']) {
   test.describe(platform, () => {
     test.beforeEach(async ({ page }) => {
       await page.clock.setFixedTime(new Date('2026-11-17T12:00:00'));

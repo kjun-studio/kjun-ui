@@ -96,7 +96,7 @@ export const KjunDatePicker = defineComponent({
       text: props.modelValue ? formatDateValue(props.modelValue, scope.value) : "",
       spoken: props.modelValue ? dateLabel(props.modelValue, scope.value) : "", submitted: props.modelValue ?? "",
       placeholder: props.placeholder ?? scope.value.messages.datePlaceholder, clearLabel: scope.value.messages.clearDate, onClear: () => commit(""),
-    }, () => <CalendarView value={props.modelValue ?? ""} min={props.min} max={props.max} clearable={props.clearable} weekStart={props.weekStart} markSunday={props.markSunday}
+    }, () => <CalendarView value={props.modelValue ?? ""} min={props.min} max={props.max} clearable={props.clearable} weekStart={props.weekStart} markSunday={props.markSunday} markSaturday={props.markSaturday}
       isDateUnavailable={props.isDateUnavailable} onSelect={commit} onClear={() => commit("")} />);
   },
 });
@@ -136,7 +136,7 @@ export const KjunDateRangePicker = defineComponent({
         text: formatRange(value.value, format), spoken: rangeSpoken(value.value, scope.value), submitted: rangeSubmitted(value.value),
         placeholder: props.placeholder ?? scope.value.messages.rangePlaceholder, clearLabel: scope.value.messages.clearDates,
         onClear: () => commit({ start: "", end: "" }),
-      }, () => <CalendarView range={draft.value} min={props.min} max={props.max} clearable={props.clearable} weekStart={props.weekStart} markSunday={props.markSunday}
+      }, () => <CalendarView range={draft.value} min={props.min} max={props.max} clearable={props.clearable} weekStart={props.weekStart} markSunday={props.markSunday} markSaturday={props.markSaturday}
         isDateUnavailable={props.isDateUnavailable} presets={props.presets}
         onPreset={(next: DateRange) => { draft.value = normalizeRange(next, props.min, props.max); if (props.autoApply) commit(draft.value); }}
         onSelect={pick} onClear={() => { draft.value = { start: "", end: "" }; }} onApply={props.autoApply ? undefined : () => commit(draft.value)} />);
