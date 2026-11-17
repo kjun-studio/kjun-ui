@@ -295,6 +295,11 @@ export const kjunPropValues = Object.freeze({
   KjunStackedBar: Object.freeze({
     size: Object.freeze(["sm","md"] as const),
   }),
+  KjunSteps: Object.freeze({
+    currentStatus: Object.freeze(["active","error"] as const),
+    layout: Object.freeze(["auto","compact","full"] as const),
+    orientation: Object.freeze(["horizontal","vertical"] as const),
+  }),
   KjunSwitch: Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),
   }),

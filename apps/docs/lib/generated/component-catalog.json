@@ -2958,6 +2958,42 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
+    "name": "KjunSteps",
+    "category": "navigation",
+    "kind": "component",
+    "owner": "KjunSteps",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/steps",
+    "tests": [
+      "tests/steps.test.mjs",
+      "tests/browser/steps.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue3": "packages/vue3/src/steps.tsx",
+      "react": "packages/react/src/steps.tsx",
+      "native": "packages/native/src/steps.tsx"
+    }
+  },
+  {
     "name": "KjunBottomActionBar",
     "sources": {
       "vue3": "packages/vue3/src/app-navigation.tsx",

@@ -22,6 +22,7 @@
       "packages/tokens/src/market.css",
       "packages/tokens/src/motion.css",
       "packages/tokens/src/navigation.css",
+      "packages/tokens/src/steps.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/actions.tsx",
@@ -43,6 +44,7 @@
       "packages/native/src/progress.tsx",
       "packages/native/src/range-input.tsx",
       "packages/native/src/select-options.tsx",
+      "packages/native/src/steps.tsx",
       "packages/native/src/table-toolbar.tsx",
       "packages/native/src/tabs.tsx"
     ]
@@ -181,6 +183,7 @@
       "packages/tokens/src/list.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
+      "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
@@ -200,6 +203,7 @@
       "packages/native/src/media.tsx",
       "packages/native/src/navigation.tsx",
       "packages/native/src/selection-groups.tsx",
+      "packages/native/src/steps.tsx",
       "packages/native/src/table-cards.tsx",
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-list.tsx",
@@ -228,6 +232,7 @@
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/side-navigation.css",
       "packages/tokens/src/split-pane.css",
+      "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/web.css",
       "packages/native/src/actions.tsx",
@@ -251,6 +256,7 @@
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/side-navigation-parts.tsx",
       "packages/native/src/split-pane.tsx",
+      "packages/native/src/steps.tsx",
       "packages/native/src/table-list.tsx",
       "packages/native/src/tabs.tsx"
     ]
@@ -272,6 +278,7 @@
       "packages/tokens/src/list.css",
       "packages/tokens/src/motion.css",
       "packages/tokens/src/side-navigation.css",
+      "packages/tokens/src/steps.css",
       "packages/tokens/src/web.css",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
@@ -283,6 +290,7 @@
       "packages/native/src/list.tsx",
       "packages/native/src/select-control.tsx",
       "packages/native/src/side-navigation-parts.tsx",
+      "packages/native/src/steps.tsx",
       "packages/native/src/table-cards.tsx"
     ]
   },
@@ -349,6 +357,7 @@
       "packages/tokens/src/reset.css",
       "packages/tokens/src/side-navigation.css",
       "packages/tokens/src/split-pane.css",
+      "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
@@ -389,6 +398,7 @@
       "packages/native/src/side-navigation.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/split-pane.tsx",
+      "packages/native/src/steps.tsx",
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-narrow-parts.tsx",
       "packages/native/src/table-view.tsx",
@@ -425,6 +435,7 @@
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/side-navigation.css",
+      "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
@@ -462,6 +473,7 @@
       "packages/native/src/side-navigation-parts.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/stacked-bar.tsx",
+      "packages/native/src/steps.tsx",
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-list.tsx",
       "packages/native/src/table-narrow-parts.tsx",
@@ -497,6 +509,7 @@
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/side-navigation.css",
       "packages/tokens/src/split-pane.css",
+      "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/web.css",
@@ -542,6 +555,7 @@
       "packages/native/src/side-navigation.tsx",
       "packages/native/src/split-pane.tsx",
       "packages/native/src/stacked-bar.tsx",
+      "packages/native/src/steps.tsx",
       "packages/native/src/table-cards.tsx",
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-narrow-parts.tsx",
@@ -704,6 +718,7 @@
       "packages/tokens/src/file-upload.css",
       "packages/tokens/src/layout.css",
       "packages/tokens/src/list.css",
+      "packages/tokens/src/steps.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/input.tsx",
@@ -722,6 +737,7 @@
       "packages/native/src/input.tsx",
       "packages/native/src/list.tsx",
       "packages/native/src/quantity-stepper.tsx",
+      "packages/native/src/steps.tsx",
       "packages/native/src/textarea.tsx",
       "packages/native/src/time-picker.tsx",
       "packages/native/src/toast.tsx"
@@ -767,11 +783,13 @@
     "implementationFiles": [
       "packages/tokens/src/controls.css",
       "packages/tokens/src/list.css",
+      "packages/tokens/src/steps.css",
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/feedback.tsx",
-      "packages/native/src/list.tsx"
+      "packages/native/src/list.tsx",
+      "packages/native/src/steps.tsx"
     ]
   },
   {
@@ -1172,6 +1190,7 @@
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/side-navigation.css",
       "packages/tokens/src/split-pane.css",
+      "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
@@ -1453,7 +1472,9 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/calendar.css",
+      "packages/tokens/src/steps.css",
       "packages/native/src/calendar.tsx",
+      "packages/native/src/steps.tsx",
       "packages/native/src/table-toolbar.tsx"
     ]
   },
@@ -1508,6 +1529,7 @@
       "packages/tokens/src/list.css",
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
+      "packages/tokens/src/steps.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx",
@@ -1515,7 +1537,8 @@
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/fab.tsx",
       "packages/native/src/list.tsx",
-      "packages/native/src/market-cards.tsx"
+      "packages/native/src/market-cards.tsx",
+      "packages/native/src/steps.tsx"
     ]
   },
   {
@@ -1613,9 +1636,11 @@
     "implementationFiles": [
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/layout.css",
+      "packages/tokens/src/steps.css",
       "packages/tokens/src/web.css",
       "packages/native/src/app-navigation.tsx",
-      "packages/native/src/button.tsx"
+      "packages/native/src/button.tsx",
+      "packages/native/src/steps.tsx"
     ]
   },
   {

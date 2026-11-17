@@ -15102,6 +15102,230 @@
       }
     }
   },
+  "KjunSteps": {
+    "name": "KjunSteps",
+    "path": "/components/steps",
+    "related": "app-screen",
+    "description": "가입·결제·주문처럼 여러 화면으로 나뉜 흐름에서 지금 몇 번째 단계인지, 무엇이 끝났는지, 다음은 무엇인지 보여 줍니다. 가로 위저드와 세로 배송 추적을 한 컴포넌트로 그립니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "완료한 단계",
+                "description": "체크가 있는 마커와 보조색 라벨입니다. 앱이 onStepSelect를 주면 버튼이 됩니다.",
+                "target": "text=약관 동의",
+                "optional": false
+              },
+              {
+                "label": "현재 단계",
+                "description": "번호와 6px 후광, 굵은 라벨로 표시하고 aria-current를 답니다.",
+                "target": "[aria-current=\"step\"]",
+                "optional": false
+              },
+              {
+                "label": "예정 단계",
+                "description": "보조색 마커와 옅은 라벨입니다.",
+                "target": "text=완료",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "error",
+            "label": "오류",
+            "description": "결제 실패처럼 막힌 현재 단계를 danger 색과 느낌표로 표시합니다.",
+            "settings": {
+              "currentStatus": "error"
+            }
+          },
+          {
+            "id": "compact",
+            "label": "축약형",
+            "description": "현재 라벨과 n / N, 마커 줄, 다음 단계 이름만 보입니다. 단계를 선택할 수 없습니다.",
+            "settings": {
+              "layout": "compact"
+            }
+          },
+          {
+            "id": "tracking",
+            "label": "배송 추적",
+            "description": "세로 배치는 12px 점과 시각·설명을 씁니다.",
+            "settings": {
+              "orientation": "vertical",
+              "current": 3
+            }
+          },
+          {
+            "id": "complete",
+            "label": "모두 완료",
+            "description": "모든 마커가 완료이고 현재 단계 표시가 없습니다.",
+            "settings": {
+              "current": 5
+            }
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "가로(orientation=\"horizontal\", 기본)는 24px 번호 원을 단계 수만큼 같은 폭의 열에 놓고 라벨을 아래에 둡니다. 완료는 체크, 현재는 번호와 6px 후광, 오류는 느낌표와 후광, 예정은 번호만 보이는 보조색 원입니다. 세로(orientation=\"vertical\")는 12px 점을 쓰고 단계 아래에 meta·description(시각 등 보조 글)을 둡니다. meta는 숫자 글꼴이며 가로에서는 그리지 않습니다. 연결선은 2px이고 다음 단계가 완료·현재·오류이면 브랜드색, 아니면 보조색입니다. layout=\"auto\"(기본)는 컨테이너 폭이 단계 수×80px보다 좁으면 축약형으로 바뀌고, 11단계 이상은 항상 축약형입니다. 축약형은 현재 단계 라벨과 ‘n / N’, 마커 줄, ‘다음 · 라벨’을 보여 줍니다. layout=\"full\"·\"compact\"로 강제할 수 있고 세로에서는 무시합니다. 가로 라벨은 6자 안팎을 권장합니다. 열 폭이 최소 80px이라 라벨은 어절 단위로 2줄까지 줄바꿈하고 넘치면 말줄임표로 줄입니다. 모든 단계가 완료되면 오류 표시와 aria-current 없이 루트가 data-status=\"complete\"가 됩니다. 앱 팔레트에 brandSubtleBg·dangerBg가 없으면 후광이 보조색으로 떨어져 예정 마커와 같은 색이 되지만, 상태는 아이콘·굵기·숨김 텍스트로도 구분되므로 그대로 쓸 수 있습니다. 상태는 색만으로 전하지 않으며 마커 모양과 굵기, 화면에 보이지 않는 ‘완료·현재 단계·오류·예정’ 텍스트를 함께 씁니다. 색은 앱 팔레트의 brand·danger·secondary와 글자색 역할을 따르고 외곽선과 장식 띠는 쓰지 않습니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "완료한 단계",
+                "description": "체크가 있는 마커와 보조색 라벨입니다. 앱이 onStepSelect를 주면 버튼이 됩니다.",
+                "target": "text=약관 동의",
+                "optional": false
+              },
+              {
+                "label": "현재 단계",
+                "description": "번호와 6px 후광, 굵은 라벨로 표시하고 aria-current를 답니다.",
+                "target": "[aria-current=\"step\"]",
+                "optional": false
+              },
+              {
+                "label": "예정 단계",
+                "description": "보조색 마커와 옅은 라벨입니다.",
+                "target": "text=완료",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "error",
+            "label": "오류",
+            "description": "결제 실패처럼 막힌 현재 단계를 danger 색과 느낌표로 표시합니다.",
+            "settings": {
+              "currentStatus": "error"
+            }
+          },
+          {
+            "id": "compact",
+            "label": "축약형",
+            "description": "현재 라벨과 n / N, 마커 줄, 다음 단계 이름만 보입니다. 단계를 선택할 수 없습니다.",
+            "settings": {
+              "layout": "compact"
+            }
+          },
+          {
+            "id": "tracking",
+            "label": "배송 추적",
+            "description": "세로 배치는 12px 점과 시각·설명을 씁니다.",
+            "settings": {
+              "orientation": "vertical",
+              "current": 3
+            }
+          },
+          {
+            "id": "complete",
+            "label": "모두 완료",
+            "description": "모든 마커가 완료이고 현재 단계 표시가 없습니다.",
+            "settings": {
+              "current": 5
+            }
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "가로(orientation=\"horizontal\", 기본)는 24px 번호 원을 단계 수만큼 같은 폭의 열에 놓고 라벨을 아래에 둡니다. 완료는 체크, 현재는 번호와 6px 후광, 오류는 느낌표와 후광, 예정은 번호만 보이는 보조색 원입니다. 세로(orientation=\"vertical\")는 12px 점을 쓰고 단계 아래에 meta·description(시각 등 보조 글)을 둡니다. meta는 숫자 글꼴이며 가로에서는 그리지 않습니다. 연결선은 2px이고 다음 단계가 완료·현재·오류이면 브랜드색, 아니면 보조색입니다. layout=\"auto\"(기본)는 컨테이너 폭이 단계 수×80px보다 좁으면 축약형으로 바뀌고, 11단계 이상은 항상 축약형입니다. 축약형은 현재 단계 라벨과 ‘n / N’, 마커 줄, ‘다음 · 라벨’을 보여 줍니다. layout=\"full\"·\"compact\"로 강제할 수 있고 세로에서는 무시합니다. 가로 라벨은 6자 안팎을 권장합니다. 열 폭이 최소 80px이라 라벨은 어절 단위로 2줄까지 줄바꿈하고 넘치면 말줄임표로 줄입니다. 모든 단계가 완료되면 오류 표시와 aria-current 없이 루트가 data-status=\"complete\"가 됩니다. 앱 팔레트에 brandSubtleBg·dangerBg가 없으면 후광이 보조색으로 떨어져 예정 마커와 같은 색이 되지만, 상태는 아이콘·굵기·숨김 텍스트로도 구분되므로 그대로 쓸 수 있습니다. 상태는 색만으로 전하지 않으며 마커 모양과 굵기, 화면에 보이지 않는 ‘완료·현재 단계·오류·예정’ 텍스트를 함께 씁니다. 색은 앱 팔레트의 brand·danger·secondary와 글자색 역할을 따르고 외곽선과 장식 띠는 쓰지 않습니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "완료한 단계",
+                "description": "체크가 있는 마커와 보조색 라벨입니다. 앱이 onStepSelect를 주면 버튼이 됩니다.",
+                "target": "text=약관 동의",
+                "optional": false
+              },
+              {
+                "label": "현재 단계",
+                "description": "번호와 6px 후광, 굵은 라벨로 표시하고 aria-current를 답니다.",
+                "target": "[aria-current=\"step\"]",
+                "optional": false
+              },
+              {
+                "label": "예정 단계",
+                "description": "보조색 마커와 옅은 라벨입니다.",
+                "target": "text=완료",
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "error",
+            "label": "오류",
+            "description": "결제 실패처럼 막힌 현재 단계를 danger 색과 느낌표로 표시합니다.",
+            "settings": {
+              "currentStatus": "error"
+            }
+          },
+          {
+            "id": "compact",
+            "label": "축약형",
+            "description": "현재 라벨과 n / N, 마커 줄, 다음 단계 이름만 보입니다. 단계를 선택할 수 없습니다.",
+            "settings": {
+              "layout": "compact"
+            }
+          },
+          {
+            "id": "tracking",
+            "label": "배송 추적",
+            "description": "세로 배치는 12px 점과 시각·설명을 씁니다.",
+            "settings": {
+              "orientation": "vertical",
+              "current": 3
+            }
+          },
+          {
+            "id": "complete",
+            "label": "모두 완료",
+            "description": "모든 마커가 완료이고 현재 단계 표시가 없습니다.",
+            "settings": {
+              "current": 5
+            }
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "가로(orientation=\"horizontal\", 기본)는 24px 번호 원을 단계 수만큼 같은 폭의 열에 놓고 라벨을 아래에 둡니다. 완료는 체크, 현재는 번호와 6px 후광, 오류는 느낌표와 후광, 예정은 번호만 보이는 보조색 원입니다. 세로(orientation=\"vertical\")는 12px 점을 쓰고 단계 아래에 meta·description(시각 등 보조 글)을 둡니다. meta는 숫자 글꼴이며 가로에서는 그리지 않습니다. 연결선은 2px이고 다음 단계가 완료·현재·오류이면 브랜드색, 아니면 보조색입니다. layout=\"auto\"(기본)는 컨테이너 폭이 단계 수×80px보다 좁으면 축약형으로 바뀌고, 11단계 이상은 항상 축약형입니다. 축약형은 현재 단계 라벨과 ‘n / N’, 마커 줄, ‘다음 · 라벨’을 보여 줍니다. layout=\"full\"·\"compact\"로 강제할 수 있고 세로에서는 무시합니다. 가로 라벨은 6자 안팎을 권장합니다. 열 폭이 최소 80px이라 라벨은 어절 단위로 2줄까지 줄바꿈하고 넘치면 말줄임표로 줄입니다. 모든 단계가 완료되면 오류 표시와 aria-current 없이 루트가 data-status=\"complete\"가 됩니다. 앱 팔레트에 brandSubtleBg·dangerBg가 없으면 후광이 보조색으로 떨어져 예정 마커와 같은 색이 되지만, 상태는 아이콘·굵기·숨김 텍스트로도 구분되므로 그대로 쓸 수 있습니다. 상태는 색만으로 전하지 않으며 마커 모양과 굵기, 화면에 보이지 않는 ‘완료·현재 단계·오류·예정’ 텍스트를 함께 씁니다. 색은 앱 팔레트의 brand·danger·secondary와 글자색 역할을 따르고 외곽선과 장식 띠는 쓰지 않습니다."
+      }
+    }
+  },
   "KjunBottomActionBar": {
     "name": "KjunBottomActionBar",
     "path": "/components/bottom-action-bar",

@@ -2774,6 +2774,37 @@
       "recordId": "verification-v0.3.0"
     },
     {
+      "name": "KjunSteps",
+      "title": "Steps",
+      "docs": "/components/steps",
+      "category": "navigation",
+      "differences": "세 플랫폼의 prop 이름·기본값·축약 기준이 같습니다. 웹은 CSS 컨테이너 쿼리로 컴포넌트 자신의 폭을 보고 JS 측정 없이 형태를 고르므로 서버 렌더링 HTML도 처음부터 맞게 보입니다. Native는 onLayout으로 받은 폭을 쓰고, 폭을 받기 전 첫 프레임은 자리만 차지한 채 투명합니다. Native 결과는 React Native Web 미리보기이며 기기 검증이 아닙니다. 목록은 웹에서 ol·li와 aria-current=\"step\"으로, Native에서는 목록 역할로 알립니다. 웹은 줄임으로 잘린 라벨의 전체를 title로 보여 줍니다. 폭이 정해진 부모 안에 두세요. 내용에 맞춰 줄어드는 부모 안에서는 폭이 0으로 측정되어 축약형으로 바뀝니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
       "name": "KjunSwitch",
       "title": "Switch",
       "docs": "/components/switch",
