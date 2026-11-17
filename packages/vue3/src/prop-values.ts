@@ -244,7 +244,11 @@ export const kjunPropValues = Object.freeze({
   KjunSideNavigation: Object.freeze({
     collapsedParent: Object.freeze(["flyout","widen"] as const),
     density: Object.freeze(["compact","default"] as const),
+    headingLevel: Object.freeze([2,3,4,5,6] as const),
     rail: Object.freeze(["groups","items"] as const),
+  }),
+  KjunSideNavigationLayout: Object.freeze({
+    width: Object.freeze(["sm","md","lg"] as const),
   }),
   KjunSignedValue: Object.freeze({
     format: Object.freeze(["number","percent"] as const),

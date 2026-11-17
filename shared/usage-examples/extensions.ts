@@ -87,8 +87,9 @@ export function generate(input: UsageInput) {
         ...(s.collapsedParent === 'flyout' ? { collapsedParent: 'flyout' } : {}), ...(s.chrome ? { collapseToggle: true } : {}),
         ...(s.collapsibleGroups ? { collapsibleGroups: true } : {}), ...(s.groupCounts ? { groupCounts: true } : {}), ...(s.rail === 'groups' ? { rail: 'groups' } : {}),
         ...(s.railLabels ? { railLabels: true } : {}), ...(s.density === 'compact' ? { density: 'compact' } : {}),
-        items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'activity', label: s.long ? '아주 긴 이름을 가진 프로젝트 활동 내역' : '활동', href: '#activity', icon: 'list', badge: 3 },
-          { title: '문서', icon: 'file-text', items: [{ key: 'projects', label: '프로젝트', icon: 'folder', children: [{ key: 'brand', label: '브랜드 웹사이트', href: '#brand', badge: true }, { key: 'checkout', label: '결제 화면 개선', href: '#checkout' }] }, { key: 'archive', label: '보관함', href: '#archive', icon: 'box', ...(s.actions ? { actions: [{ key: 'new', icon: 'plus', label: '새 문서' }, { key: 'more', icon: 'dots', label: '더 보기' }] } : {}) }] },
+        items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'activity', label: s.long ? '아주 긴 이름을 가진 프로젝트 활동 내역' : '활동', ...(s.long && s.railLabels ? { shortLabel: '활동' } : {}), href: '#activity', icon: 'list', badge: 3, ...(s.neutralBadges ? { badgeTone: 'neutral' } : {}) },
+          { title: '문서', icon: 'file-text', ...(s.limit ? { limit: 1 } : {}), items: [{ key: 'projects', label: '프로젝트', icon: 'folder', children: [{ key: 'brand', label: '브랜드 웹사이트', href: '#brand', badge: true }, { key: 'checkout', label: '결제 화면 개선', href: '#checkout' },
+            ...(s.nested ? [{ key: 'design', label: '디자인', children: [{ key: 'tokens', label: '토큰', href: '#tokens' }, { key: 'icons', label: '아이콘', href: '#icons' }] }] : [])] }, { key: 'archive', label: '보관함', href: '#archive', icon: 'box', ...(s.actions ? { actions: [{ key: 'new', icon: 'plus', label: '새 문서' }, { key: 'more', icon: 'dots', label: '더 보기' }] } : {}) }] },
           { key: 'help', label: '도움말', href: 'https://example.com/help', icon: 'help-circle', target: '_blank' },
           { title: '관리', icon: 'adjustments', items: [{ key: 'settings', label: '설정', href: '#settings', icon: 'settings', ...(s.disabled ? { disabled: true } : {}) }] }]),
         // Modified clicks and target links never reach onNavigate, so a plain click is the app's to route.
@@ -96,6 +97,17 @@ export function generate(input: UsageInput) {
         // A row's action reports the row and the action; the app opens its own menu or dialog.
         ...(s.actions ? { onAction: b.handler('action', 'key, action', b.set('destination', 'key + ":" + action')) } : {}),
       }, '', s.chrome ? { header: b.node(b.native ? 'Text' : 'strong', {}, b.text('KJ Studio')), footer: b.node(b.native ? 'Text' : 'span', {}, b.text('계정')) } : {})), b.text(expr('"현재 위치: " + state.destination'))]);
+      break;
+    }
+    case 'KjunSideNavigationLayout': {
+      // The layout keeps the column (open, collapsed, or a drawer below the breakpoint); pass collapsed to both, and close
+      // the drawer when a page is chosen.
+      const menu = b.node('KjunSideNavigation', { ariaLabel: '작업 공간', value: b.state('destination', 'home'), collapsed: b.state('collapsed', !!s.collapsed), ...(s.railLabels ? { railLabels: true } : {}),
+        items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'activity', label: '활동', href: '#activity', icon: 'list', badge: 3, badgeTone: 'neutral' },
+          { title: '문서', icon: 'file-text', items: [{ key: 'projects', label: '프로젝트', href: '#projects', icon: 'folder' }, { key: 'archive', label: '보관함', href: '#archive', icon: 'box' }] }]),
+        onNavigate: b.handler('navigate', 'key, event', (b.native ? '' : 'event.preventDefault();\n') + b.set('destination', 'key') + '\n' + b.set('navOpen', 'false')) });
+      content = b.node(name, { collapsed: b.state('collapsed', !!s.collapsed), ...(s.width && s.width !== 'md' ? { width: s.width } : {}), ...(s.railLabels ? { railLabels: true } : {}),
+        navOpen: b.state('navOpen', false), onNavOpenChange: b.update('navOpen') }, b.text(expr('"현재 위치: " + state.destination')), { nav: menu });
       break;
     }
     case 'KjunPressable':

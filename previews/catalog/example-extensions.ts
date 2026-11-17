@@ -68,9 +68,10 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         onAction: (key: string, act: string) => set("destination", key + ":" + act),
         onCollapsedChange: (next: boolean) => settings.chrome ? set("narrow", next) : set("widened", !next), items: [
         { key: "home", label: "홈", href: "#home", icon: "home" },
-        { key: "activity", label: settings.long ? "아주 긴 이름을 가진 프로젝트 활동 내역" : "활동", href: "#activity", icon: "list", badge: 3 },
-        { title: "문서", icon: "file-text", items: [
-          { key: "projects", label: "프로젝트", icon: "folder", children: [{ key: "brand", label: "브랜드 웹사이트", href: "#brand", badge: true }, { key: "checkout", label: "결제 화면 개선", href: "#checkout" }] },
+        { key: "activity", label: settings.long ? "아주 긴 이름을 가진 프로젝트 활동 내역" : "활동", shortLabel: "활동", href: "#activity", icon: "list", badge: 3, badgeTone: settings.neutralBadges ? "neutral" : undefined },
+        { title: "문서", icon: "file-text", limit: settings.limit ? 1 : undefined, items: [
+          { key: "projects", label: "프로젝트", icon: "folder", children: [{ key: "brand", label: "브랜드 웹사이트", href: "#brand", badge: true }, { key: "checkout", label: "결제 화면 개선", href: "#checkout" },
+            ...(settings.nested ? [{ key: "design", label: "디자인", children: [{ key: "tokens", label: "토큰", href: "#tokens" }, { key: "icons", label: "아이콘", href: "#icons" }] }] : [])] },
           { key: "archive", label: "보관함", href: "#archive", icon: "box", actions: settings.actions ? [{ key: "new", icon: "plus", label: "새 문서" }, { key: "more", icon: "dots", label: "더 보기" }] : undefined },
         ] },
         { key: "help", label: "도움말", href: "https://example.com/help", icon: "help-circle", target: "_blank" },
@@ -78,6 +79,21 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); } }, undefined,
         settings.chrome ? { header: h("Text", {}, "KJ Studio"), footer: h("Text", {}, "계정") } : undefined)),
       h("Text", {}, "현재 위치: " + get("destination", "home"))]);
+    }
+    case "KjunSideNavigationLayout": {
+      // The layout keeps the column's width (open, collapsed, or a drawer on a narrow screen); the page is the app's.
+      // drawer: the breakpoint is set above this frame's width, so the menu opens from a button instead.
+      const narrow = !!settings.drawer, collapsed = !!settings.collapsed;
+      const menu = (state: any) => h("KjunSideNavigation", { ariaLabel: "작업 공간", value: get("destination", "home"), collapsed: state.collapsed, railLabels: settings.railLabels, items: [
+        { key: "home", label: "홈", href: "#home", icon: "home" },
+        { key: "activity", label: "활동", href: "#activity", icon: "list", badge: 3, badgeTone: "neutral" },
+        { title: "문서", icon: "file-text", items: [{ key: "projects", label: "프로젝트", href: "#projects", icon: "folder" }, { key: "archive", label: "보관함", href: "#archive", icon: "box" }] },
+      ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); set("navOpen", false); } });
+      return h("Box", { width: 640 }, h(name, { collapsed, railLabels: settings.railLabels, width: settings.width, breakpoint: narrow ? 100000 : 0, ...(platform === "native" ? {} : { sticky: false }),
+        navOpen: get("navOpen", false), onNavOpenChange: change("navOpen") }, h("Stack", {}, [
+        narrow ? button("메뉴 열기", () => set("navOpen", true)) : null,
+        h("Text", {}, "현재 위치: " + get("destination", "home")),
+      ]), { nav: menu }));
     }
     case "KjunPressable":
       // The shape is the app's: a rounded, padded area that is neither a button nor a card.

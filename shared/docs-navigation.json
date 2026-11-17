@@ -914,6 +914,17 @@
       "useCases": []
     },
     {
+      "name": "KjunSideNavigationLayout",
+      "category": "navigation",
+      "aliases": [
+        "사이드바 레이아웃",
+        "앱 셸",
+        "메뉴 열",
+        "사이드 메뉴 배치"
+      ],
+      "useCases": []
+    },
+    {
       "name": "KjunBottomActionBar",
       "category": "layout",
       "aliases": [

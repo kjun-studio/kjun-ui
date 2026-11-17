@@ -12,7 +12,7 @@ export function KjunImage({ src, alt, decorative = false, aspectRatio = 1, fit =
   const failed = !src || state === "error";
   return <span className="kjun-image" style={{ aspectRatio: aspectRatio > 0 ? aspectRatio : 1 }} data-state={failed ? "error" : state}>
     {!failed && <img key={version} src={src} alt={decorative ? "" : alt} loading={lazy ? "lazy" : "eager"} style={{ objectFit: fit }} onLoad={() => { if (current.current.version !== version) return; setResult({ version, state: "loaded" }); onLoad?.(); }} onError={() => { if (current.current.version !== version) return; setResult({ version, state: "error" }); onError?.(); }} />}
-    {failed && <span className="kjun-image-fallback" role={decorative ? undefined : "img"} aria-label={decorative ? undefined : alt} aria-hidden={decorative || undefined}>{fallback ?? <KjunIcon name="image" size={tokens.extensions.image.fallbackIconSize} />}</span>}
+    {failed && <span className="kjun-image-fallback" role={decorative ? undefined : "img"} aria-label={decorative ? undefined : alt} aria-hidden={decorative || undefined}>{fallback ?? <KjunIcon name="photo" size={tokens.extensions.image.fallbackIconSize} />}</span>}
   </span>;
 }
 export interface KjunAvatarProps { src?: string; name?: string; alt?: string; decorative?: boolean; size?: "xs" | "sm" | "md" | "lg" | "xl"; shape?: "circle" | "square"; color?: CSSProperties["color"]; textColor?: CSSProperties["color"]; fallback?: ReactNode; onLoad?: () => void; onError?: () => void }

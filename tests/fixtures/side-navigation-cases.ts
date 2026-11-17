@@ -23,6 +23,13 @@ if (query.has('actions')) {
   (sideItems[4] as any).action = { key: 'add', icon: 'plus', label: '관리 항목 추가' };
 }
 if (query.has('pergroup')) { (sideItems[2] as any).defaultOpen = true; (sideItems[4] as any).collapsible = false; }
+// tones=1 makes "할 일"'s count a neutral total; nested=1 gives "프로젝트" a second-level parent "디자인" with two pages;
+// limit=1 shows only the first row of "문서" and a "1개 더 보기" row; shortlabels=1 gives the long archive a short rail name.
+if (query.has('tones')) (sideItems[1] as any).badgeTone = 'neutral';
+if (query.has('nested')) (sideItems[2] as any).items[0].children.push({ key: 'design', label: '디자인', children: [
+  { key: 'tokens', label: '토큰', href: '#tokens' }, { key: 'icons', label: '아이콘', href: '#icons', badge: 2, badgeTone: 'neutral' }] });
+if (query.has('limit')) (sideItems[2] as any).limit = 1;
+if (query.has('shortlabels')) { (sideItems[2] as any).items[1].shortLabel = '보관함'; (sideItems[2] as any).shortTitle = '문서함'; }
 // disabledparent=1 disables the "프로젝트" parent.
 if (query.has('disabledparent')) (sideItems[2] as any).items[0].disabled = true;
 export const sideStart = query.get('value') || 'home';

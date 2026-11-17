@@ -522,13 +522,16 @@ set("SideNavigation", {
   collapsed: { default: "false", summary: "아이콘만 표시합니다. 항목은 아이콘을 감싸는 44×40px 면이 되고 열 폭은 앱이 줄입니다(44px + 앱의 좌우 여백). 이름은 툴팁과 화면 낭독기로 전합니다. 하위 항목은 숨기며, 부모를 누르면 넓혀 달라고 요청하거나(Vue v-model:collapsed) collapsedParent=\"flyout\"이면 옆 패널로 보여 줍니다. 현재 페이지를 품은 부모는 선택 배경의 절반 세기 면으로 표시합니다. 다시 넓어질 때 이름·제목·배지는 열이 펼쳐진 뒤 서서히 나타납니다." },
 });
 set("SideNavigation", {
-  collapsibleGroups: { default: "false", summary: "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 제목 바로 뒤의 작은 14px 화살표가 닫힘(끝 방향)과 열림(아래)을 알립니다. 현재 페이지가 있는 묶음과 defaultOpen 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 제목을 본문 글자색으로, 배지가 있으면 끝에 점을 표시합니다. 묶음마다 collapsible을 주면 이 값보다 우선합니다(false면 늘 펼친 제목)." },
-  groupCounts: { default: "false", summary: "닫힌 묶음 제목 끝에 그 안의 행 수를 3차 글자색 숫자로 표시합니다. 안에 배지가 있으면 숫자 대신 점을 표시합니다. 닫힌 묶음이 많아 내용의 크기를 가늠해야 할 때 켭니다." },
+  collapsibleGroups: { default: "false", summary: "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 행 끝의 작은 14px 꺾쇠가 부모 항목처럼 열리면 뒤집힙니다. 현재 페이지가 있는 묶음과 defaultOpen 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 제목을 본문 글자색으로, 배지가 있으면 끝에 점을 표시합니다. 묶음마다 collapsible을 주면 이 값보다 우선합니다(false면 늘 펼친 제목)." },
+  groupCounts: { default: "false", summary: "여닫는 묶음 제목의 꺾쇠 앞에 그 안의 행 수를 3차 글자색 숫자로 표시합니다. 열림·닫힘과 상관없이 같은 자리에 있어 여닫을 때 깜빡이지 않습니다. 닫힌 묶음 안에 배지가 있으면 숫자 대신 점을 표시합니다." },
+  headingLevel: { default: "2", summary: "묶음 제목의 제목 요소 단계입니다(2–6). 화면 낭독기의 제목 이동에 쓰이므로 페이지 개요에 맞춥니다. Native에서는 Native Web의 aria-level입니다." },
+  showAll: { summary: "limit을 넘는 행을 모두 보여 주는 묶음의 key 목록입니다. 생략하면 컴포넌트가 스스로 기억하고, 주면 앱이 관리합니다(Vue v-model:showAll). 묶음의 limit을 넘으면 처음 행 뒤에 \"N개 더 보기\" 행이 놓이며, 현재 페이지 행은 limit 밖이어도 보입니다." },
+  value: { type: "string | null", summary: "현재 목적지의 key입니다(부모 아래 페이지면 하위 항목의 key). 메뉴에 없는 페이지에서는 null을 줍니다." },
   collapsedParent: { default: '"widen"', summary: "collapsed에서 부모 항목이나 rail=\"groups\"의 묶음을 눌렀을 때의 동작입니다. widen은 그 부모나 묶음을 연 채로 넓혀 달라고 요청합니다(onCollapsedChange). flyout은 열 폭을 그대로 두고 아이콘 옆에 제목과 하위 항목을 담은 비모달 패널을 띄웁니다. → 키로 열고 Esc나 바깥 누름으로 닫으며, 목적지를 누르면 닫힙니다." },
   collapseToggle: { default: "false", summary: "푸터 끝에 사이드바를 접고 펴는 버튼을 둡니다. 누르면 onCollapsedChange(Vue update:collapsed)를 반대 값으로 호출하고, 이름은 메뉴 접기·메뉴 펼치기입니다. 접힌 상태에서는 아이콘 행과 같은 44×40px 면이 되어 푸터 내용 위에 놓입니다." },
   expandedGroups: { summary: "열린 묶음 목록입니다. 묶음의 key, 없으면 제목으로 구분합니다. 생략하면 컴포넌트가 스스로 기억하고, 주면 앱이 관리합니다(Vue v-model:expandedGroups). 열린 상태를 저장하거나 메뉴 검색 중 모든 묶음을 열 때 씁니다." },
   rail: { default: '"items"', summary: "collapsed일 때 아이콘을 세우는 단위입니다. items는 최상위 항목마다, groups는 묶음마다 아이콘 하나를 세웁니다(묶음의 icon, 없으면 제목의 첫 글자). groups에서 묶음을 누르면 그 묶음을 연 채로 넓혀 달라고 요청하고, 웹에서는 넓어진 뒤 묶음 제목을 화면 안으로 스크롤합니다. 묶음 밖 항목은 그대로 한 줄씩 남습니다." },
-  railLabels: { default: "false", summary: "collapsed일 때 아이콘 아래에 짧은 이름을 한 줄로 보여 줍니다. 항목은 72px 폭이 되고(열 폭은 72px + 앱의 좌우 여백), 현재 목적지·마우스 올림·누름은 아이콘을 감싸는 56×32px 면으로 표시합니다. 이름이 보이므로 툴팁은 띄우지 않고, 배지는 숫자 그대로 아이콘 모서리에 놓입니다. 이름은 여섯 글자 안팎으로 짧게 정하세요. 넘치면 말줄임합니다." },
+  railLabels: { default: "false", summary: "collapsed일 때 아이콘 아래에 짧은 이름을 한 줄로 보여 줍니다. 항목은 72px 폭이 되고(열 폭은 72px + 앱의 좌우 여백), 현재 목적지·마우스 올림·누름은 아이콘을 감싸는 56×32px 면으로 표시합니다. 이름이 보이므로 툴팁은 띄우지 않고, 배지는 숫자 그대로 아이콘 모서리에 놓입니다. 이름 칸은 72px(한글 약 4자)이므로 긴 이름에는 목적지·부모의 shortLabel, 묶음의 shortTitle을 주세요. 전체 이름은 접근 가능한 이름과 툴팁으로 남고, 넘치면 말줄임합니다." },
   density: { default: '"default"', summary: "compact이면 마우스 포인터에서 항목을 32px, 하위 항목을 30px로 줄이고, 항목 끝의 숫자 배지를 3차 글자색 숫자로 낮춥니다(점 배지는 그대로). 문서·설정처럼 항목이 많은 목록에 씁니다. 터치 포인터와 Native 기기에서는 터치 높이(48·44px)를 유지합니다." },
 });
 set("SideNavigation", {
@@ -547,6 +550,7 @@ for (const platform of ["react", "vue3"]) set("SideNavigation", {
 }, platform);
 set("SideNavigation", { linkProp: { default: '"href"', summary: "linkAs 컴포넌트에 주소를 넘길 prop 이름입니다. Vue Router의 RouterLink는 to를 씁니다." } }, "vue3");
 for (const platform of ["react", "native"]) set("SideNavigation", {
+  onShowAllChange: "\"N개 더 보기\"나 \"접기\" 행을 누르면 다음 key 목록으로 호출합니다. showAll을 주었다면 받은 값을 반영합니다.",
   onExpandedGroupsChange: "묶음을 여닫거나, 닫힌 묶음 안으로 이동했거나, rail=\"groups\"에서 묶음을 눌렀을 때 다음 목록으로 호출합니다. expandedGroups를 주었다면 받은 값을 반영합니다.",
   onReselect: "현재 목적지를 다시 눌렀을 때 호출합니다(onNavigate 다음). 목록을 맨 위로 올리거나 새로 고칠 때 씁니다.",
   onExpandedChange: "부모 항목을 여닫거나 닫힌 부모 아래 페이지로 이동했을 때 다음 key 목록으로 호출합니다. expanded를 주었다면 받은 값을 반영합니다.",
@@ -554,3 +558,20 @@ for (const platform of ["react", "native"]) set("SideNavigation", {
   onNavigate: platform === "native" ? "목적지를 누르면 key와 이벤트로 호출합니다. Native Web에서는 수정 키 클릭과 target이 있는 링크를 브라우저에 맡기고 호출하지 않습니다." : "수정 키 없는 일반 클릭으로 이 탭의 목적지를 누르면 key와 이벤트로 호출합니다. 기본 이동을 막고 앱에서 이동하세요. 수정 키 클릭과 target이 있는 링크는 브라우저가 엽니다.",
 }, platform);
 
+set("SideNavigationLayout", {
+  nav: { summary: "열(좁은 화면에서는 서랍)에 놓을 메뉴입니다. 보통 KjunSideNavigation입니다. { collapsed, drawer }를 받는 함수로 주면 서랍 안에서 펼친 메뉴를 그릴 수 있습니다(Vue nav 슬롯)." },
+  collapsed: { default: "false", summary: "열을 아이콘 열로 줄입니다(68px, railLabels이면 80px). 메뉴에도 같은 값을 넘기세요. 폭은 collapse 모션(200ms)으로 바뀝니다." },
+  railLabels: { default: "false", summary: "메뉴가 접힌 상태에서 아이콘 아래 이름을 보여 줄 때(KjunSideNavigation railLabels) 켜면 접힌 열이 80px이 됩니다." },
+  width: { default: '"md"', summary: "열린 열의 폭입니다. sm 224px, md 256px, lg 288px입니다. 열 안쪽에 좌우·위아래 12px 여백을 둡니다." },
+  breakpoint: { default: "768", summary: "화면 폭이 이 값(px)보다 좁으면 열을 없애고 메뉴를 시작 쪽 서랍에서 엽니다. 0이면 늘 열을 둡니다. 기본값은 tokens.responsive.sideNavigationLayout입니다." },
+  navOpen: { default: "false", summary: "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 닫으세요(Vue v-model:navOpen)." },
+  drawerLabel: { summary: "서랍의 접근 가능한 이름입니다. 생략하면 메뉴의 기본 이름(주요 탐색)입니다." },
+});
+for (const platform of ["react", "vue3"]) set("SideNavigationLayout", {
+  sticky: { default: "true", summary: "열을 화면 높이로 고정해 페이지와 따로 스크롤합니다. false면 열이 페이지와 함께 스크롤됩니다." },
+}, platform);
+for (const platform of ["react", "native"]) set("SideNavigationLayout", {
+  onNavOpenChange: "서랍을 닫으려 할 때(바깥 누름, Esc, 닫기 버튼) false로 호출합니다. 받은 값을 navOpen에 반영하세요.",
+  children: "메뉴 옆에 놓을 페이지 내용입니다.",
+}, platform);
+set("SideNavigationLayout", { style: "레이아웃 바깥 View의 스타일입니다. 레이아웃은 받은 자리를 채우므로 높이·배경은 앱이 정합니다." }, "native");

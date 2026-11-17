@@ -173,7 +173,7 @@
     },
     "sideNavigation": {
       "itemHeight": { "$ref": "button.heights.md" },
-      "childHeight": 36,
+      "childHeight": { "$ref": "dimension.value36" },
       "iconSize": { "$ref": "iconSizes.large" },
       "chevronSize": { "$ref": "iconSizes.default" },
       "paddingX": { "$ref": "dimension.value12" },
@@ -186,14 +186,14 @@
       "groupGap": { "$ref": "dimension.value6" },
       "touchItemHeight": { "$ref": "button.heights.lg" },
       "touchChildHeight": { "$ref": "native.minimumTouchTarget" },
-      "railItemWidth": 72,
+      "railItemWidth": { "$ref": "dimension.value72" },
       "railPaddingX": { "$ref": "dimension.value4" },
       "railPaddingY": { "$ref": "dimension.value6" },
       "railIndicatorWidth": { "$ref": "dimension.value56" },
       "railIndicatorHeight": { "$ref": "button.heights.sm" },
       "railLabelGap": { "$ref": "dimension.value4" },
       "compactItemHeight": { "$ref": "button.heights.sm" },
-      "compactChildHeight": 30,
+      "compactChildHeight": { "$ref": "dimension.value30" },
       "groupChevronSize": { "$ref": "iconSizes.small" },
       "groupChevronGap": { "$ref": "dimension.value4" },
       "actionSize": { "$ref": "button.heights.xs" },
@@ -202,7 +202,20 @@
       "actionRadius": { "$ref": "button.radii.xs" },
       "toggleSize": { "$ref": "button.heights.sm" },
       "toggleRadius": { "$ref": "button.radii.sm" },
-      "chromeGap": { "$ref": "dimension.value12" }
+      "chromeGap": { "$ref": "dimension.value12" },
+      "selected": { "weight": { "$ref": "typography.label.fontWeight" } },
+      "grandchildHeight": { "$ref": "button.heights.sm" },
+      "grandchildIndent": { "$ref": "dimension.value16" },
+      "opensMarkerSize": { "$ref": "dimension.value10" },
+      "opensMarkerOffset": { "$ref": "dimension.value4" },
+      "width": {
+        "sm": 224,
+        "md": 256,
+        "lg": 288
+      },
+      "columnPaddingX": { "$ref": "dimension.value12" },
+      "columnPaddingY": { "$ref": "dimension.value12" },
+      "railColumnPaddingX": { "$ref": "dimension.value4" }
     },
     "floatingNavigation": {
       "itemSize": 52,

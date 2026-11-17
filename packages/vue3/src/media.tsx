@@ -39,7 +39,7 @@ export const KjunImage = defineComponent({
           {failed && (
             <span class="kjun-image-fallback" role={props.decorative ? undefined : "img"} aria-label={props.decorative ? undefined : props.alt}
               aria-hidden={props.decorative ? "true" : undefined}>
-              {slots.fallback ? slots.fallback() : <KjunIcon name="image" size={tokens.extensions.image.fallbackIconSize} />}
+              {slots.fallback ? slots.fallback() : <KjunIcon name="photo" size={tokens.extensions.image.fallbackIconSize} />}
             </span>
           )}
         </span>

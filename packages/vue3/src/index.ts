@@ -33,7 +33,8 @@ export type { KjunTabsProps, KjunTabPaneProps, TabItem, TabMenuEvent } from "./t
 export type { KjunAccordionProps, KjunAccordionItemProps, BreadcrumbItem, KjunBreadcrumbProps, KjunPaginationProps } from "./navigation";
 export type { KjunTopNavigationProps, NavigationDestination, NavigationIconStyle, KjunBottomNavigationProps, KjunFloatingNavigationProps, KjunBottomActionBarProps } from "./app-navigation";
 export type { KjunPressableProps } from "./pressable";
-export type { KjunSideNavigationProps, SideNavigationDestination, SideNavigationParent, SideNavigationItem, SideNavigationGroup, SideNavigationEntry, SideNavigationAction, SideNavigationCollapsedParent, SideNavigationRail } from "./side-navigation";
+export type { KjunSideNavigationProps, SideNavigationDestination, SideNavigationParent, SideNavigationSubParent, SideNavigationItem, SideNavigationGroup, SideNavigationEntry, SideNavigationAction, SideNavigationBadgeTone, SideNavigationCollapsedParent, SideNavigationHeadingLevel, SideNavigationRail } from "./side-navigation";
+export type { KjunSideNavigationLayoutProps, SideNavigationLayoutState, SideNavigationWidth } from "./side-navigation-layout";
 export type { KjunListGroupProps, KjunListItemProps, KjunListRowProps, KjunListSectionProps, ListChoiceValue, ListGroupVariant, ListLeadingSize, ListSectionVariant } from "./list";
 export type { KjunIconToggleProps, KjunCopyButtonProps, KjunRefreshButtonProps, KjunExternalLinkProps } from "./actions";
 export { safeExternalUrl } from "./actions";

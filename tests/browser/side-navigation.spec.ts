@@ -71,7 +71,7 @@ for (const platform of ['react', 'vue3']) {
     await expect(parent).toHaveAttribute('data-current-within', '');
     await expect.poll(() => parent.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgba(0, 0, 0, 0)');
     await expect.poll(() => parent.evaluate(el => getComputedStyle(el).color)).toBe(selectedInk);
-    expect(await parent.evaluate(el => getComputedStyle(el).fontWeight)).toBe('600');
+    expect(await parent.evaluate(el => getComputedStyle(el).fontWeight)).toBe('500');
     // A long label keeps one line.
     const long = nav.getByRole('link', { name: /아주 긴 이름/ });
     expect((await long.boundingBox())!.height).toBe(40);

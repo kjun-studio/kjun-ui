@@ -1,39 +1,59 @@
-import { navigationBadge, type NavigationBadge } from "./navigation-badge";
+import { navigationBadge, navigationLabel, type NavigationBadge } from "./navigation-badge";
 
 /** A small button at the end of a row or a group title, such as "New" or "More". It does not navigate; the press reaches
  * onAction (Vue: the action event) with the row's key and the action's key. */
 export interface SideNavigationAction { key: string; icon: string; label: string }
+/** How loud a badge is: "alert" (the default) is the danger pill, "neutral" a quiet grey count for plain totals. */
+export type SideNavigationBadgeTone = "alert" | "neutral";
 /** A destination in the side navigation: the bottom navigation's shape, so one list can feed both. */
 export interface SideNavigationDestination { key: string; label: string; href: string;
   /** Drawn on top-level rows only; a child row starts at its parent's label and draws no icon. */
   icon?: string;
   /** A count or short text; true draws a dot. Numbers over 99 show 99+. 0 and "" draw nothing. */
-  badge?: NavigationBadge; disabled?: boolean;
+  badge?: NavigationBadge;
+  /** "neutral" draws the badge as a quiet grey count; keep "alert" (the default) for what needs attention. */
+  badgeTone?: SideNavigationBadgeTone;
+  disabled?: boolean;
+  /** The name under the icon in a labelled rail (railLabels), which is only 72 wide: about four Korean characters. The
+   * full label stays the accessible name and shows as a tooltip there. */
+  shortLabel?: string;
   /** Where the link opens on Web, such as "_blank" for a page outside the app. Such a link is left to the browser. */
   target?: string;
   /** Buttons at the end of the row, shown under a pointer or focus (always on touch). Hidden while only icons show. */
   actions?: SideNavigationAction[] }
 /** The fields every destination type shares; Native's destination has an optional href. */
-type Destination = { key: string; label: string; icon?: string; badge?: NavigationBadge; disabled?: boolean; target?: string; actions?: SideNavigationAction[] };
-/** A parent that opens one level of destinations under it. It is a toggle and does not navigate itself. */
-export interface SideNavigationParent<D extends Destination = SideNavigationDestination> { key: string; label: string; icon?: string; disabled?: boolean; children: D[] }
+type Destination = { key: string; label: string; icon?: string; badge?: NavigationBadge; badgeTone?: SideNavigationBadgeTone; disabled?: boolean; shortLabel?: string;
+  target?: string; actions?: SideNavigationAction[] };
+/** A parent under a parent: the second and last level. It opens its destinations in place, one step further in. */
+export interface SideNavigationSubParent<D extends Destination = SideNavigationDestination> { key: string; label: string; disabled?: boolean; children: D[] }
+/** A parent that opens its destinations under it. Its children may hold one more level of parents. It is a toggle and
+ * does not navigate itself. */
+export interface SideNavigationParent<D extends Destination = SideNavigationDestination> { key: string; label: string; icon?: string; disabled?: boolean;
+  /** The name under the icon in a labelled rail (railLabels). */
+  shortLabel?: string;
+  children: (D | SideNavigationSubParent<D>)[] }
 export type SideNavigationItem<D extends Destination = SideNavigationDestination> = D | SideNavigationParent<D>;
 /** A titled run of items, such as "Documents" or "Admin". */
 export interface SideNavigationGroup<D extends Destination = SideNavigationDestination> { title: string; items: SideNavigationItem<D>[];
-  /** The group's identity in expandedGroups; the title when absent. */
+  /** The group's identity in expandedGroups and showAll; the title when absent. */
   key?: string;
   /** The group's mark in a collapsed rail of groups (rail="groups"); its title's first character when absent. */
   icon?: string;
+  /** The group's name under its icon in a labelled rail of groups. */
+  shortTitle?: string;
   /** Whether this title opens and closes its group. Absent: the navigation's collapsibleGroups. */
   collapsible?: boolean;
   /** Starts open when the navigation keeps the open groups itself. The current page's group always starts open. */
   defaultOpen?: boolean;
+  /** Shows only the first rows and a "N more" row for the rest, for lists people grow (projects, channels). The row of the
+   * current page always shows. */
+  limit?: number;
   /** One button at the end of the title, such as "New project". */
   action?: SideNavigationAction }
 export type SideNavigationEntry<D extends Destination = SideNavigationDestination> = SideNavigationItem<D> | SideNavigationGroup<D>;
 export interface SideNavigationSection<D extends Destination = SideNavigationDestination> { title?: string; items: SideNavigationItem<D>[];
-  /** Set on a titled section: the group's key (its title when the group has none) and icon. */
-  key?: string; icon?: string; collapsible?: boolean; defaultOpen?: boolean; action?: SideNavigationAction }
+  /** Set on a titled section: the group's key (its title when the group has none) and its options. */
+  key?: string; icon?: string; shortTitle?: string; collapsible?: boolean; defaultOpen?: boolean; limit?: number; action?: SideNavigationAction }
 /** A titled section, as a rail of groups or a toggle reads it. */
 export type SideNavigationTitledSection<D extends Destination = SideNavigationDestination> = SideNavigationSection<D> & { key: string; title: string };
 /** What a collapsed menu shows one icon for: each top-level item, or each group (loose items keep their own row). */
@@ -41,9 +61,16 @@ export type SideNavigationRail = "items" | "groups";
 /** While collapsed, what pressing a parent or a group does: widen the column with it open, or show its rows in a
  * floating panel beside the icon and keep the column narrow. */
 export type SideNavigationCollapsedParent = "widen" | "flyout";
+/** The width of an open column in KjunSideNavigationLayout. */
+export type SideNavigationWidth = "sm" | "md" | "lg";
+
+type AnyParent<D extends Destination> = SideNavigationParent<D> | SideNavigationSubParent<D>;
+type Node<D extends Destination> = D | AnyParent<D>;
 
 export const isSideGroup = <D extends Destination>(entry: SideNavigationEntry<D>): entry is SideNavigationGroup<D> => "items" in entry;
-export const isSideParent = <D extends Destination>(item: SideNavigationItem<D>): item is SideNavigationParent<D> => "children" in item;
+export const isSideParent = <T extends { key: string }>(item: T): item is Extract<T, { children: unknown[] }> => "children" in item;
+/** The same test inside the runtime, where the destination type is generic. */
+const isParentNode = <D extends Destination>(node: Node<D>): node is AnyParent<D> => "children" in node;
 export const isTitledSection = <D extends Destination>(section: SideNavigationSection<D>): section is SideNavigationTitledSection<D> => section.key !== undefined;
 
 /** The entries as sections in order: loose items between groups form untitled sections, each group its own titled one. */
@@ -53,16 +80,27 @@ export function sideNavigationSections<D extends Destination>(entries: readonly 
   for (const entry of entries) {
     if (isSideGroup(entry)) {
       loose = null;
-      sections.push({ title: entry.title, items: entry.items, key: sideGroupKey(entry), icon: entry.icon, collapsible: entry.collapsible, defaultOpen: entry.defaultOpen, action: entry.action });
+      const { title, items, icon, shortTitle, collapsible, defaultOpen, limit, action } = entry;
+      sections.push({ title, items, key: sideGroupKey(entry), icon, shortTitle, collapsible, defaultOpen, limit, action });
     } else { if (!loose) sections.push({ items: (loose = []) }); loose.push(entry); }
   }
   return sections;
 }
 
-/** The parents that hold the current destination; they start open so the current page is in view. */
+/** The parents on the way to a destination, outermost first; empty when it is not under a parent (or not found). */
+function sideNavigationPath<D extends Destination>(items: readonly Node<D>[], value: string | null | undefined): string[] {
+  for (const item of items) {
+    if (!isParentNode(item)) continue;
+    if (item.children.some(child => !isParentNode(child) && child.key === value)) return [item.key];
+    const inner = sideNavigationPath<D>(item.children, value);
+    if (inner.length) return [item.key, ...inner];
+  }
+  return [];
+}
+
+/** The parents that hold the current destination, at both levels; they start open so the current page is in view. */
 export function sideNavigationCurrentParents<D extends Destination>(entries: readonly SideNavigationEntry<D>[], value: string | null | undefined): string[] {
-  return sideNavigationSections(entries).flatMap(section => section.items)
-    .filter(item => isSideParent(item) && item.children.some(child => child.key === value)).map(item => item.key);
+  return sideNavigationPath<D>(sideNavigationSections(entries).flatMap(section => section.items), value);
 }
 
 /** The open parents once the current destination's parents are added. The same array when nothing was added, so a
@@ -79,12 +117,28 @@ export const sideGroupKey = (group: { key?: string; title: string }) => group.ke
 export const sideSectionToggles = <D extends Destination>(section: SideNavigationSection<D>, collapsibleGroups: boolean): section is SideNavigationTitledSection<D> =>
   isTitledSection(section) && (section.collapsible ?? collapsibleGroups);
 
+/** Whether a parent holds the current destination, at either level under it. */
+export const sideParentHoldsCurrent = <D extends Destination>(parent: AnyParent<D>, value: string | null | undefined): boolean =>
+  parent.children.some(child => isParentNode(child) ? sideParentHoldsCurrent(child, value) : child.key === value);
 /** Whether a run of items holds the current destination, directly or under a parent. */
-export const sideItemsHoldCurrent = <D extends Destination>(items: readonly SideNavigationItem<D>[], value: string | null | undefined) =>
-  items.some(item => isSideParent(item) ? sideParentHoldsCurrent(item, value) : item.key === value);
+export const sideItemsHoldCurrent = <D extends Destination>(items: readonly Node<D>[], value: string | null | undefined) =>
+  items.some(item => isParentNode(item) ? sideParentHoldsCurrent(item, value) : item.key === value);
+
+/** The tone of the dot that stands for the badges hidden in a run of items: "alert" when any of them is an alert, else
+ * "neutral" when any has a badge, else null. Disabled rows and their badges do not count. */
+export function sideItemsBadgeTone<D extends Destination>(items: readonly Node<D>[]): SideNavigationBadgeTone | null {
+  let tone: SideNavigationBadgeTone | null = null;
+  for (const item of items) {
+    if (item.disabled) continue;
+    const found = isParentNode(item) ? sideItemsBadgeTone(item.children) : navigationBadge(item.badge) ? item.badgeTone ?? "alert" : null;
+    if (found === "alert") return found;
+    tone ??= found;
+  }
+  return tone;
+}
 /** Whether a run of items has a badge to show while it is hidden behind its group. */
-export const sideItemsHaveBadge = <D extends Destination>(items: readonly SideNavigationItem<D>[]) =>
-  items.some(item => isSideParent(item) ? !item.disabled && sideParentHasBadge(item) : !item.disabled && !!navigationBadge(item.badge));
+export const sideItemsHaveBadge = <D extends Destination>(items: readonly Node<D>[]) => sideItemsBadgeTone(items) !== null;
+export const sideParentHasBadge = <D extends Destination>(parent: AnyParent<D>) => sideItemsHaveBadge(parent.children);
 
 /** The open groups once the group of the current destination is added. The same array when nothing was added, like
  * sideNavigationWithCurrentParents, so a component can tell whether to store or report a change. */
@@ -107,27 +161,39 @@ export function sideNavigationGroupRail<D extends Destination>(entries: readonly
     ? [{ group: section }] : section.items.map(item => ({ item })));
 }
 
-/** The next list of open parents after one is toggled. */
+/** The next list of open parents (or groups, or groups showing all rows) after one is toggled. */
 export const toggleSideParent = (open: readonly string[], key: string): string[] => open.includes(key) ? open.filter(item => item !== key) : [...open, key];
 
-/** A parent stands for its children while they are hidden: it holds the current page, or a child has a badge. */
-export const sideParentHoldsCurrent = <D extends Destination>(parent: SideNavigationParent<D>, value: string | null | undefined) => parent.children.some(child => child.key === value);
-export const sideParentHasBadge = <D extends Destination>(parent: SideNavigationParent<D>) => parent.children.some(child => !child.disabled && navigationBadge(child.badge));
-
 /** What a parent row shows: whether its children are on screen, and what it stands for while they are not (a closed
- * parent holding the current page, a dot for a child's badge). In a flyout the children show beside, not under, it. */
-export function sideParentState<D extends Destination>(parent: SideNavigationParent<D>, { open, collapsed, value }: { open: readonly string[]; collapsed: boolean; value: string | null | undefined }) {
-  const shown = !collapsed && open.includes(parent.key);
-  return { shown, within: !shown && sideParentHoldsCurrent(parent, value), dot: !shown && sideParentHasBadge(parent) };
+ * parent holding the current page, a dot for a child's badge in that badge's tone). In a flyout the children show beside,
+ * not under, it. */
+export function sideParentState<D extends Destination>(parent: AnyParent<D>, { open, collapsed, value }: { open: readonly string[]; collapsed: boolean; value: string | null | undefined }) {
+  const shown = !collapsed && open.includes(parent.key), tone = shown ? null : sideItemsBadgeTone(parent.children);
+  return { shown, within: !shown && sideParentHoldsCurrent(parent, value), dot: tone !== null, tone };
 }
-/** What a group toggle shows while closed: the selection's trace, a dot for a badge inside, and how many rows it holds. */
+/** What a group toggle shows: the selection's trace and a dot for a badge inside while closed, and how many rows it holds. */
 export function sideGroupState<D extends Destination>(section: SideNavigationTitledSection<D>, { openGroups, value }: { openGroups: readonly string[]; value: string | null | undefined }) {
-  const shown = openGroups.includes(section.key);
-  return { shown, within: !shown && sideItemsHoldCurrent(section.items, value), dot: !shown && sideItemsHaveBadge(section.items), count: section.items.length };
+  const shown = openGroups.includes(section.key), tone = shown ? null : sideItemsBadgeTone(section.items);
+  return { shown, within: !shown && sideItemsHoldCurrent(section.items, value), dot: tone !== null, tone, count: section.items.length };
 }
 /** A rail-of-groups row: always closed, so it stands for everything in its group. */
-export const sideRailGroupState = <D extends Destination>(section: SideNavigationTitledSection<D>, value: string | null | undefined) =>
-  ({ within: sideItemsHoldCurrent(section.items, value), dot: sideItemsHaveBadge(section.items) });
+export function sideRailGroupState<D extends Destination>(section: SideNavigationTitledSection<D>, value: string | null | undefined) {
+  const tone = sideItemsBadgeTone(section.items);
+  return { within: sideItemsHoldCurrent(section.items, value), dot: tone !== null, tone };
+}
+
+/** The rows a group shows under its limit: the first `limit`, plus any later row that holds the current page, in their
+ * places. hidden is how many stay behind the "more" row; 0 when the group has no limit, fits it, or shows all. */
+export function sideSectionRows<D extends Destination>(section: SideNavigationSection<D>, { value, showAll }: { value: string | null | undefined; showAll: readonly string[] }) {
+  const limit = section.limit, all = section.items;
+  const expandable = limit !== undefined && limit >= 0 && all.length > limit && isTitledSection(section);
+  if (!expandable) return { items: all, hidden: 0, expandable: false, expanded: false };
+  if (showAll.includes(section.key!)) return { items: all, hidden: 0, expandable: true, expanded: true };
+  const items = all.filter((item, index) => index < limit || sideItemsHoldCurrent([item], value));
+  // Every row past the limit is the current page's: nothing is left to show, so there is no "more" row.
+  if (items.length === all.length) return { items: all, hidden: 0, expandable: false, expanded: false };
+  return { items, hidden: all.length - items.length, expandable: true, expanded: false };
+}
 
 /** A link that leaves this tab (target="_blank" and the like). The browser opens it; the app is not asked to route. */
 export const sideNavigationOpensElsewhere = (destination: { target?: string }) => !!destination.target && destination.target !== "_self";
@@ -142,8 +208,38 @@ export function isPlainNavigationClick(event: { button?: number; metaKey?: boole
 /** The first character of a label: the mark of a row without an icon while the navigation shows icons only. */
 export const sideNavigationInitial = (label: string) => Array.from(label.trim())[0] ?? "";
 
+/** The name a row shows: its short name under an icon in a labelled rail, else its label. */
+export const sideNavigationShownLabel = (item: { label: string; shortLabel?: string }, labelled: boolean) => labelled && item.shortLabel ? item.shortLabel : item.label;
+/** A group's name under its icon in a labelled rail of groups. */
+export const sideNavigationShownTitle = (group: { title: string; shortTitle?: string }, labelled: boolean) => labelled && group.shortTitle ? group.shortTitle : group.title;
+
+type Messages = { newContent: string; newCount: (count: number) => string; newWindow: string };
+/** A destination's accessible name: its full label, what its badge says, and that it opens elsewhere. */
+export const sideNavigationLinkName = (item: { label: string; badge?: NavigationBadge; target?: string }, m: Messages) =>
+  navigationLabel(item.label, item.badge, m.newContent, m.newCount) + (sideNavigationOpensElsewhere(item) ? m.newWindow : "");
+/** The same name for Web's aria-label, or undefined when the shown text already is the whole name. */
+export function sideNavigationLinkLabel(item: { label: string; shortLabel?: string; badge?: NavigationBadge; target?: string }, m: Messages, labelled: boolean) {
+  const name = sideNavigationLinkName(item, m);
+  return name === sideNavigationShownLabel(item, labelled) ? undefined : name;
+}
+/** A parent's or group's accessible name: its label, and "new" while a dot stands for a hidden badge. */
+export const sideNavigationToggleName = (label: string, dot: boolean, m: { newContent: string }) => dot ? navigationLabel(label, true, m.newContent) : label;
+
+/** What an arrow key asks of a row in an open menu: "in" opens a closed parent or group, or moves to its first row;
+ * "out" closes an open one, or moves from a row to the parent or group title it sits under. Right to left swaps them. */
+export function sideNavigationArrow(key: string, rtl: boolean): "in" | "out" | null {
+  if (key !== "ArrowRight" && key !== "ArrowLeft") return null;
+  return (key === "ArrowRight") !== rtl ? "in" : "out";
+}
+
+/** The flyout open beside a collapsed icon, by kind, so a parent and a group with the same key never share one. */
+export const sideFlyoutKey = (kind: "parent" | "group", key: string) => kind + ":" + key;
+
 /** A key as part of an element id: anything outside [A-Za-z0-9_-] becomes its code point, so different keys stay apart. */
 export const sideNavigationIdPart = (key: string) => key.replace(/[^\w-]/g, char => "_" + char.codePointAt(0)!.toString(36));
+
+/** Heading levels a group title can take. */
+export type SideNavigationHeadingLevel = 2 | 3 | 4 | 5 | 6;
 
 const developmentMode = () => { try { return !!process.env.NODE_ENV && process.env.NODE_ENV !== "production"; } catch { return false; } };
 const warned = new Set<string>();
@@ -157,19 +253,27 @@ export function warnSideNavigation(message: string) {
 export function sideNavigationDuplicateKeys<D extends Destination>(entries: readonly SideNavigationEntry<D>[]) {
   const items = new Set<string>(), groups = new Set<string>(), repeated: string[] = [];
   const see = (set: Set<string>, key: string, kind: string) => { if (set.has(key)) repeated.push(kind + " \"" + key + "\""); else set.add(key); };
+  const walk = (nodes: readonly Node<D>[]) => { for (const node of nodes) { see(items, node.key, "item"); if (isParentNode(node)) walk(node.children); } };
   for (const section of sideNavigationSections(entries)) {
     if (section.key !== undefined) see(groups, section.key, "group");
-    for (const item of section.items) {
-      see(items, item.key, "item");
-      if (isSideParent(item)) for (const child of item.children) see(items, child.key, "item");
-    }
+    walk(section.items);
   }
   return repeated;
+}
+/** Parents nested deeper than two levels: the third level is not drawn. */
+export function sideNavigationTooDeep<D extends Destination>(entries: readonly SideNavigationEntry<D>[]) {
+  const deep: string[] = [];
+  for (const item of sideNavigationSections(entries).flatMap(section => section.items))
+    if (isParentNode(item)) for (const child of item.children)
+      if (isParentNode(child)) for (const grandchild of child.children) if (isParentNode(grandchild as Node<D>)) deep.push(grandchild.key);
+  return deep;
 }
 /** Development checks for a navigation's items and the props that read them. */
 export function checkSideNavigation<D extends Destination>(entries: readonly SideNavigationEntry<D>[]) {
   const repeated = sideNavigationDuplicateKeys(entries);
   if (repeated.length) warnSideNavigation("keys must be unique; repeated " + repeated.join(", ") + ". Give groups with the same title a key.");
+  const deep = sideNavigationTooDeep(entries);
+  if (deep.length) warnSideNavigation("parents go two levels deep at most; not drawn: " + deep.join(", ") + ".");
 }
 /** A parent or group pressed while collapsed asks to widen; without a handler the press would do nothing visible. */
 export const warnNoWiden = () => warnSideNavigation("a parent or group was pressed while collapsed, but nothing handles onCollapsedChange (Vue: v-model:collapsed). Handle it, or use collapsedParent=\"flyout\".");

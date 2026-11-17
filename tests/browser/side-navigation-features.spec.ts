@@ -15,29 +15,30 @@ for (const platform of ['react', 'vue3']) {
     await expect(docs).toHaveAttribute('aria-expanded', 'true');
     await expect(nav.getByRole('button', { name: '관리' })).toHaveCount(0);
     await expect(nav.getByRole('link', { name: '설정' })).toBeVisible();
-    // The chevron is 14, 4 after the name, and turns from pointing at the end (closed) to down (open).
-    const label = (await docs.locator('.kjun-side-navigation-label').boundingBox())!, chevron = docs.locator('.kjun-side-navigation-chevron');
-    const mark = (await chevron.boundingBox())!;
+    // The chevron is 14 at the title's end, and turns over like a parent's once open.
+    const chevron = docs.locator('.kjun-side-navigation-chevron'), mark = (await chevron.boundingBox())!, title = (await docs.boundingBox())!;
     expect([mark.width, mark.height]).toEqual([14, 14]);
-    expect(Math.round(mark.x - (label.x + label.width))).toBe(4);
-    await expect.poll(() => chevron.evaluate(el => getComputedStyle(el).transform)).toMatch(/^matrix\(0, 1, -1, 0/);
+    expect(Math.round(title.x + title.width - (mark.x + mark.width))).toBe(12);
+    await expect.poll(() => chevron.evaluate(el => getComputedStyle(el).transform)).toMatch(/^matrix\(-1, 0, 0, -1/);
     // Counts are off by default.
     await docs.click();
     await expect(docs.locator('.kjun-side-navigation-count')).toHaveCount(0);
 
     await openFixture(page, platform, '?groups=1&counts=1', 'side-navigation');
     const admin = page.getByRole('navigation', { name: '작업 공간' }).getByRole('button', { name: '관리' }), side = (await page.getByTestId('side').boundingBox())!;
-    // A closed group ends with the number of its rows, at the row's end inset, quiet and tabular; a badge inside wins as a dot.
+    // A group title holds the number of its rows before its chevron, quiet and tabular; a badge inside a closed group wins as a dot.
     const count = admin.locator('.kjun-side-navigation-count');
     await expect(count).toHaveText('2');
     await expect(count).toHaveAttribute('aria-hidden', 'true');
-    const end = (await count.boundingBox())!;
+    const end = (await admin.locator('.kjun-side-navigation-chevron').boundingBox())!;
     expect(Math.round(side.x + side.width - (end.x + end.width))).toBe(12);
+    expect((await count.boundingBox())!.x).toBeLessThan(end.x);
     const docsTitle = page.getByRole('navigation', { name: '작업 공간' }).getByRole('button', { name: /^문서/ });
     await expect(docsTitle.locator('.kjun-side-navigation-count')).toHaveCount(0);
     await expect(docsTitle.locator('.kjun-navigation-badge[data-dot]')).toBeVisible();
+    // It stays in place when the group opens.
     await admin.click();
-    await expect(count).toHaveCount(0);
+    await expect(count).toHaveText('2');
   });
 
   test(`${platform}: SideNavigation collapsedParent="flyout" shows a collapsed parent's children beside it and keeps the column narrow`, async ({ page }) => {

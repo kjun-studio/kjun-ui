@@ -2922,6 +2922,42 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
+    "name": "KjunSideNavigationLayout",
+    "sources": {
+      "vue3": "packages/vue3/src/side-navigation-layout.tsx",
+      "react": "packages/react/src/side-navigation-layout.tsx",
+      "native": "packages/native/src/side-navigation-layout.tsx"
+    },
+    "category": "navigation",
+    "kind": "component",
+    "owner": "KjunSideNavigationLayout",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/side-navigation-layout",
+    "tests": [
+      "tests/side-navigation.test.mjs",
+      "tests/browser/side-navigation-layout.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
     "name": "KjunBottomActionBar",
     "sources": {
       "vue3": "packages/vue3/src/app-navigation.tsx",

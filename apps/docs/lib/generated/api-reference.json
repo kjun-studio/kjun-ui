@@ -34900,17 +34900,17 @@
             "type": "SideNavigationEntry[]",
             "required": true,
             "default": "—",
-            "description": "Destinations, parents with one level of children, and titled groups of either. A destination has the bottom navigation's shape.",
+            "description": "Destinations, parents with up to two levels under them, and titled groups of either. A destination has the bottom\nnavigation's shape.",
             "summary": "표시할 항목과 항목별 레이블·값·구성 정보입니다.",
             "source": "packages/vue3/src/side-navigation.tsx"
           },
           {
             "name": "value",
-            "type": "string",
+            "type": "string | null",
             "required": true,
             "default": "—",
-            "description": "The current destination's key (a child's key when the page is under a parent).",
-            "summary": "현재 표시·입력·선택값입니다.",
+            "description": "The current destination's key (a child's key when the page is under a parent); null for a page outside the menu.",
+            "summary": "현재 목적지의 key입니다(부모 아래 페이지면 하위 항목의 key). 메뉴에 없는 페이지에서는 null을 줍니다.",
             "source": "packages/vue3/src/side-navigation.tsx"
           },
           {
@@ -34927,7 +34927,7 @@
             "type": "string[]",
             "required": false,
             "default": "—",
-            "description": "v-model:expanded: the open parents. Without it the navigation keeps the list itself, starting with the parent of the current destination open.\nupdate:expanded also reports a parent opened by moving to a page under it.",
+            "description": "v-model:expanded: the open parents, at both levels. Without it the navigation keeps the list itself, starting with the parents of the\ncurrent destination open. update:expanded also reports a parent opened by moving to a page under it.",
             "summary": "열린 부모 항목의 key 목록입니다. 생략하면 컴포넌트가 스스로 기억하며, 현재 목적지의 부모를 연 채로 시작합니다. 주면 앱이 관리합니다(Vue v-model:expanded). 닫힌 부모 아래 페이지로 이동하면 그 부모를 더한 목록으로 알립니다.",
             "source": "packages/vue3/src/side-navigation.tsx"
           },
@@ -34946,7 +34946,7 @@
             "required": false,
             "default": "false",
             "description": "Group titles become toggles that show or hide their group. A group's own collapsible overrides this. The group of\nthe current destination starts open, and so do groups marked defaultOpen.",
-            "summary": "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 제목 바로 뒤의 작은 14px 화살표가 닫힘(끝 방향)과 열림(아래)을 알립니다. 현재 페이지가 있는 묶음과 defaultOpen 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 제목을 본문 글자색으로, 배지가 있으면 끝에 점을 표시합니다. 묶음마다 collapsible을 주면 이 값보다 우선합니다(false면 늘 펼친 제목).",
+            "summary": "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 행 끝의 작은 14px 꺾쇠가 부모 항목처럼 열리면 뒤집힙니다. 현재 페이지가 있는 묶음과 defaultOpen 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 제목을 본문 글자색으로, 배지가 있으면 끝에 점을 표시합니다. 묶음마다 collapsible을 주면 이 값보다 우선합니다(false면 늘 펼친 제목).",
             "source": "packages/vue3/src/side-navigation.tsx"
           },
           {
@@ -34963,8 +34963,17 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "A closed group's title ends with how many rows it holds (a dot instead while one of them has a badge).",
-            "summary": "닫힌 묶음 제목 끝에 그 안의 행 수를 3차 글자색 숫자로 표시합니다. 안에 배지가 있으면 숫자 대신 점을 표시합니다. 닫힌 묶음이 많아 내용의 크기를 가늠해야 할 때 켭니다.",
+            "description": "A group title that opens and closes ends with how many rows its group holds (a dot instead while a closed group has\na badge inside).",
+            "summary": "여닫는 묶음 제목의 꺾쇠 앞에 그 안의 행 수를 3차 글자색 숫자로 표시합니다. 열림·닫힘과 상관없이 같은 자리에 있어 여닫을 때 깜빡이지 않습니다. 닫힌 묶음 안에 배지가 있으면 숫자 대신 점을 표시합니다.",
+            "source": "packages/vue3/src/side-navigation.tsx"
+          },
+          {
+            "name": "showAll",
+            "type": "string[]",
+            "required": false,
+            "default": "—",
+            "description": "v-model:showAll: the groups (by key) showing every row past their limit. Without it the navigation keeps the list itself.",
+            "summary": "limit을 넘는 행을 모두 보여 주는 묶음의 key 목록입니다. 생략하면 컴포넌트가 스스로 기억하고, 주면 앱이 관리합니다(Vue v-model:showAll). 묶음의 limit을 넘으면 처음 행 뒤에 \"N개 더 보기\" 행이 놓이며, 현재 페이지 행은 limit 밖이어도 보입니다.",
             "source": "packages/vue3/src/side-navigation.tsx"
           },
           {
@@ -34981,8 +34990,8 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "While collapsed: a short name under each icon, in a 72 wide column. The current page, hover and press fill a 56 by 32\nindicator around the icon, a count stays a number, and no tooltip is needed.",
-            "summary": "collapsed일 때 아이콘 아래에 짧은 이름을 한 줄로 보여 줍니다. 항목은 72px 폭이 되고(열 폭은 72px + 앱의 좌우 여백), 현재 목적지·마우스 올림·누름은 아이콘을 감싸는 56×32px 면으로 표시합니다. 이름이 보이므로 툴팁은 띄우지 않고, 배지는 숫자 그대로 아이콘 모서리에 놓입니다. 이름은 여섯 글자 안팎으로 짧게 정하세요. 넘치면 말줄임합니다.",
+            "description": "While collapsed: a short name (shortLabel, else the label) under each icon, in a 72 wide column. The current page,\nhover and press fill a 56 by 32 indicator around the icon, a count stays a number, and a tooltip shows only a name\nthat was shortened.",
+            "summary": "collapsed일 때 아이콘 아래에 짧은 이름을 한 줄로 보여 줍니다. 항목은 72px 폭이 되고(열 폭은 72px + 앱의 좌우 여백), 현재 목적지·마우스 올림·누름은 아이콘을 감싸는 56×32px 면으로 표시합니다. 이름이 보이므로 툴팁은 띄우지 않고, 배지는 숫자 그대로 아이콘 모서리에 놓입니다. 이름 칸은 72px(한글 약 4자)이므로 긴 이름에는 목적지·부모의 shortLabel, 묶음의 shortTitle을 주세요. 전체 이름은 접근 가능한 이름과 툴팁으로 남고, 넘치면 말줄임합니다.",
             "source": "packages/vue3/src/side-navigation.tsx"
           },
           {
@@ -35001,6 +35010,15 @@
             "default": "\"default\"",
             "description": "\"compact\": 32 tall rows and 30 tall children under a mouse, and counts as quiet numbers, for long lists (documentation,\nsettings). A touch pointer keeps the touch heights.",
             "summary": "compact이면 마우스 포인터에서 항목을 32px, 하위 항목을 30px로 줄이고, 항목 끝의 숫자 배지를 3차 글자색 숫자로 낮춥니다(점 배지는 그대로). 문서·설정처럼 항목이 많은 목록에 씁니다. 터치 포인터와 Native 기기에서는 터치 높이(48·44px)를 유지합니다.",
+            "source": "packages/vue3/src/side-navigation.tsx"
+          },
+          {
+            "name": "headingLevel",
+            "type": "SideNavigationHeadingLevel",
+            "required": false,
+            "default": "2",
+            "description": "The level of the group titles' headings (default 2), to fit the page's outline.",
+            "summary": "묶음 제목의 제목 요소 단계입니다(2–6). 화면 낭독기의 제목 이동에 쓰이므로 페이지 개요에 맞춥니다. Native에서는 Native Web의 aria-level입니다.",
             "source": "packages/vue3/src/side-navigation.tsx"
           },
           {
@@ -35035,7 +35053,7 @@
             "type": "boolean",
             "required": false,
             "default": "true",
-            "description": "Brings the current row into the menu's own scrolling column when the menu mounts and when the page changes.",
+            "description": "Brings the current row into the menu's own scrolling column when the menu mounts, when the page changes and when\nitems that hold it arrive.",
             "summary": "처음 그릴 때와 현재 페이지가 바뀔 때 현재 행(가려졌다면 그 행을 품은 부모나 묶음)을 메뉴가 들어 있는 스크롤 영역 안으로 가장 짧게 옮깁니다. 창 전체는 스크롤하지 않습니다.",
             "source": "packages/vue3/src/side-navigation.tsx"
           }
@@ -35076,6 +35094,12 @@
             "source": "packages/vue3/src/side-navigation.tsx",
             "type": "이벤트",
             "summary": "update:expandedGroups 이벤트를 통지합니다."
+          },
+          {
+            "name": "update:showAll",
+            "source": "packages/vue3/src/side-navigation.tsx",
+            "type": "이벤트",
+            "summary": "update:showAll 이벤트를 통지합니다."
           }
         ],
         "slots": [
@@ -35108,17 +35132,17 @@
             "type": "SideNavigationEntry[]",
             "required": true,
             "default": "—",
-            "description": "Destinations, parents with one level of children, and titled groups of either. A destination has the bottom navigation's shape.",
+            "description": "Destinations, parents with up to two levels under them, and titled groups of either. A destination has the bottom\nnavigation's shape.",
             "summary": "표시할 항목과 항목별 레이블·값·구성 정보입니다.",
             "source": "packages/react/src/side-navigation.tsx"
           },
           {
             "name": "value",
-            "type": "string",
+            "type": "string | null",
             "required": true,
             "default": "—",
-            "description": "The current destination's key (a child's key when the page is under a parent).",
-            "summary": "현재 표시·입력·선택값입니다.",
+            "description": "The current destination's key (a child's key when the page is under a parent); null for a page outside the menu.",
+            "summary": "현재 목적지의 key입니다(부모 아래 페이지면 하위 항목의 key). 메뉴에 없는 페이지에서는 null을 줍니다.",
             "source": "packages/react/src/side-navigation.tsx"
           },
           {
@@ -35135,7 +35159,7 @@
             "type": "((key: string, event: MouseEvent<HTMLAnchorElement>) => void) | undefined",
             "required": false,
             "default": "—",
-            "description": "A plain click on a destination of this tab. Modified clicks (new tab) and target links are left to the browser.",
+            "description": "A plain click on a destination of this tab. Modified clicks (new tab) and target links are left to the browser.\nWith linkAs the router link already navigates: use this only for side effects such as closing a drawer.",
             "summary": "수정 키 없는 일반 클릭으로 이 탭의 목적지를 누르면 key와 이벤트로 호출합니다. 기본 이동을 막고 앱에서 이동하세요. 수정 키 클릭과 target이 있는 링크는 브라우저가 엽니다.",
             "source": "packages/react/src/side-navigation.tsx"
           },
@@ -35153,7 +35177,7 @@
             "type": "string[] | undefined",
             "required": false,
             "default": "—",
-            "description": "The open parents. Without it the navigation keeps the list itself, starting with the parent of the current destination open.",
+            "description": "The open parents, at both levels. Without it the navigation keeps the list itself, starting with the parents of the\ncurrent destination open.",
             "summary": "열린 부모 항목의 key 목록입니다. 생략하면 컴포넌트가 스스로 기억하며, 현재 목적지의 부모를 연 채로 시작합니다. 주면 앱이 관리합니다(Vue v-model:expanded). 닫힌 부모 아래 페이지로 이동하면 그 부모를 더한 목록으로 알립니다.",
             "source": "packages/react/src/side-navigation.tsx"
           },
@@ -35190,7 +35214,7 @@
             "required": false,
             "default": "false",
             "description": "Group titles become toggles that show or hide their group. A group's own collapsible overrides this. The group of\nthe current destination starts open, and so do groups marked defaultOpen.",
-            "summary": "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 제목 바로 뒤의 작은 14px 화살표가 닫힘(끝 방향)과 열림(아래)을 알립니다. 현재 페이지가 있는 묶음과 defaultOpen 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 제목을 본문 글자색으로, 배지가 있으면 끝에 점을 표시합니다. 묶음마다 collapsible을 주면 이 값보다 우선합니다(false면 늘 펼친 제목).",
+            "summary": "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 행 끝의 작은 14px 꺾쇠가 부모 항목처럼 열리면 뒤집힙니다. 현재 페이지가 있는 묶음과 defaultOpen 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 제목을 본문 글자색으로, 배지가 있으면 끝에 점을 표시합니다. 묶음마다 collapsible을 주면 이 값보다 우선합니다(false면 늘 펼친 제목).",
             "source": "packages/react/src/side-navigation.tsx"
           },
           {
@@ -35216,8 +35240,26 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
-            "description": "A closed group's title ends with how many rows it holds (a dot instead while one of them has a badge).",
-            "summary": "닫힌 묶음 제목 끝에 그 안의 행 수를 3차 글자색 숫자로 표시합니다. 안에 배지가 있으면 숫자 대신 점을 표시합니다. 닫힌 묶음이 많아 내용의 크기를 가늠해야 할 때 켭니다.",
+            "description": "A group title that opens and closes ends with how many rows its group holds (a dot instead while a closed group has\na badge inside).",
+            "summary": "여닫는 묶음 제목의 꺾쇠 앞에 그 안의 행 수를 3차 글자색 숫자로 표시합니다. 열림·닫힘과 상관없이 같은 자리에 있어 여닫을 때 깜빡이지 않습니다. 닫힌 묶음 안에 배지가 있으면 숫자 대신 점을 표시합니다.",
+            "source": "packages/react/src/side-navigation.tsx"
+          },
+          {
+            "name": "showAll",
+            "type": "string[] | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The groups (by key) showing every row past their limit. Without it the navigation keeps the list itself.",
+            "summary": "limit을 넘는 행을 모두 보여 주는 묶음의 key 목록입니다. 생략하면 컴포넌트가 스스로 기억하고, 주면 앱이 관리합니다(Vue v-model:showAll). 묶음의 limit을 넘으면 처음 행 뒤에 \"N개 더 보기\" 행이 놓이며, 현재 페이지 행은 limit 밖이어도 보입니다.",
+            "source": "packages/react/src/side-navigation.tsx"
+          },
+          {
+            "name": "onShowAllChange",
+            "type": "((showAll: string[]) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "\"N개 더 보기\"나 \"접기\" 행을 누르면 다음 key 목록으로 호출합니다. showAll을 주었다면 받은 값을 반영합니다.",
             "source": "packages/react/src/side-navigation.tsx"
           },
           {
@@ -35234,8 +35276,8 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
-            "description": "While collapsed: a short name under each icon, in a 72 wide column. The current page, hover and press fill a 56 by 32\nindicator around the icon, a count stays a number, and no tooltip is needed.",
-            "summary": "collapsed일 때 아이콘 아래에 짧은 이름을 한 줄로 보여 줍니다. 항목은 72px 폭이 되고(열 폭은 72px + 앱의 좌우 여백), 현재 목적지·마우스 올림·누름은 아이콘을 감싸는 56×32px 면으로 표시합니다. 이름이 보이므로 툴팁은 띄우지 않고, 배지는 숫자 그대로 아이콘 모서리에 놓입니다. 이름은 여섯 글자 안팎으로 짧게 정하세요. 넘치면 말줄임합니다.",
+            "description": "While collapsed: a short name (shortLabel, else the label) under each icon, in a 72 wide column. The current page,\nhover and press fill a 56 by 32 indicator around the icon, a count stays a number, and a tooltip shows only a name\nthat was shortened.",
+            "summary": "collapsed일 때 아이콘 아래에 짧은 이름을 한 줄로 보여 줍니다. 항목은 72px 폭이 되고(열 폭은 72px + 앱의 좌우 여백), 현재 목적지·마우스 올림·누름은 아이콘을 감싸는 56×32px 면으로 표시합니다. 이름이 보이므로 툴팁은 띄우지 않고, 배지는 숫자 그대로 아이콘 모서리에 놓입니다. 이름 칸은 72px(한글 약 4자)이므로 긴 이름에는 목적지·부모의 shortLabel, 묶음의 shortTitle을 주세요. 전체 이름은 접근 가능한 이름과 툴팁으로 남고, 넘치면 말줄임합니다.",
             "source": "packages/react/src/side-navigation.tsx"
           },
           {
@@ -35254,6 +35296,15 @@
             "default": "\"default\"",
             "description": "\"compact\": 32 tall rows and 30 tall children under a mouse, and counts as quiet numbers, for long lists (documentation,\nsettings). A touch pointer keeps the touch heights.",
             "summary": "compact이면 마우스 포인터에서 항목을 32px, 하위 항목을 30px로 줄이고, 항목 끝의 숫자 배지를 3차 글자색 숫자로 낮춥니다(점 배지는 그대로). 문서·설정처럼 항목이 많은 목록에 씁니다. 터치 포인터와 Native 기기에서는 터치 높이(48·44px)를 유지합니다.",
+            "source": "packages/react/src/side-navigation.tsx"
+          },
+          {
+            "name": "headingLevel",
+            "type": "SideNavigationHeadingLevel | undefined",
+            "required": false,
+            "default": "2",
+            "description": "The level of the group titles' headings (default 2), to fit the page's outline.",
+            "summary": "묶음 제목의 제목 요소 단계입니다(2–6). 화면 낭독기의 제목 이동에 쓰이므로 페이지 개요에 맞춥니다. Native에서는 Native Web의 aria-level입니다.",
             "source": "packages/react/src/side-navigation.tsx"
           },
           {
@@ -35306,7 +35357,7 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "true",
-            "description": "Brings the current row into the menu's own scrolling column when the menu mounts and when the page changes.",
+            "description": "Brings the current row into the menu's own scrolling column when the menu mounts, when the page changes and when\nitems that hold it arrive.",
             "summary": "처음 그릴 때와 현재 페이지가 바뀔 때 현재 행(가려졌다면 그 행을 품은 부모나 묶음)을 메뉴가 들어 있는 스크롤 영역 안으로 가장 짧게 옮깁니다. 창 전체는 스크롤하지 않습니다.",
             "source": "packages/react/src/side-navigation.tsx"
           }
@@ -35323,17 +35374,17 @@
             "type": "SideNavigationEntry[]",
             "required": true,
             "default": "—",
-            "description": "Destinations, parents with one level of children, and titled groups of either. A destination has the bottom navigation's shape.",
+            "description": "Destinations, parents with up to two levels under them, and titled groups of either. A destination has the bottom\nnavigation's shape.",
             "summary": "표시할 항목과 항목별 레이블·값·구성 정보입니다.",
             "source": "packages/native/src/side-navigation.tsx"
           },
           {
             "name": "value",
-            "type": "string",
+            "type": "string | null",
             "required": true,
             "default": "—",
-            "description": "The current destination's key (a child's key when the page is under a parent).",
-            "summary": "현재 표시·입력·선택값입니다.",
+            "description": "The current destination's key (a child's key when the page is under a parent); null for a page outside the menu.",
+            "summary": "현재 목적지의 key입니다(부모 아래 페이지면 하위 항목의 key). 메뉴에 없는 페이지에서는 null을 줍니다.",
             "source": "packages/native/src/side-navigation.tsx"
           },
           {
@@ -35347,7 +35398,7 @@
           },
           {
             "name": "onNavigate",
-            "type": "((key: string, event: GestureResponderEvent) => void) | undefined",
+            "type": "Navigate | undefined",
             "required": false,
             "default": "—",
             "description": "A press on a destination. On Native Web, modified clicks (new tab) and target links are left to the browser.",
@@ -35356,7 +35407,7 @@
           },
           {
             "name": "onReselect",
-            "type": "((key: string, event: GestureResponderEvent) => void) | undefined",
+            "type": "Navigate | undefined",
             "required": false,
             "default": "—",
             "description": "The current destination was pressed again, e.g. to scroll its page back to the top.",
@@ -35368,7 +35419,7 @@
             "type": "string[] | undefined",
             "required": false,
             "default": "—",
-            "description": "The open parents. Without it the navigation keeps the list itself, starting with the parent of the current destination open.",
+            "description": "The open parents, at both levels. Without it the navigation keeps the list itself, starting with the parents of the\ncurrent destination open.",
             "summary": "열린 부모 항목의 key 목록입니다. 생략하면 컴포넌트가 스스로 기억하며, 현재 목적지의 부모를 연 채로 시작합니다. 주면 앱이 관리합니다(Vue v-model:expanded). 닫힌 부모 아래 페이지로 이동하면 그 부모를 더한 목록으로 알립니다.",
             "source": "packages/native/src/side-navigation.tsx"
           },
@@ -35405,7 +35456,7 @@
             "required": false,
             "default": "false",
             "description": "Group titles become toggles that show or hide their group. A group's own collapsible overrides this. The group of\nthe current destination starts open, and so do groups marked defaultOpen.",
-            "summary": "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 제목 바로 뒤의 작은 14px 화살표가 닫힘(끝 방향)과 열림(아래)을 알립니다. 현재 페이지가 있는 묶음과 defaultOpen 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 제목을 본문 글자색으로, 배지가 있으면 끝에 점을 표시합니다. 묶음마다 collapsible을 주면 이 값보다 우선합니다(false면 늘 펼친 제목).",
+            "summary": "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 행 끝의 작은 14px 꺾쇠가 부모 항목처럼 열리면 뒤집힙니다. 현재 페이지가 있는 묶음과 defaultOpen 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 제목을 본문 글자색으로, 배지가 있으면 끝에 점을 표시합니다. 묶음마다 collapsible을 주면 이 값보다 우선합니다(false면 늘 펼친 제목).",
             "source": "packages/native/src/side-navigation.tsx"
           },
           {
@@ -35431,8 +35482,26 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
-            "description": "A closed group's title ends with how many rows it holds (a dot instead while one of them has a badge).",
-            "summary": "닫힌 묶음 제목 끝에 그 안의 행 수를 3차 글자색 숫자로 표시합니다. 안에 배지가 있으면 숫자 대신 점을 표시합니다. 닫힌 묶음이 많아 내용의 크기를 가늠해야 할 때 켭니다.",
+            "description": "A group title that opens and closes ends with how many rows its group holds (a dot instead while a closed group has\na badge inside).",
+            "summary": "여닫는 묶음 제목의 꺾쇠 앞에 그 안의 행 수를 3차 글자색 숫자로 표시합니다. 열림·닫힘과 상관없이 같은 자리에 있어 여닫을 때 깜빡이지 않습니다. 닫힌 묶음 안에 배지가 있으면 숫자 대신 점을 표시합니다.",
+            "source": "packages/native/src/side-navigation.tsx"
+          },
+          {
+            "name": "showAll",
+            "type": "string[] | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The groups (by key) showing every row past their limit. Without it the navigation keeps the list itself.",
+            "summary": "limit을 넘는 행을 모두 보여 주는 묶음의 key 목록입니다. 생략하면 컴포넌트가 스스로 기억하고, 주면 앱이 관리합니다(Vue v-model:showAll). 묶음의 limit을 넘으면 처음 행 뒤에 \"N개 더 보기\" 행이 놓이며, 현재 페이지 행은 limit 밖이어도 보입니다.",
+            "source": "packages/native/src/side-navigation.tsx"
+          },
+          {
+            "name": "onShowAllChange",
+            "type": "((showAll: string[]) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "\"N개 더 보기\"나 \"접기\" 행을 누르면 다음 key 목록으로 호출합니다. showAll을 주었다면 받은 값을 반영합니다.",
             "source": "packages/native/src/side-navigation.tsx"
           },
           {
@@ -35449,8 +35518,8 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
-            "description": "While collapsed: a short name under each icon, in a 72 wide column. The current page and a press fill a 56 by 32\nindicator around the icon, a count stays a number, and no tooltip is needed.",
-            "summary": "collapsed일 때 아이콘 아래에 짧은 이름을 한 줄로 보여 줍니다. 항목은 72px 폭이 되고(열 폭은 72px + 앱의 좌우 여백), 현재 목적지·마우스 올림·누름은 아이콘을 감싸는 56×32px 면으로 표시합니다. 이름이 보이므로 툴팁은 띄우지 않고, 배지는 숫자 그대로 아이콘 모서리에 놓입니다. 이름은 여섯 글자 안팎으로 짧게 정하세요. 넘치면 말줄임합니다.",
+            "description": "While collapsed: a short name (shortLabel, else the label) under each icon, in a 72 wide column. The current page and a\npress fill a 56 by 32 indicator around the icon, a count stays a number, and a tooltip shows only a name that was shortened.",
+            "summary": "collapsed일 때 아이콘 아래에 짧은 이름을 한 줄로 보여 줍니다. 항목은 72px 폭이 되고(열 폭은 72px + 앱의 좌우 여백), 현재 목적지·마우스 올림·누름은 아이콘을 감싸는 56×32px 면으로 표시합니다. 이름이 보이므로 툴팁은 띄우지 않고, 배지는 숫자 그대로 아이콘 모서리에 놓입니다. 이름 칸은 72px(한글 약 4자)이므로 긴 이름에는 목적지·부모의 shortLabel, 묶음의 shortTitle을 주세요. 전체 이름은 접근 가능한 이름과 툴팁으로 남고, 넘치면 말줄임합니다.",
             "source": "packages/native/src/side-navigation.tsx"
           },
           {
@@ -35469,6 +35538,15 @@
             "default": "\"default\"",
             "description": "\"compact\": 32 tall rows and 30 tall children on Native Web, and counts as quiet numbers, for long lists. A device keeps\nthe touch heights.",
             "summary": "compact이면 마우스 포인터에서 항목을 32px, 하위 항목을 30px로 줄이고, 항목 끝의 숫자 배지를 3차 글자색 숫자로 낮춥니다(점 배지는 그대로). 문서·설정처럼 항목이 많은 목록에 씁니다. 터치 포인터와 Native 기기에서는 터치 높이(48·44px)를 유지합니다.",
+            "source": "packages/native/src/side-navigation.tsx"
+          },
+          {
+            "name": "headingLevel",
+            "type": "SideNavigationHeadingLevel | undefined",
+            "required": false,
+            "default": "2",
+            "description": "The level of the group titles' headings (default 2; aria-level on Native Web), to fit the page's outline.",
+            "summary": "묶음 제목의 제목 요소 단계입니다(2–6). 화면 낭독기의 제목 이동에 쓰이므로 페이지 개요에 맞춥니다. Native에서는 Native Web의 aria-level입니다.",
             "source": "packages/native/src/side-navigation.tsx"
           },
           {
@@ -35506,6 +35584,309 @@
             "description": "An action button of a row (the row's key) or a group title (the group's key) was pressed. Actions always show, as on touch.",
             "summary": "행 끝이나 묶음 제목 끝의 동작 버튼을 누르면 행 또는 묶음의 key, 동작의 key, 이벤트로 호출합니다. 기기에서는 버튼이 항상 보입니다.",
             "source": "packages/native/src/side-navigation.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      }
+    },
+    "KjunSideNavigationLayout": {
+      "vue3": {
+        "props": [
+          {
+            "name": "collapsed",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "The column shrinks to the rail of icons. Pass the same value to the menu.",
+            "summary": "열을 아이콘 열로 줄입니다(68px, railLabels이면 80px). 메뉴에도 같은 값을 넘기세요. 폭은 collapse 모션(200ms)으로 바뀝니다.",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "railLabels",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "The menu shows names under its icons while collapsed (KjunSideNavigation railLabels), so the rail is wider.",
+            "summary": "메뉴가 접힌 상태에서 아이콘 아래 이름을 보여 줄 때(KjunSideNavigation railLabels) 켜면 접힌 열이 80px이 됩니다.",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "width",
+            "type": "SideNavigationWidth",
+            "required": false,
+            "default": "\"md\"",
+            "description": "The open column's width: sm 224, md 256 (default), lg 288.",
+            "summary": "열린 열의 폭입니다. sm 224px, md 256px, lg 288px입니다. 열 안쪽에 좌우·위아래 12px 여백을 둡니다.",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "sticky",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "The column stays in view as the page scrolls (default), the viewport's height, scrolling on its own. false lets it\nscroll away with the page.",
+            "summary": "열을 화면 높이로 고정해 페이지와 따로 스크롤합니다. false면 열이 페이지와 함께 스크롤됩니다.",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "breakpoint",
+            "type": "number",
+            "required": false,
+            "default": "768",
+            "description": "Below this viewport width the column goes away and the menu opens in a drawer from the start edge (navOpen).\nDefault tokens.responsive.sideNavigationLayout (768); 0 keeps the column at every width.",
+            "summary": "화면 폭이 이 값(px)보다 좁으면 열을 없애고 메뉴를 시작 쪽 서랍에서 엽니다. 0이면 늘 열을 둡니다. 기본값은 tokens.responsive.sideNavigationLayout입니다.",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "navOpen",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "v-model:navOpen: the drawer of a narrow screen. Open it from the app's own menu button, and close it on the menu's navigate.",
+            "summary": "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 닫으세요(Vue v-model:navOpen).",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "drawerLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The drawer's name for assistive technology; the menu's name by default.",
+            "summary": "서랍의 접근 가능한 이름입니다. 생략하면 메뉴의 기본 이름(주요 탐색)입니다.",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
+          }
+        ],
+        "events": [
+          {
+            "name": "update:navOpen",
+            "source": "packages/vue3/src/side-navigation-layout.tsx",
+            "type": "이벤트",
+            "summary": "update:navOpen 이벤트를 통지합니다."
+          }
+        ],
+        "slots": [
+          {
+            "name": "nav",
+            "data": [
+              "collapsed",
+              "drawer"
+            ],
+            "source": "packages/vue3/src/side-navigation-layout.tsx",
+            "type": "{ collapsed, drawer }",
+            "summary": "nav 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "default",
+            "data": [],
+            "source": "packages/vue3/src/side-navigation-layout.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "default 영역의 기본 내용을 교체합니다."
+          }
+        ],
+        "ownership": [],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "nav",
+            "type": "ReactNode | ((state: SideNavigationLayoutState) => ReactNode)",
+            "required": true,
+            "default": "—",
+            "description": "The menu, usually a KjunSideNavigation. A function receives where it is drawn, so it can pass collapsed on and show\nthe full menu in the drawer.",
+            "summary": "열(좁은 화면에서는 서랍)에 놓을 메뉴입니다. 보통 KjunSideNavigation입니다. { collapsed, drawer }를 받는 함수로 주면 서랍 안에서 펼친 메뉴를 그릴 수 있습니다(Vue nav 슬롯).",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "The page beside the menu.",
+            "summary": "메뉴 옆에 놓을 페이지 내용입니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "collapsed",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The column shrinks to the rail of icons. Pass the same value to the menu.",
+            "summary": "열을 아이콘 열로 줄입니다(68px, railLabels이면 80px). 메뉴에도 같은 값을 넘기세요. 폭은 collapse 모션(200ms)으로 바뀝니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "railLabels",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The menu shows names under its icons while collapsed (KjunSideNavigation railLabels), so the rail is wider.",
+            "summary": "메뉴가 접힌 상태에서 아이콘 아래 이름을 보여 줄 때(KjunSideNavigation railLabels) 켜면 접힌 열이 80px이 됩니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "width",
+            "type": "SideNavigationWidth | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "The open column's width: sm 224, md 256 (default), lg 288.",
+            "summary": "열린 열의 폭입니다. sm 224px, md 256px, lg 288px입니다. 열 안쪽에 좌우·위아래 12px 여백을 둡니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "sticky",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "The column stays in view as the page scrolls (default), the viewport's height, scrolling on its own. false lets it\nscroll away with the page.",
+            "summary": "열을 화면 높이로 고정해 페이지와 따로 스크롤합니다. false면 열이 페이지와 함께 스크롤됩니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "breakpoint",
+            "type": "number | undefined",
+            "required": false,
+            "default": "768",
+            "description": "Below this viewport width the column goes away and the menu opens in a drawer from the start edge (navOpen).\nDefault tokens.responsive.sideNavigationLayout (768); 0 keeps the column at every width.",
+            "summary": "화면 폭이 이 값(px)보다 좁으면 열을 없애고 메뉴를 시작 쪽 서랍에서 엽니다. 0이면 늘 열을 둡니다. 기본값은 tokens.responsive.sideNavigationLayout입니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "navOpen",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The drawer of a narrow screen. Open it from the app's own menu button, and close it in the menu's onNavigate.",
+            "summary": "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 닫으세요(Vue v-model:navOpen).",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "onNavOpenChange",
+            "type": "((open: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "서랍을 닫으려 할 때(바깥 누름, Esc, 닫기 버튼) false로 호출합니다. 받은 값을 navOpen에 반영하세요.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "drawerLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The drawer's name for assistive technology; the menu's name by default.",
+            "summary": "서랍의 접근 가능한 이름입니다. 생략하면 메뉴의 기본 이름(주요 탐색)입니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소에 추가할 CSS 클래스입니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "nav",
+            "type": "ReactNode | ((state: SideNavigationLayoutState) => ReactNode)",
+            "required": true,
+            "default": "—",
+            "description": "The menu, usually a KjunSideNavigation. A function receives where it is drawn, so it can pass collapsed on and show\nthe full menu in the drawer.",
+            "summary": "열(좁은 화면에서는 서랍)에 놓을 메뉴입니다. 보통 KjunSideNavigation입니다. { collapsed, drawer }를 받는 함수로 주면 서랍 안에서 펼친 메뉴를 그릴 수 있습니다(Vue nav 슬롯).",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "The page beside the menu.",
+            "summary": "메뉴 옆에 놓을 페이지 내용입니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "collapsed",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The column shrinks to the rail of icons. Pass the same value to the menu.",
+            "summary": "열을 아이콘 열로 줄입니다(68px, railLabels이면 80px). 메뉴에도 같은 값을 넘기세요. 폭은 collapse 모션(200ms)으로 바뀝니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "railLabels",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The menu shows names under its icons while collapsed (KjunSideNavigation railLabels), so the rail is wider.",
+            "summary": "메뉴가 접힌 상태에서 아이콘 아래 이름을 보여 줄 때(KjunSideNavigation railLabels) 켜면 접힌 열이 80px이 됩니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "width",
+            "type": "SideNavigationWidth | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "The open column's width: sm 224, md 256 (default), lg 288.",
+            "summary": "열린 열의 폭입니다. sm 224px, md 256px, lg 288px입니다. 열 안쪽에 좌우·위아래 12px 여백을 둡니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "breakpoint",
+            "type": "number | undefined",
+            "required": false,
+            "default": "768",
+            "description": "Below this window width the column goes away and the menu opens in a drawer from the left (navOpen).\nDefault tokens.responsive.sideNavigationLayout (768); 0 keeps the column at every width.",
+            "summary": "화면 폭이 이 값(px)보다 좁으면 열을 없애고 메뉴를 시작 쪽 서랍에서 엽니다. 0이면 늘 열을 둡니다. 기본값은 tokens.responsive.sideNavigationLayout입니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "navOpen",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The drawer of a narrow screen. Open it from the app's own menu button, and close it in the menu's onNavigate.",
+            "summary": "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 닫으세요(Vue v-model:navOpen).",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "onNavOpenChange",
+            "type": "((open: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "서랍을 닫으려 할 때(바깥 누름, Esc, 닫기 버튼) false로 호출합니다. 받은 값을 navOpen에 반영하세요.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "drawerLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The drawer's name for assistive technology; the menu's name by default.",
+            "summary": "서랍의 접근 가능한 이름입니다. 생략하면 메뉴의 기본 이름(주요 탐색)입니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "레이아웃 바깥 View의 스타일입니다. 레이아웃은 받은 자리를 채우므로 높이·배경은 앱이 정합니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
           }
         ],
         "events": [],

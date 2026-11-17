@@ -54,11 +54,11 @@ test("a rail of groups keeps loose items as rows and stands one row for each gro
 });
 
 test("the current item is a fill and a weight, never an accent stripe", async () => {
-  const css = await read("packages/tokens/src/extensions.css");
+  const css = await read("packages/tokens/src/side-navigation.css");
   const rules = css.split("}").filter(rule => rule.includes(".kjun-side-navigation"));
   const current = rules.find(rule => rule.trim().startsWith(".kjun-side-navigation-item[aria-current]{"));
   assert.match(current, /background:var\(--_kjun-color-selected-bg\)/);
-  assert.match(current, /font-weight:var\(--_kjun-type-control-weight\)/);
+  assert.match(current, /font-weight:var\(--_kjun-extension-side-navigation-selected-weight\)/);
   // The only pseudo-element is the collapsed menu's group boundary: a horizontal hairline in the divider colour on a group,
   // never a mark on an item.
   const boundary = (rule) => /^\s*\.kjun-side-navigation\[data-collapsed\] > \.kjun-side-navigation-list > \.kjun-side-navigation-section[^{]*::before\s*\{/.test(rule) && !rule.split("{")[0].includes("-item");
@@ -75,7 +75,8 @@ test("the current item is a fill and a weight, never an accent stripe", async ()
 test("every platform takes its menu rules from the shared runtime", async () => {
   // Markup and geometry are covered by the browser specs; this only guards against a platform keeping its own copy of the rules.
   for (const platform of ["react", "vue3", "native"]) {
-    const component = await read(`packages/${platform}/src/side-navigation.tsx`);
+    // Native splits its row builders into side-navigation-parts.tsx.
+    const component = await read(`packages/${platform}/src/side-navigation.tsx`) + (platform === "native" ? await read("packages/native/src/side-navigation-parts.tsx") : "");
     for (const part of ["sideNavigationSections(", "sideNavigationWithCurrentParents(", "sideNavigationInitialGroups(", "toggleSideParent(", "sideParentState(", "sideGroupState(",
       "sideRailGroupState(", "sideSectionToggles(", "sideNavigationOpensElsewhere(", "isPlainNavigationClick(", "checkSideNavigation("])
       assert.ok(component.includes(part), platform + " " + part);
@@ -121,7 +122,7 @@ test("a row without an icon shows the first character of its label while only ic
 });
 
 test("spacing between runs: loose items after a group keep a title's distance, and a leading title starts at the top", async () => {
-  const css = await read("packages/tokens/src/extensions.css");
+  const css = await read("packages/tokens/src/side-navigation.css");
   assert.match(css, /\.kjun-side-navigation-list > \.kjun-side-navigation-section \+ ul\{margin-top:var\(--_kjun-extension-side-navigation-title-padding-top\)\}/);
   assert.match(css, /\.kjun-side-navigation-list > \.kjun-side-navigation-section:first-child > \.kjun-side-navigation-heading > \.kjun-side-navigation-title\{padding-top:0\}/);
 });
@@ -138,14 +139,14 @@ test("a group's own collapsible overrides the navigation's, and defaultOpen grou
 
 test("row states: a closed parent or group stands for the current page and its badges; an open one does not", () => {
   const parent = { key: "p", label: "p", children: [link("a"), link("b", { badge: 2 })] };
-  assert.deepEqual(runtime.sideParentState(parent, { open: [], collapsed: false, value: "a" }), { shown: false, within: true, dot: true });
-  assert.deepEqual(runtime.sideParentState(parent, { open: ["p"], collapsed: false, value: "a" }), { shown: true, within: false, dot: false });
+  assert.deepEqual(runtime.sideParentState(parent, { open: [], collapsed: false, value: "a" }), { shown: false, within: true, dot: true, tone: "alert" });
+  assert.deepEqual(runtime.sideParentState(parent, { open: ["p"], collapsed: false, value: "a" }), { shown: true, within: false, dot: false, tone: null });
   // Icons only: never shown under the parent, so it keeps standing for them.
-  assert.deepEqual(runtime.sideParentState(parent, { open: ["p"], collapsed: true, value: "a" }), { shown: false, within: true, dot: true });
+  assert.deepEqual(runtime.sideParentState(parent, { open: ["p"], collapsed: true, value: "a" }), { shown: false, within: true, dot: true, tone: "alert" });
   const [group] = runtime.sideNavigationSections([{ title: "G", key: "g", items: [parent, link("c")] }]);
-  assert.deepEqual(runtime.sideGroupState(group, { openGroups: [], value: "a" }), { shown: false, within: true, dot: true, count: 2 });
-  assert.deepEqual(runtime.sideGroupState(group, { openGroups: ["g"], value: "a" }), { shown: true, within: false, dot: false, count: 2 });
-  assert.deepEqual(runtime.sideRailGroupState(group, "c"), { within: true, dot: true });
+  assert.deepEqual(runtime.sideGroupState(group, { openGroups: [], value: "a" }), { shown: false, within: true, dot: true, tone: "alert", count: 2 });
+  assert.deepEqual(runtime.sideGroupState(group, { openGroups: ["g"], value: "a" }), { shown: true, within: false, dot: false, tone: null, count: 2 });
+  assert.deepEqual(runtime.sideRailGroupState(group, "c"), { within: true, dot: true, tone: "alert" });
 });
 
 test("element ids come from keys, and different keys never share one", () => {
@@ -162,22 +163,92 @@ test("repeated keys are found, including a title used twice without a key", () =
 });
 
 test("only the current page is filled: a row over it is marked by ink and weight, and by half the fill only while icons show", async () => {
-  const css = await read("packages/tokens/src/extensions.css");
+  const css = await read("packages/tokens/src/side-navigation.css");
   const rule = selector => css.replace(/\/\*[\s\S]*?\*\//g, "").split("}").find(chunk => chunk.trim().startsWith(selector + "{"));
   const within = rule(".kjun-side-navigation-item[data-current-within]");
-  assert.match(within, /color:var\(--_kjun-color-text\);font-weight:var\(--_kjun-type-control-weight\)/);
+  assert.match(within, /color:var\(--_kjun-color-text\);font-weight:var\(--_kjun-extension-side-navigation-selected-weight\)/);
   assert.doesNotMatch(within, /background/);
   assert.doesNotMatch(css, /\[data-current-within\]\{[^}]*selected-bg\)/);
   assert.match(rule(".kjun-side-navigation[data-collapsed]:not([data-rail-labels]) .kjun-side-navigation-item[data-current-within]"), /background:var\(--_kjun-side-navigation-within\)/);
   assert.match(css, /--_kjun-side-navigation-within:color-mix\(in srgb, var\(--_kjun-color-selected-bg\) calc\(var\(--_kjun-state-opacity-selected-within\) \* 100%\), transparent\)/);
 });
 
-test("a group title's chevron follows its name and turns down when open; a parent's turns over at the row's end", async () => {
-  const css = await read("packages/tokens/src/extensions.css");
-  assert.match(css, /\.kjun-side-navigation-title\[data-toggle\]\[aria-expanded=true\] > \.kjun-side-navigation-chevron\{transform:rotate\(90deg\)\}/);
+test("a group title's small chevron sits at the end and turns over like a parent's", async () => {
+  const css = await read("packages/tokens/src/side-navigation.css");
+  assert.match(css, /\.kjun-side-navigation-title\[data-toggle\]\[aria-expanded=true\] > \.kjun-side-navigation-chevron\{transform:rotate\(180deg\)\}/);
+  assert.doesNotMatch(css, /rotate\(90deg\)|scaleX\(-1\)\}\n\.kjun-side-navigation-count/);
   assert.match(css, /\.kjun-side-navigation-item\[aria-expanded=true\] > \.kjun-side-navigation-chevron\{transform:rotate\(180deg\)\}/);
   for (const platform of ["react", "vue3", "native"]) {
     const component = await read(`packages/${platform}/src/side-navigation.tsx`);
     assert.ok(component.includes("groupChevronSize"), platform);
   }
+});
+
+test("a hidden badge's dot takes the loudest tone behind it: alert over neutral, nothing when only disabled rows have one", () => {
+  const quiet = link("q", { badge: 4, badgeTone: "neutral" }), loud = link("l", { badge: 1 }), off = link("o", { badge: 2, disabled: true });
+  assert.equal(runtime.sideItemsBadgeTone([quiet]), "neutral");
+  assert.equal(runtime.sideItemsBadgeTone([quiet, loud]), "alert");
+  assert.equal(runtime.sideItemsBadgeTone([off, link("x")]), null);
+  // Under a second-level parent too.
+  assert.equal(runtime.sideItemsBadgeTone([{ key: "p", label: "p", children: [{ key: "s", label: "s", children: [quiet] }] }]), "neutral");
+});
+
+test("a second level: the current page opens both parents, and both stand for it while closed", () => {
+  const nested = [{ key: "settings", label: "설정", children: [link("general"), { key: "billing", label: "결제", children: [link("invoices"), link("methods", { badge: true })] }] }];
+  assert.deepEqual(runtime.sideNavigationCurrentParents(nested, "invoices"), ["settings", "billing"]);
+  assert.deepEqual(runtime.sideNavigationCurrentParents(nested, "general"), ["settings"]);
+  assert.deepEqual(runtime.sideNavigationWithCurrentParents(["settings"], nested, "invoices"), ["settings", "billing"]);
+  assert.equal(runtime.sideParentHoldsCurrent(nested[0], "invoices"), true);
+  assert.deepEqual(runtime.sideParentState(nested[0].children[1], { open: [], collapsed: false, value: "invoices" }), { shown: false, within: true, dot: true, tone: "alert" });
+  assert.deepEqual(runtime.sideNavigationDuplicateKeys([...nested, link("invoices")]), ["item \"invoices\""]);
+  assert.deepEqual(runtime.sideNavigationTooDeep(nested), []);
+  assert.deepEqual(runtime.sideNavigationTooDeep([{ key: "a", label: "a", children: [{ key: "b", label: "b", children: [{ key: "c", label: "c", children: [] }] }] }]), ["c"]);
+});
+
+test("a group's limit shows its first rows and the current page's row, and all of them once shown", () => {
+  const items = ["a", "b", "c", "d", "e", "f"].map(key => link(key));
+  const [group] = runtime.sideNavigationSections([{ title: "Projects", key: "projects", limit: 3, items }]);
+  const keys = rows => rows.items.map(item => item.key);
+  assert.deepEqual(keys(runtime.sideSectionRows(group, { value: "a", showAll: [] })), ["a", "b", "c"]);
+  const limited = runtime.sideSectionRows(group, { value: "e", showAll: [] });
+  assert.deepEqual([keys(limited), limited.hidden, limited.expandable, limited.expanded], [["a", "b", "c", "e"], 2, true, false]);
+  const all = runtime.sideSectionRows(group, { value: "e", showAll: ["projects"] });
+  assert.deepEqual([all.items.length, all.hidden, all.expanded], [6, 0, true]);
+  // Only the current page's row was past the limit: nothing left to fold.
+  const [two] = runtime.sideNavigationSections([{ title: "T", key: "t", limit: 1, items: items.slice(0, 2) }]);
+  assert.deepEqual(runtime.sideSectionRows(two, { value: "b", showAll: [] }), { items: two.items, hidden: 0, expandable: false, expanded: false });
+  // No limit, a list that fits, or loose items: nothing to fold.
+  const [fits] = runtime.sideNavigationSections([{ title: "T", limit: 6, items }]);
+  assert.equal(runtime.sideSectionRows(fits, { value: null, showAll: [] }).expandable, false);
+  const [loose] = runtime.sideNavigationSections(items);
+  assert.equal(runtime.sideSectionRows(loose, { value: null, showAll: [] }).items.length, 6);
+});
+
+test("arrow keys: right goes in and left goes out, swapped right to left", () => {
+  assert.equal(runtime.sideNavigationArrow("ArrowRight", false), "in");
+  assert.equal(runtime.sideNavigationArrow("ArrowLeft", false), "out");
+  assert.equal(runtime.sideNavigationArrow("ArrowRight", true), "out");
+  assert.equal(runtime.sideNavigationArrow("ArrowLeft", true), "in");
+  assert.equal(runtime.sideNavigationArrow("ArrowDown", false), null);
+});
+
+test("a labelled rail shows the short name and keeps the full one as the accessible name", () => {
+  const m = { newContent: "새 소식", newCount: count => "새 항목 " + count + "개", newWindow: " (새 창)" };
+  const inbox = link("inbox", { label: "받은 편지함", shortLabel: "편지함" });
+  assert.equal(runtime.sideNavigationShownLabel(inbox, true), "편지함");
+  assert.equal(runtime.sideNavigationShownLabel(inbox, false), "받은 편지함");
+  assert.equal(runtime.sideNavigationLinkLabel(inbox, m, true), "받은 편지함");
+  assert.equal(runtime.sideNavigationLinkLabel(inbox, m, false), undefined);
+  assert.equal(runtime.sideNavigationLinkLabel({ ...inbox, badge: 3 }, m, false), "받은 편지함, 새 항목 3개");
+  assert.equal(runtime.sideNavigationLinkLabel({ ...inbox, target: "_blank" }, m, false), "받은 편지함 (새 창)");
+  assert.equal(runtime.sideNavigationShownTitle({ title: "워크스페이스", shortTitle: "공간" }, true), "공간");
+  assert.equal(runtime.sideNavigationToggleName("프로젝트", true, m), "프로젝트, 새 소식");
+  // A parent and a group with one key open different flyouts.
+  assert.notEqual(runtime.sideFlyoutKey("parent", "x"), runtime.sideFlyoutKey("group", "x"));
+});
+
+test("the side navigation's styles live in their own file, loaded after extensions.css", async () => {
+  const sources = JSON.parse(await read("shared/web-style-sources.json"));
+  assert.equal(sources.indexOf("side-navigation.css"), sources.indexOf("extensions.css") + 1);
+  assert.doesNotMatch(await read("packages/tokens/src/extensions.css"), /\.kjun-side-navigation/);
 });

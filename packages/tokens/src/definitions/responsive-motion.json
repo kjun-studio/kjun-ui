@@ -3,6 +3,7 @@
   "responsive": {
     "modal": { "$ref": "breakpoints.compact" },
     "drawer": { "$ref": "breakpoints.compact" },
+    "sideNavigationLayout": { "$ref": "breakpoints.medium" },
     "toast": { "$ref": "breakpoints.compact" },
     "pagination": { "$ref": "breakpoints.compact" },
     "paginationWide": { "$ref": "breakpoints.wide" },

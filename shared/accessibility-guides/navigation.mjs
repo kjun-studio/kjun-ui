@@ -8,4 +8,5 @@ export default [
   ['KjunBottomNavigation', 'bottom-nav', 'items value ariaLabel', '주요 탐색의 홈·활동·설정 목적지와 현재 위치', {}],
   ['KjunFloatingNavigation', 'bottom-nav', 'items value ariaLabel', '아이콘만 보이는 목적지의 접근성 이름과 현재 위치', {}],
   ['KjunSideNavigation', 'bottom-nav', 'items value ariaLabel', '세로 메뉴의 홈·활동 목적지와 현재 위치', {}],
+  ['KjunSideNavigationLayout', 'bottom-nav', 'nav collapsed width', '메뉴 열 안 세로 메뉴의 홈·활동 목적지와 현재 위치', {}],
 ];
