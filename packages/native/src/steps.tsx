@@ -94,8 +94,13 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
     <View style={{ flexDirection: "row", alignItems: "flex-start", columnGap: geometry.columnGap, width: "100%" }}>
       <View style={{ width: bigMarker, alignItems: "center" }}>{marker(status, i)}</View>
       <View style={{ flex: 1, minWidth: 0 }}>
-        <KText style={[typeStyle(status === "current" || status === "error" ? "labelStrong" : "label"), breakWords, { color: status === "error" ? colors.danger : colors.text }]}>{item.label}</KText>
-        {detail ? <KText style={[typeStyle("caption"), breakWords, { color: colors.textTertiary }]}>{detail}</KText> : null}
+        <KText style={[typeStyle(status === "current" || status === "error" ? "labelStrong" : "label"), breakWords, { color: status === "error" ? colors.danger : status === "current" ? colors.text : status === "complete" ? colors.textSecondary : colors.textTertiary }]}>{item.label}</KText>
+        {detail ? (
+          <KText style={[typeStyle("caption"), breakWords, { color: colors.textTertiary }]}>
+            {item.meta ? <KText style={[numeric, { color: colors.textTertiary }]}>{item.meta}</KText> : null}
+            {item.meta && item.description ? " · " : ""}{item.description ?? ""}
+          </KText>
+        ) : null}
       </View>
     </View>
   );

@@ -43,7 +43,7 @@ export const KjunSteps = defineComponent({
       const count = items.length;
       const at = clampCurrent(props.current, count);
       const vertical = orientation === "vertical";
-      const selectable = !!instance?.vnode.props?.onStepSelect;
+      const selectable = !!(instance?.vnode.props?.onStepSelect || instance?.vnode.props?.["onStep-select"]);
       const statusText: Record<KjunStepStatus, string> = { complete: m.value.stepComplete, current: m.value.stepCurrent, error: m.value.stepError, upcoming: m.value.stepUpcoming };
       // The compact header names the current step, or the last one once everything is complete.
       const shown = Math.min(at, count - 1), headItem = items[shown], next = at < count ? items[at + 1] : undefined;
@@ -53,9 +53,9 @@ export const KjunSteps = defineComponent({
         <div class="kjun-steps" data-orientation={orientation} data-layout={layout} data-count={count} data-status={stepsRootStatus(at, count, currentStatus)}>
           {!vertical && headItem && (
             <div class="kjun-steps-head" aria-hidden="true">
-              <span class="kjun-steps-head-title">{headItem.label}</span>
-              <span class="kjun-steps-head-count">{total.startsWith(lead) ? <><b>{lead}</b>{total.slice(lead.length)}</> : total}</span>
-              {next && <span class="kjun-steps-head-next">{m.value.stepNext} · {next.label}</span>}
+              <span class="kjun-steps-head-title" aria-hidden="true">{headItem.label}</span>
+              <span class="kjun-steps-head-count" aria-hidden="true">{total.startsWith(lead) ? <><b>{lead}</b>{total.slice(lead.length)}</> : total}</span>
+              {next && <span class="kjun-steps-head-next" aria-hidden="true">{m.value.stepNext} · {next.label}</span>}
             </div>
           )}
           <ol class="kjun-steps-list" aria-label={props.ariaLabel ?? m.value.steps}>
@@ -72,7 +72,12 @@ export const KjunSteps = defineComponent({
                     : i + 1}
                 </span>,
                 <span key="label" class="kjun-steps-label" title={item.label} aria-hidden="true">{item.label}</span>,
-                detail ? <span key="detail" class="kjun-steps-detail" aria-hidden="true">{detail}</span> : null,
+                detail ? (
+                  <span key="detail" class="kjun-steps-detail" aria-hidden="true">
+                    {item.meta && <span class="kjun-steps-meta">{item.meta}</span>}
+                    {item.meta && item.description ? " · " : ""}{item.description}
+                  </span>
+                ) : null,
               ];
               return (
                 <li key={item.key ?? i} class="kjun-steps-item" data-status={status} aria-current={status === "current" || status === "error" ? "step" : undefined}>

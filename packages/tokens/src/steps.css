@@ -351,6 +351,10 @@
   line-height: var(--_kjun-type-caption-line);
   overflow-wrap: anywhere;
 }
+.kjun-steps-meta {
+  font-family: var(--_kjun-font-numeric);
+  font-variant-numeric: tabular-nums;
+}
 /* The line belongs to the step above and takes the colour of the step below. */
 .kjun-steps[data-orientation="vertical"] .kjun-steps-item:not(:last-child)::after {
   content: "";

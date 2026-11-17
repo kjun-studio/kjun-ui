@@ -49,9 +49,9 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
       data-orientation={orientation} data-layout={layout} data-count={count} data-status={stepsRootStatus(at, count, currentStatus)}>
       {!vertical && headItem && (
         <div className="kjun-steps-head" aria-hidden="true">
-          <span className="kjun-steps-head-title">{headItem.label}</span>
-          <span className="kjun-steps-head-count">{total.startsWith(lead) ? <><b>{lead}</b>{total.slice(lead.length)}</> : total}</span>
-          {next && <span className="kjun-steps-head-next">{m.stepNext} · {next.label}</span>}
+          <span className="kjun-steps-head-title" aria-hidden="true">{headItem.label}</span>
+          <span className="kjun-steps-head-count" aria-hidden="true">{total.startsWith(lead) ? <><b>{lead}</b>{total.slice(lead.length)}</> : total}</span>
+          {next && <span className="kjun-steps-head-next" aria-hidden="true">{m.stepNext} · {next.label}</span>}
         </div>
       )}
       <ol className="kjun-steps-list" aria-label={ariaLabel ?? m.steps}>
@@ -69,7 +69,12 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
                   : i + 1}
               </span>
               <span className="kjun-steps-label" title={item.label} aria-hidden="true">{item.label}</span>
-              {detail && <span className="kjun-steps-detail" aria-hidden="true">{detail}</span>}
+              {detail && (
+                <span className="kjun-steps-detail" aria-hidden="true">
+                  {item.meta && <span className="kjun-steps-meta">{item.meta}</span>}
+                  {item.meta && item.description ? " · " : ""}{item.description}
+                </span>
+              )}
             </>
           );
           return (

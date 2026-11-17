@@ -228,6 +228,10 @@ for (const platform of ['react', 'vue3', 'native']) {
         expect((await line(0)).color).toBe(await paint(page, 'brand'));
         expect((await line(0)).width).toBe('2px');
         expect((await line(2)).color).toBe(await paint(page, 'secondary'));
+        // The title takes its status colour: complete, current and upcoming titles all differ.
+        const titleColor = (label: string) => section(page, 'vertical').getByText(label, { exact: true }).evaluate(el => getComputedStyle(el).color);
+        const [complete, current, upcoming] = [await titleColor('상품 준비'), await titleColor('배송 중'), await titleColor('배송 완료')];
+        expect(complete).not.toBe(current); expect(upcoming).not.toBe(current); expect(upcoming).not.toBe(complete);
         return;
       }
       await expect(root(page, 'vertical')).toHaveAttribute('data-orientation', 'vertical');
@@ -235,6 +239,19 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(items(page, 'vertical').nth(1).locator('.kjun-steps-static .kjun-sr-only')).toHaveText('2단계, 상품 준비, 완료, 11:30 · 포장을 마쳤습니다');
       await expect(items(page, 'vertical').nth(3).locator('.kjun-steps-static .kjun-steps-detail')).toHaveText('문 앞에 놓아 두었습니다');
       await expect(section(page, 'vertical').locator('.kjun-steps-head')).toHaveCount(0);
+      // meta is a numeric-font span, so times line up; the description stays in the text font.
+      const meta = items(page, 'vertical').nth(1).locator('.kjun-steps-static .kjun-steps-meta');
+      await expect(meta).toHaveText('11:30');
+      const numeric = await meta.evaluate(el => {
+        const probe = document.createElement('span');
+        probe.style.fontFamily = 'var(--_kjun-font-numeric)';
+        el.parentElement!.append(probe);
+        const family = getComputedStyle(probe).fontFamily;
+        probe.remove();
+        return { family, used: getComputedStyle(el).fontFamily, variant: getComputedStyle(el).fontVariantNumeric };
+      });
+      expect(numeric.used).toBe(numeric.family);
+      expect(numeric.variant).toContain('tabular-nums');
       const marker = items(page, 'vertical').nth(0).locator('.kjun-steps-static .kjun-steps-marker');
       const box = (await marker.boundingBox())!;
       expect(Math.round(box.width)).toBe(12);
