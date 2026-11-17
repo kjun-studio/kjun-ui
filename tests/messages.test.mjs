@@ -77,3 +77,20 @@ test('en-US formats', async () => {
   assert.equal(labels.title, new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(new Date(2026, 9, 1)));
   assert.equal(labels.weekdays[0], 'Sun');
 });
+
+test('KjunFileUpload copy: hints, drop counts and rejections without a particle after the file name', async () => {
+  const { kjunMessagesKo: ko, kjunMessagesEn: en } = await load();
+  assert.equal(ko.uploadDropOverflow(1, 2), '1개 자리만 남아 2개는 추가되지 않아요');
+  // File names end in Latin extensions (".zip" takes 은, ".pdf" takes 는), so the name is set off with a colon.
+  assert.equal(ko.uploadRejected('동영상_매장.mp4', 'size', '20MB'), '동영상_매장.mp4: 20MB를 넘어 추가하지 않았어요');
+  assert.equal(ko.uploadRejected('보고서.hwp', 'type', ''), '보고서.hwp: 올릴 수 없는 형식이라 추가하지 않았어요');
+  assert.equal(ko.uploadRejected('e.pdf', 'count', ''), 'e.pdf: 개수를 넘어 추가하지 않았어요');
+  assert.equal(ko.uploadHint('PDF, PNG', '20MB', 5), 'PDF, PNG · 파일당 20MB · 5개까지');
+  assert.equal(ko.uploadHint('', undefined, 5), '5개까지');
+  assert.equal(ko.uploadFull(5), '5개를 모두 추가했어요');
+  assert.equal(ko.uploadAnnounce('a.pdf', 'done'), 'a.pdf 올렸어요');
+  assert.equal(ko.uploadAnnounce('a.pdf', 'error'), 'a.pdf 올리지 못했어요');
+  assert.equal(ko.uploadGroup('image'), '이미지');
+  assert.equal(en.uploadHint('PDF', '20MB', 5), 'PDF · Up to 20MB each · Up to 5 files');
+  assert.equal(en.uploadRejected('a.mp4', 'size', '20MB'), 'a.mp4: over 20MB, not added');
+});

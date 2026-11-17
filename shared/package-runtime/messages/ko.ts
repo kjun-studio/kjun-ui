@@ -209,6 +209,36 @@ export const kjunMessagesKo = {
   statusFailed: "실패",
   statusUnknown: "알 수 없음",
   statusNoRuns: "실행 이력 없음",
+  // File upload. A file name is set off with a colon, not a particle: names end in Latin extensions whose
+  // reading decides 은/는 (".zip" vs ".pdf").
+  uploadDropOrSelect: "파일을 끌어다 놓거나 눌러서 선택",
+  uploadSelect: "파일 선택",
+  uploadAddOrDrop: "파일 추가 또는 여기로 끌어다 놓기",
+  uploadAdd: "파일 추가",
+  uploadDropHere: "여기에 놓으세요",
+  uploadDropCount: (count: number) => `파일 ${count}개`,
+  uploadDropOverflow: (room: number, extra: number) => `${room}개 자리만 남아 ${extra}개는 추가되지 않아요`,
+  uploadTypeBlockedTitle: "이 형식은 놓을 수 없어요",
+  uploadTypeBlocked: (types: string) => `${types}만 가능해요`,
+  uploadRejected: (name: string, reason: string, detail: string) =>
+    name + ": " + (reason === "size" ? `${detail}를 넘어 추가하지 않았어요` : reason === "type" ? "올릴 수 없는 형식이라 추가하지 않았어요" : "개수를 넘어 추가하지 않았어요"),
+  uploadRejectedMore: (count: number) => `외 ${count}개도 추가하지 않았어요`,
+  uploadFull: (max: number) => `${max}개를 모두 추가했어요`,
+  uploadFullHint: "추가하려면 기존 파일을 지우세요",
+  uploadQueued: "대기 중",
+  uploadDone: "올렸어요",
+  uploadFailed: "올리지 못했어요",
+  uploadProgress: (name: string) => `${name} 업로드 진행률`,
+  uploadRetry: (name: string) => `${name} 다시 시도`,
+  uploadRetryFailed: "실패한 파일 다시 시도",
+  uploadReplace: "바꾸기",
+  uploadReplaceFile: (name: string) => `${name} 바꾸기`,
+  uploadFiles: "첨부 파일",
+  uploadFailedCount: (count: number) => `${count}개 실패`,
+  uploadHint: (types: string, size?: string, count?: number) =>
+    [types, size ? `파일당 ${size}` : "", count ? `${count}개까지` : ""].filter(Boolean).join(" · "),
+  uploadAnnounce: (name: string, status: string) => `${name} ${status === "done" ? "올렸어요" : "올리지 못했어요"}`,
+  uploadGroup: (group: string) => ({ image: "이미지", video: "동영상", audio: "오디오", text: "텍스트" } as Record<string, string>)[group] ?? String(group),
 };
 
 export type KjunMessages = typeof kjunMessagesKo;
