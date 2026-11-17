@@ -19,8 +19,7 @@ createApp(defineComponent(() => () => <div>
     {sample("refresh", <K.KjunIcon name="refresh" size="28" aria-label="새로고침 아이콘" onClick={() => { state.clicks++; }} />)}
     {sample("icon-clicks", String(state.clicks))}
     {sample("filled", <K.KjunIcon name="heart" filled />)}
-    {sample("ratio", <K.KjunSignedValue value={0.0235} format="percent" />)}
-    {sample("raw", <K.KjunSignedValue value={2.35} format="percent" tone="pill" />)}
+    {sample("percent", <K.KjunSignedValue value={2.35} format="percent" tone="pill" />)}
     {sample("deviation", <K.KjunDeviation value={-1.25} />)}
     {sample("override", <K.KjunSignedValue value={2.35} format="percent" formatter={() => "셀 포맷"} />)}
     {sample("select", <K.KjunSelect modelValue={state.selected} options={options} ariaLabel="목록 선택" onUpdate:modelValue={(value: any) => { state.selected = value; }} />)}

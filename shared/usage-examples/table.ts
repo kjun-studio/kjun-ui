@@ -27,7 +27,7 @@ export function tableUsageExample(input: UsageInput) {
   }
   if (example.metrics) {
     const money = b.node('KjunPriceCell', { value: expr('row.revenue'), formatter: expr('formatPrice') });
-    const delta = b.node('KjunSignedValue', { value: expr('row.change'), format: 'percent', });
+    const delta = b.node('KjunSignedValue', { value: expr('row.change'), format: 'percent' });
     if (b.vue) Object.assign(slots, { 'cell-revenue': money, 'cell-change': delta });
     else cases.push(`if (column.key === "revenue") return ${money};`, `if (column.key === "change") return ${delta};`);
   }

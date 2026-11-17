@@ -142,7 +142,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
       const status = (row: any) => h('KjunBadge', { size: 'sm', variant: row.status === '완료' ? 'success' : row.status === '검토 대기' ? 'warning' : 'primary', dot: true }, row.status);
       const progress = (row: any) => h('KjunProgressCell', { value: row.progress, max: 100 });
       const money = (row: any, key: string) => h('KjunPriceCell', { value: row[key], formatter: priceFormat });
-      const delta = (row: any) => h('KjunSignedValue', { value: row.change, format: 'percent', });
+      const delta = (row: any) => h('KjunSignedValue', { value: row.change, format: 'percent' });
       const view = (row: any) => h('KjunButton', { size: 'xs', variant: 'ghost', ariaLabel: row.name + ' 보기', ...action(() => message(row.name + ' 상세 보기')) }, '보기');
       const detail = (row: any) => example.project ? h('KjunAlert', { type: 'info' }, row.summary + ' 담당자 ' + row.owner + ' · 마감 ' + row.due) : '상세: ' + row.name;
       const selectionAction = () => h('KjunButton', { size: 'sm', variant: 'primary', ...action(() => message(get('selected', []).map((row: any) => row.name).join(', ') + ' 선택 확인')) }, '선택 항목 확인');

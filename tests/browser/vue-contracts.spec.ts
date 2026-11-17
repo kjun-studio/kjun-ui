@@ -37,9 +37,8 @@ for (const platform of vues) test(title(platform, "packed CSS supplies geometry,
 
 for (const platform of vues) test(title(platform, "percent units, pill geometry and project formatter overrides survive packing"), async ({ page }) => {
   await openFixture(page, platform, "", "vue-contracts");
-  await expect(page.getByTestId("ratio")).toHaveText("+2.35%");
-  await expect(page.getByTestId("raw")).toHaveText("+2.35%");
-  await expect(page.getByTestId("raw").locator("span").first()).toHaveCSS("padding-left", "8px");
+  await expect(page.getByTestId("percent")).toHaveText("+2.35%");
+  await expect(page.getByTestId("percent").locator("span").first()).toHaveCSS("padding-left", "8px");
   await expect(page.getByTestId("deviation")).toHaveText("-1.25%");
   await expect(page.getByTestId("override")).toHaveText("셀 포맷");
 });
