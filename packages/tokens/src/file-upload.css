@@ -260,6 +260,7 @@
   color: var(--_kjun-color-danger);
 }
 .kjun-file-upload-notice-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.kjun-file-upload-notice-text > span { display: block; }
 .kjun-file-upload-notice > svg { flex: none; margin-top: calc((var(--_kjun-type-caption-line) - var(--_kjun-extension-form-message-icon-size)) / 2); }
 .kjun-file-upload-notice .kjun-file-upload-action { width: auto; height: auto; color: var(--_kjun-color-text-secondary); }
 

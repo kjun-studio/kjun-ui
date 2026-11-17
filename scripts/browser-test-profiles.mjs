@@ -46,6 +46,7 @@ const componentGroups = {
   'split-pane': files('split-pane'),
   distribution: files('distribution'),
   'color-picker': files('color-picker'),
+  'file-upload': files('file-upload'),
   sparkline: files('sparkline-design', 'runtime-market', 'runtime-cards', 'size-contracts'),
   list: files('list-design', 'list-leading', 'list-section', 'list-reorder', 'list-link', 'list-value', 'list-details', 'list-expand', 'additions', 'adoption', 'requests', 'rounded'),
   primitives: [...files('layout-primitives', 'typography', 'geometry-tokens', 'card-layout', 'input-design'), ...visuals],
