@@ -17,6 +17,7 @@ export default [
   ['KjunStackedBar', 'image', 'label ariaLabel items legend', '애널리스트 의견의 이름과 항목별 수치·비율 읽기', { text: '애널리스트 의견' }],
   ['KjunSplitPane', 'tab-order', 'ariaLabel size disabled', '경계 손잡이의 이름, 현재 크기 읽기, 키보드 조절', {}],
   ['KjunCarousel', 'tab-order', 'ariaLabel index indicators', '영역 이름, 슬라이드 순서 읽기, 키보드 이동', {}],
+  ['KjunEventCalendar', 'calendar', 'month value marks isHoliday dayLongPressLabel', '날짜 칸의 읽기 이름(날짜·요일·휴일·일정 수), 키보드 이동과 고르기, 길게 누르기', {}],
   ['KjunImage', 'image', 'alt decorative', '프로젝트 표지의 대체 텍스트와 장식 모드', { text: '산과 하늘을 표현한 프로젝트 표지' }],
   ['KjunAvatar', 'image', 'name alt decorative', '김하늘 아바타의 대체 이름과 장식 모드', { text: '김하늘' }],
   ['KjunAvatarGroup', 'image', 'ariaLabel total pressable', '참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기', { text: '참여자 5명' }],

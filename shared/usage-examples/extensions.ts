@@ -1,5 +1,6 @@
 import { UsageBuilder, expr, type UsageInput } from './builder';
 import { sampleImage } from '../../previews/catalog/example-tools';
+import { eventCalendar } from './event-calendar';
 
 export function generate(input: UsageInput) {
   const b = new UsageBuilder(input), { name, settings: s } = input;
@@ -134,6 +135,7 @@ export function generate(input: UsageInput) {
       content = b.group([b.node(name, { ariaLabel: vertical ? '배송 진행' : '주문 진행', items: b.data('steps', items), current: s.current ?? 2, ...b.props('currentStatus', 'orientation', 'layout'),
         onStepSelect: b.handler('selectStep', 'index', b.result('steps[index].label + " 단계 선택"')) })]); break;
     }
+    case 'KjunEventCalendar': content = eventCalendar(b, s); break;
     case 'KjunImage': {
       b.state('imageReady', false); b.state('imageVersion', 0);
       b.data('images', [sampleImage(0), sampleImage(1)]);

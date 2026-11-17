@@ -108,6 +108,7 @@
       "name",
       "weekStart",
       "markSunday",
+      "markSaturday",
       "isDateUnavailable"
     ],
     "react": [
@@ -127,6 +128,7 @@
       "onChange",
       "weekStart",
       "markSunday",
+      "markSaturday",
       "isDateUnavailable"
     ],
     "native": [
@@ -143,6 +145,7 @@
       "onChange",
       "weekStart",
       "markSunday",
+      "markSaturday",
       "isDateUnavailable",
       "readOnly"
     ]
@@ -163,6 +166,7 @@
       "name",
       "weekStart",
       "markSunday",
+      "markSaturday",
       "isDateUnavailable",
       "presets",
       "autoApply"
@@ -184,6 +188,7 @@
       "onChange",
       "weekStart",
       "markSunday",
+      "markSaturday",
       "isDateUnavailable",
       "presets",
       "autoApply"
@@ -202,6 +207,7 @@
       "onChange",
       "weekStart",
       "markSunday",
+      "markSaturday",
       "isDateUnavailable",
       "presets",
       "autoApply",

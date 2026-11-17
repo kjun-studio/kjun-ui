@@ -16324,6 +16324,15 @@
             "source": "packages/vue3/src/date-picker.tsx"
           },
           {
+            "name": "markSaturday",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints Saturdays with the info role (default true).",
+            "summary": "토요일을 info 역할로 칠합니다. 끄면 토요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
             "name": "isDateUnavailable",
             "type": "(iso: string) => boolean",
             "required": false,
@@ -16606,6 +16615,15 @@
             "source": "packages/react/src/date-picker.tsx"
           },
           {
+            "name": "markSaturday",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints Saturdays with the info role (default true).",
+            "summary": "토요일을 info 역할로 칠합니다. 끄면 토요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
             "name": "isDateUnavailable",
             "type": "(iso: string) => boolean",
             "required": false,
@@ -16749,6 +16767,15 @@
             "source": "packages/native/src/date-picker.tsx"
           },
           {
+            "name": "markSaturday",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints Saturdays with the info role (default true).",
+            "summary": "토요일을 info 역할로 칠합니다. 끄면 토요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
             "name": "isDateUnavailable",
             "type": "(iso: string) => boolean",
             "required": false,
@@ -16783,6 +16810,15 @@
             "default": "true",
             "description": "Paints Sundays with the danger role, as Korean calendars do (default true).",
             "summary": "일요일을 danger 역할로 칠합니다. 한국 달력 관례를 따르는 기본값이며, 끄면 일요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
+            "name": "markSaturday",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints Saturdays with the info role (default true).",
+            "summary": "토요일을 info 역할로 칠합니다. 끄면 토요일도 다른 요일과 같은 색입니다.",
             "source": "packages/vue3/src/date-picker.tsx"
           },
           {
@@ -17104,6 +17140,15 @@
             "source": "packages/react/src/date-picker.tsx"
           },
           {
+            "name": "markSaturday",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints Saturdays with the info role (default true).",
+            "summary": "토요일을 info 역할로 칠합니다. 끄면 토요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
             "name": "isDateUnavailable",
             "type": "(iso: string) => boolean",
             "required": false,
@@ -17262,6 +17307,15 @@
             "default": "true",
             "description": "Paints Sundays with the danger role, as Korean calendars do (default true).",
             "summary": "일요일을 danger 역할로 칠합니다. 한국 달력 관례를 따르는 기본값이며, 끄면 일요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "markSaturday",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Paints Saturdays with the info role (default true).",
+            "summary": "토요일을 info 역할로 칠합니다. 끄면 토요일도 다른 요일과 같은 색입니다.",
             "source": "packages/native/src/date-picker.tsx"
           },
           {
@@ -37455,6 +37509,1059 @@
           "웹은 브라우저 스크롤과 CSS scroll-snap을 쓰고, 마우스처럼 올려 둘 수 있는 포인터에서만 이전·다음 버튼과 드래그를 씁니다. 마우스 휠로는 넘어가지 않습니다. Native는 ScrollView의 snap으로 넘기며 버튼을 그리지 않고, title은 제목만 표시합니다. 기기 스크린리더에서는 표시 영역이 하나의 조절 컨트롤이 되어 위·아래로 쓸어 슬라이드를 옮깁니다."
         ],
         "types": []
+      }
+    },
+    "KjunEventCalendar": {
+      "vue3": {
+        "props": [
+          {
+            "name": "view",
+            "type": "\"month\" | \"week\"",
+            "required": false,
+            "default": "\"month\"",
+            "description": "A whole month (default) or one week.",
+            "summary": "한 달 전체(month) 또는 한 주(week)를 그립니다. 한 달 보기는 항상 6주를 그려 달을 넘겨도 높이가 변하지 않고, 한 주 보기는 다른 달 날짜를 흐리게 하지 않습니다.",
+            "source": "packages/vue3/src/event-calendar.tsx"
+          },
+          {
+            "name": "month",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "v-model:month. The month shown, \"YYYY-MM\" (this month when missing or malformed). Without a listener the month does not change.",
+            "summary": "보여 줄 달(YYYY-MM)입니다. 제어 값이며 없거나 형식이 틀리면 이번 달입니다. 제목과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 앱이 제목 줄을 만들고 버튼으로 이 값을 바꿉니다.",
+            "source": "packages/vue3/src/event-calendar.tsx"
+          },
+          {
+            "name": "week",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "v-model:week. Week view: any day of the week shown, \"YYYY-MM-DD\" (this week when missing); changes ask with the week's first day.",
+            "summary": "한 주 보기에서 보여 줄 주입니다. 그 주의 아무 날(YYYY-MM-DD)이며 weekStart에 맞춰 그 주의 첫날로 정리하고, 없으면 이번 주입니다. 제어 값입니다.",
+            "source": "packages/vue3/src/event-calendar.tsx"
+          },
+          {
+            "name": "modelValue",
+            "type": "string | null",
+            "required": false,
+            "default": "null",
+            "description": "v-model. The picked day, \"YYYY-MM-DD\"; null picks nothing. Clearing it is up to the app.",
+            "summary": "고른 날(YYYY-MM-DD)입니다. null이면 아무것도 고르지 않은 상태로 그립니다. 날짜를 눌러도 값은 앱이 바꾸며, 고르기를 풀지도 앱이 정합니다. v-model로 연결합니다.",
+            "source": "packages/vue3/src/event-calendar.tsx"
+          },
+          {
+            "name": "onUpdate:month",
+            "type": "((month: string) => void)",
+            "required": false,
+            "default": "—",
+            "description": "Declared as props so the calendar knows whether the app listens: without a listener, arrow keys stop at the edge of the shown month (week).\nemit(\"update:month\") and v-model:month still reach them.",
+            "summary": "v-model:month의 갱신입니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "스와이프, 키보드로 보이는 달을 벗어날 때, 한 달 보기에서 다른 달 날짜를 누를 때(onSelect 다음)"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 보여 줄 달(YYYY-MM)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "템플릿에서는 v-model:month나 @update:month로 연결합니다. 이 prop이 있는지로 달을 바꿀 수 있는지 판단하므로 연결하지 않으면 화면의 달은 바뀌지 않습니다."
+              }
+            ],
+            "source": "packages/vue3/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "onUpdate:week",
+            "type": "((week: string) => void)",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "v-model:week의 갱신입니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "스와이프나 키보드로 보이는 주를 벗어날 때"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 보여 줄 주의 첫날(YYYY-MM-DD)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "템플릿에서는 v-model:week나 @update:week로 연결합니다. 연결하지 않으면 화면의 주는 바뀌지 않습니다."
+              }
+            ],
+            "source": "packages/vue3/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "onDayLongPress",
+            "type": "((iso: string) => void)",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "날짜를 길게 눌렀음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "터치로 길게 누르거나(스와이프가 시작되면 취소) 마우스 오른쪽 클릭, 키보드 Shift+Enter를 할 때. 이 콜백이 없으면 오른쪽 클릭 메뉴는 브라우저에 맡기고 Enter는 날짜 고르기만 합니다"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 누른 날(YYYY-MM-DD)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 그 날의 편집 화면 등을 엽니다. 템플릿에서는 @day-long-press로 연결하며, 이 항목은 emits가 아니라 prop이라 이벤트 목록에는 없습니다. 이 콜백이 있을 때만 길게 누르기와 그 읽기 이름이 켜집니다."
+              }
+            ],
+            "source": "packages/vue3/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "dayLongPressLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Describes the long press to screen readers, e.g. \"이날 약속 추가\".",
+            "summary": "길게 누르기가 무슨 동작인지 화면 낭독기에 알리는 문구입니다(예: \"이날 약속 추가\"). onDayLongPress가 있을 때만 쓰입니다.",
+            "source": "packages/vue3/src/event-calendar.tsx"
+          },
+          {
+            "name": "marks",
+            "type": "(iso: string) => DayMarks | undefined",
+            "required": false,
+            "default": "—",
+            "description": "What a day shows under its number: the first span, an icon and up to three dots; count is spoken only.",
+            "summary": "날짜마다 칸 아래에 그릴 표시를 돌려줍니다. 없으면 undefined를 돌려줍니다.",
+            "details": [
+              {
+                "label": "반환값",
+                "text": "DayMarks: spans(막대), icon(아이콘), dots(점 색 배열), count(일정 수)입니다. 모두 선택입니다."
+              },
+              {
+                "label": "표시 색",
+                "text": "색은 앱이 넘깁니다. 웹은 CSS 색 문자열(var(--kjun-...) 권장)이며 패키지에 표시용 팔레트는 없습니다. danger 색은 휴일 숫자에 쓰이므로 일정 색으로 쓰지 않는 편이 읽기 쉽습니다."
+              },
+              {
+                "label": "막대",
+                "text": "칸을 가로지르는 높이 5px 막대이며 날마다 spans의 첫 항목만 그립니다. 컴포넌트는 이웃 날을 살피지 않으므로, 일정이 겹쳐도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다."
+              },
+              {
+                "label": "점·아이콘",
+                "text": "점은 지름 5px로 최대 3개이고 넘치면 자릅니다. 아이콘은 11px 하나를 점 앞에 그리며 icon.name은 KJUN 아이콘 이름입니다."
+              },
+              {
+                "label": "count",
+                "text": "화면에는 그리지 않고 읽기 이름의 '일정 N개'에만 씁니다."
+              },
+              {
+                "label": "호출",
+                "text": "보이는 날마다 렌더링할 때 부르므로 가볍게 계산해 돌려줍니다."
+              }
+            ],
+            "source": "packages/vue3/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "isHoliday",
+            "type": "(iso: string) => string | boolean",
+            "required": false,
+            "default": "—",
+            "description": "Holidays draw a danger number; a string also names the day for screen readers.",
+            "summary": "휴일이면 숫자를 danger 색으로 그립니다.",
+            "details": [
+              {
+                "label": "반환값",
+                "text": "true는 휴일 표시만, 문자열은 표시와 함께 그 이름을 읽기 이름에 넣습니다. false나 빈 값은 휴일이 아닙니다."
+              },
+              {
+                "label": "책임",
+                "text": "어느 날이 휴일인지는 앱이 정합니다. 패키지에 휴일 목록은 없습니다."
+              }
+            ],
+            "source": "packages/vue3/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "dimPast",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Fades the numbers and marks of days before today (default true); span bars keep their colour.",
+            "summary": "오늘 이전 날의 숫자와 점·아이콘을 투명도 0.45로 흐리게 합니다. 빨강·파랑 숫자는 0.7입니다. 여러 날 막대는 흐리게 하지 않습니다.",
+            "source": "packages/vue3/src/event-calendar.tsx"
+          },
+          {
+            "name": "weekStart",
+            "type": "0 | 1 | 2 | 3 | 4 | 5 | 6",
+            "required": false,
+            "default": "0",
+            "description": "The first column of the week: 0 Sunday (default), 1 Monday.",
+            "summary": "주의 첫 요일입니다. 0은 일요일, 1은 월요일입니다. 요일 줄과 한 주 보기의 시작, 키보드 Home·End가 함께 바뀝니다.",
+            "source": "packages/vue3/src/event-calendar.tsx"
+          },
+          {
+            "name": "markSunday",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints Sundays with the danger role (default true).",
+            "summary": "일요일을 danger 역할로 칠합니다. 끄면 일요일도 다른 요일과 같은 색입니다. 휴일은 이 값과 상관없이 danger입니다.",
+            "source": "packages/vue3/src/event-calendar.tsx"
+          },
+          {
+            "name": "markSaturday",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints Saturdays with the info role (default true).",
+            "summary": "토요일을 info 역할로 칠합니다. 끄면 토요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/vue3/src/event-calendar.tsx"
+          },
+          {
+            "name": "swipeable",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "A horizontal touch swipe asks for the next or previous month or week (default true). Mouse drags never do.",
+            "summary": "가로로 넘겨 달(주)을 바꿉니다. 가로 이동이 20을 넘고 세로 이동의 2배보다 클 때만 잡아 바깥 세로 스크롤과 다투지 않습니다. 웹에서는 터치 입력만 잡고 마우스 끌기는 달을 바꾸지 않습니다. 달을 바꾸려는 요청은 onMonthChange·onWeekChange로 알립니다.",
+            "source": "packages/vue3/src/event-calendar.tsx"
+          }
+        ],
+        "events": [
+          {
+            "name": "update:month",
+            "source": "packages/vue3/src/event-calendar.tsx",
+            "type": "이벤트",
+            "summary": "v-model:month의 갱신입니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "스와이프, 키보드로 보이는 달을 벗어날 때, 한 달 보기에서 다른 달 날짜를 누를 때(onSelect 다음)"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 보여 줄 달(YYYY-MM)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "템플릿에서는 v-model:month나 @update:month로 연결합니다. 이 prop이 있는지로 달을 바꿀 수 있는지 판단하므로 연결하지 않으면 화면의 달은 바뀌지 않습니다."
+              }
+            ],
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "update:week",
+            "source": "packages/vue3/src/event-calendar.tsx",
+            "type": "이벤트",
+            "summary": "v-model:week의 갱신입니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "스와이프나 키보드로 보이는 주를 벗어날 때"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 보여 줄 주의 첫날(YYYY-MM-DD)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "템플릿에서는 v-model:week나 @update:week로 연결합니다. 연결하지 않으면 화면의 주는 바뀌지 않습니다."
+              }
+            ],
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "update:modelValue",
+            "source": "packages/vue3/src/event-calendar.tsx",
+            "type": "이벤트",
+            "summary": "고른 날이 바뀌었음을 알립니다(v-model).",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "날짜 칸을 누르거나 Enter를 누를 때"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 누른 날(YYYY-MM-DD)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "v-model이 값을 갱신합니다. 고르기를 풀지는 앱이 정합니다."
+              }
+            ],
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "select",
+            "source": "packages/vue3/src/event-calendar.tsx",
+            "type": "이벤트",
+            "summary": "누른 날을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "날짜 칸을 누르거나 Enter를 누를 때. 다른 달 날짜는 이 알림 다음에 update:month가 옵니다"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 누른 날(YYYY-MM-DD)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "v-model과 같은 날을 알립니다. 값을 따로 읽을 때 씁니다."
+              }
+            ],
+            "example": "/components/event-calendar#preview"
+          }
+        ],
+        "slots": [],
+        "ownership": [
+          "완전 제어형입니다. 앱이 month(YYYY-MM)나 week(그 주의 아무 날)와 value(고른 날, 없으면 null)를 넘기고, 달·주를 바꾸려는 요청은 onMonthChange·onWeekChange로 받아 값을 바꿉니다. 이 콜백을 주지 않으면 화면은 바뀌지 않습니다. 제목(예: 2026년 11월)과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 화면이 제목 줄을 만들고 버튼으로 month를 바꿉니다. 날짜를 누르면 onSelect(iso)를 알리며 고르기를 풀지는 앱이 정합니다. 한 달 보기에서 다른 달 날짜를 누르면 onSelect 다음에 그 달로 onMonthChange를 부릅니다. marks(iso)는 날짜마다 spans·icon·dots·count를 돌려주고 표시 색은 앱이 정합니다. 여러 날 막대는 날마다 spans의 첫 항목만 그리므로, 일정이 겹치는 날에도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다. isHoliday(iso)는 true나 휴일 이름을 돌려주며 숫자를 danger 색으로 그리고 이름은 읽기 이름에 넣습니다. onDayLongPress를 주면 길게 누르기가 켜지고, 주지 않으면 관련 동작이 모두 꺼집니다.",
+          "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다."
+        ],
+        "types": [
+          {
+            "name": "DayMarks",
+            "summary": "marks가 돌려주는 날짜 하나의 표시입니다.",
+            "fields": [
+              {
+                "name": "spans",
+                "type": "DaySpan[] | undefined",
+                "summary": "여러 날에 걸친 막대입니다. 첫 항목만 그리므로 겹치는 일정은 같은 일정을 기간 내내 첫 항목으로 넘깁니다."
+              },
+              {
+                "name": "icon",
+                "type": "{ name: string; color: string } | undefined",
+                "summary": "점 앞에 그릴 11px 아이콘입니다."
+              },
+              {
+                "name": "dots",
+                "type": "string[] | undefined",
+                "summary": "점의 색 배열입니다. 지름 5px로 최대 3개를 그립니다."
+              },
+              {
+                "name": "count",
+                "type": "number | undefined",
+                "summary": "일정 수입니다. 화면에는 그리지 않고 읽기 이름에만 씁니다."
+              }
+            ]
+          },
+          {
+            "name": "DaySpan",
+            "summary": "막대 하나입니다. 시작·끝 날과 주의 양 끝만 모서리를 둥글게 그립니다.",
+            "fields": [
+              {
+                "name": "color",
+                "type": "string",
+                "summary": "막대 색입니다."
+              },
+              {
+                "name": "start",
+                "type": "string",
+                "summary": "시작 날(YYYY-MM-DD)입니다."
+              },
+              {
+                "name": "end",
+                "type": "string",
+                "summary": "끝 날(YYYY-MM-DD)입니다. 시작 날보다 앞서면 그리지 않습니다."
+              }
+            ]
+          }
+        ]
+      },
+      "react": {
+        "props": [
+          {
+            "name": "view",
+            "type": "\"month\" | \"week\"",
+            "required": false,
+            "default": "\"month\"",
+            "description": "A whole month (default) or one week.",
+            "summary": "한 달 전체(month) 또는 한 주(week)를 그립니다. 한 달 보기는 항상 6주를 그려 달을 넘겨도 높이가 변하지 않고, 한 주 보기는 다른 달 날짜를 흐리게 하지 않습니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
+            "name": "month",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The month shown, \"YYYY-MM\" (controlled; this month when missing or malformed).",
+            "summary": "보여 줄 달(YYYY-MM)입니다. 제어 값이며 없거나 형식이 틀리면 이번 달입니다. 제목과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 앱이 제목 줄을 만들고 버튼으로 이 값을 바꿉니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
+            "name": "onMonthChange",
+            "type": "((month: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Asked for another month by a swipe, the keyboard or an outside day; without it the month does not change.",
+            "summary": "다른 달을 보여 달라고 요청합니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "스와이프, 키보드로 보이는 달을 벗어날 때, 한 달 보기에서 다른 달 날짜를 누를 때(onSelect 다음)"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 보여 줄 달(YYYY-MM)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 month를 바꿉니다. 이 콜백을 주지 않으면 화면의 달은 바뀌지 않으며, 키보드 이동은 보이는 달의 끝에서 멈춥니다. 제목 줄의 이전·다음 버튼도 같은 값을 바꿉니다."
+              }
+            ],
+            "source": "packages/react/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "week",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Week view: any day of the week shown, \"YYYY-MM-DD\" (controlled; this week when missing).",
+            "summary": "한 주 보기에서 보여 줄 주입니다. 그 주의 아무 날(YYYY-MM-DD)이며 weekStart에 맞춰 그 주의 첫날로 정리하고, 없으면 이번 주입니다. 제어 값입니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
+            "name": "onWeekChange",
+            "type": "((week: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Asked for another week with that week's first day; without it the week does not change.",
+            "summary": "다른 주를 보여 달라고 요청합니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "스와이프나 키보드로 보이는 주를 벗어날 때"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 보여 줄 주의 첫날(YYYY-MM-DD, weekStart 기준)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 week를 바꿉니다. 이 콜백을 주지 않으면 화면의 주는 바뀌지 않습니다."
+              }
+            ],
+            "source": "packages/react/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "value",
+            "type": "string | null",
+            "required": false,
+            "default": "null",
+            "description": "The picked day, \"YYYY-MM-DD\"; null picks nothing. Clearing it is up to the app.",
+            "summary": "고른 날(YYYY-MM-DD)입니다. null이면 아무것도 고르지 않은 상태로 그립니다. 날짜를 눌러도 값은 앱이 바꾸며, 고르기를 풀지도 앱이 정합니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
+            "name": "onSelect",
+            "type": "((iso: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A day was pressed; the app decides whether it becomes the value.",
+            "summary": "누른 날을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "날짜 칸을 누르거나 키보드로 Enter를 누를 때. 다른 달 날짜는 이 알림 다음에 onMonthChange가 옵니다"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 누른 날(YYYY-MM-DD)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 value를 바꿉니다. 같은 날을 다시 눌렀을 때 고르기를 풀지는 앱이 정합니다."
+              }
+            ],
+            "source": "packages/react/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "onDayLongPress",
+            "type": "((iso: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Touch hold, right click or Shift+Enter on a day; without it these are left to the browser.",
+            "summary": "날짜를 길게 눌렀음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "터치로 길게 누르거나(스와이프가 시작되면 취소) 마우스 오른쪽 클릭, 키보드 Shift+Enter를 할 때. 이 콜백이 없으면 오른쪽 클릭 메뉴는 브라우저에 맡기고 Enter는 날짜 고르기만 합니다"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 누른 날(YYYY-MM-DD)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 그 날의 편집 화면 등을 엽니다. 이 콜백이 있을 때만 길게 누르기와 그 읽기 이름이 켜집니다."
+              }
+            ],
+            "source": "packages/react/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "dayLongPressLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Describes the long press to screen readers, e.g. \"이날 약속 추가\".",
+            "summary": "길게 누르기가 무슨 동작인지 화면 낭독기에 알리는 문구입니다(예: \"이날 약속 추가\"). onDayLongPress가 있을 때만 쓰입니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
+            "name": "marks",
+            "type": "(iso: string) => DayMarks | undefined",
+            "required": false,
+            "default": "—",
+            "description": "What a day shows under its number: the first span, an icon and up to three dots; count is spoken only.",
+            "summary": "날짜마다 칸 아래에 그릴 표시를 돌려줍니다. 없으면 undefined를 돌려줍니다.",
+            "details": [
+              {
+                "label": "반환값",
+                "text": "DayMarks: spans(막대), icon(아이콘), dots(점 색 배열), count(일정 수)입니다. 모두 선택입니다."
+              },
+              {
+                "label": "표시 색",
+                "text": "색은 앱이 넘깁니다. 웹은 CSS 색 문자열(var(--kjun-...) 권장)이며 패키지에 표시용 팔레트는 없습니다. danger 색은 휴일 숫자에 쓰이므로 일정 색으로 쓰지 않는 편이 읽기 쉽습니다."
+              },
+              {
+                "label": "막대",
+                "text": "칸을 가로지르는 높이 5px 막대이며 날마다 spans의 첫 항목만 그립니다. 컴포넌트는 이웃 날을 살피지 않으므로, 일정이 겹쳐도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다."
+              },
+              {
+                "label": "점·아이콘",
+                "text": "점은 지름 5px로 최대 3개이고 넘치면 자릅니다. 아이콘은 11px 하나를 점 앞에 그리며 icon.name은 KJUN 아이콘 이름입니다."
+              },
+              {
+                "label": "count",
+                "text": "화면에는 그리지 않고 읽기 이름의 '일정 N개'에만 씁니다."
+              },
+              {
+                "label": "호출",
+                "text": "보이는 날마다 렌더링할 때 부르므로 가볍게 계산해 돌려줍니다."
+              }
+            ],
+            "source": "packages/react/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "isHoliday",
+            "type": "(iso: string) => string | boolean",
+            "required": false,
+            "default": "—",
+            "description": "Holidays draw a danger number; a string also names the day for screen readers.",
+            "summary": "휴일이면 숫자를 danger 색으로 그립니다.",
+            "details": [
+              {
+                "label": "반환값",
+                "text": "true는 휴일 표시만, 문자열은 표시와 함께 그 이름을 읽기 이름에 넣습니다. false나 빈 값은 휴일이 아닙니다."
+              },
+              {
+                "label": "책임",
+                "text": "어느 날이 휴일인지는 앱이 정합니다. 패키지에 휴일 목록은 없습니다."
+              }
+            ],
+            "source": "packages/react/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "dimPast",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Fades the numbers and marks of days before today (default true); span bars keep their colour.",
+            "summary": "오늘 이전 날의 숫자와 점·아이콘을 투명도 0.45로 흐리게 합니다. 빨강·파랑 숫자는 0.7입니다. 여러 날 막대는 흐리게 하지 않습니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
+            "name": "weekStart",
+            "type": "0 | 1 | 2 | 3 | 4 | 5 | 6",
+            "required": false,
+            "default": "0",
+            "description": "The first column of the week: 0 Sunday (default), 1 Monday.",
+            "summary": "주의 첫 요일입니다. 0은 일요일, 1은 월요일입니다. 요일 줄과 한 주 보기의 시작, 키보드 Home·End가 함께 바뀝니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
+            "name": "markSunday",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints Sundays with the danger role (default true).",
+            "summary": "일요일을 danger 역할로 칠합니다. 끄면 일요일도 다른 요일과 같은 색입니다. 휴일은 이 값과 상관없이 danger입니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
+            "name": "markSaturday",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints Saturdays with the info role (default true).",
+            "summary": "토요일을 info 역할로 칠합니다. 끄면 토요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
+            "name": "swipeable",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "A horizontal touch swipe asks for the next or previous month or week (default true). Mouse drags never do.",
+            "summary": "가로로 넘겨 달(주)을 바꿉니다. 가로 이동이 20을 넘고 세로 이동의 2배보다 클 때만 잡아 바깥 세로 스크롤과 다투지 않습니다. 웹에서는 터치 입력만 잡고 마우스 끌기는 달을 바꾸지 않습니다. 달을 바꾸려는 요청은 onMonthChange·onWeekChange로 알립니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 KJUN 클래스 뒤로 더할 클래스입니다. 바깥 여백·배치에 씁니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 스타일입니다. 바깥 여백·배치에 씁니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "완전 제어형입니다. 앱이 month(YYYY-MM)나 week(그 주의 아무 날)와 value(고른 날, 없으면 null)를 넘기고, 달·주를 바꾸려는 요청은 onMonthChange·onWeekChange로 받아 값을 바꿉니다. 이 콜백을 주지 않으면 화면은 바뀌지 않습니다. 제목(예: 2026년 11월)과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 화면이 제목 줄을 만들고 버튼으로 month를 바꿉니다. 날짜를 누르면 onSelect(iso)를 알리며 고르기를 풀지는 앱이 정합니다. 한 달 보기에서 다른 달 날짜를 누르면 onSelect 다음에 그 달로 onMonthChange를 부릅니다. marks(iso)는 날짜마다 spans·icon·dots·count를 돌려주고 표시 색은 앱이 정합니다. 여러 날 막대는 날마다 spans의 첫 항목만 그리므로, 일정이 겹치는 날에도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다. isHoliday(iso)는 true나 휴일 이름을 돌려주며 숫자를 danger 색으로 그리고 이름은 읽기 이름에 넣습니다. onDayLongPress를 주면 길게 누르기가 켜지고, 주지 않으면 관련 동작이 모두 꺼집니다.",
+          "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다."
+        ],
+        "types": [
+          {
+            "name": "DayMarks",
+            "summary": "marks가 돌려주는 날짜 하나의 표시입니다.",
+            "fields": [
+              {
+                "name": "spans",
+                "type": "DaySpan[] | undefined",
+                "summary": "여러 날에 걸친 막대입니다. 첫 항목만 그리므로 겹치는 일정은 같은 일정을 기간 내내 첫 항목으로 넘깁니다."
+              },
+              {
+                "name": "icon",
+                "type": "{ name: string; color: string } | undefined",
+                "summary": "점 앞에 그릴 11px 아이콘입니다."
+              },
+              {
+                "name": "dots",
+                "type": "string[] | undefined",
+                "summary": "점의 색 배열입니다. 지름 5px로 최대 3개를 그립니다."
+              },
+              {
+                "name": "count",
+                "type": "number | undefined",
+                "summary": "일정 수입니다. 화면에는 그리지 않고 읽기 이름에만 씁니다."
+              }
+            ]
+          },
+          {
+            "name": "DaySpan",
+            "summary": "막대 하나입니다. 시작·끝 날과 주의 양 끝만 모서리를 둥글게 그립니다.",
+            "fields": [
+              {
+                "name": "color",
+                "type": "string",
+                "summary": "막대 색입니다."
+              },
+              {
+                "name": "start",
+                "type": "string",
+                "summary": "시작 날(YYYY-MM-DD)입니다."
+              },
+              {
+                "name": "end",
+                "type": "string",
+                "summary": "끝 날(YYYY-MM-DD)입니다. 시작 날보다 앞서면 그리지 않습니다."
+              }
+            ]
+          }
+        ]
+      },
+      "native": {
+        "props": [
+          {
+            "name": "view",
+            "type": "\"month\" | \"week\"",
+            "required": false,
+            "default": "\"month\"",
+            "description": "A whole month (default) or one week.",
+            "summary": "한 달 전체(month) 또는 한 주(week)를 그립니다. 한 달 보기는 항상 6주를 그려 달을 넘겨도 높이가 변하지 않고, 한 주 보기는 다른 달 날짜를 흐리게 하지 않습니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          },
+          {
+            "name": "month",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The month shown, \"YYYY-MM\" (controlled; this month when missing or malformed).",
+            "summary": "보여 줄 달(YYYY-MM)입니다. 제어 값이며 없거나 형식이 틀리면 이번 달입니다. 제목과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 앱이 제목 줄을 만들고 버튼으로 이 값을 바꿉니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          },
+          {
+            "name": "onMonthChange",
+            "type": "((month: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Asked for another month by a swipe or an outside day; without it the month does not change.",
+            "summary": "다른 달을 보여 달라고 요청합니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "스와이프, 키보드로 보이는 달을 벗어날 때, 한 달 보기에서 다른 달 날짜를 누를 때(onSelect 다음)"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 보여 줄 달(YYYY-MM)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 month를 바꿉니다. 이 콜백을 주지 않으면 화면의 달은 바뀌지 않으며, 키보드 이동은 보이는 달의 끝에서 멈춥니다. 제목 줄의 이전·다음 버튼도 같은 값을 바꿉니다."
+              }
+            ],
+            "source": "packages/native/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "week",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Week view: any day of the week shown, \"YYYY-MM-DD\" (controlled; this week when missing).",
+            "summary": "한 주 보기에서 보여 줄 주입니다. 그 주의 아무 날(YYYY-MM-DD)이며 weekStart에 맞춰 그 주의 첫날로 정리하고, 없으면 이번 주입니다. 제어 값입니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          },
+          {
+            "name": "onWeekChange",
+            "type": "((week: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Asked for another week with that week's first day; without it the week does not change.",
+            "summary": "다른 주를 보여 달라고 요청합니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "스와이프나 키보드로 보이는 주를 벗어날 때"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 보여 줄 주의 첫날(YYYY-MM-DD, weekStart 기준)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 week를 바꿉니다. 이 콜백을 주지 않으면 화면의 주는 바뀌지 않습니다."
+              }
+            ],
+            "source": "packages/native/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "value",
+            "type": "string | null",
+            "required": false,
+            "default": "null",
+            "description": "The picked day, \"YYYY-MM-DD\"; null picks nothing. Clearing it is up to the app.",
+            "summary": "고른 날(YYYY-MM-DD)입니다. null이면 아무것도 고르지 않은 상태로 그립니다. 날짜를 눌러도 값은 앱이 바꾸며, 고르기를 풀지도 앱이 정합니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          },
+          {
+            "name": "onSelect",
+            "type": "((iso: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A day was pressed; the app decides whether it becomes the value.",
+            "summary": "누른 날을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "날짜 칸을 누르거나 키보드로 Enter를 누를 때. 다른 달 날짜는 이 알림 다음에 onMonthChange가 옵니다"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 누른 날(YYYY-MM-DD)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 value를 바꿉니다. 같은 날을 다시 눌렀을 때 고르기를 풀지는 앱이 정합니다."
+              }
+            ],
+            "source": "packages/native/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "onDayLongPress",
+            "type": "((iso: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A long press on a day, also offered to screen readers as an action; without it a hold is an ordinary press.",
+            "summary": "날짜를 길게 눌렀음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "날짜 칸을 길게 누를 때. 화면 낭독기에는 사용자 동작(길게 누르기)으로도 알려 줍니다"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 누른 날(YYYY-MM-DD)"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 그 날의 편집 화면 등을 엽니다. 이 콜백이 있을 때만 길게 누르기와 그 읽기 이름이 켜집니다."
+              }
+            ],
+            "source": "packages/native/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "dayLongPressLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Names the long press action for screen readers, e.g. \"이날 약속 추가\".",
+            "summary": "길게 누르기가 무슨 동작인지 화면 낭독기에 알리는 문구입니다(예: \"이날 약속 추가\"). onDayLongPress가 있을 때만 쓰입니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          },
+          {
+            "name": "marks",
+            "type": "(iso: string) => DayMarks | undefined",
+            "required": false,
+            "default": "—",
+            "description": "What a day shows under its number: the first span, an icon and up to three dots; count is spoken only.",
+            "summary": "날짜마다 칸 아래에 그릴 표시를 돌려줍니다. 없으면 undefined를 돌려줍니다.",
+            "details": [
+              {
+                "label": "반환값",
+                "text": "DayMarks: spans(막대), icon(아이콘), dots(점 색 배열), count(일정 수)입니다. 모두 선택입니다."
+              },
+              {
+                "label": "표시 색",
+                "text": "색은 앱이 넘깁니다. Native는 ColorValue이며 패키지에 표시용 팔레트는 없습니다. danger 색은 휴일 숫자에 쓰이므로 일정 색으로 쓰지 않는 편이 읽기 쉽습니다."
+              },
+              {
+                "label": "막대",
+                "text": "칸을 가로지르는 높이 5px 막대이며 날마다 spans의 첫 항목만 그립니다. 컴포넌트는 이웃 날을 살피지 않으므로, 일정이 겹쳐도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다."
+              },
+              {
+                "label": "점·아이콘",
+                "text": "점은 지름 5px로 최대 3개이고 넘치면 자릅니다. 아이콘은 11px 하나를 점 앞에 그리며 icon.name은 KJUN 아이콘 이름입니다."
+              },
+              {
+                "label": "count",
+                "text": "화면에는 그리지 않고 읽기 이름의 '일정 N개'에만 씁니다."
+              },
+              {
+                "label": "호출",
+                "text": "보이는 날마다 렌더링할 때 부르므로 가볍게 계산해 돌려줍니다."
+              }
+            ],
+            "source": "packages/native/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "isHoliday",
+            "type": "(iso: string) => string | boolean",
+            "required": false,
+            "default": "—",
+            "description": "Holidays draw a danger number; a string also names the day for screen readers.",
+            "summary": "휴일이면 숫자를 danger 색으로 그립니다.",
+            "details": [
+              {
+                "label": "반환값",
+                "text": "true는 휴일 표시만, 문자열은 표시와 함께 그 이름을 읽기 이름에 넣습니다. false나 빈 값은 휴일이 아닙니다."
+              },
+              {
+                "label": "책임",
+                "text": "어느 날이 휴일인지는 앱이 정합니다. 패키지에 휴일 목록은 없습니다."
+              }
+            ],
+            "source": "packages/native/src/event-calendar.tsx",
+            "example": "/components/event-calendar#preview"
+          },
+          {
+            "name": "dimPast",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Fades the numbers and marks of days before today (default true); span bars keep their colour.",
+            "summary": "오늘 이전 날의 숫자와 점·아이콘을 투명도 0.45로 흐리게 합니다. 빨강·파랑 숫자는 0.7입니다. 여러 날 막대는 흐리게 하지 않습니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          },
+          {
+            "name": "weekStart",
+            "type": "0 | 1 | 2 | 3 | 4 | 5 | 6",
+            "required": false,
+            "default": "0",
+            "description": "The first column of the week: 0 Sunday (default), 1 Monday.",
+            "summary": "주의 첫 요일입니다. 0은 일요일, 1은 월요일입니다. 요일 줄과 한 주 보기의 시작, 키보드 Home·End가 함께 바뀝니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          },
+          {
+            "name": "markSunday",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints Sundays with the danger role (default true).",
+            "summary": "일요일을 danger 역할로 칠합니다. 끄면 일요일도 다른 요일과 같은 색입니다. 휴일은 이 값과 상관없이 danger입니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          },
+          {
+            "name": "markSaturday",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Paints Saturdays with the info role (default true).",
+            "summary": "토요일을 info 역할로 칠합니다. 끄면 토요일도 다른 요일과 같은 색입니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          },
+          {
+            "name": "swipeable",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "A horizontal swipe asks for the next or previous month or week (default true).",
+            "summary": "가로로 넘겨 달(주)을 바꿉니다. 가로 이동이 20을 넘고 세로 이동의 2배보다 클 때만 잡아 바깥 세로 스크롤과 다투지 않습니다. 웹에서는 터치 입력만 잡고 마우스 끌기는 달을 바꾸지 않습니다. 달을 바꾸려는 요청은 onMonthChange·onWeekChange로 알립니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 스타일입니다. 바깥 여백·배치에 씁니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "완전 제어형입니다. 앱이 month(YYYY-MM)나 week(그 주의 아무 날)와 value(고른 날, 없으면 null)를 넘기고, 달·주를 바꾸려는 요청은 onMonthChange·onWeekChange로 받아 값을 바꿉니다. 이 콜백을 주지 않으면 화면은 바뀌지 않습니다. 제목(예: 2026년 11월)과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 화면이 제목 줄을 만들고 버튼으로 month를 바꿉니다. 날짜를 누르면 onSelect(iso)를 알리며 고르기를 풀지는 앱이 정합니다. 한 달 보기에서 다른 달 날짜를 누르면 onSelect 다음에 그 달로 onMonthChange를 부릅니다. marks(iso)는 날짜마다 spans·icon·dots·count를 돌려주고 표시 색은 앱이 정합니다. 여러 날 막대는 날마다 spans의 첫 항목만 그리므로, 일정이 겹치는 날에도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다. isHoliday(iso)는 true나 휴일 이름을 돌려주며 숫자를 danger 색으로 그리고 이름은 읽기 이름에 넣습니다. onDayLongPress를 주면 길게 누르기가 켜지고, 주지 않으면 관련 동작이 모두 꺼집니다.",
+          "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다."
+        ],
+        "types": [
+          {
+            "name": "DayMarks",
+            "summary": "marks가 돌려주는 날짜 하나의 표시입니다.",
+            "fields": [
+              {
+                "name": "spans",
+                "type": "DaySpan[] | undefined",
+                "summary": "여러 날에 걸친 막대입니다. 첫 항목만 그리므로 겹치는 일정은 같은 일정을 기간 내내 첫 항목으로 넘깁니다."
+              },
+              {
+                "name": "icon",
+                "type": "{ name: string; color: ColorValue } | undefined",
+                "summary": "점 앞에 그릴 11px 아이콘입니다."
+              },
+              {
+                "name": "dots",
+                "type": "ColorValue[] | undefined",
+                "summary": "점의 색 배열입니다. 지름 5px로 최대 3개를 그립니다."
+              },
+              {
+                "name": "count",
+                "type": "number | undefined",
+                "summary": "일정 수입니다. 화면에는 그리지 않고 읽기 이름에만 씁니다."
+              }
+            ]
+          },
+          {
+            "name": "DaySpan",
+            "summary": "막대 하나입니다. 시작·끝 날과 주의 양 끝만 모서리를 둥글게 그립니다.",
+            "fields": [
+              {
+                "name": "color",
+                "type": "ColorValue",
+                "summary": "막대 색입니다."
+              },
+              {
+                "name": "start",
+                "type": "string",
+                "summary": "시작 날(YYYY-MM-DD)입니다."
+              },
+              {
+                "name": "end",
+                "type": "string",
+                "summary": "끝 날(YYYY-MM-DD)입니다. 시작 날보다 앞서면 그리지 않습니다."
+              }
+            ]
+          }
+        ]
       }
     },
     "KjunAvatar": {

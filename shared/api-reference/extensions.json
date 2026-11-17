@@ -1066,5 +1066,63 @@
       "variant",
       "children"
     ]
+  },
+  "KjunEventCalendar": {
+    "vue3": [
+      "view",
+      "month",
+      "week",
+      "modelValue",
+      "onUpdate:month",
+      "onUpdate:week",
+      "onDayLongPress",
+      "dayLongPressLabel",
+      "marks",
+      "isHoliday",
+      "dimPast",
+      "weekStart",
+      "markSunday",
+      "markSaturday",
+      "swipeable"
+    ],
+    "react": [
+      "view",
+      "month",
+      "onMonthChange",
+      "week",
+      "onWeekChange",
+      "value",
+      "onSelect",
+      "onDayLongPress",
+      "dayLongPressLabel",
+      "marks",
+      "isHoliday",
+      "dimPast",
+      "weekStart",
+      "markSunday",
+      "markSaturday",
+      "swipeable",
+      "className",
+      "style"
+    ],
+    "native": [
+      "view",
+      "month",
+      "onMonthChange",
+      "week",
+      "onWeekChange",
+      "value",
+      "onSelect",
+      "onDayLongPress",
+      "dayLongPressLabel",
+      "marks",
+      "isHoliday",
+      "dimPast",
+      "weekStart",
+      "markSunday",
+      "markSaturday",
+      "swipeable",
+      "style"
+    ]
   }
 }

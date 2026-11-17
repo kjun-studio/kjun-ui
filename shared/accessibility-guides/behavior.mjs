@@ -19,6 +19,7 @@ export const behavior = {
   time: '시·분·선택적인 초마다 Select를 조합하고 선택값을 시각 문자열로 전달합니다.',
   slider: '손잡이별 값과 범위·이름을 제공하며 step에 맞는 값을 전달합니다.',
   upload: '선택 영역과 추가 행은 버튼이며 숨은 파일 입력을 엽니다. 끌어다 놓기는 보조 경로이고, 고른 파일은 사전 검사 뒤 onSelect로 전달합니다. 행 삭제·다시 시도는 소비 코드가 처리합니다.',
+  calendar: '날짜 칸은 버튼이며 한 칸만 Tab 대상(roving tabindex)입니다. 화살표·Home·End·PageUp·PageDown으로 칸을 옮기고 Enter로 고르며 고른 날은 aria-pressed, 오늘은 aria-current="date"입니다. 칸 이름은 날짜·요일에 휴일 이름과 일정 수를 붙여 읽습니다. 길게 누르기는 Shift+Enter(터치·오른쪽 클릭도 같음)이며 onDayLongPress가 있을 때만 켜집니다. 달·주를 바꾸는 요청은 소비 코드가 처리합니다.',
   stepper: '수량 입력의 미확정 문자열을 관리하고 Enter·blur에서 확정합니다. 증감 버튼은 min·max·step을 적용합니다.',
   number: '입력과 붙여넣기에서 숫자·소수점·부호만 남기고 쉼표를 붙여 보여 줍니다. Enter·blur에서 소수 자릿수를 채우고 범위를 확인합니다. 값은 쉼표 없는 문자열입니다.',
   link: '웹은 링크 주소로 이동하고 Native는 프로젝트가 전달한 탐색 콜백을 호출합니다.',

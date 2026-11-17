@@ -151,6 +151,7 @@ set("DatePicker DateRangePicker", {
 set("DatePicker DateRangePicker", {
   weekStart: { type: "0 | 1 | 2 | 3 | 4 | 5 | 6", default: "0", summary: "주의 첫 요일입니다. 0은 일요일, 1은 월요일입니다. 요일 머리글과 Home·End 이동이 함께 바뀝니다." },
   markSunday: { default: "true", summary: "일요일을 danger 역할로 칠합니다. 한국 달력 관례를 따르는 기본값이며, 끄면 일요일도 다른 요일과 같은 색입니다." },
+  markSaturday: { default: "true", summary: "토요일을 info 역할로 칠합니다. 끄면 토요일도 다른 요일과 같은 색입니다." },
   isDateUnavailable: { type: "(iso: string) => boolean", summary: "min·max 안에서 고를 수 없는 날짜(휴일·마감일 등)를 앱이 알려 줍니다. 그런 날은 흐린 취소선으로 보이고, 방향키로는 지나갈 수 있지만 고를 수 없습니다. 기간은 이런 날을 가로지를 수 없어 그 너머를 고르면 거기서 새 기간을 시작합니다." },
 });
 set("DateRangePicker", {

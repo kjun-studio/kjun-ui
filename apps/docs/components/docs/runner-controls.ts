@@ -48,6 +48,7 @@ const hints: Record<string, string> = {
   KjunSplitPane: '가운데 경계를 끌어 보세요. 경계에 포커스를 두면 화살표·Home·End·Enter로도 조절합니다.',
   KjunSteps: '현재 단계를 바꾸고 오류·축약형·세로 배치를 비교해 보세요. 완료된 단계를 누르면 선택 결과가 표시됩니다(축약형 제외).',
   KjunCarousel: '옆으로 넘기거나 점을 눌러 보세요. 영역에 포커스를 두면 화살표 키로도 넘어갑니다.',
+  KjunEventCalendar: '날짜를 눌러 고르고 이전·다음 버튼으로 달을 넘겨 보세요. 설정에서 한 주 보기와 길게 눌러 추가를 켤 수 있습니다.',
   KjunFloatingNavigation: '목적지를 선택해 보세요. 아이콘만 보이는 목적지도 이름으로 읽힙니다.',
   KjunBottomActionBar: '긴 안내 문구와 안전 영역을 바꿔 하단 행동의 배치를 확인하세요.',
   KjunTopNavigation: '긴 제목과 안전 영역을 바꿔 탐색·저장 버튼의 배치를 확인하세요.',

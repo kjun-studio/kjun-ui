@@ -20,7 +20,7 @@ for (const statement of helperFile.statements) {
   if (ts.isFunctionDeclaration(statement) && statement.name.text === 'createExampleTools')
     statement.body.statements.forEach(item => declarations(item, helperFile));
 }
-for (const path of ['previews/catalog/example-icons.ts', 'previews/catalog/example-interaction.ts', 'previews/catalog/example-accessibility.ts', 'previews/catalog/example-motion.ts', 'previews/catalog/example-card.ts', 'previews/catalog/example-controls.ts', 'previews/catalog/example-data.ts', 'previews/catalog/example-layouts.ts', 'previews/catalog/example-extensions.ts', 'previews/catalog/example-recipes.ts', 'previews/catalog/example-design-cases.ts', 'previews/catalog/example-foundations.ts']) {
+for (const path of ['previews/catalog/example-icons.ts', 'previews/catalog/example-interaction.ts', 'previews/catalog/example-accessibility.ts', 'previews/catalog/example-motion.ts', 'previews/catalog/example-card.ts', 'previews/catalog/example-controls.ts', 'previews/catalog/example-data.ts', 'previews/catalog/example-layouts.ts', 'previews/catalog/example-extensions.ts', 'previews/catalog/example-event-calendar.ts', 'previews/catalog/example-recipes.ts', 'previews/catalog/example-design-cases.ts', 'previews/catalog/example-foundations.ts']) {
   const file = parse(path, await read(path));
   const fn = file.statements.find(ts.isFunctionDeclaration);
   const block = fn.body.statements.find(ts.isSwitchStatement);

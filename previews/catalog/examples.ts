@@ -8,6 +8,7 @@ import { createExampleTools, type ExampleContext } from "./example-tools";
 import { renderDataExample } from "./example-data";
 import { renderControlExample } from "./example-controls";
 import { renderExtensionExample } from "./example-extensions";
+import { renderEventCalendarExample } from "./example-event-calendar";
 import { renderRecipeExample } from "./example-recipes";
 import { renderDesignExample } from "./example-design-cases";
 export type { ExampleRenderer, ExampleContext } from "./example-tools";
@@ -44,7 +45,7 @@ export function renderExample(name: string, context: ExampleContext) {
   const tools = createExampleTools(context);
   const interaction = renderIconExample(name, tools) ?? renderInteractionExample(name, tools);
   if (interaction !== undefined) return interaction;
-  const extension = renderAccessibilityExample(name, tools) ?? renderMotionExample(name, tools) ?? renderCardExample(name, tools) ?? renderFoundationExample(name, tools) ?? renderExtensionExample(name, tools) ?? renderRecipeExample(name, tools) ?? renderDesignExample(name, tools);
+  const extension = renderAccessibilityExample(name, tools) ?? renderMotionExample(name, tools) ?? renderCardExample(name, tools) ?? renderFoundationExample(name, tools) ?? renderExtensionExample(name, tools) ?? renderEventCalendarExample(name, tools) ?? renderRecipeExample(name, tools) ?? renderDesignExample(name, tools);
   if (extension !== undefined) return extension;
   return dataNames.has(name)
     ? renderDataExample(name, tools)

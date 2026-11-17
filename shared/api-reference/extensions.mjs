@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { detail, event, slot, fields } from "./helpers.mjs";
+import { eventCalendarProp, eventCalendarEvents, eventCalendarTypes } from "./event-calendar.mjs";
 const bindings = JSON.parse(readFileSync(new URL("./extensions.json", import.meta.url), "utf8"));
 const guides = JSON.parse(readFileSync(new URL("../component-guides.json", import.meta.url), "utf8"));
 const summaries = {
@@ -306,6 +307,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
       entry = key.startsWith("on") ? fileUploadCallbacks[key] : fileUploadSummaries[key] ? { summary: fileUploadSummaries[key] } : undefined;
       if (!entry) throw Error("Missing extension prop description: " + name + "." + key);
     }
+    else if (name === "KjunEventCalendar") entry = eventCalendarProp(key, platform);
     else if (name === "KjunSplitPane") {
       entry = key.startsWith("on") ? callback(name, key, platform) : splitPaneSlots[key] ?? (splitPaneSummaries[key] ? { summary: splitPaneSummaries[key] } : undefined);
       if (!entry) throw Error("Missing extension prop description: " + name + "." + key);
@@ -372,6 +374,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (platform === "vue3") {
     const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper", "KjunNumberInput"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : name === "KjunAvatarGroup" ? { click: "onClick" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunSteps" ? { "step-select": "onStepSelect" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange", "update:expanded": "onExpandedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange", "update:order": "onOrderChange", reorder: "onReorder" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
+    if (name === "KjunEventCalendar") Object.assign(events, eventCalendarEvents);
     const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions", "expanded"], KjunListSection: ["actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"], KjunNumberInput: ["prefix", "suffix"] }[name] || [];
     for (const key of slotNames) {
       if (name === "KjunColorPicker") { slots[key] = colorTriggerSlot; continue; }
@@ -379,5 +382,5 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
       slots[key] = { ...definition, details: definition.details.map(row => row.label === "슬롯 데이터" ? { ...row, text: "제공 데이터 없음" } : row) };
     }
   }
-  return [platform, { props, events, slots, ownership: [guides[name].interaction, guides[name].differences], types: name === "KjunFileUpload" ? fileUploadTypes : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? [fields("NavigationDestination", "목적지 목록의 항목입니다.", [["key", "string", "고유한 목적지 key"], ["label", "string", "전체 목적지 이름"], ["href", platform === "native" ? "string | undefined" : "string", "웹 이동 주소. Native에서는 앱 콜백으로 이동합니다."], ["icon", "string | undefined", "보조 아이콘"], ["badge", "string | number | boolean | undefined", "보조 수치 또는 짧은 라벨. true는 점으로 표시하고 99보다 큰 숫자는 99+로 줄입니다."], ["disabled", "boolean | undefined", "이 목적지 이동 비활성"]])] : [] }];
+  return [platform, { props, events, slots, ownership: [guides[name].interaction, guides[name].differences], types: name === "KjunFileUpload" ? fileUploadTypes : name === "KjunEventCalendar" ? eventCalendarTypes(platform) : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? [fields("NavigationDestination", "목적지 목록의 항목입니다.", [["key", "string", "고유한 목적지 key"], ["label", "string", "전체 목적지 이름"], ["href", platform === "native" ? "string | undefined" : "string", "웹 이동 주소. Native에서는 앱 콜백으로 이동합니다."], ["icon", "string | undefined", "보조 아이콘"], ["badge", "string | number | boolean | undefined", "보조 수치 또는 짧은 라벨. true는 점으로 표시하고 99보다 큰 숫자는 99+로 줄입니다."], ["disabled", "boolean | undefined", "이 목적지 이동 비활성"]])] : [] }];
 }))]));

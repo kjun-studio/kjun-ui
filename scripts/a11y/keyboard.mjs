@@ -175,6 +175,26 @@ export async function verifyKeyboard(page, d, note) {
     }
     note('키보드 링크 목적지·콜백 실행'); return;
   }
+  if (profile === 'calendar') {
+    // The long press only exists when the app listens, so turn it on first.
+    await configure(page, { longPress: true });
+    const label = () => page.evaluate(() => document.activeElement?.getAttribute('aria-label') || '');
+    const onDay = async () => /\d+월 \d+일/.test(await label());
+    for (let index = 0; index < 60 && !(await onDay()); index++) await page.keyboard.press('Tab');
+    expect(await onDay(), 'Tab으로 날짜 칸에 도달해야 합니다').toBe(true);
+    if (d.platform !== 'native') {
+      const start = await label(); await page.keyboard.press('ArrowRight');
+      expect(await label(), '화살표로 이웃 날로 이동').not.toBe(start);
+      const picked = await snapshot(page); await page.keyboard.press('Enter'); await stateChanged(page, picked);
+      await expect(page.locator(':focus')).toHaveAttribute('aria-pressed', 'true');
+      const held = await snapshot(page); await page.keyboard.press('Shift+Enter'); await stateChanged(page, held);
+      note('날짜 칸 Tab 진입·화살표 이동·Enter 고르기·Shift+Enter 길게 누르기');
+    } else {
+      const before = await snapshot(page); await page.keyboard.press('Enter'); await stateChanged(page, before);
+      note('날짜 칸 Tab 진입·Enter 고르기 (Native Web은 화살표 이동·Shift+Enter 없음)');
+    }
+    return;
+  }
   if (profile === 'tab-order') {
     for (const control of await controls(page).all()) { await tabTo(page, control); await expect(control).toBeFocused(); }
     note('공급한 모든 버튼의 Tab 순서'); return;

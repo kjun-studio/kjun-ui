@@ -37,7 +37,7 @@ const kebab = (name: string) => name.replace(/[A-Z]/g, c => '-' + c.toLowerCase(
 export class Expression { constructor(public code: string) {} }
 /** Vue 3 components whose value is v-model (modelValue / update:modelValue). */
 export const vueModelComponents = new Set(['KjunInput', 'KjunTextarea', 'KjunCheckbox', 'KjunSwitch', 'KjunRadio', 'KjunRadioGroup', 'KjunButtonGroup', 'KjunFilterGroup',
-  'KjunSlider', 'KjunRangeSlider', 'KjunQuantityStepper', 'KjunNumberInput', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunDateRangePicker', 'KjunTimePicker', 'KjunColorPicker', 'KjunTabs', 'KjunListSection']);
+  'KjunSlider', 'KjunRangeSlider', 'KjunQuantityStepper', 'KjunNumberInput', 'KjunSelect', 'KjunCombobox', 'KjunSearchInput', 'KjunDatePicker', 'KjunDateRangePicker', 'KjunTimePicker', 'KjunColorPicker', 'KjunTabs', 'KjunListSection', 'KjunEventCalendar']);
 class Handler extends Expression {}
 export const expr = (code: string) => new Expression(code);
 
@@ -107,9 +107,9 @@ export class UsageBuilder {
     const attributes: string[] = [];
     if (this.vue) {
       // v-model pairs a state value with the update handler that writes it back.
-      for (const [valueKey, eventKey, model] of [['value', 'onValueChange', 'v-model'], ['open', 'onOpenChange', 'v-model:open']] as const) {
+      for (const [valueKey, eventKey, model] of [['value', 'onValueChange', 'v-model'], ['open', 'onOpenChange', 'v-model:open'], ['month', 'onMonthChange', 'v-model:month'], ['week', 'onWeekChange', 'v-model:week']] as const) {
         const value = props[valueKey], handler = props[eventKey];
-        if (value instanceof Expression && handler instanceof Handler && handler.code === `${value.code} = $event` && (valueKey === 'open' || vueModelComponents.has(name))) {
+        if (value instanceof Expression && handler instanceof Handler && handler.code === `${value.code} = $event` && (valueKey !== 'value' || vueModelComponents.has(name))) {
           attributes.push(`${model}="${attribute(vueCode(value.code))}"`);
           props = Object.fromEntries(Object.entries(props).filter(([key]) => key !== valueKey && key !== eventKey));
         }

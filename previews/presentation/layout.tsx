@@ -33,6 +33,11 @@ export function layout(name: string) {
     case 'KjunSplitPane': return <div style={{ height: 160 }}><K.KjunSplitPane ariaLabel="메시지 목록 크기" defaultSize={0.6} first={<K.KjunCard title="메시지 목록" subtitle="첫 패널" />} second={<K.KjunCard title="상세 내용" subtitle="둘째 패널" />} /></div>;
     case 'KjunCarousel': return <K.KjunCarousel ariaLabel="추천 콘텐츠" slideSize="peek" gap="sm">{['이번 주 추천', '팀 공간', '알림 정리'].map((title, i) => <K.KjunCard key={title} title={title} subtitle="새 소식을 확인하세요" border media={<K.KjunImage src={sampleImage(i)} alt="" decorative aspectRatio={2} lazy={false} />} />)}</K.KjunCarousel>;
     case 'KjunSteps': return <K.KjunSteps ariaLabel="주문 진행" items={['약관 동의', '배송지', '결제', '주문 확인', '완료'].map(label => ({ label }))} current={2} />;
+    // A fixed past month keeps the capture the same on every day; the marks use the docs demo palette.
+    case 'KjunEventCalendar': return <K.KjunEventCalendar month="2026-09" value="2026-09-17" dimPast={false} swipeable={false}
+      marks={iso => iso === '2026-09-03' ? { dots: ['var(--kjun-success)'] } : iso === '2026-09-08' ? { dots: ['var(--kjun-brand)', 'var(--kjun-warning)'], count: 2 } : iso === '2026-09-10' ? { icon: { name: 'heart', color: 'var(--kjun-brand)' } }
+        : iso >= '2026-09-14' && iso <= '2026-09-16' ? { spans: [{ color: 'var(--kjun-warning)', start: '2026-09-14', end: '2026-09-16' }] } : undefined}
+      isHoliday={iso => iso >= '2026-09-24' && iso <= '2026-09-26' ? '추석' : false} />;
     case 'KjunImage': return <div className="presentation-image"><K.KjunImage src="/brand/kjun-symbol.svg" alt="KJUN 심볼" aspectRatio={16 / 9} fit="contain" lazy={false} /></div>;
   }
 }

@@ -977,6 +977,22 @@
       ]
     },
     {
+      "name": "KjunEventCalendar",
+      "category": "data-display",
+      "aliases": [
+        "일정 달력",
+        "캘린더",
+        "월간 달력",
+        "주간 달력",
+        "스케줄",
+        "Event calendar",
+        "Calendar"
+      ],
+      "useCases": [
+        "모바일 화면 구성"
+      ]
+    },
+    {
       "name": "KjunAvatar",
       "category": "data-display",
       "aliases": [

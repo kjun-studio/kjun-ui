@@ -65,6 +65,11 @@ export const extensions: Record<string, GuideAuthor> = {
     related: "app-screen",
     states: [{ id: "peek", label: "다음 카드 보이기", description: "다음 슬라이드를 24px 보여 넘길 수 있음을 알립니다.", settings: { slideSize: "peek", gap: "sm" } }, { id: "cards", label: "카드 줄", description: "섹션 제목 오른쪽에 이전·다음 버튼을 둡니다.", settings: { slideSize: "auto", indicators: "none", title: true } }, { id: "second", label: "두 번째 슬라이드", description: "앱이 index로 두 번째 슬라이드를 엽니다.", values: { slide: 1 } }],
   },
+  KjunEventCalendar: {
+    parts: [p("날짜 칸", "누르면 그 날을 고르는 버튼입니다. 오늘은 알약, 고른 날은 둥근 사각형이며 테두리는 없습니다.", ".kjun-event-calendar-grid button"), p("일정 표시", "날짜 아래의 점·아이콘·막대입니다. 색은 앱이 넘기고 막대는 칸을 가로질러 이어집니다.", ".kjun-event-calendar-marks, .kjun-event-calendar-span")],
+    related: "app-screen",
+    states: [{ id: "week", label: "한 주 보기", description: "카드 안에 한 주만 그립니다. 아무 날도 고르지 않은 채 시작하고 스와이프는 끕니다.", settings: { view: "week", swipeable: false } }, { id: "long-press", label: "길게 눌러 추가", description: "날짜를 길게 누르면(웹은 오른쪽 클릭·Shift+Enter) 앱이 약속을 추가하고 점을 표시합니다.", settings: { longPress: true } }],
+  },
   KjunAvatar: {
     parts: [p("프로필 영역", "이미지가 없으면 이름의 첫 글자를 표시하며 접근성 이름은 전체 이름을 유지합니다.", '[aria-label="김하늘"]')], related: "generic-lists",
     states: [{ id: "photo", label: "사진", description: "실제 이미지 주소를 제공합니다.", settings: { imageState: "사진" } }, { id: "failure", label: "실패 대체", description: "사진 실패 시 이름의 첫 글자로 돌아갑니다.", settings: { imageState: "실패" } }],
