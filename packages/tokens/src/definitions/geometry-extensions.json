@@ -83,6 +83,13 @@
         "leadingRadius": { "$ref": "radius.radius12" },
         "leadingIconSize": { "$ref": "dimension.value20" },
         "groupGap": { "$ref": "dimension.value20" }
+      },
+      "details": {
+        "minimumHeight": { "$ref": "dimension.value32" },
+        "paddingY": { "$ref": "dimension.value6" },
+        "listPaddingY": { "$ref": "dimension.value10" },
+        "titleMaxPercent": 40,
+        "emphasizedGap": { "$ref": "dimension.value8" }
       }
     },
     "navigation": {

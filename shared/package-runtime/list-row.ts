@@ -35,8 +35,10 @@ export type ListTypeRole = "label" | "input" | "caption" | "body";
  * row skeletons: vertical and horizontal padding, gap, minimum height, actions padding and the title, description and
  * end value type roles.
  */
-export function listRowMetrics({ open, compact }: { open: boolean; compact: boolean }) {
-  const list = tokens.extensions.list, o = list.open;
+export function listRowMetrics({ open, compact, details = false }: { open: boolean; compact: boolean; details?: boolean }) {
+  const list = tokens.extensions.list, o = list.open, d = list.details;
+  // A details section's rows are read, not pressed: 32 tall, the label in the body type and the value one step heavier.
+  if (details) return { paddingY: d.paddingY, paddingX: list.padding, gap: list.gap, minimumHeight: d.minimumHeight, actionsPadding: list.actionsPadding, title: "body" as ListTypeRole, description: "caption" as ListTypeRole, trailing: "label" as ListTypeRole };
   return open
     ? { paddingY: compact ? o.compactPaddingY : o.paddingY, paddingX: o.paddingX, gap: o.gap, minimumHeight: compact ? o.compactMinimumHeight : o.minimumHeight, actionsPadding: o.paddingX, title: "input" as ListTypeRole, description: "body" as ListTypeRole, trailing: "label" as ListTypeRole }
     : { paddingY: compact ? list.compactPaddingY : list.padding, paddingX: list.padding, gap: list.gap, minimumHeight: compact ? list.compactMinimumHeight : list.minimumHeight, actionsPadding: list.actionsPadding, title: "label" as ListTypeRole, description: "caption" as ListTypeRole, trailing: "body" as ListTypeRole };
@@ -76,8 +78,9 @@ const warnOnce = (key: string, when: unknown, message: string, component = "List
  * no onPress) has nowhere to go, since only the web follows href; `looseChoice` is a choice row outside a section with a
  * selection mode, so it cannot join one radio group.
  */
-export function warnListRowProps({ checked, selected, href, chevron, deviceLink, looseChoice, expanded }: { checked?: boolean; selected?: boolean; href?: string; chevron?: boolean; deviceLink?: boolean; looseChoice?: boolean; expanded?: boolean }) {
+export function warnListRowProps({ checked, selected, href, chevron, deviceLink, looseChoice, expanded, pressableDetails }: { checked?: boolean; selected?: boolean; href?: string; chevron?: boolean; deviceLink?: boolean; looseChoice?: boolean; expanded?: boolean; pressableDetails?: boolean }) {
   if (!developmentMode()) return;
+  warnOnce("details-press", pressableDetails, "a details section's rows are 32 tall, below the touch minimum, and read as information; put pressable rows in a default section.");
   warnOnce("device-link", deviceLink, "href only navigates on the web; on a device pass onPress and navigate with the app's router.");
   warnOnce("switch", checked !== undefined && (href || selected !== undefined || chevron), "a switch row (checked) ignores href, selected and chevron; give each row one role.");
   warnOnce("choice-link", checked === undefined && selected !== undefined && href, "a choice row (selected) is a button and ignores href; navigate in the press handler instead.");
@@ -85,10 +88,14 @@ export function warnListRowProps({ checked, selected, href, chevron, deviceLink,
   warnOnce("loose-choice", looseChoice, "a choice row (selected) is outside a section with selectionMode; set selectionMode on its KjunListSection so the rows read as one group.");
 }
 
-/** Development warning, once: an open section draws no dividers, so an explicit `divider` does nothing there. */
-export function warnListSectionProps({ open, divider }: { open: boolean; divider?: boolean }) {
+/**
+ * Development warnings, once each: an open section draws no dividers, so an explicit `divider` does nothing there; a
+ * details section keeps its own 32px rows, so `density` does nothing there.
+ */
+export function warnListSectionProps({ open, divider, details = false, compact = false }: { open: boolean; divider?: boolean; details?: boolean; compact?: boolean }) {
   if (!developmentMode()) return;
   warnOnce("open-divider", open && divider === true, "divider has no effect in an open section; open rows are set apart by space. Use the default variant for divided rows.", "ListSection");
+  warnOnce("details-density", details && compact, "density has no effect in a details section; its rows are always 32 tall.", "ListSection");
 }
 /**
  * Development warnings, once each, for a section selection that would otherwise be ignored without a word: a value
@@ -106,20 +113,24 @@ export function warnListSelection({ mode, value, handled }: { mode: ListSelectio
 
 export type ListSectionCorner = "none" | "sm" | "md" | "lg" | "xl";
 export type ListGroupVariant = "inset" | "flush" | "open";
-export type ListSectionVariant = "default" | "open";
+/** "details": rows that are read, not pressed, such as "Payment method / Visa": 32 tall, no dividers by default, the
+ * label in the secondary body type and the value in the text color, given the room the label leaves. */
+export type ListSectionVariant = "default" | "open" | "details";
+/** Where a row's trailing value sits: beside the text, on the title line, or on its own line under the title. */
+export type ListTrailingPosition = "side" | "title" | "below";
 /**
  * How a section draws, the same on every platform: whether it is open (rows on the page with no card or dividers; the
- * section's variant, or the KjunListGroup's), its card corner (the group's when unset; none when open), whether its title
+ * section's variant, or the KjunListGroup's) or details (read-only rows; only its own variant), its card corner (the group's when unset; none when open), whether its title
  * is the small label (a title without a description, unless titleVariant says otherwise) and whether its rows form a card
  * with the heading and footer outside it.
  */
 export function listSectionShape<R extends ListSectionCorner>({ radius, group, variant, title, description, titleVariant }: {
   radius?: R; group?: ListGroupVariant | null; variant?: ListSectionVariant; title?: string; description?: string; titleVariant?: "title" | "label";
 }) {
-  const open = (variant ?? (group === "open" ? "open" : "default")) === "open";
+  const resolved = variant ?? (group === "open" ? "open" : "default"), open = resolved === "open", details = resolved === "details";
   const corner: R | "lg" | "none" = open ? "none" : radius ?? (group === "inset" ? "lg" : "none");
   const bare = !!title && (titleVariant ? titleVariant === "label" : !description);
-  return { open, corner, bare, outside: corner !== "none" };
+  return { open, details, corner, bare, outside: corner !== "none" };
 }
 
 /**

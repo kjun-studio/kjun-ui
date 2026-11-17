@@ -200,6 +200,31 @@
 .kjun-list-mark[data-checked]{background:var(--_kjun-color-brand);box-shadow:none}
 .kjun-list-group[data-variant=open]{gap:var(--_kjun-extension-list-open-group-gap)}
 
+/* Details variant: rows that are read, not pressed ("Payment method / Visa"). They are 32 tall and set apart by space
+   (dividers only when asked), and the list adds the rest of the card's 16px inset above and below them. The label is
+   the secondary body type, the value the text color one weight up; the label takes at most 40% and wraps, the value the
+   rest. A short value keeps the row's end line, and a value that wraps reads from its start like a sentence, while its
+   box keeps that end line. Both start on the first line. */
+.kjun-list[data-variant=details]{padding-block:var(--_kjun-extension-list-details-list-padding-y)}
+.kjun-list[data-variant=details]>.kjun-list-row{--_kjun-list-title-line:var(--_kjun-type-body-line);--_kjun-list-padding-y:var(--_kjun-extension-list-details-padding-y);--_kjun-list-minimum-height:var(--_kjun-extension-list-details-minimum-height)}
+.kjun-list[data-variant=details] .kjun-list-main{align-items:baseline}
+.kjun-list[data-variant=details] .kjun-list-title{font-size:var(--_kjun-type-body-size);line-height:var(--_kjun-type-body-line);font-weight:var(--_kjun-type-body-weight);letter-spacing:var(--_kjun-type-body-tracking);color:var(--_kjun-color-text-secondary)}
+.kjun-list[data-variant=details] .kjun-list-body{flex:0 0 auto;max-width:var(--_kjun-extension-list-details-title-max-percent)}
+.kjun-list[data-variant=details] .kjun-list-trailing{max-width:none;font-size:var(--_kjun-type-label-size);line-height:var(--_kjun-type-label-line);font-weight:var(--_kjun-type-label-weight);letter-spacing:var(--_kjun-type-label-tracking);color:var(--_kjun-color-text)}
+.kjun-list[data-variant=details] .kjun-list-main > .kjun-list-trailing{display:block;flex:0 1 auto;min-width:0;min-height:0;margin-inline-start:auto;text-align:start}
+/* A value that closes the list (a total) keeps a little more room above it. */
+.kjun-list[data-variant=details]>.kjun-list-row[data-emphasized]:last-child:not(:first-child){padding-top:var(--_kjun-extension-list-details-emphasized-gap)}
+
+/* trailingPosition="below": the value takes its own line under the title, from the text's start and across its width,
+   for long values such as an address or a note. */
+.kjun-list-body > .kjun-list-trailing{display:block;max-width:none;margin-top:var(--_kjun-extension-list-description-gap);text-align:start}
+.kjun-list-row[data-trailing=below] > .kjun-list-main > .kjun-list-body{flex:1;max-width:none}
+
+/* emphasized: the row a list leads to, such as a total or a balance: the title in the text color one weight up, the
+   value in the large number type. Size and weight only, never color, so the app's meaning colors stay its own. */
+.kjun-list-row[data-emphasized] .kjun-list-title{font-weight:var(--_kjun-type-label-strong-weight);color:var(--_kjun-color-text)}
+.kjun-list-row[data-emphasized] .kjun-list-trailing{font-size:var(--_kjun-type-number-lg-size);line-height:var(--_kjun-type-number-lg-line);font-weight:var(--_kjun-type-number-lg-weight);letter-spacing:var(--_kjun-type-number-lg-tracking);color:var(--_kjun-color-text)}
+
 /* In place of rows: loading content (a row skeleton, which brings its own row inset) or the empty note. */
 .kjun-list-loading{min-width:0}
 /* The empty note stays lighter than the labels and rows around it: one row tall, in the secondary body type. */

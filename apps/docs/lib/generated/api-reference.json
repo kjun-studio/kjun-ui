@@ -30689,11 +30689,11 @@
           },
           {
             "name": "trailingPosition",
-            "type": "\"title\" | \"side\"",
+            "type": "\"title\" | \"side\" | \"below\"",
             "required": false,
             "default": "\"side\"",
-            "description": "Where the trailing value sits: \"side\" (default) is a column beside the whole text; \"title\" puts it on the title line, so the\ndescription and children keep the full text width whatever the value's length (rows with a budget bar line up).",
-            "summary": "끝 칸 값의 자리입니다. side(기본값)는 글 전체 옆의 별도 열이고, title은 제목과 같은 줄입니다. title이면 설명과 children이 값의 길이와 무관하게 글 폭 전체를 써서, 막대가 있는 행들의 끝선이 맞습니다.",
+            "description": "Where the trailing value sits: \"side\" (default) is a column beside the whole text; \"title\" puts it on the title line, so the\ndescription and children keep the full text width whatever the value's length (rows with a budget bar line up);\n\"below\" gives it its own line under the title across the text width, for long values such as an address.",
+            "summary": "끝 칸 값의 자리입니다. side(기본값)는 글 전체 옆의 별도 열이고, title은 제목과 같은 줄, below는 제목 아래 자기 줄(글 폭 전체, 시작 정렬)입니다. below는 주소·메모처럼 긴 값에 씁니다. title이면 설명과 children이 값의 길이와 무관하게 글 폭 전체를 써서, 막대가 있는 행들의 끝선이 맞습니다.",
             "source": "packages/vue3/src/list.tsx"
           },
           {
@@ -30730,6 +30730,15 @@
             "default": "false",
             "description": "Draws the title in the danger role, for rows such as \"Delete account\".",
             "summary": "제목을 danger 색으로 그립니다(계정 삭제 등). 설명 색과 동작은 그대로입니다.",
+            "source": "packages/vue3/src/list.tsx"
+          },
+          {
+            "name": "emphasized",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "The row the list leads to, such as a total or a balance: the title one weight up and the value in the large number\ntype, size and weight only. One or two per section; a details section keeps a little more room above it when it is last.",
+            "summary": "목록이 향하는 값(합계·잔액 등)을 강조합니다. 제목은 한 단계 굵게, 값은 큰 숫자체로 키우며 색은 바꾸지 않습니다.",
             "source": "packages/vue3/src/list.tsx"
           },
           {
@@ -31242,11 +31251,11 @@
           },
           {
             "name": "trailingPosition",
-            "type": "\"title\" | \"side\" | undefined",
+            "type": "\"title\" | \"below\" | \"side\" | undefined",
             "required": false,
             "default": "\"side\"",
-            "description": "Where the trailing value sits: \"side\" (default) is a column beside the whole text; \"title\" puts it on the title line, so the\ndescription and children keep the full text width whatever the value's length (rows with a budget bar line up).",
-            "summary": "끝 칸 값의 자리입니다. side(기본값)는 글 전체 옆의 별도 열이고, title은 제목과 같은 줄입니다. title이면 설명과 children이 값의 길이와 무관하게 글 폭 전체를 써서, 막대가 있는 행들의 끝선이 맞습니다.",
+            "description": "Where the trailing value sits: \"side\" (default) is a column beside the whole text; \"title\" puts it on the title line, so the\ndescription and children keep the full text width whatever the value's length (rows with a budget bar line up);\n\"below\" gives it its own line under the title across the text width, for long values such as an address.",
+            "summary": "끝 칸 값의 자리입니다. side(기본값)는 글 전체 옆의 별도 열이고, title은 제목과 같은 줄, below는 제목 아래 자기 줄(글 폭 전체, 시작 정렬)입니다. below는 주소·메모처럼 긴 값에 씁니다. title이면 설명과 children이 값의 길이와 무관하게 글 폭 전체를 써서, 막대가 있는 행들의 끝선이 맞습니다.",
             "source": "packages/react/src/list.tsx"
           },
           {
@@ -31283,6 +31292,15 @@
             "default": "false",
             "description": "Draws the title in the danger role, for rows such as \"Delete account\".",
             "summary": "제목을 danger 색으로 그립니다(계정 삭제 등). 설명 색과 동작은 그대로입니다.",
+            "source": "packages/react/src/list.tsx"
+          },
+          {
+            "name": "emphasized",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The row the list leads to, such as a total or a balance: the title one weight up and the value in the large number\ntype, size and weight only. One or two per section; a details section keeps a little more room above it when it is last.",
+            "summary": "목록이 향하는 값(합계·잔액 등)을 강조합니다. 제목은 한 단계 굵게, 값은 큰 숫자체로 키우며 색은 바꾸지 않습니다.",
             "source": "packages/react/src/list.tsx"
           },
           {
@@ -31711,11 +31729,11 @@
           },
           {
             "name": "trailingPosition",
-            "type": "\"side\" | \"title\" | undefined",
+            "type": "\"below\" | \"side\" | \"title\" | undefined",
             "required": false,
             "default": "\"side\"",
-            "description": "Where the trailing value sits: \"side\" (default) is a column beside the whole text; \"title\" puts it on the title line, so the\ndescription and children keep the full text width whatever the value's length (rows with a budget bar line up).",
-            "summary": "끝 칸 값의 자리입니다. side(기본값)는 글 전체 옆의 별도 열이고, title은 제목과 같은 줄입니다. title이면 설명과 children이 값의 길이와 무관하게 글 폭 전체를 써서, 막대가 있는 행들의 끝선이 맞습니다.",
+            "description": "Where the trailing value sits: \"side\" (default) is a column beside the whole text; \"title\" puts it on the title line, so the\ndescription and children keep the full text width whatever the value's length (rows with a budget bar line up);\n\"below\" gives it its own line under the title across the text width, for long values such as an address.",
+            "summary": "끝 칸 값의 자리입니다. side(기본값)는 글 전체 옆의 별도 열이고, title은 제목과 같은 줄, below는 제목 아래 자기 줄(글 폭 전체, 시작 정렬)입니다. below는 주소·메모처럼 긴 값에 씁니다. title이면 설명과 children이 값의 길이와 무관하게 글 폭 전체를 써서, 막대가 있는 행들의 끝선이 맞습니다.",
             "source": "packages/native/src/list.tsx"
           },
           {
@@ -31743,6 +31761,15 @@
             "default": "false",
             "description": "Draws the title in the danger role, for rows such as \"Delete account\".",
             "summary": "제목을 danger 색으로 그립니다(계정 삭제 등). 설명 색과 동작은 그대로입니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "emphasized",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The row the list leads to, such as a total or a balance: the title one weight up and the value in the large number\ntype, size and weight only. One or two per section; a details section keeps a little more room above it when it is last.",
+            "summary": "목록이 향하는 값(합계·잔액 등)을 강조합니다. 제목은 한 단계 굵게, 값은 큰 숫자체로 키우며 색은 바꾸지 않습니다.",
             "source": "packages/native/src/list.tsx"
           },
           {
@@ -32029,7 +32056,7 @@
             "type": "boolean",
             "required": false,
             "default": "true",
-            "description": "Draws dividers between rows (default true). An open section draws none; giving it true warns in development.",
+            "description": "Draws dividers between rows (default true; false in a details section). An open section draws none; giving it true warns in development.",
             "summary": "행 사이 구분선을 그립니다. 기본값 true이며 false면 선 없이 붙여 그립니다.",
             "source": "packages/vue3/src/list.tsx"
           },
@@ -32038,7 +32065,7 @@
             "type": "\"default\" | \"compact\"",
             "required": false,
             "default": "\"default\"",
-            "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56.",
+            "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. A details section keeps its own 32px rows.",
             "summary": "행 밀도입니다. 기본값 default는 높이 56, compact는 44(터치 최소 크기)에 위아래 여백 12이며 시작 여백 16은 같습니다.",
             "source": "packages/vue3/src/list.tsx"
           },
@@ -32053,15 +32080,19 @@
           },
           {
             "name": "variant",
-            "type": "\"default\" | \"open\"",
+            "type": "\"default\" | \"open\" | \"details\"",
             "required": false,
             "default": "—",
-            "description": "\"open\" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default \"default\", or \"open\" in an open KjunListGroup).",
+            "description": "\"open\" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default \"default\", or \"open\" in an open KjunListGroup).\n\"details\" is for rows that are read, not pressed (\"Payment method / Visa\"): 32 tall, no dividers, the label secondary and the value in the text color with the room the label leaves.",
             "summary": "행을 그리는 모양입니다.",
             "details": [
               {
                 "label": "default",
                 "text": "기본값입니다. 행을 구분선으로 나누고, radius나 그룹 inset이면 카드로 묶습니다."
+              },
+              {
+                "label": "details",
+                "text": "누르지 않고 읽는 항목·값 목록입니다(\"결제 수단 / 신한카드\"). 행은 32px(위아래 6), 목록 위아래에 10을 더해 카드 안쪽 여백 16을 맞추고, 구분선은 기본으로 그리지 않습니다. 라벨(title)은 보조 색 본문체(14/20/400)로 최대 40% 폭에서 줄바꿈하고, 값(trailing)은 글자색 14/20/500으로 남은 폭을 모두 씁니다. 짧은 값은 끝선에 붙고, 줄바꿈하는 값은 시작에서부터 읽힙니다. 라벨과 값은 첫 줄 기준선에 맞춥니다. 누르는 행을 넣으면 개발 모드에서 한 번 경고하고, density는 쓰지 않습니다."
               },
               {
                 "label": "open",
@@ -32077,7 +32108,7 @@
               },
               {
                 "label": "생략",
-                "text": "KjunListGroup의 variant가 open이면 open, 아니면 default입니다. open이면 radius는 쓰지 않습니다."
+                "text": "KjunListGroup의 variant가 open이면 open, 아니면 default입니다. details는 섹션에 직접 줄 때만 적용됩니다. open이면 radius는 쓰지 않습니다."
               }
             ],
             "source": "packages/vue3/src/list.tsx",
@@ -32467,7 +32498,7 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "true",
-            "description": "Draws dividers between rows (default true). An open section draws none; giving it true warns in development.",
+            "description": "Draws dividers between rows (default true; false in a details section). An open section draws none; giving it true warns in development.",
             "summary": "행 사이 구분선을 그립니다. 기본값 true이며 false면 선 없이 붙여 그립니다.",
             "source": "packages/react/src/list.tsx"
           },
@@ -32476,7 +32507,7 @@
             "type": "\"default\" | \"compact\" | undefined",
             "required": false,
             "default": "\"default\"",
-            "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56.",
+            "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. A details section keeps its own 32px rows.",
             "summary": "행 밀도입니다. 기본값 default는 높이 56, compact는 44(터치 최소 크기)에 위아래 여백 12이며 시작 여백 16은 같습니다.",
             "source": "packages/react/src/list.tsx"
           },
@@ -32491,15 +32522,19 @@
           },
           {
             "name": "variant",
-            "type": "\"default\" | \"open\"",
+            "type": "\"default\" | \"open\" | \"details\"",
             "required": false,
             "default": "—",
-            "description": "\"open\" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default \"default\", or \"open\" in an open KjunListGroup).",
+            "description": "\"open\" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default \"default\", or \"open\" in an open KjunListGroup).\n\"details\" is for rows that are read, not pressed (\"Payment method / Visa\"): 32 tall, no dividers, the label secondary and the value in the text color with the room the label leaves.",
             "summary": "행을 그리는 모양입니다.",
             "details": [
               {
                 "label": "default",
                 "text": "기본값입니다. 행을 구분선으로 나누고, radius나 그룹 inset이면 카드로 묶습니다."
+              },
+              {
+                "label": "details",
+                "text": "누르지 않고 읽는 항목·값 목록입니다(\"결제 수단 / 신한카드\"). 행은 32px(위아래 6), 목록 위아래에 10을 더해 카드 안쪽 여백 16을 맞추고, 구분선은 기본으로 그리지 않습니다. 라벨(title)은 보조 색 본문체(14/20/400)로 최대 40% 폭에서 줄바꿈하고, 값(trailing)은 글자색 14/20/500으로 남은 폭을 모두 씁니다. 짧은 값은 끝선에 붙고, 줄바꿈하는 값은 시작에서부터 읽힙니다. 라벨과 값은 첫 줄 기준선에 맞춥니다. 누르는 행을 넣으면 개발 모드에서 한 번 경고하고, density는 쓰지 않습니다."
               },
               {
                 "label": "open",
@@ -32515,7 +32550,7 @@
               },
               {
                 "label": "생략",
-                "text": "KjunListGroup의 variant가 open이면 open, 아니면 default입니다. open이면 radius는 쓰지 않습니다."
+                "text": "KjunListGroup의 variant가 open이면 open, 아니면 default입니다. details는 섹션에 직접 줄 때만 적용됩니다. open이면 radius는 쓰지 않습니다."
               }
             ],
             "source": "packages/react/src/list.tsx",
@@ -32882,7 +32917,7 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "true",
-            "description": "Draws dividers between rows (default true). An open section draws none; giving it true warns in development.",
+            "description": "Draws dividers between rows (default true; false in a details section). An open section draws none; giving it true warns in development.",
             "summary": "행 사이 구분선을 그립니다. 기본값 true이며 false면 선 없이 붙여 그립니다.",
             "source": "packages/native/src/list.tsx"
           },
@@ -32891,7 +32926,7 @@
             "type": "\"default\" | \"compact\" | undefined",
             "required": false,
             "default": "\"default\"",
-            "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56.",
+            "description": "\"compact\" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. A details section keeps its own 32px rows.",
             "summary": "행 밀도입니다. 기본값 default는 높이 56, compact는 44(터치 최소 크기)에 위아래 여백 12이며 시작 여백 16은 같습니다.",
             "source": "packages/native/src/list.tsx"
           },
@@ -32906,15 +32941,19 @@
           },
           {
             "name": "variant",
-            "type": "\"default\" | \"open\"",
+            "type": "\"default\" | \"open\" | \"details\"",
             "required": false,
             "default": "—",
-            "description": "\"open\" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default \"default\", or \"open\" in an open KjunListGroup).",
+            "description": "\"open\" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default \"default\", or \"open\" in an open KjunListGroup).\n\"details\" is for rows that are read, not pressed (\"Payment method / Visa\"): 32 tall, no dividers, the label secondary and the value in the text color with the room the label leaves.",
             "summary": "행을 그리는 모양입니다.",
             "details": [
               {
                 "label": "default",
                 "text": "기본값입니다. 행을 구분선으로 나누고, radius나 그룹 inset이면 카드로 묶습니다."
+              },
+              {
+                "label": "details",
+                "text": "누르지 않고 읽는 항목·값 목록입니다(\"결제 수단 / 신한카드\"). 행은 32px(위아래 6), 목록 위아래에 10을 더해 카드 안쪽 여백 16을 맞추고, 구분선은 기본으로 그리지 않습니다. 라벨(title)은 보조 색 본문체(14/20/400)로 최대 40% 폭에서 줄바꿈하고, 값(trailing)은 글자색 14/20/500으로 남은 폭을 모두 씁니다. 짧은 값은 끝선에 붙고, 줄바꿈하는 값은 시작에서부터 읽힙니다. 라벨과 값은 첫 줄 기준선에 맞춥니다. 누르는 행을 넣으면 개발 모드에서 한 번 경고하고, density는 쓰지 않습니다."
               },
               {
                 "label": "open",
@@ -32930,7 +32969,7 @@
               },
               {
                 "label": "생략",
-                "text": "KjunListGroup의 variant가 open이면 open, 아니면 default입니다. open이면 radius는 쓰지 않습니다."
+                "text": "KjunListGroup의 variant가 open이면 open, 아니면 default입니다. details는 섹션에 직접 줄 때만 적용됩니다. open이면 radius는 쓰지 않습니다."
               }
             ],
             "source": "packages/native/src/list.tsx",

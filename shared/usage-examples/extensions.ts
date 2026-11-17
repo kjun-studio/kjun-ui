@@ -9,6 +9,16 @@ export function generate(input: UsageInput) {
   let content: string;
   switch (name) {
     case 'KjunListSection':
+      // A details section: label and value pairs that are read, not pressed, closed by an emphasized total.
+      if (s.variant === 'details') {
+        content = b.node('KjunListSection', { title: '결제 정보', variant: 'details' }, [
+          b.node('KjunListRow', { title: '결제 수단' }, '', { trailing: b.text('신한카드 (1234)') }),
+          b.node('KjunListRow', { title: '승인 번호' }, '', { trailing: b.text('30418827') }),
+          b.node('KjunListRow', { title: '배송 메모', trailingPosition: 'below' }, '', { trailing: b.text('문 앞에 두고 벨은 누르지 말아 주세요.') }),
+          b.node('KjunListRow', { title: '총 결제 금액', emphasized: true }, '', { trailing: b.text('29,000원') }),
+        ].join('\n'));
+        break;
+      }
       // A single choice the section owns: rows carry values, the section the chosen one.
       content = b.node('KjunListSection', { title: '화면 테마', description: '앱의 색 모드를 고릅니다.', variant: s.variant === 'open' ? 'open' : undefined, selectionMode: 'single', value: b.state('theme', 'system'), onValueChange: b.update('theme') }, [
         b.node('KjunListRow', { title: '밝게', icon: s.variant === 'open' ? 'sun' : undefined, value: 'light' }),

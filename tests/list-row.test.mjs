@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { linkRel, listRowChoice, listRowEnd, listRowKind, listRowMetrics, listSectionShape, warnListSectionProps, warnListSelection } from '../shared/package-runtime/list-row.ts';
+import { linkRel, listRowChoice, listRowEnd, listRowKind, listRowMetrics, listSectionShape, warnListRowProps, warnListSectionProps, warnListSelection } from '../shared/package-runtime/list-row.ts';
 import { listLeadingGeometry, listRowBleed } from '../shared/package-runtime/list-leading.ts';
 
 test('a switch row wins, a row given selected is a radio, then link, button and static', () => {
@@ -32,9 +32,9 @@ test('a section that owns its value selects rows by value and reports the next v
 });
 
 test('an open section has no card; its group or its own variant opens it', () => {
-  assert.deepEqual(listSectionShape({ group: 'open', title: 'a' }), { open: true, corner: 'none', bare: true, outside: false });
+  assert.deepEqual(listSectionShape({ group: 'open', title: 'a' }), { open: true, details: false, corner: 'none', bare: true, outside: false });
   assert.equal(listSectionShape({ variant: 'open', group: 'inset', radius: 'md' }).corner, 'none');
-  assert.deepEqual(listSectionShape({ group: 'open', variant: 'default', radius: 'md' }), { open: false, corner: 'md', bare: false, outside: true });
+  assert.deepEqual(listSectionShape({ group: 'open', variant: 'default', radius: 'md' }), { open: false, details: false, corner: 'md', bare: false, outside: true });
   assert.equal(listSectionShape({ group: 'inset' }).open, false);
 });
 
@@ -92,6 +92,38 @@ test('row metrics follow the section variant and density, like the web row varia
   assert.deepEqual(listRowMetrics({ open: true, compact: false }), { paddingY: 12, paddingX: 12, gap: 14, minimumHeight: 64, actionsPadding: 12, title: 'input', description: 'body', trailing: 'label' });
   assert.equal(listRowMetrics({ open: true, compact: true }).minimumHeight, 56);
   assert.equal(listRowMetrics({ open: true, compact: true }).paddingY, 8);
+});
+
+test('a details section reads its rows: 32 tall, body label, label-weight value, density ignored', () => {
+  const details = { paddingY: 6, paddingX: 16, gap: 12, minimumHeight: 32, actionsPadding: 16, title: 'body', description: 'caption', trailing: 'label' };
+  assert.deepEqual(listRowMetrics({ open: false, compact: false, details: true }), details);
+  assert.deepEqual(listRowMetrics({ open: false, compact: true, details: true }), details);
+});
+
+test('details is a section variant of its own: never open, a card in an inset group, not inherited from the group', () => {
+  assert.deepEqual(listSectionShape({ variant: 'details', title: 'a' }), { open: false, details: true, corner: 'none', bare: true, outside: false });
+  assert.deepEqual(listSectionShape({ variant: 'details', group: 'inset' }), { open: false, details: true, corner: 'lg', bare: false, outside: true });
+  assert.equal(listSectionShape({ variant: 'details', group: 'open' }).open, false);
+  assert.equal(listSectionShape({ group: 'flush' }).details, false);
+});
+
+test('density on a details section and a pressable row in one warn once in development', t => {
+  const env = process.env.NODE_ENV, warnings = [];
+  process.env.NODE_ENV = 'development';
+  t.mock.method(console, 'warn', message => warnings.push(message));
+  try {
+    warnListSectionProps({ open: false, details: true });
+    warnListSectionProps({ open: false, details: false, compact: true });
+    warnListRowProps({ pressableDetails: false });
+    assert.deepEqual(warnings, []);
+    warnListSectionProps({ open: false, details: true, compact: true });
+    warnListSectionProps({ open: false, details: true, compact: true });
+    warnListRowProps({ pressableDetails: true });
+    warnListRowProps({ pressableDetails: true });
+    assert.equal(warnings.length, 2);
+    assert.match(warnings[0], /^KJUN ListSection: density has no effect in a details section/);
+    assert.match(warnings[1], /^KJUN ListRow: a details section's rows are 32 tall/);
+  } finally { if (env === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = env; }
 });
 
 test('a section value that would be ignored warns once in development', t => {

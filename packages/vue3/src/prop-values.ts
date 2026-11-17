@@ -168,7 +168,7 @@ export const kjunPropValues = Object.freeze({
   }),
   KjunListRow: Object.freeze({
     leadingSize: Object.freeze(["xs","sm","md","lg"] as const),
-    trailingPosition: Object.freeze(["side","title"] as const),
+    trailingPosition: Object.freeze(["below","side","title"] as const),
   }),
   KjunListSection: Object.freeze({
     density: Object.freeze(["compact","default"] as const),
@@ -177,7 +177,7 @@ export const kjunPropValues = Object.freeze({
     reorderControls: Object.freeze(["both","buttons","handle"] as const),
     selectionMode: Object.freeze(["multiple","none","single"] as const),
     titleVariant: Object.freeze(["label","title"] as const),
-    variant: Object.freeze(["default","open"] as const),
+    variant: Object.freeze(["default","details","open"] as const),
   }),
   KjunListSkeleton: Object.freeze({
     trailing: Object.freeze(["chevron","switch","value"] as const),

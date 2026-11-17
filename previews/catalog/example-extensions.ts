@@ -7,6 +7,14 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       const leadingSize = ['xs', 'sm', 'md', 'lg'].includes(settings.leadingSize) ? settings.leadingSize : undefined;
       const iconColor = settings.iconColor ? platform === 'native' ? colors.brand : 'var(--kjun-brand)' : undefined;
       const iconBackground = settings.iconBackground ? platform === 'native' ? colors.secondary : 'var(--kjun-secondary)' : undefined;
+      // A details section reads label and value pairs; its rows are never pressed, and a total closes it.
+      if (name === "KjunListSection" && settings.variant === "details") return h("KjunListSection", { title: "결제 정보", variant: "details" }, [
+        h("KjunListRow", { title: "결제 수단" }, undefined, { trailing: "신한카드 (1234)" }),
+        h("KjunListRow", { title: "승인 번호" }, undefined, { trailing: "30418827" }),
+        h("KjunListRow", { title: "배송지" }, undefined, { trailing: settings.long ? "서울특별시 성동구 왕십리로 222, 한양대학교 제1공학관 304호" : "서울 성동구 왕십리로 222" }),
+        h("KjunListRow", { title: "배송 메모", trailingPosition: "below" }, undefined, { trailing: "문 앞에 두고 벨은 누르지 말아 주세요." }),
+        h("KjunListRow", { title: "총 결제 금액", emphasized: true }, undefined, { trailing: "29,000원" }),
+      ]);
       return h("KjunListSection", { title: "설정", description: "계정과 알림을 관리합니다.", variant: settings.variant }, [
         h("KjunListRow", { title: settings.long ? "모든 기기에서 사용할 프로필과 계정 표시 이름" : "프로필 설정", description: "이름과 사진을 변경합니다.", leadingSize, disabled, ...action(() => set("message", "프로필 설정 열기")) }, undefined, { leading: h("KjunAvatar", { name: "김하늘", size: leadingSize ?? "sm" }), actions: h("KjunButton", { variant: "secondary", size: "sm", ...action(() => set("message", "프로필 공유")) }, "공유") }),
         h("KjunListRow", { icon: "bell", leadingSize, iconColor, iconBackground, title: "알림 받기", description: "행 어디를 눌러도 켜고 끕니다.", disabled, checked: get("notifications", true), onCheckedChange: change("notifications") }),

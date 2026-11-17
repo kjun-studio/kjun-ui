@@ -326,6 +326,11 @@
   --_kjun-extension-list-open-leading-radius: 12px;
   --_kjun-extension-list-open-leading-icon-size: 20px;
   --_kjun-extension-list-open-group-gap: 20px;
+  --_kjun-extension-list-details-minimum-height: 32px;
+  --_kjun-extension-list-details-padding-y: 6px;
+  --_kjun-extension-list-details-list-padding-y: 10px;
+  --_kjun-extension-list-details-title-max-percent: 40%;
+  --_kjun-extension-list-details-emphasized-gap: 8px;
   --_kjun-extension-list-icon-size: 20px;
   --_kjun-extension-list-end-icon-size: 16px;
   --_kjun-extension-navigation-minimum-height: 56px;

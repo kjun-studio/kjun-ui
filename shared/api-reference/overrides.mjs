@@ -393,14 +393,15 @@ for (const platform of ["react", "native"]) set("ListRow", {
   onExpandedChange: "펼침 상태를 바꾸려 할 때 다음 값으로 호출합니다. 받은 값을 expanded에 반영합니다.",
   expandedContent: "펼친 동안 행 아래에 보이는 내용입니다. 버튼 바깥이므로 버튼·링크를 넣을 수 있습니다.",
 }, platform);
-set("ListRow", { trailingPosition: { default: '"side"', summary: "끝 칸 값의 자리입니다. side는 글 전체 옆의 별도 열이고, title은 제목과 같은 줄입니다. title이면 설명과 children이 값의 길이와 무관하게 글 폭 전체를 써서, 막대가 있는 행들의 끝선이 맞습니다." } });
+set("ListRow", { emphasized: { default: "false", summary: "목록이 향하는 값(합계·잔액·예상 수령액 등)을 강조합니다. 제목은 글자색 600, 값은 큰 숫자체(20/28/700)로 키우며 색은 바꾸지 않습니다. 한 섹션에 하나, 많아도 둘까지 씁니다. details 섹션의 마지막 행이면 위에 8을 더 띄웁니다." } });
+set("ListRow", { trailingPosition: { default: '"side"', summary: "끝 칸 값의 자리입니다. side는 글 전체 옆의 별도 열, title은 제목과 같은 줄, below는 제목 아래 자기 줄(글 폭 전체, 시작 정렬)입니다. below는 주소·메모처럼 긴 값에 씁니다. title이면 설명과 children이 값의 길이와 무관하게 글 폭 전체를 써서, 막대가 있는 행들의 끝선이 맞습니다." } });
 for (const platform of ["vue3", "react"]) set("ListRow", {
   target: "링크 행을 여는 위치입니다. \"_blank\"이면 새 탭에서 열고 rel을 따로 주지 않으면 noopener noreferrer를 붙입니다.",
   rel: "링크의 rel입니다. 생략하면 target=\"_blank\"일 때 noopener noreferrer입니다.",
 }, platform);
 set("ListSection", {
-  divider: { default:"true", summary:"행 사이 구분선을 그립니다. false면 선 없이 붙여 그립니다." },
-  density: { default:'"default"', summary:'"compact"는 행 높이를 56에서 44(터치 최소 크기)로 줄이고 위아래 여백을 12로 둡니다. 시작 여백 16은 그대로라 다른 목록과 글자 위치가 맞습니다.' },
+  divider: { default:"true", summary:"행 사이 구분선을 그립니다. false면 선 없이 붙여 그립니다. details 섹션의 기본값은 false입니다." },
+  density: { default:'"default"', summary:'"compact"는 행 높이를 56에서 44(터치 최소 크기)로 줄이고 위아래 여백을 12로 둡니다. 시작 여백 16은 그대로라 다른 목록과 글자 위치가 맞습니다. details 섹션은 자기 32px 행을 쓰므로 density를 쓰지 않습니다.' },
 });
 set("DatePicker DateRangePicker", { clearable: { default:"false", summary:"값이 있을 때 달력 아이콘 앞에 지우기 버튼을 보입니다. 누르면 빈 문자열로 바꿉니다. 버튼 이름은 KjunProvider 문구(clearDate)를 따릅니다." } });
 set("FormGroup", { optional: { default:"false", summary:"라벨 뒤에 선택 입력 표시를 붙입니다. 문구는 KjunProvider의 locale·messages(optional)를 따르며 required와 함께 주면 required가 우선합니다." } });

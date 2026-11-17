@@ -10,7 +10,7 @@ import { ReorderContext, ReorderControls, useReorder, type KjunListReorderContro
 import { reorderPlace } from "../../../shared/package-runtime/reorder";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
-export type { ListChoiceValue, ListGroupVariant, ListSectionVariant } from "../../../shared/package-runtime/list-row";
+export type { ListChoiceValue, ListGroupVariant, ListSectionVariant, ListTrailingPosition } from "../../../shared/package-runtime/list-row";
 export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 export type { KjunListReorderControls, KjunListReorderMove } from "./reorder-controls";
 // The section's selection mode and, when it owns the value, that value (a single-choice list is a radiogroup). Whether
@@ -34,8 +34,9 @@ export interface KjunListRowProps {
   actions?: ReactNode;
   href?: string;
   /** Where the trailing value sits: "side" (default) is a column beside the whole text; "title" puts it on the title line, so the
-   * description and children keep the full text width whatever the value's length (rows with a budget bar line up). */
-  trailingPosition?: "side" | "title";
+   * description and children keep the full text width whatever the value's length (rows with a budget bar line up);
+   * "below" gives it its own line under the title across the text width, for long values such as an address. */
+  trailingPosition?: "side" | "title" | "below";
   /** Where a link row opens, e.g. "_blank" for a new tab; a new tab gets rel="noopener noreferrer" unless rel is given. */
   target?: string;
   /** The link's rel; by default "noopener noreferrer" for target="_blank". */
@@ -43,6 +44,9 @@ export interface KjunListRowProps {
   disabled?: boolean;
   /** Draws the title in the danger role, for rows such as "Delete account". */
   destructive?: boolean;
+  /** The row the list leads to, such as a total or a balance: the title one weight up and the value in the large number
+   * type, size and weight only. One or two per section; a details section keeps a little more room above it when it is last. */
+  emphasized?: boolean;
   /** Ends the row with a decorative chevron that marks it as navigation. */
   chevron?: boolean;
   /** One choice in a single-choice list: true draws a check at the end (in an open section or a multiple-choice list, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio. */
@@ -69,8 +73,8 @@ export interface KjunListRowProps {
   titleLines?: number;
   descriptionLines?: number;
 }
-export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, trailingPosition = "side", actions, href, target, rel, disabled = false, destructive = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onClick: ownClick, ariaLabel, children, titleLines, descriptionLines, expanded, onExpandedChange, expandedContent }: KjunListRowProps) {
-  const selection = useContext(ListSelectionContext), { open } = useContext(ListShapeContext), choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
+export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, trailingPosition = "side", actions, href, target, rel, disabled = false, destructive = false, emphasized = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onClick: ownClick, ariaLabel, children, titleLines, descriptionLines, expanded, onExpandedChange, expandedContent }: KjunListRowProps) {
+  const selection = useContext(ListSelectionContext), { open, details } = useContext(ListShapeContext), choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
   // In a reorderable section a row its order lists draws move buttons after its own actions.
   const reorder = useContext(ReorderContext), movable = !!reorder && !!reorderPlace(reorder.order, value);
   const expandable = listRowExpandable({ expanded, checked, selected, href });
@@ -82,7 +86,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   const content = useRef<HTMLSpanElement>(null), pressable = kind !== "static";
   const looseChoice = (kind === "radio" || kind === "checkbox") && selection.mode === "none";
   useEffect(() => { if (pressable) warnNestedControls(content.current, "KJUN ListRow: a pressable row's content contains buttons or links; move them to actions."); }, [pressable]);
-  useEffect(() => warnListRowProps({ checked, selected, href, chevron, looseChoice, expanded }), [checked !== undefined, selected !== undefined, !!href, chevron, looseChoice, expanded !== undefined]);
+  useEffect(() => warnListRowProps({ checked, selected, href, chevron, looseChoice, expanded, pressableDetails: !!details && pressable }), [checked !== undefined, selected !== undefined, !!href, chevron, looseChoice, expanded !== undefined, !!details && pressable]);
   const clamp = (lines?: number) => lines ? { WebkitLineClamp: lines } as CSSProperties : undefined;
   const custom = hasContent(leading), geometry = listLeadingGeometry({ size: leadingSize, custom, background: iconBackground != null, open });
   const glyph = icon ? <KjunIcon name={icon} className="kjun-list-icon" size={geometry.iconSize} style={{ color: iconColor }} /> : null;
@@ -100,8 +104,8 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   const label = { "aria-label": ariaLabel, "aria-labelledby": names, "aria-describedby": notes };
   const titleText = <span id={id + "-title"} className="kjun-list-title" data-clamp={titleLines ? "" : undefined} style={clamp(titleLines)}>{title}</span>;
   const titleBlock = hasBadge ? <span className="kjun-list-title-row">{titleText}<span id={id + "-badge"} className="kjun-list-badge">{badge}</span></span> : titleText;
-  const endValue = hasTrailing && <span id={id + "-trailing"} className="kjun-list-trailing">{trailing}</span>, onTitle = hasTrailing && trailingPosition === "title";
-  const contents = <>{front && <span className="kjun-list-leading">{front}</span>}<span className="kjun-list-body">{onTitle ? <span className="kjun-list-value-line">{titleBlock}{endValue}</span> : titleBlock}{description && <span id={id + "-description"} className="kjun-list-description" data-clamp={descriptionLines ? "" : undefined} style={clamp(descriptionLines)}>{description}</span>}{hasBody && <span ref={content} id={id + "-content"} className="kjun-list-content">{children}</span>}</span>{!onTitle && endValue}{mark}{toggle && <span className={"kjun-switch kjun-switch--md" + (checked ? " kjun-switch--on" : "")} aria-hidden="true"><span className="kjun-switch-thumb">{busy && <span className="kjun-switch-spinner" />}</span></span>}{expandable ? end !== "spinner" && <KjunIcon name="chevron-down" className="kjun-list-chevron kjun-list-expand-icon" size={tokens.iconSizes.default} />
+  const endValue = hasTrailing && <span id={id + "-trailing"} className="kjun-list-trailing">{trailing}</span>, onTitle = hasTrailing && trailingPosition === "title", below = hasTrailing && trailingPosition === "below";
+  const contents = <>{front && <span className="kjun-list-leading">{front}</span>}<span className="kjun-list-body">{onTitle ? <span className="kjun-list-value-line">{titleBlock}{endValue}</span> : titleBlock}{below && endValue}{description && <span id={id + "-description"} className="kjun-list-description" data-clamp={descriptionLines ? "" : undefined} style={clamp(descriptionLines)}>{description}</span>}{hasBody && <span ref={content} id={id + "-content"} className="kjun-list-content">{children}</span>}</span>{!onTitle && !below && endValue}{mark}{toggle && <span className={"kjun-switch kjun-switch--md" + (checked ? " kjun-switch--on" : "")} aria-hidden="true"><span className="kjun-switch-thumb">{busy && <span className="kjun-switch-spinner" />}</span></span>}{expandable ? end !== "spinner" && <KjunIcon name="chevron-down" className="kjun-list-chevron kjun-list-expand-icon" size={tokens.iconSizes.default} />
     : chevron && end !== "spinner" && <KjunIcon name="chevron-right" className="kjun-list-chevron" size={tokens.iconSizes.default} />}</>;
   // A switch row is one switch control: the drawn switch is decoration and the row carries role and state.
   // A choice row is a radio (a checkbox in a multiple-choice section), checked when selected; the check is its drawing.
@@ -110,19 +114,20 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
     : href ? <a className="kjun-list-main" href={disabled ? undefined : href} target={target} rel={linkRel(target, rel)} {...label} aria-disabled={disabled || undefined} aria-busy={busy || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a>
     : onClick ? <button className="kjun-list-main" type="button" {...label} aria-expanded={expandable ? expanded : undefined} aria-controls={expandable ? id + "-expanded" : undefined} aria-busy={busy || undefined} disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main">{contents}</div>;
   // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
-  return <li className="kjun-list-row" role={selection.mode === "single" ? "none" : undefined} data-leading={front ? (custom ? "" : "icon") : undefined} data-leading-size={front ? geometry.size : undefined} style={leadingStyle} data-destructive={destructive || undefined} data-disabled={disabled || undefined} data-reordering={movable && reorder!.grabbed === value || undefined} data-expandable={expandable ? "" : undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{(hasContent(actions) || movable) && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}{movable && <ReorderControls value={value!} name={title} />}</div>}{expandable && <div id={id + "-expanded"} className="kjun-list-expanded"><Collapse open={!!expanded}><div className="kjun-list-expanded-body">{expandedContent}</div></Collapse></div>}</li>;
+  return <li className="kjun-list-row" role={selection.mode === "single" ? "none" : undefined} data-leading={front ? (custom ? "" : "icon") : undefined} data-leading-size={front ? geometry.size : undefined} style={leadingStyle} data-destructive={destructive || undefined} data-emphasized={emphasized || undefined} data-trailing={below ? "below" : undefined} data-disabled={disabled || undefined} data-reordering={movable && reorder!.grabbed === value || undefined} data-expandable={expandable ? "" : undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{(hasContent(actions) || movable) && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}{movable && <ReorderControls value={value!} name={title} />}</div>}{expandable && <div id={id + "-expanded"} className="kjun-list-expanded"><Collapse open={!!expanded}><div className="kjun-list-expanded-body">{expandedContent}</div></Collapse></div>}</li>;
 }
 export interface KjunListSectionProps {
   title?: string; description?: string; actions?: ReactNode; children?: ReactNode; ariaLabel?: string;
   /** Paints the surface background (default true); false lets the page background show through. */
   surface?: boolean;
-  /** Draws dividers between rows (default true). An open section draws none; giving it true warns in development. */
+  /** Draws dividers between rows (default true; false in a details section). An open section draws none; giving it true warns in development. */
   divider?: boolean;
-  /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. */
+  /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. A details section keeps its own 32px rows. */
   density?: "default" | "compact";
   /** Rounds the rows into a card on the card radius steps; the title, actions and footer stay outside it (default "none", or the KjunListGroup's). An open section has no card. */
   radius?: CardRadius;
-  /** "open" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default "default", or "open" in an open KjunListGroup). */
+  /** "open" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default "default", or "open" in an open KjunListGroup).
+   * "details" is for rows that are read, not pressed ("Payment method / Visa"): 32 tall, no dividers, the label secondary and the value in the text color with the room the label leaves. */
   variant?: ListSectionVariant;
   /** "title" is the 16px heading, "label" the small caption above the rows; by default a title with a description is a heading and one without is a label. */
   titleVariant?: "title" | "label";
@@ -158,9 +163,9 @@ export interface KjunListSectionProps {
 const ListGroupContext = createContext<ListGroupVariant | null>(null);
 export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider: dividerProp, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant, reorderable = false, order, onOrderChange, onReorder, reorderControls = "buttons", reorderDisabled = false, reorderDisabledText }: KjunListSectionProps) {
   // A rounded section is a card of rows only: its title, actions and footer stay on the page, above and below it.
-  const { open, corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), variant, title, description, titleVariant });
-  const divider = dividerProp ?? true;
-  useEffect(() => warnListSectionProps({ open, divider: dividerProp }), [open, dividerProp]);
+  const { open, details, corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), variant, title, description, titleVariant });
+  const divider = dividerProp ?? !details;
+  useEffect(() => warnListSectionProps({ open, divider: dividerProp, details, compact: density === "compact" }), [open, dividerProp, details, density]);
   useEffect(() => warnListSelection({ mode: selectionMode, value, handled: !!onValueChange }), [selectionMode, Array.isArray(value), value === undefined, !!onValueChange]);
   const id = "kjun-" + useId(), Heading = `h${headingLevel}` as "h3";
   const choice = selectionMode === "single", [list, setList] = useState<HTMLUListElement | null>(null), [actionsBox, setActionsBox] = useState<HTMLDivElement | null>(null);
@@ -170,17 +175,17 @@ export function KjunListSection({ title, description, actions, children, ariaLab
   const reorder = useReorder({ reorderable, order, disabled: reorderDisabled, controls: reorderControls, noteId: note, list, onOrderChange, onReorder });
   const hasFooter = hasContent(footer), describedBy = [description && id + "-description", hasFooter && id + "-footer"].filter(Boolean).join(" ") || undefined;
   const rounded = corner === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${corner})` };
-  const compact = density === "compact" ? "compact" : undefined;
+  const compact = density === "compact" && !details ? "compact" : undefined, look = open ? "open" : details ? "details" : undefined;
   // Memoized, so a section drawing again for its own state (its measured heading actions) does not redraw every row.
-  const shape = useMemo(() => ({ open, compact: !!compact }), [open, compact]);
+  const shape = useMemo(() => ({ open, details, compact: !!compact }), [open, details, compact]);
   const selection = useMemo(() => ({ mode: selectionMode, value, onValueChange }), [selectionMode, value, onValueChange]);
   // The list carries the name and the description; a named section would make every settings group a page landmark.
   // Loading content announces itself (a skeleton's loadingText is a status), so the wrapper only places it.
   const rows = hasContent(loading) ? <div className="kjun-list-loading">{loading}</div>
     : hasContent(children)
-    ? <ul ref={setList} className="kjun-list" role={choice ? "radiogroup" : undefined} aria-label={ariaLabel || undefined} aria-labelledby={ariaLabel || !title ? undefined : id} aria-describedby={describedBy} data-divider={divider ? undefined : "false"} data-density={compact} data-variant={open ? "open" : undefined}><ListSelectionContext.Provider value={selection}><ReorderContext.Provider value={reorder.context}>{children}</ReorderContext.Provider></ListSelectionContext.Provider></ul>
+    ? <ul ref={setList} className="kjun-list" role={choice ? "radiogroup" : undefined} aria-label={ariaLabel || undefined} aria-labelledby={ariaLabel || !title ? undefined : id} aria-describedby={describedBy} data-divider={divider ? undefined : "false"} data-density={compact} data-variant={look}><ListSelectionContext.Provider value={selection}><ReorderContext.Provider value={reorder.context}>{children}</ReorderContext.Provider></ListSelectionContext.Provider></ul>
     : hasContent(empty) ? <div className="kjun-list-empty" data-density={compact}>{empty}</div> : null;
-  return <ListShapeContext.Provider value={shape}><section className="kjun-list-section" data-surface={surface ? undefined : "false"} data-outside={outside || undefined} data-variant={open ? "open" : undefined}>
+  return <ListShapeContext.Provider value={shape}><section className="kjun-list-section" data-surface={surface ? undefined : "false"} data-outside={outside || undefined} data-variant={look}>
     {(title || description || hasContent(actions)) && <div className="kjun-list-heading" data-bare={bare ? "" : undefined}><div>{title && <Heading id={id}>{title}</Heading>}{description && <p id={id + "-description"}>{description}</p>}</div>{hasContent(actions) && <div ref={setActionsBox} className="kjun-list-heading-actions">{actions}</div>}</div>}
     {outside ? <div className="kjun-list-panel" data-surface={surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
     {note && <div id={note} className="kjun-list-footer">{reorderDisabledText}</div>}
