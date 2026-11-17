@@ -63,7 +63,7 @@ export function KjunAvatarGroup({ items, max, total, size = "md", shape = "circl
         fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"], color: colors.textSecondary }}>{overflowText}</KText>
     </View>
   </View> : null;
-  const base: ViewStyle = { flexDirection: "row", alignItems: "center", alignSelf: "flex-start", margin: -ring };
+  const base: ViewStyle = { flexDirection: "row", alignItems: "center", alignSelf: "flex-start", margin: -ring, zIndex: 0 };
   const row = <>{people}{chip}</>;
   if (!pressable) return <View accessible accessibilityRole="image" accessibilityLabel={label} style={[base, style]}>{row}</View>;
   const hit = Math.max(0, (tokens.native.minimumTouchTarget - side) / 2);

@@ -44,6 +44,17 @@ for (const platform of platforms) {
         return [b.x + b.width / 2, t.x + t.width / 2];
       });
       expect(text - box).toBeGreaterThan(4);
+      // Three characters step one type size down (md: input 16 -> control 14), the same on every platform.
+      const size = await chip.evaluate(el => getComputedStyle(document.createTreeWalker(el, NodeFilter.SHOW_TEXT).nextNode()!.parentElement!).fontSize);
+      expect(size).toBe('14px');
+      expect(await items(group(page, 'five')).last().evaluate(el => getComputedStyle(document.createTreeWalker(el, NodeFilter.SHOW_TEXT).nextNode()!.parentElement!).fontSize)).toBe('16px');
+    });
+
+    test(`${platform}: the avatars' stacking stays inside the group`, async ({ page }) => {
+      // A sticky table header (z-index 1-2) must not be painted over by the avatars' own z-indexes.
+      const root = group(page, 'five');
+      const [isolation, zIndex] = await root.evaluate(el => [getComputedStyle(el).isolation, getComputedStyle(el).zIndex]);
+      expect(isolation === 'isolate' || zIndex === '0').toBe(true);
     });
 
     test(`${platform}: squares sit apart`, async ({ page }) => {
@@ -84,6 +95,16 @@ for (const platform of platforms) {
 
 // The ring is a box-shadow on the web packages and a painted wrapper on Native.
 for (const platform of ['react', 'vue3'] as const) {
+  test(`${platform}: reduced motion keeps a pressed group at full size`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await openFixture(page, platform, '', 'avatar-group');
+    const button = page.getByRole('button', { name: '참여자 목록 열기' });
+    const box = (await button.boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    expect(await button.evaluate(el => getComputedStyle(el).transform)).toBe('none');
+    await page.mouse.up();
+  });
   test(`${platform}: the ring is a 2px shadow in the colour behind the group`, async ({ page }) => {
     await openFixture(page, platform, '', 'avatar-group');
     expect(await style(items(group(page, 'five')).first(), 'box-shadow')).toContain('0px 0px 0px 2px');
