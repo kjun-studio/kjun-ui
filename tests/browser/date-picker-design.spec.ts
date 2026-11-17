@@ -284,7 +284,8 @@ for (const platform of NEW_CELLS) {
       await open(page, 'date');
       await expect(day(page, '2026년 9월 19일 토요일')).not.toHaveAttribute('data-tone', /.*/);
       expect(await style(saturday, 'color')).toBe(await role(page, 'text'));
-      expect(await style(header('토'), 'color')).toBe(await role(page, 'text'));
+      // A weekday header without a tone is tertiary text; the day number without a tone is text.
+      expect(await style(header('토'), 'color')).toBe(await role(page, 'text-tertiary'));
       expect(await style(sunday, 'color')).toBe(await role(page, 'danger'));
     });
 

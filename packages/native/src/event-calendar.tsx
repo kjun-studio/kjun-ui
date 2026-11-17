@@ -7,7 +7,7 @@ import {
 } from "../../../shared/package-runtime/event-calendar";
 import { useSlide } from "../../../shared/package-runtime/use-slide";
 import { tokens } from "@kjun-ui/tokens";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { Animated, PanResponder, Platform, View, type ColorValue, type StyleProp, type ViewStyle } from "react-native";
 import { CalendarDayCell } from "./calendar-day";
 import { KText, useReducedMotion } from "./internal";
@@ -109,7 +109,8 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
 
   // The slide: the old period leaves toward the side it came from, the new one enters from the other; reduced motion never starts it.
   const shift = useRef(new Animated.Value(0)).current, fade = useRef(new Animated.Value(1)).current;
-  useEffect(() => {
+  // A layout effect, so a newly shown period takes its entering offset and fade before it paints, even when a quick change cut the exit short.
+  useLayoutEffect(() => {
     if (slide.phase === "idle") { shift.setValue(0); fade.setValue(1); return; }
     const out = slide.phase === "out";
     if (!out) { shift.setValue(slide.direction * calendar.slideDistance); fade.setValue(0); }
@@ -142,7 +143,8 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
         })}
       </View>
       <Animated.View {...(swipeable ? pan.panHandlers : {})} style={{ opacity: fade, transform: [{ translateX: shift }] }}
-        {...(Platform.OS === "web" ? { role: "group" as const, "aria-label": title } : {})}
+        // The group is named after the period on every platform; the web also marks it as a group.
+        accessibilityLabel={title} {...(Platform.OS === "web" ? { role: "group" as const } : {})}
         {...data({ kjunPart: "event-calendar-grid", slide: moving ? slide.phase : undefined, direction: moving ? slide.direction : undefined })}>
         {weeksOf(days).map(row => (
           <View key={row[0].iso} style={{ flexDirection: "row" }}>
