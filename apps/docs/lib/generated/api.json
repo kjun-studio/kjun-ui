@@ -18190,7 +18190,7 @@
       },
       {
         "name": "messages",
-        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; notifications: string; moreNotifications: (count: number) => string; showNotifications: string; collapseNotifications: string; confirmTitle: string; promptTitle: string; invalidInput: string; typeToConfirm: (value: string) => string; dialog: string; panel: string; details: string; dismiss: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; chooseYear: string; clearDates: string; rangeStartDay: string; rangeEndDay: string; inRangeDay: string; chooseEndDate: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; period: string; am: string; pm: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; hiddenValue: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number | string) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; tableSubtotal: string; tableTotal: string; groupCount: (count: number) => string; toggleGroup: (label: string, open: boolean) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; sortBy: string; defaultOrder: string; descending: string; tabs: string; showPath: string; breadcrumb: string; mainNavigation: string; newCount: (count: number) => string; saving: string; charactersLeft: (count: number) => string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; carousel: string; slide: string; slides: string; previousSlide: string; nextSlide: string; goToSlide: (slide: number) => string; slideOf: (slide: number, total: number) => string; moveUp: (name: string) => string; moveDown: (name: string) => string; reorderMoved: (name: string, position: number, total: number) => string; reorderHandle: (name: string) => string; reorderGrabbed: (name: string) => string; reorderDropped: (name: string, position: number, total: number) => string; reorderCancelled: (name: string) => string; tableReorderLocked: string; colorPlaceholder: string; colorPicker: string; colorArea: string; colorAreaValue: (saturation: number, brightness: number) => string; hue: string; hueValue: (degrees: number) => string; alpha: string; hex: string; swatches: string; colorNone: string; colorValue: (hex: string, alpha?: number) => string; increaseSaturation: string; decreaseSaturation: string; increaseBrightness: string; decreaseBrightness: string; recentColors: string; eyeDropper: string; colorAreaHint: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }>",
+        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; notifications: string; moreNotifications: (count: number) => string; showNotifications: string; collapseNotifications: string; confirmTitle: string; promptTitle: string; invalidInput: string; typeToConfirm: (value: string) => string; dialog: string; panel: string; details: string; dismiss: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; chooseYear: string; clearDates: string; rangeStartDay: string; rangeEndDay: string; inRangeDay: string; chooseEndDate: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; period: string; am: string; pm: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; hiddenValue: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number | string) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; tableSubtotal: string; tableTotal: string; groupCount: (count: number) => string; toggleGroup: (label: string, open: boolean) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; sortBy: string; defaultOrder: string; descending: string; tabs: string; showPath: string; breadcrumb: string; mainNavigation: string; collapseNavigation: string; expandNavigation: string; newCount: (count: number) => string; saving: string; charactersLeft: (count: number) => string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; carousel: string; slide: string; slides: string; previousSlide: string; nextSlide: string; goToSlide: (slide: number) => string; slideOf: (slide: number, total: number) => string; moveUp: (name: string) => string; moveDown: (name: string) => string; reorderMoved: (name: string, position: number, total: number) => string; reorderHandle: (name: string) => string; reorderGrabbed: (name: string) => string; reorderDropped: (name: string, position: number, total: number) => string; reorderCancelled: (name: string) => string; tableReorderLocked: string; colorPlaceholder: string; colorPicker: string; colorArea: string; colorAreaValue: (saturation: number, brightness: number) => string; hue: string; hueValue: (degrees: number) => string; alpha: string; hex: string; swatches: string; colorNone: string; colorValue: (hex: string, alpha?: number) => string; increaseSaturation: string; decreaseSaturation: string; increaseBrightness: string; decreaseBrightness: string; recentColors: string; eyeDropper: string; colorAreaHint: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }>",
         "required": false,
         "default": "—",
         "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
@@ -18235,7 +18235,7 @@
       },
       {
         "name": "messages",
-        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; notifications: string; moreNotifications: (count: number) => string; showNotifications: string; collapseNotifications: string; confirmTitle: string; promptTitle: string; invalidInput: string; typeToConfirm: (value: string) => string; dialog: string; panel: string; details: string; dismiss: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; chooseYear: string; clearDates: string; rangeStartDay: string; rangeEndDay: string; inRangeDay: string; chooseEndDate: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; period: string; am: string; pm: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; hiddenValue: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number | string) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; tableSubtotal: string; tableTotal: string; groupCount: (count: number) => string; toggleGroup: (label: string, open: boolean) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; sortBy: string; defaultOrder: string; descending: string; tabs: string; showPath: string; breadcrumb: string; mainNavigation: string; newCount: (count: number) => string; saving: string; charactersLeft: (count: number) => string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; carousel: string; slide: string; slides: string; previousSlide: string; nextSlide: string; goToSlide: (slide: number) => string; slideOf: (slide: number, total: number) => string; moveUp: (name: string) => string; moveDown: (name: string) => string; reorderMoved: (name: string, position: number, total: number) => string; reorderHandle: (name: string) => string; reorderGrabbed: (name: string) => string; reorderDropped: (name: string, position: number, total: number) => string; reorderCancelled: (name: string) => string; tableReorderLocked: string; colorPlaceholder: string; colorPicker: string; colorArea: string; colorAreaValue: (saturation: number, brightness: number) => string; hue: string; hueValue: (degrees: number) => string; alpha: string; hex: string; swatches: string; colorNone: string; colorValue: (hex: string, alpha?: number) => string; increaseSaturation: string; decreaseSaturation: string; increaseBrightness: string; decreaseBrightness: string; recentColors: string; eyeDropper: string; colorAreaHint: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
+        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; notifications: string; moreNotifications: (count: number) => string; showNotifications: string; collapseNotifications: string; confirmTitle: string; promptTitle: string; invalidInput: string; typeToConfirm: (value: string) => string; dialog: string; panel: string; details: string; dismiss: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; chooseYear: string; clearDates: string; rangeStartDay: string; rangeEndDay: string; inRangeDay: string; chooseEndDate: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; period: string; am: string; pm: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; hiddenValue: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number | string) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; tableSubtotal: string; tableTotal: string; groupCount: (count: number) => string; toggleGroup: (label: string, open: boolean) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; sortBy: string; defaultOrder: string; descending: string; tabs: string; showPath: string; breadcrumb: string; mainNavigation: string; collapseNavigation: string; expandNavigation: string; newCount: (count: number) => string; saving: string; charactersLeft: (count: number) => string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; carousel: string; slide: string; slides: string; previousSlide: string; nextSlide: string; goToSlide: (slide: number) => string; slideOf: (slide: number, total: number) => string; moveUp: (name: string) => string; moveDown: (name: string) => string; reorderMoved: (name: string, position: number, total: number) => string; reorderHandle: (name: string) => string; reorderGrabbed: (name: string) => string; reorderDropped: (name: string, position: number, total: number) => string; reorderCancelled: (name: string) => string; tableReorderLocked: string; colorPlaceholder: string; colorPicker: string; colorArea: string; colorAreaValue: (saturation: number, brightness: number) => string; hue: string; hueValue: (degrees: number) => string; alpha: string; hex: string; swatches: string; colorNone: string; colorValue: (hex: string, alpha?: number) => string; increaseSaturation: string; decreaseSaturation: string; increaseBrightness: string; decreaseBrightness: string; recentColors: string; eyeDropper: string; colorAreaHint: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
         "required": false,
         "default": "—",
         "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
@@ -18328,7 +18328,7 @@
       },
       {
         "name": "messages",
-        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; notifications: string; moreNotifications: (count: number) => string; showNotifications: string; collapseNotifications: string; confirmTitle: string; promptTitle: string; invalidInput: string; typeToConfirm: (value: string) => string; dialog: string; panel: string; details: string; dismiss: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; chooseYear: string; clearDates: string; rangeStartDay: string; rangeEndDay: string; inRangeDay: string; chooseEndDate: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; period: string; am: string; pm: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; hiddenValue: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number | string) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; tableSubtotal: string; tableTotal: string; groupCount: (count: number) => string; toggleGroup: (label: string, open: boolean) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; sortBy: string; defaultOrder: string; descending: string; tabs: string; showPath: string; breadcrumb: string; mainNavigation: string; newCount: (count: number) => string; saving: string; charactersLeft: (count: number) => string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; carousel: string; slide: string; slides: string; previousSlide: string; nextSlide: string; goToSlide: (slide: number) => string; slideOf: (slide: number, total: number) => string; moveUp: (name: string) => string; moveDown: (name: string) => string; reorderMoved: (name: string, position: number, total: number) => string; reorderHandle: (name: string) => string; reorderGrabbed: (name: string) => string; reorderDropped: (name: string, position: number, total: number) => string; reorderCancelled: (name: string) => string; tableReorderLocked: string; colorPlaceholder: string; colorPicker: string; colorArea: string; colorAreaValue: (saturation: number, brightness: number) => string; hue: string; hueValue: (degrees: number) => string; alpha: string; hex: string; swatches: string; colorNone: string; colorValue: (hex: string, alpha?: number) => string; increaseSaturation: string; decreaseSaturation: string; increaseBrightness: string; decreaseBrightness: string; recentColors: string; eyeDropper: string; colorAreaHint: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
+        "type": "Partial<{ cancel: string; confirm: string; save: string; close: string; closeNotification: string; notifications: string; moreNotifications: (count: number) => string; showNotifications: string; collapseNotifications: string; confirmTitle: string; promptTitle: string; invalidInput: string; typeToConfirm: (value: string) => string; dialog: string; panel: string; details: string; dismiss: string; menu: string; back: string; remove: (label: string) => string; user: string; loading: string; loadingEllipsis: string; refreshing: string; chartLoading: string; noData: string; noItems: string; noResults: string; errorTitle: string; retry: string; somethingWentWrong: string; retryHint: string; refreshError: (error: string) => string; progress: string; search: string; searching: string; searchOrSelect: string; searchFailed: string; minChars: (count: number) => string; select: string; optional: string; clearSelection: string; searchOptions: string; selectedCount: (count: number) => string; loadMore: string; clearInput: string; clearValue: (label: string) => string; datePlaceholder: string; clearDate: string; calendarTitle: (year: number, month: number) => string; weekdays: string; previousMonth: string; nextMonth: string; previousYear: string; nextYear: string; chooseMonth: string; chooseYear: string; clearDates: string; rangeStartDay: string; rangeEndDay: string; inRangeDay: string; chooseEndDate: string; today: string; apply: string; rangePlaceholder: string; yearTitle: (year: number) => string; monthName: (month: number) => string; dateLabel: (year: number, month: number, day: number, weekday: number) => string; time: string; period: string; am: string; pm: string; hour: string; minute: string; second: string; timePlaceholder: string; value: string; minimum: string; maximum: string; increase: string; decrease: string; increaseQuantity: string; decreaseQuantity: string; quantity: string; hiddenValue: string; relativeTimeFallback: (amount: number, unit: string) => string; copy: string; copied: string; copyFailed: string; refresh: string; externalLink: string; newWindow: string; dataTable: string; selectRow: (row: number | string) => string; selectAll: string; selectAllPartial: string; deselectAll: string; selectionActions: string; selectedItems: (count: number) => string; tableSubtotal: string; tableTotal: string; groupCount: (count: number) => string; toggleGroup: (label: string, open: boolean) => string; searchTable: string; expandRow: string; collapse: string; showDetails: string; ascending: string; sortBy: string; defaultOrder: string; descending: string; tabs: string; showPath: string; breadcrumb: string; mainNavigation: string; collapseNavigation: string; expandNavigation: string; newCount: (count: number) => string; saving: string; charactersLeft: (count: number) => string; newContent: string; pagination: string; itemsPerPage: string; perPage: (count: number) => string; pageRange: (from: number, to: number, total: string) => string; page: (page: number) => string; firstPage: string; previousPage: string; nextPage: string; lastPage: string; carousel: string; slide: string; slides: string; previousSlide: string; nextSlide: string; goToSlide: (slide: number) => string; slideOf: (slide: number, total: number) => string; moveUp: (name: string) => string; moveDown: (name: string) => string; reorderMoved: (name: string, position: number, total: number) => string; reorderHandle: (name: string) => string; reorderGrabbed: (name: string) => string; reorderDropped: (name: string, position: number, total: number) => string; reorderCancelled: (name: string) => string; tableReorderLocked: string; colorPlaceholder: string; colorPicker: string; colorArea: string; colorAreaValue: (saturation: number, brightness: number) => string; hue: string; hueValue: (degrees: number) => string; alpha: string; hex: string; swatches: string; colorNone: string; colorValue: (hex: string, alpha?: number) => string; increaseSaturation: string; decreaseSaturation: string; increaseBrightness: string; decreaseBrightness: string; recentColors: string; eyeDropper: string; colorAreaHint: string; marketData: string; metrics: string; watchToggle: (name: string, active: boolean) => string; favoriteToggle: (name: string, active: boolean) => string; lastUpdated: string; unitLabel: string; totalCount: (count: number, unit: string) => string; arbitrage: string; deviationWarning: (threshold: number) => string; statusQueued: string; statusStarting: string; statusRunning: string; statusStopping: string; statusStopped: string; statusCompleted: string; statusCompletedWithErrors: string; statusFailed: string; statusUnknown: string; statusNoRuns: string; }> | undefined",
         "required": false,
         "default": "—",
         "description": "Replaces part of KJUN's copy, e.g. with the app's own translations."
@@ -21006,14 +21006,14 @@
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "v-model:collapsed: icons only, for a narrowed column. Names show as tooltips, and children stay hidden behind their parent;\npressing a parent emits update:collapsed false."
+        "description": "v-model:collapsed: icons only, for a narrowed column. Names show as tooltips, and children stay hidden behind their parent."
       },
       {
         "name": "collapsibleGroups",
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Group titles become toggles that show or hide their group. The group of the current destination starts open."
+        "description": "Group titles become toggles that show or hide their group. A group's own collapsible overrides this. The group of\nthe current destination starts open, and so do groups marked defaultOpen."
       },
       {
         "name": "expandedGroups",
@@ -21023,11 +21023,18 @@
         "description": "v-model:expandedGroups: the open groups by key (a group's key, else its title). Without it the navigation keeps the list itself.\nupdate:expandedGroups also reports a group opened by moving to a page in it."
       },
       {
+        "name": "groupCounts",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "A closed group's title ends with how many rows it holds (a dot instead while one of them has a badge)."
+      },
+      {
         "name": "rail",
         "type": "SideNavigationRail",
         "required": false,
         "default": "\"items\"",
-        "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon), which\nemits update:collapsed false with that group open and in view. Loose items between groups keep their own row."
+        "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon).\nLoose items between groups keep their own row."
       },
       {
         "name": "railLabels",
@@ -21037,11 +21044,46 @@
         "description": "While collapsed: a short name under each icon, in a 72 wide column. The current page, hover and press fill a 56 by 32\nindicator around the icon, a count stays a number, and no tooltip is needed."
       },
       {
+        "name": "collapsedParent",
+        "type": "SideNavigationCollapsedParent",
+        "required": false,
+        "default": "\"widen\"",
+        "description": "While collapsed, pressing a parent or a rail group: \"widen\" emits update:collapsed false with it open;\n\"flyout\" shows its rows in a panel beside the icon and keeps the column narrow."
+      },
+      {
         "name": "density",
         "type": "\"default\" | \"compact\"",
         "required": false,
         "default": "\"default\"",
         "description": "\"compact\": 32 tall rows and 30 tall children under a mouse, and counts as quiet numbers, for long lists (documentation,\nsettings). A touch pointer keeps the touch heights."
+      },
+      {
+        "name": "collapseToggle",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "A button at the end of the footer that asks to collapse or widen the column (update:collapsed)."
+      },
+      {
+        "name": "linkAs",
+        "type": "string | Component",
+        "required": false,
+        "default": "—",
+        "description": "Renders enabled links with the app's router link (RouterLink, NuxtLink) or another tag instead of <a>. It receives the\nhref under linkProp, class, the aria-* and data-* attributes, onClick and a default slot, and must render an <a>."
+      },
+      {
+        "name": "linkProp",
+        "type": "string",
+        "required": false,
+        "default": "\"href\"",
+        "description": "The prop linkAs receives the href under: \"to\" for RouterLink."
+      },
+      {
+        "name": "scrollToCurrent",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Brings the current row into the menu's own scrolling column when the menu mounts and when the page changes."
       }
     ],
     "events": [
@@ -21051,6 +21093,10 @@
       },
       {
         "name": "reselect",
+        "source": "packages/vue3/src/side-navigation.tsx"
+      },
+      {
+        "name": "action",
         "source": "packages/vue3/src/side-navigation.tsx"
       },
       {
@@ -21066,7 +21112,22 @@
         "source": "packages/vue3/src/side-navigation.tsx"
       }
     ],
-    "slots": [],
+    "slots": [
+      {
+        "name": "header",
+        "data": [
+          "collapsed"
+        ],
+        "source": "packages/vue3/src/side-navigation.tsx"
+      },
+      {
+        "name": "footer",
+        "data": [
+          "collapsed"
+        ],
+        "source": "packages/vue3/src/side-navigation.tsx"
+      }
+    ],
     "react": [
       {
         "name": "items",
@@ -21129,14 +21190,14 @@
         "type": "((collapsed: boolean) => void) | undefined",
         "required": false,
         "default": "—",
-        "description": "A parent or group was pressed while collapsed: widen the column (collapsed=false) to show its children."
+        "description": "A parent or group was pressed while collapsed (collapsedParent=\"widen\"), or the collapse toggle was pressed."
       },
       {
         "name": "collapsibleGroups",
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Group titles become toggles that show or hide their group. The group of the current destination starts open."
+        "description": "Group titles become toggles that show or hide their group. A group's own collapsible overrides this. The group of\nthe current destination starts open, and so do groups marked defaultOpen."
       },
       {
         "name": "expandedGroups",
@@ -21153,11 +21214,18 @@
         "description": "Also called when moving to a page in a closed group opens it."
       },
       {
+        "name": "groupCounts",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A closed group's title ends with how many rows it holds (a dot instead while one of them has a badge)."
+      },
+      {
         "name": "rail",
         "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationRail | undefined",
         "required": false,
         "default": "—",
-        "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon), which\nasks to widen with that group open and in view. Loose items between groups keep their own row."
+        "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon).\nLoose items between groups keep their own row."
       },
       {
         "name": "railLabels",
@@ -21167,11 +21235,60 @@
         "description": "While collapsed: a short name under each icon, in a 72 wide column. The current page, hover and press fill a 56 by 32\nindicator around the icon, a count stays a number, and no tooltip is needed."
       },
       {
+        "name": "collapsedParent",
+        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationCollapsedParent | undefined",
+        "required": false,
+        "default": "—",
+        "description": "While collapsed, pressing a parent or a rail group: \"widen\" asks for the full width with it open (onCollapsedChange);\n\"flyout\" shows its rows in a panel beside the icon and keeps the column narrow."
+      },
+      {
         "name": "density",
         "type": "\"default\" | \"compact\" | undefined",
         "required": false,
         "default": "—",
         "description": "\"compact\": 32 tall rows and 30 tall children under a mouse, and counts as quiet numbers, for long lists (documentation,\nsettings). A touch pointer keeps the touch heights."
+      },
+      {
+        "name": "header",
+        "type": "import(\"/workspace/packages/react/src/side-navigation\").SideNavigationSlot",
+        "required": false,
+        "default": "—",
+        "description": "Above the list, such as a logo, a workspace switcher or search. With a header or footer only the list scrolls."
+      },
+      {
+        "name": "footer",
+        "type": "import(\"/workspace/packages/react/src/side-navigation\").SideNavigationSlot",
+        "required": false,
+        "default": "—",
+        "description": "Below the list, such as the account."
+      },
+      {
+        "name": "collapseToggle",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A button at the end of the footer that asks to collapse or widen the column (onCollapsedChange)."
+      },
+      {
+        "name": "onAction",
+        "type": "((key: string, action: string, event: import(\"/workspace/node_modules/@types/react/index\").MouseEvent<HTMLButtonElement>) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "An action button of a row (the row's key) or a group title (the group's key) was pressed."
+      },
+      {
+        "name": "linkAs",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ElementType | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Renders enabled links with the app's router link (Next.js Link, React Router Link) instead of <a>. It receives href,\nclassName, the aria-* and data-* attributes, onClick and children, and must render an <a> with them."
+      },
+      {
+        "name": "scrollToCurrent",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Brings the current row into the menu's own scrolling column when the menu mounts and when the page changes."
       }
     ],
     "native": [
@@ -21236,14 +21353,14 @@
         "type": "((collapsed: boolean) => void) | undefined",
         "required": false,
         "default": "—",
-        "description": "A parent or group was pressed while collapsed: widen the column (collapsed=false) to show its children."
+        "description": "A parent or group was pressed while collapsed (collapsedParent=\"widen\"), or the collapse toggle was pressed."
       },
       {
         "name": "collapsibleGroups",
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Group titles become toggles that show or hide their group. The group of the current destination starts open."
+        "description": "Group titles become toggles that show or hide their group. A group's own collapsible overrides this. The group of\nthe current destination starts open, and so do groups marked defaultOpen."
       },
       {
         "name": "expandedGroups",
@@ -21260,11 +21377,18 @@
         "description": "Also called when moving to a page in a closed group opens it."
       },
       {
+        "name": "groupCounts",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A closed group's title ends with how many rows it holds (a dot instead while one of them has a badge)."
+      },
+      {
         "name": "rail",
         "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationRail | undefined",
         "required": false,
         "default": "—",
-        "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon), which\nasks to widen with that group open. Loose items between groups keep their own row."
+        "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon).\nLoose items between groups keep their own row."
       },
       {
         "name": "railLabels",
@@ -21274,11 +21398,46 @@
         "description": "While collapsed: a short name under each icon, in a 72 wide column. The current page and a press fill a 56 by 32\nindicator around the icon, a count stays a number, and no tooltip is needed."
       },
       {
+        "name": "collapsedParent",
+        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationCollapsedParent | undefined",
+        "required": false,
+        "default": "—",
+        "description": "While collapsed, pressing a parent or a rail group: \"widen\" asks for the full width with it open (onCollapsedChange);\n\"flyout\" shows its rows in a panel beside the icon and keeps the column narrow."
+      },
+      {
         "name": "density",
         "type": "\"default\" | \"compact\" | undefined",
         "required": false,
         "default": "—",
         "description": "\"compact\": 32 tall rows and 30 tall children on Native Web, and counts as quiet numbers, for long lists. A device keeps\nthe touch heights."
+      },
+      {
+        "name": "header",
+        "type": "import(\"/workspace/packages/native/src/side-navigation\").SideNavigationSlot",
+        "required": false,
+        "default": "—",
+        "description": "Above the list, such as a logo, a workspace switcher or search. The navigation does not scroll itself: put it in the\napp's ScrollView, or let the app scroll the list between a fixed header and footer."
+      },
+      {
+        "name": "footer",
+        "type": "import(\"/workspace/packages/native/src/side-navigation\").SideNavigationSlot",
+        "required": false,
+        "default": "—",
+        "description": "Below the list, such as the account."
+      },
+      {
+        "name": "collapseToggle",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A button at the end of the footer that asks to collapse or widen the column (onCollapsedChange)."
+      },
+      {
+        "name": "onAction",
+        "type": "((key: string, action: string, event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "An action button of a row (the row's key) or a group title (the group's key) was pressed. Actions always show, as on touch."
       }
     ]
   },

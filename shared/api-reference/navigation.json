@@ -28,9 +28,15 @@
       "collapsed",
       "collapsibleGroups",
       "expandedGroups",
+      "groupCounts",
       "rail",
       "railLabels",
-      "density"
+      "collapsedParent",
+      "density",
+      "collapseToggle",
+      "linkAs",
+      "linkProp",
+      "scrollToCurrent"
     ],
     "react": [
       "items",
@@ -45,9 +51,17 @@
       "collapsibleGroups",
       "expandedGroups",
       "onExpandedGroupsChange",
+      "groupCounts",
       "rail",
       "railLabels",
-      "density"
+      "collapsedParent",
+      "density",
+      "header",
+      "footer",
+      "collapseToggle",
+      "onAction",
+      "linkAs",
+      "scrollToCurrent"
     ],
     "native": [
       "items",
@@ -62,9 +76,15 @@
       "collapsibleGroups",
       "expandedGroups",
       "onExpandedGroupsChange",
+      "groupCounts",
       "rail",
       "railLabels",
-      "density"
+      "collapsedParent",
+      "density",
+      "header",
+      "footer",
+      "collapseToggle",
+      "onAction"
     ]
   },
   "KjunExternalLink": {

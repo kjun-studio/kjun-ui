@@ -422,6 +422,15 @@
   --_kjun-extension-side-navigation-rail-label-gap: 4px;
   --_kjun-extension-side-navigation-compact-item-height: 32px;
   --_kjun-extension-side-navigation-compact-child-height: 30px;
+  --_kjun-extension-side-navigation-group-chevron-size: 14px;
+  --_kjun-extension-side-navigation-group-chevron-gap: 4px;
+  --_kjun-extension-side-navigation-action-size: 24px;
+  --_kjun-extension-side-navigation-action-icon-size: 16px;
+  --_kjun-extension-side-navigation-action-gap: 2px;
+  --_kjun-extension-side-navigation-action-radius: 8px;
+  --_kjun-extension-side-navigation-toggle-size: 32px;
+  --_kjun-extension-side-navigation-toggle-radius: 10px;
+  --_kjun-extension-side-navigation-chrome-gap: 12px;
   --_kjun-extension-floating-navigation-item-size: 52px;
   --_kjun-extension-floating-navigation-icon-size: 24px;
   --_kjun-extension-floating-navigation-padding: 6px;
@@ -1026,6 +1035,7 @@
   --_kjun-state-opacity-tint-hover: 0.12;
   --_kjun-state-opacity-tint-active: 0.16;
   --_kjun-state-opacity-hover-soft: 0.5;
+  --_kjun-state-opacity-selected-within: 0.5;
   --_kjun-state-opacity-muted: 0.55;
   --_kjun-state-focus-width: 2px;
   --_kjun-state-focus-offset: 2px;

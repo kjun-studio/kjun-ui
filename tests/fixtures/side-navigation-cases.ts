@@ -17,11 +17,25 @@ export const sideItems = [
   ] },
 ];
 const query = new URLSearchParams(location.search);
+// actions=1 gives "보관함" two row actions and "관리" a title action; pergroup=1 opens "문서" by default and keeps "관리" always open.
+if (query.has('actions')) {
+  (sideItems[2] as any).items[1].actions = [{ key: 'new', icon: 'plus', label: '새 문서' }, { key: 'more', icon: 'dots', label: '더 보기' }];
+  (sideItems[4] as any).action = { key: 'add', icon: 'plus', label: '관리 항목 추가' };
+}
+if (query.has('pergroup')) { (sideItems[2] as any).defaultOpen = true; (sideItems[4] as any).collapsible = false; }
+// disabledparent=1 disables the "프로젝트" parent.
+if (query.has('disabledparent')) (sideItems[2] as any).items[0].disabled = true;
 export const sideStart = query.get('value') || 'home';
 /** collapsed=1 starts with icons only; controlled=1 passes expanded; late=1 hands the items over after the first render;
  * groups=1 turns on collapsibleGroups; rail=groups shows one icon per group while collapsed; labels=1 turns on railLabels;
  * compact=1 sets density="compact". */
 export const sideCase = { collapsed: query.has('collapsed'), controlled: query.has('controlled'), late: query.has('late'),
   groups: query.has('groups'), rail: (query.get('rail') || 'items') as 'items' | 'groups', labels: query.has('labels'),
-  density: (query.has('compact') ? 'compact' : 'default') as 'default' | 'compact' };
+  density: (query.has('compact') ? 'compact' : 'default') as 'default' | 'compact',
+  /** counts=1 groupCounts; flyout=1 collapsedParent="flyout"; chrome=1 a header, a footer and the collapse toggle;
+   * link=1 renders links with a stand-in router link; short=1 gives the column a fixed height that scrolls. */
+  counts: query.has('counts'), flyout: query.has('flyout'), chrome: query.has('chrome'), link: query.has('link'), short: query.has('short') };
 export const sideWidth = (collapsed: boolean) => collapsed ? sideCase.labels ? 88 : 64 : 240;
+/** The aside around the menu: a fixed, scrolling height for short=1 and chrome=1. */
+export const sideColumn = (collapsed: boolean) => ({ width: sideWidth(collapsed) + 'px', ...(sideCase.short || sideCase.chrome ? { height: '260px', overflowY: 'auto' as const } : {}),
+  ...(sideCase.chrome ? { display: 'flex', flexDirection: 'column' as const } : {}) });

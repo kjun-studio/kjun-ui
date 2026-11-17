@@ -34936,8 +34936,8 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "v-model:collapsed: icons only, for a narrowed column. Names show as tooltips, and children stay hidden behind their parent;\npressing a parent emits update:collapsed false.",
-            "summary": "아이콘만 표시합니다. 항목은 아이콘을 감싸는 44×40px 면이 되고 열 폭은 앱이 줄입니다(44px + 앱의 좌우 여백). 이름은 툴팁과 화면 낭독기로 전합니다. 하위 항목은 숨기며 부모를 누르면 넓혀 달라고 요청합니다(Vue v-model:collapsed).",
+            "description": "v-model:collapsed: icons only, for a narrowed column. Names show as tooltips, and children stay hidden behind their parent.",
+            "summary": "아이콘만 표시합니다. 항목은 아이콘을 감싸는 44×40px 면이 되고 열 폭은 앱이 줄입니다(44px + 앱의 좌우 여백). 이름은 툴팁과 화면 낭독기로 전합니다. 하위 항목은 숨기며, 부모를 누르면 넓혀 달라고 요청하거나(Vue v-model:collapsed) collapsedParent=\"flyout\"이면 옆 패널로 보여 줍니다. 현재 페이지를 품은 부모는 선택 배경의 절반 세기 면으로 표시합니다. 다시 넓어질 때 이름·제목·배지는 열이 펼쳐진 뒤 서서히 나타납니다.",
             "source": "packages/vue3/src/side-navigation.tsx"
           },
           {
@@ -34945,8 +34945,8 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Group titles become toggles that show or hide their group. The group of the current destination starts open.",
-            "summary": "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 현재 페이지가 있는 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 선택 배경색 면을, 배지가 있으면 점을 표시합니다.",
+            "description": "Group titles become toggles that show or hide their group. A group's own collapsible overrides this. The group of\nthe current destination starts open, and so do groups marked defaultOpen.",
+            "summary": "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 제목 바로 뒤의 작은 14px 화살표가 닫힘(끝 방향)과 열림(아래)을 알립니다. 현재 페이지가 있는 묶음과 defaultOpen 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 제목을 본문 글자색으로, 배지가 있으면 끝에 점을 표시합니다. 묶음마다 collapsible을 주면 이 값보다 우선합니다(false면 늘 펼친 제목).",
             "source": "packages/vue3/src/side-navigation.tsx"
           },
           {
@@ -34959,11 +34959,20 @@
             "source": "packages/vue3/src/side-navigation.tsx"
           },
           {
+            "name": "groupCounts",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "A closed group's title ends with how many rows it holds (a dot instead while one of them has a badge).",
+            "summary": "닫힌 묶음 제목 끝에 그 안의 행 수를 3차 글자색 숫자로 표시합니다. 안에 배지가 있으면 숫자 대신 점을 표시합니다. 닫힌 묶음이 많아 내용의 크기를 가늠해야 할 때 켭니다.",
+            "source": "packages/vue3/src/side-navigation.tsx"
+          },
+          {
             "name": "rail",
             "type": "SideNavigationRail",
             "required": false,
             "default": "\"items\"",
-            "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon), which\nemits update:collapsed false with that group open and in view. Loose items between groups keep their own row.",
+            "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon).\nLoose items between groups keep their own row.",
             "summary": "collapsed일 때 아이콘을 세우는 단위입니다. items는 최상위 항목마다, groups는 묶음마다 아이콘 하나를 세웁니다(묶음의 icon, 없으면 제목의 첫 글자). groups에서 묶음을 누르면 그 묶음을 연 채로 넓혀 달라고 요청하고, 웹에서는 넓어진 뒤 묶음 제목을 화면 안으로 스크롤합니다. 묶음 밖 항목은 그대로 한 줄씩 남습니다.",
             "source": "packages/vue3/src/side-navigation.tsx"
           },
@@ -34977,12 +34986,57 @@
             "source": "packages/vue3/src/side-navigation.tsx"
           },
           {
+            "name": "collapsedParent",
+            "type": "SideNavigationCollapsedParent",
+            "required": false,
+            "default": "\"widen\"",
+            "description": "While collapsed, pressing a parent or a rail group: \"widen\" emits update:collapsed false with it open;\n\"flyout\" shows its rows in a panel beside the icon and keeps the column narrow.",
+            "summary": "collapsed에서 부모 항목이나 rail=\"groups\"의 묶음을 눌렀을 때의 동작입니다. widen은 그 부모나 묶음을 연 채로 넓혀 달라고 요청합니다(onCollapsedChange). flyout은 열 폭을 그대로 두고 아이콘 옆에 제목과 하위 항목을 담은 비모달 패널을 띄웁니다. → 키로 열고 Esc나 바깥 누름으로 닫으며, 목적지를 누르면 닫힙니다.",
+            "source": "packages/vue3/src/side-navigation.tsx"
+          },
+          {
             "name": "density",
             "type": "\"default\" | \"compact\"",
             "required": false,
             "default": "\"default\"",
             "description": "\"compact\": 32 tall rows and 30 tall children under a mouse, and counts as quiet numbers, for long lists (documentation,\nsettings). A touch pointer keeps the touch heights.",
             "summary": "compact이면 마우스 포인터에서 항목을 32px, 하위 항목을 30px로 줄이고, 항목 끝의 숫자 배지를 3차 글자색 숫자로 낮춥니다(점 배지는 그대로). 문서·설정처럼 항목이 많은 목록에 씁니다. 터치 포인터와 Native 기기에서는 터치 높이(48·44px)를 유지합니다.",
+            "source": "packages/vue3/src/side-navigation.tsx"
+          },
+          {
+            "name": "collapseToggle",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "A button at the end of the footer that asks to collapse or widen the column (update:collapsed).",
+            "summary": "푸터 끝에 사이드바를 접고 펴는 버튼을 둡니다. 누르면 onCollapsedChange(Vue update:collapsed)를 반대 값으로 호출하고, 이름은 메뉴 접기·메뉴 펼치기입니다. 접힌 상태에서는 아이콘 행과 같은 44×40px 면이 되어 푸터 내용 위에 놓입니다.",
+            "source": "packages/vue3/src/side-navigation.tsx"
+          },
+          {
+            "name": "linkAs",
+            "type": "string | Component",
+            "required": false,
+            "default": "—",
+            "description": "Renders enabled links with the app's router link (RouterLink, NuxtLink) or another tag instead of <a>. It receives the\nhref under linkProp, class, the aria-* and data-* attributes, onClick and a default slot, and must render an <a>.",
+            "summary": "켜진 링크를 앱 라우터의 링크 컴포넌트(RouterLink 등)로 그립니다. 주소는 linkProp 이름으로 넘기고 class·aria-*·data-*·클릭 처리는 속성으로 넘기므로, 그 컴포넌트는 받은 속성을 <a>에 그대로 붙여야 합니다. 비활성 목적지는 늘 <a>입니다.",
+            "source": "packages/vue3/src/side-navigation.tsx"
+          },
+          {
+            "name": "linkProp",
+            "type": "string",
+            "required": false,
+            "default": "\"href\"",
+            "description": "The prop linkAs receives the href under: \"to\" for RouterLink.",
+            "summary": "linkAs 컴포넌트에 주소를 넘길 prop 이름입니다. Vue Router의 RouterLink는 to를 씁니다.",
+            "source": "packages/vue3/src/side-navigation.tsx"
+          },
+          {
+            "name": "scrollToCurrent",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Brings the current row into the menu's own scrolling column when the menu mounts and when the page changes.",
+            "summary": "처음 그릴 때와 현재 페이지가 바뀔 때 현재 행(가려졌다면 그 행을 품은 부모나 묶음)을 메뉴가 들어 있는 스크롤 영역 안으로 가장 짧게 옮깁니다. 창 전체는 스크롤하지 않습니다.",
             "source": "packages/vue3/src/side-navigation.tsx"
           }
         ],
@@ -34998,6 +35052,12 @@
             "source": "packages/vue3/src/side-navigation.tsx",
             "type": "이벤트",
             "summary": "reselect 이벤트를 통지합니다."
+          },
+          {
+            "name": "action",
+            "source": "packages/vue3/src/side-navigation.tsx",
+            "type": "이벤트",
+            "summary": "action 이벤트를 통지합니다."
           },
           {
             "name": "update:expanded",
@@ -35018,7 +35078,26 @@
             "summary": "update:expandedGroups 이벤트를 통지합니다."
           }
         ],
-        "slots": [],
+        "slots": [
+          {
+            "name": "header",
+            "data": [
+              "collapsed"
+            ],
+            "source": "packages/vue3/src/side-navigation.tsx",
+            "type": "{ collapsed }",
+            "summary": "header 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "footer",
+            "data": [
+              "collapsed"
+            ],
+            "source": "packages/vue3/src/side-navigation.tsx",
+            "type": "{ collapsed }",
+            "summary": "footer 영역의 기본 내용을 교체합니다."
+          }
+        ],
         "ownership": [],
         "types": []
       },
@@ -35093,7 +35172,7 @@
             "required": false,
             "default": "false",
             "description": "Icons only, for a narrowed column. Names show as tooltips, and children stay hidden behind their parent.",
-            "summary": "아이콘만 표시합니다. 항목은 아이콘을 감싸는 44×40px 면이 되고 열 폭은 앱이 줄입니다(44px + 앱의 좌우 여백). 이름은 툴팁과 화면 낭독기로 전합니다. 하위 항목은 숨기며 부모를 누르면 넓혀 달라고 요청합니다(Vue v-model:collapsed).",
+            "summary": "아이콘만 표시합니다. 항목은 아이콘을 감싸는 44×40px 면이 되고 열 폭은 앱이 줄입니다(44px + 앱의 좌우 여백). 이름은 툴팁과 화면 낭독기로 전합니다. 하위 항목은 숨기며, 부모를 누르면 넓혀 달라고 요청하거나(Vue v-model:collapsed) collapsedParent=\"flyout\"이면 옆 패널로 보여 줍니다. 현재 페이지를 품은 부모는 선택 배경의 절반 세기 면으로 표시합니다. 다시 넓어질 때 이름·제목·배지는 열이 펼쳐진 뒤 서서히 나타납니다.",
             "source": "packages/react/src/side-navigation.tsx"
           },
           {
@@ -35101,8 +35180,8 @@
             "type": "((collapsed: boolean) => void) | undefined",
             "required": false,
             "default": "—",
-            "description": "A parent or group was pressed while collapsed: widen the column (collapsed=false) to show its children.",
-            "summary": "collapsed에서 부모 항목이나 rail=\"groups\"의 묶음을 누르면 false로 호출합니다. 받은 값으로 사이드바 폭을 넓히면 그 부모나 묶음이 열린 채로 보입니다.",
+            "description": "A parent or group was pressed while collapsed (collapsedParent=\"widen\"), or the collapse toggle was pressed.",
+            "summary": "collapsed에서 부모 항목이나 rail=\"groups\"의 묶음을 누르면(collapsedParent=\"widen\") false로, 접기 버튼(collapseToggle)을 누르면 반대 값으로 호출합니다. 받은 값으로 사이드바 폭을 바꾸면 눌렀던 부모나 묶음이 열린 채로 보입니다.",
             "source": "packages/react/src/side-navigation.tsx"
           },
           {
@@ -35110,8 +35189,8 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
-            "description": "Group titles become toggles that show or hide their group. The group of the current destination starts open.",
-            "summary": "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 현재 페이지가 있는 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 선택 배경색 면을, 배지가 있으면 점을 표시합니다.",
+            "description": "Group titles become toggles that show or hide their group. A group's own collapsible overrides this. The group of\nthe current destination starts open, and so do groups marked defaultOpen.",
+            "summary": "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 제목 바로 뒤의 작은 14px 화살표가 닫힘(끝 방향)과 열림(아래)을 알립니다. 현재 페이지가 있는 묶음과 defaultOpen 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 제목을 본문 글자색으로, 배지가 있으면 끝에 점을 표시합니다. 묶음마다 collapsible을 주면 이 값보다 우선합니다(false면 늘 펼친 제목).",
             "source": "packages/react/src/side-navigation.tsx"
           },
           {
@@ -35133,11 +35212,20 @@
             "source": "packages/react/src/side-navigation.tsx"
           },
           {
+            "name": "groupCounts",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "A closed group's title ends with how many rows it holds (a dot instead while one of them has a badge).",
+            "summary": "닫힌 묶음 제목 끝에 그 안의 행 수를 3차 글자색 숫자로 표시합니다. 안에 배지가 있으면 숫자 대신 점을 표시합니다. 닫힌 묶음이 많아 내용의 크기를 가늠해야 할 때 켭니다.",
+            "source": "packages/react/src/side-navigation.tsx"
+          },
+          {
             "name": "rail",
             "type": "SideNavigationRail | undefined",
             "required": false,
             "default": "\"items\"",
-            "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon), which\nasks to widen with that group open and in view. Loose items between groups keep their own row.",
+            "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon).\nLoose items between groups keep their own row.",
             "summary": "collapsed일 때 아이콘을 세우는 단위입니다. items는 최상위 항목마다, groups는 묶음마다 아이콘 하나를 세웁니다(묶음의 icon, 없으면 제목의 첫 글자). groups에서 묶음을 누르면 그 묶음을 연 채로 넓혀 달라고 요청하고, 웹에서는 넓어진 뒤 묶음 제목을 화면 안으로 스크롤합니다. 묶음 밖 항목은 그대로 한 줄씩 남습니다.",
             "source": "packages/react/src/side-navigation.tsx"
           },
@@ -35151,12 +35239,75 @@
             "source": "packages/react/src/side-navigation.tsx"
           },
           {
+            "name": "collapsedParent",
+            "type": "SideNavigationCollapsedParent | undefined",
+            "required": false,
+            "default": "\"widen\"",
+            "description": "While collapsed, pressing a parent or a rail group: \"widen\" asks for the full width with it open (onCollapsedChange);\n\"flyout\" shows its rows in a panel beside the icon and keeps the column narrow.",
+            "summary": "collapsed에서 부모 항목이나 rail=\"groups\"의 묶음을 눌렀을 때의 동작입니다. widen은 그 부모나 묶음을 연 채로 넓혀 달라고 요청합니다(onCollapsedChange). flyout은 열 폭을 그대로 두고 아이콘 옆에 제목과 하위 항목을 담은 비모달 패널을 띄웁니다. → 키로 열고 Esc나 바깥 누름으로 닫으며, 목적지를 누르면 닫힙니다.",
+            "source": "packages/react/src/side-navigation.tsx"
+          },
+          {
             "name": "density",
             "type": "\"default\" | \"compact\" | undefined",
             "required": false,
             "default": "\"default\"",
             "description": "\"compact\": 32 tall rows and 30 tall children under a mouse, and counts as quiet numbers, for long lists (documentation,\nsettings). A touch pointer keeps the touch heights.",
             "summary": "compact이면 마우스 포인터에서 항목을 32px, 하위 항목을 30px로 줄이고, 항목 끝의 숫자 배지를 3차 글자색 숫자로 낮춥니다(점 배지는 그대로). 문서·설정처럼 항목이 많은 목록에 씁니다. 터치 포인터와 Native 기기에서는 터치 높이(48·44px)를 유지합니다.",
+            "source": "packages/react/src/side-navigation.tsx"
+          },
+          {
+            "name": "header",
+            "type": "SideNavigationSlot",
+            "required": false,
+            "default": "—",
+            "description": "Above the list, such as a logo, a workspace switcher or search. With a header or footer only the list scrolls.",
+            "summary": "목록 위에 둘 내용입니다(로고, 워크스페이스 전환, 검색). collapsed를 받는 함수로 주면 접힌 상태에서 아이콘만 남길 수 있습니다. header나 footer가 있으면 목록만 스크롤되고 둘은 제자리에 남습니다.",
+            "source": "packages/react/src/side-navigation.tsx"
+          },
+          {
+            "name": "footer",
+            "type": "SideNavigationSlot",
+            "required": false,
+            "default": "—",
+            "description": "Below the list, such as the account.",
+            "summary": "목록 아래에 둘 내용입니다(계정, 도움말). collapsed를 받는 함수로 줄 수 있습니다. 접힌 상태에서는 아이콘 행 폭에 맞춰 가운데 정렬합니다.",
+            "source": "packages/react/src/side-navigation.tsx"
+          },
+          {
+            "name": "collapseToggle",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "A button at the end of the footer that asks to collapse or widen the column (onCollapsedChange).",
+            "summary": "푸터 끝에 사이드바를 접고 펴는 버튼을 둡니다. 누르면 onCollapsedChange(Vue update:collapsed)를 반대 값으로 호출하고, 이름은 메뉴 접기·메뉴 펼치기입니다. 접힌 상태에서는 아이콘 행과 같은 44×40px 면이 되어 푸터 내용 위에 놓입니다.",
+            "source": "packages/react/src/side-navigation.tsx"
+          },
+          {
+            "name": "onAction",
+            "type": "((key: string, action: string, event: MouseEvent<HTMLButtonElement>) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "An action button of a row (the row's key) or a group title (the group's key) was pressed.",
+            "summary": "행 끝 동작 버튼(목적지의 actions)이나 묶음 제목 끝 동작 버튼(묶음의 action)을 누르면 행 또는 묶음의 key, 동작의 key, 이벤트로 호출합니다. 버튼은 링크 바깥에 놓여 목적지로 이동하지 않습니다.",
+            "source": "packages/react/src/side-navigation.tsx"
+          },
+          {
+            "name": "linkAs",
+            "type": "ElementType | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Renders enabled links with the app's router link (Next.js Link, React Router Link) instead of <a>. It receives href,\nclassName, the aria-* and data-* attributes, onClick and children, and must render an <a> with them.",
+            "summary": "켜진 링크를 앱 라우터의 링크 컴포넌트(Next.js Link, React Router Link)로 그립니다. href·className·aria-*·data-*·onClick·children을 넘기므로 그 컴포넌트는 받은 속성을 <a>에 그대로 붙여야 합니다. 프리페치 같은 라우터 기능을 그대로 쓸 수 있습니다. 비활성 목적지는 늘 <a>입니다.",
+            "source": "packages/react/src/side-navigation.tsx"
+          },
+          {
+            "name": "scrollToCurrent",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Brings the current row into the menu's own scrolling column when the menu mounts and when the page changes.",
+            "summary": "처음 그릴 때와 현재 페이지가 바뀔 때 현재 행(가려졌다면 그 행을 품은 부모나 묶음)을 메뉴가 들어 있는 스크롤 영역 안으로 가장 짧게 옮깁니다. 창 전체는 스크롤하지 않습니다.",
             "source": "packages/react/src/side-navigation.tsx"
           }
         ],
@@ -35236,7 +35387,7 @@
             "required": false,
             "default": "false",
             "description": "Icons only, for a narrowed column. Names show as tooltips (a long press on a device), and children stay hidden behind their parent.",
-            "summary": "아이콘만 표시합니다. 항목은 아이콘을 감싸는 44×40px 면이 되고 열 폭은 앱이 줄입니다(44px + 앱의 좌우 여백). 이름은 툴팁과 화면 낭독기로 전합니다. 하위 항목은 숨기며 부모를 누르면 넓혀 달라고 요청합니다(Vue v-model:collapsed).",
+            "summary": "아이콘만 표시합니다. 항목은 아이콘을 감싸는 44×40px 면이 되고 열 폭은 앱이 줄입니다(44px + 앱의 좌우 여백). 이름은 툴팁과 화면 낭독기로 전합니다. 하위 항목은 숨기며, 부모를 누르면 넓혀 달라고 요청하거나(Vue v-model:collapsed) collapsedParent=\"flyout\"이면 옆 패널로 보여 줍니다. 현재 페이지를 품은 부모는 선택 배경의 절반 세기 면으로 표시합니다. 다시 넓어질 때 이름·제목·배지는 열이 펼쳐진 뒤 서서히 나타납니다.",
             "source": "packages/native/src/side-navigation.tsx"
           },
           {
@@ -35244,8 +35395,8 @@
             "type": "((collapsed: boolean) => void) | undefined",
             "required": false,
             "default": "—",
-            "description": "A parent or group was pressed while collapsed: widen the column (collapsed=false) to show its children.",
-            "summary": "collapsed에서 부모 항목이나 rail=\"groups\"의 묶음을 누르면 false로 호출합니다. 받은 값으로 사이드바 폭을 넓히면 그 부모나 묶음이 열린 채로 보입니다.",
+            "description": "A parent or group was pressed while collapsed (collapsedParent=\"widen\"), or the collapse toggle was pressed.",
+            "summary": "collapsed에서 부모 항목이나 rail=\"groups\"의 묶음을 누르면(collapsedParent=\"widen\") false로, 접기 버튼(collapseToggle)을 누르면 반대 값으로 호출합니다. 받은 값으로 사이드바 폭을 바꾸면 눌렀던 부모나 묶음이 열린 채로 보입니다.",
             "source": "packages/native/src/side-navigation.tsx"
           },
           {
@@ -35253,8 +35404,8 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
-            "description": "Group titles become toggles that show or hide their group. The group of the current destination starts open.",
-            "summary": "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 현재 페이지가 있는 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 선택 배경색 면을, 배지가 있으면 점을 표시합니다.",
+            "description": "Group titles become toggles that show or hide their group. A group's own collapsible overrides this. The group of\nthe current destination starts open, and so do groups marked defaultOpen.",
+            "summary": "묶음 제목을 여닫는 32px 행으로 바꿉니다(터치 포인터에서는 44px). 제목 바로 뒤의 작은 14px 화살표가 닫힘(끝 방향)과 열림(아래)을 알립니다. 현재 페이지가 있는 묶음과 defaultOpen 묶음은 열린 채로 시작하고, 닫힌 묶음 안으로 이동하면 열립니다. 닫힌 묶음은 안에 현재 페이지가 있으면 제목을 본문 글자색으로, 배지가 있으면 끝에 점을 표시합니다. 묶음마다 collapsible을 주면 이 값보다 우선합니다(false면 늘 펼친 제목).",
             "source": "packages/native/src/side-navigation.tsx"
           },
           {
@@ -35276,11 +35427,20 @@
             "source": "packages/native/src/side-navigation.tsx"
           },
           {
+            "name": "groupCounts",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "A closed group's title ends with how many rows it holds (a dot instead while one of them has a badge).",
+            "summary": "닫힌 묶음 제목 끝에 그 안의 행 수를 3차 글자색 숫자로 표시합니다. 안에 배지가 있으면 숫자 대신 점을 표시합니다. 닫힌 묶음이 많아 내용의 크기를 가늠해야 할 때 켭니다.",
+            "source": "packages/native/src/side-navigation.tsx"
+          },
+          {
             "name": "rail",
             "type": "SideNavigationRail | undefined",
             "required": false,
             "default": "\"items\"",
-            "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon), which\nasks to widen with that group open. Loose items between groups keep their own row.",
+            "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon).\nLoose items between groups keep their own row.",
             "summary": "collapsed일 때 아이콘을 세우는 단위입니다. items는 최상위 항목마다, groups는 묶음마다 아이콘 하나를 세웁니다(묶음의 icon, 없으면 제목의 첫 글자). groups에서 묶음을 누르면 그 묶음을 연 채로 넓혀 달라고 요청하고, 웹에서는 넓어진 뒤 묶음 제목을 화면 안으로 스크롤합니다. 묶음 밖 항목은 그대로 한 줄씩 남습니다.",
             "source": "packages/native/src/side-navigation.tsx"
           },
@@ -35294,12 +35454,57 @@
             "source": "packages/native/src/side-navigation.tsx"
           },
           {
+            "name": "collapsedParent",
+            "type": "SideNavigationCollapsedParent | undefined",
+            "required": false,
+            "default": "\"widen\"",
+            "description": "While collapsed, pressing a parent or a rail group: \"widen\" asks for the full width with it open (onCollapsedChange);\n\"flyout\" shows its rows in a panel beside the icon and keeps the column narrow.",
+            "summary": "collapsed에서 부모 항목이나 rail=\"groups\"의 묶음을 눌렀을 때의 동작입니다. widen은 그 부모나 묶음을 연 채로 넓혀 달라고 요청합니다(onCollapsedChange). flyout은 열 폭을 그대로 두고 아이콘 옆에 제목과 하위 항목을 담은 비모달 패널을 띄웁니다. → 키로 열고 Esc나 바깥 누름으로 닫으며, 목적지를 누르면 닫힙니다.",
+            "source": "packages/native/src/side-navigation.tsx"
+          },
+          {
             "name": "density",
             "type": "\"default\" | \"compact\" | undefined",
             "required": false,
             "default": "\"default\"",
             "description": "\"compact\": 32 tall rows and 30 tall children on Native Web, and counts as quiet numbers, for long lists. A device keeps\nthe touch heights.",
             "summary": "compact이면 마우스 포인터에서 항목을 32px, 하위 항목을 30px로 줄이고, 항목 끝의 숫자 배지를 3차 글자색 숫자로 낮춥니다(점 배지는 그대로). 문서·설정처럼 항목이 많은 목록에 씁니다. 터치 포인터와 Native 기기에서는 터치 높이(48·44px)를 유지합니다.",
+            "source": "packages/native/src/side-navigation.tsx"
+          },
+          {
+            "name": "header",
+            "type": "SideNavigationSlot",
+            "required": false,
+            "default": "—",
+            "description": "Above the list, such as a logo, a workspace switcher or search. The navigation does not scroll itself: put it in the\napp's ScrollView, or let the app scroll the list between a fixed header and footer.",
+            "summary": "목록 위에 둘 내용입니다. collapsed를 받는 함수로 주면 접힌 상태에서 바꿔 그릴 수 있습니다. Native는 스스로 스크롤하지 않으므로 앱의 ScrollView 안에 둡니다.",
+            "source": "packages/native/src/side-navigation.tsx"
+          },
+          {
+            "name": "footer",
+            "type": "SideNavigationSlot",
+            "required": false,
+            "default": "—",
+            "description": "Below the list, such as the account.",
+            "summary": "목록 아래에 둘 내용입니다. collapsed를 받는 함수로 줄 수 있습니다.",
+            "source": "packages/native/src/side-navigation.tsx"
+          },
+          {
+            "name": "collapseToggle",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "A button at the end of the footer that asks to collapse or widen the column (onCollapsedChange).",
+            "summary": "푸터 끝에 사이드바를 접고 펴는 버튼을 둡니다. 누르면 onCollapsedChange(Vue update:collapsed)를 반대 값으로 호출하고, 이름은 메뉴 접기·메뉴 펼치기입니다. 접힌 상태에서는 아이콘 행과 같은 44×40px 면이 되어 푸터 내용 위에 놓입니다.",
+            "source": "packages/native/src/side-navigation.tsx"
+          },
+          {
+            "name": "onAction",
+            "type": "((key: string, action: string, event: GestureResponderEvent) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "An action button of a row (the row's key) or a group title (the group's key) was pressed. Actions always show, as on touch.",
+            "summary": "행 끝이나 묶음 제목 끝의 동작 버튼을 누르면 행 또는 묶음의 key, 동작의 key, 이벤트로 호출합니다. 기기에서는 버튼이 항상 보입니다.",
             "source": "packages/native/src/side-navigation.tsx"
           }
         ],

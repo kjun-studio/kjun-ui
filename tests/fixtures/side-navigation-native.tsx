@@ -18,6 +18,8 @@ function Page() {
         onCollapsedChange={next => { setCollapsed(next); add('wide'); }}
         {...(sideCase.controlled ? { expanded, onExpandedChange: (next: string[]) => { setExpanded(next); add('open:' + next.join(',')); } } : {})}
         rail={sideCase.rail} railLabels={sideCase.labels} density={sideCase.density} {...(sideCase.groups ? { collapsibleGroups: true, onExpandedGroupsChange: (next: string[]) => add('groups:' + next.join(',')) } : {})}
+        groupCounts={sideCase.counts} collapsedParent={sideCase.flyout ? 'flyout' : 'widen'} onAction={(key, action) => add('act:' + key + ':' + action)}
+        {...(sideCase.chrome ? { collapseToggle: true, header: (narrow: boolean) => <Text testID="header">{narrow ? 'K' : 'KJ Studio'}</Text>, footer: <Text testID="footer">KJ</Text> } : {})}
         onNavigate={(key, event) => { event.preventDefault?.(); setValue(key); add('go:' + key); }} onReselect={key => add('again:' + key)} />
     </View>
     <View><Pressable testID="to-checkout" onPress={() => setValue('checkout')}><Text>결제 화면으로</Text></Pressable><Text testID="log">{log.join(' ')}</Text></View>

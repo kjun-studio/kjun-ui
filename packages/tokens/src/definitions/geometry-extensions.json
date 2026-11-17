@@ -193,7 +193,16 @@
       "railIndicatorHeight": { "$ref": "button.heights.sm" },
       "railLabelGap": { "$ref": "dimension.value4" },
       "compactItemHeight": { "$ref": "button.heights.sm" },
-      "compactChildHeight": 30
+      "compactChildHeight": 30,
+      "groupChevronSize": { "$ref": "iconSizes.small" },
+      "groupChevronGap": { "$ref": "dimension.value4" },
+      "actionSize": { "$ref": "button.heights.xs" },
+      "actionIconSize": { "$ref": "iconSizes.default" },
+      "actionGap": { "$ref": "dimension.value2" },
+      "actionRadius": { "$ref": "button.radii.xs" },
+      "toggleSize": { "$ref": "button.heights.sm" },
+      "toggleRadius": { "$ref": "button.radii.sm" },
+      "chromeGap": { "$ref": "dimension.value12" }
     },
     "floatingNavigation": {
       "itemSize": 52,

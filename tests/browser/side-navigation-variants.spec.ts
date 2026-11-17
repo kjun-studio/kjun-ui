@@ -45,7 +45,7 @@ for (const platform of ['react', 'vue3']) {
     expect(badge.x).toBeGreaterThan(icon.x);
     expect(badge.y + badge.height).toBeLessThanOrEqual((await tasks.locator('.kjun-side-navigation-label').boundingBox())!.y);
     // Group boundaries are the indicator's width, centred under it.
-    const lines = await nav.evaluate(el => [...el.children].map(group => { const line = getComputedStyle(group, '::before');
+    const lines = await nav.locator('.kjun-side-navigation-list').evaluate(el => [...el.children].map(group => { const line = getComputedStyle(group, '::before');
       return line.content === 'none' ? null : [line.width, line.insetInlineStart]; }));
     expect(lines).toEqual([null, ['56px', '8px'], ['56px', '8px'], ['56px', '8px']]);
     // A parent still asks to widen with its children open.

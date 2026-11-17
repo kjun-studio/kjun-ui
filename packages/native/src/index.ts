@@ -8,7 +8,7 @@ export type { KjunInputProps, KjunFormGroupProps } from "./input";
 export type { KjunTextInputHandle, KjunViewHandle } from "./handles";
 export { KjunPressable } from "./pressable";
 export { KjunSideNavigation } from "./side-navigation";
-export type { KjunSideNavigationProps, SideNavigationDestination, SideNavigationParent, SideNavigationItem, SideNavigationGroup, SideNavigationEntry } from "./side-navigation";
+export type { KjunSideNavigationProps, SideNavigationDestination, SideNavigationParent, SideNavigationItem, SideNavigationGroup, SideNavigationEntry, SideNavigationAction, SideNavigationCollapsedParent, SideNavigationRail, SideNavigationSlot } from "./side-navigation";
 export type { KjunPressableProps } from "./pressable";
 export { KjunModal, KjunFormActions } from "./modal";
 export type { KjunModalProps, KjunFormActionsProps } from "./modal";

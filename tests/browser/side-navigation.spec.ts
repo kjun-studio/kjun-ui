@@ -60,13 +60,18 @@ for (const platform of ['react', 'vue3']) {
     await expect(page.getByTestId('log')).toHaveText('');
     await child.click();
     await expect(child).toHaveAttribute('aria-current', 'page');
-    // Closed over the current page, the parent keeps the place with the same fill, also under the pointer.
-    // Read the fill once the hover-to-selected transition has settled into an opaque colour.
-    await expect.poll(() => child.evaluate(el => getComputedStyle(el).backgroundColor)).toMatch(/^rgb\(/);
-    const selectedFill = await child.evaluate(el => getComputedStyle(el).backgroundColor);
+    // Closed over the current page, the parent keeps the place a step below the page itself: the page's ink and weight,
+    // without its fill, so the fill only ever means the current page.
+    // Read the ink once the press-to-selected transition has settled.
+    await page.mouse.move(800, 600);
+    await page.waitForTimeout(400);
+    const selectedInk = await child.evaluate(el => getComputedStyle(el).color);
     await parent.click();
+    await page.mouse.move(800, 600);
     await expect(parent).toHaveAttribute('data-current-within', '');
-    await expect.poll(() => parent.evaluate(el => getComputedStyle(el).backgroundColor)).toBe(selectedFill);
+    await expect.poll(() => parent.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgba(0, 0, 0, 0)');
+    await expect.poll(() => parent.evaluate(el => getComputedStyle(el).color)).toBe(selectedInk);
+    expect(await parent.evaluate(el => getComputedStyle(el).fontWeight)).toBe('600');
     // A long label keeps one line.
     const long = nav.getByRole('link', { name: /아주 긴 이름/ });
     expect((await long.boundingBox())!.height).toBe(40);
@@ -121,7 +126,7 @@ for (const platform of ['react', 'vue3']) {
     await expect(brand.locator('.kjun-navigation-badge[data-dot]')).toBeVisible();
     const parentLabel = await nav.getByRole('button', { name: '프로젝트', exact: true }).locator('.kjun-side-navigation-label').boundingBox();
     expect(Math.abs((await brand.locator('.kjun-side-navigation-label').boundingBox())!.x - parentLabel!.x)).toBeLessThan(1);
-    // The panel ids do not come from keys, so a key with spaces still points at its panel.
+    // Panel ids are made from keys with anything outside [A-Za-z0-9_-] encoded, so any key still points at its panel.
     const panel = await nav.getByRole('button', { name: '프로젝트', exact: true }).getAttribute('aria-controls');
     expect(panel).toMatch(/^[\w-]+$/);
     await expect(page.locator('#' + panel)).toHaveCount(1);
@@ -162,7 +167,7 @@ for (const platform of ['react', 'vue3']) {
     const badge = (await mark.boundingBox())!;
     expect(badge.x + badge.width).toBeLessThanOrEqual(side.x + side.width);
     // With the titles hidden, each later group starts under a hairline the icon's width, centred in the gap.
-    const lines = await nav.evaluate(el => [...el.children].map(group => { const line = getComputedStyle(group, '::before');
+    const lines = await nav.locator('.kjun-side-navigation-list').evaluate(el => [...el.children].map(group => { const line = getComputedStyle(group, '::before');
       return line.content === 'none' ? null : [line.width, line.height, line.insetInlineStart]; }));
     expect(lines).toEqual([null, ['20px', '1px', '12px'], ['20px', '1px', '12px'], ['20px', '1px', '12px']]);
     // The parent holding the current page takes the fill; no chevron, and its child's dot sits on its icon.
@@ -209,11 +214,12 @@ for (const platform of ['react', 'vue3']) {
     await expect(docs).toHaveAttribute('aria-expanded', 'true');
     await expect(page.getByTestId('log')).toHaveText('groups:관리 groups:관리,문서');
     await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toHaveAttribute('aria-current', 'page');
-    // Closed over the current page, the title takes the selection fill, as a closed parent does.
+    // Closed over the current page, the title takes full ink instead of its tertiary grey, and no fill.
     await docs.click();
     await page.mouse.move(800, 600);
     await expect(docs).toHaveAttribute('data-current-within', '');
-    await expect.poll(() => docs.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe(clear);
+    await expect.poll(() => docs.evaluate(el => getComputedStyle(el).backgroundColor)).toBe(clear);
+    expect(await docs.evaluate(el => getComputedStyle(el).color)).not.toBe(await admin.evaluate(el => getComputedStyle(el).color));
     await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toBeHidden();
   });
 
@@ -226,7 +232,8 @@ for (const platform of ['react', 'vue3']) {
     await expect(rows).toHaveCount(5);
     for (const [at, name] of [/^홈$/, /^할 일, .*12/, /^문서, 새 소식$/, /^도움말/, /^관리$/].entries()) await expect(rows.nth(at)).toHaveAccessibleName(name);
     const docs = nav.getByRole('button', { name: /^문서/ }), admin = nav.getByRole('button', { name: '관리' });
-    // The group holding the current page is filled; its badge shows as a dot on the icon.
+    // The group holding the current page takes half the selection fill (icons only, there is no name to strengthen); its
+    // badge shows as a dot on the icon.
     await expect(docs).toHaveAttribute('data-current-within', '');
     expect(await docs.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
     await expect(docs.locator('.kjun-side-navigation-glyph > .kjun-navigation-badge[data-dot]')).toBeVisible();
@@ -284,11 +291,11 @@ test('native: SideNavigation starts with the current page\'s parent open', async
   const nav = page.getByRole('navigation', { name: '작업 공간' });
   await expect(nav.getByRole('button', { name: '프로젝트' })).toHaveAttribute('aria-expanded', 'true');
   await expect(nav.getByRole('link', { name: '결제 화면 개선' })).toHaveAttribute('aria-current', 'page');
-  // Closed over the current page, the parent takes the selection fill, as it does while collapsed.
+  // Closed over the current page, the parent is marked without the selection fill (that is the page's alone).
   const parent = nav.getByRole('button', { name: /^프로젝트/ });
   await parent.click();
   await page.mouse.move(800, 600);
-  await expect.poll(() => parent.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
+  await expect.poll(() => parent.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgba(0, 0, 0, 0)');
 });
 
 test('native: SideNavigation keeps loose items apart from a group and stands a closed parent for its children', async ({ page }) => {
