@@ -1,11 +1,11 @@
 {
-  "total": 99,
+  "total": 100,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 99,
+      "provided": 100,
       "counts": {
-        "supported": 99,
+        "supported": 100,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 99,
+      "provided": 100,
       "counts": {
-        "supported": 99,
+        "supported": 100,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 99,
+      "provided": 100,
       "counts": {
         "supported": 0,
-        "preview": 99,
+        "preview": 100,
         "review": 0,
         "unsupported": 0
       },
@@ -3186,7 +3186,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 99
+      "componentCount": 100
     }
   ]
 }
