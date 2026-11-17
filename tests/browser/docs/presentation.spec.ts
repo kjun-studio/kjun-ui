@@ -6,14 +6,14 @@ import { preparePresentation } from '../../../scripts/presentation-capture.mjs';
 const ready = (page: import('@playwright/test').Page) => expect(page.getByRole('button', { name: '문서 플랫폼', exact: true })).toBeEnabled();
 const noOverflow = async (page: import('@playwright/test').Page) => expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 
-test('99 packed presentation images share dimensions, definitions and unclipped capture evidence', async ({ request }) => {
+test('100 packed presentation images share dimensions, definitions and unclipped capture evidence', async ({ request }) => {
   const manifest = await (await request.get('/previews/thumbnails/manifest.json')).json();
   expect(manifest.renderer).toBe('@kjun-ui/react'); expect(manifest.capture).toEqual(capture);
   expect(manifest.captureProfiles).toEqual(captureProfiles);
-  expect(Object.keys(manifest.images)).toHaveLength(96); expect(Object.keys(manifest.overviewImages)).toHaveLength(3);
-  expect(new Set(Object.values(manifest.images)).size).toBe(96);
+  expect(Object.keys(manifest.images)).toHaveLength(97); expect(Object.keys(manifest.overviewImages)).toHaveLength(3);
+  expect(new Set(Object.values(manifest.images)).size).toBe(97);
   expect(Object.keys(manifest.scenes).sort()).toEqual([...presentations, ...overviewScenes].map(s => s.name).sort());
-  expect(new Set(Object.values(manifest.scenes).map((s: any) => s.url)).size).toBe(99);
+  expect(new Set(Object.values(manifest.scenes).map((s: any) => s.url)).size).toBe(100);
   for (const definition of [...presentations, ...overviewScenes]) {
     const scene = manifest.scenes[definition.name], profile = captureFor(definition);
     expect(scene.captureType).toBe(definition.captureType); expect(scene.capture).toEqual(profile);
