@@ -19860,39 +19860,39 @@
       "name": "@kjun-ui/icons",
       "version": "0.21.0",
       "file": "kjun-ui-icons-0.21.0.tgz",
-      "bytes": 1459666,
-      "integrity": "sha512-YlDNi1PmbbZN8xlalXbVQTrAJYlHuSwLZphnny6r5J3APb/m2XEpp3BqdzdcAxqnEkzxU39ekbhO5It00pSajw=="
+      "bytes": 1459751,
+      "integrity": "sha512-RbooUbBziTs64yt2W1hI3VNCoRBImajxfObRj4tDyYwRaN5J2ZBgfcFPnCxj5b/Wv0bmgfX4Q0XAeuXD9jFxgg=="
     },
     {
       "name": "@kjun-ui/tokens",
       "version": "0.21.0",
       "file": "kjun-ui-tokens-0.21.0.tgz",
-      "bytes": 148695,
-      "integrity": "sha512-jxGfTYLy9cE5nW0Llnkj7/77CxQXNO161IUCC0rAwJUFksGV7X/e2nNGfgj5p/JUhEAgqzHCDK3dGPkSCvrwrA=="
+      "bytes": 148078,
+      "integrity": "sha512-3CDd0jGAU+cpU2n3oya5sUKuSpqpWYgmVcvyN0Z/aKbAN6k5jmue+ej2dbcPtMtdlnqFUP1nJIEf3uy4vgpRXw=="
     },
     {
       "name": "@kjun-ui/vue3",
       "version": "0.21.0",
       "file": "kjun-ui-vue3-0.21.0.tgz",
-      "bytes": 674049,
-      "integrity": "sha512-3+T4U+QCKvluLFCXTXMRETBqP98SC9daAIw/0q/tgdt4ZbhsyFPgVKfDz8j7cgVAKu1AWpE/yLMWSqYXwOPQPQ=="
+      "bytes": 674659,
+      "integrity": "sha512-io4j2upY+4TSAhkIB9kmkKZwOHhaowu1fKzkTrFroHDEdHEggBazyJr7YQ8G0L3ceAkPRNseEdyVoSJIFhy7JA=="
     },
     {
       "name": "@kjun-ui/react",
       "version": "0.21.0",
       "file": "kjun-ui-react-0.21.0.tgz",
-      "bytes": 571113,
-      "integrity": "sha512-xM0KSZlTlb5zVC9Udf5OEtRRcrHY8BW5HpEMufPzIuKpI+ZEZA0qgaol+vaAk8DyoYx+MqtfTCO7mT/ttYgMBw=="
+      "bytes": 571397,
+      "integrity": "sha512-TJ5xTxBNNjTpCOwwkq0SPqAoyF2wm3s1+i14UeffOUztMECmOM8WTkH7aRr15kzqoxfNkdBGFjCsAQeKfbpSWA=="
     },
     {
       "name": "@kjun-ui/native",
       "version": "0.21.0",
       "file": "kjun-ui-native-0.21.0.tgz",
-      "bytes": 1010713,
-      "integrity": "sha512-vQs2aiQHZlA0Rt4IIawhXMbP+pQLujxtC9sQm+JmtyD6WRBVmxosV/VCJCluzdD36oPRxr2xrl8DfGr3JoRtag=="
+      "bytes": 1011137,
+      "integrity": "sha512-R3p0d9wx6dOEXqwAl9RpiJBMBp+OwZRcPLx4cN0p7Wx6XqJ4oSHb4ygYgVRxGyuKhPQpm9yWmNEhI+wGT4IxVw=="
     }
   ],
-  "definitionHash": "sha256-7dbf653fb8b1d62929392a4a93c564b5cf422813e7ac2ed6be478bd91bcaaff2",
+  "definitionHash": "sha256-377e6abd1e5a83b01a32134048fc869d89f414fdb21ba2abaed7220f989792dc",
   "runs": [
     {
       "schemaVersion": 1,
