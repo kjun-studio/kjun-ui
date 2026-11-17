@@ -18714,7 +18714,7 @@
               {
                 "label": "단위 suffix",
                 "description": "서식이 붙이는 글자입니다. amount는 앱이 \"원\"을 지정하고 percent는 \"%\"가 기본입니다.",
-                "target": "text=원",
+                "target": ".kjun-input-affix",
                 "optional": false
               },
               {
@@ -18723,7 +18723,14 @@
                 "target": "text=125만 원",
                 "optional": true
               }
-            ]
+            ],
+            "settings": {
+              "format": "amount",
+              "readingAid": true
+            },
+            "values": {
+              "amount": "1250000"
+            }
           }
         ],
         "states": [
@@ -18788,7 +18795,7 @@
               {
                 "label": "단위 suffix",
                 "description": "서식이 붙이는 글자입니다. amount는 앱이 \"원\"을 지정하고 percent는 \"%\"가 기본입니다.",
-                "target": "text=원",
+                "target": ".kjun-input-affix",
                 "optional": false
               },
               {
@@ -18797,7 +18804,14 @@
                 "target": "text=125만 원",
                 "optional": true
               }
-            ]
+            ],
+            "settings": {
+              "format": "amount",
+              "readingAid": true
+            },
+            "values": {
+              "amount": "1250000"
+            }
           }
         ],
         "states": [
@@ -18862,7 +18876,7 @@
               {
                 "label": "단위 suffix",
                 "description": "서식이 붙이는 글자입니다. amount는 앱이 \"원\"을 지정하고 percent는 \"%\"가 기본입니다.",
-                "target": "text=원",
+                "target": ".kjun-input-affix",
                 "optional": false
               },
               {
@@ -18871,7 +18885,14 @@
                 "target": "text=125만 원",
                 "optional": true
               }
-            ]
+            ],
+            "settings": {
+              "format": "amount",
+              "readingAid": true
+            },
+            "values": {
+              "amount": "1250000"
+            }
           }
         ],
         "states": [
