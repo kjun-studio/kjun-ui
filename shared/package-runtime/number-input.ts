@@ -79,6 +79,16 @@ export function caretForCount(display: string, count: number): number {
   return display.length;
 }
 
+/** Where the caret sits after an edit that turned `before` into `after`, from the text alone: right after the changed part.
+ * Platforms that report the selection separately from the text (React Native) can send the two in either order. */
+export function caretAfterEdit(before: string, after: string): number {
+  let prefix = 0;
+  while (prefix < before.length && prefix < after.length && before[prefix] === after[prefix]) prefix++;
+  let suffix = 0;
+  while (suffix < before.length - prefix && suffix < after.length - prefix && before[before.length - 1 - suffix] === after[after.length - 1 - suffix]) suffix++;
+  return Math.max(prefix, after.length - suffix);
+}
+
 /** Backspace right after a comma deletes the digit before it, Delete right before one deletes the digit after it. Returns the text without commas and the caret in it; null when the browser's default is right. */
 export function deleteAcrossSeparator(display: string, start: number, end: number, key: "Backspace" | "Delete"): { text: string; caret: number } | null {
   if (start !== end) return null;

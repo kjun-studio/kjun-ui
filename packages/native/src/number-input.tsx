@@ -3,7 +3,7 @@ import { Platform, View, type KeyboardTypeOptions, type NativeSyntheticEvent, ty
 import { isComposingKey, tokens, type InputSize } from "@kjun-ui/tokens";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import {
-  caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, numberKeyboard, rangeIssue, rangeMessage,
+  caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, numberKeyboard, rangeIssue, rangeMessage,
   readingAid as readNumber, resolveNumberInput, sanitizeNumber, type NumberInputOptions,
 } from "../../../shared/package-runtime/number-input";
 import { KjunInput, useKjunField } from "./input";
@@ -61,12 +61,11 @@ export function KjunNumberInput({
   const emitted = useRef(value), accepted = useRef(value), acceptedIssue = useRef<Issue>(null);
   // The text on screen and the last selection the platform reported, read by events between renders.
   const text = useRef(view.text), selection = useRef<Selection>({ start: view.text.length, end: view.text.length });
-  // Native: the digits left after the platform deletes a separator itself, after onKeyPress already removed the digit.
-  const separatorEcho = useRef<{ digits: string; selection: Selection } | null>(null);
   const aidId = "kjun-number-reading-" + useId().replace(/:/g, "");
   const put = (next: Shown) => {
     text.current = next.text;
-    if (next.selection) selection.current = next.selection;
+    // Without a caret of its own (commit, cancel, a new value) the text is replaced and the caret sits at its end.
+    selection.current = next.selection ?? { start: next.text.length, end: next.text.length };
     setView(next);
   };
 
@@ -104,22 +103,22 @@ export function KjunNumberInput({
     const before = sanitizeNumber(typed.slice(0, caret), o);
     show(raw, before.length + (raw.startsWith("-") && !before.startsWith("-") ? 1 : 0));
   };
-  const caretAfter = (typed: string) => {
-    if (web) {
-      const el = input.current as unknown as HTMLInputElement | null;
-      return el?.selectionStart ?? typed.length;
-    }
-    // Native reports the selection after the text: the typed text replaced the old selection, so the caret moved by the length change.
-    return Math.max(0, Math.min(typed.length, selection.current.end + typed.length - text.current.length));
+  // Web reads the caret from the input. Native sends onChangeText and onSelectionChange in either order, so the caret comes from the text change.
+  const caretAfter = (typed: string) => web
+    ? (input.current as unknown as HTMLInputElement | null)?.selectionStart ?? typed.length
+    : caretAfterEdit(text.current, typed);
+  // Native cannot cancel the platform's own Backspace, and onKeyPress may come before or after onChangeText. A change that removed
+  // only one separator is that Backspace, so it removes the digit before the separator instead, like Web.
+  const separatorBackspace = (typed: string) => {
+    const before = text.current;
+    if (web || typed.length !== before.length - 1) return false;
+    const at = caretAfterEdit(before, typed);
+    if (before[at] !== "," || before.slice(0, at) + before.slice(at + 1) !== typed) return false;
+    return removeSeparator("Backspace", at + 1, at + 1);
   };
   const change = (typed: string) => {
-    if (separatorEcho.current !== null) {
-      const echo = separatorEcho.current;
-      separatorEcho.current = null;
-      // Keep the text and caret onKeyPress set; a fresh selection object applies the caret again after the platform's edit.
-      if (sanitizeNumber(typed, o) === echo.digits) { put({ text: text.current, selection: { ...echo.selection } }); return; }
-    }
     if (composing.current) { dirty.current = true; put({ text: typed }); return; }
+    if (separatorBackspace(typed)) return;
     edit(typed, caretAfter(typed));
   };
   const commit = (typed = text.current) => {
@@ -161,14 +160,9 @@ export function KjunNumberInput({
     const el = event.currentTarget as HTMLInputElement;
     if (removeSeparator(event.key, el.selectionStart ?? 0, el.selectionEnd ?? 0)) event.preventDefault();
   };
-  // Native: onKeyPress cannot cancel the platform's edit, so the onChangeText that follows a separator deletion is ignored.
+  // Native: a hardware Escape cancels the edit (separator Backspace is read from the text change above).
   const keyPress = (event: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
-    if (disabled || readOnly) return;
-    const key = event.nativeEvent.key;
-    if (key === "Escape" && dirty.current) { cancel(); return; }
-    if (key !== "Backspace") return;
-    const digits = sanitizeNumber(text.current, o);
-    if (removeSeparator("Backspace", selection.current.start, selection.current.end)) separatorEcho.current = { digits, selection: selection.current };
+    if (!disabled && !readOnly && event.nativeEvent.key === "Escape" && dirty.current) cancel();
   };
   const selectionChange = (event: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
     selection.current = event.nativeEvent.selection;
@@ -216,7 +210,7 @@ export function KjunNumberInput({
       placeholder={placeholder} accessibilityHint={aid || undefined} selection={view.selection} onSelectionChange={selectionChange}
       onChangeText={change} onBlur={() => commit()}
       {...(web
-        ? { inputMode: keyboard.inputMode, "aria-describedby": aid ? aidId : undefined }
+        ? { inputMode: keyboard.inputMode, "aria-describedby": aid ? aidId : undefined, blurOnSubmit: false }
         : { keyboardType: Platform.select({ ios: keyboard.ios, default: keyboard.android }) as KeyboardTypeOptions, onKeyPress: keyPress, onSubmitEditing: () => commit() })}
       style={{ fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"], textAlign: align === "end" ? "right" : undefined }} />
     {!!aid && <FontText nativeID={aidId} style={{ fontFamily, ...typeStyle("caption"), marginTop: tokens.extensions.form.messageGap, color: colors.textSecondary }}>{aid}</FontText>}

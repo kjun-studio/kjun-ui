@@ -8,7 +8,7 @@ const output = await build({
   bundle: true, write: false, format: 'esm', platform: 'node',
 });
 const {
-  caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, numberKeyboard, rangeIssue, rangeMessage, readingAid, resolveMessageScope, resolveNumberInput, sanitizeNumber, significantCount,
+  caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, numberKeyboard, rangeIssue, rangeMessage, readingAid, resolveMessageScope, resolveNumberInput, sanitizeNumber, significantCount,
 } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 
 const r = (o = {}) => resolveNumberInput(o);
@@ -86,6 +86,18 @@ test('caret keeps the significant count', () => {
   assert.equal(significantCount('1,234,567', 5), 4);
   assert.equal(caretForCount('12,345,678', 4), 5);
   assert.equal(caretForCount('1,234', 0), 0);
+});
+
+test('caretAfterEdit reads the caret from the text change alone', () => {
+  assert.equal(caretAfterEdit('1,234', '1,2534'), 4);
+  assert.equal(caretAfterEdit('1,234', '1,2345'), 6);
+  assert.equal(caretAfterEdit('1,234', '91,234'), 1);
+  assert.equal(caretAfterEdit('1,234', '1,23'), 4);
+  assert.equal(caretAfterEdit('1,234', '1234'), 1);
+  assert.equal(caretAfterEdit('1,234', '1,2x34'), 4);
+  assert.equal(caretAfterEdit('1,234', '1,7'), 3);
+  assert.equal(caretAfterEdit('', '5'), 1);
+  assert.equal(caretAfterEdit('11', '111'), 3);
 });
 
 test('deleteAcrossSeparator', () => {
