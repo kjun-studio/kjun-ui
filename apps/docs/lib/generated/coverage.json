@@ -2623,7 +2623,7 @@
       "title": "Spinner",
       "docs": "/components/spinner",
       "category": "feedback",
-      "differences": "세 플랫폼 모두 size·text를 사용합니다. 웹과 Native의 회전 구현은 다르며 동작 줄이기 환경을 따릅니다.",
+      "differences": "세 플랫폼 모두 size·text를 사용하고, 웹은 role=\"status\", Native는 role=\"status\"와 polite 라이브 영역으로 알립니다. Button·Fab·List·Switch·Toast의 로딩도 같은 고리 모양을 씁니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
