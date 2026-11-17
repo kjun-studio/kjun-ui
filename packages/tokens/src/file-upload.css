@@ -1,0 +1,270 @@
+/* KjunFileUpload: one card that starts as a wide pick zone and folds into a file list with a one-line add row once
+   files exist. In-flow parts are fill-only (no borders); colour is used only for status words. */
+.kjun-file-upload {
+  --_kjun-file-upload-inset: var(--_kjun-extension-file-upload-inset);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-radius: var(--_kjun-extension-file-upload-radius);
+  background: var(--_kjun-color-surface);
+  color: var(--_kjun-color-text);
+  overflow: hidden;
+}
+/* The card swaps its content when the first file arrives or the last one leaves; the new content fades in. */
+.kjun-file-upload > :is(.kjun-file-upload-zone, .kjun-file-upload-head) {
+  animation: kjun-file-upload-in var(--_kjun-motion-collapse) var(--_kjun-ease-out);
+}
+@keyframes kjun-file-upload-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* Pick zone (empty) and add row (filled): one button each, filled, never outlined. */
+.kjun-file-upload-zone,
+.kjun-file-upload-add {
+  appearance: none;
+  border: 0;
+  margin: var(--_kjun-file-upload-inset);
+  border-radius: var(--_kjun-extension-file-upload-inner-radius);
+  background: var(--_kjun-color-secondary);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
+}
+.kjun-file-upload-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--_kjun-extension-file-upload-zone-gap);
+  min-height: var(--_kjun-extension-file-upload-zone-height);
+  padding: 0 var(--_kjun-extension-file-upload-row-padding);
+  text-align: center;
+}
+.kjun-file-upload-add {
+  display: flex;
+  align-items: center;
+  gap: var(--_kjun-extension-file-upload-gap);
+  min-height: var(--_kjun-extension-file-upload-add-row-height);
+  padding: 0 var(--_kjun-file-upload-inset);
+  text-align: start;
+}
+.kjun-file-upload-add > .kjun-file-upload-text { flex: 1; min-width: 0; }
+.kjun-file-upload-icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_kjun-extension-file-upload-zone-icon);
+  height: var(--_kjun-extension-file-upload-zone-icon);
+  border-radius: var(--_kjun-extension-file-upload-round-radius);
+  background: var(--_kjun-color-surface);
+  color: var(--_kjun-color-text);
+  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), color var(--_kjun-motion-control) var(--_kjun-ease-out);
+}
+.kjun-file-upload-add > .kjun-file-upload-icon {
+  width: var(--_kjun-extension-file-upload-add-icon);
+  height: var(--_kjun-extension-file-upload-add-icon);
+}
+.kjun-file-upload-title {
+  display: block;
+  font-size: var(--_kjun-type-label-size);
+  line-height: var(--_kjun-type-label-line);
+  font-weight: var(--_kjun-type-label-weight);
+  letter-spacing: var(--_kjun-type-label-tracking);
+  word-break: keep-all;
+}
+.kjun-file-upload-hint {
+  display: block;
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+  color: var(--_kjun-color-text-secondary);
+  word-break: keep-all;
+}
+:is(.kjun-file-upload-zone, .kjun-file-upload-add):hover:not([aria-disabled="true"]) { background: var(--_kjun-color-hover); }
+:is(.kjun-file-upload-zone, .kjun-file-upload-add):active:not([aria-disabled="true"]) { background: var(--_kjun-color-active); }
+:is(.kjun-file-upload-zone, .kjun-file-upload-add):focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-offset);
+}
+:is(.kjun-file-upload-zone, .kjun-file-upload-add)[aria-disabled="true"] { cursor: default; color: var(--_kjun-color-text-disabled); }
+:is(.kjun-file-upload-zone, .kjun-file-upload-add)[aria-disabled="true"] :is(.kjun-file-upload-hint, .kjun-file-upload-icon) { color: var(--_kjun-color-text-disabled); }
+
+/* Dragging files over the card. An empty card fills its zone; a filled card lays a see-through veil over the list. */
+.kjun-file-upload[data-drag="over"] .kjun-file-upload-zone { background: var(--_kjun-color-active); }
+:is(.kjun-file-upload[data-drag="over"] .kjun-file-upload-zone, .kjun-file-upload-veil) .kjun-file-upload-icon {
+  background: var(--_kjun-color-brand);
+  color: var(--_kjun-color-inverse);
+}
+.kjun-file-upload[data-drag="blocked"] .kjun-file-upload-title { color: var(--_kjun-color-danger); }
+.kjun-file-upload[data-drag="blocked"] .kjun-file-upload-icon { color: var(--_kjun-color-text-secondary); }
+.kjun-file-upload-veil {
+  position: absolute;
+  inset: var(--_kjun-file-upload-inset);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--_kjun-extension-file-upload-zone-gap);
+  padding: 0 var(--_kjun-extension-file-upload-row-padding);
+  border-radius: var(--_kjun-extension-file-upload-inner-radius);
+  background: color-mix(in srgb, var(--_kjun-color-active) 82%, transparent);
+  text-align: center;
+  pointer-events: none;
+}
+.kjun-file-upload[data-drag="blocked"] .kjun-file-upload-veil .kjun-file-upload-icon {
+  background: var(--_kjun-color-surface);
+  color: var(--_kjun-color-text-secondary);
+}
+
+/* Head: count, failures and a retry-all action. */
+.kjun-file-upload-head {
+  display: flex;
+  align-items: center;
+  gap: var(--_kjun-extension-file-upload-progress-gap);
+  min-height: var(--_kjun-extension-file-upload-head-min-height);
+  padding: 0 var(--_kjun-file-upload-inset) 0 var(--_kjun-extension-file-upload-row-padding);
+  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-divider);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  color: var(--_kjun-color-text-secondary);
+}
+.kjun-file-upload-head-title {
+  font-size: var(--_kjun-type-label-strong-size);
+  line-height: var(--_kjun-type-label-strong-line);
+  font-weight: var(--_kjun-type-label-strong-weight);
+  color: var(--_kjun-color-text);
+}
+.kjun-file-upload-head-spacer { flex: 1; }
+
+/* Rows. */
+.kjun-file-upload-list { margin: 0; padding: 0; list-style: none; }
+.kjun-file-upload-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--_kjun-extension-file-upload-gap);
+  min-height: var(--_kjun-extension-file-upload-row-min-height);
+  padding: var(--_kjun-extension-file-upload-row-padding-y) var(--_kjun-file-upload-inset) var(--_kjun-extension-file-upload-row-padding-y) var(--_kjun-extension-file-upload-row-padding);
+}
+.kjun-file-upload-row + .kjun-file-upload-row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  inset-inline: var(--_kjun-extension-file-upload-row-padding);
+  height: var(--_kjun-border-default-width);
+  background: var(--_kjun-color-divider);
+}
+.kjun-file-upload-thumb {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_kjun-extension-file-upload-thumb);
+  height: var(--_kjun-extension-file-upload-thumb);
+  border-radius: var(--_kjun-extension-file-upload-thumb-radius);
+  background: var(--_kjun-color-secondary);
+  color: var(--_kjun-color-text-secondary);
+  font-size: var(--_kjun-type-caption-strong-size);
+  line-height: var(--_kjun-type-caption-strong-line);
+  font-weight: var(--_kjun-type-caption-strong-weight);
+  overflow: hidden;
+}
+.kjun-file-upload-thumb > img { width: 100%; height: 100%; object-fit: cover; }
+.kjun-file-upload-body { flex: 1; min-width: 0; }
+/* Middle truncation: the head may end in an ellipsis; the tail (last characters and extension) always shows. */
+.kjun-file-upload-name {
+  display: flex;
+  min-width: 0;
+  font-size: var(--_kjun-type-label-size);
+  line-height: var(--_kjun-type-label-line);
+  font-weight: var(--_kjun-type-label-weight);
+  letter-spacing: var(--_kjun-type-label-tracking);
+}
+.kjun-file-upload-name-head { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kjun-file-upload-name-tail { flex: none; white-space: nowrap; }
+.kjun-file-upload-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--_kjun-extension-file-upload-meta-gap);
+  min-width: 0;
+  margin-top: var(--_kjun-extension-list-description-gap);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  letter-spacing: var(--_kjun-type-caption-tracking);
+  color: var(--_kjun-color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.kjun-file-upload-meta > :last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.kjun-file-upload-num { font-family: var(--_kjun-font-numeric); font-variant-numeric: tabular-nums; }
+.kjun-file-upload-status[data-tone="done"] { color: var(--_kjun-color-success); }
+.kjun-file-upload-status[data-tone="error"] { color: var(--_kjun-color-danger); }
+.kjun-file-upload-bar {
+  height: var(--_kjun-extension-file-upload-progress-height);
+  margin-top: var(--_kjun-extension-file-upload-progress-gap);
+  border-radius: var(--_kjun-extension-file-upload-round-radius);
+  background: var(--_kjun-color-secondary);
+  overflow: hidden;
+}
+.kjun-file-upload-bar > div {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--_kjun-color-brand);
+  transition: width var(--_kjun-motion-progress) var(--_kjun-ease-out);
+}
+.kjun-file-upload-bar:not([aria-valuenow]) > div {
+  width: 30%;
+  animation: kjun-progress-indeterminate var(--_kjun-motion-spin) linear infinite;
+  transition: none;
+}
+.kjun-file-upload-actions { flex: none; display: flex; align-items: center; }
+.kjun-file-upload-action {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_kjun-extension-file-upload-action-size);
+  height: var(--_kjun-extension-file-upload-action-size);
+  border: 0;
+  padding: 0;
+  border-radius: var(--_kjun-extension-file-upload-thumb-radius);
+  background: transparent;
+  color: var(--_kjun-color-text-secondary);
+  cursor: pointer;
+  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
+}
+.kjun-file-upload-action[data-action="retry"] { color: var(--_kjun-color-text); }
+.kjun-file-upload-action:hover:not(:disabled) { background: var(--_kjun-color-hover); }
+.kjun-file-upload-action:active:not(:disabled) { background: var(--_kjun-color-active); }
+.kjun-file-upload-action:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-inset-offset);
+}
+.kjun-file-upload-action:disabled { cursor: default; opacity: var(--_kjun-state-opacity-disabled); }
+@media (pointer: coarse) {
+  .kjun-file-upload-action { width: var(--_kjun-extension-file-upload-touch-target); height: var(--_kjun-extension-file-upload-touch-target); }
+}
+
+/* Foot: the add row and the rejection notice under it. */
+.kjun-file-upload-foot { border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-divider); }
+.kjun-file-upload-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--_kjun-extension-file-upload-notice-gap);
+  margin: 0;
+  padding: 0 var(--_kjun-file-upload-inset) var(--_kjun-file-upload-inset) var(--_kjun-extension-file-upload-row-padding);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  color: var(--_kjun-color-danger);
+}
+.kjun-file-upload-notice-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.kjun-file-upload-notice > svg { flex: none; margin-top: calc((var(--_kjun-type-caption-line) - var(--_kjun-extension-form-message-icon-size)) / 2); }
+.kjun-file-upload-notice .kjun-file-upload-action { width: auto; height: auto; color: var(--_kjun-color-text-secondary); }
+
+@media (prefers-reduced-motion: reduce) {
+  .kjun-file-upload > :is(.kjun-file-upload-zone, .kjun-file-upload-head) { animation: none; }
+  .kjun-file-upload-bar:not([aria-valuenow]) > div { animation: none; transform: translateX(116%); }
+  :is(.kjun-file-upload-zone, .kjun-file-upload-add, .kjun-file-upload-icon, .kjun-file-upload-action, .kjun-file-upload-bar > div) { transition: none; }
+}

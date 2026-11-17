@@ -24,5 +24,6 @@
   "calendar.css",
   "color-picker.css",
   "split-pane.css",
-  "distribution.css"
+  "distribution.css",
+  "file-upload.css"
 ]
