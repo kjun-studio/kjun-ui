@@ -154,15 +154,21 @@ for (const platform of ['react']) {
       await expect(buttons).toHaveCount(2);
       await expect(buttons.nth(1)).toHaveAccessibleName('2단계, 상품 준비, 완료, 11:30 · 포장을 마쳤습니다');
       await expect(items(page, 'vselect').nth(1).locator('.kjun-steps-static')).toBeHidden();
-      // The invisible layer is at least 44px tall even when the drawn row is shorter.
-      const reach = await buttons.nth(1).evaluate(el => ({ after: parseFloat(getComputedStyle(el, '::after').height), box: el.getBoundingClientRect().height }));
-      expect(reach.after).toBeGreaterThanOrEqual(44);
-      expect(reach.box).toBeLessThan(reach.after);
       await buttons.nth(1).click();
       await expect(page.getByTestId('vselected')).toHaveText('1');
       await buttons.nth(0).focus();
       await page.keyboard.press('Enter');
       await expect(page.getByTestId('vselected')).toHaveText('0');
+    });
+
+    test('a short vertical row reaches 44px with an invisible layer', async ({ page }) => {
+      const button = section(page, 'vbare').getByRole('button').nth(1);
+      const box = (await button.boundingBox())!;
+      expect(box.height).toBeLessThan(44);
+      expect(await button.evaluate(el => parseFloat(getComputedStyle(el, '::after').height))).toBeGreaterThanOrEqual(44);
+      // Just below the drawn row, inside the layer.
+      await page.mouse.click(box.x + box.width / 2, box.y + box.height + 4);
+      await expect(page.getByTestId('vbareselected')).toHaveText('1');
     });
 
     test('more than ten steps always fold', async ({ page }) => {

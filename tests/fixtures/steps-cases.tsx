@@ -12,6 +12,7 @@ const long = ['배송지 입력 및 확인', 'Supercalifragilistic', '결제', '
 export function StepsCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const [selected, setSelected] = useState<number | null>(null);
   const [verticalSelected, setVerticalSelected] = useState<number | null>(null);
+  const [bareSelected, setBareSelected] = useState<number | null>(null);
   const [width, setWidth] = useState(900);
   const press = (action: () => void) => ({ [native ? 'onPress' : 'onClick']: action });
   const block = { width: 900 };
@@ -22,6 +23,8 @@ export function StepsCases({ K, native = false, providerProps = {} }: { K: any; 
     <div data-testid="vertical" style={{ width: 360 }}><K.KjunSteps items={tracking} current={2} orientation="vertical" ariaLabel="배송 추적" /></div>
     <div data-testid="vselect" style={{ width: 360 }}><K.KjunSteps items={tracking} current={2} orientation="vertical" onStepSelect={(i: number) => setVerticalSelected(i)} /></div>
     <output data-testid="vselected">{verticalSelected === null ? '' : verticalSelected}</output>
+    <div data-testid="vbare" style={{ width: 360 }}><K.KjunSteps items={['A', 'B', 'C'].map(label => ({ label }))} current={2} orientation="vertical" onStepSelect={(i: number) => setBareSelected(i)} /></div>
+    <output data-testid="vbareselected">{bareSelected === null ? '' : bareSelected}</output>
     <div data-testid="many" style={{ width: 2000 }}><K.KjunSteps items={Array.from({ length: 11 }, (_, i) => ({ label: `단계 ${i + 1}` }))} current={4} /></div>
     <div data-testid="full" style={{ width: 300 }}><K.KjunSteps items={wizard} current={2} layout="full" /></div>
     <div data-testid="long" style={{ width: 360 }}><K.KjunSteps items={long} current={1} /></div>
