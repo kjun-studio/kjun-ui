@@ -85,6 +85,8 @@ export type {
 
 export { KjunCarousel } from "./carousel";
 export type { KjunCarouselProps } from "./carousel";
+export { KjunSteps } from "./steps";
+export type { KjunStepsProps, KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLayout } from "./steps";
 export { KjunSplitPane, type KjunSplitPaneProps } from "./split-pane";
 export { KjunZoneGauge, type KjunZoneGaugeProps, type KjunGaugeZone } from "./zone-gauge";
 export { KjunStackedBar, type KjunStackedBarProps, type KjunStackedBarItem } from "./stacked-bar";

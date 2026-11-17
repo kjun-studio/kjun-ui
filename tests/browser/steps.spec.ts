@@ -15,20 +15,37 @@ const paint = (page: Page, role: string) => page.evaluate(name => {
   probe.remove();
   return color;
 }, role);
+// Native draws no classes: a step is a listitem named by the phrase a screen reader hears, a selectable one is a button.
+const rows = (page: Page, id: string) => section(page, id).getByRole('listitem');
+const spoken = (page: Page, id: string, n: number) => rows(page, id).nth(n);
 const setWidth = (page: Page, width: number) => section(page, 'width').evaluate((el, w) => { el.style.width = w + 'px'; }, width);
 const visibleBox = async (page: Page, locator: ReturnType<Page['locator']>) => {
   const box = await locator.boundingBox();
   return box && box.width > 1 && box.height > 1 ? box : null;
 };
 
-for (const platform of ['react', 'vue3']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test.describe(platform, () => {
+    const web = platform !== 'native';
     test.beforeEach(async ({ page }) => {
       await page.setViewportSize({ width: 1280, height: 1600 });
       await openFixture(page, platform, '', 'steps');
     });
 
     test('marks each status', async ({ page }) => {
+      if (!web) {
+        await expect(rows(page, 'wizard')).toHaveCount(5);
+        for (const [n, name] of ['1단계, 약관 동의, 완료', '2단계, 주문자 정보, 완료', '3단계, 배송 정보, 현재 단계', '4단계, 결제, 예정', '5단계, 완료, 예정'].entries())
+          await expect(spoken(page, 'wizard', n)).toHaveAttribute('aria-label', name);
+        // Native Web maps the current step to aria-current, the same one step as on the web packages.
+        await expect(section(page, 'wizard').locator('[aria-current="step"]')).toHaveCount(1);
+        await expect(spoken(page, 'wizard', 2)).toHaveAttribute('aria-current', 'step');
+        await expect(section(page, 'wizard').getByRole('list', { name: '주문 단계' })).toBeVisible();
+        await expect(spoken(page, 'wizard', 2).getByText('3', { exact: true })).toBeVisible();
+        await expect(spoken(page, 'wizard', 0).locator('svg')).toHaveCount(1);
+        await expect(spoken(page, 'wizard', 2).locator('svg')).toHaveCount(0);
+        return;
+      }
       await expect(items(page, 'wizard')).toHaveCount(5);
       for (const [n, status] of ['complete', 'complete', 'current', 'upcoming', 'upcoming'].entries())
         await expect(items(page, 'wizard').nth(n)).toHaveAttribute('data-status', status);
@@ -45,6 +62,14 @@ for (const platform of ['react', 'vue3']) {
     });
 
     test('error step', async ({ page }) => {
+      if (!web) {
+        await expect(spoken(page, 'error', 2)).toHaveAttribute('aria-label', '3단계, 결제, 오류');
+        await expect(spoken(page, 'error', 2)).toHaveAttribute('aria-current', 'step');
+        await expect(spoken(page, 'error', 2).locator('svg')).toHaveCount(1);
+        const color = await paint(page, 'danger');
+        await expect(spoken(page, 'error', 2).getByText('결제', { exact: true })).toHaveCSS('color', color);
+        return;
+      }
       await expect(items(page, 'error').nth(2)).toHaveAttribute('data-status', 'error');
       await expect(items(page, 'error').nth(2)).toHaveAttribute('aria-current', 'step');
       await expect(items(page, 'error').nth(2).locator('.kjun-steps-static .kjun-sr-only')).toHaveText('3단계, 결제, 오류');
@@ -54,12 +79,33 @@ for (const platform of ['react', 'vue3']) {
     });
 
     test('all complete ignores error', async ({ page }) => {
+      if (!web) {
+        await expect(section(page, 'done').locator('[aria-current]')).toHaveCount(0);
+        for (const [n, name] of ['1단계, 약관 동의, 완료', '2단계, 배송 정보, 완료', '3단계, 결제, 완료'].entries())
+          await expect(spoken(page, 'done', n)).toHaveAttribute('aria-label', name);
+        return;
+      }
       await expect(root(page, 'done')).toHaveAttribute('data-status', 'complete');
       await expect(section(page, 'done').locator('[aria-current]')).toHaveCount(0);
       for (let n = 0; n < 3; n++) await expect(items(page, 'done').nth(n)).toHaveAttribute('data-status', 'complete');
     });
 
     test('compact switches at count × 80', async ({ page }) => {
+      if (!web) {
+        const title = section(page, 'fit').getByText('배송 정보', { exact: true });
+        await setWidth(page, 400);
+        await expect(section(page, 'fit').getByText('3 / 5')).toHaveCount(0);
+        await expect(title).toBeVisible();
+        await setWidth(page, 399);
+        // The heading names the current step, then the position with the number apart, then the next step.
+        await expect(section(page, 'fit').getByText('3 / 5')).toBeVisible();
+        await expect(section(page, 'fit').getByText('다음 · 결제', { exact: true })).toBeVisible();
+        await expect(title).toHaveCount(1);
+        await expect(section(page, 'fit').getByText('결제', { exact: true })).toHaveCount(0);
+        await expect(spoken(page, 'fit', 2)).toHaveAttribute('aria-label', '3단계, 배송 정보, 현재 단계');
+        await expect(section(page, 'fit').getByRole('list', { name: '진행 단계' })).toBeAttached();
+        return;
+      }
       const head = section(page, 'fit').locator('.kjun-steps-head');
       await setWidth(page, 400);
       await expect(head).toBeHidden();
@@ -77,6 +123,12 @@ for (const platform of ['react', 'vue3']) {
     });
 
     test('forced layout', async ({ page }) => {
+      if (!web) {
+        await expect(section(page, 'forced').getByText('3 / 5')).toBeVisible();
+        await expect(section(page, 'forced').getByText('결제', { exact: true })).toHaveCount(0);
+        await expect(section(page, 'wizard').getByText('3 / 5')).toHaveCount(0);
+        return;
+      }
       await expect(section(page, 'forced').locator('.kjun-steps-head')).toBeVisible();
       await expect(root(page, 'forced')).toHaveAttribute('data-layout', 'compact');
       expect(await visibleBox(page, label(page, 'forced', 2))).toBeNull();
@@ -84,6 +136,19 @@ for (const platform of ['react', 'vue3']) {
     });
 
     test('long labels stay inside their column', async ({ page }) => {
+      if (!web) {
+        for (const n of [0, 1]) {
+          const column = (await rows(page, 'long').nth(n).boundingBox())!;
+          const text = rows(page, 'long').nth(n).getByText(n ? 'Supercalifragilistic' : '배송지 입력 및 확인', { exact: true });
+          const box = (await text.boundingBox())!;
+          expect(box.x).toBeGreaterThanOrEqual(column.x - 0.5);
+          expect(box.x + box.width).toBeLessThanOrEqual(column.x + column.width + 0.5);
+          const line = parseFloat(await text.evaluate(el => getComputedStyle(el).lineHeight));
+          expect(Number.isFinite(line)).toBe(true);
+          expect(box.height).toBeLessThanOrEqual(line * 2 + 1);
+        }
+        return;
+      }
       for (const n of [0, 1]) {
         const column = (await items(page, 'long').nth(n).boundingBox())!;
         const text = label(page, 'long', n);
@@ -104,7 +169,7 @@ for (const platform of ['react', 'vue3']) {
       await expect(buttons.nth(0)).toHaveAccessibleName('1단계, 약관 동의, 완료');
       expect((await buttons.nth(0).boundingBox())!.height).toBeGreaterThanOrEqual(44);
       // Only the button speaks in the wide layout: the static copy is display:none.
-      await expect(items(page, 'select').nth(0).locator('.kjun-steps-static')).toBeHidden();
+      if (web) await expect(items(page, 'select').nth(0).locator('.kjun-steps-static')).toBeHidden();
       await buttons.nth(1).click();
       await expect(page.getByTestId('selected')).toHaveText('1');
       await buttons.nth(0).focus();
@@ -114,7 +179,7 @@ for (const platform of ['react', 'vue3']) {
       await page.keyboard.press('Space');
       await expect(page.getByTestId('selected')).toHaveText('2');
       // The current and later steps are not buttons.
-      await expect(items(page, 'select').nth(3).getByRole('button')).toHaveCount(0);
+      await expect(rows(page, 'select').nth(3).getByRole('button')).toHaveCount(0);
     });
 
     test('compact has no step buttons', async ({ page }) => {
@@ -127,6 +192,16 @@ for (const platform of ['react', 'vue3']) {
     });
 
     test('vertical', async ({ page }) => {
+      if (!web) {
+        await expect(rows(page, 'vertical')).toHaveCount(4);
+        await expect(spoken(page, 'vertical', 1)).toHaveAttribute('aria-label', '2단계, 상품 준비, 완료, 11:30 · 포장을 마쳤습니다');
+        await expect(spoken(page, 'vertical', 1).getByText('11:30 · 포장을 마쳤습니다', { exact: true })).toBeVisible();
+        await expect(spoken(page, 'vertical', 3).getByText('문 앞에 놓아 두었습니다', { exact: true })).toBeVisible();
+        await expect(section(page, 'vertical').getByText(/ \/ 4/)).toHaveCount(0);
+        const first = (await rows(page, 'vertical').nth(0).boundingBox())!, second = (await rows(page, 'vertical').nth(1).boundingBox())!;
+        expect(Math.round(second.y - (first.y + first.height))).toBe(16);
+        return;
+      }
       await expect(root(page, 'vertical')).toHaveAttribute('data-orientation', 'vertical');
       await expect(items(page, 'vertical').nth(1).locator('.kjun-steps-static .kjun-steps-detail')).toHaveText('11:30 · 포장을 마쳤습니다');
       await expect(items(page, 'vertical').nth(1).locator('.kjun-steps-static .kjun-sr-only')).toHaveText('2단계, 상품 준비, 완료, 11:30 · 포장을 마쳤습니다');
@@ -153,7 +228,7 @@ for (const platform of ['react', 'vue3']) {
       const buttons = section(page, 'vselect').getByRole('button');
       await expect(buttons).toHaveCount(2);
       await expect(buttons.nth(1)).toHaveAccessibleName('2단계, 상품 준비, 완료, 11:30 · 포장을 마쳤습니다');
-      await expect(items(page, 'vselect').nth(1).locator('.kjun-steps-static')).toBeHidden();
+      if (web) await expect(items(page, 'vselect').nth(1).locator('.kjun-steps-static')).toBeHidden();
       await buttons.nth(1).click();
       await expect(page.getByTestId('vselected')).toHaveText('1');
       await buttons.nth(0).focus();
@@ -162,6 +237,7 @@ for (const platform of ['react', 'vue3']) {
     });
 
     test('a short vertical row reaches 44px with an invisible layer', async ({ page }) => {
+      test.skip(!web, 'The invisible layer is a CSS pseudo-element; Native widens the target with hitSlop.');
       const button = section(page, 'vbare').getByRole('button').nth(1);
       const box = (await button.boundingBox())!;
       expect(box.height).toBeLessThan(44);
@@ -172,12 +248,23 @@ for (const platform of ['react', 'vue3']) {
     });
 
     test('more than ten steps always fold', async ({ page }) => {
+      if (!web) {
+        await expect(section(page, 'many').getByText('5 / 11')).toBeVisible();
+        await expect(section(page, 'many').getByText('다음 · 단계 6', { exact: true })).toBeVisible();
+        await expect(section(page, 'many').getByText('단계 5', { exact: true })).toHaveCount(1);
+        return;
+      }
       await expect(section(page, 'many').locator('.kjun-steps-head')).toBeVisible();
       await expect(section(page, 'many').locator('.kjun-steps-head-count')).toHaveText('5 / 11');
       expect(await visibleBox(page, label(page, 'many', 4))).toBeNull();
     });
 
     test('forced full layout keeps labels in a narrow container', async ({ page }) => {
+      if (!web) {
+        await expect(section(page, 'full').getByText('3 / 5')).toHaveCount(0);
+        await expect(section(page, 'full').getByText('배송 정보', { exact: true })).toBeVisible();
+        return;
+      }
       await expect(root(page, 'full')).toHaveAttribute('data-layout', 'full');
       await expect(section(page, 'full').locator('.kjun-steps-head')).toBeHidden();
       expect(await visibleBox(page, label(page, 'full', 2))).not.toBeNull();
