@@ -10,7 +10,7 @@ export const captureFor = scene => captureProfiles[scene.captureType];
 // Explicit public-component coverage. Widths belong to the consuming canvas.
 const groups = [
   ['control', 456, ['KjunTabPane']],
-  ['control', 464, ['KjunTopNavigation', 'KjunBottomNavigation', 'KjunFloatingNavigation', 'KjunPagination', 'KjunTabs']],
+  ['control', 464, ['KjunTopNavigation', 'KjunBottomNavigation', 'KjunFloatingNavigation', 'KjunPagination', 'KjunTabs', 'KjunSteps']],
   ['control', 240, ['KjunSideNavigation', 'KjunPressable']],
   ['desktop', 736, ['KjunKpiRow', 'KjunMarketTable', 'KjunMarketTableSkeleton', 'KjunSideNavigationLayout']],
   ['small', null, ['KjunButton', 'KjunIcon', 'KjunButtonGroup', 'KjunFilterGroup', 'KjunIconToggle', 'KjunFab', 'KjunCopyButton', 'KjunRefreshButton', 'KjunExternalLink', 'KjunBadge', 'KjunChip', 'KjunBreadcrumb', 'KjunAvatar', 'KjunAvatarGroup', 'KjunAnimatedNumber', 'KjunPriceCell', 'KjunSignedValue', 'KjunDeviation', 'KjunCollectionMark', 'KjunExecutionStatusBadge', 'KjunSpinner', 'KjunTooltip', 'KjunText', 'KjunStack', 'KjunInline', 'KjunSpacer']],

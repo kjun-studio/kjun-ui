@@ -1,7 +1,7 @@
 import { visibleControls, type ExampleControl, type Settings } from '../../../../shared/example-registry';
 import type { PlatformName } from '../../../../shared/demo-config';
 
-const appearance = new Set(['size', 'variant', 'tone', 'density', 'surface', 'padding', 'bodyPadding', 'radius', 'elevation', 'border', 'dividers', 'compact', 'striped', 'hoverable', 'block', 'fullWidth', 'fit', 'aspectRatio', 'shape', 'align', 'noPadding', 'responsive', 'mobileSummary']);
+const appearance = new Set(['size', 'variant', 'tone', 'density', 'surface', 'padding', 'bodyPadding', 'radius', 'elevation', 'border', 'dividers', 'compact', 'striped', 'hoverable', 'block', 'fullWidth', 'fit', 'aspectRatio', 'shape', 'align', 'noPadding', 'responsive', 'mobileSummary', 'orientation', 'layout']);
 const state = new Set(['disabled', 'loading', 'error', 'readOnly', 'childDisabled', 'itemDisabled', 'empty', 'stale', 'queryState', 'imageState', 'response']);
 const behavior = new Set(['multiple', 'searchable', 'clearable', 'sortable', 'selectable', 'expandable', 'stickyHeader', 'minChars', 'debounce', 'animated', 'spin', 'removable', 'decimal', 'negative', 'format', 'readingAid', 'decimals', 'precision', 'minuteStep', 'secondStep', 'bounded', 'preserveContent', 'skeleton', 'keyboardVisible', 'hideOnKeyboard', 'safeAreaTop', 'safeAreaBottom', 'required', 'validate', 'closable', 'duration', 'confirmAction']);
 
@@ -46,6 +46,7 @@ const hints: Record<string, string> = {
   KjunZoneGauge: '값을 바꿔 표식의 위치와 구간 이름이 따라 바뀌는지 확인하세요. 표시 전용이라 누를 수 없습니다.',
   KjunStackedBar: '데이터를 바꿔 작은 조각, 모두 0, 데이터 없음이 어떻게 다른지 확인하세요.',
   KjunSplitPane: '가운데 경계를 끌어 보세요. 경계에 포커스를 두면 화살표·Home·End·Enter로도 조절합니다.',
+  KjunSteps: '현재 단계를 바꾸고 오류·축약형·세로 배치를 비교해 보세요. 완료된 단계를 누르면 선택 결과가 표시됩니다(축약형 제외).',
   KjunCarousel: '옆으로 넘기거나 점을 눌러 보세요. 영역에 포커스를 두면 화살표 키로도 넘어갑니다.',
   KjunFloatingNavigation: '목적지를 선택해 보세요. 아이콘만 보이는 목적지도 이름으로 읽힙니다.',
   KjunBottomActionBar: '긴 안내 문구와 안전 영역을 바꿔 하단 행동의 배치를 확인하세요.',

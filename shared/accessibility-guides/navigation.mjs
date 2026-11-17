@@ -9,4 +9,5 @@ export default [
   ['KjunFloatingNavigation', 'bottom-nav', 'items value ariaLabel', '아이콘만 보이는 목적지의 접근성 이름과 현재 위치', {}],
   ['KjunSideNavigation', 'bottom-nav', 'items value ariaLabel', '세로 메뉴의 홈·활동 목적지와 현재 위치', {}],
   ['KjunSideNavigationLayout', 'bottom-nav', 'nav collapsed width', '메뉴 열 안 세로 메뉴의 홈·활동 목적지와 현재 위치', {}],
+  ['KjunSteps', 'text', 'items current currentStatus ariaLabel', '목록 이름과 단계별 숨김 상태 텍스트(완료·현재 단계·오류·예정)와 현재 단계의 aria-current', { text: '약관 동의' }],
 ];

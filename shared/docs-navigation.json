@@ -925,6 +925,19 @@
       "useCases": []
     },
     {
+      "name": "KjunSteps",
+      "category": "navigation",
+      "aliases": [
+        "단계",
+        "스텝",
+        "진행 단계",
+        "배송 추적",
+        "Steps",
+        "Stepper"
+      ],
+      "useCases": []
+    },
+    {
       "name": "KjunBottomActionBar",
       "category": "layout",
       "aliases": [

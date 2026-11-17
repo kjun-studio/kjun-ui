@@ -110,6 +110,16 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         index: get("slide", 0), onIndexChange: change("slide") }, settings.slideSize === "auto" ? cards.map(card => h("Box", { width: 240 }, card)) : cards),
         h("Text", {}, `현재 슬라이드: ${get("slide", 0) + 1}`)]);
     }
+    case "KjunSteps": {
+      // A wizard by default, a delivery trail when vertical: the vertical rows carry the time (meta) and a line of detail.
+      const vertical = settings.orientation === "vertical";
+      const wizard = ["약관 동의", "배송지", "결제", "주문 확인", "완료"].map(label => ({ label }));
+      const trail = [["주문 접수", "11월 17일 09:12", "주문이 접수되었습니다"], ["상품 준비", "11월 17일 10:40", "판매자가 상품을 포장하고 있습니다"], ["배송 시작", "11월 17일 14:05", "서울 강서 허브에서 출발했습니다"], ["배송 중", "도착 예정 11월 18일", "기사님이 배송 중입니다"], ["배송 완료"]]
+        .map(([label, meta, description]) => ({ label, meta, description }));
+      const items = vertical ? trail : wizard;
+      return h("Stack", {}, [h(name, { items, current: settings.current, currentStatus: settings.currentStatus, orientation: settings.orientation, layout: settings.layout, ariaLabel: vertical ? "배송 진행" : "주문 진행",
+        onStepSelect: (index: number) => set("message", items[index].label + " 단계 선택") })]);
+    }
     case "KjunImage":
       return h("Stack", {}, [h(name, { src: settings.imageState === "실패" ? "data:image/png;base64,invalid" : settings.imageState === "로딩" && !get("imageReady", false) ? undefined : sampleImage(get("imageVersion", 0)), alt: "산과 하늘을 표현한 프로젝트 표지", decorative: settings.decorative, aspectRatio: settings.aspectRatio, fit: settings.fit, onLoad: () => set("message", "이미지 로드 완료"), onError: () => set("message", "이미지 로드 실패") }, undefined, { fallback: settings.imageState === "로딩" && !get("imageReady", false) ? "이미지 주소를 준비합니다" : "이미지를 불러올 수 없습니다" }), settings.imageState === "로딩" && !get("imageReady", false) ? button("로컬 이미지 준비 · 2초", async () => { await new Promise(resolve => setTimeout(resolve, 2000)); set("imageReady", true); }) : null, button("이미지 주소 변경", () => set("imageVersion", get("imageVersion", 0) + 1))]);
     case "KjunAvatar":

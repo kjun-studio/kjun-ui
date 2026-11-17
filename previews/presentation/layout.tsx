@@ -32,6 +32,7 @@ export function layout(name: string) {
     case 'KjunAvatar': return row(<><K.KjunAvatar name="김하늘" size="lg" /><K.KjunAvatar name="이서준" size="lg" /><K.KjunAvatar name="박지우" size="lg" shape="square" /></>);
     case 'KjunSplitPane': return <div style={{ height: 160 }}><K.KjunSplitPane ariaLabel="메시지 목록 크기" defaultSize={0.6} first={<K.KjunCard title="메시지 목록" subtitle="첫 패널" />} second={<K.KjunCard title="상세 내용" subtitle="둘째 패널" />} /></div>;
     case 'KjunCarousel': return <K.KjunCarousel ariaLabel="추천 콘텐츠" slideSize="peek" gap="sm">{['이번 주 추천', '팀 공간', '알림 정리'].map((title, i) => <K.KjunCard key={title} title={title} subtitle="새 소식을 확인하세요" border media={<K.KjunImage src={sampleImage(i)} alt="" decorative aspectRatio={2} lazy={false} />} />)}</K.KjunCarousel>;
+    case 'KjunSteps': return <K.KjunSteps ariaLabel="주문 진행" items={['약관 동의', '배송지', '결제', '주문 확인', '완료'].map(label => ({ label }))} current={2} />;
     case 'KjunImage': return <div className="presentation-image"><K.KjunImage src="/brand/kjun-symbol.svg" alt="KJUN 심볼" aspectRatio={16 / 9} fit="contain" lazy={false} /></div>;
   }
 }

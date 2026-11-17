@@ -499,6 +499,39 @@
       "style"
     ]
   },
+  "KjunSteps": {
+    "vue3": [
+      "items",
+      "current",
+      "currentStatus",
+      "orientation",
+      "layout",
+      "ariaLabel"
+    ],
+    "react": [
+      "items",
+      "current",
+      "currentStatus",
+      "orientation",
+      "layout",
+      "ariaLabel",
+      "onStepSelect",
+      "className",
+      "style",
+      "id"
+    ],
+    "native": [
+      "items",
+      "current",
+      "currentStatus",
+      "orientation",
+      "layout",
+      "ariaLabel",
+      "onStepSelect",
+      "style",
+      "testID"
+    ]
+  },
   "KjunAvatar": {
     "vue3": [
       "src",

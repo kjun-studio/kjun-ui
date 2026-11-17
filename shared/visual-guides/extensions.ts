@@ -42,6 +42,11 @@ export const extensions: Record<string, GuideAuthor> = {
     parts: [p("메뉴 열", "폭 토큰(224·256·288px)으로 열리고 접히면 아이콘 열로 줄어듭니다. 웹에서는 화면 높이로 고정됩니다.", ".kjun-side-navigation-layout-nav, [data-kjun-side-navigation-layout-part=\"nav\"]"), p("페이지", "메뉴 옆의 앱 내용입니다. 배경과 구분선은 앱이 정합니다.", ".kjun-side-navigation-layout-main, [data-kjun-side-navigation-layout-part=\"main\"]")], related: "app-screen",
     states: [{ id: "collapsed", label: "접힌 열", description: "열이 68px 아이콘 열로 줄어듭니다. 메뉴에도 같은 collapsed를 넘깁니다.", settings: { collapsed: true } }, { id: "wide", label: "넓은 열", description: "width=\"lg\"는 288px 열입니다.", settings: { width: "lg" } }, { id: "drawer", label: "좁은 화면", description: "breakpoint보다 좁으면 열 대신 서랍에서 메뉴를 엽니다.", settings: { drawer: true } }],
   },
+  KjunSteps: {
+    parts: [t("완료한 단계", "체크가 있는 마커와 보조색 라벨입니다. 앱이 onStepSelect를 주면 버튼이 됩니다.", "약관 동의"), p("현재 단계", "번호와 6px 후광, 굵은 라벨로 표시하고 aria-current를 답니다.", '[aria-current="step"]'), t("예정 단계", "보조색 마커와 옅은 라벨입니다.", "완료", true)],
+    related: "app-screen",
+    states: [{ id: "error", label: "오류", description: "결제 실패처럼 막힌 현재 단계를 danger 색과 느낌표로 표시합니다.", settings: { currentStatus: "error" } }, { id: "compact", label: "축약형", description: "현재 라벨과 n / N, 마커 줄, 다음 단계 이름만 보입니다. 단계를 선택할 수 없습니다.", settings: { layout: "compact" } }, { id: "tracking", label: "배송 추적", description: "세로 배치는 12px 점과 시각·설명을 씁니다.", settings: { orientation: "vertical", current: 3 } }, { id: "complete", label: "모두 완료", description: "모든 마커가 완료이고 현재 단계 표시가 없습니다.", settings: { current: 5 } }],
+  },
   KjunPressable: {
     parts: [p("누름 영역", "앱이 준 모양 그대로 통째로 누릅니다. 눌림 표시는 내용 위에 덮는 글자색 막입니다.", '[role="button"]'), t("내용", "앱이 넣은 표시용 콘텐츠입니다. 버튼이나 링크는 넣지 않습니다.", "교토 3박 4일")], related: "app-screen",
     states: [{ id: "disabled", label: "비활성", description: "누름을 막고 내용을 흐리게 표시합니다.", settings: { disabled: true } }, { id: "plain", label: "눌림 표시 없음", description: "내용이 스스로 눌림을 그릴 때 막을 끕니다.", settings: { pressEffect: "none" } }],
