@@ -56,6 +56,8 @@ export const kjunMessagesKo = {
   searchOptions: "선택 항목 검색",
   avatarGroupCount: (count: number) => `${count}명`,
   selectedCount: (count: number) => `${count}개 선택됨`,
+  eventCount: (count: number) => `일정 ${count}개`,
+  holiday: "휴일",
   loadMore: "더 보기",
   clearInput: "입력 지우기",
   clearValue: (label: string) => label + " 지우기",

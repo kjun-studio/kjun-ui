@@ -112,3 +112,11 @@ test('formatRange drops a repeated year only for the Korean format', () => {
   assert.equal(formatRange({ start: '2026-09-08', end: '2026-09-16' }, iso => iso), '2026-09-08 – 2026-09-16');
   assert.equal(formatRange({ start: '2026-09-08', end: '' }, ko), '2026. 09. 08. –');
 });
+
+test('fixedWeeks always gives six weeks', () => {
+  assert.equal(calendarDays(2026, 1, { fixedWeeks: true }).length, 42);
+  assert.equal(calendarDays(2026, 10, { fixedWeeks: true }).length, 42);
+  assert.equal(calendarDays(2026, 4, {}).length, 42);
+  assert.equal(calendarDays(2026, 10, {}).length, 35);
+  assert.equal(calendarDays(2026, 10, { fixedWeeks: true })[41].iso, '2026-12-12');
+});

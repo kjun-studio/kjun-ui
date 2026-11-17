@@ -52,6 +52,8 @@ export const kjunMessagesEn: KjunMessages = {
   searchOptions: "Search options",
   avatarGroupCount: (count: number) => plural(count, "person", "people"),
   selectedCount: (count: number) => `${count} selected`,
+  eventCount: (count: number) => plural(count, "event", "events"),
+  holiday: "Holiday",
   loadMore: "Show more",
   clearInput: "Clear input",
   clearValue: (label: string) => "Clear " + label,

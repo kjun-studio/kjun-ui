@@ -24,7 +24,7 @@ function makeDate(year: number, month: number, day: number) {
   date.setFullYear(year, month, day);
   return date;
 }
-const weekdayOf = (year: number, month: number, day: number) => makeDate(year, month, day).getDay();
+export const weekdayOf = (year: number, month: number, day: number) => makeDate(year, month, day).getDay();
 const monthLength = (year: number, month: number) => makeDate(year, month + 1, 0).getDate();
 export const toIsoDate = (year: number, month: number, day: number) => {
   const date = makeDate(year, month, day);
@@ -56,11 +56,11 @@ export function rangeBand(range: DateRange | undefined, preview?: string): DateR
   return preview < range.start ? { start: preview, end: range.start } : { start: range.start, end: preview };
 }
 
-/** Whole weeks covering the month from weekStart (Sunday by default), with the neighbouring months' days marked outside. */
-export function calendarDays(year: number, month: number, { value, range, min, max, today = todayIso(), weekStart = 0, unavailable, preview }:
-  { value?: string; range?: DateRange; min?: string; max?: string; today?: string; weekStart?: WeekStart; unavailable?: DateUnavailable; preview?: string }): CalendarDay[] {
+/** Whole weeks covering the month from weekStart (Sunday by default), with the neighbouring months' days marked outside; fixedWeeks always gives six. */
+export function calendarDays(year: number, month: number, { value, range, min, max, today = todayIso(), weekStart = 0, unavailable, preview, fixedWeeks }:
+  { value?: string; range?: DateRange; min?: string; max?: string; today?: string; weekStart?: WeekStart; unavailable?: DateUnavailable; preview?: string; fixedWeeks?: boolean }): CalendarDay[] {
   const first = (weekdayOf(year, month, 1) - weekStart + 7) % 7, count = monthLength(year, month);
-  const total = Math.ceil((first + count) / 7) * 7;
+  const total = fixedWeeks ? 42 : Math.ceil((first + count) / 7) * 7;
   const band = rangeBand(range, preview);
   const start = range?.start || "", end = range?.end || "";
   return Array.from({ length: total }, (_, index) => {
