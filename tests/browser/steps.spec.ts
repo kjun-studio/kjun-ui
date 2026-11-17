@@ -21,7 +21,7 @@ const visibleBox = async (page: Page, locator: ReturnType<Page['locator']>) => {
   return box && box.width > 1 && box.height > 1 ? box : null;
 };
 
-for (const platform of ['react']) {
+for (const platform of ['react', 'vue3']) {
   test.describe(platform, () => {
     test.beforeEach(async ({ page }) => {
       await page.setViewportSize({ width: 1280, height: 1600 });

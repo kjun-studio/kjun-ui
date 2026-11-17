@@ -35,6 +35,7 @@ export { KjunListItem } from "./list";
 export { KjunListGroup, KjunListRow, KjunListSection } from "./list";
 export { KjunIconToggle, KjunCopyButton, KjunRefreshButton, KjunExternalLink, KjunScrollFade } from "./actions";
 export { KjunCarousel } from "./carousel";
+export { KjunSteps } from "./steps";
 export { KjunColorPicker } from "./color-picker";
 export { KjunFileUpload } from "./file-upload";
 export { KjunSplitPane } from "./split-pane";
