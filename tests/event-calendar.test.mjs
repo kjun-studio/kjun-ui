@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
+import { readFile } from 'node:fs/promises';
 
 // event-calendar.ts reads the message folder, which Node cannot import directly, so the test bundles it.
 const output = await build({ entryPoints: ['shared/package-runtime/event-calendar.ts'], bundle: true, write: false, format: 'esm', platform: 'node',
@@ -86,4 +87,13 @@ test('a slide that returns to the shown month settles without entering, and dire
   s = slideStart(s, '2026-12'); assert.equal(s.direction, 1);
   s = slideStart(s, '2026-09'); assert.equal(s.direction, -1);
   s = slideNext(s); assert.deepEqual([s.phase, s.shown], ['in', '2026-09']);
+});
+
+test('day cells carry no ring and the event calendar css ships', async () => {
+  const css = await readFile('packages/tokens/src/calendar.css', 'utf8');
+  assert.ok(!/today-ring/.test(css));
+  assert.ok(!/\.kjun-calendar-(day|month)[^{]*\{[^}]*box-shadow/.test(css));
+  assert.ok(JSON.parse(await readFile('shared/web-style-sources.json', 'utf8')).includes('event-calendar.css'));
+  const event = await readFile('packages/tokens/src/event-calendar.css', 'utf8');
+  assert.ok(/prefers-reduced-motion/.test(event) && /touch-action:\s*pan-y/.test(event));
 });

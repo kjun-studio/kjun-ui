@@ -6,7 +6,10 @@ export function tokenKind(path) {
   if (name === 'loadingMinimum') return 'duration';
   if (parts[0] === 'layers') return 'layer';
   if (path.startsWith('states.opacity.')) return 'opacity';
-  if (/^(fontWeight|weight|titleWeight)$/.test(name)) return 'fontWeight';
+  if (/^(fontWeight|weight|titleWeight|selectedWeight)$/.test(name)) return 'fontWeight';
+  // Calendar extension values that are not lengths: opacities are plain numbers, slide and long-press times are milliseconds.
+  if (/^extensions\.calendar\./.test(path) && /Opacity$/.test(name)) return 'opacity';
+  if (/^extensions\.calendar\./.test(path) && /^(slideOut|slideIn|longPressDelay)$/.test(name)) return 'duration';
   if (name === 'letterSpacingEm') return 'tracking';
   if (name === 'inset' && isShadow(path)) return 'boolean';
   if (name === 'colorRole') return 'colorRole';
