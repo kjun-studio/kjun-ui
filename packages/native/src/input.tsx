@@ -191,8 +191,8 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
   }, [props.autoFocus]);
   const ownErrorId = "kjun-native-input-error-" + useId().replace(/:/g, "");
   const showError = !!errorMessage && !field?.error;
-  const describedBy = [field?.describedBy, showError ? ownErrorId : undefined]
-    .filter(Boolean).join(" ") || undefined;
+  // A caller's description (NumberInput's reading aid) comes first, as on Web.
+  const describedBy = mergeIds((props as { "aria-describedby"?: string })["aria-describedby"], field?.describedBy, showError ? ownErrorId : undefined);
   const spec = tokens.input[size], edge = inputEdge(variant, spec.padding);
   const invalid = !!(error || errorMessage || field?.error);
   const canEdit = !disabled && !readOnly && editable;
@@ -226,10 +226,7 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
           accessibilityLabelledBy={
             field?.label && !field.labelHidden ? field.id + "-label" : undefined
           }
-          accessibilityHint={
-            joinHints(field?.hint, errorMessage || field?.error) ||
-            props.accessibilityHint
-          }
+          accessibilityHint={joinHints(props.accessibilityHint, field?.hint, errorMessage || field?.error)}
           accessibilityState={{ disabled }}
           {...(Platform.OS === "web"
             ? {

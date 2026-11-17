@@ -160,6 +160,8 @@ export * from "./chip";
 export * from "./fab";
 export * from "./range-input";
 export * from "./quantity-stepper";
+export { KjunNumberInput } from "./number-input";
+export type { KjunNumberInputProps } from "./number-input";
 export * from "./time-picker";
 
 export type { ShadowLayer, ElevationRole, CardElevation } from "@kjun-ui/tokens";

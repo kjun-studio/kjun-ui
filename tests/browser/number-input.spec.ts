@@ -11,8 +11,10 @@ const setCaret = (page: Page, id: string, at: number) => field(page, id).evaluat
 const described = (page: Page, id: string) => field(page, id).evaluate(el =>
   (el.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean).map(ref => document.getElementById(ref)?.textContent?.trim() ?? ''));
 
-for (const platform of ['react', 'vue3']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test.describe(platform, () => {
+    // Native Web: no CDP IME or inputmode assertions; the root carries data-* through dataSet and aligns end as "right".
+    const web = platform !== 'native';
     test.beforeEach(async ({ page }) => {
       await openFixture(page, platform, '', 'number-input');
     });
@@ -89,7 +91,7 @@ for (const platform of ['react', 'vue3']) {
     });
 
     test('ime end after blur commits', async ({ page, browserName }) => {
-      test.skip(browserName !== 'chromium', 'IME composition is driven through the Chromium DevTools protocol.');
+      test.skip(browserName !== 'chromium' || !web, 'IME composition is driven through the Chromium DevTools protocol on the web packages.');
       const amount = field(page, 'amount');
       await amount.pressSequentially('12');
       const cdp = await page.context().newCDPSession(page);
@@ -148,7 +150,7 @@ for (const platform of ['react', 'vue3']) {
     });
 
     test('ime composition', async ({ page, browserName }) => {
-      test.skip(browserName !== 'chromium', 'IME composition is driven through the Chromium DevTools protocol.');
+      test.skip(browserName !== 'chromium' || !web, 'IME composition is driven through the Chromium DevTools protocol on the web packages.');
       const amount = field(page, 'amount');
       await amount.pressSequentially('12');
       const cdp = await page.context().newCDPSession(page);
@@ -173,9 +175,11 @@ for (const platform of ['react', 'vue3']) {
     });
 
     test('keyboard', async ({ page }) => {
-      await expect(field(page, 'percent')).toHaveAttribute('inputmode', 'text');
-      await expect(field(page, 'decimals')).toHaveAttribute('inputmode', 'decimal');
-      await expect(field(page, 'amount')).toHaveAttribute('inputmode', 'numeric');
+      if (web) {
+        await expect(field(page, 'percent')).toHaveAttribute('inputmode', 'text');
+        await expect(field(page, 'decimals')).toHaveAttribute('inputmode', 'decimal');
+        await expect(field(page, 'amount')).toHaveAttribute('inputmode', 'numeric');
+      }
       const grouped = page.getByRole('textbox', { name: '보낼 금액' });
       await expect(grouped).toHaveCount(1);
       await grouped.pressSequentially('1250000');
@@ -194,13 +198,15 @@ for (const platform of ['react', 'vue3']) {
       expect(end.paddingRight).toBe(reference.paddingRight);
       expect(end.radius).toBe(reference.radius);
       expect(end.numeric).toContain('tabular-nums');
-      expect(end.align).toBe('end');
+      const endAlign = web ? 'end' : 'right';
+      expect(end.align).toBe(endAlign);
       expect((await read('amount')).height).toBe(reference.height);
-      expect((await read('amount')).align).not.toBe('end');
-      const root = page.getByTestId('end').locator('.kjun-number-input');
+      expect((await read('amount')).align).not.toBe(endAlign);
+      const root = page.getByTestId('end').locator('[data-format]');
+      if (web) await expect(root).toHaveClass(/kjun-number-input/);
       await expect(root).toHaveAttribute('data-format', 'amount');
       await expect(root).toHaveAttribute('data-align', 'end');
-      await expect(page.getByTestId('percent').locator('.kjun-number-input')).toHaveAttribute('data-align', 'start');
+      await expect(page.getByTestId('percent').locator('[data-format]')).toHaveAttribute('data-align', 'start');
     });
   });
 }
