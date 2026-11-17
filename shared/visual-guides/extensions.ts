@@ -106,7 +106,7 @@ export const extensions: Record<string, GuideAuthor> = {
     states: [{ id: "all", label: "전체 옵션", description: "채도·명도 영역, 색상·투명도 슬라이더, HEX와 % 입력을 함께 엽니다.", settings: { custom: true, alpha: true, input: true }, values: { color: "#3B82F6CC" } }],
   },
   KjunFileUpload: {
-    parts: [p("선택 영역", "비어 있을 때의 넓은 버튼입니다. 누르거나 파일을 끌어다 놓아 고릅니다.", ".kjun-file-upload-zone, [role=\"button\"]"), t("안내 문구", "허용 형식·파일당 크기·최대 개수입니다.", "파일당 20MB", true)],
+    parts: [p("선택 영역", "비어 있을 때의 넓은 버튼입니다. 누르거나 파일을 끌어다 놓아 고릅니다.", ".kjun-file-upload-zone, [role=\"button\"]"), t("안내 문구", "허용 형식·파일당 크기·최대 개수입니다.", "PDF, XLSX, 이미지 · 파일당 20MB · 5개까지", true)],
     related: "input-settings",
     states: [{ id: "states", label: "여러 상태", description: "업로드 중·완료·실패·대기 행과 머리의 실패 수, 추가 행을 함께 보입니다.", settings: { sample: "여러 상태" } }],
   },

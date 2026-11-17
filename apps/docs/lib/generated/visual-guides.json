@@ -17615,7 +17615,7 @@
               {
                 "label": "안내 문구",
                 "description": "허용 형식·파일당 크기·최대 개수입니다.",
-                "target": "text=파일당 20MB",
+                "target": "text=PDF, XLSX, 이미지 · 파일당 20MB · 5개까지",
                 "optional": true
               }
             ]
@@ -17664,7 +17664,7 @@
               {
                 "label": "안내 문구",
                 "description": "허용 형식·파일당 크기·최대 개수입니다.",
-                "target": "text=파일당 20MB",
+                "target": "text=PDF, XLSX, 이미지 · 파일당 20MB · 5개까지",
                 "optional": true
               }
             ]
@@ -17713,7 +17713,7 @@
               {
                 "label": "안내 문구",
                 "description": "허용 형식·파일당 크기·최대 개수입니다.",
-                "target": "text=파일당 20MB",
+                "target": "text=PDF, XLSX, 이미지 · 파일당 20MB · 5개까지",
                 "optional": true
               }
             ]
