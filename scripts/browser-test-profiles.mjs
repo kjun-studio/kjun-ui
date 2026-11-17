@@ -44,6 +44,7 @@ const componentGroups = {
   parity: files('parity'),
   trail: files('trail'),
   carousel: files('carousel'),
+  steps: files('steps'),
   'split-pane': files('split-pane'),
   distribution: files('distribution'),
   tiles: [...files('tiles', 'layout-primitives', 'card-layout', 'geometry-tokens'), ...visuals],
