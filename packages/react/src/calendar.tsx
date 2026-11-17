@@ -5,6 +5,7 @@ import {
   orderWeekdays, parseDate, pickMonth, pickYear, rangeRole, stepDisabled, stepTarget, todayIso, toIsoDate, yearChoices, yearGrid,
   yearOutside, type CalendarMode, type DateRange, type DateUnavailable, type WeekStart,
 } from "../../../shared/package-runtime/calendar";
+import { dayTone } from "../../../shared/package-runtime/event-calendar";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useId, useRef, useState } from "react";
 import { KjunButton, KjunIcon } from "./button";
@@ -14,6 +15,8 @@ export interface CalendarOptions {
   weekStart?: WeekStart;
   /** Paints Sundays with the danger role, as Korean calendars do (default true). */
   markSunday?: boolean;
+  /** Paints Saturdays with the info role (default true). */
+  markSaturday?: boolean;
   /** Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one. */
   isDateUnavailable?: DateUnavailable;
 }
@@ -34,7 +37,7 @@ export interface CalendarViewProps extends CalendarOptions {
 /** A named range offered as a chip, such as "최근 7일". */
 export interface DateRangePreset { label: string; value: DateRange }
 /** KJUN's calendar: a day grid with keyboard movement, and month and year views opened from the heading. */
-export function CalendarView({ value, range, min, max, clearable = false, weekStart = 0, markSunday = true, isDateUnavailable,
+export function CalendarView({ value, range, min, max, clearable = false, weekStart = 0, markSunday = true, markSaturday = true, isDateUnavailable,
   onSelect, onClear, onApply, presets, onPreset }: CalendarViewProps) {
   const scope = useKjunMessageScope(), m = scope.messages;
   const [focus, setFocus] = useState(() => initialFocus(range ? range.start : value, min, max));
@@ -64,7 +67,7 @@ export function CalendarView({ value, range, min, max, clearable = false, weekSt
   const title = mode === "days" ? labels.title : mode === "months" ? names.title : `${years[0]} – ${years[11]}`;
   const picking = !!range?.start && !range.end;
   const footer = calendarFooter({ range: !!range, apply: !!onApply, clearable, todayBlocked: isBlocked(today, min, max) || !!isDateUnavailable?.(today) });
-  const sunday = (weekday: number) => (markSunday && weekday === 0) || undefined;
+  const tone = (weekday: number) => { const t = dayTone(weekday, { markSunday, markSaturday, holiday: false }); return t === "text" ? undefined : t; };
   // The live region stays empty on open and speaks only when the heading or the range step changes.
   const announcement = picking ? m.chooseEndDate : title, first = useRef(announcement);
   const [spoken, setSpoken] = useState("");
@@ -105,22 +108,22 @@ export function CalendarView({ value, range, min, max, clearable = false, weekSt
             if (picking) setPreview(clampDate(next, min, max));
           }}>
           {orderWeekdays(labels.weekdays, weekStart).map((day, index) => (
-            <span key={day} className="kjun-calendar-weekday" data-sunday={sunday((index + weekStart) % 7)} aria-hidden="true">{day}</span>
+            <span key={day} className="kjun-calendar-weekday" data-tone={tone((index + weekStart) % 7)} aria-hidden="true">{day}</span>
           ))}
           {calendarDays(shown.year, shown.month, { value, range, min, max, today, weekStart, unavailable: isDateUnavailable, preview: picking ? preview : undefined }).map(day => {
             const role = range ? rangeRole(day) : null;
             return (
-              <button key={day.iso} type="button" className="kjun-calendar-day" data-iso={day.iso}
+              <button key={day.iso} type="button" className="kjun-calendar-day" data-density="compact" data-iso={day.iso}
                 // Blocked days stay focusable so arrow keys can pass over them, as in the ARIA date picker pattern.
                 tabIndex={day.iso === focus ? 0 : -1} aria-disabled={day.blocked || undefined}
                 aria-label={dateLabel(day.iso, scope)} aria-pressed={day.selected} aria-current={day.today ? "date" : undefined}
                 aria-describedby={role ? `${uid}-${role}` : undefined}
-                data-sunday={sunday(day.weekday)} data-outside={day.outside || undefined} data-today={day.today || undefined}
+                data-tone={tone(day.weekday)} data-outside={day.outside || undefined} data-today={day.today || undefined}
                 data-selected={day.selected || undefined} data-in-range={day.inRange || undefined}
                 data-range-start={day.rangeStart || undefined} data-range-end={day.rangeEnd || undefined}
                 onMouseEnter={() => { if (picking && !day.blocked) setPreview(day.iso); }}
                 onClick={() => { if (day.blocked) return; setFocus(day.iso); setPreview(undefined); onSelect(day.iso); }}>
-                {day.day}
+                <span className="kjun-calendar-day-number">{day.day}</span>
               </button>
             );
           })}

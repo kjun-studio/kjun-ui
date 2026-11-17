@@ -14,12 +14,15 @@ export const timeConfig = { value: '13:30' as string | null, hourCycle: 24, minu
 export function DatePickerCases({ K, native = false }: { K: any; native?: boolean }) {
   const [config, setConfig] = useState<Record<string, unknown>>(dateConfig);
   const [time, setTime] = useState(timeConfig);
+  // Opt-in (window.showTodayEnd) so the other cases keep their original page: a range that ends on today, 2026-09-12.
+  const [todayEnd, setTodayEnd] = useState({ show: false, range: { start: '2026-09-05', end: '2026-09-12' } });
   const [date, setDate] = useState('2026-09-12'), [range, setRange] = useState({ start: '2026-09-08', end: '2026-09-16' });
-  useLayoutEffect(() => { Object.assign(window, { configureDates: (next: object) => setConfig(old => ({ ...old, ...next })), configureTime: (next: object) => setTime(old => ({ ...old, ...next })) }); }, []);
+  useLayoutEffect(() => { Object.assign(window, { configureDates: (next: object) => setConfig(old => ({ ...old, ...next })), configureTime: (next: object) => setTime(old => ({ ...old, ...next })), showTodayEnd: () => setTodayEnd(old => ({ ...old, show: true })) }); }, []);
   void native;
   return <main style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 360 }}>
     <div data-testid="date"><K.KjunDatePicker {...config} value={date} onValueChange={setDate} ariaLabel="시작일" /></div>
     <div data-testid="range"><K.KjunDateRangePicker {...config} value={range} onValueChange={setRange} ariaLabel="사용 기간" /></div>
+    {todayEnd.show && <div data-testid="today-end"><K.KjunDateRangePicker {...config} value={todayEnd.range} onValueChange={(range: { start: string; end: string }) => setTodayEnd(old => ({ ...old, range }))} ariaLabel="오늘에 끝나는 기간" /></div>}
     <div data-testid="time"><K.KjunTimePicker {...time} ariaLabel="알림" onValueChange={(value: string | null) => setTime(old => ({ ...old, value }))} /></div>
     <output data-testid="values" style={{ display: 'none' }}>{date}|{range.start}/{range.end}</output>
     <output data-testid="time-value" style={{ display: 'none' }}>{String(time.value)}</output>

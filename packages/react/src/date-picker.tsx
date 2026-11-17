@@ -75,7 +75,7 @@ export interface KjunDatePickerProps extends DateFieldProps {
   onValueChange?: (value: string) => void;
   onChange?: (value: string) => void;
 }
-export function KjunDatePicker({ value, placeholder, clearable = false, min, max, weekStart, markSunday, isDateUnavailable, onValueChange, onChange, ...field }: KjunDatePickerProps) {
+export function KjunDatePicker({ value, placeholder, clearable = false, min, max, weekStart, markSunday, markSaturday, isDateUnavailable, onValueChange, onChange, ...field }: KjunDatePickerProps) {
   const scope = useKjunMessageScope();
   const [open, setOpen] = useState(false);
   const commit = (next: string) => { if (next !== value) { onValueChange?.(next); onChange?.(next); } setOpen(false); };
@@ -83,7 +83,7 @@ export function KjunDatePicker({ value, placeholder, clearable = false, min, max
     <DateField {...field} clearable={clearable} placeholder={placeholder ?? scope.messages.datePlaceholder} clearLabel={scope.messages.clearDate}
       text={value ? formatDateValue(value, scope) : ""} spoken={value ? dateLabel(value, scope) : ""} submitted={value}
       open={open} setOpen={setOpen} onClear={() => commit("")}>
-      <CalendarView value={value} min={min} max={max} clearable={clearable} weekStart={weekStart} markSunday={markSunday} isDateUnavailable={isDateUnavailable}
+      <CalendarView value={value} min={min} max={max} clearable={clearable} weekStart={weekStart} markSunday={markSunday} markSaturday={markSaturday} isDateUnavailable={isDateUnavailable}
         onSelect={commit} onClear={() => commit("")} />
     </DateField>
   );
@@ -100,7 +100,7 @@ export interface KjunDateRangePickerProps extends DateFieldProps {
   autoApply?: boolean;
 }
 /** Two dates picked in one calendar: the first pick starts the range, the second ends it, and Apply commits it. */
-export function KjunDateRangePicker({ value: given, placeholder, clearable = false, min, max, weekStart, markSunday, isDateUnavailable, presets, autoApply = false,
+export function KjunDateRangePicker({ value: given, placeholder, clearable = false, min, max, weekStart, markSunday, markSaturday, isDateUnavailable, presets, autoApply = false,
   onValueChange, onChange, ...field }: KjunDateRangePickerProps) {
   const scope = useKjunMessageScope();
   const value = normalizeRange(given, min, max);
@@ -116,7 +116,7 @@ export function KjunDateRangePicker({ value: given, placeholder, clearable = fal
     <DateField {...field} clearable={clearable} placeholder={placeholder ?? scope.messages.rangePlaceholder} clearLabel={scope.messages.clearDates}
       text={formatRange(value, format)} spoken={rangeSpoken(value, scope)} submitted={rangeSubmitted(value)}
       open={open} setOpen={next => { if (next) setDraft(value); setOpen(next); }} onClear={() => commit({ start: "", end: "" })}>
-      <CalendarView range={draft} min={min} max={max} clearable={clearable} weekStart={weekStart} markSunday={markSunday} isDateUnavailable={isDateUnavailable}
+      <CalendarView range={draft} min={min} max={max} clearable={clearable} weekStart={weekStart} markSunday={markSunday} markSaturday={markSaturday} isDateUnavailable={isDateUnavailable}
         presets={presets} onPreset={next => { const range = normalizeRange(next, min, max); setDraft(range); if (autoApply) commit(range); }}
         onSelect={pick} onClear={() => setDraft({ start: "", end: "" })} onApply={autoApply ? undefined : () => commit(draft)} />
     </DateField>

@@ -1,14 +1,28 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+// Platforms that already draw the redesigned picker cells (squared picks, a pill for today, tones by data-tone). Tasks 5 and 6 add vue3 and native.
+const NEW_CELLS = ['react'];
+// A colour role as the browser computes it inside the KJUN scope.
+const role = (page: Page, name: string) => page.evaluate(name => {
+  const probe = document.createElement('i');
+  probe.style.color = `var(--_kjun-color-${name})`;
+  document.querySelector('.kjun-scope')!.append(probe);
+  const color = getComputedStyle(probe).color;
+  probe.remove();
+  return color;
+}, name);
+const style = (cell: Locator, property: string) => cell.evaluate((el, property) => (getComputedStyle(el) as any)[property] as string, property);
+const number = (page: Page, name: string) => day(page, name).locator('.kjun-calendar-day-number');
+const clear = 'rgba(0, 0, 0, 0)';
 const values = (page: Page) => page.getByTestId('values');
 const day = (page: Page, name: string) => page.getByRole('button', { name, exact: true });
-const field = (page: Page, id: string) => page.getByTestId(id).getByRole('button', { name: id === 'date' ? /^시작일/ : /^사용 기간/ });
+const field = (page: Page, id: string) => page.getByTestId(id).getByRole('button', { name: id === 'date' ? /^시작일/ : id === 'today-end' ? /^오늘에 끝나는 기간/ : /^사용 기간/ });
 const open = async (page: Page, id: string) => { await field(page, id).click(); await expect(day(page, '월 선택')).toBeVisible(); };
 // A closing calendar stays through its exit motion, so wait for it before opening the other field.
 const close = async (page: Page) => { await page.keyboard.press('Escape'); await expect(day(page, '월 선택')).toHaveCount(0); };
 
 for (const platform of ['react', 'vue3', 'native']) {
-  test(`${platform}: one KJUN calendar: round days, bounds, month view and picking a date`, async ({ page }) => {
+  test(`${platform}: one KJUN calendar: ${NEW_CELLS.includes(platform) ? 'squared' : 'round'} days, bounds, month view and picking a date`, async ({ page }) => {
     await openFixture(page, platform, '', 'date-picker-design');
     await expect(page.getByTestId('date')).toContainText('2026. 09. 12.');
     await open(page, 'date');
@@ -16,6 +30,10 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(selected).toHaveAttribute('aria-pressed', 'true');
     const box = (await selected.boundingBox())!;
     expect(Math.round(box.width)).toBe(40); expect(Math.round(box.height)).toBe(40);
+    if (NEW_CELLS.includes(platform)) {
+      expect(await style(selected, 'borderRadius')).toBe('12px');
+      expect(await style(selected.locator('.kjun-calendar-day-number'), 'fontWeight')).toBe('800');
+    }
     // Neighbouring months show faintly; the bounds block days and the previous month.
     await expect(day(page, '2026년 9월 2일 수요일')).toBeDisabled();
     await expect(day(page, '2026년 8월 30일 일요일')).toBeVisible();
@@ -203,5 +221,103 @@ for (const platform of ['react', 'vue3']) {
     expect(fit.content).toBeLessThanOrEqual(fit.box); expect(fit.panel).toBeLessThanOrEqual(0);
     const box = (await day(page, '2026년 9월 12일 토요일').boundingBox())!;
     expect(box.width).toBeLessThan(40); expect(Math.abs(box.width - box.height)).toBeLessThan(0.5);
+  });
+}
+
+for (const platform of NEW_CELLS) {
+  test.describe(`${platform}: picker cells, redesigned`, () => {
+    test.beforeEach(async ({ page }) => {
+      await page.clock.setFixedTime(new Date('2026-09-12T12:00:00'));
+      await openFixture(page, platform, '', 'date-picker-design');
+    });
+
+    test('today is a quiet pill, never a ring', async ({ page }) => {
+      await open(page, 'date');
+      // Pick another day so that today (2026-09-12) is not the selected one.
+      await day(page, '2026년 9월 15일 화요일').click();
+      await open(page, 'date');
+      const today = day(page, '2026년 9월 12일 토요일');
+      await expect(today).toHaveAttribute('data-today', 'true');
+      await expect(today).not.toHaveAttribute('data-selected', /.*/);
+      expect(await style(today, 'boxShadow')).toBe('none');
+      expect(await style(today, 'borderTopWidth')).toBe('0px');
+      const pill = number(page, '2026년 9월 12일 토요일');
+      expect(await style(pill, 'backgroundColor')).toBe(await role(page, 'brand-subtle-bg'));
+      expect(Math.round((await pill.boundingBox())!.height)).toBe(26);
+      expect(await style(pill, 'fontWeight')).toBe('600');
+    });
+
+    test('today inside a range', async ({ page }) => {
+      await open(page, 'range');
+      const today = day(page, '2026년 9월 12일 토요일');
+      await expect(today).toHaveAttribute('data-in-range', 'true');
+      // The band already shows today, so the number is bare and brand-coloured.
+      expect(await style(number(page, '2026년 9월 12일 토요일'), 'backgroundColor')).toBe(clear);
+      expect(await style(number(page, '2026년 9월 12일 토요일'), 'color')).toBe(await role(page, 'brand'));
+      await close(page);
+      // When today ends the range it is a selected day: filled with brand.
+      await page.evaluate(() => (window as any).showTodayEnd());
+      await field(page, 'today-end').click();
+      await expect(day(page, '월 선택')).toBeVisible();
+      const end = day(page, '2026년 9월 12일 토요일');
+      await expect(end).toHaveAttribute('data-selected', 'true');
+      expect(await style(end, 'backgroundColor')).toBe(await role(page, 'brand'));
+      expect(await style(number(page, '2026년 9월 12일 토요일'), 'color')).toBe(await role(page, 'on-brand'));
+    });
+
+    test('Saturdays read info and markSaturday={false} turns it off', async ({ page }) => {
+      await open(page, 'date');
+      const saturday = number(page, '2026년 9월 19일 토요일'), sunday = number(page, '2026년 9월 20일 일요일');
+      const header = (name: string) => page.locator('.kjun-calendar-weekday', { hasText: name });
+      await expect(day(page, '2026년 9월 19일 토요일')).toHaveAttribute('data-tone', 'info');
+      expect(await style(saturday, 'color')).toBe(await role(page, 'info'));
+      expect(await style(sunday, 'color')).toBe(await role(page, 'danger'));
+      expect(await style(header('토'), 'color')).toBe(await role(page, 'info'));
+      expect(await style(header('일'), 'color')).toBe(await role(page, 'danger'));
+      await close(page);
+      await page.evaluate(() => (window as any).configureDates({ markSaturday: false }));
+      await open(page, 'date');
+      await expect(day(page, '2026년 9월 19일 토요일')).not.toHaveAttribute('data-tone', /.*/);
+      expect(await style(saturday, 'color')).toBe(await role(page, 'text'));
+      expect(await style(header('토'), 'color')).toBe(await role(page, 'text'));
+      expect(await style(sunday, 'color')).toBe(await role(page, 'danger'));
+    });
+
+    test('the current month and year are filled, not outlined', async ({ page }) => {
+      await open(page, 'date');
+      // Move the picked day to October so September is only the current month.
+      await day(page, '다음 달').click();
+      await day(page, '2026년 10월 7일 수요일').click();
+      await open(page, 'date');
+      await day(page, '월 선택').click();
+      const current = page.getByRole('button', { name: '9월', exact: true });
+      await expect(current).toHaveAttribute('data-current', 'true');
+      expect(await style(current, 'boxShadow')).toBe('none');
+      expect(await style(current, 'backgroundColor')).toBe(await role(page, 'brand-subtle-bg'));
+      await close(page);
+      // The same for the year: pick a day in 2020, then 2026 is only the current year.
+      await page.evaluate(() => (window as any).configureDates({ min: '2016-01-01' }));
+      await open(page, 'date');
+      await day(page, '월 선택').click();
+      await day(page, '연도 선택').click();
+      await page.getByRole('button', { name: '2020', exact: true }).click();
+      await page.getByRole('button', { name: '3월', exact: true }).click();
+      await day(page, '2020년 3월 12일 목요일').click();
+      await open(page, 'date');
+      await day(page, '월 선택').click();
+      await day(page, '연도 선택').click();
+      const year = page.getByRole('button', { name: '2026', exact: true });
+      await expect(year).toHaveAttribute('data-current', 'true');
+      expect(await style(year, 'boxShadow')).toBe('none');
+      expect(await style(year, 'backgroundColor')).toBe(await role(page, 'brand-subtle-bg'));
+    });
+
+    test('outside days fade to 0.2', async ({ page }) => {
+      await open(page, 'date');
+      const outside = number(page, '2026년 8월 30일 일요일');
+      await expect(day(page, '2026년 8월 30일 일요일')).toHaveAttribute('data-outside', 'true');
+      expect(Number(await style(outside, 'opacity'))).toBeCloseTo(0.2, 2);
+      expect(Number(await style(number(page, '2026년 9월 15일 화요일'), 'opacity'))).toBe(1);
+    });
   });
 }
