@@ -26,7 +26,7 @@ export const extensionControls: Record<string, ExampleControl[]> = {
   KjunFileUpload: [disabled, error, bool("multiple", "여러 파일", true), choice("sample", "예시 파일", ["비어 있음", "여러 상태"])],
   KjunTimePicker: [size, disabled, error, choice("precision", "시간 정밀도", ["minute", "second"]), number("minuteStep", "분 간격", 1, 1, 59), { ...number("secondStep", "초 간격", 1, 1, 59), when: { precision: ["second"] } }, bool("bounded", "시각 범위 제한"), bool("clearable", "지우기", true), bool("block", "전체 너비")],
   KjunQuantityStepper: [size, disabled, error, bool("block", "전체 너비"), bool("decimal", "소수 수량"), bool("negative", "음수 허용")],
-  KjunNumberInput: [size, disabled, error, choice("format", "서식", ["number", "amount", "percent"]), choice("align", "정렬", ["start", "end"]), bool("readingAid", "읽기 보조"), number("decimals", "소수 자릿수(0은 서식 기본값)", 0, 0, 6), bool("unit", "kg 단위 예제")],
+  KjunNumberInput: [size, disabled, error, choice("format", "서식", ["number", "amount", "percent"]), choice("align", "정렬", ["start", "end"]), bool("readingAid", "읽기 보조"), number("decimals", "소수 자릿수(0은 서식 기본값)", 0, 0, 6), bool("unit", "kg 단위 예제"), bool("prefix", "$ prefix 예제")],
 };
 const preset = (id: string, label: string, settings: Record<string, any>, values = {}): ExamplePreset => ({ id, label, settings, values });
 export const extensionPresets: Record<string, ExamplePreset[]> = {
@@ -59,7 +59,7 @@ export const extensionPresets: Record<string, ExamplePreset[]> = {
   KjunFileUpload: [preset("states", "여러 상태", { sample: "여러 상태" }), preset("single", "파일 1개", { multiple: false, sample: "여러 상태" })],
   KjunTimePicker: [preset("seconds", "초 단위", { precision: "second" }, { time: "09:30:15" }), preset("bounded", "시각 범위", { precision: "second", bounded: true }), preset("error", "오류", { error: true })],
   KjunQuantityStepper: [preset("block", "전체 너비", { block:true }), preset("decimal", "소수 수량", { decimal: true }, { quantity: 1.25 }), preset("negative", "음수와 반올림", { decimal: true, negative: true }, { quantity: -1.25 }), preset("error", "오류", { error: true })],
-  KjunNumberInput: [preset("amount", "금액·읽기 보조", { format: "amount", readingAid: true }, { amount: "1250000" }), preset("percent", "퍼센트", { format: "percent" }, { amount: "12.5" }), preset("unit", "단위 suffix", { unit: true, decimals: 1 }, { amount: "62.5" }), preset("end", "끝 정렬", { format: "amount", align: "end" }, { amount: "1250000" }), preset("error", "오류", { error: true })],
+  KjunNumberInput: [preset("amount", "금액·읽기 보조", { format: "amount", readingAid: true }, { amount: "1250000" }), preset("percent", "퍼센트", { format: "percent" }, { amount: "12.5" }), preset("unit", "단위 suffix", { unit: true, decimals: 1 }, { amount: "62.5" }), preset("prefix", "$ prefix", { prefix: true }, { amount: "1234.50" }), preset("end", "끝 정렬", { format: "amount", align: "end" }, { amount: "1250000" }), preset("error", "오류", { error: true })],
 };
 export const recipeNames = ["GuideGenericLists", "GuideAppScreen", "GuideInputSettings", "GuideBottomSheet", "GuideThumbnail", "GuideSegmentedSelection", "GuideTransferForm"];
 for (const name of recipeNames) {

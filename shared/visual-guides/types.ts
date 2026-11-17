@@ -32,6 +32,8 @@ export interface GuideAuthor {
   figures?: FigureSpec[];
   states?: GuideCase[];
   related?: string;
+  /** The FormGroup text of the error state; it should read like the component's own message. */
+  errorMessage?: string;
 }
 export interface VisualGuide {
   name: string;

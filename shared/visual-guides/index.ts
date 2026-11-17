@@ -115,7 +115,7 @@ export function buildVisualGuides(
             // A boolean field error only colors the control; the wrapping FormGroup carries the text,
             // so the comparison never shows an error by color alone. Examples without a FormGroup ignore it.
             if (prop === "error" && literal === true)
-              state.settings = { visual: JSON.stringify({ ...JSON.parse(String(state.settings!.visual)), KjunFormGroup: { props: { error: "입력 내용을 확인해 주세요." } } }) };
+              state.settings = { visual: JSON.stringify({ ...JSON.parse(String(state.settings!.visual)), KjunFormGroup: { props: { error: author.errorMessage ?? "입력 내용을 확인해 주세요." } } }) };
             states.push(state);
           }
           if (selection[name])

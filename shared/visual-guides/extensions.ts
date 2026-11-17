@@ -117,6 +117,7 @@ export const extensions: Record<string, GuideAuthor> = {
   KjunNumberInput: {
     settings: { format: "amount", readingAid: true }, values: { amount: "1250000" },
     parts: [p("숫자 입력", "쉼표·소수 자릿수·부호를 지키며 편집합니다. 값은 그룹 구분 문자가 없는 문자열입니다.", "input"), t("단위 suffix", "서식이 붙이는 글자입니다. amount는 앱이 \"원\"을 지정하고 percent는 \"%\"가 기본입니다.", "원"), t("읽기 문구", "readingAid를 켜면 1만 이상일 때 입력 아래에 \"1억 2,003만 5,000 원\"처럼 읽어 줍니다.", "125만 원", true)], related: "transfer-form",
-    states: [{ id: "amount", label: "금액·읽기 보조", description: "쉼표와 단위, 입력 아래 읽기 문구를 함께 보입니다.", settings: { format: "amount", readingAid: true }, values: { amount: "1250000" } }, { id: "percent", label: "퍼센트", description: "보이는 그대로의 값이며 소수 한 자리를 채웁니다.", settings: { format: "percent" }, values: { amount: "12.5" } }, { id: "unit", label: "단위 suffix", description: "format은 number로 두고 suffix와 decimals만 지정합니다.", settings: { unit: true, decimals: 1 }, values: { amount: "62.5" } }],
+    states: [{ id: "amount", label: "금액·읽기 보조", description: "쉼표와 단위, 입력 아래 읽기 문구를 함께 보입니다.", settings: { format: "amount", readingAid: true }, values: { amount: "1250000" } }, { id: "percent", label: "퍼센트", description: "보이는 그대로의 값이며 소수 한 자리를 채웁니다.", settings: { format: "percent" }, values: { amount: "12.5" } }, { id: "unit", label: "단위 suffix", description: "format은 number로 두고 suffix와 decimals만 지정합니다.", settings: { unit: true, decimals: 1 }, values: { amount: "62.5" } }, { id: "prefix", label: "$ prefix", description: "prefix로 통화 기호를 앞에 두고 decimals 2로 소수 두 자리를 씁니다.", settings: { prefix: true }, values: { amount: "1234.50" } }],
+    errorMessage: "100,000명 이하로 입력해 주세요",
   },
 };
