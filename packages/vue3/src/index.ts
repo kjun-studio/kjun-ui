@@ -39,6 +39,7 @@ export type { KjunIconToggleProps, KjunCopyButtonProps, KjunRefreshButtonProps, 
 export { safeExternalUrl } from "./actions";
 export type { KjunCarouselProps } from "./carousel";
 export type { KjunColorPickerProps, KjunColorSwatch } from "./color-picker";
+export type { KjunFileUploadProps, KjunUploadFile, KjunUploadStatus, KjunRejectedFile, KjunRejectReason } from "./file-upload";
 export type { KjunSplitPaneProps } from "./split-pane";
 export type { KjunZoneGaugeProps, KjunGaugeZone } from "./zone-gauge";
 export type { KjunStackedBarProps, KjunStackedBarItem } from "./stacked-bar";
