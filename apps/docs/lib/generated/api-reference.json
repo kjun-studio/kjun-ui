@@ -2428,7 +2428,7 @@
           },
           {
             "name": "variant",
-            "type": "\"market\" | \"compact\" | \"notification\" | \"row\"",
+            "type": "\"compact\" | \"market\" | \"notification\" | \"row\"",
             "required": false,
             "default": "\"market\"",
             "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked.",
@@ -43605,11 +43605,11 @@
         "props": [
           {
             "name": "gap",
-            "type": "StackGap",
+            "type": "StackGapValue",
             "required": false,
             "default": "\"md\"",
-            "description": "Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg).",
-            "summary": "자식 사이 세로 간격 단계입니다. sm·md·lg는 space.stack(8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다.",
+            "description": "Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the\nscreen width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up).",
+            "summary": "자식 사이 세로 간격 단계입니다. xs·sm·md·lg는 space.stack(4·8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다). Native는 창 폭을 따릅니다.",
             "source": "packages/vue3/src/layout-primitives.tsx"
           },
           {
@@ -43617,17 +43617,35 @@
             "type": "StackAlign",
             "required": false,
             "default": "\"stretch\"",
-            "description": "",
-            "summary": "자식의 가로 정렬입니다. stretch는 폭을 채우고 start·center·end는 내용 폭으로 둡니다.",
+            "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons and badges keep their own;\na full-width button says so with block.",
+            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지는 내용 폭을 유지합니다(전체 폭 버튼은 block). start·center·end는 모든 자식을 내용 폭으로 둡니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "justify",
+            "type": "StackJustify",
+            "required": false,
+            "default": "\"start\"",
+            "description": "How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom.",
+            "summary": "Stack이 자식보다 높을 때 남는 높이의 분배(start·center·end·between)입니다. between은 첫 자식을 위, 마지막 자식을 아래에 붙입니다. 높이를 채우는 패널에 씁니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "A hairline in the divider color between children, with the gap above and below it.",
+            "summary": "자식 사이에 divider 색 1px 구분선을 그립니다. 선 위아래에 각각 gap만큼 간격을 둡니다. 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다.",
             "source": "packages/vue3/src/layout-primitives.tsx"
           },
           {
             "name": "as",
-            "type": "\"div\" | \"section\"",
+            "type": "StackTag",
             "required": false,
             "default": "\"div\"",
-            "description": "",
-            "summary": "웹 태그(div·section)입니다.",
+            "description": "Element to render. ul and ol drop bullets and indent; give them li children.",
+            "summary": "웹 태그(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)입니다. ul·ol은 목록 기호와 들여쓰기를, fieldset은 테두리를 지우며 자식은 li로 주세요.",
             "source": "packages/vue3/src/layout-primitives.tsx"
           }
         ],
@@ -43648,11 +43666,11 @@
         "props": [
           {
             "name": "gap",
-            "type": "StackGap | undefined",
+            "type": "StackGapValue | undefined",
             "required": false,
             "default": "\"md\"",
-            "description": "Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg).",
-            "summary": "자식 사이 세로 간격 단계입니다. sm·md·lg는 space.stack(8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다.",
+            "description": "Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the\nscreen width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up).",
+            "summary": "자식 사이 세로 간격 단계입니다. xs·sm·md·lg는 space.stack(4·8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다). Native는 창 폭을 따릅니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
@@ -43660,17 +43678,35 @@
             "type": "StackAlign | undefined",
             "required": false,
             "default": "\"stretch\"",
-            "description": "",
-            "summary": "자식의 가로 정렬입니다. stretch는 폭을 채우고 start·center·end는 내용 폭으로 둡니다.",
+            "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons and badges keep their own;\na full-width button says so with block.",
+            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지는 내용 폭을 유지합니다(전체 폭 버튼은 block). start·center·end는 모든 자식을 내용 폭으로 둡니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "justify",
+            "type": "StackJustify | undefined",
+            "required": false,
+            "default": "\"start\"",
+            "description": "How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom.",
+            "summary": "Stack이 자식보다 높을 때 남는 높이의 분배(start·center·end·between)입니다. between은 첫 자식을 위, 마지막 자식을 아래에 붙입니다. 높이를 채우는 패널에 씁니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "A hairline in the divider color between children, with the gap above and below it.",
+            "summary": "자식 사이에 divider 색 1px 구분선을 그립니다. 선 위아래에 각각 gap만큼 간격을 둡니다. 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
             "name": "as",
-            "type": "\"div\" | \"section\" | undefined",
+            "type": "StackTag | undefined",
             "required": false,
             "default": "\"div\"",
-            "description": "",
-            "summary": "웹 태그(div·section)입니다.",
+            "description": "Element to render. ul and ol drop bullets and indent; give them li children.",
+            "summary": "웹 태그(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)입니다. ul·ol은 목록 기호와 들여쓰기를, fieldset은 테두리를 지우며 자식은 li로 주세요.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
@@ -43701,6 +43737,15 @@
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
+            "name": "ref",
+            "type": "Ref<HTMLElement> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트 요소의 ref입니다. 스크롤 위치나 크기를 잴 때 씁니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
             "name": "id",
             "type": "string | undefined",
             "required": false,
@@ -43719,11 +43764,11 @@
         "props": [
           {
             "name": "gap",
-            "type": "StackGap | undefined",
+            "type": "StackGapValue | undefined",
             "required": false,
             "default": "\"md\"",
-            "description": "Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg).",
-            "summary": "자식 사이 세로 간격 단계입니다. sm·md·lg는 space.stack(8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다.",
+            "description": "Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the\nwindow width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up).",
+            "summary": "자식 사이 세로 간격 단계입니다. xs·sm·md·lg는 space.stack(4·8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다). Native는 창 폭을 따릅니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
@@ -43731,8 +43776,26 @@
             "type": "StackAlign | undefined",
             "required": false,
             "default": "\"stretch\"",
-            "description": "",
-            "summary": "자식의 가로 정렬입니다. stretch는 폭을 채우고 start·center·end는 내용 폭으로 둡니다.",
+            "description": "Cross-axis alignment. Buttons and badges keep their own width under stretch (the default), as on Web.",
+            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지는 내용 폭을 유지합니다(전체 폭 버튼은 block). start·center·end는 모든 자식을 내용 폭으로 둡니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "justify",
+            "type": "StackJustify | undefined",
+            "required": false,
+            "default": "\"start\"",
+            "description": "How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom.",
+            "summary": "Stack이 자식보다 높을 때 남는 높이의 분배(start·center·end·between)입니다. between은 첫 자식을 위, 마지막 자식을 아래에 붙입니다. 높이를 채우는 패널에 씁니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "A hairline in the divider color between children, with the gap above and below it.",
+            "summary": "자식 사이에 divider 색 1px 구분선을 그립니다. 선 위아래에 각각 gap만큼 간격을 둡니다. 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
@@ -43751,6 +43814,15 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Used to reference react managed views from native code.",
+            "summary": "기본 요소 또는 연결할 필드의 식별자입니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           }
         ],
@@ -43879,6 +43951,15 @@
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
+            "name": "ref",
+            "type": "Ref<HTMLDivElement> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트 요소의 ref입니다. 스크롤 위치나 크기를 잴 때 씁니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
             "name": "id",
             "type": "string | undefined",
             "required": false,
@@ -43947,6 +44028,15 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Used to reference react managed views from native code.",
+            "summary": "기본 요소 또는 연결할 필드의 식별자입니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           }
         ],

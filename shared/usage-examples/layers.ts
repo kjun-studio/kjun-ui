@@ -61,9 +61,20 @@ export function generate(input: UsageInput) {
       content = b.node(name, { currentPage: b.state('page', 1), onPageChange: b.update('page'), pageSize: b.state('pageSize', 20), onPageSizeChange: b.update('pageSize'), totalPages: 10, totalRows: 195, showInfo: true, showSizeSelector: true }); break;
     case 'KjunText':
       content = b.group([b.node(name, { variant: 'sectionTitle' }, b.text('섹션 제목')), b.node(name, { tone: 'secondary' }, b.text('보조 설명 문구입니다.'))]); break;
-    case 'KjunStack':
-      content = b.node(name, { gap: 'md' }, [b.node('KjunText', { variant: 'cardTitle' }, b.text('알림 설정')),
-        b.node('KjunText', { tone: 'secondary' }, b.text('받을 알림을 고르세요.')), b.button('저장', notify('save', '저장했습니다'))].join('\n')); break;
+    case 'KjunStack': {
+      // Only the options the reader changed are written out; the defaults (gap md, align stretch, justify start) stay implicit.
+      const own = { ...(s.gap && s.gap !== 'md' ? { gap: s.gap } : {}), ...(s.align && s.align !== 'stretch' ? { align: s.align } : {}),
+        ...(s.justify && s.justify !== 'start' ? { justify: s.justify } : {}), ...(s.divider ? { divider: true } : {}) };
+      if (s.content === '설정 목록') content = b.node(name, own, ['푸시 알림', '이메일 요약', '야간 방해 금지'].map((label, index) =>
+        b.node('KjunSwitch', { label, value: b.state('switch' + index, index === 0), onValueChange: b.update('switch' + index) })).join('\n'));
+      else if (s.content === '높이 채우기') content = b.node(name, { ...own, style: { height: b.vue ? '280px' : 280 } }, [
+        b.node(name, { gap: 'sm' }, ['홈', '자산', '와치리스트'].map(label => b.node('KjunText', {}, b.text(label))).join('\n')),
+        b.node('KjunText', { variant: 'label' }, b.text('김하늘 · 관리자'))].join('\n'));
+      // Title and description belong together (sm); the action keeps a step apart.
+      else content = b.node(name, own, [b.node(name, { gap: 'sm' }, [b.node('KjunText', { variant: 'cardTitle' }, b.text('알림 설정')),
+        b.node('KjunText', { tone: 'secondary' }, b.text('받을 알림을 고르세요.'))].join('\n')), b.button('저장', notify('save', '저장했습니다'))].join('\n'));
+      break;
+    }
     case 'KjunInline':
       content = b.node(name, { gap: 'sm', justify: 'end' }, [b.button('취소', undefined, { variant: 'secondary' }), b.button('저장', notify('save', '저장했습니다'))].join('\n')); break;
     case 'KjunScrollFade':

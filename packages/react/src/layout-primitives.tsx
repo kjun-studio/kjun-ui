@@ -1,10 +1,10 @@
-import { createElement, type AriaAttributes, type AriaRole, type CSSProperties, type ReactNode, type Ref } from "react";
+import { Children, createElement, type AriaAttributes, type AriaRole, type CSSProperties, type ReactNode, type Ref } from "react";
 import {
-  clampLines, defaultTextTag, textToneAttribute, textTypeClass,
-  type InlineAlign, type InlineGap, type InlineJustify, type StackAlign, type StackGap,
+  clampLines, defaultTextTag, isStackList, stackGapSteps, textToneAttribute, textTypeClass,
+  type InlineAlign, type InlineGap, type InlineJustify, type StackAlign, type StackBreakpoint, type StackGap, type StackGapValue, type StackJustify, type StackTag,
   type TextAlign, type TextDecoration, type TextTag, type TextTone, type TextVariant,
 } from "../../../shared/package-runtime/layout-primitives";
-export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackGap, TextAlign, TextDecoration, TextTag, TextTone, TextVariant };
+export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackBreakpoint, StackGap, StackGapValue, StackJustify, StackTag, TextAlign, TextDecoration, TextTag, TextTone, TextVariant };
 
 // Only the id and ARIA attributes reach the root, like Vue 3's fallthrough attributes; no event handlers.
 interface RootAttributes extends AriaAttributes { id?: string }
@@ -55,18 +55,32 @@ export function KjunText({ variant = "body", tone = "default", as, align, maxLin
 }
 
 export interface KjunStackProps extends RootAttributes {
-  /** Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg). */
-  gap?: StackGap;
+  /** Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the
+   * screen width, e.g. { base: "sm", medium: "lg" } (compact 640, medium 768, wide 1024 and up). */
+  gap?: StackGapValue;
+  /** Cross-axis alignment. With stretch (the default) blocks fill the width while buttons and badges keep their own;
+   * a full-width button says so with block. */
   align?: StackAlign;
-  as?: "div" | "section";
+  /** How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom. */
+  justify?: StackJustify;
+  /** A hairline in the divider color between children, with the gap above and below it. */
+  divider?: boolean;
+  /** Element to render. ul and ol drop bullets and indent; give them li children. */
+  as?: StackTag;
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
+  ref?: Ref<HTMLElement>;
 }
 /** Vertical stack. It is not KJUN markup (a data attribute, no kjun- class), so app children keep the styles they would have without it; direct form groups drop their own bottom margin. */
-export function KjunStack({ gap = "md", align = "stretch", as = "div", className, style, children, ...rest }: KjunStackProps) {
+export function KjunStack({ gap, align = "stretch", justify = "start", divider = false, as = "div", className, style, children, ...rest }: KjunStackProps) {
+  const steps = stackGapSteps(gap), line = isStackList(as) ? "li" : "div";
+  // The divider is the stack's own element between children, so no app child is restyled to draw it.
+  const content = divider ? Children.toArray(children).flatMap((child, index) => index
+    ? [createElement(line, { key: "kjun-divider-" + index, "data-kjun-stack-divider": "", "aria-hidden": true }), child] : [child]) : children;
   return createElement(as, { ...rest, className: className || undefined, style,
-    "data-kjun-stack": "", "data-gap": gap, "data-align": align }, children);
+    "data-kjun-stack": "", "data-gap": steps.base, "data-gap-compact": steps.compact, "data-gap-medium": steps.medium, "data-gap-wide": steps.wide,
+    "data-align": align, "data-justify": justify === "start" ? undefined : justify, "data-divider": divider ? "" : undefined }, content);
 }
 
 export interface KjunInlineProps extends RootAttributes {
@@ -79,6 +93,7 @@ export interface KjunInlineProps extends RootAttributes {
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
+  ref?: Ref<HTMLDivElement>;
 }
 /** Horizontal row that wraps by default. Like KjunStack it is not KJUN markup, so app children keep their own styles. */
 export function KjunInline({ gap = "sm", align = "center", justify = "start", wrap = true, className, style, children, ...rest }: KjunInlineProps) {

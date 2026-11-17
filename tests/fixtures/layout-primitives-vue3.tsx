@@ -32,6 +32,13 @@ createApp(() => <K.KjunProvider><div style={{ padding: '16px' }}>
   <div data-testid="inline-sm"><K.KjunInline gap="sm">{boxes(3)}</K.KjunInline></div>
   <div data-testid="inline-narrow"><K.KjunInline>{boxes(12, true)}</K.KjunInline></div>
   <div data-testid="stack-form"><K.KjunStack gap="md">{formLabels.stack.map(field)}</K.KjunStack></div>
+  <div data-testid="stack-xs"><K.KjunStack gap="xs">{boxes(2)}</K.KjunStack></div>
+  <div data-testid="stack-controls" style={{ width: '240px' }}><K.KjunStack><K.KjunButton>저장</K.KjunButton><K.KjunBadge>신규</K.KjunBadge><K.KjunButton block>전체 폭</K.KjunButton></K.KjunStack></div>
+  <div data-testid="stack-justify" style={{ height: '200px' }}><K.KjunStack justify="between" style={{ height: '200px' }}>{boxes(2)}</K.KjunStack></div>
+  <div data-testid="stack-divider"><K.KjunStack gap="sm" divider>{boxes(3)}</K.KjunStack></div>
+  <div data-testid="stack-responsive"><K.KjunStack gap={{ base: 'sm', medium: 'lg' }}>{boxes(2)}</K.KjunStack></div>
+  <K.KjunStack id="stack-web-id" aria-label="쌓인 영역">{boxes(1)}</K.KjunStack>
+  <div data-testid="stack-list"><K.KjunStack as="ul" gap="sm" divider>{['주문 접수', '결제 완료', '배송 준비'].map(t => <li key={t}>{t}</li>)}</K.KjunStack></div>
   <div data-testid="free-form">{formLabels.free.map(field)}</div>
   <div data-testid="stack-app-markup"><K.KjunStack><h2>앱 제목</h2></K.KjunStack></div>
   <div data-testid="nested-app-markup"><K.KjunStack><K.KjunStack><K.KjunInline><h2>안쪽 앱 제목</h2></K.KjunInline></K.KjunStack></K.KjunStack></div>

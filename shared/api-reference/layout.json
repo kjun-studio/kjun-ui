@@ -407,22 +407,30 @@
     "vue3": [
       "gap",
       "align",
+      "justify",
+      "divider",
       "as"
     ],
     "react": [
       "gap",
       "align",
+      "justify",
+      "divider",
       "as",
       "className",
       "style",
       "children",
-      "id"
+      "id",
+      "ref"
     ],
     "native": [
       "gap",
       "align",
+      "justify",
+      "divider",
       "style",
-      "children"
+      "children",
+      "id"
     ]
   },
   "KjunInline": {
@@ -440,7 +448,8 @@
       "className",
       "style",
       "children",
-      "id"
+      "id",
+      "ref"
     ],
     "native": [
       "gap",
@@ -448,7 +457,8 @@
       "justify",
       "wrap",
       "style",
-      "children"
+      "children",
+      "id"
     ]
   }
 }

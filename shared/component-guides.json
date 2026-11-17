@@ -625,9 +625,9 @@
   "KjunStack": {
     "slug": "stack",
     "description": "요소를 세로로 쌓고 사이 간격을 토큰 단계로 정합니다.",
-    "interaction": "gap으로 간격 단계(sm·md·lg는 space.stack, section-sm·md·lg는 space.section)를, align으로 가로 정렬을 고릅니다. Stack 자체는 KJUN 마크업으로 취급하지 않으므로, 안에 넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받고 몇 겹 겹쳐도 같습니다. 바로 안의 FormGroup은 자체 아래 여백 대신 gap만 따릅니다. 앱 CSS로 margin을 더하지 말고 gap 단계를 바꿉니다.",
-    "differences": "세 플랫폼 모두 gap·align을 사용합니다. as(div·section)는 웹 전용입니다. Native는 문자열 자식을 본문 글자로 감쌉니다.",
-    "states": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)입니다."
+    "interaction": "gap으로 간격 단계(xs·sm·md·lg는 space.stack, section-sm·md·lg는 space.section)를, align으로 가로 정렬을, justify로 남는 높이의 분배를 고릅니다. 함께 읽히는 제목과 설명은 안쪽 Stack(xs·sm)으로 묶고, 행동 버튼은 바깥 Stack에서 한 단계 떨어뜨리세요. gap에 { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭(compact 640·medium 768·wide 1024px 이상)에 따라 간격이 바뀝니다. divider는 자식 사이에 구분선을 넣고 선 위아래에 gap을 둡니다. 기본 align=stretch에서 블록은 폭을 채우고 버튼·배지는 내용 폭을 유지하므로, 전체 폭 버튼은 block으로 지정합니다. Stack 자체는 KJUN 마크업으로 취급하지 않으므로, 안에 넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받고 몇 겹 겹쳐도 같습니다. 바로 안의 FormGroup은 자체 아래 여백 대신 gap만 따릅니다. 앱 CSS로 margin을 더하지 말고 gap 단계를 바꿉니다.",
+    "differences": "세 플랫폼 모두 gap·align·justify·divider를 사용합니다. as(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)는 웹 전용이며 ul·ol의 자식은 li로 줍니다. 웹은 화면 폭 간격을 미디어 쿼리로, Native는 창 폭으로 고릅니다. Native는 문자열 자식을 본문 글자로 감싸고, testID·accessibilityRole 같은 View 속성을 그대로 넘깁니다. 웹에서 문자열을 본문 서체로 쓰려면 KjunText로 감싸세요.",
+    "states": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)이고 가장 작은 xs는 4px입니다. divider 선은 divider 색 1px이며 첫 자식 위와 마지막 자식 아래에는 없습니다."
   },
   "KjunInline": {
     "slug": "inline",

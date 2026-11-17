@@ -294,10 +294,18 @@ set("Text", {
   dir: { summary: "글자 방향(ltr·rtl·auto)입니다." },
 });
 set("Stack", {
-  gap: { default: '"md"', summary: "자식 사이 세로 간격 단계입니다. sm·md·lg는 space.stack(8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다." },
-  align: { default: '"stretch"', summary: "자식의 가로 정렬입니다. stretch는 폭을 채우고 start·center·end는 내용 폭으로 둡니다." },
-  as: { default: '"div"', summary: "웹 태그(div·section)입니다." },
+  gap: { default: '"md"', summary: "자식 사이 세로 간격 단계입니다. xs·sm·md·lg는 space.stack(4·8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다). Native는 창 폭을 따릅니다." },
+  align: { default: '"stretch"', summary: "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지는 내용 폭을 유지합니다(전체 폭 버튼은 block). start·center·end는 모든 자식을 내용 폭으로 둡니다." },
+  justify: { default: '"start"', summary: "Stack이 자식보다 높을 때 남는 높이의 분배(start·center·end·between)입니다. between은 첫 자식을 위, 마지막 자식을 아래에 붙입니다. 높이를 채우는 패널에 씁니다." },
+  divider: { default: "false", summary: "자식 사이에 divider 색 1px 구분선을 그립니다. 선 위아래에 각각 gap만큼 간격을 둡니다. 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다." },
+  as: { default: '"div"', summary: "웹 태그(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)입니다. ul·ol은 목록 기호와 들여쓰기를, fieldset은 테두리를 지우며 자식은 li로 주세요." },
 });
+set("Stack", {
+  ref: "루트 요소의 ref입니다. 스크롤 위치나 크기를 잴 때 씁니다.",
+}, "react");
+set("Inline", {
+  ref: "루트 요소의 ref입니다. 스크롤 위치나 크기를 잴 때 씁니다.",
+}, "react");
 set("Inline", {
   gap: { default: '"sm"', summary: "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다." },
   align: { default: '"center"', summary: "자식의 세로 정렬(start·center·end·baseline·stretch)입니다." },

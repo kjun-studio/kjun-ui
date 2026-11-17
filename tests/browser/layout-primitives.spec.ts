@@ -95,6 +95,58 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(Math.round(free - stacked)).toBe(tokens.extensions.form.itemGap - tokens.space.stack.md);
     });
 
+    test('stack xs gap, justify between and a divider between children', async ({ page }) => {
+      const [a, b] = [await box(boxes(page, 'stack-xs').nth(0)), await box(boxes(page, 'stack-xs').nth(1))];
+      expect(Math.round(b.y - (a.y + a.height))).toBe(tokens.space.stack.xs);
+      // justify="between": the last child sits on the stack's bottom edge.
+      const area = await box(page.getByTestId('stack-justify')), last = await box(boxes(page, 'stack-justify').nth(1));
+      expect(Math.round(area.y + area.height - (last.y + last.height))).toBe(0);
+      // divider: the gap above and below a hairline, so two gaps and the line between neighbours, and none after the last.
+      const rows = boxes(page, 'stack-divider'), [first, second, third] = [await box(rows.nth(0)), await box(rows.nth(1)), await box(rows.nth(2))];
+      const step = 2 * tokens.space.stack.sm + tokens.border.defaultWidth;
+      expect(Math.round(second.y - (first.y + first.height))).toBe(step);
+      expect(Math.round(third.y - (second.y + second.height))).toBe(step);
+      const stack = await box(page.getByTestId('stack-divider'));
+      expect(Math.round(stack.y + stack.height - (third.y + third.height))).toBe(0);
+    });
+
+    test('under stretch, buttons and badges keep their own width and a block button fills it', async ({ page }) => {
+      const area = await box(page.getByTestId('stack-controls'));
+      const save = await box(page.getByTestId('stack-controls').getByRole('button', { name: '저장' }));
+      const full = await box(page.getByTestId('stack-controls').getByRole('button', { name: '전체 폭' }));
+      const badge = await box(page.getByTestId('stack-controls').getByText('신규', { exact: true }));
+      expect(save.width).toBeLessThan(area.width / 2);
+      expect(badge.width).toBeLessThan(area.width / 2);
+      expect(Math.round(full.width)).toBe(Math.round(area.width));
+      expect(Math.round(save.x)).toBe(Math.round(area.x));
+    });
+
+    test('a gap per screen width follows the breakpoints', async ({ page }) => {
+      const gap = async () => { const [a, b] = [await box(boxes(page, 'stack-responsive').nth(0)), await box(boxes(page, 'stack-responsive').nth(1))]; return Math.round(b.y - (a.y + a.height)); };
+      await expect.poll(gap).toBe(tokens.space.stack.lg);
+      await page.setViewportSize({ width: tokens.responsive.stackMedium - 1, height: 900 });
+      await expect.poll(gap).toBe(tokens.space.stack.sm);
+    });
+
+    if (platform === 'native') {
+      test('native stack keeps app keys, so stateful children keep their state when one is added in front', async ({ page }) => {
+        const keyed = page.getByTestId('stack-keys');
+        await keyed.getByRole('button', { name: '앞에 추가' }).click();
+        await expect(keyed.getByText(/째$/)).toHaveText(['첫째', '둘째', '셋째']);
+      });
+      test('native stack passes View props through', async ({ page }) => {
+        await expect(page.getByTestId('stack-native-props')).toHaveAttribute('aria-label', '쌓인 영역');
+      });
+    } else {
+      test('as="ul" is a list without bullets, and its dividers are hidden list rows', async ({ page }) => {
+        const list = page.getByTestId('stack-list').getByRole('list');
+        await expect(list.getByRole('listitem')).toHaveCount(3);
+        expect(await list.evaluate(el => [getComputedStyle(el).listStyleType, getComputedStyle(el).paddingInlineStart])).toEqual(['none', '0px']);
+        await expect(list.locator('> li[data-kjun-stack-divider][aria-hidden="true"]')).toHaveCount(2);
+        await expect(page.locator('#stack-web-id')).toHaveAttribute('aria-label', '쌓인 영역');
+      });
+    }
+
     if (platform === 'native') {
       // A bare string inside a View crashes on a device; RN Web renders it anyway, so check it sits in a Text (dir="auto").
       for (const [id, text] of [['stack-string', '문자열 자식'], ['stack-fragment-string', '조각 안 문자열']]) {

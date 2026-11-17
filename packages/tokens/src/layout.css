@@ -66,6 +66,7 @@
   min-width: 0;
 }
 [data-kjun-stack][data-gap="none"] { gap: 0; }
+[data-kjun-stack][data-gap="xs"] { gap: var(--_kjun-geometry-space-stack-xs); }
 [data-kjun-stack][data-gap="sm"] { gap: var(--_kjun-geometry-space-stack-sm); }
 [data-kjun-stack][data-gap="lg"] { gap: var(--_kjun-geometry-space-stack-lg); }
 [data-kjun-stack][data-gap="section-sm"] { gap: var(--_kjun-geometry-space-section-sm); }
@@ -74,6 +75,52 @@
 [data-kjun-stack][data-align="start"] { align-items: flex-start; }
 [data-kjun-stack][data-align="center"] { align-items: center; }
 [data-kjun-stack][data-align="end"] { align-items: flex-end; }
+[data-kjun-stack][data-justify="center"] { justify-content: center; }
+[data-kjun-stack][data-justify="end"] { justify-content: flex-end; }
+[data-kjun-stack][data-justify="between"] { justify-content: space-between; }
+/* A gap per screen width: the step named for the widest breakpoint the screen reaches wins over base. */
+@media (width >= token(responsive.stackCompact)) {
+  [data-kjun-stack][data-gap-compact="none"] { gap: 0; }
+  [data-kjun-stack][data-gap-compact="xs"] { gap: var(--_kjun-geometry-space-stack-xs); }
+  [data-kjun-stack][data-gap-compact="sm"] { gap: var(--_kjun-geometry-space-stack-sm); }
+  [data-kjun-stack][data-gap-compact="md"] { gap: var(--_kjun-geometry-space-stack-md); }
+  [data-kjun-stack][data-gap-compact="lg"] { gap: var(--_kjun-geometry-space-stack-lg); }
+  [data-kjun-stack][data-gap-compact="section-sm"] { gap: var(--_kjun-geometry-space-section-sm); }
+  [data-kjun-stack][data-gap-compact="section-md"] { gap: var(--_kjun-geometry-space-section-md); }
+  [data-kjun-stack][data-gap-compact="section-lg"] { gap: var(--_kjun-geometry-space-section-lg); }
+}
+@media (width >= token(responsive.stackMedium)) {
+  [data-kjun-stack][data-gap-medium="none"] { gap: 0; }
+  [data-kjun-stack][data-gap-medium="xs"] { gap: var(--_kjun-geometry-space-stack-xs); }
+  [data-kjun-stack][data-gap-medium="sm"] { gap: var(--_kjun-geometry-space-stack-sm); }
+  [data-kjun-stack][data-gap-medium="md"] { gap: var(--_kjun-geometry-space-stack-md); }
+  [data-kjun-stack][data-gap-medium="lg"] { gap: var(--_kjun-geometry-space-stack-lg); }
+  [data-kjun-stack][data-gap-medium="section-sm"] { gap: var(--_kjun-geometry-space-section-sm); }
+  [data-kjun-stack][data-gap-medium="section-md"] { gap: var(--_kjun-geometry-space-section-md); }
+  [data-kjun-stack][data-gap-medium="section-lg"] { gap: var(--_kjun-geometry-space-section-lg); }
+}
+@media (width >= token(responsive.stackWide)) {
+  [data-kjun-stack][data-gap-wide="none"] { gap: 0; }
+  [data-kjun-stack][data-gap-wide="xs"] { gap: var(--_kjun-geometry-space-stack-xs); }
+  [data-kjun-stack][data-gap-wide="sm"] { gap: var(--_kjun-geometry-space-stack-sm); }
+  [data-kjun-stack][data-gap-wide="md"] { gap: var(--_kjun-geometry-space-stack-md); }
+  [data-kjun-stack][data-gap-wide="lg"] { gap: var(--_kjun-geometry-space-stack-lg); }
+  [data-kjun-stack][data-gap-wide="section-sm"] { gap: var(--_kjun-geometry-space-section-sm); }
+  [data-kjun-stack][data-gap-wide="section-md"] { gap: var(--_kjun-geometry-space-section-md); }
+  [data-kjun-stack][data-gap-wide="section-lg"] { gap: var(--_kjun-geometry-space-section-lg); }
+}
+/* Buttons and badges keep their own width when the stack stretches its children, as they do on Native; a full-width
+   button says so with block. */
+[data-kjun-stack][data-align="stretch"] > :is(.kjun-button, .kjun-badge) { align-self: flex-start; }
+/* A list or fieldset stack drops the browser's bullets, indent and frame, so only the gap spaces it. */
+:is(ul, ol)[data-kjun-stack] { list-style: none; margin: 0; padding: 0; }
+fieldset[data-kjun-stack] { margin: 0; padding: 0; border: 0; min-inline-size: 0; }
+/* divider: a hairline between children, the gap above and below it. It is the stack's own element, so app
+   children keep their styles. */
+[data-kjun-stack-divider] {
+  flex: none; align-self: stretch; height: var(--_kjun-border-default-width);
+  margin: 0; padding: 0; list-style: none; background: var(--_kjun-color-divider);
+}
 
 /* KjunInline: 가로 배치. 간격은 space.inline 단계이고, 좁은 화면에서는 기본으로 줄바꿈한다. */
 [data-kjun-inline] {

@@ -2561,7 +2561,7 @@
       "title": "Stack",
       "docs": "/components/stack",
       "category": "layout",
-      "differences": "세 플랫폼 모두 gap·align을 사용합니다. as(div·section)는 웹 전용입니다. Native는 문자열 자식을 본문 글자로 감쌉니다.",
+      "differences": "세 플랫폼 모두 gap·align·justify·divider를 사용합니다. as(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)는 웹 전용이며 ul·ol의 자식은 li로 줍니다. 웹은 화면 폭 간격을 미디어 쿼리로, Native는 창 폭으로 고릅니다. Native는 문자열 자식을 본문 글자로 감싸고, testID·accessibilityRole 같은 View 속성을 그대로 넘깁니다. 웹에서 문자열을 본문 서체로 쓰려면 KjunText로 감싸세요.",
       "platforms": {
         "vue3": {
           "status": "implemented",

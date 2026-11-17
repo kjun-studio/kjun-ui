@@ -15,7 +15,10 @@
     "formColumns": { "$ref": "breakpoints.medium" },
     "table": { "$ref": "table.mobileBreakpoint" },
     "bottomAction": { "$ref": "breakpoints.actionContent" },
-    "empty": { "$ref": "breakpoints.compact" }
+    "empty": { "$ref": "breakpoints.compact" },
+    "stackCompact": { "$ref": "breakpoints.compact" },
+    "stackMedium": { "$ref": "breakpoints.medium" },
+    "stackWide": { "$ref": "breakpoints.wide" }
   },
   "motionDistance": { "modalEnter": 16, "modalExit": 8, "popup": 4, "toast": 8 }
 }

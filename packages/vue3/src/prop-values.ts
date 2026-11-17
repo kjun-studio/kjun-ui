@@ -270,8 +270,8 @@ export const kjunPropValues = Object.freeze({
   }),
   KjunStack: Object.freeze({
     align: Object.freeze(["center","end","start","stretch"] as const),
-    as: Object.freeze(["div","section"] as const),
-    gap: Object.freeze(["lg","md","none","section-lg","section-md","section-sm","sm"] as const),
+    as: Object.freeze(["article","aside","div","fieldset","footer","form","header","main","nav","ol","section","ul"] as const),
+    justify: Object.freeze(["between","center","end","start"] as const),
   }),
   KjunStackedBar: Object.freeze({
     size: Object.freeze(["sm","md"] as const),

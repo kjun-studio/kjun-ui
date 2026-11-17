@@ -68,8 +68,8 @@ export const layout: Record<string, GuideAuthor> = {
   },
   KjunStack: {
     parts: [
-      t("쌓인 제목", "gap 단계만큼 아래 요소와 떨어집니다.", "알림 설정"),
-      t("쌓인 설명", "자식 사이 간격은 space.stack 토큰입니다.", "받을 알림을 고르세요."),
+      t("쌓인 제목", "안쪽 Stack(sm)으로 설명과 붙여 한 덩어리로 읽힙니다.", "알림 설정"),
+      t("쌓인 설명", "행동 버튼과는 바깥 Stack의 gap만큼 떨어집니다. 자식 사이 간격은 space.stack 토큰입니다.", "받을 알림을 고르세요."),
     ],
     related: "form",
   },

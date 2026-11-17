@@ -18102,13 +18102,13 @@
             "parts": [
               {
                 "label": "쌓인 제목",
-                "description": "gap 단계만큼 아래 요소와 떨어집니다.",
+                "description": "안쪽 Stack(sm)으로 설명과 붙여 한 덩어리로 읽힙니다.",
                 "target": "text=알림 설정",
                 "optional": false
               },
               {
                 "label": "쌓인 설명",
-                "description": "자식 사이 간격은 space.stack 토큰입니다.",
+                "description": "행동 버튼과는 바깥 Stack의 gap만큼 떨어집니다. 자식 사이 간격은 space.stack 토큰입니다.",
                 "target": "text=받을 알림을 고르세요.",
                 "optional": false
               }
@@ -18124,7 +18124,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)입니다."
+        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)이고 가장 작은 xs는 4px입니다. divider 선은 divider 색 1px이며 첫 자식 위와 마지막 자식 아래에는 없습니다."
       },
       "react": {
         "figures": [
@@ -18135,13 +18135,13 @@
             "parts": [
               {
                 "label": "쌓인 제목",
-                "description": "gap 단계만큼 아래 요소와 떨어집니다.",
+                "description": "안쪽 Stack(sm)으로 설명과 붙여 한 덩어리로 읽힙니다.",
                 "target": "text=알림 설정",
                 "optional": false
               },
               {
                 "label": "쌓인 설명",
-                "description": "자식 사이 간격은 space.stack 토큰입니다.",
+                "description": "행동 버튼과는 바깥 Stack의 gap만큼 떨어집니다. 자식 사이 간격은 space.stack 토큰입니다.",
                 "target": "text=받을 알림을 고르세요.",
                 "optional": false
               }
@@ -18157,7 +18157,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)입니다."
+        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)이고 가장 작은 xs는 4px입니다. divider 선은 divider 색 1px이며 첫 자식 위와 마지막 자식 아래에는 없습니다."
       },
       "native": {
         "figures": [
@@ -18168,13 +18168,13 @@
             "parts": [
               {
                 "label": "쌓인 제목",
-                "description": "gap 단계만큼 아래 요소와 떨어집니다.",
+                "description": "안쪽 Stack(sm)으로 설명과 붙여 한 덩어리로 읽힙니다.",
                 "target": "text=알림 설정",
                 "optional": false
               },
               {
                 "label": "쌓인 설명",
-                "description": "자식 사이 간격은 space.stack 토큰입니다.",
+                "description": "행동 버튼과는 바깥 Stack의 gap만큼 떨어집니다. 자식 사이 간격은 space.stack 토큰입니다.",
                 "target": "text=받을 알림을 고르세요.",
                 "optional": false
               }
@@ -18190,7 +18190,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)입니다."
+        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)이고 가장 작은 xs는 4px입니다. divider 선은 divider 색 1px이며 첫 자식 위와 마지막 자식 아래에는 없습니다."
       }
     }
   },

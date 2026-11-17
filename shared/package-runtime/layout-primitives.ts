@@ -9,8 +9,15 @@ export type TextAlign = "start" | "center" | "end";
 export type TextTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "div"
   | "dt" | "dd" | "li" | "label" | "legend" | "figcaption" | "time" | "strong" | "em";
 export type TextDecoration = "lineThrough";
-export type StackGap = "none" | "sm" | "md" | "lg" | "section-sm" | "section-md" | "section-lg";
+export type StackGap = "none" | "xs" | "sm" | "md" | "lg" | "section-sm" | "section-md" | "section-lg";
+/** The breakpoints a stack's gap can change at: tokens.responsive.stackCompact·stackMedium·stackWide (640·768·1024 wide and up). */
+export type StackBreakpoint = "compact" | "medium" | "wide";
+/** One step, or a step per screen width: base below compact, then each named breakpoint and wider. */
+export type StackGapValue = StackGap | ({ base?: StackGap } & Partial<Record<StackBreakpoint, StackGap>>);
 export type StackAlign = "stretch" | "start" | "center" | "end";
+export type StackJustify = "start" | "center" | "end" | "between";
+/** Web only. ul and ol drop the list's bullets and indent; their children should be li. */
+export type StackTag = "div" | "section" | "ul" | "ol" | "nav" | "header" | "footer" | "main" | "article" | "aside" | "form" | "fieldset";
 export type InlineGap = "none" | "xs" | "sm" | "md" | "lg";
 export type InlineAlign = "start" | "center" | "end" | "baseline" | "stretch";
 export type InlineJustify = "start" | "center" | "end" | "between";
@@ -33,3 +40,17 @@ export const clampLines = (maxLines: number | undefined) => {
   const lines = Math.floor(maxLines ?? 0);
   return lines >= 1 ? lines : undefined;
 };
+
+export const stackBreakpoints: readonly StackBreakpoint[] = ["compact", "medium", "wide"];
+/** A gap as its steps: base (md when absent) and any breakpoint the app named. */
+export function stackGapSteps(gap: StackGapValue | undefined): { base: StackGap } & Partial<Record<StackBreakpoint, StackGap>> {
+  if (gap == null) return { base: "md" };
+  return typeof gap === "string" ? { base: gap } : { ...gap, base: gap.base ?? "md" };
+}
+/** The step that applies at a width, given the breakpoint widths (Native reads the window; Web uses media queries). */
+export function stackGapAt(gap: StackGapValue | undefined, width: number, breakpoints: Record<StackBreakpoint, number>): StackGap {
+  const steps = stackGapSteps(gap);
+  return stackBreakpoints.reduce((step, name) => width >= breakpoints[name] && steps[name] ? steps[name]! : step, steps.base);
+}
+/** Whether a stack's tag is a list, so its divider is an li too. */
+export const isStackList = (tag: StackTag | undefined) => tag === "ul" || tag === "ol";

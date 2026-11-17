@@ -75,7 +75,14 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
     case "KjunText":
       return h("Stack", {}, [h(name, { variant: "sectionTitle" }, "섹션 제목"), h(name, { tone: "secondary" }, "보조 설명 문구입니다.")]);
     case "KjunStack":
-      return h(name, { gap: "md" }, [h("KjunText", { variant: "cardTitle" }, "알림 설정"), h("KjunText", { tone: "secondary" }, "받을 알림을 고르세요."), h("KjunButton", {}, "저장")]);
+      // Card content groups title and description tightly (sm) and keeps the action a step apart (the chosen gap);
+      // a settings list shows divider; a fixed height shows justify. Buttons keep their width under stretch.
+      if (settings.content === "설정 목록") return h(name, { gap: settings.gap, align: settings.align, justify: settings.justify, divider: settings.divider },
+        ["푸시 알림", "이메일 요약", "야간 방해 금지"].map((label, index) => h("KjunSwitch", { label, value: get("switch" + index, index === 0), onValueChange: change("switch" + index) })));
+      if (settings.content === "높이 채우기") return h("Box", { width: 240, height: 280 }, h(name, { gap: settings.gap, align: settings.align, justify: settings.justify, divider: settings.divider, style: { height: "100%" } }, [
+        h(name, { gap: "sm" }, ["홈", "자산", "와치리스트"].map(label => h("KjunText", {}, label))), h("KjunText", { variant: "label" }, "김하늘 · 관리자")]));
+      return h(name, { gap: settings.gap, align: settings.align, justify: settings.justify, divider: settings.divider }, [
+        h(name, { gap: "sm" }, [h("KjunText", { variant: "cardTitle" }, "알림 설정"), h("KjunText", { tone: "secondary" }, "받을 알림을 고르세요.")]), h("KjunButton", {}, "저장")]);
     case "KjunInline":
       return h(name, { gap: "sm", justify: "end" }, [h("KjunButton", { variant: "secondary" }, "취소"), h("KjunButton", {}, "저장")]);
     case "KjunAlert":

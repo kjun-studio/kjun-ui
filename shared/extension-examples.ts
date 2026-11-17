@@ -8,6 +8,7 @@ export const extensionControls: Record<string, ExampleControl[]> = {
   KjunTopNavigation: [long, bool("showDescription", "설명 표시", true), choice("leading", "앞쪽 탐색", ["아이콘", "긴 문구", "없음"]), choice("actions", "행동 구성", ["저장", "긴 문구", "여러 행동", "아이콘 조합", "없음"]), choice("exampleWidth", "예제 너비", ["640", "390", "320", "288"], "390"), disabled, bool("loading", "행동 로딩"), number("safeAreaTop", "상단 안전 영역", 0, 0, 80)],
   KjunBottomNavigation: [choice("iconStyle", "아이콘 모양", ["auto", "filled", "outline"]), bool("showLabels", "라벨 표시", true), long, bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기", true), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
   KjunSideNavigation: [bool("collapsibleGroups", "묶음 접기"), bool("collapsed", "아이콘만 표시"), choice("rail", "접힌 레일", ["items", "groups"]), bool("railLabels", "레일 이름"), choice("density", "밀도", ["default", "compact"]), choice("collapsedParent", "접힌 부모", ["widen", "flyout"]), bool("groupCounts", "묶음 행 수"), bool("chrome", "머리글·바닥글"), bool("actions", "행 동작"), bool("spaces", "공간 레일과 메뉴 패널"), bool("long", "긴 이름"), bool("disabled", "비활성 목적지")],
+  KjunStack: [choice("content", "내용", ["카드 내용", "설정 목록", "높이 채우기"]), choice("gap", "간격", ["xs", "sm", "md", "lg", "section-sm"], "lg"), choice("align", "가로 정렬", ["stretch", "start", "center", "end"]), choice("justify", "세로 분배", ["start", "center", "end", "between"]), bool("divider", "구분선")],
   KjunPressable: [choice("pressEffect", "눌림 표시", ["overlay", "none"]), bool("focusRingInset", "안쪽 포커스 링"), bool("disabled", "비활성")],
   KjunFloatingNavigation: [bool("badges", "배지", true), bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기", true), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
   KjunBottomActionBar: [choice("variant", "모양", ["docked", "floating"]), long, bool("keyboardVisible", "키보드 표시"), bool("hideOnKeyboard", "키보드 표시 중 숨기기"), number("safeAreaBottom", "하단 안전 영역", 0, 0, 80)],
@@ -26,6 +27,7 @@ export const extensionControls: Record<string, ExampleControl[]> = {
 const preset = (id: string, label: string, settings: Record<string, any>, values = {}): ExamplePreset => ({ id, label, settings, values });
 export const extensionPresets: Record<string, ExamplePreset[]> = {
   KjunListRow: [preset("plain", "배경 없음", { leadingSize: "자동", iconBackground: false, iconColor: false }), ...["xs", "sm", "md", "lg"].map(leadingSize => preset(leadingSize, `${leadingSize} 원형 배경`, { leadingSize, iconBackground: true })), preset("long", "긴 콘텐츠", { long: true, leadingSize: "lg" })], KjunListSection: [preset("open", "열린 목록", { variant: "open" }), preset("details", "항목·값", { variant: "details" }), preset("long", "긴 콘텐츠", { long: true })], KjunListGroup: [preset("open", "열린 목록", { variant: "open" })], KjunListItem: [],
+  KjunStack: [preset("settings", "설정 목록", { content: "설정 목록", gap: "sm", divider: true }), preset("panel", "높이 채우기", { content: "높이 채우기", justify: "between" })],
   KjunTopNavigation: [
     preset("safe-area", "안전 영역·긴 제목", { safeAreaTop: 24, long: true }),
     preset("title-only", "제목만", { leading: "없음", actions: "없음", showDescription: false }),

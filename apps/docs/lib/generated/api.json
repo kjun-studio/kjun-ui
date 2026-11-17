@@ -7028,7 +7028,7 @@
       },
       {
         "name": "density",
-        "type": "\"comfortable\" | \"compact\" | undefined",
+        "type": "\"compact\" | \"comfortable\" | undefined",
         "required": false,
         "default": "—",
         "description": "compact: 32px rows on Native Web's fine pointers; touch keeps 44px."
@@ -10277,6 +10277,13 @@
         "description": ""
       },
       {
+        "name": "ref",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").Ref<HTMLDivElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "id",
         "type": "string | undefined",
         "required": false,
@@ -10326,6 +10333,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Used to reference react managed views from native code."
       }
     ]
   },
@@ -12722,7 +12736,7 @@
       },
       {
         "name": "variant",
-        "type": "\"market\" | \"compact\" | \"notification\" | \"row\"",
+        "type": "\"compact\" | \"market\" | \"notification\" | \"row\"",
         "required": false,
         "default": "\"market\"",
         "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked."
@@ -16128,7 +16142,7 @@
       },
       {
         "name": "density",
-        "type": "\"comfortable\" | \"compact\" | undefined",
+        "type": "\"compact\" | \"comfortable\" | undefined",
         "required": false,
         "default": "—",
         "description": "compact: 32px rows on Native Web's fine pointers; touch keeps 44px."
@@ -22822,24 +22836,38 @@
     "vue3": [
       {
         "name": "gap",
-        "type": "StackGap",
+        "type": "StackGapValue",
         "required": false,
         "default": "\"md\"",
-        "description": "Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg)."
+        "description": "Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the\nscreen width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up)."
       },
       {
         "name": "align",
         "type": "StackAlign",
         "required": false,
         "default": "\"stretch\"",
-        "description": ""
+        "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons and badges keep their own;\na full-width button says so with block."
+      },
+      {
+        "name": "justify",
+        "type": "StackJustify",
+        "required": false,
+        "default": "\"start\"",
+        "description": "How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom."
+      },
+      {
+        "name": "divider",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "A hairline in the divider color between children, with the gap above and below it."
       },
       {
         "name": "as",
-        "type": "\"div\" | \"section\"",
+        "type": "StackTag",
         "required": false,
         "default": "\"div\"",
-        "description": ""
+        "description": "Element to render. ul and ol drop bullets and indent; give them li children."
       }
     ],
     "events": [],
@@ -22853,24 +22881,38 @@
     "react": [
       {
         "name": "gap",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackGap | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackGapValue | undefined",
         "required": false,
         "default": "—",
-        "description": "Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg)."
+        "description": "Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the\nscreen width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up)."
       },
       {
         "name": "align",
         "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackAlign | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons and badges keep their own;\na full-width button says so with block."
+      },
+      {
+        "name": "justify",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackJustify | undefined",
+        "required": false,
+        "default": "—",
+        "description": "How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom."
+      },
+      {
+        "name": "divider",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A hairline in the divider color between children, with the gap above and below it."
       },
       {
         "name": "as",
-        "type": "\"div\" | \"section\" | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackTag | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Element to render. ul and ol drop bullets and indent; give them li children."
       },
       {
         "name": "className",
@@ -22894,6 +22936,13 @@
         "description": ""
       },
       {
+        "name": "ref",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").Ref<HTMLElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "id",
         "type": "string | undefined",
         "required": false,
@@ -22904,17 +22953,31 @@
     "native": [
       {
         "name": "gap",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackGap | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackGapValue | undefined",
         "required": false,
         "default": "—",
-        "description": "Space between children: space.stack (sm·md·lg) or space.section (section-sm·md·lg)."
+        "description": "Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the\nwindow width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up)."
       },
       {
         "name": "align",
         "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackAlign | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Cross-axis alignment. Buttons and badges keep their own width under stretch (the default), as on Web."
+      },
+      {
+        "name": "justify",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackJustify | undefined",
+        "required": false,
+        "default": "—",
+        "description": "How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom."
+      },
+      {
+        "name": "divider",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A hairline in the divider color between children, with the gap above and below it."
       },
       {
         "name": "style",
@@ -22929,6 +22992,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Used to reference react managed views from native code."
       }
     ]
   },
@@ -25154,7 +25224,7 @@
       },
       {
         "name": "density",
-        "type": "\"comfortable\" | \"compact\" | undefined",
+        "type": "\"compact\" | \"comfortable\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
