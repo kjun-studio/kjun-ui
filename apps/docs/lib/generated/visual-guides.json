@@ -14939,13 +14939,13 @@
               {
                 "label": "메뉴 열",
                 "description": "폭 토큰(224·256·288px)으로 열리고 접히면 아이콘 열로 줄어듭니다. 웹에서는 화면 높이로 고정됩니다.",
-                "target": ".kjun-side-navigation-layout-nav",
+                "target": ".kjun-side-navigation-layout-nav, [data-kjun-side-navigation-layout-part=\"nav\"]",
                 "optional": false
               },
               {
                 "label": "페이지",
                 "description": "메뉴 옆의 앱 내용입니다. 배경과 구분선은 앱이 정합니다.",
-                "target": ".kjun-side-navigation-layout-main",
+                "target": ".kjun-side-navigation-layout-main, [data-kjun-side-navigation-layout-part=\"main\"]",
                 "optional": false
               }
             ]
@@ -14996,13 +14996,13 @@
               {
                 "label": "메뉴 열",
                 "description": "폭 토큰(224·256·288px)으로 열리고 접히면 아이콘 열로 줄어듭니다. 웹에서는 화면 높이로 고정됩니다.",
-                "target": ".kjun-side-navigation-layout-nav",
+                "target": ".kjun-side-navigation-layout-nav, [data-kjun-side-navigation-layout-part=\"nav\"]",
                 "optional": false
               },
               {
                 "label": "페이지",
                 "description": "메뉴 옆의 앱 내용입니다. 배경과 구분선은 앱이 정합니다.",
-                "target": ".kjun-side-navigation-layout-main",
+                "target": ".kjun-side-navigation-layout-main, [data-kjun-side-navigation-layout-part=\"main\"]",
                 "optional": false
               }
             ]
@@ -15053,13 +15053,13 @@
               {
                 "label": "메뉴 열",
                 "description": "폭 토큰(224·256·288px)으로 열리고 접히면 아이콘 열로 줄어듭니다. 웹에서는 화면 높이로 고정됩니다.",
-                "target": ".kjun-side-navigation-layout-nav",
+                "target": ".kjun-side-navigation-layout-nav, [data-kjun-side-navigation-layout-part=\"nav\"]",
                 "optional": false
               },
               {
                 "label": "페이지",
                 "description": "메뉴 옆의 앱 내용입니다. 배경과 구분선은 앱이 정합니다.",
-                "target": ".kjun-side-navigation-layout-main",
+                "target": ".kjun-side-navigation-layout-main, [data-kjun-side-navigation-layout-part=\"main\"]",
                 "optional": false
               }
             ]

@@ -2,7 +2,7 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import type { SideNavigationWidth } from "../../../shared/package-runtime/side-navigation";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useRef, type ReactNode } from "react";
-import { Animated, useWindowDimensions, View, type StyleProp, type ViewStyle } from "react-native";
+import { Animated, Platform, useWindowDimensions, View, type StyleProp, type ViewStyle } from "react-native";
 import { KjunDrawer } from "./drawer";
 import { useReducedMotion } from "./internal";
 import { motionOut } from "./motion";
@@ -33,6 +33,9 @@ export interface KjunSideNavigationLayoutProps {
   style?: StyleProp<ViewStyle>;
 }
 
+// React Native Web prints dataSet as data-*, so the packed web contracts and anatomy figures can find the column and the page.
+const part = (name: "nav" | "main") => (Platform.OS === "web" ? { dataSet: { kjunSideNavigationLayoutPart: name } } : {});
+
 /** A screen with a side menu: a column that keeps the menu's width tokens (open or collapsed) beside the page, and a drawer
  * for the menu below a breakpoint. The column's width follows collapsed with the collapse motion. Web's sticky has no
  * Native form: the layout fills the space the app gives it, and the app owns scrolling (a ScrollView inside the menu's
@@ -54,14 +57,14 @@ export function KjunSideNavigationLayout({ nav, children, collapsed = false, rai
     return () => motion.stop();
   }, [target, reduced]);
   if (narrow) return <View style={[{ flex: 1, minWidth: 0 }, style]}>
-    <View style={{ flex: 1, minWidth: 0 }}>{children}</View>
+    <View style={{ flex: 1, minWidth: 0 }} {...part("main")}>{children}</View>
     <KjunDrawer open={navOpen} onOpenChange={next => onNavOpenChange?.(next)} position="left" ariaLabel={drawerLabel ?? m.mainNavigation}
       width={geometry.width[width]}>{menu({ collapsed: false, drawer: true })}</KjunDrawer>
   </View>;
   return <View style={[{ flex: 1, minWidth: 0, flexDirection: "row" }, style]}>
-    <Animated.View style={{ width: columnWidth, flexShrink: 0, overflow: "hidden", paddingVertical: geometry.columnPaddingY, paddingHorizontal: paddingX }}>
+    <Animated.View style={{ width: columnWidth, flexShrink: 0, overflow: "hidden", paddingVertical: geometry.columnPaddingY, paddingHorizontal: paddingX }} {...part("nav")}>
       {menu({ collapsed, drawer: false })}
     </Animated.View>
-    <View style={{ flex: 1, minWidth: 0 }}>{children}</View>
+    <View style={{ flex: 1, minWidth: 0 }} {...part("main")}>{children}</View>
   </View>;
 }

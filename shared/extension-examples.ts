@@ -16,7 +16,7 @@ export const extensionControls: Record<string, ExampleControl[]> = {
   KjunCarousel: [choice("slideSize", "슬라이드 폭", ["full", "peek", "auto"]), choice("gap", "간격", ["none", "sm", "md", "lg"], "md"), choice("indicators", "위치 표시", ["dots", "count", "none"]), choice("indicatorPlacement", "표시 위치", ["below", "overlay"]), choice("snapAlign", "정렬", ["start", "center"]), choice("bleed", "여백 밖 펼침", ["none", "sm", "md", "lg"]), bool("mouseDrag", "마우스 드래그", true), bool("controls", "이전·다음 버튼", true), bool("title", "섹션 제목")],
   KjunImage: [choice("imageState", "이미지 상태", ["정상", "로딩", "실패"]), choice("fit", "맞춤 방식", ["cover", "contain"]), number("aspectRatio", "가로/세로 비율", 16 / 9, .25, 4), bool("decorative", "장식 이미지")],
   KjunAvatar: [size, choice("shape", "형태", ["circle", "square"]), choice("imageState", "이미지 상태", ["이름", "사진", "실패"]), bool("decorative", "장식 이미지")],
-  KjunAvatarGroup: [size, choice("shape", "형태", ["circle", "square"]), choice("people", "인원", ["3명", "5명", "128명"]), bool("pressable", "누를 수 있음"), bool("disabled", "비활성")],
+  KjunAvatarGroup: [size, choice("shape", "형태", ["circle", "square"]), choice("people", "인원", ["3명", "5명", "128명"], "5명"), bool("pressable", "누를 수 있음"), bool("disabled", "비활성")],
   KjunChip: [size, disabled, bool("removable", "삭제 버튼", true), long],
   KjunSlider: [disabled, bool("decimal", "소수 step")], KjunRangeSlider: [disabled, bool("decimal", "소수 step")],
   KjunZoneGauge: [number("value", "값", 72, 0, 100), choice("size", "크기", ["md", "sm"]), bool("zoneLabels", "구간 이름", true), bool("missing", "데이터 없음")],
