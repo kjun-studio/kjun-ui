@@ -1,11 +1,11 @@
 {
-  "total": 100,
+  "total": 101,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 100,
+      "provided": 101,
       "counts": {
-        "supported": 100,
+        "supported": 101,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 100,
+      "provided": 101,
       "counts": {
-        "supported": 100,
+        "supported": 101,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 100,
+      "provided": 101,
       "counts": {
         "supported": 0,
-        "preview": 100,
+        "preview": 101,
         "review": 0,
         "unsupported": 0
       },
@@ -1043,6 +1043,37 @@
       "docs": "/components/error-boundary",
       "category": "feedback",
       "differences": "Vue onErrorCaptured와 React·Native 오류 경계의 포착 범위는 각 프레임워크를 따릅니다. Vue는 fallback 슬롯과 error·reset 이벤트, React·Native는 fallback·onError·onReset으로 대체 화면과 보고를 연결합니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "KjunEventCalendar",
+      "title": "EventCalendar",
+      "docs": "/components/event-calendar",
+      "category": "data-display",
+      "differences": "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -3186,7 +3217,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 100
+      "componentCount": 101
     }
   ]
 }

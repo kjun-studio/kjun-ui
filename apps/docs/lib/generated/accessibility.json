@@ -18073,6 +18073,222 @@
       "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
     },
     {
+      "id": "KjunEventCalendar.vue3.keyboard.v1",
+      "component": "KjunEventCalendar",
+      "platform": "vue3",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "calendar",
+      "scenario": {},
+      "behavior": "날짜 칸의 읽기 이름(날짜·요일·휴일·일정 수), 키보드 이동과 고르기, 길게 누르기. 날짜 칸은 버튼이며 한 칸만 Tab 대상(roving tabindex)입니다. 화살표·Home·End·PageUp·PageDown으로 칸을 옮기고 Enter로 고르며 고른 날은 aria-pressed, 오늘은 aria-current=\"date\"입니다. 칸 이름은 날짜·요일에 휴일 이름과 일정 수를 붙여 읽습니다. 길게 누르기는 Shift+Enter(터치·오른쪽 클릭도 같음)이며 onDayLongPress가 있을 때만 켜집니다. 달·주를 바꾸는 요청은 소비 코드가 처리합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "month",
+        "modelValue",
+        "marks",
+        "isHoliday",
+        "dayLongPressLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "날짜 칸에 Tab으로 진입한 뒤 화살표로 이웃 날로 옮기고 Enter로 고릅니다. 같은 칸에서 Shift+Enter로 길게 누르기를 실행합니다.",
+      "expected": "포커스가 이웃 날 칸으로 옮겨 가고, 고른 날의 aria-pressed가 켜지며, 길게 누르기 콜백이 실행됩니다. Tab 대상은 한 칸입니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunEventCalendar.vue3.labeling.v1",
+      "component": "KjunEventCalendar",
+      "platform": "vue3",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "calendar",
+      "scenario": {},
+      "behavior": "날짜 칸의 읽기 이름(날짜·요일·휴일·일정 수), 키보드 이동과 고르기, 길게 누르기. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "month",
+        "modelValue",
+        "marks",
+        "isHoliday",
+        "dayLongPressLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunEventCalendar.vue3.focus.v1",
+      "component": "KjunEventCalendar",
+      "platform": "vue3",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "calendar",
+      "scenario": {},
+      "behavior": "날짜 칸의 읽기 이름(날짜·요일·휴일·일정 수), 키보드 이동과 고르기, 길게 누르기. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "month",
+        "modelValue",
+        "marks",
+        "isHoliday",
+        "dayLongPressLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunEventCalendar.react.keyboard.v1",
+      "component": "KjunEventCalendar",
+      "platform": "react",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "calendar",
+      "scenario": {},
+      "behavior": "날짜 칸의 읽기 이름(날짜·요일·휴일·일정 수), 키보드 이동과 고르기, 길게 누르기. 날짜 칸은 버튼이며 한 칸만 Tab 대상(roving tabindex)입니다. 화살표·Home·End·PageUp·PageDown으로 칸을 옮기고 Enter로 고르며 고른 날은 aria-pressed, 오늘은 aria-current=\"date\"입니다. 칸 이름은 날짜·요일에 휴일 이름과 일정 수를 붙여 읽습니다. 길게 누르기는 Shift+Enter(터치·오른쪽 클릭도 같음)이며 onDayLongPress가 있을 때만 켜집니다. 달·주를 바꾸는 요청은 소비 코드가 처리합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "month",
+        "value",
+        "marks",
+        "isHoliday",
+        "dayLongPressLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "날짜 칸에 Tab으로 진입한 뒤 화살표로 이웃 날로 옮기고 Enter로 고릅니다. 같은 칸에서 Shift+Enter로 길게 누르기를 실행합니다.",
+      "expected": "포커스가 이웃 날 칸으로 옮겨 가고, 고른 날의 aria-pressed가 켜지며, 길게 누르기 콜백이 실행됩니다. Tab 대상은 한 칸입니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunEventCalendar.react.labeling.v1",
+      "component": "KjunEventCalendar",
+      "platform": "react",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "calendar",
+      "scenario": {},
+      "behavior": "날짜 칸의 읽기 이름(날짜·요일·휴일·일정 수), 키보드 이동과 고르기, 길게 누르기. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "month",
+        "value",
+        "marks",
+        "isHoliday",
+        "dayLongPressLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunEventCalendar.react.focus.v1",
+      "component": "KjunEventCalendar",
+      "platform": "react",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "calendar",
+      "scenario": {},
+      "behavior": "날짜 칸의 읽기 이름(날짜·요일·휴일·일정 수), 키보드 이동과 고르기, 길게 누르기. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "month",
+        "value",
+        "marks",
+        "isHoliday",
+        "dayLongPressLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunEventCalendar.native.keyboard.v1",
+      "component": "KjunEventCalendar",
+      "platform": "native",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "calendar",
+      "scenario": {},
+      "behavior": "날짜 칸의 읽기 이름(날짜·요일·휴일·일정 수), 키보드 이동과 고르기, 길게 누르기. 날짜 칸은 각각 버튼이며 저마다 포커스 대상입니다(한 칸만 Tab 대상이 되는 roving은 없고, 화살표·Home·End·PageUp·PageDown 이동과 Shift+Enter도 없습니다). 고르면 selected 상태가 되고 칸 이름은 날짜·요일에 휴일 이름과 일정 수를 붙여 읽으며 오늘에는 '오늘'이 붙습니다. 달·주는 스와이프나 화면의 버튼으로 바꾸고, 길게 누르기는 접근성 동작(longpress)으로 노출되며 onDayLongPress가 있을 때만 켜집니다. 달·주를 바꾸는 요청은 소비 코드가 처리합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "month",
+        "value",
+        "marks",
+        "isHoliday",
+        "dayLongPressLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "날짜 칸에 Tab으로 진입해 Enter로 고릅니다. 화살표 이동과 Shift+Enter는 Native에 없으므로 검사하지 않습니다.",
+      "expected": "날짜 칸마다 포커스를 받고, Enter로 고른 날의 상태가 바뀝니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunEventCalendar.native.labeling.v1",
+      "component": "KjunEventCalendar",
+      "platform": "native",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "calendar",
+      "scenario": {},
+      "behavior": "날짜 칸의 읽기 이름(날짜·요일·휴일·일정 수), 키보드 이동과 고르기, 길게 누르기. 날짜 칸은 각각 버튼이며 저마다 포커스 대상입니다(한 칸만 Tab 대상이 되는 roving은 없고, 화살표·Home·End·PageUp·PageDown 이동과 Shift+Enter도 없습니다). 고르면 selected 상태가 되고 칸 이름은 날짜·요일에 휴일 이름과 일정 수를 붙여 읽으며 오늘에는 '오늘'이 붙습니다. 달·주는 스와이프나 화면의 버튼으로 바꾸고, 길게 누르기는 접근성 동작(longpress)으로 노출되며 onDayLongPress가 있을 때만 켜집니다. 달·주를 바꾸는 요청은 소비 코드가 처리합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "month",
+        "value",
+        "marks",
+        "isHoliday",
+        "dayLongPressLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "표시된 컨트롤의 접근성 이름과 라벨·설명 ID, 열린 컨트롤의 aria-controls·activedescendant, 중복 ID를 검사합니다.",
+      "expected": "각 컨트롤의 이름이 비어 있지 않고 라벨·설명 및 열린 컨트롤의 ID 참조가 유일한 실제 요소를 가리킵니다. 닫힌 뒤 제거되는 패널의 controls 참조는 열렸을 때 검사합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunEventCalendar.native.focus.v1",
+      "component": "KjunEventCalendar",
+      "platform": "native",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "calendar",
+      "scenario": {},
+      "behavior": "날짜 칸의 읽기 이름(날짜·요일·휴일·일정 수), 키보드 이동과 고르기, 길게 누르기. 날짜 칸은 각각 버튼이며 저마다 포커스 대상입니다(한 칸만 Tab 대상이 되는 roving은 없고, 화살표·Home·End·PageUp·PageDown 이동과 Shift+Enter도 없습니다). 고르면 selected 상태가 되고 칸 이름은 날짜·요일에 휴일 이름과 일정 수를 붙여 읽으며 오늘에는 '오늘'이 붙습니다. 달·주는 스와이프나 화면의 버튼으로 바꾸고, 길게 누르기는 접근성 동작(longpress)으로 노출되며 onDayLongPress가 있을 때만 켜집니다. 달·주를 바꾸는 요청은 소비 코드가 처리합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "month",
+        "value",
+        "marks",
+        "isHoliday",
+        "dayLongPressLabel"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
       "id": "KjunImage.vue3.keyboard.v1",
       "component": "KjunImage",
       "platform": "vue3",
@@ -20668,32 +20884,32 @@
       "name": "@kjun-ui/tokens",
       "version": "0.21.0",
       "file": "kjun-ui-tokens-0.21.0.tgz",
-      "bytes": 153002,
-      "integrity": "sha512-dPxNw7RFyUWvlyr+mSoKtmd6bDMJBCWx3neAsz9drWnAHcNuyu6lS7DkSgBcX+tRWX3VfQ+LOhX49O8RnfasJA=="
+      "bytes": 155507,
+      "integrity": "sha512-0M6lHp0cMUiFjUPHMKkdP46X/tdhKRdEf5BIW6tmIH2/lpVw+q1zfgXGls5vm0ZEqY9FqPnYaiOOSpE3ovpfHw=="
     },
     {
       "name": "@kjun-ui/vue3",
       "version": "0.21.0",
       "file": "kjun-ui-vue3-0.21.0.tgz",
-      "bytes": 707640,
-      "integrity": "sha512-65/kLyTAytQ6QAL1QSlvf8SfS8yP1yoJ0bD9ApgVeIW67ii+yMdrDsVXudoVXlSzjHu292Ity+h0HzLHDYQ2NA=="
+      "bytes": 722511,
+      "integrity": "sha512-dtvnt1eO081jdAl8kJ+1NHCUv596pofGvV6wXipm32+rzfsOnwBUu+4PIMbPlZ14tHNbphlLFP6DkfcC6Xgp7A=="
     },
     {
       "name": "@kjun-ui/react",
       "version": "0.21.0",
       "file": "kjun-ui-react-0.21.0.tgz",
-      "bytes": 600048,
-      "integrity": "sha512-9yVzvq/9KhjkgJj/GUN74y0+OkfRAktZFcKFQg4OOYHbBrIcnPkcMpUEqmg5Xqk734JiApdaA3f5Q7NNSXy0OQ=="
+      "bytes": 612955,
+      "integrity": "sha512-lm8NrPQh3u4RnEazBUv9yireo95dwi878yuJMPCke9jmBIiWjchuSsEI/oe2xOXl+f2Juq87KKcBo0mWpGPwdQ=="
     },
     {
       "name": "@kjun-ui/native",
       "version": "0.21.0",
       "file": "kjun-ui-native-0.21.0.tgz",
-      "bytes": 1060580,
-      "integrity": "sha512-uVYJSXu6N5sVwqKt2BJ7TpdSm02EndSDR1wOr/P5oD4P/gJMuKbzOc/MK8gqDYMlpjQivbynr5K07bXFwNLw/w=="
+      "bytes": 1085983,
+      "integrity": "sha512-7NrQlxQddnUbA/U3gBdMvmmgJ/kagd8d0ODO9Oxs5i9FROyIfv/sXfvA3n65ktPEhPkqvulTuk1W/vSWxGSbMQ=="
     }
   ],
-  "definitionHash": "sha256-b784c0f0af0380372ff879729fc6af04b91a508b221152e7e987986dc113c861",
+  "definitionHash": "sha256-b8823ca8f07ed519f27063ad6843277e51b57de74c5e18f20f8bf6544cd29b46",
   "runs": [
     {
       "schemaVersion": 1,
