@@ -18708,13 +18708,13 @@
               {
                 "label": "숫자 입력",
                 "description": "쉼표·소수 자릿수·부호를 지키며 편집합니다. 값은 그룹 구분 문자가 없는 문자열입니다.",
-                "target": "[role=\"textbox\"]",
+                "target": "input",
                 "optional": false
               },
               {
                 "label": "단위 suffix",
                 "description": "서식이 붙이는 글자입니다. amount는 앱이 \"원\"을 지정하고 percent는 \"%\"가 기본입니다.",
-                "target": ".kjun-input-affix",
+                "target": "text=원",
                 "optional": false
               },
               {
@@ -18738,6 +18738,22 @@
             "id": "default",
             "label": "기본 예제",
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "error",
+            "label": "오류",
+            "description": "공개 error 속성이 담당하는 오류 상태입니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+            }
           },
           {
             "id": "amount",
@@ -18775,8 +18791,33 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
         "note": "KjunInput과 같은 크기(sm·md·lg)·모서리·초점·오류·비활성 표현을 그대로 쓰고 새 토큰은 없습니다. 숫자는 숫자 글꼴과 고정폭 숫자로 그리며 align=\"end\"이면 오른쪽(끝)으로 맞춥니다. prefix·suffix는 KjunInput의 앞뒤 장식 자리에 붙습니다. 읽기 문구는 입력 아래 보조 글자 한 줄이며 화면 낭독기에는 aria-describedby로만 연결해 입력 중 계속 읽지 않습니다. 오류 문구는 입력 아래에 오류 색으로 표시하고 FormGroup 오류가 있으면 그 문구로 바뀝니다."
       },
       "react": {
@@ -18789,13 +18830,13 @@
               {
                 "label": "숫자 입력",
                 "description": "쉼표·소수 자릿수·부호를 지키며 편집합니다. 값은 그룹 구분 문자가 없는 문자열입니다.",
-                "target": "[role=\"textbox\"]",
+                "target": "input",
                 "optional": false
               },
               {
                 "label": "단위 suffix",
                 "description": "서식이 붙이는 글자입니다. amount는 앱이 \"원\"을 지정하고 percent는 \"%\"가 기본입니다.",
-                "target": ".kjun-input-affix",
+                "target": "text=원",
                 "optional": false
               },
               {
@@ -18819,6 +18860,22 @@
             "id": "default",
             "label": "기본 예제",
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "error",
+            "label": "오류",
+            "description": "공개 error 속성이 담당하는 오류 상태입니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+            }
           },
           {
             "id": "amount",
@@ -18856,8 +18913,33 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
         "note": "KjunInput과 같은 크기(sm·md·lg)·모서리·초점·오류·비활성 표현을 그대로 쓰고 새 토큰은 없습니다. 숫자는 숫자 글꼴과 고정폭 숫자로 그리며 align=\"end\"이면 오른쪽(끝)으로 맞춥니다. prefix·suffix는 KjunInput의 앞뒤 장식 자리에 붙습니다. 읽기 문구는 입력 아래 보조 글자 한 줄이며 화면 낭독기에는 aria-describedby로만 연결해 입력 중 계속 읽지 않습니다. 오류 문구는 입력 아래에 오류 색으로 표시하고 FormGroup 오류가 있으면 그 문구로 바뀝니다."
       },
       "native": {
@@ -18870,13 +18952,13 @@
               {
                 "label": "숫자 입력",
                 "description": "쉼표·소수 자릿수·부호를 지키며 편집합니다. 값은 그룹 구분 문자가 없는 문자열입니다.",
-                "target": "[role=\"textbox\"]",
+                "target": "input",
                 "optional": false
               },
               {
                 "label": "단위 suffix",
                 "description": "서식이 붙이는 글자입니다. amount는 앱이 \"원\"을 지정하고 percent는 \"%\"가 기본입니다.",
-                "target": ".kjun-input-affix",
+                "target": "text=원",
                 "optional": false
               },
               {
@@ -18900,6 +18982,22 @@
             "id": "default",
             "label": "기본 예제",
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "error",
+            "label": "오류",
+            "description": "공개 error 속성이 담당하는 오류 상태입니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"error\":true}},\"KjunFormGroup\":{\"props\":{\"error\":\"입력 내용을 확인해 주세요.\"}}}"
+            }
           },
           {
             "id": "amount",
@@ -18937,8 +19035,33 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunNumberInput\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
         "note": "KjunInput과 같은 크기(sm·md·lg)·모서리·초점·오류·비활성 표현을 그대로 쓰고 새 토큰은 없습니다. 숫자는 숫자 글꼴과 고정폭 숫자로 그리며 align=\"end\"이면 오른쪽(끝)으로 맞춥니다. prefix·suffix는 KjunInput의 앞뒤 장식 자리에 붙습니다. 읽기 문구는 입력 아래 보조 글자 한 줄이며 화면 낭독기에는 aria-describedby로만 연결해 입력 중 계속 읽지 않습니다. 오류 문구는 입력 아래에 오류 색으로 표시하고 FormGroup 오류가 있으면 그 문구로 바뀝니다."
       }
     }

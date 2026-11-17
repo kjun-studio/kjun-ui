@@ -17660,7 +17660,7 @@
               },
               {
                 "label": "복합 입력",
-                "text": "QuantityStepper는 숫자 입력에 라벨·ID·오류·도움말·필수 정보를 연결합니다. TimePicker는 각 부분에 고유한 ID와 시·분·초 이름을 부여하고 도움말·오류를 공유합니다. 웹에서 연결된 라벨은 첫 번째 시 선택 컨트롤을 가리킵니다. Native DatePicker도 필드의 라벨·오류·도움말을 사용하며, Select 팝업의 검색창은 바깥 필드 맥락을 상속하지 않습니다."
+                "text": "QuantityStepper와 NumberInput은 숫자 입력에 라벨·ID·오류·도움말·필수 정보를 연결합니다. TimePicker는 각 부분에 고유한 ID와 시·분·초 이름을 부여하고 도움말·오류를 공유합니다. 웹에서 연결된 라벨은 첫 번째 시 선택 컨트롤을 가리킵니다. Native DatePicker도 필드의 라벨·오류·도움말을 사용하며, Select 팝업의 검색창은 바깥 필드 맥락을 상속하지 않습니다."
               }
             ],
             "source": "packages/vue3/src/input.tsx",
@@ -17800,7 +17800,7 @@
               },
               {
                 "label": "복합 입력",
-                "text": "QuantityStepper는 숫자 입력에 라벨·ID·오류·도움말·필수 정보를 연결합니다. TimePicker는 각 부분에 고유한 ID와 시·분·초 이름을 부여하고 도움말·오류를 공유합니다. 웹에서 연결된 라벨은 첫 번째 시 선택 컨트롤을 가리킵니다. Native DatePicker도 필드의 라벨·오류·도움말을 사용하며, Select 팝업의 검색창은 바깥 필드 맥락을 상속하지 않습니다."
+                "text": "QuantityStepper와 NumberInput은 숫자 입력에 라벨·ID·오류·도움말·필수 정보를 연결합니다. TimePicker는 각 부분에 고유한 ID와 시·분·초 이름을 부여하고 도움말·오류를 공유합니다. 웹에서 연결된 라벨은 첫 번째 시 선택 컨트롤을 가리킵니다. Native DatePicker도 필드의 라벨·오류·도움말을 사용하며, Select 팝업의 검색창은 바깥 필드 맥락을 상속하지 않습니다."
               }
             ],
             "source": "packages/react/src/input.tsx",
@@ -17950,7 +17950,7 @@
               },
               {
                 "label": "복합 입력",
-                "text": "QuantityStepper는 숫자 입력에 라벨·ID·오류·도움말·필수 정보를 연결합니다. TimePicker는 각 부분에 고유한 ID와 시·분·초 이름을 부여하고 도움말·오류를 공유합니다. 웹에서 연결된 라벨은 첫 번째 시 선택 컨트롤을 가리킵니다. Native DatePicker도 필드의 라벨·오류·도움말을 사용하며, Select 팝업의 검색창은 바깥 필드 맥락을 상속하지 않습니다."
+                "text": "QuantityStepper와 NumberInput은 숫자 입력에 라벨·ID·오류·도움말·필수 정보를 연결합니다. TimePicker는 각 부분에 고유한 ID와 시·분·초 이름을 부여하고 도움말·오류를 공유합니다. 웹에서 연결된 라벨은 첫 번째 시 선택 컨트롤을 가리킵니다. Native DatePicker도 필드의 라벨·오류·도움말을 사용하며, Select 팝업의 검색창은 바깥 필드 맥락을 상속하지 않습니다."
               }
             ],
             "source": "packages/native/src/input.tsx",
@@ -44789,6 +44789,817 @@
         "ownership": [
           "문자열 초안은 내부 상태이며 Enter·blur에서 숫자로 확정합니다. 값과 검증 결과는 소비자가 관리합니다.",
           "웹 한글 입력 조합 중에는 확정하지 않습니다. Native 키보드와 입력 방식은 실제 기기에서 별도 검증해야 합니다."
+        ],
+        "types": []
+      }
+    },
+    "KjunNumberInput": {
+      "vue3": {
+        "props": [
+          {
+            "name": "modelValue",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "Normalized value without group separators: \"\", \"1250000\", \"-3.5\", \"12.50\".",
+            "summary": "정규화된 값 문자열입니다. 빈 값은 \"\", 예는 \"1250000\"·\"-3.5\"·\"12.50\"이며 그룹 구분 문자(쉼표)는 없습니다. 퍼센트는 보이는 그대로라 화면의 12.5%가 \"12.5\"입니다.",
+            "details": [
+              {
+                "label": "상태 책임",
+                "text": "값은 그룹 구분 문자가 없는 문자열입니다(빈 값 \"\", 예 \"1250000\", \"-3.5\", \"12.50\"). format은 기본값 묶음만 고르고 동작은 나누지 않습니다. number는 천 단위 쉼표·정수, amount는 같은 규칙에 앱이 \"원\"을 suffix로 붙이며, percent는 쉼표 없이 소수 1자리·음수 허용·\"%\" suffix입니다. 개별 prop(decimals·grouping·allowNegative·prefix·suffix)이 항상 프리셋을 덮습니다. 새 format은 편집 규칙이 다를 때만 늘립니다. 붙는 글자만 다르면 suffix로, 0.125와 12.5% 또는 kg과 lb 같은 값 변환은 앱이 맡습니다. 퍼센트는 보이는 그대로라 화면의 12.5%가 값 \"12.5\"이고, KjunSignedValue의 format=\"percent\"와 같은 기준입니다. 수량처럼 ±버튼으로 조절하는 값은 KjunQuantityStepper를 고르고, 이 컴포넌트는 금액·비율처럼 버튼 없이 직접 치는 값에 씁니다. 입력과 붙여넣기에서는 숫자·점 하나·허용 시 -만 남기므로 \"₩1,234,000원\"은 1234000이 됩니다. 정수부는 15 - decimals자리까지 받고, 앞자리 0은 지우며, 소수부는 반올림 없이 자릿수에서 잘라 냅니다. 한글 입력 조합 중에는 정리하지 않고 조합이 끝나면 정리합니다. 쉼표 바로 뒤에서 Backspace를 누르면 쉼표 앞 숫자를, 쉼표 바로 앞에서 Delete를 누르면 뒤 숫자를 지웁니다. onValueChange(Vue update:modelValue)는 편집마다 채우지 않은 값을 알리고, Enter·포커스 이탈에서 소수 자릿수를 채운 값(3.5 → 3.50)을 onChangeCommit(Vue change)으로 한 번 더 알립니다. 확정으로 값이 바뀌면 onValueChange로도 보내므로 value는 늘 화면과 같습니다. min·max를 벗어난 값은 편집 중에는 그대로 두고, 확정할 때 오류 상태와 내장 문구(\"100% 이하로 입력해 주세요\")를 보입니다. 값을 고치지는 않으므로 앱이 거부할지 정합니다. FormGroup의 error나 error prop이 있으면 그쪽이 우선합니다. readingAid를 켜면 정수부가 1만 이상일 때 입력 바로 아래에 \"1억 2,003만 5,000 원\" 같은 읽기 문구를 보이고, FormGroup hint는 그 아래 줄에 놓입니다. 퍼센트에서는 꺼집니다. 빠른 금액 버튼(+1만·전액)은 컴포넌트에 넣지 않고 앱이 Button으로 옆에 구성합니다."
+              }
+            ],
+            "source": "packages/vue3/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "format",
+            "type": "NumberInputFormat",
+            "required": false,
+            "default": "\"number\"",
+            "description": "",
+            "summary": "기본값 묶음을 고릅니다. number는 천 단위 쉼표·정수, amount는 같은 규칙에 앱이 suffix를 지정하는 금액, percent는 쉼표 없이 소수 1자리·음수 허용·\"%\"입니다. 동작은 갈라지지 않고 아래 개별 prop이 항상 프리셋을 덮습니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "decimals",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "소수 자릿수 상한(0~6의 정수)입니다. 확정할 때 이 자릿수까지 0으로 채웁니다(3.5 → 3.50). 생략하면 format 프리셋(number·amount 0, percent 1)을 씁니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "grouping",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "정수부에 천 단위 쉼표를 보입니다. 값에는 쉼표가 들어가지 않습니다. 생략하면 format 프리셋(percent만 false)을 씁니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "allowNegative",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "음수를 받습니다. 허용하면 텍스트 어디에 -가 있어도 음수로 보고, 허용하지 않으면 -를 무시합니다. 생략하면 format 프리셋(percent만 true)을 씁니다. 음수를 받는 입력은 웹 inputMode가 text, Native 키보드가 iOS numbers-and-punctuation·Android numeric입니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "허용하는 최솟값입니다.",
+            "details": [
+              {
+                "label": "동작",
+                "text": "편집 중에는 그대로 두고, 확정(blur·Enter)할 때 벗어나 있으면 오류 상태와 내장 문구(\"1,000원 이상 입력해 주세요\")를 보입니다. 값을 고치지 않으므로 거부는 앱이 정합니다. 편집 중 값이 범위로 돌아오면 오류를 바로 지웁니다. 오류 prop이나 FormGroup 오류가 있으면 그쪽이 우선합니다."
+              }
+            ],
+            "source": "packages/vue3/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "허용하는 최댓값입니다.",
+            "details": [
+              {
+                "label": "동작",
+                "text": "min과 같습니다. 확정할 때 벗어나면 오류 상태와 내장 문구(\"100% 이하로 입력해 주세요\")를 보입니다."
+              }
+            ],
+            "source": "packages/vue3/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "prefix",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "숫자 앞에 붙는 글자입니다. 노드가 필요하면 prefix 슬롯을 씁니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "suffix",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "숫자 뒤에 붙는 글자입니다(예: \"원\", \"kg\"). 생략하면 format 프리셋(percent의 \"%\")을 씁니다. 노드가 필요하면 suffix 슬롯을 씁니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "readingAid",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Shows \"1억 2,003만 5,000 원\" under the field for integers of 10,000 or more.",
+            "summary": "정수부가 1만 이상일 때 입력 바로 아래에 \"1억 2,003만 5,000 원\" 같은 읽기 문구를 보입니다. suffix가 문자열이면 공백 뒤에 붙고, percent에서는 꺼집니다. 한국어 메시지에서만 만들며 화면 낭독기에는 aria-describedby로만 연결해 입력 중 계속 읽지 않습니다. FormGroup 도움말은 이 문구 아래 줄입니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "align",
+            "type": "\"start\" | \"end\"",
+            "required": false,
+            "default": "\"start\"",
+            "description": "",
+            "summary": "숫자의 가로 정렬입니다. end는 숫자를 끝 쪽에 맞춥니다. 금액을 세로로 나열할 때 씁니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\" | \"lg\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "KjunInput과 같은 크기(sm·md·lg)입니다. 높이·글자·모서리가 같습니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "입력을 막고 Tab 순서에서 뺍니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "값을 보여 주기만 하고 바꾸지 않습니다. 초점은 받습니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "error",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "입력 영역을 오류로 표현합니다. 이 값이나 FormGroup 오류가 있으면 범위 밖 내장 문구보다 우선합니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "실제 입력의 ID입니다. 외부 라벨과 명시적으로 연결할 때 사용합니다. FormGroup 안에서는 FormGroup이 정합니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "화면 낭독기가 읽는 이름입니다. 보이는 라벨이 없을 때 필요하며, FormGroup 라벨이 있으면 생략합니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값이 비었을 때 보이는 안내 문구입니다. 값을 대신하지 않습니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          }
+        ],
+        "events": [
+          {
+            "name": "update:modelValue",
+            "source": "packages/vue3/src/number-input.tsx",
+            "type": "이벤트",
+            "summary": "값 변경을 소비자에게 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "편집할 때마다. 확정이나 Escape로 보이는 값이 바뀌면(3.5 → 3.50) 그 값도 한 번 더 알려 value가 늘 화면과 같습니다"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 그룹 구분 문자가 없는 값(\"\", \"1250000\", \"-3.5\")"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "소비자가 value를 갱신합니다. 편집 중 값은 소수 자릿수를 채우지 않은 상태입니다."
+              }
+            ],
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "change",
+            "source": "packages/vue3/src/number-input.tsx",
+            "type": "이벤트",
+            "summary": "편집이 확정됐음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "blur 또는 Enter. 소수 자릿수를 채운 값으로, 값 변경 콜백 다음"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 소수 자릿수를 채운 값(\"12.50\")"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "저장·조회 등 확정이 필요한 작업에 쓰고, 범위 밖 값을 받아들일지는 앱이 정합니다."
+              }
+            ],
+            "example": "/components/number-input#preview"
+          }
+        ],
+        "slots": [
+          {
+            "name": "prefix",
+            "data": [],
+            "source": "packages/vue3/src/number-input.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "숫자 앞에 붙는 단위 장식입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "제공 데이터 없음"
+              },
+              {
+                "label": "사용 계약",
+                "text": "화면 장식으로만 쓰이며 읽기 문구와 범위 문구에는 붙지 않습니다. 글자만 필요하면 prefix prop을 쓰세요."
+              }
+            ],
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "suffix",
+            "data": [],
+            "source": "packages/vue3/src/number-input.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "숫자 뒤에 붙는 단위 장식입니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "제공 데이터 없음"
+              },
+              {
+                "label": "사용 계약",
+                "text": "화면 장식으로만 쓰이며 읽기 문구와 범위 문구에는 붙지 않습니다. 글자만 필요하면 suffix prop을 쓰세요."
+              }
+            ],
+            "example": "/components/number-input#preview"
+          }
+        ],
+        "ownership": [
+          "값은 그룹 구분 문자가 없는 문자열입니다(빈 값 \"\", 예 \"1250000\", \"-3.5\", \"12.50\"). format은 기본값 묶음만 고르고 동작은 나누지 않습니다. number는 천 단위 쉼표·정수, amount는 같은 규칙에 앱이 \"원\"을 suffix로 붙이며, percent는 쉼표 없이 소수 1자리·음수 허용·\"%\" suffix입니다. 개별 prop(decimals·grouping·allowNegative·prefix·suffix)이 항상 프리셋을 덮습니다. 새 format은 편집 규칙이 다를 때만 늘립니다. 붙는 글자만 다르면 suffix로, 0.125와 12.5% 또는 kg과 lb 같은 값 변환은 앱이 맡습니다. 퍼센트는 보이는 그대로라 화면의 12.5%가 값 \"12.5\"이고, KjunSignedValue의 format=\"percent\"와 같은 기준입니다. 수량처럼 ±버튼으로 조절하는 값은 KjunQuantityStepper를 고르고, 이 컴포넌트는 금액·비율처럼 버튼 없이 직접 치는 값에 씁니다. 입력과 붙여넣기에서는 숫자·점 하나·허용 시 -만 남기므로 \"₩1,234,000원\"은 1234000이 됩니다. 정수부는 15 - decimals자리까지 받고, 앞자리 0은 지우며, 소수부는 반올림 없이 자릿수에서 잘라 냅니다. 한글 입력 조합 중에는 정리하지 않고 조합이 끝나면 정리합니다. 쉼표 바로 뒤에서 Backspace를 누르면 쉼표 앞 숫자를, 쉼표 바로 앞에서 Delete를 누르면 뒤 숫자를 지웁니다. onValueChange(Vue update:modelValue)는 편집마다 채우지 않은 값을 알리고, Enter·포커스 이탈에서 소수 자릿수를 채운 값(3.5 → 3.50)을 onChangeCommit(Vue change)으로 한 번 더 알립니다. 확정으로 값이 바뀌면 onValueChange로도 보내므로 value는 늘 화면과 같습니다. min·max를 벗어난 값은 편집 중에는 그대로 두고, 확정할 때 오류 상태와 내장 문구(\"100% 이하로 입력해 주세요\")를 보입니다. 값을 고치지는 않으므로 앱이 거부할지 정합니다. FormGroup의 error나 error prop이 있으면 그쪽이 우선합니다. readingAid를 켜면 정수부가 1만 이상일 때 입력 바로 아래에 \"1억 2,003만 5,000 원\" 같은 읽기 문구를 보이고, FormGroup hint는 그 아래 줄에 놓입니다. 퍼센트에서는 꺼집니다. 빠른 금액 버튼(+1만·전액)은 컴포넌트에 넣지 않고 앱이 Button으로 옆에 구성합니다.",
+          "웹은 inputMode를 정합니다(음수 허용이면 text, 소수가 있으면 decimal, 아니면 numeric). Native는 keyboardType을 정합니다(음수 허용이면 iOS numbers-and-punctuation·Android numeric, 아니면 decimal-pad 또는 number-pad). prefix·suffix는 웹이 ReactNode(Vue는 슬롯), Native가 문자열입니다. Escape로 편집을 마지막 확정값으로 되돌리는 동작은 웹과 하드웨어 키보드의 동작이며, 화면 키보드만 있는 Native 기기에는 해당하지 않습니다. Native는 React Native Web에서만 확인했고 기기 키보드·IME는 별도로 확인해야 합니다."
+        ],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "Normalized value without group separators: \"\", \"1250000\", \"-3.5\", \"12.50\".",
+            "summary": "정규화된 값 문자열입니다. 빈 값은 \"\", 예는 \"1250000\"·\"-3.5\"·\"12.50\"이며 그룹 구분 문자(쉼표)는 없습니다. 퍼센트는 보이는 그대로라 화면의 12.5%가 \"12.5\"입니다.",
+            "details": [
+              {
+                "label": "상태 책임",
+                "text": "값은 그룹 구분 문자가 없는 문자열입니다(빈 값 \"\", 예 \"1250000\", \"-3.5\", \"12.50\"). format은 기본값 묶음만 고르고 동작은 나누지 않습니다. number는 천 단위 쉼표·정수, amount는 같은 규칙에 앱이 \"원\"을 suffix로 붙이며, percent는 쉼표 없이 소수 1자리·음수 허용·\"%\" suffix입니다. 개별 prop(decimals·grouping·allowNegative·prefix·suffix)이 항상 프리셋을 덮습니다. 새 format은 편집 규칙이 다를 때만 늘립니다. 붙는 글자만 다르면 suffix로, 0.125와 12.5% 또는 kg과 lb 같은 값 변환은 앱이 맡습니다. 퍼센트는 보이는 그대로라 화면의 12.5%가 값 \"12.5\"이고, KjunSignedValue의 format=\"percent\"와 같은 기준입니다. 수량처럼 ±버튼으로 조절하는 값은 KjunQuantityStepper를 고르고, 이 컴포넌트는 금액·비율처럼 버튼 없이 직접 치는 값에 씁니다. 입력과 붙여넣기에서는 숫자·점 하나·허용 시 -만 남기므로 \"₩1,234,000원\"은 1234000이 됩니다. 정수부는 15 - decimals자리까지 받고, 앞자리 0은 지우며, 소수부는 반올림 없이 자릿수에서 잘라 냅니다. 한글 입력 조합 중에는 정리하지 않고 조합이 끝나면 정리합니다. 쉼표 바로 뒤에서 Backspace를 누르면 쉼표 앞 숫자를, 쉼표 바로 앞에서 Delete를 누르면 뒤 숫자를 지웁니다. onValueChange(Vue update:modelValue)는 편집마다 채우지 않은 값을 알리고, Enter·포커스 이탈에서 소수 자릿수를 채운 값(3.5 → 3.50)을 onChangeCommit(Vue change)으로 한 번 더 알립니다. 확정으로 값이 바뀌면 onValueChange로도 보내므로 value는 늘 화면과 같습니다. min·max를 벗어난 값은 편집 중에는 그대로 두고, 확정할 때 오류 상태와 내장 문구(\"100% 이하로 입력해 주세요\")를 보입니다. 값을 고치지는 않으므로 앱이 거부할지 정합니다. FormGroup의 error나 error prop이 있으면 그쪽이 우선합니다. readingAid를 켜면 정수부가 1만 이상일 때 입력 바로 아래에 \"1억 2,003만 5,000 원\" 같은 읽기 문구를 보이고, FormGroup hint는 그 아래 줄에 놓입니다. 퍼센트에서는 꺼집니다. 빠른 금액 버튼(+1만·전액)은 컴포넌트에 넣지 않고 앱이 Button으로 옆에 구성합니다."
+              }
+            ],
+            "source": "packages/react/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "prefix",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "숫자 앞에 붙는 단위 장식입니다. 문자열이 아니면 화면 장식으로만 쓰고 내장 문구에는 붙지 않습니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "suffix",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "숫자 뒤에 붙는 단위 장식입니다(예: \"원\", \"kg\"). 생략하면 format 프리셋(percent의 \"%\")을 씁니다. 문자열이면 읽기 문구와 범위 문구에도 붙습니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "readingAid",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Shows \"1억 2,003만 5,000 원\" under the field for integers of 10,000 or more.",
+            "summary": "정수부가 1만 이상일 때 입력 바로 아래에 \"1억 2,003만 5,000 원\" 같은 읽기 문구를 보입니다. suffix가 문자열이면 공백 뒤에 붙고, percent에서는 꺼집니다. 한국어 메시지에서만 만들며 화면 낭독기에는 aria-describedby로만 연결해 입력 중 계속 읽지 않습니다. FormGroup 도움말은 이 문구 아래 줄입니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "align",
+            "type": "\"start\" | \"end\" | undefined",
+            "required": false,
+            "default": "\"start\"",
+            "description": "",
+            "summary": "숫자의 가로 정렬입니다. end는 숫자를 끝 쪽에 맞춥니다. 금액을 세로로 나열할 때 씁니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "KjunInput과 같은 크기(sm·md·lg)입니다. 높이·글자·모서리가 같습니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "입력을 막고 Tab 순서에서 뺍니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "값을 보여 주기만 하고 바꾸지 않습니다. 초점은 받습니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "error",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "입력 영역을 오류로 표현합니다. 이 값이나 FormGroup 오류가 있으면 범위 밖 내장 문구보다 우선합니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "실제 입력의 ID입니다. 외부 라벨과 명시적으로 연결할 때 사용합니다. FormGroup 안에서는 FormGroup이 정합니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "화면 낭독기가 읽는 이름입니다. 보이는 라벨이 없을 때 필요하며, FormGroup 라벨이 있으면 생략합니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "placeholder",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값이 비었을 때 보이는 안내 문구입니다. 값을 대신하지 않습니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Every edit, unpadded; also the committed value when committing or cancelling changes it.",
+            "summary": "값 변경을 소비자에게 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "편집할 때마다. 확정이나 Escape로 보이는 값이 바뀌면(3.5 → 3.50) 그 값도 한 번 더 알려 value가 늘 화면과 같습니다"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 그룹 구분 문자가 없는 값(\"\", \"1250000\", \"-3.5\")"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "소비자가 value를 갱신합니다. 편집 중 값은 소수 자릿수를 채우지 않은 상태입니다."
+              }
+            ],
+            "source": "packages/react/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "onChangeCommit",
+            "type": "((value: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Blur or Enter, with the fraction padded to `decimals`.",
+            "summary": "편집이 확정됐음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "blur 또는 Enter. 소수 자릿수를 채운 값으로, 값 변경 콜백 다음"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 소수 자릿수를 채운 값(\"12.50\")"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "저장·조회 등 확정이 필요한 작업에 쓰고, 범위 밖 값을 받아들일지는 앱이 정합니다."
+              }
+            ],
+            "source": "packages/react/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트(kjun-number-input)에 더할 클래스입니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 인라인 스타일입니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "format",
+            "type": "NumberInputFormat | undefined",
+            "required": false,
+            "default": "\"number\"",
+            "description": "",
+            "summary": "기본값 묶음을 고릅니다. number는 천 단위 쉼표·정수, amount는 같은 규칙에 앱이 suffix를 지정하는 금액, percent는 쉼표 없이 소수 1자리·음수 허용·\"%\"입니다. 동작은 갈라지지 않고 아래 개별 prop이 항상 프리셋을 덮습니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "decimals",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "소수 자릿수 상한(0~6의 정수)입니다. 확정할 때 이 자릿수까지 0으로 채웁니다(3.5 → 3.50). 생략하면 format 프리셋(number·amount 0, percent 1)을 씁니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "grouping",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "정수부에 천 단위 쉼표를 보입니다. 값에는 쉼표가 들어가지 않습니다. 생략하면 format 프리셋(percent만 false)을 씁니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "allowNegative",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "음수를 받습니다. 허용하면 텍스트 어디에 -가 있어도 음수로 보고, 허용하지 않으면 -를 무시합니다. 생략하면 format 프리셋(percent만 true)을 씁니다. 음수를 받는 입력은 웹 inputMode가 text, Native 키보드가 iOS numbers-and-punctuation·Android numeric입니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
+            "name": "min",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "허용하는 최솟값입니다.",
+            "details": [
+              {
+                "label": "동작",
+                "text": "편집 중에는 그대로 두고, 확정(blur·Enter)할 때 벗어나 있으면 오류 상태와 내장 문구(\"1,000원 이상 입력해 주세요\")를 보입니다. 값을 고치지 않으므로 거부는 앱이 정합니다. 편집 중 값이 범위로 돌아오면 오류를 바로 지웁니다. 오류 prop이나 FormGroup 오류가 있으면 그쪽이 우선합니다."
+              }
+            ],
+            "source": "packages/react/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "max",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "허용하는 최댓값입니다.",
+            "details": [
+              {
+                "label": "동작",
+                "text": "min과 같습니다. 확정할 때 벗어나면 오류 상태와 내장 문구(\"100% 이하로 입력해 주세요\")를 보입니다."
+              }
+            ],
+            "source": "packages/react/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "값은 그룹 구분 문자가 없는 문자열입니다(빈 값 \"\", 예 \"1250000\", \"-3.5\", \"12.50\"). format은 기본값 묶음만 고르고 동작은 나누지 않습니다. number는 천 단위 쉼표·정수, amount는 같은 규칙에 앱이 \"원\"을 suffix로 붙이며, percent는 쉼표 없이 소수 1자리·음수 허용·\"%\" suffix입니다. 개별 prop(decimals·grouping·allowNegative·prefix·suffix)이 항상 프리셋을 덮습니다. 새 format은 편집 규칙이 다를 때만 늘립니다. 붙는 글자만 다르면 suffix로, 0.125와 12.5% 또는 kg과 lb 같은 값 변환은 앱이 맡습니다. 퍼센트는 보이는 그대로라 화면의 12.5%가 값 \"12.5\"이고, KjunSignedValue의 format=\"percent\"와 같은 기준입니다. 수량처럼 ±버튼으로 조절하는 값은 KjunQuantityStepper를 고르고, 이 컴포넌트는 금액·비율처럼 버튼 없이 직접 치는 값에 씁니다. 입력과 붙여넣기에서는 숫자·점 하나·허용 시 -만 남기므로 \"₩1,234,000원\"은 1234000이 됩니다. 정수부는 15 - decimals자리까지 받고, 앞자리 0은 지우며, 소수부는 반올림 없이 자릿수에서 잘라 냅니다. 한글 입력 조합 중에는 정리하지 않고 조합이 끝나면 정리합니다. 쉼표 바로 뒤에서 Backspace를 누르면 쉼표 앞 숫자를, 쉼표 바로 앞에서 Delete를 누르면 뒤 숫자를 지웁니다. onValueChange(Vue update:modelValue)는 편집마다 채우지 않은 값을 알리고, Enter·포커스 이탈에서 소수 자릿수를 채운 값(3.5 → 3.50)을 onChangeCommit(Vue change)으로 한 번 더 알립니다. 확정으로 값이 바뀌면 onValueChange로도 보내므로 value는 늘 화면과 같습니다. min·max를 벗어난 값은 편집 중에는 그대로 두고, 확정할 때 오류 상태와 내장 문구(\"100% 이하로 입력해 주세요\")를 보입니다. 값을 고치지는 않으므로 앱이 거부할지 정합니다. FormGroup의 error나 error prop이 있으면 그쪽이 우선합니다. readingAid를 켜면 정수부가 1만 이상일 때 입력 바로 아래에 \"1억 2,003만 5,000 원\" 같은 읽기 문구를 보이고, FormGroup hint는 그 아래 줄에 놓입니다. 퍼센트에서는 꺼집니다. 빠른 금액 버튼(+1만·전액)은 컴포넌트에 넣지 않고 앱이 Button으로 옆에 구성합니다.",
+          "웹은 inputMode를 정합니다(음수 허용이면 text, 소수가 있으면 decimal, 아니면 numeric). Native는 keyboardType을 정합니다(음수 허용이면 iOS numbers-and-punctuation·Android numeric, 아니면 decimal-pad 또는 number-pad). prefix·suffix는 웹이 ReactNode(Vue는 슬롯), Native가 문자열입니다. Escape로 편집을 마지막 확정값으로 되돌리는 동작은 웹과 하드웨어 키보드의 동작이며, 화면 키보드만 있는 Native 기기에는 해당하지 않습니다. Native는 React Native Web에서만 확인했고 기기 키보드·IME는 별도로 확인해야 합니다."
+        ],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": true,
+            "default": "—",
+            "description": "Normalized value without group separators: \"\", \"1250000\", \"-3.5\", \"12.50\".",
+            "summary": "정규화된 값 문자열입니다. 빈 값은 \"\", 예는 \"1250000\"·\"-3.5\"·\"12.50\"이며 그룹 구분 문자(쉼표)는 없습니다. 퍼센트는 보이는 그대로라 화면의 12.5%가 \"12.5\"입니다.",
+            "details": [
+              {
+                "label": "상태 책임",
+                "text": "값은 그룹 구분 문자가 없는 문자열입니다(빈 값 \"\", 예 \"1250000\", \"-3.5\", \"12.50\"). format은 기본값 묶음만 고르고 동작은 나누지 않습니다. number는 천 단위 쉼표·정수, amount는 같은 규칙에 앱이 \"원\"을 suffix로 붙이며, percent는 쉼표 없이 소수 1자리·음수 허용·\"%\" suffix입니다. 개별 prop(decimals·grouping·allowNegative·prefix·suffix)이 항상 프리셋을 덮습니다. 새 format은 편집 규칙이 다를 때만 늘립니다. 붙는 글자만 다르면 suffix로, 0.125와 12.5% 또는 kg과 lb 같은 값 변환은 앱이 맡습니다. 퍼센트는 보이는 그대로라 화면의 12.5%가 값 \"12.5\"이고, KjunSignedValue의 format=\"percent\"와 같은 기준입니다. 수량처럼 ±버튼으로 조절하는 값은 KjunQuantityStepper를 고르고, 이 컴포넌트는 금액·비율처럼 버튼 없이 직접 치는 값에 씁니다. 입력과 붙여넣기에서는 숫자·점 하나·허용 시 -만 남기므로 \"₩1,234,000원\"은 1234000이 됩니다. 정수부는 15 - decimals자리까지 받고, 앞자리 0은 지우며, 소수부는 반올림 없이 자릿수에서 잘라 냅니다. 한글 입력 조합 중에는 정리하지 않고 조합이 끝나면 정리합니다. 쉼표 바로 뒤에서 Backspace를 누르면 쉼표 앞 숫자를, 쉼표 바로 앞에서 Delete를 누르면 뒤 숫자를 지웁니다. onValueChange(Vue update:modelValue)는 편집마다 채우지 않은 값을 알리고, Enter·포커스 이탈에서 소수 자릿수를 채운 값(3.5 → 3.50)을 onChangeCommit(Vue change)으로 한 번 더 알립니다. 확정으로 값이 바뀌면 onValueChange로도 보내므로 value는 늘 화면과 같습니다. min·max를 벗어난 값은 편집 중에는 그대로 두고, 확정할 때 오류 상태와 내장 문구(\"100% 이하로 입력해 주세요\")를 보입니다. 값을 고치지는 않으므로 앱이 거부할지 정합니다. FormGroup의 error나 error prop이 있으면 그쪽이 우선합니다. readingAid를 켜면 정수부가 1만 이상일 때 입력 바로 아래에 \"1억 2,003만 5,000 원\" 같은 읽기 문구를 보이고, FormGroup hint는 그 아래 줄에 놓입니다. 퍼센트에서는 꺼집니다. 빠른 금액 버튼(+1만·전액)은 컴포넌트에 넣지 않고 앱이 Button으로 옆에 구성합니다."
+              }
+            ],
+            "source": "packages/native/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "prefix",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "숫자 앞에 붙는 단위 장식입니다. 문자열이 아니면 화면 장식으로만 쓰고 내장 문구에는 붙지 않습니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "suffix",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "숫자 뒤에 붙는 단위 장식입니다(예: \"원\", \"kg\"). 생략하면 format 프리셋(percent의 \"%\")을 씁니다. 문자열이면 읽기 문구와 범위 문구에도 붙습니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "readingAid",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Shows \"1억 2,003만 5,000 원\" under the field for integers of 10,000 or more.",
+            "summary": "정수부가 1만 이상일 때 입력 바로 아래에 \"1억 2,003만 5,000 원\" 같은 읽기 문구를 보입니다. suffix가 문자열이면 공백 뒤에 붙고, percent에서는 꺼집니다. 한국어 메시지에서만 만들며 화면 낭독기에는 aria-describedby로만 연결해 입력 중 계속 읽지 않습니다. FormGroup 도움말은 이 문구 아래 줄입니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "align",
+            "type": "\"start\" | \"end\" | undefined",
+            "required": false,
+            "default": "\"start\"",
+            "description": "",
+            "summary": "숫자의 가로 정렬입니다. end는 숫자를 끝 쪽에 맞춥니다. 금액을 세로로 나열할 때 씁니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\" | \"lg\" | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "KjunInput과 같은 크기(sm·md·lg)입니다. 높이·글자·모서리가 같습니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "입력을 막고 Tab 순서에서 뺍니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "값을 보여 주기만 하고 바꾸지 않습니다. 초점은 받습니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "error",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "입력 영역을 오류로 표현합니다. 이 값이나 FormGroup 오류가 있으면 범위 밖 내장 문구보다 우선합니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "실제 입력의 ID입니다. 외부 라벨과 명시적으로 연결할 때 사용합니다. FormGroup 안에서는 FormGroup이 정합니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "화면 낭독기가 읽는 이름입니다. 보이는 라벨이 없을 때 필요하며, FormGroup 라벨이 있으면 생략합니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "placeholder",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값이 비었을 때 보이는 안내 문구입니다. 값을 대신하지 않습니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Every edit, unpadded; also the committed value when committing or cancelling changes it.",
+            "summary": "값 변경을 소비자에게 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "편집할 때마다. 확정이나 Escape로 보이는 값이 바뀌면(3.5 → 3.50) 그 값도 한 번 더 알려 value가 늘 화면과 같습니다"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 그룹 구분 문자가 없는 값(\"\", \"1250000\", \"-3.5\")"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "소비자가 value를 갱신합니다. 편집 중 값은 소수 자릿수를 채우지 않은 상태입니다."
+              }
+            ],
+            "source": "packages/native/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "onChangeCommit",
+            "type": "((value: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Blur or submit, with the fraction padded to `decimals`.",
+            "summary": "편집이 확정됐음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "blur 또는 Enter. 소수 자릿수를 채운 값으로, 값 변경 콜백 다음"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 소수 자릿수를 채운 값(\"12.50\")"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "저장·조회 등 확정이 필요한 작업에 쓰고, 범위 밖 값을 받아들일지는 앱이 정합니다."
+              }
+            ],
+            "source": "packages/native/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트 View에 더할 스타일입니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "format",
+            "type": "NumberInputFormat | undefined",
+            "required": false,
+            "default": "\"number\"",
+            "description": "",
+            "summary": "기본값 묶음을 고릅니다. number는 천 단위 쉼표·정수, amount는 같은 규칙에 앱이 suffix를 지정하는 금액, percent는 쉼표 없이 소수 1자리·음수 허용·\"%\"입니다. 동작은 갈라지지 않고 아래 개별 prop이 항상 프리셋을 덮습니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "decimals",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "소수 자릿수 상한(0~6의 정수)입니다. 확정할 때 이 자릿수까지 0으로 채웁니다(3.5 → 3.50). 생략하면 format 프리셋(number·amount 0, percent 1)을 씁니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "grouping",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "정수부에 천 단위 쉼표를 보입니다. 값에는 쉼표가 들어가지 않습니다. 생략하면 format 프리셋(percent만 false)을 씁니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "allowNegative",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "음수를 받습니다. 허용하면 텍스트 어디에 -가 있어도 음수로 보고, 허용하지 않으면 -를 무시합니다. 생략하면 format 프리셋(percent만 true)을 씁니다. 음수를 받는 입력은 웹 inputMode가 text, Native 키보드가 iOS numbers-and-punctuation·Android numeric입니다.",
+            "source": "packages/native/src/number-input.tsx"
+          },
+          {
+            "name": "min",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "허용하는 최솟값입니다.",
+            "details": [
+              {
+                "label": "동작",
+                "text": "편집 중에는 그대로 두고, 확정(blur·Enter)할 때 벗어나 있으면 오류 상태와 내장 문구(\"1,000원 이상 입력해 주세요\")를 보입니다. 값을 고치지 않으므로 거부는 앱이 정합니다. 편집 중 값이 범위로 돌아오면 오류를 바로 지웁니다. 오류 prop이나 FormGroup 오류가 있으면 그쪽이 우선합니다."
+              }
+            ],
+            "source": "packages/native/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          },
+          {
+            "name": "max",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "허용하는 최댓값입니다.",
+            "details": [
+              {
+                "label": "동작",
+                "text": "min과 같습니다. 확정할 때 벗어나면 오류 상태와 내장 문구(\"100% 이하로 입력해 주세요\")를 보입니다."
+              }
+            ],
+            "source": "packages/native/src/number-input.tsx",
+            "example": "/components/number-input#preview"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "값은 그룹 구분 문자가 없는 문자열입니다(빈 값 \"\", 예 \"1250000\", \"-3.5\", \"12.50\"). format은 기본값 묶음만 고르고 동작은 나누지 않습니다. number는 천 단위 쉼표·정수, amount는 같은 규칙에 앱이 \"원\"을 suffix로 붙이며, percent는 쉼표 없이 소수 1자리·음수 허용·\"%\" suffix입니다. 개별 prop(decimals·grouping·allowNegative·prefix·suffix)이 항상 프리셋을 덮습니다. 새 format은 편집 규칙이 다를 때만 늘립니다. 붙는 글자만 다르면 suffix로, 0.125와 12.5% 또는 kg과 lb 같은 값 변환은 앱이 맡습니다. 퍼센트는 보이는 그대로라 화면의 12.5%가 값 \"12.5\"이고, KjunSignedValue의 format=\"percent\"와 같은 기준입니다. 수량처럼 ±버튼으로 조절하는 값은 KjunQuantityStepper를 고르고, 이 컴포넌트는 금액·비율처럼 버튼 없이 직접 치는 값에 씁니다. 입력과 붙여넣기에서는 숫자·점 하나·허용 시 -만 남기므로 \"₩1,234,000원\"은 1234000이 됩니다. 정수부는 15 - decimals자리까지 받고, 앞자리 0은 지우며, 소수부는 반올림 없이 자릿수에서 잘라 냅니다. 한글 입력 조합 중에는 정리하지 않고 조합이 끝나면 정리합니다. 쉼표 바로 뒤에서 Backspace를 누르면 쉼표 앞 숫자를, 쉼표 바로 앞에서 Delete를 누르면 뒤 숫자를 지웁니다. onValueChange(Vue update:modelValue)는 편집마다 채우지 않은 값을 알리고, Enter·포커스 이탈에서 소수 자릿수를 채운 값(3.5 → 3.50)을 onChangeCommit(Vue change)으로 한 번 더 알립니다. 확정으로 값이 바뀌면 onValueChange로도 보내므로 value는 늘 화면과 같습니다. min·max를 벗어난 값은 편집 중에는 그대로 두고, 확정할 때 오류 상태와 내장 문구(\"100% 이하로 입력해 주세요\")를 보입니다. 값을 고치지는 않으므로 앱이 거부할지 정합니다. FormGroup의 error나 error prop이 있으면 그쪽이 우선합니다. readingAid를 켜면 정수부가 1만 이상일 때 입력 바로 아래에 \"1억 2,003만 5,000 원\" 같은 읽기 문구를 보이고, FormGroup hint는 그 아래 줄에 놓입니다. 퍼센트에서는 꺼집니다. 빠른 금액 버튼(+1만·전액)은 컴포넌트에 넣지 않고 앱이 Button으로 옆에 구성합니다.",
+          "웹은 inputMode를 정합니다(음수 허용이면 text, 소수가 있으면 decimal, 아니면 numeric). Native는 keyboardType을 정합니다(음수 허용이면 iOS numbers-and-punctuation·Android numeric, 아니면 decimal-pad 또는 number-pad). prefix·suffix는 웹이 ReactNode(Vue는 슬롯), Native가 문자열입니다. Escape로 편집을 마지막 확정값으로 되돌리는 동작은 웹과 하드웨어 키보드의 동작이며, 화면 키보드만 있는 Native 기기에는 해당하지 않습니다. Native는 React Native Web에서만 확인했고 기기 키보드·IME는 별도로 확인해야 합니다."
         ],
         "types": []
       }

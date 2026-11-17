@@ -454,6 +454,7 @@
       "packages/native/src/media.tsx",
       "packages/native/src/navigation.tsx",
       "packages/native/src/number-display.tsx",
+      "packages/native/src/number-input.tsx",
       "packages/native/src/progress.tsx",
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/side-navigation-parts.tsx",
