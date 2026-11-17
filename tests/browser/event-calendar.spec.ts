@@ -146,9 +146,25 @@ for (const platform of ['react']) {
       await expect(values(page)).toHaveText(/^2027-01\|/);
     });
 
+    test('a parent that applies the month later still gets focus on the new day', async ({ page }) => {
+      // 12-12 is the last of November's 42 cells; 12-19 is drawn only once December is.
+      await day(page, 'deferred', '2026-12-12').focus();
+      await page.keyboard.press('ArrowDown');
+      await expect(page.getByTestId('deferred-month')).toHaveText('2026-12');
+      await expect(day(page, 'deferred', '2026-12-19')).not.toHaveAttribute('data-outside');
+      await expect.poll(() => page.evaluate(() => (document.activeElement as HTMLElement | null)?.dataset.iso)).toBe('2026-12-19');
+      await expect(day(page, 'deferred', '2026-12-19')).toBeFocused();
+    });
+
     test('touch swipe changes the month; vertical drags do not', async ({ page }) => {
+      // Each refused gesture gets time to start a slide before the state is read, so a late change would show.
       await drag(middleCell(page, 'month'), -30, 40);
+      await page.waitForTimeout(300);
+      await expect(grid(page, 'month')).not.toHaveAttribute('data-slide');
+      await expect(values(page)).toHaveText('2026-11|2026-11-30||');
       await drag(middleCell(page, 'month'), -60, 0, 'mouse');
+      await page.waitForTimeout(300);
+      await expect(grid(page, 'month')).not.toHaveAttribute('data-slide');
       await expect(values(page)).toHaveText('2026-11|2026-11-30||');
       await drag(middleCell(page, 'month'), -60, 0);
       await expect(values(page)).toHaveText('2026-12|2026-11-30||');
@@ -158,6 +174,8 @@ for (const platform of ['react']) {
       await expect(values(page)).toHaveText('2026-11|2026-11-30||');
       // The week calendar is not swipeable.
       await drag(grid(page, 'week').locator('button').nth(3), -60, 0);
+      await page.waitForTimeout(300);
+      await expect(grid(page, 'week')).not.toHaveAttribute('data-slide');
       await expect(values(page)).toHaveText('2026-11|2026-11-30||');
     });
 
@@ -223,6 +241,8 @@ for (const platform of ['react']) {
         ['2026-11-29', '2026-11-30', '2026-12-01', '2026-12-02', '2026-12-03', '2026-12-04', '2026-12-05']);
       await expect(grid(page, 'week').locator('[data-outside]')).toHaveCount(0);
       await expect(grid(page, 'week').locator('[aria-pressed="true"]')).toHaveCount(0);
+      // A week across two months names both.
+      await expect(grid(page, 'week')).toHaveAttribute('aria-label', '2026년 11월 – 2026년 12월');
       expect(await opacity(number(page, 'week', '2026-12-01'))).toBe(1);
       expect(Math.round((await day(page, 'week', '2026-12-01').boundingBox())!.height)).toBe(49);
       // Arrow keys past the week's end ask for the next week by its first day.

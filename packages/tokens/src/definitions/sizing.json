@@ -358,7 +358,8 @@
       "slideOut": 140,
       "slideIn": 220,
       "slideDistance": { "$ref": "dimension.value24" },
-      "longPressDelay": 500
+      "longPressDelay": 500,
+      "longPressSlop": { "$ref": "dimension.value10" }
     },
     "financial": {
       "warningIconSize": {

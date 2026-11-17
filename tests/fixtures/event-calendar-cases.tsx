@@ -18,6 +18,8 @@ export function EventCalendarCases({ K }: { K: any }) {
   const [longPressed, setLongPressed] = useState('');
   const [plainMonth, setPlainMonth] = useState('2026-11');
   const [plainValue, setPlainValue] = useState<string | null>(null);
+  // An app that applies the month later, as a router or async state would.
+  const [deferredMonth, setDeferredMonth] = useState('2026-11');
   useLayoutEffect(() => { Object.assign(window, { configureEvents: (next: { plainMonth?: string }) => { if (next.plainMonth) setPlainMonth(next.plainMonth); } }); }, []);
   return <main style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 24, width: 390, boxSizing: 'border-box' }}>
     <div data-testid="month"><K.KjunEventCalendar month={month} onMonthChange={setMonth} value={value} onSelect={setValue}
@@ -25,6 +27,8 @@ export function EventCalendarCases({ K }: { K: any }) {
     <div data-testid="week"><K.KjunEventCalendar view="week" week={week} onWeekChange={setWeek} value={value} onSelect={setValue}
       marks={eventMarks} isHoliday={eventHoliday} swipeable={false} /></div>
     <div data-testid="plain"><K.KjunEventCalendar month={plainMonth} onMonthChange={setPlainMonth} value={plainValue} onSelect={setPlainValue} /></div>
+    <div data-testid="deferred"><K.KjunEventCalendar month={deferredMonth} onMonthChange={(next: string) => setTimeout(() => setDeferredMonth(next), 50)} /></div>
+    <output data-testid="deferred-month" style={{ display: 'none' }}>{deferredMonth}</output>
     <output data-testid="values" style={{ display: 'none' }}>{month}|{week}|{value ?? ''}|{longPressed}</output>
   </main>;
 }

@@ -1079,6 +1079,7 @@
   --_kjun-extension-calendar-slide-in: 220ms;
   --_kjun-extension-calendar-slide-distance: 24px;
   --_kjun-extension-calendar-long-press-delay: 500ms;
+  --_kjun-extension-calendar-long-press-slop: 10px;
   --_kjun-extension-market-list-minimum-height: 72px;
   --_kjun-extension-market-list-mobile-quote-minimum-width: 102px;
   --_kjun-extension-market-list-change-skeleton-width: 56px;

@@ -51,8 +51,6 @@ export interface KjunEventCalendarProps {
 }
 
 const calendar = tokens.extensions.calendar;
-// A touch that travels further than this is a drag, not a hold.
-const holdSlop = calendar.swipeDistance / 2;
 // A month key is "YYYY-MM"; a week key is the week's first day.
 const within = (iso: string, key: string) => key.length === 7 ? iso.startsWith(key + "-") : iso >= key && iso <= addDays(key, 6);
 function daysOf(key: string, today: string, weekStart: WeekStart): CalendarDay[] {
@@ -75,27 +73,37 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
   const days = daysOf(shown, today, weekStart);
   const first = parseDate(shown.length === 7 ? shown + "-01" : shown)!;
   const labels = calendarLabels(first.year, first.month, scope);
+  // A week across two months names both.
+  const last = shown.length === 7 ? first : parseDate(addDays(shown, 6))!;
+  const title = last.month === first.month ? labels.title : labels.title + " – " + calendarLabels(last.year, last.month, scope).title;
   const uid = "kjun-event-calendar-" + useId().replace(/:/g, "");
   const grid = useRef<HTMLDivElement>(null);
   const [focus, setFocus] = useState<string>();
-  // Set by keys: focus follows the day once it is drawn, also after the month changes.
-  const focusWanted = useRef(false);
+  // The day a navigation key moved to: focus follows it once it is drawn in the shown period, however late the app applies the change.
+  // The next pointer press or other key drops it.
+  const focusWanted = useRef<string | null>(null);
   const touch = useRef<TouchTrack | null>(null);
-  // A hold or a swipe is not a pick: the click that follows is dropped once.
-  const swallow = useRef(false);
+  // Set when a touch hold has fired, until the next press; a context menu from the same hold is then ignored.
+  const held = useRef(false);
+  // A hold or a swipe is not a pick: the click that follows is dropped once, and only shortly after the finger lifts.
+  const swallow = useRef(false), swallowTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const tabStop = [focus, value, today].find(iso => !!iso && within(iso, shown)) ?? days.find(day => within(day.iso, shown))!.iso;
   const describe = onDayLongPress && dayLongPressLabel ? uid + "-long-press" : undefined;
 
   useEffect(() => {
-    if (!focusWanted.current || !focus) return;
-    // The app kept the view: there is nothing to follow.
-    if (!within(focus, key)) { focusWanted.current = false; return; }
-    const target = grid.current?.querySelector<HTMLButtonElement>(`[data-iso="${focus}"]`);
-    if (target && document.activeElement !== target) target.focus({ preventScroll: true });
-    if (within(focus, shown)) focusWanted.current = false;
+    const wanted = focusWanted.current;
+    if (!wanted) return;
+    // Focus went somewhere else on the page: never pull it back.
+    const active = document.activeElement;
+    if (active && active !== document.body && !grid.current?.contains(active)) { focusWanted.current = null; return; }
+    const target = grid.current?.querySelector<HTMLButtonElement>(`[data-iso="${wanted}"]`);
+    if (!target) return;
+    if (active !== target) target.focus({ preventScroll: true });
+    // An outside copy in the old month holds focus until the new period is drawn.
+    if (within(wanted, shown)) focusWanted.current = null;
   });
   const endTouch = () => { clearTimeout(touch.current?.timer); touch.current = null; };
-  useEffect(() => endTouch, []);
+  useEffect(() => () => { endTouch(); clearTimeout(swallowTimer.current); }, []);
 
   const canChange = view === "week" ? !!onWeekChange : !!onMonthChange;
   // Asks the app for the month (week) holding iso.
@@ -103,7 +111,9 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
   const step = (delta: -1 | 1) => change(view === "week" ? addDays(key, 7 * delta) : stepMonth(key, delta) + "-01");
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    swallow.current = false;
+    swallow.current = held.current = false;
+    // Any key drops a pending focus; a navigation key below sets a new one.
+    focusWanted.current = null;
     const iso = isoOf(event.target);
     if (!iso) return;
     // Enter picks; Shift+Enter is the keyboard long press.
@@ -115,22 +125,24 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
     if (!next) return;
     event.preventDefault();
     if (!within(next, key)) { if (!canChange) return; change(next); }
-    focusWanted.current = true;
+    focusWanted.current = next;
     setFocus(next);
   };
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     swallow.current = false;
+    held.current = false;
+    focusWanted.current = null;
     endTouch();
     if (event.pointerType !== "touch") return;
     const iso = isoOf(event.target), track: TouchTrack = { id: event.pointerId, x: event.clientX, y: event.clientY, swiped: false, held: false };
-    if (iso && onDayLongPress) track.timer = setTimeout(() => { track.held = true; swallow.current = true; onDayLongPress(iso); }, calendar.longPressDelay);
+    if (iso && onDayLongPress) track.timer = setTimeout(() => { track.held = held.current = swallow.current = true; onDayLongPress(iso); }, calendar.longPressDelay);
     touch.current = track;
   };
   const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
     const track = touch.current;
     if (!track || track.id !== event.pointerId || track.swiped || track.held) return;
     const dx = event.clientX - track.x, dy = event.clientY - track.y;
-    if (Math.hypot(dx, dy) > holdSlop) clearTimeout(track.timer);
+    if (Math.hypot(dx, dy) > calendar.longPressSlop) clearTimeout(track.timer);
     const delta = swipeable ? swipeStep(dx, dy) : 0;
     if (!delta) return;
     // One swipe asks for one month (week); the rest of the gesture is ignored.
@@ -138,15 +150,22 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
     swallow.current = true;
     step(delta);
   };
+  // The finger lifted: a click due to the gesture comes right after, so the swallow flag lasts only that long.
+  const onPointerEnd = () => {
+    endTouch();
+    clearTimeout(swallowTimer.current);
+    if (swallow.current) swallowTimer.current = setTimeout(() => { swallow.current = false; }, tokens.motion.instant);
+  };
   const onContextMenu = (event: MouseEvent<HTMLDivElement>) => {
     const iso = isoOf(event.target);
     if (!onDayLongPress || !iso) return;
     event.preventDefault();
+    // A touch hold may raise the context menu as well as the timer (even after pointercancel); whichever comes first counts.
+    if (held.current) return;
     const track = touch.current;
-    // A touch hold may raise the context menu as well as the timer; whichever comes first counts.
     if (track) {
-      if (track.held || track.swiped) return;
-      clearTimeout(track.timer); track.held = true; swallow.current = true;
+      if (track.swiped) return;
+      clearTimeout(track.timer); track.held = held.current = swallow.current = true;
     }
     onDayLongPress(iso);
   };
@@ -163,12 +182,12 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
       <div className="kjun-event-calendar-weekdays">
         {orderWeekdays(labels.weekdays, weekStart).map((name, index) => {
           const tone = dayTone((index + weekStart) % 7, { markSunday, markSaturday, holiday: false });
-          return <span key={name} className="kjun-calendar-weekday" data-tone={tone === "text" ? undefined : tone} aria-hidden="true">{name}</span>;
+          return <span key={index} className="kjun-calendar-weekday" data-tone={tone === "text" ? undefined : tone} aria-hidden="true">{name}</span>;
         })}
       </div>
-      <div ref={grid} className="kjun-event-calendar-grid" role="group" aria-label={labels.title}
+      <div ref={grid} className="kjun-event-calendar-grid" role="group" aria-label={title}
         data-slide={slide.phase === "idle" ? undefined : slide.phase} data-direction={slide.phase === "idle" ? undefined : slide.direction}
-        onKeyDown={onKeyDown} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={endTouch} onPointerCancel={endTouch}
+        onKeyDown={onKeyDown} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerEnd} onPointerCancel={onPointerEnd}
         onContextMenu={onContextMenu}>
         {days.map((day, index) => {
           const holiday = holidayOf(isHoliday, day.iso, scope);
