@@ -49,7 +49,7 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
   }, [count]);
   const at = clampCurrent(current, count);
   const vertical = orientation === "vertical";
-  // Only a horizontal auto layout reads the width; it stays invisible until the first measurement.
+  // Only a horizontal auto layout reads the width and stays invisible until the first measurement. The width is always tracked, so switching to auto later has one.
   const measuring = !vertical && layout === "auto";
   const waiting = measuring && width === undefined;
   const compact = !vertical && (layout === "compact" || (measuring && stepsLayout(width ?? 0, count) === "compact"));
@@ -117,10 +117,10 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
     const slop = Math.max(0, (tokens.native.minimumTouchTarget - (vertical ? titleLine + 2 * pad : 0)) / 2);
     return (
       <View key={item.key ?? i} role="listitem"
-        {...(selectable ? {} : { accessible: true, accessibilityLabel: spoken, ...(marked ? { accessibilityState: { selected: true } } : {}) })}
+        {...(selectable ? {} : { accessible: true, accessibilityLabel: spoken, ...(marked && Platform.OS !== "web" ? { accessibilityState: { selected: true } } : {}) })}
         {...(Platform.OS === "web" && marked ? { "aria-current": "step" } : {})}
         style={{ flex: vertical ? undefined : 1, minWidth: !vertical && layout === "full" ? geometry.minColumn : 0 }}>
-        {line ? <View pointerEvents="none" style={[{ position: "absolute", zIndex: 0 }, line]} /> : null}
+        {line ? <View testID={`steps-line-${i}`} pointerEvents="none" style={[{ position: "absolute", zIndex: 0 }, line]} /> : null}
         {selectable ? (
           <Pressable accessibilityRole="button" accessibilityLabel={spoken} onPress={() => onStepSelect?.(i)}
             hitSlop={{ top: slop, bottom: slop }} focusRingRadius={tokens.radius.radius8}
@@ -134,7 +134,7 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
   });
 
   return (
-    <View testID={testID} onLayout={measuring ? (event: LayoutChangeEvent) => setWidth(event.nativeEvent.layout.width) : undefined}
+    <View testID={testID} onLayout={(event: LayoutChangeEvent) => setWidth(event.nativeEvent.layout.width)}
       style={[{ minWidth: 0, opacity: waiting ? 0 : 1 }, style]}>
       {compact && headItem ? (
         <View accessible={false} aria-hidden importantForAccessibility="no-hide-descendants" accessibilityElementsHidden

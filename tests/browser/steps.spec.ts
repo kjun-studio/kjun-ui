@@ -43,6 +43,13 @@ for (const platform of ['react', 'vue3', 'native']) {
         await expect(section(page, 'wizard').getByRole('list', { name: '주문 단계' })).toBeVisible();
         await expect(spoken(page, 'wizard', 2).getByText('3', { exact: true })).toBeVisible();
         await expect(spoken(page, 'wizard', 0).locator('svg')).toHaveCount(1);
+        // A line runs from the previous marker's centre to this one's, brand once this step is reached.
+        const line = (n: number) => section(page, 'wizard').getByTestId('steps-line-' + n);
+        await expect(line(1)).toHaveCSS('background-color', await paint(page, 'brand'));
+        await expect(line(3)).toHaveCSS('background-color', await paint(page, 'secondary'));
+        const [before, after, bar] = await Promise.all([rows(page, 'wizard').nth(0).boundingBox(), rows(page, 'wizard').nth(1).boundingBox(), line(1).boundingBox()]);
+        expect(Math.abs(bar!.x - (before!.x + before!.width / 2))).toBeLessThanOrEqual(1);
+        expect(Math.abs(bar!.x + bar!.width - (after!.x + after!.width / 2))).toBeLessThanOrEqual(1);
         await expect(spoken(page, 'wizard', 2).locator('svg')).toHaveCount(0);
         return;
       }
@@ -200,6 +207,14 @@ for (const platform of ['react', 'vue3', 'native']) {
         await expect(section(page, 'vertical').getByText(/ \/ 4/)).toHaveCount(0);
         const first = (await rows(page, 'vertical').nth(0).boundingBox())!, second = (await rows(page, 'vertical').nth(1).boundingBox())!;
         expect(Math.round(second.y - (first.y + first.height))).toBe(16);
+        // The line below a finished step is brand coloured and 2px wide; the one below the current step is not.
+        const line = (n: number) => section(page, 'vertical').getByTestId('steps-line-' + n).evaluate(el => {
+          const style = getComputedStyle(el);
+          return { width: style.width, color: style.backgroundColor };
+        });
+        expect((await line(0)).color).toBe(await paint(page, 'brand'));
+        expect((await line(0)).width).toBe('2px');
+        expect((await line(2)).color).toBe(await paint(page, 'secondary'));
         return;
       }
       await expect(root(page, 'vertical')).toHaveAttribute('data-orientation', 'vertical');
