@@ -85,7 +85,8 @@
     "filterSelectedText",
     "onDanger",
     "onSuccess",
-    "onWarning"
+    "onWarning",
+    "navigationInactive"
   ],
   "domainColorRoles": [
     "priceUp",
@@ -196,7 +197,8 @@
     "filter-selected-text": "filterSelectedText",
     "on-danger": "onDanger",
     "on-success": "onSuccess",
-    "on-warning": "onWarning"
+    "on-warning": "onWarning",
+    "navigation-inactive": "navigationInactive"
   },
   "coreColorRoles": [
     "brand",
@@ -286,7 +288,8 @@
     "filterSelectedText": "inverse",
     "onDanger": "inverse",
     "onSuccess": "inverse",
-    "onWarning": "inverse"
+    "onWarning": "inverse",
+    "navigationInactive": "textTertiary"
   },
   "cardSurfaces": {
     "default": {

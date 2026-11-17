@@ -86,6 +86,7 @@
   --_kjun-color-on-danger: var(--kjun-on-danger, var(--kjun-inverse));
   --_kjun-color-on-success: var(--kjun-on-success, var(--kjun-inverse));
   --_kjun-color-on-warning: var(--kjun-on-warning, var(--kjun-inverse));
+  --_kjun-color-navigation-inactive: var(--kjun-navigation-inactive, var(--kjun-text-tertiary));
   --_kjun-color-price-up: var(--kjun-price-up);
   --_kjun-color-price-up-light: var(--kjun-price-up-light);
   --_kjun-color-price-up-bg: var(--kjun-price-up-bg);
@@ -193,6 +194,7 @@
   --_kjun-on-danger: var(--_kjun-color-on-danger);
   --_kjun-on-success: var(--_kjun-color-on-success);
   --_kjun-on-warning: var(--_kjun-color-on-warning);
+  --_kjun-navigation-inactive: var(--_kjun-color-navigation-inactive);
   --_kjun-font-numeric: var(--kjun-font-numeric, var(--kjun-font));
   --_kjun-control-label-size: var(--_kjun-type-control-size);
   --_kjun-radius-card: 12px;
@@ -205,7 +207,7 @@
   --_kjun-elevation-handle: 0px 1px 3px 0px var(--_kjun-color-shadow);
   --_kjun-elevation-lifted: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-elevation-floating: 0px 6px 16px 0px var(--_kjun-color-shadow), 0px 1px 3px 0px var(--_kjun-color-shadow-subtle);
-  --_kjun-elevation-docked: 0px -8px 24px 0px var(--_kjun-color-shadow-subtle), 0px -1px 0px 0px var(--_kjun-color-shadow-subtle);
+  --_kjun-elevation-docked: 0px -1px 0px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-motion-instant: 100ms;
   --_kjun-motion-quick: 150ms;
   --_kjun-motion-fast: 200ms;
@@ -243,7 +245,7 @@
   --_kjun-modal-elevation: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-popover-elevation: 0px 6px 16px 0px var(--_kjun-color-shadow), 0px 1px 3px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-fab-elevation: 0px 2px 8px 0px var(--_kjun-color-shadow-subtle);
-  --_kjun-bottom-navigation-elevation: 0px -8px 24px 0px var(--_kjun-color-shadow-subtle), 0px -1px 0px 0px var(--_kjun-color-shadow-subtle);
+  --_kjun-bottom-navigation-elevation: 0px -1px 0px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-floating-navigation-elevation: 0px 6px 16px 0px var(--_kjun-color-shadow), 0px 1px 3px 0px var(--_kjun-color-shadow-subtle);
   --_kjun-slider-elevation: 0px 1px 3px 0px var(--_kjun-color-shadow);
   --_kjun-menu-elevation: 0px 6px 16px 0px var(--_kjun-color-shadow), 0px 1px 3px 0px var(--_kjun-color-shadow-subtle);

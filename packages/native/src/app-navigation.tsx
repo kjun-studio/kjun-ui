@@ -93,7 +93,7 @@ export interface KjunBottomNavigationProps { items: NavigationDestination[]; val
   keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: Navigate;
   /** The current destination was pressed again, e.g. to scroll its page back to the top. */
   onReselect?: Navigate;
-  /** Paints the surface (default true): a square bar with a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band. */
+  /** Paints the surface (default true): a square bar with a hairline shadow along its top edge; false lets the page background show through, so the bar does not read as a separate band. */
   surface?: boolean;
   /** "auto" (default) draws outline icons and fills the selected one; "filled" or "outline" keeps one style for every destination, the selection then carried by colour (and stroke weight). */
   iconStyle?: NavigationIconStyle;
@@ -107,7 +107,7 @@ export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true,
   const layout = bottomNavigationLayout(items, showLabels);
   const reportHeight = useKjunBottomBar(!(keyboardVisible && hideOnKeyboard));
   if (keyboardVisible && hideOnKeyboard) return null;
-  // Like Web: a square bar with a soft shadow thrown upwards, apart from the content above it.
+  // Like Web: a square bar with a hairline shadow along its top edge, apart from the content above it.
   return <View role="navigation" accessibilityLabel={ariaLabel} onLayout={reportHeight} style={{ flexShrink: 0, flexDirection: "row", justifyContent: "center", backgroundColor: surface ? colors.surface : "transparent", paddingBottom: (safeArea ? insets.bottom : 0),
     ...(surface ? { boxShadow: shadowLayers(geometry.elevation, colors) } : {}) }}>
     {items.map(item => <BottomDestination key={item.key} item={item} selected={item.key === value} parts={layout.parts(item)} iconOnly={layout.iconOnly} hasIcons={layout.hasIcons}
@@ -122,7 +122,7 @@ function BottomDestination({ item, selected, parts, iconOnly, hasIcons, iconStyl
   const m = useKjunMessages(), { colors } = useKjunStyles();
   const geometry = tokens.extensions.bottomNavigation;
   // Unselected destinations step back to the tertiary text role; disabled ones go one step further.
-  const ink = item.disabled ? colors.textDisabled : selected ? colors.brand : colors.textTertiary;
+  const ink = item.disabled ? colors.textDisabled : selected ? colors.brand : colors.navigationInactive;
   // Hover, press and keyboard focus share one shape: a rounded rectangle inset from the destination's edges.
   const press = ({ pressed, hovered }: PressState) => !item.disabled && (pressed || hovered) ? (pressed ? colors.active : colors.hover) : "transparent";
   // The badge ring follows the fill under it (hover or press), else the bar's surface, or the page background without one.

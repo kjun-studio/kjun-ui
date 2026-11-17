@@ -33841,7 +33841,7 @@
             "type": "boolean",
             "required": false,
             "default": "true",
-            "description": "Paints the surface (default true): a square bar with a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band.",
+            "description": "Paints the surface (default true): a square bar with a hairline shadow along its top edge; false lets the page background show through, so the bar does not read as a separate band.",
             "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
             "source": "packages/vue3/src/app-navigation.tsx"
           },
@@ -34095,7 +34095,7 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "true",
-            "description": "Paints the surface (default true): a square bar with a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band.",
+            "description": "Paints the surface (default true): a square bar with a hairline shadow along its top edge; false lets the page background show through, so the bar does not read as a separate band.",
             "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
             "source": "packages/react/src/app-navigation.tsx"
           },
@@ -34298,7 +34298,7 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "true",
-            "description": "Paints the surface (default true): a square bar with a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band.",
+            "description": "Paints the surface (default true): a square bar with a hairline shadow along its top edge; false lets the page background show through, so the bar does not read as a separate band.",
             "summary": "표면색(surface) 바탕을 그립니다. 기본값 true이며 false면 바탕 없이 부모 배경이 그대로 보입니다. 헤더·하단 탭바·하단 버튼 영역에서는 화면 바탕과 이어져 별도의 띠처럼 보이지 않게 할 때 씁니다. 내용이 그 뒤로 스크롤되는 고정 영역에는 바탕을 두세요.",
             "source": "packages/native/src/app-navigation.tsx"
           },

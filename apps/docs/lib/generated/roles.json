@@ -481,7 +481,6 @@
       "packages/react/src/number-display.tsx",
       "packages/react/src/select-control.tsx",
       "packages/native/src/actions.tsx",
-      "packages/native/src/app-navigation.tsx",
       "packages/native/src/calendar.tsx",
       "packages/native/src/color-picker-parts.tsx",
       "packages/native/src/combobox.tsx",
@@ -1652,6 +1651,20 @@
       "packages/tokens/src/layout.css",
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "navigationInactive",
+    "contract": "common",
+    "required": false,
+    "fallback": "textTertiary",
+    "variable": "--kjun-navigation-inactive",
+    "upstreamAliases": [
+      "--navigation-inactive"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/extensions.css",
+      "packages/native/src/app-navigation.tsx"
     ]
   },
   {

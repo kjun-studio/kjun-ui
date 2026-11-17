@@ -1463,7 +1463,7 @@
         "type": "boolean",
         "required": false,
         "default": "true",
-        "description": "Paints the surface (default true): a square bar with a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band."
+        "description": "Paints the surface (default true): a square bar with a hairline shadow along its top edge; false lets the page background show through, so the bar does not read as a separate band."
       },
       {
         "name": "iconStyle",
@@ -1553,7 +1553,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Paints the surface (default true): a square bar with a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band."
+        "description": "Paints the surface (default true): a square bar with a hairline shadow along its top edge; false lets the page background show through, so the bar does not read as a separate band."
       },
       {
         "name": "iconStyle",
@@ -1632,7 +1632,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "Paints the surface (default true): a square bar with a soft shadow over the content; false lets the page background show through, so the bar does not read as a separate band."
+        "description": "Paints the surface (default true): a square bar with a hairline shadow along its top edge; false lets the page background show through, so the bar does not read as a separate band."
       },
       {
         "name": "iconStyle",

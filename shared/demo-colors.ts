@@ -18,6 +18,8 @@ const base: KjunColors = {
   textSecondary: "#666666",
   textTertiary: "#737373",
   textDisabled: "#969696",
+  // Unselected bottom navigation destinations, lighter than textTertiary so the selection stands out.
+  navigationInactive: "#8C8C8C",
   inverse: "#FFFFFF",
   border: "#DEDEDE",
   borderSecondary: "#CCCCCC",
@@ -112,6 +114,7 @@ const paletteInputs: Record<PaletteName, KjunColors> = {
     textSecondary: "#D4D4D4",
     textTertiary: "#BDBDBD",
     textDisabled: "#969696",
+    navigationInactive: "#8C8C8C",
     inverse: "#111111",
     border: "#525252",
     borderSecondary: "#737373",

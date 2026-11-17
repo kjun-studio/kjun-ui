@@ -52,14 +52,6 @@
     "docked": [
       {
         "offsetX": 0,
-        "offsetY": -8,
-        "blurRadius": 24,
-        "spreadDistance": 0,
-        "inset": false,
-        "colorRole": "shadowSubtle"
-      },
-      {
-        "offsetX": 0,
         "offsetY": -1,
         "blurRadius": 0,
         "spreadDistance": 0,
