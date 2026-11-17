@@ -66,6 +66,12 @@ test('commit', () => {
   assert.equal(commitNumber('-0', two.allowNegative ? r({ allowNegative: true }) : two), '0');
   assert.equal(commitNumber('12.', r()), '12');
   assert.equal(commitNumber('-5', two), '-5.00');
+  const pct = r({ format: 'percent' });
+  assert.equal(sanitizeNumber('.', pct), '');
+  assert.equal(sanitizeNumber('-.', pct), '-');
+  assert.equal(commitNumber(sanitizeNumber('.', pct), pct), '');
+  assert.equal(commitNumber(sanitizeNumber('-.', pct), pct), '');
+  assert.equal(sanitizeNumber('.5', pct), '0.5');
 });
 
 test('caret keeps the significant count', () => {

@@ -39,7 +39,7 @@ export function sanitizeNumber(text: string, o: ResolvedNumberInput): string {
   const rawInt = (dot < 0 ? kept.replace(/\./g, "") : kept.slice(0, dot)).replace(/^0+(?=\d)/, "");
   const int = rawInt.slice(0, o.maxIntegerDigits);
   const frac = dot < 0 ? "" : kept.slice(dot + 1).replace(/\./g, "").slice(0, o.decimals);
-  const body = dot < 0 ? int : `${int || "0"}.${frac}`;
+  const body = dot < 0 || (!int && !frac) ? int : `${int || "0"}.${frac}`;
   return (negative ? "-" : "") + body;
 }
 
