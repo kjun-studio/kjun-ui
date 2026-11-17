@@ -80,4 +80,11 @@ export const layout: Record<string, GuideAuthor> = {
     ],
     related: "toolbar",
   },
+  KjunSpacer: {
+    parts: [
+      t("앞 묶음", "Spacer 앞의 주 메뉴입니다. 묶음 안 간격은 gap 그대로입니다.", "홈"),
+      t("뒤 묶음", "Spacer가 남는 높이를 차지해 끝으로 밀린 항목입니다.", "설정"),
+    ],
+    related: "toolbar",
+  },
 };

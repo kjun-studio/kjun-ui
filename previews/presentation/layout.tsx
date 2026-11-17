@@ -13,6 +13,7 @@ export function layout(name: string) {
   switch (name) {
     case 'KjunText': return stack(<><K.KjunText variant="sectionTitle">알림 설정</K.KjunText><K.KjunText tone="secondary">받을 알림을 고르세요.</K.KjunText></>);
     case 'KjunStack': return <K.KjunStack gap="md"><K.KjunText variant="cardTitle">알림 설정</K.KjunText><K.KjunText tone="secondary">받을 알림을 고르세요.</K.KjunText><K.KjunButton>저장</K.KjunButton></K.KjunStack>;
+    case 'KjunSpacer': return <div style={{ height: 160 }}><K.KjunStack gap="xs" style={{ height: '100%' }}><K.KjunText>홈</K.KjunText><K.KjunText>자산</K.KjunText><K.KjunSpacer /><K.KjunText>설정</K.KjunText></K.KjunStack></div>;
     case 'KjunInline': return <K.KjunInline gap="sm" justify="end"><K.KjunButton variant="secondary">취소</K.KjunButton><K.KjunButton>저장</K.KjunButton></K.KjunInline>;
     case 'KjunDropdown': case 'KjunDropdownItem': case 'KjunDropdownDivider': case 'KjunDropdownSection': case 'KjunDropdownSubmenu': case 'KjunMenuButton': return <Menu name={name} />;
     case 'KjunModal': return <K.KjunModal open onOpenChange={noop} title="목록 이름 변경" size="sm" showFooter confirmText="변경 사항 저장">{field(input())}</K.KjunModal>;

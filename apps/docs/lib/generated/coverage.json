@@ -1,11 +1,11 @@
 {
-  "total": 97,
+  "total": 98,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 97,
+      "provided": 98,
       "counts": {
-        "supported": 97,
+        "supported": 98,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 97,
+      "provided": 98,
       "counts": {
-        "supported": 97,
+        "supported": 98,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 97,
+      "provided": 98,
       "counts": {
         "supported": 0,
-        "preview": 97,
+        "preview": 98,
         "review": 0,
         "unsupported": 0
       },
@@ -1476,7 +1476,7 @@
       "title": "Inline",
       "docs": "/components/inline",
       "category": "layout",
-      "differences": "세 플랫폼 모두 gap·align·justify·wrap을 사용합니다. Native는 문자열 자식을 본문 글자로 감쌉니다.",
+      "differences": "세 플랫폼 모두 gap·align·justify·wrap·divider·direction·padding·responsive를 사용합니다. as는 웹 전용입니다. Native는 문자열 자식을 본문 글자로 감쌉니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -2588,6 +2588,37 @@
       "recordId": "verification-v0.3.0"
     },
     {
+      "name": "KjunSpacer",
+      "title": "Spacer",
+      "docs": "/components/spacer",
+      "category": "layout",
+      "differences": "웹은 화면 낭독기에서 숨긴 빈 div, Native는 flexGrow 1인 View입니다. Vue 3는 속성을 받지 않고 class·style을 그대로 넘깁니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
       "name": "KjunSparkline",
       "title": "Sparkline",
       "docs": "/components/sparkline",
@@ -2685,7 +2716,7 @@
       "title": "Stack",
       "docs": "/components/stack",
       "category": "layout",
-      "differences": "세 플랫폼 모두 gap·align·justify·divider를 사용합니다. as(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)는 웹 전용이며 ul·ol의 자식은 li로 줍니다. 웹은 화면 폭 간격을 미디어 쿼리로, Native는 창 폭으로 고릅니다. Native는 문자열 자식을 본문 글자로 감싸고, testID·accessibilityRole 같은 View 속성을 그대로 넘깁니다. 웹에서 문자열을 본문 서체로 쓰려면 KjunText로 감싸세요.",
+      "differences": "세 플랫폼 모두 gap·align·justify·divider·dividerInset·direction·padding·responsive를 사용합니다. as(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)는 웹 전용이며 ul·ol의 자식은 li로 줍니다. React는 as에 따라 태그의 속성(form의 onSubmit 등)과 ref 타입을 받고, Vue 3는 같은 속성을 그대로 넘깁니다. 화면 폭 기준은 웹이 미디어 쿼리로, Native가 창 폭으로 고르고, container 기준은 웹이 ResizeObserver로, Native가 onLayout으로 잽니다. 웹에서 내용 폭을 유지하는 컨트롤은 Button·Badge·Chip·CopyButton·ExternalLink·MenuButton·Spinner·FilterGroup과 숫자 표시 컴포넌트이고, Native는 Button·Badge·Chip이 align을 따릅니다. Native는 문자열 자식을 본문 글자로 감싸고, testID·accessibilityRole 같은 View 속성을 그대로 넘깁니다. 웹에서 문자열을 본문 서체로 쓰려면 KjunText로 감싸세요.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -3093,7 +3124,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 97
+      "componentCount": 98
     }
   ]
 }

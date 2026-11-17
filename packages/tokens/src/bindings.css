@@ -1083,6 +1083,7 @@
   --_kjun-border-hairline-width: 0.5px;
   --_kjun-border-default-width: 1px;
   --_kjun-border-control-width: 2px;
+  --_kjun-border-divider-strong-width: 8px;
   --_kjun-motion-distance-modal-enter: 16px;
   --_kjun-motion-distance-modal-exit: 8px;
   --_kjun-motion-distance-popup: 4px;
@@ -1289,6 +1290,7 @@
   --_kjun-geometry-space-inline-lg: 16px;
   --_kjun-geometry-space-stack-xs: 4px;
   --_kjun-geometry-space-stack-sm: 8px;
+  --_kjun-geometry-space-stack-sm-md: 12px;
   --_kjun-geometry-space-stack-md: 16px;
   --_kjun-geometry-space-stack-lg: 24px;
   --_kjun-geometry-space-inset-sm: 12px;

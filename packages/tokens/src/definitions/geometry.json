@@ -2,7 +2,7 @@
   "basis": "KJUN",
   "space": {
     "inline": { "xs": { "$ref": "dimension.value4" }, "sm": { "$ref": "dimension.value8" }, "md": { "$ref": "dimension.value12" }, "lg": { "$ref": "dimension.value16" } },
-    "stack": { "xs": { "$ref": "dimension.value4" }, "sm": { "$ref": "dimension.value8" }, "md": { "$ref": "dimension.value16" }, "lg": { "$ref": "dimension.value24" } },
+    "stack": { "xs": { "$ref": "dimension.value4" }, "sm": { "$ref": "dimension.value8" }, "smMd": { "$ref": "dimension.value12" }, "md": { "$ref": "dimension.value16" }, "lg": { "$ref": "dimension.value24" } },
     "inset": { "sm": { "$ref": "dimension.value12" }, "md": { "$ref": "dimension.value16" }, "lg": { "$ref": "dimension.value24" } },
     "section": { "sm": { "$ref": "dimension.value32" }, "md": { "$ref": "dimension.value48" }, "lg": { "$ref": "dimension.value64" } }
   },

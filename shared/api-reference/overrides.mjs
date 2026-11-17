@@ -294,24 +294,35 @@ set("Text", {
   dir: { summary: "글자 방향(ltr·rtl·auto)입니다." },
 });
 set("Stack", {
-  gap: { default: '"md"', summary: "자식 사이 세로 간격 단계입니다. xs·sm·md·lg는 space.stack(4·8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다). Native는 창 폭을 따릅니다." },
-  align: { default: '"stretch"', summary: "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지는 내용 폭을 유지합니다(전체 폭 버튼은 block). start·center·end는 모든 자식을 내용 폭으로 둡니다." },
-  justify: { default: '"start"', summary: "Stack이 자식보다 높을 때 남는 높이의 분배(start·center·end·between)입니다. between은 첫 자식을 위, 마지막 자식을 아래에 붙입니다. 높이를 채우는 패널에 씁니다." },
-  divider: { default: "false", summary: "자식 사이에 divider 색 1px 구분선을 그립니다. 선 위아래에 각각 gap만큼 간격을 둡니다. 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다." },
-  as: { default: '"div"', summary: "웹 태그(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)입니다. ul·ol은 목록 기호와 들여쓰기를, fieldset은 테두리를 지우며 자식은 li로 주세요." },
+  gap: { default: '"md"', summary: "자식 사이 간격 단계입니다. xs·sm·smMd·md·lg는 space.stack(4·8·12·16·24px), sectionSm·sectionMd·sectionLg는 space.section(32·48·64px)이고 none은 0입니다. section-sm처럼 쓰던 이전 이름도 동작하며 개발 모드에서 한 번 알립니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다)." },
+  align: { default: '"stretch"', summary: "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지합니다(전체 폭 버튼은 block, 앱이 감싼 요소는 data-kjun-intrinsic). start·center·end는 모든 자식을 내용 폭으로 둡니다." },
+  justify: { default: '"start"', summary: "Stack이 자식보다 길 때 남는 길이의 분배(start·center·end·between)입니다. between은 첫 자식을 시작, 마지막 자식을 끝에 붙입니다. 묶음 사이를 벌리려면 KjunSpacer를 넣습니다." },
+  divider: { default: "false", summary: "자식 사이에 구분 요소를 넣습니다. true와 full은 divider 색 1px 선, inset은 dividerInset만큼 들여 시작하는 선, strong은 구획을 나누는 8px 바탕색 띠입니다. 선은 gap 가운데에 그려 자식 사이 거리가 gap 그대로이고, 띠는 gap에 두께를 더합니다. KjunSpacer 옆에는 그리지 않으며, 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다." },
+  direction: { default: '"column"', summary: "자식을 세로(column)로 쌓을지 가로(row)로 놓을지 정합니다. { base: \"column\", medium: \"row\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, 좁으면 세로·넓으면 가로인 카드를 컴포넌트 하나로 그립니다. 방향이 바뀌면 구분선도 따라 눕습니다." },
+  padding: { summary: "안쪽 여백 단계입니다. sm·md·lg는 space.inset(12·16·24px)이고 none은 0입니다. 네 방향에 같은 값을 주며 gap처럼 화면 폭별 객체를 받습니다. 배경과 모서리는 앱이 정합니다." },
+  paddingX: { summary: "좌우 여백 단계입니다. padding의 좌우만 바꿉니다." },
+  paddingY: { summary: "위아래 여백 단계입니다. padding의 위아래만 바꿉니다." },
+  dividerInset: { default: '"md"', summary: "divider=\"inset\"인 선이 시작하는 거리입니다. space.inset(sm 12·md 16·lg 24px) 단계입니다." },
+  responsive: { default: '"viewport"', summary: "화면 폭별 객체가 무엇을 기준으로 바뀔지 정합니다. viewport는 화면(창) 폭이라 첫 화면부터 정확합니다. container는 Stack 자기 폭을 재서(웹 ResizeObserver, Native onLayout) 좁은 사이드바·Drawer 안에서도 맞는 단계를 고르며, 재기 전 첫 그림은 base입니다." },
+  as: { default: '"div"', summary: "웹 태그(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)입니다. ul·ol은 목록 기호와 들여쓰기를, fieldset은 테두리를 지우며 자식은 li로 주세요. React에서는 태그의 속성(form의 onSubmit, fieldset의 disabled 등)과 ref 타입이 as를 따릅니다." },
 });
-set("Stack", {
-  ref: "루트 요소의 ref입니다. 스크롤 위치나 크기를 잴 때 씁니다.",
-}, "react");
 set("Inline", {
-  ref: "루트 요소의 ref입니다. 스크롤 위치나 크기를 잴 때 씁니다.",
-}, "react");
-set("Inline", {
-  gap: { default: '"sm"', summary: "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다." },
+  gap: { default: '"sm"', summary: "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다. Stack처럼 화면 폭별 객체를 받습니다." },
   align: { default: '"center"', summary: "자식의 세로 정렬(start·center·end·baseline·stretch)입니다." },
   justify: { default: '"start"', summary: "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다." },
   wrap: { default: "true", summary: "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다." },
+  divider: { default: "false", summary: "자식 사이에 세로 구분선을 넣습니다. 종류와 간격 규칙은 Stack과 같습니다." },
+  direction: { default: '"row"', summary: "자식을 가로(row)로 놓을지 세로(column)로 쌓을지 정합니다. { base: \"column\", medium: \"row\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, 좁으면 세로·넓으면 가로인 카드를 컴포넌트 하나로 그립니다. 방향이 바뀌면 구분선도 따라 눕습니다." },
+  padding: { summary: "안쪽 여백 단계입니다. sm·md·lg는 space.inset(12·16·24px)이고 none은 0입니다. 네 방향에 같은 값을 주며 gap처럼 화면 폭별 객체를 받습니다. 배경과 모서리는 앱이 정합니다." },
+  paddingX: { summary: "좌우 여백 단계입니다. padding의 좌우만 바꿉니다." },
+  paddingY: { summary: "위아래 여백 단계입니다. padding의 위아래만 바꿉니다." },
+  dividerInset: { default: '"md"', summary: "divider=\"inset\"인 선이 시작하는 거리입니다. space.inset(sm 12·md 16·lg 24px) 단계입니다." },
+  responsive: { default: '"viewport"', summary: "화면 폭별 객체가 무엇을 기준으로 바뀔지 정합니다. viewport는 화면(창) 폭이라 첫 화면부터 정확합니다. container는 Stack 자기 폭을 재서(웹 ResizeObserver, Native onLayout) 좁은 사이드바·Drawer 안에서도 맞는 단계를 고르며, 재기 전 첫 그림은 base입니다." },
+  as: { default: '"div"', summary: "웹 태그입니다. Stack과 같은 태그를 받으며, ul·ol은 목록 기호와 들여쓰기를 지웁니다." },
 });
+set("Spacer", {
+  style: { summary: "Native 바깥 스타일입니다. 길이는 Spacer가 남는 공간으로 정하므로 크기를 주지 않습니다." },
+}, "native");
 set("KpiHero", {
   asideMobile: { default: '"below"', summary: "좁은 화면(640px 이하)에서 aside를 변동선 아래 전폭으로 내립니다. hidden이면 숨깁니다." },
   deltaIcon: { default: "false", summary: "첫 번째 증감 숫자(deltaAbsolute, 없으면 deltaPercent) 앞에 방향 삼각형을 그리고 그 숫자의 부호를 뺍니다. 부호는 스크린 리더에 그대로 읽힙니다. deltaFormatter의 글자는 바꾸지 않습니다." },

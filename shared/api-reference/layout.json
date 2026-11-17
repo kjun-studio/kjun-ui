@@ -409,25 +409,46 @@
       "align",
       "justify",
       "divider",
+      "direction",
+      "padding",
+      "paddingX",
+      "paddingY",
+      "dividerInset",
+      "responsive",
       "as"
     ],
     "react": [
       "gap",
       "align",
-      "justify",
+      "direction",
+      "padding",
+      "paddingX",
+      "paddingY",
       "divider",
-      "as",
+      "dividerInset",
+      "responsive",
+      "justify",
       "className",
       "style",
       "children",
+      "as",
+      "autoFocus",
       "id",
-      "ref"
+      "onChange",
+      "onKeyDown",
+      "onClick"
     ],
     "native": [
       "gap",
       "align",
       "justify",
       "divider",
+      "direction",
+      "padding",
+      "paddingX",
+      "paddingY",
+      "dividerInset",
+      "responsive",
       "style",
       "children",
       "id"
@@ -438,27 +459,63 @@
       "gap",
       "align",
       "justify",
-      "wrap"
+      "wrap",
+      "divider",
+      "direction",
+      "padding",
+      "paddingX",
+      "paddingY",
+      "dividerInset",
+      "responsive",
+      "as"
     ],
     "react": [
       "gap",
       "align",
-      "justify",
       "wrap",
+      "direction",
+      "padding",
+      "paddingX",
+      "paddingY",
+      "divider",
+      "dividerInset",
+      "responsive",
+      "justify",
       "className",
       "style",
       "children",
+      "as",
+      "autoFocus",
       "id",
-      "ref"
+      "onChange",
+      "onKeyDown",
+      "onClick"
     ],
     "native": [
       "gap",
       "align",
       "justify",
       "wrap",
+      "divider",
+      "direction",
+      "padding",
+      "paddingX",
+      "paddingY",
+      "dividerInset",
+      "responsive",
       "style",
       "children",
       "id"
+    ]
+  },
+  "KjunSpacer": {
+    "vue3": [],
+    "react": [
+      "className",
+      "style"
+    ],
+    "native": [
+      "style"
     ]
   }
 }

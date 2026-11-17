@@ -19251,7 +19251,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)이고 가장 작은 xs는 4px입니다. divider 선은 divider 색 1px이며 첫 자식 위와 마지막 자식 아래에는 없습니다."
+        "note": "padding을 주지 않으면 바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)이고 가장 작은 xs는 4px입니다. 선은 divider 색 1px, strong 띠는 바탕색 8px(tokens.border.dividerStrongWidth)이며 첫 자식 앞과 마지막 자식 뒤, KjunSpacer 옆에는 없습니다. 가로로 놓이면 선도 세로로 섭니다."
       },
       "react": {
         "figures": [
@@ -19284,7 +19284,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)이고 가장 작은 xs는 4px입니다. divider 선은 divider 색 1px이며 첫 자식 위와 마지막 자식 아래에는 없습니다."
+        "note": "padding을 주지 않으면 바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)이고 가장 작은 xs는 4px입니다. 선은 divider 색 1px, strong 띠는 바탕색 8px(tokens.border.dividerStrongWidth)이며 첫 자식 앞과 마지막 자식 뒤, KjunSpacer 옆에는 없습니다. 가로로 놓이면 선도 세로로 섭니다."
       },
       "native": {
         "figures": [
@@ -19317,7 +19317,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)이고 가장 작은 xs는 4px입니다. divider 선은 divider 색 1px이며 첫 자식 위와 마지막 자식 아래에는 없습니다."
+        "note": "padding을 주지 않으면 바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)이고 가장 작은 xs는 4px입니다. 선은 divider 색 1px, strong 띠는 바탕색 8px(tokens.border.dividerStrongWidth)이며 첫 자식 앞과 마지막 자식 뒤, KjunSpacer 옆에는 없습니다. 가로로 놓이면 선도 세로로 섭니다."
       }
     }
   },
@@ -19358,7 +19358,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다."
+        "note": "padding을 주지 않으면 바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다. 구분선은 세로 1px입니다."
       },
       "react": {
         "figures": [
@@ -19391,7 +19391,7 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다."
+        "note": "padding을 주지 않으면 바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다. 구분선은 세로 1px입니다."
       },
       "native": {
         "figures": [
@@ -19424,7 +19424,114 @@
         ],
         "sizes": [],
         "sizeDefault": "—",
-        "note": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다."
+        "note": "padding을 주지 않으면 바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다. 구분선은 세로 1px입니다."
+      }
+    }
+  },
+  "KjunSpacer": {
+    "name": "KjunSpacer",
+    "path": "/components/spacer",
+    "related": "toolbar",
+    "description": "Stack·Inline 안에서 남는 길이를 차지해 뒤에 오는 자식을 끝으로 밉니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "앞 묶음",
+                "description": "Spacer 앞의 주 메뉴입니다. 묶음 안 간격은 gap 그대로입니다.",
+                "target": "text=홈",
+                "optional": false
+              },
+              {
+                "label": "뒤 묶음",
+                "description": "Spacer가 남는 높이를 차지해 끝으로 밀린 항목입니다.",
+                "target": "text=설정",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "크기와 색이 없습니다. 남는 길이가 없으면 0으로 줄고, 앞뒤에는 Stack의 gap이 그대로 놓입니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "앞 묶음",
+                "description": "Spacer 앞의 주 메뉴입니다. 묶음 안 간격은 gap 그대로입니다.",
+                "target": "text=홈",
+                "optional": false
+              },
+              {
+                "label": "뒤 묶음",
+                "description": "Spacer가 남는 높이를 차지해 끝으로 밀린 항목입니다.",
+                "target": "text=설정",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "크기와 색이 없습니다. 남는 길이가 없으면 0으로 줄고, 앞뒤에는 Stack의 gap이 그대로 놓입니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "앞 묶음",
+                "description": "Spacer 앞의 주 메뉴입니다. 묶음 안 간격은 gap 그대로입니다.",
+                "target": "text=홈",
+                "optional": false
+              },
+              {
+                "label": "뒤 묶음",
+                "description": "Spacer가 남는 높이를 차지해 끝으로 밀린 항목입니다.",
+                "target": "text=설정",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "크기와 색이 없습니다. 남는 길이가 없으면 0으로 줄고, 앞뒤에는 Stack의 gap이 그대로 놓입니다."
       }
     }
   },

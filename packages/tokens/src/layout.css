@@ -55,95 +55,106 @@
   overflow: hidden;
 }
 
-/* KjunStack: 세로 쌓기. 간격은 space.stack·space.section 단계다.
-   클래스 대신 data 속성을 써서 KJUN 마크업으로 판정되지 않는다. 그래서 안에 넣은 앱 요소는 Stack이
-   없을 때와 같은 스타일을 받고, Stack을 몇 겹 겹쳐도 달라지지 않는다. */
-[data-kjun-stack] {
+/* KjunStack·KjunInline: 세로·가로 배치. 클래스 대신 data 속성을 써서 KJUN 마크업으로 판정되지 않는다. 그래서 안에
+   넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받고, 몇 겹 겹쳐도 달라지지 않는다.
+   간격·여백 단계는 컴포넌트가 토큰 변수(--_kjun-flex-*-base·compact·medium·wide)로 넘기고, 여기서는 화면 폭에 따라 어느
+   변수를 쓸지만 고른다. gap 규칙은 (0,1,0)이라 KJUN CSS 뒤에 오는 앱 클래스가 덮어쓸 수 있다. */
+:is([data-kjun-stack], [data-kjun-inline]) {
+  --_kjun-flex-px: var(--_kjun-flex-px-base, 0px);
+  --_kjun-flex-py: var(--_kjun-flex-py-base, 0px);
   display: flex;
+  min-width: 0;
+  gap: var(--_kjun-flex-gap);
+}
+[data-kjun-stack] {
+  --_kjun-flex-gap: var(--_kjun-flex-gap-base, var(--_kjun-geometry-space-stack-md));
+  --_kjun-flex-row: 0;
   flex-direction: column;
   align-items: stretch;
-  gap: var(--_kjun-geometry-space-stack-md);
-  min-width: 0;
 }
-[data-kjun-stack][data-gap="none"] { gap: 0; }
-[data-kjun-stack][data-gap="xs"] { gap: var(--_kjun-geometry-space-stack-xs); }
-[data-kjun-stack][data-gap="sm"] { gap: var(--_kjun-geometry-space-stack-sm); }
-[data-kjun-stack][data-gap="lg"] { gap: var(--_kjun-geometry-space-stack-lg); }
-[data-kjun-stack][data-gap="section-sm"] { gap: var(--_kjun-geometry-space-section-sm); }
-[data-kjun-stack][data-gap="section-md"] { gap: var(--_kjun-geometry-space-section-md); }
-[data-kjun-stack][data-gap="section-lg"] { gap: var(--_kjun-geometry-space-section-lg); }
-[data-kjun-stack][data-align="start"] { align-items: flex-start; }
-[data-kjun-stack][data-align="center"] { align-items: center; }
-[data-kjun-stack][data-align="end"] { align-items: flex-end; }
-[data-kjun-stack][data-justify="center"] { justify-content: center; }
-[data-kjun-stack][data-justify="end"] { justify-content: flex-end; }
-[data-kjun-stack][data-justify="between"] { justify-content: space-between; }
-/* A gap per screen width: the step named for the widest breakpoint the screen reaches wins over base. */
-@media (width >= token(responsive.stackCompact)) {
-  [data-kjun-stack][data-gap-compact="none"] { gap: 0; }
-  [data-kjun-stack][data-gap-compact="xs"] { gap: var(--_kjun-geometry-space-stack-xs); }
-  [data-kjun-stack][data-gap-compact="sm"] { gap: var(--_kjun-geometry-space-stack-sm); }
-  [data-kjun-stack][data-gap-compact="md"] { gap: var(--_kjun-geometry-space-stack-md); }
-  [data-kjun-stack][data-gap-compact="lg"] { gap: var(--_kjun-geometry-space-stack-lg); }
-  [data-kjun-stack][data-gap-compact="section-sm"] { gap: var(--_kjun-geometry-space-section-sm); }
-  [data-kjun-stack][data-gap-compact="section-md"] { gap: var(--_kjun-geometry-space-section-md); }
-  [data-kjun-stack][data-gap-compact="section-lg"] { gap: var(--_kjun-geometry-space-section-lg); }
-}
-@media (width >= token(responsive.stackMedium)) {
-  [data-kjun-stack][data-gap-medium="none"] { gap: 0; }
-  [data-kjun-stack][data-gap-medium="xs"] { gap: var(--_kjun-geometry-space-stack-xs); }
-  [data-kjun-stack][data-gap-medium="sm"] { gap: var(--_kjun-geometry-space-stack-sm); }
-  [data-kjun-stack][data-gap-medium="md"] { gap: var(--_kjun-geometry-space-stack-md); }
-  [data-kjun-stack][data-gap-medium="lg"] { gap: var(--_kjun-geometry-space-stack-lg); }
-  [data-kjun-stack][data-gap-medium="section-sm"] { gap: var(--_kjun-geometry-space-section-sm); }
-  [data-kjun-stack][data-gap-medium="section-md"] { gap: var(--_kjun-geometry-space-section-md); }
-  [data-kjun-stack][data-gap-medium="section-lg"] { gap: var(--_kjun-geometry-space-section-lg); }
-}
-@media (width >= token(responsive.stackWide)) {
-  [data-kjun-stack][data-gap-wide="none"] { gap: 0; }
-  [data-kjun-stack][data-gap-wide="xs"] { gap: var(--_kjun-geometry-space-stack-xs); }
-  [data-kjun-stack][data-gap-wide="sm"] { gap: var(--_kjun-geometry-space-stack-sm); }
-  [data-kjun-stack][data-gap-wide="md"] { gap: var(--_kjun-geometry-space-stack-md); }
-  [data-kjun-stack][data-gap-wide="lg"] { gap: var(--_kjun-geometry-space-stack-lg); }
-  [data-kjun-stack][data-gap-wide="section-sm"] { gap: var(--_kjun-geometry-space-section-sm); }
-  [data-kjun-stack][data-gap-wide="section-md"] { gap: var(--_kjun-geometry-space-section-md); }
-  [data-kjun-stack][data-gap-wide="section-lg"] { gap: var(--_kjun-geometry-space-section-lg); }
-}
-/* Buttons and badges keep their own width when the stack stretches its children, as they do on Native; a full-width
-   button says so with block. */
-[data-kjun-stack][data-align="stretch"] > :is(.kjun-button, .kjun-badge) { align-self: flex-start; }
-/* A list or fieldset stack drops the browser's bullets, indent and frame, so only the gap spaces it. */
-:is(ul, ol)[data-kjun-stack] { list-style: none; margin: 0; padding: 0; }
-fieldset[data-kjun-stack] { margin: 0; padding: 0; border: 0; min-inline-size: 0; }
-/* divider: a hairline between children, the gap above and below it. It is the stack's own element, so app
-   children keep their styles. */
-[data-kjun-stack-divider] {
-  flex: none; align-self: stretch; height: var(--_kjun-border-default-width);
-  margin: 0; padding: 0; list-style: none; background: var(--_kjun-color-divider);
-}
-
-/* KjunInline: 가로 배치. 간격은 space.inline 단계이고, 좁은 화면에서는 기본으로 줄바꿈한다. */
 [data-kjun-inline] {
-  display: flex;
+  --_kjun-flex-gap: var(--_kjun-flex-gap-base, var(--_kjun-geometry-space-inline-sm));
+  --_kjun-flex-row: 1;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
-  gap: var(--_kjun-geometry-space-inline-sm);
-  min-width: 0;
 }
+:is([data-kjun-stack], [data-kjun-inline])[data-direction="row"] { flex-direction: row; --_kjun-flex-row: 1; }
+:is([data-kjun-stack], [data-kjun-inline])[data-direction="column"] { flex-direction: column; --_kjun-flex-row: 0; }
+:is([data-kjun-stack], [data-kjun-inline])[data-padding] { padding: var(--_kjun-flex-py) var(--_kjun-flex-px); }
+[data-kjun-stack][data-align="start"] { align-items: flex-start; }
+[data-kjun-stack][data-align="center"] { align-items: center; }
+[data-kjun-stack][data-align="end"] { align-items: flex-end; }
+:is([data-kjun-stack], [data-kjun-inline])[data-justify="center"] { justify-content: center; }
+:is([data-kjun-stack], [data-kjun-inline])[data-justify="end"] { justify-content: flex-end; }
+:is([data-kjun-stack], [data-kjun-inline])[data-justify="between"] { justify-content: space-between; }
 [data-kjun-inline][data-wrap="false"] { flex-wrap: nowrap; }
-[data-kjun-inline][data-gap="none"] { gap: 0; }
-[data-kjun-inline][data-gap="xs"] { gap: var(--_kjun-geometry-space-inline-xs); }
-[data-kjun-inline][data-gap="md"] { gap: var(--_kjun-geometry-space-inline-md); }
-[data-kjun-inline][data-gap="lg"] { gap: var(--_kjun-geometry-space-inline-lg); }
 [data-kjun-inline][data-align="start"] { align-items: flex-start; }
 [data-kjun-inline][data-align="end"] { align-items: flex-end; }
 [data-kjun-inline][data-align="baseline"] { align-items: baseline; }
 [data-kjun-inline][data-align="stretch"] { align-items: stretch; }
-[data-kjun-inline][data-justify="center"] { justify-content: center; }
-[data-kjun-inline][data-justify="end"] { justify-content: flex-end; }
-[data-kjun-inline][data-justify="between"] { justify-content: space-between; }
+/* 화면 폭 단계: 화면이 닿은 가장 넓은 단계의 값이 base를 이긴다(규칙 순서가 compact → medium → wide). */
+@media (width >= token(responsive.stackCompact)) {
+  :is([data-kjun-stack], [data-kjun-inline])[data-gap-compact] { --_kjun-flex-gap: var(--_kjun-flex-gap-compact); }
+  :is([data-kjun-stack], [data-kjun-inline])[data-px-compact] { --_kjun-flex-px: var(--_kjun-flex-px-compact); }
+  :is([data-kjun-stack], [data-kjun-inline])[data-py-compact] { --_kjun-flex-py: var(--_kjun-flex-py-compact); }
+  :is([data-kjun-stack], [data-kjun-inline])[data-direction-compact="row"] { flex-direction: row; --_kjun-flex-row: 1; }
+  :is([data-kjun-stack], [data-kjun-inline])[data-direction-compact="column"] { flex-direction: column; --_kjun-flex-row: 0; }
+}
+@media (width >= token(responsive.stackMedium)) {
+  :is([data-kjun-stack], [data-kjun-inline])[data-gap-medium] { --_kjun-flex-gap: var(--_kjun-flex-gap-medium); }
+  :is([data-kjun-stack], [data-kjun-inline])[data-px-medium] { --_kjun-flex-px: var(--_kjun-flex-px-medium); }
+  :is([data-kjun-stack], [data-kjun-inline])[data-py-medium] { --_kjun-flex-py: var(--_kjun-flex-py-medium); }
+  :is([data-kjun-stack], [data-kjun-inline])[data-direction-medium="row"] { flex-direction: row; --_kjun-flex-row: 1; }
+  :is([data-kjun-stack], [data-kjun-inline])[data-direction-medium="column"] { flex-direction: column; --_kjun-flex-row: 0; }
+}
+@media (width >= token(responsive.stackWide)) {
+  :is([data-kjun-stack], [data-kjun-inline])[data-gap-wide] { --_kjun-flex-gap: var(--_kjun-flex-gap-wide); }
+  :is([data-kjun-stack], [data-kjun-inline])[data-px-wide] { --_kjun-flex-px: var(--_kjun-flex-px-wide); }
+  :is([data-kjun-stack], [data-kjun-inline])[data-py-wide] { --_kjun-flex-py: var(--_kjun-flex-py-wide); }
+  :is([data-kjun-stack], [data-kjun-inline])[data-direction-wide="row"] { flex-direction: row; --_kjun-flex-row: 1; }
+  :is([data-kjun-stack], [data-kjun-inline])[data-direction-wide="column"] { flex-direction: column; --_kjun-flex-row: 0; }
+}
+/* 내용 폭 컨트롤은 stretch에서도 제 폭을 유지한다(Native와 같음). 전체 폭 버튼은 block으로 말하고, 앱이 감싼
+   요소는 data-kjun-intrinsic으로 같은 대접을 받는다. Switch·Checkbox 같은 선택 행은 폭을 채워 누르는 면이 넓다. */
+[data-kjun-stack][data-align="stretch"] > :is(.kjun-button, .kjun-badge, .kjun-chip, .kjun-copy-button, .kjun-external-link,
+  .kjun-layer-trigger, .kjun-spinner, .kjun-filter-group, .kjun-deviation, .kjun-signed-value, .kjun-price-cell,
+  .kjun-animated-number, [data-kjun-intrinsic]) { align-self: flex-start; }
+/* A list or fieldset drops the browser's bullets, indent and frame, so only the gap spaces it. */
+:is(ul, ol):is([data-kjun-stack], [data-kjun-inline]) { list-style: none; margin: 0; padding: 0; }
+:is(ul, ol):is([data-kjun-stack], [data-kjun-inline])[data-padding] { padding: var(--_kjun-flex-py) var(--_kjun-flex-px); }
+fieldset:is([data-kjun-stack], [data-kjun-inline]) { margin: 0; padding: 0; border: 0; min-inline-size: 0; }
+fieldset:is([data-kjun-stack], [data-kjun-inline])[data-padding] { padding: var(--_kjun-flex-py) var(--_kjun-flex-px); }
+/* divider: 자식 사이의 구분 요소. 선(full·inset)은 gap 안 가운데에 그려 자식 사이 거리가 gap 그대로이고(gap이 선보다
+   얇으면 선 두께), strong 띠는 gap 가운데에 띠 두께만큼 더한다. 방향은 --_kjun-flex-row(세로 0·가로 1)가 정하므로
+   화면 폭에 따라 방향이 바뀌어도 선이 따라 눕는다. 선택자를 세 번 겹쳐(0,3,0) 앱의 `.steps li` 규칙이 구분 li를
+   카드처럼 칠하지 못하게 한다. */
+:is([data-kjun-stack], [data-kjun-inline]) > [data-kjun-stack-divider][data-kjun-stack-divider] {
+  --_kjun-divider-t: var(--_kjun-border-default-width);
+  --_kjun-divider-m: calc((max(var(--_kjun-flex-gap), var(--_kjun-divider-t)) - 2 * var(--_kjun-flex-gap) - var(--_kjun-divider-t)) / 2);
+  --_kjun-divider-inset: 0px;
+  flex: 0 0 var(--_kjun-divider-t);
+  align-self: stretch;
+  box-sizing: border-box;
+  inline-size: auto; block-size: auto; min-inline-size: 0; min-block-size: 0; max-inline-size: none; max-block-size: none;
+  margin-block: calc(var(--_kjun-divider-m) * (1 - var(--_kjun-flex-row)) + var(--_kjun-divider-inset) * var(--_kjun-flex-row)) calc(var(--_kjun-divider-m) * (1 - var(--_kjun-flex-row)));
+  margin-inline: calc(var(--_kjun-divider-m) * var(--_kjun-flex-row) + var(--_kjun-divider-inset) * (1 - var(--_kjun-flex-row))) calc(var(--_kjun-divider-m) * var(--_kjun-flex-row));
+  padding: 0; border: 0; border-radius: 0; list-style: none; counter-increment: none;
+  background: var(--_kjun-color-divider);
+}
+:is([data-kjun-stack], [data-kjun-inline]) > [data-kjun-stack-divider="inset"][data-kjun-stack-divider] {
+  --_kjun-divider-inset: var(--_kjun-flex-divider-inset, var(--_kjun-geometry-space-inset-md));
+}
+:is([data-kjun-stack], [data-kjun-inline]) > [data-kjun-stack-divider="strong"][data-kjun-stack-divider] {
+  --_kjun-divider-t: var(--_kjun-border-divider-strong-width);
+  --_kjun-divider-m: calc(var(--_kjun-flex-gap) / -2);
+  background: var(--_kjun-color-background);
+}
+:is([data-kjun-stack], [data-kjun-inline]) > [data-kjun-stack-divider][data-kjun-stack-divider]::before,
+:is([data-kjun-stack], [data-kjun-inline]) > [data-kjun-stack-divider][data-kjun-stack-divider]::after { content: none; }
+/* KjunSpacer: 남는 길이를 차지해 앞뒤 묶음을 양쪽 끝으로 민다. 구분선은 Spacer 옆에 그리지 않는다. */
+[data-kjun-spacer] { flex: 1 1 auto; min-inline-size: 0; min-block-size: 0; align-self: stretch; }
 
 /* 직계 폼 그룹은 자체 아래 여백 대신 부모 gap만 따른다. */
 :is([data-kjun-stack], [data-kjun-inline]) > .kjun-form-group { margin-bottom: 0; }

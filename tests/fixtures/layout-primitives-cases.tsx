@@ -36,6 +36,18 @@ export function LayoutCases({ K, native = false }: { K: any; native?: boolean })
     <div data-testid="stack-justify" style={{ height: 200 }}><K.KjunStack justify="between" style={{ height: 200 }}>{boxes(2)}</K.KjunStack></div>
     <div data-testid="stack-divider"><K.KjunStack gap="sm" divider>{boxes(3)}</K.KjunStack></div>
     <div data-testid="stack-responsive"><K.KjunStack gap={{ base: 'sm', medium: 'lg' }}>{boxes(2)}</K.KjunStack></div>
+    <div data-testid="stack-smmd"><K.KjunStack gap="smMd">{boxes(2)}</K.KjunStack></div>
+    <div data-testid="stack-inset"><K.KjunStack gap="md" divider="inset" dividerInset="lg">{boxes(2)}</K.KjunStack></div>
+    <div data-testid="stack-strong"><K.KjunStack gap="md" divider="strong">{boxes(2)}</K.KjunStack></div>
+    <div data-testid="stack-fragment"><K.KjunStack gap="sm" divider="strong">{boxes(1)}<>{boxes(2)}</></K.KjunStack></div>
+    <div data-testid="stack-chip" style={{ width: 240 }}><K.KjunStack><K.KjunChip label="식비" /></K.KjunStack></div>
+    <div data-testid="stack-direction"><K.KjunStack gap="md" direction={{ base: 'column', medium: 'row' }}>{boxes(2)}</K.KjunStack></div>
+    <div data-testid="stack-padding"><K.KjunStack padding="md" paddingX="lg">{boxes(1)}</K.KjunStack></div>
+    <div data-testid="stack-container" style={{ width: 280 }}><K.KjunStack responsive="container" gap={{ base: 'xs', wide: 'lg' }}>{boxes(2)}</K.KjunStack></div>
+    <div data-testid="stack-viewport" style={{ width: 280 }}><K.KjunStack gap={{ base: 'xs', wide: 'lg' }}>{boxes(2)}</K.KjunStack></div>
+    <div data-testid="stack-spacer" style={{ height: 200 }}><K.KjunStack gap="sm" divider="strong" style={{ height: 200 }}>{boxes(1)}<K.KjunSpacer />{boxes(1)}</K.KjunStack></div>
+    <div data-testid="inline-strong"><K.KjunInline gap="md" divider="strong">{boxes(2)}</K.KjunInline></div>
+    <DividerToggle K={K} />
     {native ? <K.KjunStack testID="stack-native-props" accessibilityLabel="쌓인 영역">{boxes(1)}</K.KjunStack>
       : <K.KjunStack id="stack-web-id" aria-label="쌓인 영역">{boxes(1)}</K.KjunStack>}
     <div data-testid="free-form">{formLabels.free.map(field)}</div>
@@ -45,6 +57,9 @@ export function LayoutCases({ K, native = false }: { K: any; native?: boolean })
         <div data-testid="stack-fragment-string"><K.KjunStack><>조각 안 문자열</></K.KjunStack></div></>
       : <><div data-testid="stack-app-markup"><K.KjunStack><h2>앱 제목</h2></K.KjunStack></div>
         <div data-testid="stack-list"><K.KjunStack as="ul" gap="sm" divider>{['주문 접수', '결제 완료', '배송 준비'].map(t => <li key={t}>{t}</li>)}</K.KjunStack></div>
+        <div data-testid="stack-app-li"><K.KjunStack as="ul" className="app-steps" gap="sm" divider>{['주문 접수', '결제 완료'].map(t => <li key={t}>{t}</li>)}</K.KjunStack></div>
+        <div data-testid="stack-app-gap"><K.KjunStack className="app-gap">{boxes(2)}</K.KjunStack></div>
+        <SubmitStack K={K} />
         <div data-testid="nested-app-markup"><K.KjunStack><K.KjunStack><K.KjunInline><h2>안쪽 앱 제목</h2></K.KjunInline></K.KjunStack></K.KjunStack></div></>}
   </div>;
 }
@@ -59,5 +74,26 @@ function KeyedStack({ K }: { K: any }) {
   return <div data-testid="stack-keys">
     <K.KjunButton onPress={() => setLabels(old => ['첫째', ...old])}>앞에 추가</K.KjunButton>
     <K.KjunStack>{labels.map(label => <Remembered key={label} K={K} label={label} />)}</K.KjunStack>
+  </div>;
+}
+// A child that counts presses keeps its count when the stack's divider is turned on.
+function Counter({ K }: { K: any }) {
+  const [count, setCount] = useState(0);
+  return <K.KjunButton onPress={() => setCount(n => n + 1)} onClick={() => setCount(n => n + 1)}>{'누름 ' + count}</K.KjunButton>;
+}
+function DividerToggle({ K }: { K: any }) {
+  const [on, setOn] = useState(false);
+  return <div data-testid="stack-toggle">
+    <K.KjunButton onPress={() => setOn(v => !v)} onClick={() => setOn(v => !v)}>구분선 전환</K.KjunButton>
+    <K.KjunStack divider={on}><Counter K={K} /><K.KjunText>둘째</K.KjunText></K.KjunStack>
+  </div>;
+}
+// as="form" takes the form's own attributes (React types them from as).
+function SubmitStack({ K }: { K: any }) {
+  const [sent, setSent] = useState('보내지 않음');
+  return <div data-testid="stack-form-tag">
+    <K.KjunStack as="form" noValidate onSubmit={(event: { preventDefault(): void }) => { event.preventDefault(); setSent('보냄'); }}>
+      <button type="submit">보내기</button><span>{sent}</span>
+    </K.KjunStack>
   </div>;
 }

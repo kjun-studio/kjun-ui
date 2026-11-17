@@ -37,6 +37,22 @@ createApp(() => <K.KjunProvider><div style={{ padding: '16px' }}>
   <div data-testid="stack-justify" style={{ height: '200px' }}><K.KjunStack justify="between" style={{ height: '200px' }}>{boxes(2)}</K.KjunStack></div>
   <div data-testid="stack-divider"><K.KjunStack gap="sm" divider>{boxes(3)}</K.KjunStack></div>
   <div data-testid="stack-responsive"><K.KjunStack gap={{ base: 'sm', medium: 'lg' }}>{boxes(2)}</K.KjunStack></div>
+  <div data-testid="stack-smmd"><K.KjunStack gap="smMd">{boxes(2)}</K.KjunStack></div>
+  <div data-testid="stack-inset"><K.KjunStack gap="md" divider="inset" dividerInset="lg">{boxes(2)}</K.KjunStack></div>
+  <div data-testid="stack-strong"><K.KjunStack gap="md" divider="strong">{boxes(2)}</K.KjunStack></div>
+  <div data-testid="stack-fragment"><K.KjunStack gap="sm" divider="strong">{boxes(1)}{boxes(2)}</K.KjunStack></div>
+  <div data-testid="stack-chip" style={{ width: '240px' }}><K.KjunStack><K.KjunChip label="식비" /></K.KjunStack></div>
+  <div data-testid="stack-direction"><K.KjunStack gap="md" direction={{ base: 'column', medium: 'row' }}>{boxes(2)}</K.KjunStack></div>
+  <div data-testid="stack-padding"><K.KjunStack padding="md" paddingX="lg">{boxes(1)}</K.KjunStack></div>
+  <div data-testid="stack-container" style={{ width: '280px' }}><K.KjunStack responsive="container" gap={{ base: 'xs', wide: 'lg' }}>{boxes(2)}</K.KjunStack></div>
+  <div data-testid="stack-viewport" style={{ width: '280px' }}><K.KjunStack gap={{ base: 'xs', wide: 'lg' }}>{boxes(2)}</K.KjunStack></div>
+  <div data-testid="stack-spacer" style={{ height: '200px' }}><K.KjunStack gap="sm" divider="strong" style={{ height: '200px' }}>{boxes(1)}<K.KjunSpacer />{boxes(1)}</K.KjunStack></div>
+  <div data-testid="inline-strong"><K.KjunInline gap="md" divider="strong">{boxes(2)}</K.KjunInline></div>
+  <div data-testid="stack-app-li"><K.KjunStack as="ul" class="app-steps" gap="sm" divider>{['주문 접수', '결제 완료'].map(t => <li key={t}>{t}</li>)}</K.KjunStack></div>
+  <div data-testid="stack-app-gap"><K.KjunStack class="app-gap">{boxes(2)}</K.KjunStack></div>
+  <div data-testid="stack-form-tag"><K.KjunStack as="form" novalidate onSubmit={(event: Event) => { event.preventDefault(); (event.target as HTMLElement).querySelector('span')!.textContent = '보냄'; }}>
+    <button type="submit">보내기</button><span>보내지 않음</span>
+  </K.KjunStack></div>
   <K.KjunStack id="stack-web-id" aria-label="쌓인 영역">{boxes(1)}</K.KjunStack>
   <div data-testid="stack-list"><K.KjunStack as="ul" gap="sm" divider>{['주문 접수', '결제 완료', '배송 준비'].map(t => <li key={t}>{t}</li>)}</K.KjunStack></div>
   <div data-testid="free-form">{formLabels.free.map(field)}</div>

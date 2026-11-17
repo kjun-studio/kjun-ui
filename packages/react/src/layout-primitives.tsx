@@ -1,10 +1,14 @@
-import { Children, createElement, type AriaAttributes, type AriaRole, type CSSProperties, type ReactNode, type Ref } from "react";
+import { Children, Fragment, cloneElement, createElement, isValidElement, useCallback, useRef, useState,
+  type AriaAttributes, type AriaRole, type ComponentPropsWithRef, type CSSProperties, type ReactElement, type ReactNode, type Ref } from "react";
+import { tokens } from "@kjun-ui/tokens";
 import {
-  clampLines, defaultTextTag, isStackList, stackGapSteps, textToneAttribute, textTypeClass,
-  type InlineAlign, type InlineGap, type InlineJustify, type StackAlign, type StackBreakpoint, type StackGap, type StackGapValue, type StackJustify, type StackTag,
-  type TextAlign, type TextDecoration, type TextTag, type TextTone, type TextVariant,
+  clampLines, defaultTextTag, dividerVariant, flexLayout, interleave, isResponsive, isStackList, textToneAttribute, textTypeClass,
+  type DirectionValue, type FlexDirection, type InlineAlign, type InlineGap, type InlineGapValue, type InlineJustify, type InsetStep, type LegacyStackGap,
+  type PaddingValue, type Responsive, type ResponsiveBasis, type StackAlign, type StackBreakpoint, type StackDivider, type StackGap, type StackGapValue,
+  type StackJustify, type StackTag, type TextAlign, type TextDecoration, type TextTag, type TextTone, type TextVariant,
 } from "../../../shared/package-runtime/layout-primitives";
-export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackBreakpoint, StackGap, StackGapValue, StackJustify, StackTag, TextAlign, TextDecoration, TextTag, TextTone, TextVariant };
+export type { DirectionValue, FlexDirection, InlineAlign, InlineGap, InlineGapValue, InlineJustify, InsetStep, LegacyStackGap, PaddingValue, Responsive,
+  ResponsiveBasis, StackAlign, StackBreakpoint, StackDivider, StackGap, StackGapValue, StackJustify, StackTag, TextAlign, TextDecoration, TextTag, TextTone, TextVariant };
 
 // Only the id and ARIA attributes reach the root, like Vue 3's fallthrough attributes; no event handlers.
 interface RootAttributes extends AriaAttributes { id?: string }
@@ -54,53 +58,109 @@ export function KjunText({ variant = "body", tone = "default", as, align, maxLin
   }, children);
 }
 
-export interface KjunStackProps extends RootAttributes {
-  /** Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the
-   * screen width, e.g. { base: "sm", medium: "lg" } (compact 640, medium 768, wide 1024 and up). */
-  gap?: StackGapValue;
-  /** Cross-axis alignment. With stretch (the default) blocks fill the width while buttons and badges keep their own;
-   * a full-width button says so with block. */
-  align?: StackAlign;
-  /** How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom. */
+/** Props both KjunStack and KjunInline take. */
+interface FlexOwnProps {
+  /** Lay the children out as a column or a row; an object changes it with the width, e.g. { base: "column", medium: "row" }. */
+  direction?: DirectionValue;
+  /** Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap. */
+  padding?: PaddingValue;
+  paddingX?: PaddingValue;
+  paddingY?: PaddingValue;
+  /** A divider between children: true or "full" a hairline, "inset" a hairline that starts after dividerInset, "strong" a band
+   * for sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness. */
+  divider?: StackDivider;
+  /** Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md. */
+  dividerInset?: InsetStep;
+  /** What the responsive values follow: viewport (default, CSS media queries) or container, the element's own width, measured. */
+  responsive?: ResponsiveBasis;
   justify?: StackJustify;
-  /** A hairline in the divider color between children, with the gap above and below it. */
-  divider?: boolean;
-  /** Element to render. ul and ol drop bullets and indent; give them li children. */
-  as?: StackTag;
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
-  ref?: Ref<HTMLElement>;
 }
-/** Vertical stack. It is not KJUN markup (a data attribute, no kjun- class), so app children keep the styles they would have without it; direct form groups drop their own bottom margin. */
-export function KjunStack({ gap, align = "stretch", justify = "start", divider = false, as = "div", className, style, children, ...rest }: KjunStackProps) {
-  const steps = stackGapSteps(gap), line = isStackList(as) ? "li" : "div";
-  // The divider is the stack's own element between children, so no app child is restyled to draw it.
-  const content = divider ? Children.toArray(children).flatMap((child, index) => index
-    ? [createElement(line, { key: "kjun-divider-" + index, "data-kjun-stack-divider": "", "aria-hidden": true }), child] : [child]) : children;
-  return createElement(as, { ...rest, className: className || undefined, style,
-    "data-kjun-stack": "", "data-gap": steps.base, "data-gap-compact": steps.compact, "data-gap-medium": steps.medium, "data-gap-wide": steps.wide,
-    "data-align": align, "data-justify": justify === "start" ? undefined : justify, "data-divider": divider ? "" : undefined }, content);
-}
+/** The tag's own attributes (onSubmit for a form, disabled for a fieldset…) come with as. */
+type WithTag<Own, T extends StackTag> = Own & { as?: T } & Omit<ComponentPropsWithRef<T>, keyof Own | "as">;
 
-export interface KjunInlineProps extends RootAttributes {
-  /** Space between children: space.inline (xs·sm·md·lg). */
-  gap?: InlineGap;
+export interface KjunStackOwnProps extends FlexOwnProps {
+  /** Space between children: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24) or space.section (sectionSm 32 · sectionMd 48 · sectionLg 64).
+   * An object changes it with the width, e.g. { base: "sm", medium: "lg" } (compact 640, medium 768, wide 1024 and up). */
+  gap?: StackGapValue;
+  /** Cross-axis alignment. With stretch (the default) blocks fill the width while buttons, badges, chips and other
+   * content-width controls keep their own; a full-width button says so with block. */
+  align?: StackAlign;
+}
+/** Element to render with as (ul and ol drop bullets and indent; give them li children); the tag's attributes and ref follow it. */
+export type KjunStackProps<T extends StackTag = "div"> = WithTag<KjunStackOwnProps, T>;
+
+export interface KjunInlineOwnProps extends FlexOwnProps {
+  /** Space between children: space.inline (xs·sm·md·lg). An object changes it with the width like Stack's gap. */
+  gap?: InlineGapValue;
   align?: InlineAlign;
-  justify?: InlineJustify;
   /** Wrap onto new lines when the row runs out of width. Default true. */
   wrap?: boolean;
+}
+export type KjunInlineProps<T extends StackTag = "div"> = WithTag<KjunInlineOwnProps, T>;
+
+export interface KjunSpacerProps {
   className?: string;
   style?: CSSProperties;
-  children?: ReactNode;
-  ref?: Ref<HTMLDivElement>;
 }
+/** Takes the spare length of a Stack or Inline, pushing what follows to the far end: a menu at the top and a profile at the bottom. */
+export function KjunSpacer({ className, style }: KjunSpacerProps) {
+  return <div className={className || undefined} style={style} data-kjun-spacer="" aria-hidden="true" />;
+}
+
+const breakpoints: Record<StackBreakpoint, number> = { compact: tokens.responsive.stackCompact, medium: tokens.responsive.stackMedium, wide: tokens.responsive.stackWide };
+/** The element's width while responsive="container" asks for it; undefined until the first measurement (and on the server). */
+function useContainerWidth(enabled: boolean, outer: Ref<HTMLElement> | undefined) {
+  const [width, setWidth] = useState<number>();
+  const observer = useRef<ResizeObserver | null>(null);
+  const ref = useCallback((node: HTMLElement | null) => {
+    observer.current?.disconnect();
+    observer.current = null;
+    if (node && enabled && typeof ResizeObserver !== "undefined") {
+      setWidth(node.getBoundingClientRect().width);
+      observer.current = new ResizeObserver(() => setWidth(node.getBoundingClientRect().width));
+      observer.current.observe(node);
+    }
+    if (typeof outer === "function") outer(node);
+    else if (outer) (outer as { current: HTMLElement | null }).current = node;
+  }, [enabled, outer]);
+  return [width, ref] as const;
+}
+// Fragments are opened so their children count as children (dividers go between them on every platform). Keys keep the
+// app's own key and the place for an unkeyed child, the same with or without a divider, so toggling it keeps child state.
+function flatten(children: ReactNode, path = ""): ReactNode[] {
+  return Children.toArray(children).flatMap(child => {
+    if (!isValidElement<{ children?: ReactNode }>(child)) return [child];
+    if (child.type === Fragment) return flatten(child.props.children, path + child.key + "/");
+    return [path ? cloneElement(child, { key: path + child.key }) : child];
+  });
+}
+const isSpacer = (child: ReactNode) => isValidElement(child) && child.type === KjunSpacer;
+
+type FlexRenderProps = FlexOwnProps & { kind: "stack" | "inline"; gap?: StackGapValue | InlineGapValue; as?: StackTag; ref?: Ref<HTMLElement>; extra: Record<string, string | undefined> };
+function useFlexElement({ kind, gap, direction, padding, paddingX, paddingY, divider, dividerInset, responsive = "viewport", justify = "start",
+  as = "div", className, style, children, ref, extra, ...rest }: FlexRenderProps) {
+  const measure = responsive === "container" && isResponsive(gap, direction, padding, paddingX, paddingY);
+  const [width, setRef] = useContainerWidth(measure, ref);
+  const { attrs, vars } = flexLayout({ kind, gap, direction, padding, paddingX, paddingY, dividerInset, width: measure ? width : undefined, breakpoints });
+  const variant = dividerVariant(divider), line = isStackList(as) ? "li" : "div";
+  const items = flatten(children);
+  // The divider is the stack's own element between children, so no app child is restyled to draw it.
+  const content = variant ? interleave(items, isSpacer, index => createElement(line, { key: "kjun-divider-" + index, "data-kjun-stack-divider": variant, "aria-hidden": true })) : items;
+  return createElement(as, { ...rest, ref: measure ? setRef : ref, className: className || undefined, style: { ...vars, ...style }, ...attrs, ...extra,
+    "data-justify": justify === "start" ? undefined : justify, "data-divider": variant ? "" : undefined, "data-responsive": measure ? "container" : undefined }, content);
+}
+
+/** Vertical stack (direction turns it into a row). It is not KJUN markup (a data attribute, no kjun- class), so app children keep
+ * the styles they would have without it; direct form groups drop their own bottom margin. */
+export function KjunStack<T extends StackTag = "div">({ align = "stretch", ...props }: KjunStackProps<T>): ReactElement {
+  return useFlexElement({ ...(props as unknown as Omit<FlexRenderProps, "kind" | "extra">), kind: "stack", extra: { "data-kjun-stack": "", "data-align": align } });
+}
+
 /** Horizontal row that wraps by default. Like KjunStack it is not KJUN markup, so app children keep their own styles. */
-export function KjunInline({ gap = "sm", align = "center", justify = "start", wrap = true, className, style, children, ...rest }: KjunInlineProps) {
-  return (
-    <div {...rest} className={className || undefined} style={style}
-      data-kjun-inline="" data-gap={gap} data-align={align} data-justify={justify} data-wrap={wrap ? undefined : "false"}>
-      {children}
-    </div>
-  );
+export function KjunInline<T extends StackTag = "div">({ align = "center", wrap = true, ...props }: KjunInlineProps<T>): ReactElement {
+  return useFlexElement({ ...(props as unknown as Omit<FlexRenderProps, "kind" | "extra">), kind: "inline", gap: props.gap ?? "sm",
+    extra: { "data-kjun-inline": "", "data-align": align, "data-wrap": wrap ? undefined : "false" } });
 }

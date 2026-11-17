@@ -2,7 +2,7 @@
 export { KjunProvider } from "./provider";
 export { KjunIcon, KjunButton } from "./button";
 export { KjunBadge, KjunEmpty, KjunSpinner, KjunAlert, KjunProgress, KjunSkeleton } from "./display";
-export { KjunText, KjunStack, KjunInline } from "./layout-primitives";
+export { KjunText, KjunStack, KjunInline, KjunSpacer } from "./layout-primitives";
 export { KjunCard } from "./card";
 export { KjunChip } from "./chip";
 export { KjunFab } from "./fab";

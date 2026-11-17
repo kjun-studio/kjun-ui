@@ -62,21 +62,31 @@ export function generate(input: UsageInput) {
     case 'KjunText':
       content = b.group([b.node(name, { variant: 'sectionTitle' }, b.text('섹션 제목')), b.node(name, { tone: 'secondary' }, b.text('보조 설명 문구입니다.'))]); break;
     case 'KjunStack': {
-      // Only the options the reader changed are written out; the defaults (gap md, align stretch, justify start) stay implicit.
+      // Only the options the reader changed are written out; the defaults (gap md, align stretch, justify start, column) stay implicit.
+      const direction = s.direction === '좁으면 세로' ? { base: 'column', medium: 'row' } : s.direction && s.direction !== 'column' ? s.direction : undefined;
       const own = { ...(s.gap && s.gap !== 'md' ? { gap: s.gap } : {}), ...(s.align && s.align !== 'stretch' ? { align: s.align } : {}),
-        ...(s.justify && s.justify !== 'start' ? { justify: s.justify } : {}), ...(s.divider ? { divider: true } : {}) };
+        ...(s.justify && s.justify !== 'start' ? { justify: s.justify } : {}), ...(s.divider && s.divider !== '없음' ? { divider: s.divider === 'full' ? true : s.divider } : {}),
+        ...(direction ? { direction } : {}), ...(s.padding && s.padding !== 'none' ? { padding: s.padding } : {}) };
+      const spacer = s.spacer ? [b.node('KjunSpacer')] : [];
       if (s.content === '설정 목록') content = b.node(name, own, ['푸시 알림', '이메일 요약', '야간 방해 금지'].map((label, index) =>
         b.node('KjunSwitch', { label, value: b.state('switch' + index, index === 0), onValueChange: b.update('switch' + index) })).join('\n'));
       else if (s.content === '높이 채우기') content = b.node(name, { ...own, style: { height: b.vue ? '280px' : 280 } }, [
-        b.node(name, { gap: 'sm' }, ['홈', '자산', '와치리스트'].map(label => b.node('KjunText', {}, b.text(label))).join('\n')),
-        b.node('KjunText', { variant: 'label' }, b.text('김하늘 · 관리자'))].join('\n'));
-      // Title and description belong together (sm); the action keeps a step apart.
-      else content = b.node(name, own, [b.node(name, { gap: 'sm' }, [b.node('KjunText', { variant: 'cardTitle' }, b.text('알림 설정')),
+        b.node(name, { gap: 'xs' }, ['홈', '자산', '와치리스트'].map(label => b.node('KjunText', {}, b.text(label))).join('\n')), ...spacer,
+        b.node(name, { gap: 'xs' }, [b.node('KjunText', { variant: 'label' }, b.text('김하늘 · 관리자')), b.node('KjunText', {}, b.text('설정'))].join('\n'))].join('\n'));
+      else if (s.content === '상품 카드') content = b.node(name, { ...own, align: s.align && s.align !== 'stretch' ? s.align : 'center' }, [
+        b.node('KjunAvatar', { name: '무선 이어폰', size: 'xl', shape: 'square' }),
+        b.node(name, { gap: 'xs' }, [b.node('KjunText', { variant: 'cardTitle' }, b.text('무선 이어폰')), b.node('KjunText', { tone: 'secondary' }, b.text('39,000원'))].join('\n')),
+        ...spacer, b.button('담기', notify('add', '담았습니다'))].join('\n'));
+      // Title and description belong together (smMd); the action keeps a step apart.
+      else content = b.node(name, own, [b.node(name, { gap: 'smMd' }, [b.node('KjunText', { variant: 'cardTitle' }, b.text('알림 설정')),
         b.node('KjunText', { tone: 'secondary' }, b.text('받을 알림을 고르세요.'))].join('\n')), b.button('저장', notify('save', '저장했습니다'))].join('\n'));
       break;
     }
     case 'KjunInline':
       content = b.node(name, { gap: 'sm', justify: 'end' }, [b.button('취소', undefined, { variant: 'secondary' }), b.button('저장', notify('save', '저장했습니다'))].join('\n')); break;
+    case 'KjunSpacer':
+      content = b.node('KjunStack', { gap: 'xs', style: { height: b.vue ? '240px' : 240 } }, [...['홈', '자산', '혜택'].map(label => b.node('KjunText', {}, b.text(label))),
+        b.node(name), b.node('KjunText', {}, b.text('프로필')), b.node('KjunText', {}, b.text('설정'))].join('\n')); break;
     case 'KjunScrollFade':
       content = b.node(name, {}, b.group(Array.from({ length: 12 }, (_, i) => b.button('항목 ' + (i + 1), undefined, { variant: 'secondary', size: 'sm' })))); break;
     case 'KjunErrorBoundary':

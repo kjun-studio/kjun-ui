@@ -74,17 +74,30 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
       return h(name, { size: "md", text: "조회 중" });
     case "KjunText":
       return h("Stack", {}, [h(name, { variant: "sectionTitle" }, "섹션 제목"), h(name, { tone: "secondary" }, "보조 설명 문구입니다.")]);
-    case "KjunStack":
-      // Card content groups title and description tightly (sm) and keeps the action a step apart (the chosen gap);
-      // a settings list shows divider; a fixed height shows justify. Buttons keep their width under stretch.
-      if (settings.content === "설정 목록") return h(name, { gap: settings.gap, align: settings.align, justify: settings.justify, divider: settings.divider },
+    case "KjunStack": {
+      // Card content groups title and description tightly (smMd) and keeps the action a step apart (the chosen gap);
+      // a settings list shows divider; a fixed height shows Spacer and justify; a product card turns into a row on wide screens.
+      const own = { gap: settings.gap, align: settings.align, justify: settings.justify, padding: settings.padding,
+        divider: settings.divider === "없음" ? false : settings.divider,
+        direction: settings.direction === "좁으면 세로" ? { base: "column", medium: "row" } : settings.direction };
+      const spacer = settings.spacer ? [h("KjunSpacer", {})] : [];
+      if (settings.content === "설정 목록") return h(name, own,
         ["푸시 알림", "이메일 요약", "야간 방해 금지"].map((label, index) => h("KjunSwitch", { label, value: get("switch" + index, index === 0), onValueChange: change("switch" + index) })));
-      if (settings.content === "높이 채우기") return h("Box", { width: 240, height: 280 }, h(name, { gap: settings.gap, align: settings.align, justify: settings.justify, divider: settings.divider, style: { height: "100%" } }, [
-        h(name, { gap: "sm" }, ["홈", "자산", "와치리스트"].map(label => h("KjunText", {}, label))), h("KjunText", { variant: "label" }, "김하늘 · 관리자")]));
-      return h(name, { gap: settings.gap, align: settings.align, justify: settings.justify, divider: settings.divider }, [
-        h(name, { gap: "sm" }, [h("KjunText", { variant: "cardTitle" }, "알림 설정"), h("KjunText", { tone: "secondary" }, "받을 알림을 고르세요.")]), h("KjunButton", {}, "저장")]);
+      if (settings.content === "높이 채우기") return h("Box", { width: 240, height: 280 }, h(name, { ...own, style: { height: "100%" } }, [
+        h(name, { gap: "xs" }, ["홈", "자산", "와치리스트"].map(label => h("KjunText", {}, label))), ...spacer,
+        h(name, { gap: "xs" }, [h("KjunText", { variant: "label" }, "김하늘 · 관리자"), h("KjunText", {}, "설정")])]));
+      if (settings.content === "상품 카드") return h(name, { ...own, align: settings.align === "stretch" ? "center" : settings.align }, [
+        h("KjunAvatar", { name: "무선 이어폰", size: "xl", shape: "square" }),
+        h(name, { gap: "xs" }, [h("KjunText", { variant: "cardTitle" }, "무선 이어폰"), h("KjunText", { tone: "secondary" }, "39,000원")]), ...spacer,
+        h("KjunButton", {}, "담기")]);
+      return h(name, own, [
+        h(name, { gap: "smMd" }, [h("KjunText", { variant: "cardTitle" }, "알림 설정"), h("KjunText", { tone: "secondary" }, "받을 알림을 고르세요.")]), h("KjunButton", {}, "저장")]);
+    }
     case "KjunInline":
       return h(name, { gap: "sm", justify: "end" }, [h("KjunButton", { variant: "secondary" }, "취소"), h("KjunButton", {}, "저장")]);
+    case "KjunSpacer":
+      return h("Box", { width: 240, height: 240 }, h("KjunStack", { gap: "xs", style: { height: "100%" } }, [
+        ...["홈", "자산", "혜택"].map(label => h("KjunText", {}, label)), h(name, {}), h("KjunText", {}, "프로필"), h("KjunText", {}, "설정")]));
     case "KjunAlert":
       return h(name, {
         variant: settings.tone, size: settings.size, title: settings.title,

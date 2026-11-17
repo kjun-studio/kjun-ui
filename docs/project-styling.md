@@ -64,7 +64,7 @@ Vue 3·React 모달은 가장 가까운 Provider 안에 렌더링되어 해당 �
 화면의 제목·본문·보조 문구와 요소 사이 간격은 앱 CSS로 정하지 않고 KJUN 컴포넌트의 이름(역할·단계)으로 고릅니다. 앱 CSS에는 페이지 폭·그리드 열 같은 큰 배치만 남깁니다. 이렇게 하면 화면마다 `font-size: 28px`, `margin-top: 18px` 같은 값이 따로 생기지 않습니다.
 
 ```vue
-<KjunStack gap="section-md">
+<KjunStack gap="sectionMd">
   <KjunStack gap="sm">
     <KjunText variant="pageTitle">알림 설정</KjunText>
     <KjunText tone="secondary">받을 알림을 고르세요.</KjunText>
@@ -79,9 +79,11 @@ Vue 3·React 모달은 가장 가까운 Provider 안에 렌더링되어 해당 �
 
 - `KjunText`: `variant`로 글자 역할, `tone`으로 색 역할을 고릅니다. 제목 수준은 `as`로 바꿉니다(웹).
   - 기본 tone의 색은 플랫폼마다 다릅니다. 웹은 감싼 영역의 글자색을 따르고, Native는 항상 `text` 색입니다(Native 글자는 부모 View의 색을 이어받지 못합니다). 색이 다른 배경 위에 둔 글자는 웹에서는 배경을 따라가지만 Native에서는 `text` 색으로 남으니, 두 플랫폼에서 모두 확인합니다.
-- `KjunStack`(세로)·`KjunInline`(가로): `gap`으로 간격 단계를 고릅니다. Stack의 단계는 `none`·`xs`·`sm`·`md`·`lg`·`section-sm`·`section-md`·`section-lg`입니다.
-  - Stack의 `gap`은 화면 폭별 값도 받습니다. `{ base: "md", medium: "lg" }`처럼 쓰며 `compact`·`medium`·`wide`는 640·768·1024px 이상입니다.
-  - `justify`(start·center·end·between)로 주축 정렬을, Stack의 `divider`로 자식 사이의 구분선을 지정합니다. 웹의 Stack은 `as`로 `ul`·`ol`·`nav`·`section` 같은 목록·랜드마크 태그를 고릅니다. 바로 안의 폼 그룹은 자체 아래 여백 없이 `gap`만 따르므로 `data-kjun-layout="form"`이 필요 없습니다.
+- `KjunStack`(세로)·`KjunInline`(가로): `gap`으로 간격 단계를 고릅니다. Stack의 단계는 `none`·`xs` 4·`sm` 8·`smMd` 12·`md` 16·`lg` 24와 `sectionSm` 32·`sectionMd` 48·`sectionLg` 64입니다(이전 이름 `section-sm` 등도 동작).
+  - `gap`·`direction`·`padding`은 화면 폭별 값도 받습니다. `{ base: "md", medium: "lg" }`처럼 쓰며 `compact`·`medium`·`wide`는 640·768·1024px 이상입니다. 사이드바처럼 화면보다 좁은 자리에서는 `responsive="container"`로 자기 폭을 기준으로 삼습니다.
+  - `justify`(start·center·end·between)로 주축 정렬을, `divider`(true·inset·strong)로 자식 사이의 구분선을 지정합니다. 선은 gap 가운데에 그려 간격이 늘지 않습니다. 웹의 Stack은 `as`로 `ul`·`ol`·`nav`·`section` 같은 목록·랜드마크 태그를 고릅니다. 바로 안의 폼 그룹은 자체 아래 여백 없이 `gap`만 따르므로 `data-kjun-layout="form"`이 필요 없습니다.
+- 안쪽 여백도 px로 쓰지 않고 `padding`(`paddingX`·`paddingY`)으로 space.inset 단계(sm 12·md 16·lg 24)를 고릅니다. 좁으면 세로·넓으면 가로인 배치는 `direction={{ base: "column", medium: "row" }}`로, 사이드바처럼 화면보다 좁은 자리의 반응형 값은 `responsive="container"`로 둡니다. 묶음을 양 끝으로 나눌 때는 `KjunSpacer`를 넣습니다.
+- 앱 CSS로 간격을 바꿔야 한다면 KJUN CSS 뒤에 불러온 앱 클래스의 `gap`이 이깁니다. 그래도 단계 이름을 먼저 고려합니다.
 - Stack·Inline은 KJUN 마크업으로 취급하지 않습니다. 안에 넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받습니다.
 - `tone`은 `secondary`·`tertiary`·`disabled` 외에 `brand`·`danger`·`success`·`warning`·`info`와, 그 색으로 채운 바탕 위 글자용 `onBrand`·`onDanger`·`onSuccess`·`onWarning`도 받습니다. `inverse`는 `onBrand`의 이전 이름입니다.
 - Native 버튼·Badge는 혼자서는 왼쪽(flex-start)에 놓입니다. `KjunStack`·`KjunInline`에 `align`(start·center·end, Inline은 baseline도)을 **명시**하면 바로 안의 버튼·Badge가 그 정렬을 따릅니다. 기본값과 `stretch`에서는 그대로 왼쪽이고, 꽉 채우려면 버튼의 `block`을 씁니다. 앱이 만든 View 안이나 `style.alignSelf`를 준 경우에는 그 값이 우선합니다. 웹은 원래 부모 정렬을 따릅니다.

@@ -1,18 +1,21 @@
-import { Children, Fragment, cloneElement, isValidElement, type ReactElement, type ReactNode } from "react";
-import { View, useWindowDimensions, type StyleProp, type TextProps, type TextStyle, type ViewProps, type ViewStyle } from "react-native";
+import { Children, Fragment, cloneElement, isValidElement, useState, type ReactElement, type ReactNode } from "react";
+import { View, useWindowDimensions, type LayoutChangeEvent, type StyleProp, type TextProps, type TextStyle, type ViewProps, type ViewStyle } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
 import {
-  clampLines, isNumericVariant, stackGapAt, titleVariants,
-  type InlineAlign, type InlineGap, type InlineJustify, type StackAlign, type StackBreakpoint, type StackGap, type StackGapValue, type StackJustify,
-  type TextAlign, type TextDecoration, type TextTone, type TextVariant,
+  clampLines, dividerVariant, interleave, isNumericVariant, isResponsive, responsiveSteps, stackGapSteps, stepAt, titleVariants,
+  type DirectionValue, type FlexDirection, type InlineAlign, type InlineGap, type InlineGapValue, type InlineJustify, type InsetStep, type LegacyStackGap,
+  type PaddingValue, type Responsive, type ResponsiveBasis, type StackAlign, type StackBreakpoint, type StackDivider, type StackGap, type StackGapValue,
+  type StackJustify, type TextAlign, type TextDecoration, type TextTone, type TextVariant,
 } from "../../../shared/package-runtime/layout-primitives";
 import { KjunFormGroup } from "./input";
 import { KjunButton } from "./button";
 import { KjunBadge } from "./display-primitives";
+import { KjunChip } from "./chip";
 import { FontText, KText } from "./internal";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
-export type { InlineAlign, InlineGap, InlineJustify, StackAlign, StackBreakpoint, StackGap, StackGapValue, StackJustify, TextAlign, TextDecoration, TextTone, TextVariant };
+export type { DirectionValue, FlexDirection, InlineAlign, InlineGap, InlineGapValue, InlineJustify, InsetStep, LegacyStackGap, PaddingValue, Responsive,
+  ResponsiveBasis, StackAlign, StackBreakpoint, StackDivider, StackGap, StackGapValue, StackJustify, TextAlign, TextDecoration, TextTone, TextVariant };
 
 /** Other React Native Text props (accessibilityLabel, testID, selectable, allowFontScaling, adjustsFontSizeToFit…) pass through.
  * adjustsFontSizeToFit only shrinks: the variant size stays the largest. */
@@ -76,8 +79,8 @@ function flatten(children: ReactNode, path = ""): [string, ReactNode][] {
       ? flatten(child.props.children, `${key}.`) : [[key, child]];
   });
 }
-// Native buttons and badges sit at flex-start on their own. When the app names an alignment, a direct button
-// or badge takes it as alignSelf (Web already follows the parent); the default and stretch keep flex-start,
+// Native buttons, badges and chips sit at flex-start on their own. When the app names an alignment, a direct one
+// takes it as alignSelf (Web already follows the parent); the default and stretch keep flex-start,
 // and the child's own style.alignSelf still wins.
 type ChildAlign = "flex-start" | "center" | "flex-end" | "baseline";
 function items(children: ReactNode, childAlign?: ChildAlign) {
@@ -87,7 +90,7 @@ function items(children: ReactNode, childAlign?: ChildAlign) {
       const group = child as ReactElement<{ style?: StyleProp<ViewStyle> }>;
       return cloneElement(group, { key, style: [{ marginBottom: 0 }, group.props.style] });
     }
-    if (childAlign && isValidElement(child) && (child.type === KjunButton || child.type === KjunBadge)) {
+    if (childAlign && isValidElement(child) && (child.type === KjunButton || child.type === KjunBadge || child.type === KjunChip)) {
       const control = child as ReactElement<{ style?: StyleProp<ViewStyle> }>;
       return cloneElement(control, { key, style: [{ alignSelf: childAlign }, control.props.style] });
     }
@@ -98,55 +101,88 @@ const followed = (align: StackAlign | InlineAlign | undefined): ChildAlign | und
   align && align !== "stretch" ? crossAxis[align] : undefined;
 
 const stackGap: Record<StackGap, number> = {
-  none: 0, xs: tokens.space.stack.xs, sm: tokens.space.stack.sm, md: tokens.space.stack.md, lg: tokens.space.stack.lg,
-  "section-sm": tokens.space.section.sm, "section-md": tokens.space.section.md, "section-lg": tokens.space.section.lg,
+  none: 0, xs: tokens.space.stack.xs, sm: tokens.space.stack.sm, smMd: tokens.space.stack.smMd, md: tokens.space.stack.md, lg: tokens.space.stack.lg,
+  sectionSm: tokens.space.section.sm, sectionMd: tokens.space.section.md, sectionLg: tokens.space.section.lg,
 };
 const inlineGap: Record<InlineGap, number> = {
   none: 0, xs: tokens.space.inline.xs, sm: tokens.space.inline.sm, md: tokens.space.inline.md, lg: tokens.space.inline.lg,
 };
+const inset: Record<InsetStep, number> = { none: 0, sm: tokens.space.inset.sm, md: tokens.space.inset.md, lg: tokens.space.inset.lg };
 const crossAxis = { stretch: "stretch", start: "flex-start", center: "center", end: "flex-end", baseline: "baseline" } as const;
 const mainAxis = { start: "flex-start", center: "center", end: "flex-end", between: "space-between" } as const;
-
 const breakpoints: Record<StackBreakpoint, number> = { compact: tokens.responsive.stackCompact, medium: tokens.responsive.stackMedium, wide: tokens.responsive.stackWide };
-/** Other View props (testID, accessibilityRole, accessibilityLabel, nativeID, onLayout, pointerEvents…) pass through. */
-export interface KjunStackProps extends Omit<ViewProps, "style" | "children"> {
-  /** Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the
-   * window width, e.g. { base: "sm", medium: "lg" } (compact 640, medium 768, wide 1024 and up). */
-  gap?: StackGapValue;
-  /** Cross-axis alignment. Buttons and badges keep their own width under stretch (the default), as on Web. */
-  align?: StackAlign;
-  /** How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom. */
+
+/** Props both KjunStack and KjunInline take. Other View props (testID, accessibilityRole, accessibilityLabel, nativeID, onLayout,
+ * pointerEvents…) pass through. */
+interface FlexProps extends Omit<ViewProps, "style" | "children"> {
+  /** Lay the children out as a column or a row; an object changes it with the width, e.g. { base: "column", medium: "row" }. */
+  direction?: DirectionValue;
+  /** Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap. */
+  padding?: PaddingValue;
+  paddingX?: PaddingValue;
+  paddingY?: PaddingValue;
+  /** A divider between children: true or "full" a hairline, "inset" a hairline that starts after dividerInset, "strong" a band
+   * for sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness. */
+  divider?: StackDivider;
+  /** Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md. */
+  dividerInset?: InsetStep;
+  /** What the responsive values follow: viewport (default, the window width) or container, the stack's own width from onLayout. */
+  responsive?: ResponsiveBasis;
   justify?: StackJustify;
-  /** A hairline in the divider color between children, with the gap above and below it. */
-  divider?: boolean;
   style?: StyleProp<ViewStyle>;
   children?: ReactNode;
 }
-export function KjunStack({ gap, align, justify = "start", divider = false, style, children, ...rest }: KjunStackProps) {
-  const { colors } = useKjunStyles(), { width } = useWindowDimensions();
-  const rows = items(children, followed(align));
-  const content = divider ? rows.flatMap((row, index) => index
-    ? [<View key={"kjun-divider-" + index} aria-hidden={true} style={{ alignSelf: "stretch", height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />, row] : [row]) : rows;
-  return <View {...rest} style={[{ flexDirection: "column", alignItems: crossAxis[align ?? "stretch"], justifyContent: mainAxis[justify],
-    gap: stackGap[stackGapAt(gap, width, breakpoints)], minWidth: 0 }, style]}>{content}</View>;
+export interface KjunStackProps extends FlexProps {
+  /** Space between children: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24) or space.section (sectionSm 32 · sectionMd 48 · sectionLg 64).
+   * An object changes it with the width, e.g. { base: "sm", medium: "lg" } (compact 640, medium 768, wide 1024 and up). */
+  gap?: StackGapValue;
+  /** Cross-axis alignment. Buttons, badges and chips keep their own width under stretch (the default), as on Web. */
+  align?: StackAlign;
 }
-
-/** Other View props (testID, accessibilityRole, accessibilityLabel, nativeID, onLayout, pointerEvents…) pass through. */
-export interface KjunInlineProps extends Omit<ViewProps, "style" | "children"> {
-  /** Space between children: space.inline (xs·sm·md·lg). */
-  gap?: InlineGap;
+export interface KjunInlineProps extends FlexProps {
+  /** Space between children: space.inline (xs·sm·md·lg). An object changes it with the width like Stack's gap. */
+  gap?: InlineGapValue;
   align?: InlineAlign;
-  justify?: InlineJustify;
   /** Wrap onto new lines when the row runs out of width. Default true. */
   wrap?: boolean;
-  style?: StyleProp<ViewStyle>;
-  children?: ReactNode;
 }
-export function KjunInline({ gap = "sm", align, justify = "start", wrap = true, style, children, ...rest }: KjunInlineProps) {
-  return (
-    <View {...rest} style={[{ flexDirection: "row", flexWrap: wrap ? "wrap" : "nowrap", alignItems: crossAxis[align ?? "center"],
-      justifyContent: mainAxis[justify], gap: inlineGap[gap], minWidth: 0 }, style]}>
-      {items(children, followed(align))}
-    </View>
-  );
+export interface KjunSpacerProps { style?: StyleProp<ViewStyle> }
+/** Takes the spare length of a Stack or Inline, pushing what follows to the far end: a menu at the top and a profile at the bottom. */
+export function KjunSpacer({ style }: KjunSpacerProps) {
+  return <View aria-hidden={true} style={[{ flexGrow: 1, flexShrink: 1, minWidth: 0, minHeight: 0, alignSelf: "stretch" }, style]} />;
+}
+const isSpacer = (child: ReactNode) => isValidElement(child) && child.type === KjunSpacer;
+
+function Flex({ kind, gap, align, wrap, direction, padding, paddingX, paddingY, divider, dividerInset = "md", responsive = "viewport", justify = "start",
+  style, children, onLayout, ...rest }: FlexProps & { kind: "stack" | "inline"; gap?: StackGapValue | InlineGapValue; align?: StackAlign | InlineAlign; wrap?: boolean }) {
+  const { colors } = useKjunStyles(), window = useWindowDimensions();
+  const container = responsive === "container" && isResponsive(gap, direction, padding, paddingX, paddingY);
+  const [measured, setMeasured] = useState<number>();
+  const width = container ? measured ?? 0 : window.width;
+  const at = <T,>(value: Responsive<T> | undefined, fallback: T) => stepAt(responsiveSteps(value, fallback), width, breakpoints);
+  const stack = kind === "stack";
+  const space = stack ? stackGap[stepAt(stackGapSteps(gap as StackGapValue), width, breakpoints)] : inlineGap[at(gap as InlineGapValue, "sm")];
+  const row = at<FlexDirection>(direction, stack ? "column" : "row") === "row";
+  const all = at<InsetStep>(padding, "none"), px = inset[paddingX == null ? all : at(paddingX, "none")], py = inset[paddingY == null ? all : at(paddingY, "none")];
+  const rows = items(children, followed(align));
+  const variant = dividerVariant(divider);
+  const content = variant ? interleave(rows, isSpacer, index => {
+    // A hairline sits inside the gap (the distance stays the gap, or the line when the gap is thinner); a band adds its thickness.
+    const strong = variant === "strong", t = strong ? tokens.border.dividerStrongWidth : tokens.border.defaultWidth;
+    const m = strong ? -space / 2 : (Math.max(space, t) - 2 * space - t) / 2, start = variant === "inset" ? inset[dividerInset] : 0;
+    return <View key={"kjun-divider-" + index} aria-hidden={true} style={[{ alignSelf: "stretch", flexShrink: 0, backgroundColor: strong ? colors.background : colors.divider },
+      row ? { width: t, marginHorizontal: m, marginTop: start } : { height: t, marginVertical: m, marginStart: start }]} />;
+  }) : rows;
+  return <View {...rest} onLayout={container ? (event: LayoutChangeEvent) => { setMeasured(event.nativeEvent.layout.width); onLayout?.(event); } : onLayout}
+    style={[{ flexDirection: row ? "row" : "column", flexWrap: !stack && wrap ? "wrap" : "nowrap", alignItems: crossAxis[align ?? (stack ? "stretch" : "center")],
+      justifyContent: mainAxis[justify], gap: space, paddingHorizontal: px, paddingVertical: py, minWidth: 0 }, style]}>{content}</View>;
+}
+
+/** Vertical stack (direction turns it into a row). */
+export function KjunStack(props: KjunStackProps) {
+  return <Flex {...props} kind="stack" />;
+}
+/** Horizontal row that wraps by default. */
+export function KjunInline({ gap = "sm", wrap = true, ...props }: KjunInlineProps) {
+  return <Flex {...props} gap={gap} wrap={wrap} kind="inline" />;
 }

@@ -10727,10 +10727,10 @@
     "vue3": [
       {
         "name": "gap",
-        "type": "InlineGap",
+        "type": "InlineGapValue",
         "required": false,
         "default": "\"sm\"",
-        "description": "Space between children: space.inline (xs·sm·md·lg)."
+        "description": "Space between children: space.inline (xs·sm·md·lg). An object changes it with the width like Stack's gap."
       },
       {
         "name": "align",
@@ -10740,18 +10740,74 @@
         "description": ""
       },
       {
-        "name": "justify",
-        "type": "InlineJustify",
-        "required": false,
-        "default": "\"start\"",
-        "description": ""
-      },
-      {
         "name": "wrap",
         "type": "boolean",
         "required": false,
         "default": "true",
         "description": "Wrap onto new lines when the row runs out of width."
+      },
+      {
+        "name": "direction",
+        "type": "DirectionValue",
+        "required": false,
+        "default": "—",
+        "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }."
+      },
+      {
+        "name": "padding",
+        "type": "PaddingValue",
+        "required": false,
+        "default": "—",
+        "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap."
+      },
+      {
+        "name": "paddingX",
+        "type": "PaddingValue",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "paddingY",
+        "type": "PaddingValue",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "divider",
+        "type": "StackDivider",
+        "required": false,
+        "default": "false",
+        "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness."
+      },
+      {
+        "name": "dividerInset",
+        "type": "InsetStep",
+        "required": false,
+        "default": "\"md\"",
+        "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24)."
+      },
+      {
+        "name": "responsive",
+        "type": "ResponsiveBasis",
+        "required": false,
+        "default": "\"viewport\"",
+        "description": "What the responsive values follow: viewport (CSS media queries) or container, the element's own width, measured."
+      },
+      {
+        "name": "justify",
+        "type": "StackJustify",
+        "required": false,
+        "default": "\"start\"",
+        "description": "How children share the spare length: between puts the first at the start and the last at the end."
+      },
+      {
+        "name": "as",
+        "type": "StackTag",
+        "required": false,
+        "default": "\"div\"",
+        "description": "Element to render. ul and ol drop bullets and indent; give them li children."
       }
     ],
     "events": [],
@@ -10765,21 +10821,14 @@
     "react": [
       {
         "name": "gap",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineGap | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineGapValue | undefined",
         "required": false,
         "default": "—",
-        "description": "Space between children: space.inline (xs·sm·md·lg)."
+        "description": "Space between children: space.inline (xs·sm·md·lg). An object changes it with the width like Stack's gap."
       },
       {
         "name": "align",
         "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineAlign | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "justify",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineJustify | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -10790,6 +10839,62 @@
         "required": false,
         "default": "—",
         "description": "Wrap onto new lines when the row runs out of width. Default true."
+      },
+      {
+        "name": "direction",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").DirectionValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }."
+      },
+      {
+        "name": "padding",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap."
+      },
+      {
+        "name": "paddingX",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "paddingY",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "divider",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackDivider | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness."
+      },
+      {
+        "name": "dividerInset",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InsetStep | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md."
+      },
+      {
+        "name": "responsive",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").ResponsiveBasis | undefined",
+        "required": false,
+        "default": "—",
+        "description": "What the responsive values follow: viewport (default, CSS media queries) or container, the element's own width, measured."
+      },
+      {
+        "name": "justify",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackJustify | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       },
       {
         "name": "className",
@@ -10813,15 +10918,43 @@
         "description": ""
       },
       {
-        "name": "ref",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").Ref<HTMLDivElement> | undefined",
+        "name": "as",
+        "type": "T | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "autoFocus",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ComponentPropsWithRef<T>[\"autoFocus\"] | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "id",
-        "type": "string | undefined",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ComponentPropsWithRef<T>[\"id\"] | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onChange",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ComponentPropsWithRef<T>[\"onChange\"] | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onKeyDown",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ComponentPropsWithRef<T>[\"onKeyDown\"] | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onClick",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ComponentPropsWithRef<T>[\"onClick\"] | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -10830,21 +10963,14 @@
     "native": [
       {
         "name": "gap",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineGap | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineGapValue | undefined",
         "required": false,
         "default": "—",
-        "description": "Space between children: space.inline (xs·sm·md·lg)."
+        "description": "Space between children: space.inline (xs·sm·md·lg). An object changes it with the width like Stack's gap."
       },
       {
         "name": "align",
         "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineAlign | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "justify",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineJustify | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -10855,6 +10981,62 @@
         "required": false,
         "default": "—",
         "description": "Wrap onto new lines when the row runs out of width. Default true."
+      },
+      {
+        "name": "direction",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").DirectionValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }."
+      },
+      {
+        "name": "padding",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap."
+      },
+      {
+        "name": "paddingX",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "paddingY",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "divider",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackDivider | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness."
+      },
+      {
+        "name": "dividerInset",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InsetStep | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md."
+      },
+      {
+        "name": "responsive",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").ResponsiveBasis | undefined",
+        "required": false,
+        "default": "—",
+        "description": "What the responsive values follow: viewport (default, the window width) or container, the stack's own width from onLayout."
+      },
+      {
+        "name": "justify",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackJustify | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       },
       {
         "name": "style",
@@ -23472,6 +23654,36 @@
       }
     ]
   },
+  "KjunSpacer": {
+    "vue3": [],
+    "events": [],
+    "slots": [],
+    "react": [
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ],
+    "native": [
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
   "KjunSparkline": {
     "vue3": [
       {
@@ -24096,28 +24308,70 @@
         "type": "StackGapValue",
         "required": false,
         "default": "\"md\"",
-        "description": "Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the\nscreen width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up)."
+        "description": "Space between children: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24) or space.section (sectionSm 32 · sectionMd 48 · sectionLg 64).\nAn object changes it with the width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up)."
       },
       {
         "name": "align",
         "type": "StackAlign",
         "required": false,
         "default": "\"stretch\"",
-        "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons and badges keep their own;\na full-width button says so with block."
+        "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons, badges, chips and other\ncontent-width controls keep their own; a full-width button says so with block."
+      },
+      {
+        "name": "direction",
+        "type": "DirectionValue",
+        "required": false,
+        "default": "—",
+        "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }."
+      },
+      {
+        "name": "padding",
+        "type": "PaddingValue",
+        "required": false,
+        "default": "—",
+        "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap."
+      },
+      {
+        "name": "paddingX",
+        "type": "PaddingValue",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "paddingY",
+        "type": "PaddingValue",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "divider",
+        "type": "StackDivider",
+        "required": false,
+        "default": "false",
+        "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness."
+      },
+      {
+        "name": "dividerInset",
+        "type": "InsetStep",
+        "required": false,
+        "default": "\"md\"",
+        "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24)."
+      },
+      {
+        "name": "responsive",
+        "type": "ResponsiveBasis",
+        "required": false,
+        "default": "\"viewport\"",
+        "description": "What the responsive values follow: viewport (CSS media queries) or container, the element's own width, measured."
       },
       {
         "name": "justify",
         "type": "StackJustify",
         "required": false,
         "default": "\"start\"",
-        "description": "How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom."
-      },
-      {
-        "name": "divider",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "A hairline in the divider color between children, with the gap above and below it."
+        "description": "How children share the spare length: between puts the first at the start and the last at the end."
       },
       {
         "name": "as",
@@ -24141,35 +24395,70 @@
         "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackGapValue | undefined",
         "required": false,
         "default": "—",
-        "description": "Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the\nscreen width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up)."
+        "description": "Space between children: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24) or space.section (sectionSm 32 · sectionMd 48 · sectionLg 64).\nAn object changes it with the width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up)."
       },
       {
         "name": "align",
         "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackAlign | undefined",
         "required": false,
         "default": "—",
-        "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons and badges keep their own;\na full-width button says so with block."
+        "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons, badges, chips and other\ncontent-width controls keep their own; a full-width button says so with block."
+      },
+      {
+        "name": "direction",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").DirectionValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }."
+      },
+      {
+        "name": "padding",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap."
+      },
+      {
+        "name": "paddingX",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "paddingY",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "divider",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackDivider | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness."
+      },
+      {
+        "name": "dividerInset",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InsetStep | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md."
+      },
+      {
+        "name": "responsive",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").ResponsiveBasis | undefined",
+        "required": false,
+        "default": "—",
+        "description": "What the responsive values follow: viewport (default, CSS media queries) or container, the element's own width, measured."
       },
       {
         "name": "justify",
         "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackJustify | undefined",
         "required": false,
         "default": "—",
-        "description": "How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom."
-      },
-      {
-        "name": "divider",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": "A hairline in the divider color between children, with the gap above and below it."
-      },
-      {
-        "name": "as",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackTag | undefined",
-        "required": false,
-        "default": "—",
-        "description": "Element to render. ul and ol drop bullets and indent; give them li children."
+        "description": ""
       },
       {
         "name": "className",
@@ -24193,15 +24482,43 @@
         "description": ""
       },
       {
-        "name": "ref",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").Ref<HTMLElement> | undefined",
+        "name": "as",
+        "type": "T | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "autoFocus",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ComponentPropsWithRef<T>[\"autoFocus\"] | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "id",
-        "type": "string | undefined",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ComponentPropsWithRef<T>[\"id\"] | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onChange",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ComponentPropsWithRef<T>[\"onChange\"] | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onKeyDown",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ComponentPropsWithRef<T>[\"onKeyDown\"] | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onClick",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ComponentPropsWithRef<T>[\"onClick\"] | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -24213,28 +24530,70 @@
         "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackGapValue | undefined",
         "required": false,
         "default": "—",
-        "description": "Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the\nwindow width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up)."
+        "description": "Space between children: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24) or space.section (sectionSm 32 · sectionMd 48 · sectionLg 64).\nAn object changes it with the width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up)."
       },
       {
         "name": "align",
         "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackAlign | undefined",
         "required": false,
         "default": "—",
-        "description": "Cross-axis alignment. Buttons and badges keep their own width under stretch (the default), as on Web."
+        "description": "Cross-axis alignment. Buttons, badges and chips keep their own width under stretch (the default), as on Web."
+      },
+      {
+        "name": "direction",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").DirectionValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }."
+      },
+      {
+        "name": "padding",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap."
+      },
+      {
+        "name": "paddingX",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "paddingY",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "divider",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackDivider | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness."
+      },
+      {
+        "name": "dividerInset",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InsetStep | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md."
+      },
+      {
+        "name": "responsive",
+        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").ResponsiveBasis | undefined",
+        "required": false,
+        "default": "—",
+        "description": "What the responsive values follow: viewport (default, the window width) or container, the stack's own width from onLayout."
       },
       {
         "name": "justify",
         "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackJustify | undefined",
         "required": false,
         "default": "—",
-        "description": "How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom."
-      },
-      {
-        "name": "divider",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": "A hairline in the divider color between children, with the gap above and below it."
+        "description": ""
       },
       {
         "name": "style",

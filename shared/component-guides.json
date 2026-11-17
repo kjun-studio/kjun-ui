@@ -646,16 +646,23 @@
   "KjunStack": {
     "slug": "stack",
     "description": "요소를 세로로 쌓고 사이 간격을 토큰 단계로 정합니다.",
-    "interaction": "gap으로 간격 단계(xs·sm·md·lg는 space.stack, section-sm·md·lg는 space.section)를, align으로 가로 정렬을, justify로 남는 높이의 분배를 고릅니다. 함께 읽히는 제목과 설명은 안쪽 Stack(xs·sm)으로 묶고, 행동 버튼은 바깥 Stack에서 한 단계 떨어뜨리세요. gap에 { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭(compact 640·medium 768·wide 1024px 이상)에 따라 간격이 바뀝니다. divider는 자식 사이에 구분선을 넣고 선 위아래에 gap을 둡니다. 기본 align=stretch에서 블록은 폭을 채우고 버튼·배지는 내용 폭을 유지하므로, 전체 폭 버튼은 block으로 지정합니다. Stack 자체는 KJUN 마크업으로 취급하지 않으므로, 안에 넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받고 몇 겹 겹쳐도 같습니다. 바로 안의 FormGroup은 자체 아래 여백 대신 gap만 따릅니다. 앱 CSS로 margin을 더하지 말고 gap 단계를 바꿉니다.",
-    "differences": "세 플랫폼 모두 gap·align·justify·divider를 사용합니다. as(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)는 웹 전용이며 ul·ol의 자식은 li로 줍니다. 웹은 화면 폭 간격을 미디어 쿼리로, Native는 창 폭으로 고릅니다. Native는 문자열 자식을 본문 글자로 감싸고, testID·accessibilityRole 같은 View 속성을 그대로 넘깁니다. 웹에서 문자열을 본문 서체로 쓰려면 KjunText로 감싸세요.",
-    "states": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)이고 가장 작은 xs는 4px입니다. divider 선은 divider 색 1px이며 첫 자식 위와 마지막 자식 아래에는 없습니다."
+    "interaction": "gap으로 간격 단계(xs·sm·smMd·md·lg는 space.stack, sectionSm·sectionMd·sectionLg는 space.section)를, align으로 가로 정렬을, justify로 남는 높이의 분배를 고릅니다. 함께 읽히는 제목과 설명은 안쪽 Stack(xs·sm·smMd)으로 묶고, 행동 버튼은 바깥 Stack에서 한 단계 떨어뜨리세요. 카드 안 제목·본문·메타처럼 8은 빽빽하고 16은 흩어지는 거리에는 smMd(12)를 씁니다. gap·direction·padding에 { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭(compact 640·medium 768·wide 1024px 이상)에 따라 바뀝니다. direction={{ base: \"column\", medium: \"row\" }}이면 좁은 화면에서는 세로, 넓은 화면에서는 가로로 놓아 상품 카드나 설정 행을 컴포넌트 하나로 그립니다. 사이드바·Drawer처럼 화면보다 좁은 자리에서는 responsive=\"container\"로 Stack 자기 폭을 기준으로 삼습니다. padding(paddingX·paddingY)은 space.inset 단계로 안쪽 여백을 주므로 카드마다 px를 직접 쓰지 않아도 글자 시작선이 맞습니다. divider는 자식 사이에 구분 요소를 넣습니다. 선(true·full·inset)은 gap 가운데에 그려 간격이 늘지 않고, inset은 dividerInset만큼 들여 시작하며, strong은 구획을 나누는 바탕색 띠입니다. 메뉴를 위에, 프로필을 아래에 두려면 사이에 KjunSpacer를 넣습니다. 기본 align=stretch에서 블록은 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지하므로, 전체 폭 버튼은 block으로 지정하고 앱이 감싼 컨트롤에는 data-kjun-intrinsic을 줍니다. Stack 자체는 KJUN 마크업으로 취급하지 않으므로, 안에 넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받고 몇 겹 겹쳐도 같습니다. 바로 안의 FormGroup은 자체 아래 여백 대신 gap만 따릅니다. 앱 CSS로 margin을 더하지 말고 gap 단계를 바꿉니다.",
+    "differences": "세 플랫폼 모두 gap·align·justify·divider·dividerInset·direction·padding·responsive를 사용합니다. as(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)는 웹 전용이며 ul·ol의 자식은 li로 줍니다. React는 as에 따라 태그의 속성(form의 onSubmit 등)과 ref 타입을 받고, Vue 3는 같은 속성을 그대로 넘깁니다. 화면 폭 기준은 웹이 미디어 쿼리로, Native가 창 폭으로 고르고, container 기준은 웹이 ResizeObserver로, Native가 onLayout으로 잽니다. 웹에서 내용 폭을 유지하는 컨트롤은 Button·Badge·Chip·CopyButton·ExternalLink·MenuButton·Spinner·FilterGroup과 숫자 표시 컴포넌트이고, Native는 Button·Badge·Chip이 align을 따릅니다. Native는 문자열 자식을 본문 글자로 감싸고, testID·accessibilityRole 같은 View 속성을 그대로 넘깁니다. 웹에서 문자열을 본문 서체로 쓰려면 KjunText로 감싸세요.",
+    "states": "padding을 주지 않으면 바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 md(16px)이고 가장 작은 xs는 4px입니다. 선은 divider 색 1px, strong 띠는 바탕색 8px(tokens.border.dividerStrongWidth)이며 첫 자식 앞과 마지막 자식 뒤, KjunSpacer 옆에는 없습니다. 가로로 놓이면 선도 세로로 섭니다."
   },
   "KjunInline": {
     "slug": "inline",
     "description": "요소를 가로로 배치하고 사이 간격을 토큰 단계로 정합니다. 좁은 화면에서는 줄바꿈합니다.",
-    "interaction": "gap으로 간격 단계(xs·sm·md·lg는 space.inline)를, align으로 세로 정렬, justify로 가로 분배(between은 양 끝 정렬)를 고릅니다. wrap 기본값은 true라 좁은 화면에서 가로로 넘치지 않습니다. Inline 자체는 KJUN 마크업으로 취급하지 않으므로, 안에 넣은 앱 요소는 Inline이 없을 때와 같은 스타일을 받습니다.",
-    "differences": "세 플랫폼 모두 gap·align·justify·wrap을 사용합니다. Native는 문자열 자식을 본문 글자로 감쌉니다.",
-    "states": "바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다."
+    "interaction": "gap으로 간격 단계(xs·sm·md·lg는 space.inline)를, align으로 세로 정렬, justify로 가로 분배(between은 양 끝 정렬)를 고릅니다. wrap 기본값은 true라 좁은 화면에서 가로로 넘치지 않습니다. Stack과 같은 direction·padding·divider·responsive를 받아, 좁은 화면에서 세로로 바꾸거나 툴바 버튼 묶음 사이에 세로 구분선을 넣을 수 있습니다. 묶음을 양 끝으로 나누려면 KjunSpacer를 넣습니다. Inline 자체는 KJUN 마크업으로 취급하지 않으므로, 안에 넣은 앱 요소는 Inline이 없을 때와 같은 스타일을 받습니다.",
+    "differences": "세 플랫폼 모두 gap·align·justify·wrap·divider·direction·padding·responsive를 사용합니다. as는 웹 전용입니다. Native는 문자열 자식을 본문 글자로 감쌉니다.",
+    "states": "padding을 주지 않으면 바깥 여백이 없고 자식 사이 간격만 갖습니다. 기본 gap은 sm(8px), 기본 정렬은 세로 가운데입니다. 구분선은 세로 1px입니다."
+  },
+  "KjunSpacer": {
+    "slug": "spacer",
+    "description": "Stack·Inline 안에서 남는 길이를 차지해 뒤에 오는 자식을 끝으로 밉니다.",
+    "interaction": "세로 메뉴에서 주 메뉴는 위에, 프로필과 설정은 아래에 두거나, 툴바에서 제목은 왼쪽에, 버튼 묶음은 오른쪽에 둘 때 두 묶음 사이에 넣습니다. justify=\"between\"과 달리 묶음 안의 간격은 gap 그대로입니다. 남는 길이가 있어야 하므로 세로 Stack에는 높이를 줍니다. 구분선은 Spacer 옆에 그리지 않습니다.",
+    "differences": "웹은 화면 낭독기에서 숨긴 빈 div, Native는 flexGrow 1인 View입니다. Vue 3는 속성을 받지 않고 class·style을 그대로 넘깁니다.",
+    "states": "크기와 색이 없습니다. 남는 길이가 없으면 0으로 줄고, 앞뒤에는 Stack의 gap이 그대로 놓입니다."
   },
   "KjunSideNavigation": {
     "slug": "side-navigation",

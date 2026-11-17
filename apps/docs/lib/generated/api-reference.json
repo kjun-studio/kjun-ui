@@ -2428,7 +2428,7 @@
           },
           {
             "name": "variant",
-            "type": "\"compact\" | \"market\" | \"notification\" | \"row\"",
+            "type": "\"compact\" | \"row\" | \"market\" | \"notification\"",
             "required": false,
             "default": "\"market\"",
             "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked.",
@@ -2588,7 +2588,7 @@
           },
           {
             "name": "variant",
-            "type": "\"compact\" | \"market\" | \"notification\" | \"row\" | undefined",
+            "type": "\"compact\" | \"row\" | \"market\" | \"notification\" | undefined",
             "required": false,
             "default": "\"market\"",
             "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked.",
@@ -8568,7 +8568,7 @@
           },
           {
             "name": "responsive",
-            "type": "\"card\" | \"none\" | \"compact\" | \"list\" | null",
+            "type": "\"card\" | \"compact\" | \"none\" | \"list\" | null",
             "required": false,
             "default": "null",
             "description": "",
@@ -45961,8 +45961,8 @@
             "type": "StackGapValue",
             "required": false,
             "default": "\"md\"",
-            "description": "Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the\nscreen width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up).",
-            "summary": "자식 사이 세로 간격 단계입니다. xs·sm·md·lg는 space.stack(4·8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다). Native는 창 폭을 따릅니다.",
+            "description": "Space between children: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24) or space.section (sectionSm 32 · sectionMd 48 · sectionLg 64).\nAn object changes it with the width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up).",
+            "summary": "자식 사이 간격 단계입니다. xs·sm·smMd·md·lg는 space.stack(4·8·12·16·24px), sectionSm·sectionMd·sectionLg는 space.section(32·48·64px)이고 none은 0입니다. section-sm처럼 쓰던 이전 이름도 동작하며 개발 모드에서 한 번 알립니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다).",
             "source": "packages/vue3/src/layout-primitives.tsx"
           },
           {
@@ -45970,8 +45970,71 @@
             "type": "StackAlign",
             "required": false,
             "default": "\"stretch\"",
-            "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons and badges keep their own;\na full-width button says so with block.",
-            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지는 내용 폭을 유지합니다(전체 폭 버튼은 block). start·center·end는 모든 자식을 내용 폭으로 둡니다.",
+            "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons, badges, chips and other\ncontent-width controls keep their own; a full-width button says so with block.",
+            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지합니다(전체 폭 버튼은 block, 앱이 감싼 요소는 data-kjun-intrinsic). start·center·end는 모든 자식을 내용 폭으로 둡니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "direction",
+            "type": "DirectionValue",
+            "required": false,
+            "default": "\"column\"",
+            "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }.",
+            "summary": "자식을 세로(column)로 쌓을지 가로(row)로 놓을지 정합니다. { base: \"column\", medium: \"row\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, 좁으면 세로·넓으면 가로인 카드를 컴포넌트 하나로 그립니다. 방향이 바뀌면 구분선도 따라 눕습니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "padding",
+            "type": "PaddingValue",
+            "required": false,
+            "default": "—",
+            "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap.",
+            "summary": "안쪽 여백 단계입니다. sm·md·lg는 space.inset(12·16·24px)이고 none은 0입니다. 네 방향에 같은 값을 주며 gap처럼 화면 폭별 객체를 받습니다. 배경과 모서리는 앱이 정합니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "paddingX",
+            "type": "PaddingValue",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "좌우 여백 단계입니다. padding의 좌우만 바꿉니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "paddingY",
+            "type": "PaddingValue",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "위아래 여백 단계입니다. padding의 위아래만 바꿉니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "StackDivider",
+            "required": false,
+            "default": "false",
+            "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness.",
+            "summary": "자식 사이에 구분 요소를 넣습니다. true와 full은 divider 색 1px 선, inset은 dividerInset만큼 들여 시작하는 선, strong은 구획을 나누는 8px 바탕색 띠입니다. 선은 gap 가운데에 그려 자식 사이 거리가 gap 그대로이고, 띠는 gap에 두께를 더합니다. KjunSpacer 옆에는 그리지 않으며, 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "dividerInset",
+            "type": "InsetStep",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24).",
+            "summary": "divider=\"inset\"인 선이 시작하는 거리입니다. space.inset(sm 12·md 16·lg 24px) 단계입니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "responsive",
+            "type": "ResponsiveBasis",
+            "required": false,
+            "default": "\"viewport\"",
+            "description": "What the responsive values follow: viewport (CSS media queries) or container, the element's own width, measured.",
+            "summary": "화면 폭별 객체가 무엇을 기준으로 바뀔지 정합니다. viewport는 화면(창) 폭이라 첫 화면부터 정확합니다. container는 Stack 자기 폭을 재서(웹 ResizeObserver, Native onLayout) 좁은 사이드바·Drawer 안에서도 맞는 단계를 고르며, 재기 전 첫 그림은 base입니다.",
             "source": "packages/vue3/src/layout-primitives.tsx"
           },
           {
@@ -45979,17 +46042,8 @@
             "type": "StackJustify",
             "required": false,
             "default": "\"start\"",
-            "description": "How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom.",
-            "summary": "Stack이 자식보다 높을 때 남는 높이의 분배(start·center·end·between)입니다. between은 첫 자식을 위, 마지막 자식을 아래에 붙입니다. 높이를 채우는 패널에 씁니다.",
-            "source": "packages/vue3/src/layout-primitives.tsx"
-          },
-          {
-            "name": "divider",
-            "type": "boolean",
-            "required": false,
-            "default": "false",
-            "description": "A hairline in the divider color between children, with the gap above and below it.",
-            "summary": "자식 사이에 divider 색 1px 구분선을 그립니다. 선 위아래에 각각 gap만큼 간격을 둡니다. 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다.",
+            "description": "How children share the spare length: between puts the first at the start and the last at the end.",
+            "summary": "Stack이 자식보다 길 때 남는 길이의 분배(start·center·end·between)입니다. between은 첫 자식을 시작, 마지막 자식을 끝에 붙입니다. 묶음 사이를 벌리려면 KjunSpacer를 넣습니다.",
             "source": "packages/vue3/src/layout-primitives.tsx"
           },
           {
@@ -45998,7 +46052,7 @@
             "required": false,
             "default": "\"div\"",
             "description": "Element to render. ul and ol drop bullets and indent; give them li children.",
-            "summary": "웹 태그(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)입니다. ul·ol은 목록 기호와 들여쓰기를, fieldset은 테두리를 지우며 자식은 li로 주세요.",
+            "summary": "웹 태그(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)입니다. ul·ol은 목록 기호와 들여쓰기를, fieldset은 테두리를 지우며 자식은 li로 주세요. React에서는 태그의 속성(form의 onSubmit, fieldset의 disabled 등)과 ref 타입이 as를 따릅니다.",
             "source": "packages/vue3/src/layout-primitives.tsx"
           }
         ],
@@ -46022,8 +46076,8 @@
             "type": "StackGapValue | undefined",
             "required": false,
             "default": "\"md\"",
-            "description": "Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the\nscreen width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up).",
-            "summary": "자식 사이 세로 간격 단계입니다. xs·sm·md·lg는 space.stack(4·8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다). Native는 창 폭을 따릅니다.",
+            "description": "Space between children: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24) or space.section (sectionSm 32 · sectionMd 48 · sectionLg 64).\nAn object changes it with the width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up).",
+            "summary": "자식 사이 간격 단계입니다. xs·sm·smMd·md·lg는 space.stack(4·8·12·16·24px), sectionSm·sectionMd·sectionLg는 space.section(32·48·64px)이고 none은 0입니다. section-sm처럼 쓰던 이전 이름도 동작하며 개발 모드에서 한 번 알립니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다).",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
@@ -46031,8 +46085,71 @@
             "type": "StackAlign | undefined",
             "required": false,
             "default": "\"stretch\"",
-            "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons and badges keep their own;\na full-width button says so with block.",
-            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지는 내용 폭을 유지합니다(전체 폭 버튼은 block). start·center·end는 모든 자식을 내용 폭으로 둡니다.",
+            "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons, badges, chips and other\ncontent-width controls keep their own; a full-width button says so with block.",
+            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지합니다(전체 폭 버튼은 block, 앱이 감싼 요소는 data-kjun-intrinsic). start·center·end는 모든 자식을 내용 폭으로 둡니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "direction",
+            "type": "DirectionValue | undefined",
+            "required": false,
+            "default": "\"column\"",
+            "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }.",
+            "summary": "자식을 세로(column)로 쌓을지 가로(row)로 놓을지 정합니다. { base: \"column\", medium: \"row\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, 좁으면 세로·넓으면 가로인 카드를 컴포넌트 하나로 그립니다. 방향이 바뀌면 구분선도 따라 눕습니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "padding",
+            "type": "PaddingValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap.",
+            "summary": "안쪽 여백 단계입니다. sm·md·lg는 space.inset(12·16·24px)이고 none은 0입니다. 네 방향에 같은 값을 주며 gap처럼 화면 폭별 객체를 받습니다. 배경과 모서리는 앱이 정합니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "paddingX",
+            "type": "PaddingValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "좌우 여백 단계입니다. padding의 좌우만 바꿉니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "paddingY",
+            "type": "PaddingValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "위아래 여백 단계입니다. padding의 위아래만 바꿉니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "StackDivider | undefined",
+            "required": false,
+            "default": "false",
+            "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness.",
+            "summary": "자식 사이에 구분 요소를 넣습니다. true와 full은 divider 색 1px 선, inset은 dividerInset만큼 들여 시작하는 선, strong은 구획을 나누는 8px 바탕색 띠입니다. 선은 gap 가운데에 그려 자식 사이 거리가 gap 그대로이고, 띠는 gap에 두께를 더합니다. KjunSpacer 옆에는 그리지 않으며, 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "dividerInset",
+            "type": "InsetStep | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md.",
+            "summary": "divider=\"inset\"인 선이 시작하는 거리입니다. space.inset(sm 12·md 16·lg 24px) 단계입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "responsive",
+            "type": "ResponsiveBasis | undefined",
+            "required": false,
+            "default": "\"viewport\"",
+            "description": "What the responsive values follow: viewport (default, CSS media queries) or container, the element's own width, measured.",
+            "summary": "화면 폭별 객체가 무엇을 기준으로 바뀔지 정합니다. viewport는 화면(창) 폭이라 첫 화면부터 정확합니다. container는 Stack 자기 폭을 재서(웹 ResizeObserver, Native onLayout) 좁은 사이드바·Drawer 안에서도 맞는 단계를 고르며, 재기 전 첫 그림은 base입니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
@@ -46040,26 +46157,8 @@
             "type": "StackJustify | undefined",
             "required": false,
             "default": "\"start\"",
-            "description": "How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom.",
-            "summary": "Stack이 자식보다 높을 때 남는 높이의 분배(start·center·end·between)입니다. between은 첫 자식을 위, 마지막 자식을 아래에 붙입니다. 높이를 채우는 패널에 씁니다.",
-            "source": "packages/react/src/layout-primitives.tsx"
-          },
-          {
-            "name": "divider",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "false",
-            "description": "A hairline in the divider color between children, with the gap above and below it.",
-            "summary": "자식 사이에 divider 색 1px 구분선을 그립니다. 선 위아래에 각각 gap만큼 간격을 둡니다. 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다.",
-            "source": "packages/react/src/layout-primitives.tsx"
-          },
-          {
-            "name": "as",
-            "type": "StackTag | undefined",
-            "required": false,
-            "default": "\"div\"",
-            "description": "Element to render. ul and ol drop bullets and indent; give them li children.",
-            "summary": "웹 태그(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)입니다. ul·ol은 목록 기호와 들여쓰기를, fieldset은 테두리를 지우며 자식은 li로 주세요.",
+            "description": "",
+            "summary": "Stack이 자식보다 길 때 남는 길이의 분배(start·center·end·between)입니다. between은 첫 자식을 시작, 마지막 자식을 끝에 붙입니다. 묶음 사이를 벌리려면 KjunSpacer를 넣습니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
@@ -46090,21 +46189,57 @@
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
-            "name": "ref",
-            "type": "Ref<HTMLElement> | undefined",
+            "name": "as",
+            "type": "T | undefined",
+            "required": false,
+            "default": "\"div\"",
+            "description": "",
+            "summary": "웹 태그(div·section·ul·ol·nav·header·footer·main·article·aside·form·fieldset)입니다. ul·ol은 목록 기호와 들여쓰기를, fieldset은 테두리를 지우며 자식은 li로 주세요. React에서는 태그의 속성(form의 onSubmit, fieldset의 disabled 등)과 ref 타입이 as를 따릅니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "autoFocus",
+            "type": "ComponentPropsWithRef<T>[\"autoFocus\"] | undefined",
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "루트 요소의 ref입니다. 스크롤 위치나 크기를 잴 때 씁니다.",
+            "summary": "마운트 시 기본 요소에 포커스를 요청합니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
             "name": "id",
-            "type": "string | undefined",
+            "type": "ComponentPropsWithRef<T>[\"id\"] | undefined",
             "required": false,
             "default": "—",
             "description": "",
             "summary": "기본 요소 또는 연결할 필드의 식별자입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "onChange",
+            "type": "ComponentPropsWithRef<T>[\"onChange\"] | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "onKeyDown",
+            "type": "ComponentPropsWithRef<T>[\"onKeyDown\"] | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소의 키보드 이벤트를 전달합니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "onClick",
+            "type": "ComponentPropsWithRef<T>[\"onClick\"] | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소의 클릭 이벤트를 전달합니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           }
         ],
@@ -46120,8 +46255,8 @@
             "type": "StackGapValue | undefined",
             "required": false,
             "default": "\"md\"",
-            "description": "Space between children: space.stack (xs·sm·md·lg) or space.section (section-sm·md·lg). An object changes it with the\nwindow width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up).",
-            "summary": "자식 사이 세로 간격 단계입니다. xs·sm·md·lg는 space.stack(4·8·16·24px), section-sm·md·lg는 space.section(32·48·64px)이고 none은 0입니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다). Native는 창 폭을 따릅니다.",
+            "description": "Space between children: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24) or space.section (sectionSm 32 · sectionMd 48 · sectionLg 64).\nAn object changes it with the width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up).",
+            "summary": "자식 사이 간격 단계입니다. xs·sm·smMd·md·lg는 space.stack(4·8·12·16·24px), sectionSm·sectionMd·sectionLg는 space.section(32·48·64px)이고 none은 0입니다. section-sm처럼 쓰던 이전 이름도 동작하며 개발 모드에서 한 번 알립니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다).",
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
@@ -46129,8 +46264,71 @@
             "type": "StackAlign | undefined",
             "required": false,
             "default": "\"stretch\"",
-            "description": "Cross-axis alignment. Buttons and badges keep their own width under stretch (the default), as on Web.",
-            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지는 내용 폭을 유지합니다(전체 폭 버튼은 block). start·center·end는 모든 자식을 내용 폭으로 둡니다.",
+            "description": "Cross-axis alignment. Buttons, badges and chips keep their own width under stretch (the default), as on Web.",
+            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지합니다(전체 폭 버튼은 block, 앱이 감싼 요소는 data-kjun-intrinsic). start·center·end는 모든 자식을 내용 폭으로 둡니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "direction",
+            "type": "DirectionValue | undefined",
+            "required": false,
+            "default": "\"column\"",
+            "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }.",
+            "summary": "자식을 세로(column)로 쌓을지 가로(row)로 놓을지 정합니다. { base: \"column\", medium: \"row\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, 좁으면 세로·넓으면 가로인 카드를 컴포넌트 하나로 그립니다. 방향이 바뀌면 구분선도 따라 눕습니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "padding",
+            "type": "PaddingValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap.",
+            "summary": "안쪽 여백 단계입니다. sm·md·lg는 space.inset(12·16·24px)이고 none은 0입니다. 네 방향에 같은 값을 주며 gap처럼 화면 폭별 객체를 받습니다. 배경과 모서리는 앱이 정합니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "paddingX",
+            "type": "PaddingValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "좌우 여백 단계입니다. padding의 좌우만 바꿉니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "paddingY",
+            "type": "PaddingValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "위아래 여백 단계입니다. padding의 위아래만 바꿉니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "StackDivider | undefined",
+            "required": false,
+            "default": "false",
+            "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness.",
+            "summary": "자식 사이에 구분 요소를 넣습니다. true와 full은 divider 색 1px 선, inset은 dividerInset만큼 들여 시작하는 선, strong은 구획을 나누는 8px 바탕색 띠입니다. 선은 gap 가운데에 그려 자식 사이 거리가 gap 그대로이고, 띠는 gap에 두께를 더합니다. KjunSpacer 옆에는 그리지 않으며, 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "dividerInset",
+            "type": "InsetStep | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md.",
+            "summary": "divider=\"inset\"인 선이 시작하는 거리입니다. space.inset(sm 12·md 16·lg 24px) 단계입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "responsive",
+            "type": "ResponsiveBasis | undefined",
+            "required": false,
+            "default": "\"viewport\"",
+            "description": "What the responsive values follow: viewport (default, the window width) or container, the stack's own width from onLayout.",
+            "summary": "화면 폭별 객체가 무엇을 기준으로 바뀔지 정합니다. viewport는 화면(창) 폭이라 첫 화면부터 정확합니다. container는 Stack 자기 폭을 재서(웹 ResizeObserver, Native onLayout) 좁은 사이드바·Drawer 안에서도 맞는 단계를 고르며, 재기 전 첫 그림은 base입니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
@@ -46138,17 +46336,8 @@
             "type": "StackJustify | undefined",
             "required": false,
             "default": "\"start\"",
-            "description": "How children share spare height when the stack is taller than they are: between puts the first at the top and the last at the bottom.",
-            "summary": "Stack이 자식보다 높을 때 남는 높이의 분배(start·center·end·between)입니다. between은 첫 자식을 위, 마지막 자식을 아래에 붙입니다. 높이를 채우는 패널에 씁니다.",
-            "source": "packages/native/src/layout-primitives.tsx"
-          },
-          {
-            "name": "divider",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "false",
-            "description": "A hairline in the divider color between children, with the gap above and below it.",
-            "summary": "자식 사이에 divider 색 1px 구분선을 그립니다. 선 위아래에 각각 gap만큼 간격을 둡니다. 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다.",
+            "description": "",
+            "summary": "Stack이 자식보다 길 때 남는 길이의 분배(start·center·end·between)입니다. between은 첫 자식을 시작, 마지막 자식을 끝에 붙입니다. 묶음 사이를 벌리려면 KjunSpacer를 넣습니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
@@ -46190,11 +46379,11 @@
         "props": [
           {
             "name": "gap",
-            "type": "InlineGap",
+            "type": "InlineGapValue",
             "required": false,
             "default": "\"sm\"",
-            "description": "Space between children: space.inline (xs·sm·md·lg).",
-            "summary": "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다.",
+            "description": "Space between children: space.inline (xs·sm·md·lg). An object changes it with the width like Stack's gap.",
+            "summary": "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다. Stack처럼 화면 폭별 객체를 받습니다.",
             "source": "packages/vue3/src/layout-primitives.tsx"
           },
           {
@@ -46207,21 +46396,93 @@
             "source": "packages/vue3/src/layout-primitives.tsx"
           },
           {
-            "name": "justify",
-            "type": "InlineJustify",
-            "required": false,
-            "default": "\"start\"",
-            "description": "",
-            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
-            "source": "packages/vue3/src/layout-primitives.tsx"
-          },
-          {
             "name": "wrap",
             "type": "boolean",
             "required": false,
             "default": "true",
             "description": "Wrap onto new lines when the row runs out of width.",
             "summary": "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "direction",
+            "type": "DirectionValue",
+            "required": false,
+            "default": "\"row\"",
+            "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }.",
+            "summary": "자식을 가로(row)로 놓을지 세로(column)로 쌓을지 정합니다. { base: \"column\", medium: \"row\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, 좁으면 세로·넓으면 가로인 카드를 컴포넌트 하나로 그립니다. 방향이 바뀌면 구분선도 따라 눕습니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "padding",
+            "type": "PaddingValue",
+            "required": false,
+            "default": "—",
+            "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap.",
+            "summary": "안쪽 여백 단계입니다. sm·md·lg는 space.inset(12·16·24px)이고 none은 0입니다. 네 방향에 같은 값을 주며 gap처럼 화면 폭별 객체를 받습니다. 배경과 모서리는 앱이 정합니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "paddingX",
+            "type": "PaddingValue",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "좌우 여백 단계입니다. padding의 좌우만 바꿉니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "paddingY",
+            "type": "PaddingValue",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "위아래 여백 단계입니다. padding의 위아래만 바꿉니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "StackDivider",
+            "required": false,
+            "default": "false",
+            "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness.",
+            "summary": "자식 사이에 세로 구분선을 넣습니다. 종류와 간격 규칙은 Stack과 같습니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "dividerInset",
+            "type": "InsetStep",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24).",
+            "summary": "divider=\"inset\"인 선이 시작하는 거리입니다. space.inset(sm 12·md 16·lg 24px) 단계입니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "responsive",
+            "type": "ResponsiveBasis",
+            "required": false,
+            "default": "\"viewport\"",
+            "description": "What the responsive values follow: viewport (CSS media queries) or container, the element's own width, measured.",
+            "summary": "화면 폭별 객체가 무엇을 기준으로 바뀔지 정합니다. viewport는 화면(창) 폭이라 첫 화면부터 정확합니다. container는 Stack 자기 폭을 재서(웹 ResizeObserver, Native onLayout) 좁은 사이드바·Drawer 안에서도 맞는 단계를 고르며, 재기 전 첫 그림은 base입니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "justify",
+            "type": "StackJustify",
+            "required": false,
+            "default": "\"start\"",
+            "description": "How children share the spare length: between puts the first at the start and the last at the end.",
+            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "as",
+            "type": "StackTag",
+            "required": false,
+            "default": "\"div\"",
+            "description": "Element to render. ul and ol drop bullets and indent; give them li children.",
+            "summary": "웹 태그입니다. Stack과 같은 태그를 받으며, ul·ol은 목록 기호와 들여쓰기를 지웁니다.",
             "source": "packages/vue3/src/layout-primitives.tsx"
           }
         ],
@@ -46242,11 +46503,11 @@
         "props": [
           {
             "name": "gap",
-            "type": "InlineGap | undefined",
+            "type": "InlineGapValue | undefined",
             "required": false,
             "default": "\"sm\"",
-            "description": "Space between children: space.inline (xs·sm·md·lg).",
-            "summary": "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다.",
+            "description": "Space between children: space.inline (xs·sm·md·lg). An object changes it with the width like Stack's gap.",
+            "summary": "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다. Stack처럼 화면 폭별 객체를 받습니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
@@ -46259,21 +46520,84 @@
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
-            "name": "justify",
-            "type": "InlineJustify | undefined",
-            "required": false,
-            "default": "\"start\"",
-            "description": "",
-            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
-            "source": "packages/react/src/layout-primitives.tsx"
-          },
-          {
             "name": "wrap",
             "type": "boolean | undefined",
             "required": false,
             "default": "true",
             "description": "Wrap onto new lines when the row runs out of width. Default true.",
             "summary": "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "direction",
+            "type": "DirectionValue | undefined",
+            "required": false,
+            "default": "\"row\"",
+            "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }.",
+            "summary": "자식을 가로(row)로 놓을지 세로(column)로 쌓을지 정합니다. { base: \"column\", medium: \"row\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, 좁으면 세로·넓으면 가로인 카드를 컴포넌트 하나로 그립니다. 방향이 바뀌면 구분선도 따라 눕습니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "padding",
+            "type": "PaddingValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap.",
+            "summary": "안쪽 여백 단계입니다. sm·md·lg는 space.inset(12·16·24px)이고 none은 0입니다. 네 방향에 같은 값을 주며 gap처럼 화면 폭별 객체를 받습니다. 배경과 모서리는 앱이 정합니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "paddingX",
+            "type": "PaddingValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "좌우 여백 단계입니다. padding의 좌우만 바꿉니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "paddingY",
+            "type": "PaddingValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "위아래 여백 단계입니다. padding의 위아래만 바꿉니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "StackDivider | undefined",
+            "required": false,
+            "default": "false",
+            "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness.",
+            "summary": "자식 사이에 세로 구분선을 넣습니다. 종류와 간격 규칙은 Stack과 같습니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "dividerInset",
+            "type": "InsetStep | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md.",
+            "summary": "divider=\"inset\"인 선이 시작하는 거리입니다. space.inset(sm 12·md 16·lg 24px) 단계입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "responsive",
+            "type": "ResponsiveBasis | undefined",
+            "required": false,
+            "default": "\"viewport\"",
+            "description": "What the responsive values follow: viewport (default, CSS media queries) or container, the element's own width, measured.",
+            "summary": "화면 폭별 객체가 무엇을 기준으로 바뀔지 정합니다. viewport는 화면(창) 폭이라 첫 화면부터 정확합니다. container는 Stack 자기 폭을 재서(웹 ResizeObserver, Native onLayout) 좁은 사이드바·Drawer 안에서도 맞는 단계를 고르며, 재기 전 첫 그림은 base입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "justify",
+            "type": "StackJustify | undefined",
+            "required": false,
+            "default": "\"start\"",
+            "description": "",
+            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
@@ -46304,21 +46628,57 @@
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
-            "name": "ref",
-            "type": "Ref<HTMLDivElement> | undefined",
+            "name": "as",
+            "type": "T | undefined",
+            "required": false,
+            "default": "\"div\"",
+            "description": "",
+            "summary": "웹 태그입니다. Stack과 같은 태그를 받으며, ul·ol은 목록 기호와 들여쓰기를 지웁니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "autoFocus",
+            "type": "ComponentPropsWithRef<T>[\"autoFocus\"] | undefined",
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "루트 요소의 ref입니다. 스크롤 위치나 크기를 잴 때 씁니다.",
+            "summary": "마운트 시 기본 요소에 포커스를 요청합니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
             "name": "id",
-            "type": "string | undefined",
+            "type": "ComponentPropsWithRef<T>[\"id\"] | undefined",
             "required": false,
             "default": "—",
             "description": "",
             "summary": "기본 요소 또는 연결할 필드의 식별자입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "onChange",
+            "type": "ComponentPropsWithRef<T>[\"onChange\"] | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "onKeyDown",
+            "type": "ComponentPropsWithRef<T>[\"onKeyDown\"] | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소의 키보드 이벤트를 전달합니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "onClick",
+            "type": "ComponentPropsWithRef<T>[\"onClick\"] | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소의 클릭 이벤트를 전달합니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           }
         ],
@@ -46331,11 +46691,11 @@
         "props": [
           {
             "name": "gap",
-            "type": "InlineGap | undefined",
+            "type": "InlineGapValue | undefined",
             "required": false,
             "default": "\"sm\"",
-            "description": "Space between children: space.inline (xs·sm·md·lg).",
-            "summary": "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다.",
+            "description": "Space between children: space.inline (xs·sm·md·lg). An object changes it with the width like Stack's gap.",
+            "summary": "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다. Stack처럼 화면 폭별 객체를 받습니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
@@ -46348,21 +46708,84 @@
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
-            "name": "justify",
-            "type": "InlineJustify | undefined",
-            "required": false,
-            "default": "\"start\"",
-            "description": "",
-            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
-            "source": "packages/native/src/layout-primitives.tsx"
-          },
-          {
             "name": "wrap",
             "type": "boolean | undefined",
             "required": false,
             "default": "true",
             "description": "Wrap onto new lines when the row runs out of width. Default true.",
             "summary": "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "direction",
+            "type": "DirectionValue | undefined",
+            "required": false,
+            "default": "\"row\"",
+            "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }.",
+            "summary": "자식을 가로(row)로 놓을지 세로(column)로 쌓을지 정합니다. { base: \"column\", medium: \"row\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, 좁으면 세로·넓으면 가로인 카드를 컴포넌트 하나로 그립니다. 방향이 바뀌면 구분선도 따라 눕습니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "padding",
+            "type": "PaddingValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap.",
+            "summary": "안쪽 여백 단계입니다. sm·md·lg는 space.inset(12·16·24px)이고 none은 0입니다. 네 방향에 같은 값을 주며 gap처럼 화면 폭별 객체를 받습니다. 배경과 모서리는 앱이 정합니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "paddingX",
+            "type": "PaddingValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "좌우 여백 단계입니다. padding의 좌우만 바꿉니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "paddingY",
+            "type": "PaddingValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "위아래 여백 단계입니다. padding의 위아래만 바꿉니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "divider",
+            "type": "StackDivider | undefined",
+            "required": false,
+            "default": "false",
+            "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness.",
+            "summary": "자식 사이에 세로 구분선을 넣습니다. 종류와 간격 규칙은 Stack과 같습니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "dividerInset",
+            "type": "InsetStep | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md.",
+            "summary": "divider=\"inset\"인 선이 시작하는 거리입니다. space.inset(sm 12·md 16·lg 24px) 단계입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "responsive",
+            "type": "ResponsiveBasis | undefined",
+            "required": false,
+            "default": "\"viewport\"",
+            "description": "What the responsive values follow: viewport (default, the window width) or container, the stack's own width from onLayout.",
+            "summary": "화면 폭별 객체가 무엇을 기준으로 바뀔지 정합니다. viewport는 화면(창) 폭이라 첫 화면부터 정확합니다. container는 Stack 자기 폭을 재서(웹 ResizeObserver, Native onLayout) 좁은 사이드바·Drawer 안에서도 맞는 단계를 고르며, 재기 전 첫 그림은 base입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "justify",
+            "type": "StackJustify | undefined",
+            "required": false,
+            "default": "\"start\"",
+            "description": "",
+            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
@@ -46390,6 +46813,58 @@
             "default": "—",
             "description": "Used to reference react managed views from native code.",
             "summary": "기본 요소 또는 연결할 필드의 식별자입니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      }
+    },
+    "KjunSpacer": {
+      "vue3": {
+        "props": [],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소에 추가할 CSS 클래스입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "Native 바깥 스타일입니다. 길이는 Spacer가 남는 공간으로 정하므로 크기를 주지 않습니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           }
         ],

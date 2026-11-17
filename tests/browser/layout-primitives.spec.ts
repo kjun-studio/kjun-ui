@@ -101,9 +101,9 @@ for (const platform of ['react', 'vue3', 'native']) {
       // justify="between": the last child sits on the stack's bottom edge.
       const area = await box(page.getByTestId('stack-justify')), last = await box(boxes(page, 'stack-justify').nth(1));
       expect(Math.round(area.y + area.height - (last.y + last.height))).toBe(0);
-      // divider: the gap above and below a hairline, so two gaps and the line between neighbours, and none after the last.
+      // divider: a hairline sits inside the gap, so neighbours stay one gap apart, and there is none after the last.
       const rows = boxes(page, 'stack-divider'), [first, second, third] = [await box(rows.nth(0)), await box(rows.nth(1)), await box(rows.nth(2))];
-      const step = 2 * tokens.space.stack.sm + tokens.border.defaultWidth;
+      const step = tokens.space.stack.sm;
       expect(Math.round(second.y - (first.y + first.height))).toBe(step);
       expect(Math.round(third.y - (second.y + second.height))).toBe(step);
       const stack = await box(page.getByTestId('stack-divider'));
@@ -127,6 +127,78 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.setViewportSize({ width: tokens.responsive.stackMedium - 1, height: 900 });
       await expect.poll(gap).toBe(tokens.space.stack.sm);
     });
+
+    const distance = async (page: Page, id: string, axis: 'x' | 'y' = 'y', from = 0) => {
+      const [a, b] = [await box(boxes(page, id).nth(from)), await box(boxes(page, id).nth(from + 1))];
+      return Math.round(axis === 'y' ? b.y - (a.y + a.height) : b.x - (a.x + a.width));
+    };
+
+    test('smMd is the 12px step between sm and md', async ({ page }) => {
+      expect(await distance(page, 'stack-smmd')).toBe(tokens.space.stack.smMd);
+    });
+
+    test('an inset hairline keeps the gap and a strong band adds its thickness, fragments included', async ({ page }) => {
+      expect(await distance(page, 'stack-inset')).toBe(tokens.space.stack.md);
+      expect(await distance(page, 'stack-strong')).toBe(tokens.space.stack.md + tokens.border.dividerStrongWidth);
+      // Children inside a fragment get dividers between them like any other child, on every platform.
+      for (const from of [0, 1]) expect(await distance(page, 'stack-fragment', 'y', from)).toBe(tokens.space.stack.sm + tokens.border.dividerStrongWidth);
+      expect(await distance(page, 'inline-strong', 'x')).toBe(tokens.space.inline.md + tokens.border.dividerStrongWidth);
+    });
+
+    test('a chip keeps its own width under stretch', async ({ page }) => {
+      const area = await box(page.getByTestId('stack-chip')), chip = await box(page.getByTestId('stack-chip').getByText('식비', { exact: true }));
+      expect(chip.width).toBeLessThan(area.width / 2);
+    });
+
+    test('direction turns the stack into a row from the medium width', async ({ page }) => {
+      await page.setViewportSize({ width: tokens.responsive.stackMedium, height: 900 });
+      await expect.poll(() => distance(page, 'stack-direction', 'x')).toBe(tokens.space.stack.md);
+      await page.setViewportSize({ width: tokens.responsive.stackMedium - 1, height: 900 });
+      await expect.poll(() => distance(page, 'stack-direction')).toBe(tokens.space.stack.md);
+    });
+
+    test('padding takes space.inset steps and paddingX replaces the sides', async ({ page }) => {
+      const area = await box(page.getByTestId('stack-padding')), inner = await box(boxes(page, 'stack-padding').first());
+      expect(Math.round(inner.x - area.x)).toBe(tokens.space.inset.lg);
+      expect(Math.round(inner.y - area.y)).toBe(tokens.space.inset.md);
+    });
+
+    test('responsive="container" follows the width of the stack itself, the default follows the screen', async ({ page }) => {
+      await page.setViewportSize({ width: tokens.responsive.stackWide + 100, height: 900 });
+      await expect.poll(() => distance(page, 'stack-container')).toBe(tokens.space.stack.xs);
+      await expect.poll(() => distance(page, 'stack-viewport')).toBe(tokens.space.stack.lg);
+    });
+
+    test('a spacer pushes what follows to the end and gets no divider', async ({ page }) => {
+      const area = await box(page.getByTestId('stack-spacer')), [first, last] = [await box(boxes(page, 'stack-spacer').first()), await box(boxes(page, 'stack-spacer').last())];
+      expect(Math.round(first.y - area.y)).toBe(0);
+      expect(Math.round(area.y + area.height - (last.y + last.height))).toBe(0);
+      if (platform !== 'native') await expect(page.getByTestId('stack-spacer').locator('[data-kjun-stack-divider]')).toHaveCount(0);
+    });
+
+    if (platform !== 'vue3') {
+      test('turning the divider on keeps the state of each child', async ({ page }) => {
+        const area = page.getByTestId('stack-toggle');
+        await area.getByRole('button', { name: '누름 0' }).click();
+        await area.getByRole('button', { name: '구분선 전환' }).click();
+        await expect(area.getByRole('button', { name: '누름 1' })).toBeVisible();
+      });
+    }
+
+    if (platform !== 'native') {
+      test('an app li rule does not paint the divider, and an app class can set the gap', async ({ page }) => {
+        const line = page.getByTestId('stack-app-li').locator('[data-kjun-stack-divider]');
+        expect(Math.round((await box(line)).height)).toBe(tokens.border.defaultWidth);
+        expect(await line.evaluate(el => getComputedStyle(el).paddingTop)).toBe('0px');
+        expect(await distance(page, 'stack-app-gap')).toBe(40);
+      });
+      test('as="form" takes the attributes of a form', async ({ page }) => {
+        const area = page.getByTestId('stack-form-tag');
+        await expect(area.locator('form')).toHaveAttribute('novalidate', '');
+        await area.getByRole('button', { name: '보내기' }).click();
+        await expect(area.getByText('보냄', { exact: true })).toBeVisible();
+      });
+    }
 
     if (platform === 'native') {
       test('native stack keeps app keys, so stateful children keep their state when one is added in front', async ({ page }) => {

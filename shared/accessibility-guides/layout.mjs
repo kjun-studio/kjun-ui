@@ -9,5 +9,6 @@ export default [
   ['KjunText', 'text', 'variant', '섹션 제목과 보조 설명 문구', {}],
   ['KjunStack', 'text', 'gap', '세로로 쌓은 제목·설명·저장 버튼', { children: true }],
   ['KjunInline', 'text', 'gap', '가로로 놓은 취소·저장 버튼', { children: true }],
+  ['KjunSpacer', 'decorative', '', 'Stack 안에서 화면 낭독기에 숨긴 빈 공간', {}],
   ['KjunBottomActionBar', 'action', 'description', '하단 영역에 공급한 FormActions 확인·취소 버튼', { button: '변경 사항 저장', event: 'message', children: true }],
 ];

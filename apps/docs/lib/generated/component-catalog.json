@@ -3686,5 +3686,42 @@
       "react": "packages/react/src/layout-primitives.tsx",
       "native": "packages/native/src/layout-primitives.tsx"
     }
+  },
+  {
+    "name": "KjunSpacer",
+    "category": "layout",
+    "kind": "component",
+    "owner": "KjunSpacer",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/spacer",
+    "tests": [
+      "tests/browser/layout-primitives.spec.ts",
+      "tests/browser/docs/catalog.spec.ts",
+      "tests/contracts.test.mjs"
+    ],
+    "example": "previews/catalog/examples.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md",
+    "sources": {
+      "vue3": "packages/vue3/src/layout-primitives.tsx",
+      "react": "packages/react/src/layout-primitives.tsx",
+      "native": "packages/native/src/layout-primitives.tsx"
+    }
   }
 ]
