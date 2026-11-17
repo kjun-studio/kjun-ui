@@ -119,7 +119,12 @@ export function connectedCss(source, consumerSource) {
   const used = name => consumerSource.includes(name) || prefixes.some(prefix => name.startsWith(prefix) && name.length > prefix.length);
   postcss.parse(source).walkRules(rule => {
     const classes = [...rule.selector.matchAll(/\.([_a-zA-Z][\w-]*)/g)].map(m => m[1]).filter(name => name !== 'kjun-scope');
-    if (classes.some(used)) rules.push(rule.toString());
+    // Components that stay out of KJUN markup (KjunStack, KjunTiles) select by data-kjun-* attributes instead of
+    // classes; such a rule connects when the platform writes every one of those attributes, matched as whole names.
+    // A rule with a class connects only through it; attributes inside :not() are not required.
+    const attributes = classes.length ? [] : [...rule.selector.replace(/:not\([^)]*\)/g, '').matchAll(/\[(data-kjun-[\w-]+)/g)].map(m => m[1]);
+    const writes = name => new RegExp(name + '(?![\\w-])').test(consumerSource);
+    if (classes.some(used) || attributes.length && attributes.every(writes)) rules.push(rule.toString());
   });
   return rules.join('\n');
 }

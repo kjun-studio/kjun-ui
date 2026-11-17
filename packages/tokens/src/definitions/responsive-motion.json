@@ -19,7 +19,8 @@
     "empty": { "$ref": "breakpoints.compact" },
     "stackCompact": { "$ref": "breakpoints.compact" },
     "stackMedium": { "$ref": "breakpoints.medium" },
-    "stackWide": { "$ref": "breakpoints.wide" }
+    "stackWide": { "$ref": "breakpoints.wide" },
+    "tilesGap": { "$ref": "breakpoints.medium" }
   },
   "motionDistance": { "modalEnter": 16, "modalExit": 8, "popup": 4, "toast": 8 }
 }

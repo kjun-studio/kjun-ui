@@ -6,6 +6,7 @@ export type { KjunPluginOptions } from "./plugin";
 export { default } from "./plugin";
 export type { DisplaySize, SemanticTone, KjunBadgeProps, KjunEmptyProps, KjunSpinnerProps, KjunAlertProps, KjunProgressProps, KjunSkeletonProps } from "./display";
 export type { KjunTextProps, KjunStackProps, KjunInlineProps, KjunSpacerProps, TextVariant, TextTone, TextAlign, TextTag, TextDecoration, StackGap, StackGapValue, StackAlign, StackJustify, StackTag, StackDivider, StackBreakpoint, LegacyStackGap, Responsive, ResponsiveBasis, FlexDirection, DirectionValue, InsetStep, PaddingValue, InlineGap, InlineGapValue, InlineAlign, InlineJustify } from "./layout-primitives";
+export type { KjunTilesProps, TilesGap, TilesMinItem, TilesMaxColumns } from "./tiles";
 export type { KjunCardProps } from "./card";
 export type { KjunChipProps } from "./chip";
 export type { KjunFabProps, KjunFabSize } from "./fab";

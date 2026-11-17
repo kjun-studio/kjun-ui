@@ -664,6 +664,13 @@
     "differences": "웹은 화면 낭독기에서 숨긴 빈 div, Native는 flexGrow 1인 View입니다. Vue 3는 속성을 받지 않고 class·style을 그대로 넘깁니다.",
     "states": "크기와 색이 없습니다. 남는 길이가 없으면 0으로 줄고, 앞뒤에는 Stack의 gap이 그대로 놓입니다."
   },
+  "KjunTiles": {
+    "slug": "tiles",
+    "description": "같은 종류의 카드를 같은 폭으로 나열합니다. 열 수와 간격은 화면이 아니라 목록이 놓인 영역의 폭을 따릅니다.",
+    "interaction": "minItem으로 칸의 최소 폭(sm 160·md 240·lg 320px)을, maxColumns로 넓은 영역의 최대 열 수(2·3·4)를 고릅니다. 칸이 minItem보다 좁아지면 열을 줄이고, 1열에서는 영역 폭까지 줄어듭니다. gap 기본값 auto는 영역 폭이 768px보다 좁으면 16px, 넓으면 24px이고 compact·regular로 고정할 수 있습니다. 자식 하나가 한 칸이며 false·null·빈 문자열은 칸을 만들지 않습니다. 목록 전체가 화면 낭독기에 목록과 항목 수로 읽히므로 화면의 제목을 aria-labelledby로 연결하세요. 목록은 놓인 영역의 폭을 채웁니다. 웹은 가로 flex 행이나 가운데 정렬 열 안에서도 남은 폭을 채우지만, inline-block이나 fit-content처럼 내용으로 폭을 정하는 부모 안에서는 폭이 생기지 않으므로 부모에 폭을 주세요. 칸 폭·간격을 className·style로 바꾸지 말고 minItem·gap 단계를 바꿉니다. 페이지를 본문과 보조 영역으로 나누는 배치나 크기가 서로 다른 카드는 앱 CSS로 만듭니다. 빈 상태와 로딩은 DataState로 감쌉니다.",
+    "differences": "세 플랫폼 모두 gap·minItem·maxColumns를 사용합니다. 웹은 컨테이너 쿼리와 CSS 그리드로, Native는 목록의 측정 폭으로 같은 열 수와 간격을 계산합니다. 웹은 칸 안의 어떤 요소든 줄의 높이로 늘어나고, Native는 KjunCard만 칸 높이를 채우므로 앱 요소에는 flex: 1을 직접 주세요. Native는 폭을 잴 때까지 목록을 숨기고, 가로 행(flexDirection: row) 안에 넣을 때는 style={{ flex: 1 }}로 남은 폭을 주세요. 이름은 ariaLabel로 정합니다.",
+    "states": "같은 줄의 칸은 가장 높은 칸에 맞춰 늘어나고, 마지막 줄이 덜 차도 칸 폭은 다른 줄과 같습니다. 칸 자체에는 배경·테두리·여백이 없고 모양은 안에 넣은 카드가 정합니다. 기본값은 gap auto, minItem md, maxColumns 4입니다."
+  },
   "KjunSideNavigation": {
     "slug": "side-navigation",
     "description": "넓은 화면의 옆에 세로로 놓는 메뉴입니다. 목적지를 묶음 제목과 두 단계까지의 하위 항목으로 정리합니다.",

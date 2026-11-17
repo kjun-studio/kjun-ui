@@ -904,6 +904,9 @@
   --_kjun-extension-carousel-header-gap: 12px;
   --_kjun-extension-carousel-header-controls-gap: 8px;
   --_kjun-extension-carousel-overlay-padding-x: 8px;
+  --_kjun-extension-tiles-min-item-sm: 160px;
+  --_kjun-extension-tiles-min-item-md: 240px;
+  --_kjun-extension-tiles-min-item-lg: 320px;
   --_kjun-extension-spinner-sizes-xs: 12px;
   --_kjun-extension-spinner-sizes-sm: 16px;
   --_kjun-extension-spinner-sizes-md: 24px;

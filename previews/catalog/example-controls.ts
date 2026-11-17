@@ -98,6 +98,9 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
     case "KjunSpacer":
       return h("Box", { width: 240, height: 240 }, h("KjunStack", { gap: "xs", style: { height: "100%" } }, [
         ...["홈", "자산", "혜택"].map(label => h("KjunText", {}, label)), h(name, {}), h("KjunText", {}, "프로필"), h("KjunText", {}, "설정")]));
+    case "KjunTiles":
+      return h(name, { minItem: "md" }, ["모바일 앱 리뉴얼", "파트너 대시보드", "온보딩 개선"].map((title) =>
+        h("KjunCard", { title }, [h("KjunText", { tone: "secondary" }, "진행 중")])));
     case "KjunAlert":
       return h(name, {
         variant: settings.tone, size: settings.size, title: settings.title,

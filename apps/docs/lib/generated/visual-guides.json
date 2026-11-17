@@ -19535,6 +19535,113 @@
       }
     }
   },
+  "KjunTiles": {
+    "name": "KjunTiles",
+    "path": "/components/tiles",
+    "related": "form",
+    "description": "같은 종류의 카드를 같은 폭으로 나열합니다. 열 수와 간격은 화면이 아니라 목록이 놓인 영역의 폭을 따릅니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "첫 칸",
+                "description": "칸의 최소 폭(minItem)을 지키는 만큼 한 줄에 놓이고, 같은 줄 칸은 가장 높은 칸에 맞춰 늘어납니다.",
+                "target": "text=모바일 앱 리뉴얼",
+                "optional": false
+              },
+              {
+                "label": "다음 칸",
+                "description": "영역 폭이 768px 이상이면 칸 사이가 24px, 좁으면 16px입니다.",
+                "target": "text=파트너 대시보드",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "같은 줄의 칸은 가장 높은 칸에 맞춰 늘어나고, 마지막 줄이 덜 차도 칸 폭은 다른 줄과 같습니다. 칸 자체에는 배경·테두리·여백이 없고 모양은 안에 넣은 카드가 정합니다. 기본값은 gap auto, minItem md, maxColumns 4입니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "첫 칸",
+                "description": "칸의 최소 폭(minItem)을 지키는 만큼 한 줄에 놓이고, 같은 줄 칸은 가장 높은 칸에 맞춰 늘어납니다.",
+                "target": "text=모바일 앱 리뉴얼",
+                "optional": false
+              },
+              {
+                "label": "다음 칸",
+                "description": "영역 폭이 768px 이상이면 칸 사이가 24px, 좁으면 16px입니다.",
+                "target": "text=파트너 대시보드",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "같은 줄의 칸은 가장 높은 칸에 맞춰 늘어나고, 마지막 줄이 덜 차도 칸 폭은 다른 줄과 같습니다. 칸 자체에는 배경·테두리·여백이 없고 모양은 안에 넣은 카드가 정합니다. 기본값은 gap auto, minItem md, maxColumns 4입니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "첫 칸",
+                "description": "칸의 최소 폭(minItem)을 지키는 만큼 한 줄에 놓이고, 같은 줄 칸은 가장 높은 칸에 맞춰 늘어납니다.",
+                "target": "text=모바일 앱 리뉴얼",
+                "optional": false
+              },
+              {
+                "label": "다음 칸",
+                "description": "영역 폭이 768px 이상이면 칸 사이가 24px, 좁으면 16px입니다.",
+                "target": "text=파트너 대시보드",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          }
+        ],
+        "sizes": [],
+        "sizeDefault": "—",
+        "note": "같은 줄의 칸은 가장 높은 칸에 맞춰 늘어나고, 마지막 줄이 덜 차도 칸 폭은 다른 줄과 같습니다. 칸 자체에는 배경·테두리·여백이 없고 모양은 안에 넣은 카드가 정합니다. 기본값은 gap auto, minItem md, maxColumns 4입니다."
+      }
+    }
+  },
   "KjunFeedbackProvider": {
     "name": "KjunFeedbackProvider",
     "path": "/feedback",

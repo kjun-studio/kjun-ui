@@ -517,5 +517,29 @@
     "native": [
       "style"
     ]
+  },
+  "KjunTiles": {
+    "vue3": [
+      "gap",
+      "minItem",
+      "maxColumns"
+    ],
+    "react": [
+      "gap",
+      "minItem",
+      "maxColumns",
+      "className",
+      "style",
+      "children",
+      "id"
+    ],
+    "native": [
+      "gap",
+      "minItem",
+      "maxColumns",
+      "ariaLabel",
+      "style",
+      "children"
+    ]
   }
 }

@@ -1,5 +1,5 @@
 import { tokens, type CardElevation, type CardPadding, type CardRadius, type CardSurface, type ColorRole } from "@kjun-ui/tokens";
-import { type ReactNode } from "react";
+import { useContext, type ReactNode } from "react";
 import { Platform, View, type GestureResponderEvent, type StyleProp, type TextStyle, type ViewStyle } from "react-native";
 import { AccessiblePressable } from "./a11y";
 import { typeStyle } from "./typography";
@@ -8,6 +8,7 @@ import { useKjunStyles } from "./provider";
 import { hasContent as present } from "../../../shared/package-runtime/content-presence";
 import { CardActionsContext } from "./card-actions-context";
 import { CardTintContext } from "./card-surface-context";
+import { TileCellContext } from "./tiles-context";
 import { cardLayout, type CardHeadingLevel, type CardMediaAspect, type CardMediaPosition } from "../../../shared/package-runtime/card-layout";
 
 // Like Web's keep-all: Korean wraps between words (iOS through its Hangul word strategy, a Text prop).
@@ -53,6 +54,8 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
   pressable = false, disabled = false, ariaLabel, onPress, headingLevel = 3, footerAlign = "start",
 }: KjunCardProps) {
   const { colors } = useKjunStyles();
+  // In a KjunTiles cell the card fills the cell, so cards in a row share the tallest height (Web: the cell grid).
+  const inTile = useContext(TileCellContext);
   const inset = tokens.card.padding[padding], bodyInset = tokens.card.padding[bodyPadding];
   const corner = tokens.card.radii[radius];
   const paint: { background: ColorRole; border: ColorRole; text: ColorRole; description: ColorRole } = tokens.cardSurfaces[surface];
@@ -70,6 +73,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
       boxShadow: tokens.card.elevation[elevation].map(({ colorRole, ...layer }) => ({ ...layer, color: colors[colorRole] })),
     },
     Platform.OS === "web" && surface === "glass" ? { backdropFilter: `blur(${tokens.card.glassBlur}px)` } as ViewStyle : {},
+    inTile ? { flex: 1 } : null,
     style,
   ];
   const frame = mediaAspect ? { aspectRatio: tokens.card.mediaAspects[mediaAspect] } : {};
@@ -117,7 +121,8 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
     }} />}
   </>;
   // Always provided, so a plain card nested in a tinted one drops the tint again.
-  const painted = <CardTintContext.Provider value={layout.tinted}>{parts}</CardTintContext.Provider>;
+  // A card inside this one is not in a tile cell, so it keeps its own size.
+  const painted = <CardTintContext.Provider value={layout.tinted}><TileCellContext.Provider value={false}>{parts}</TileCellContext.Provider></CardTintContext.Provider>;
   // A pressable card presses in slightly, like a button, and dims when disabled.
   return pressable
     ? <AccessiblePressable accessibilityRole="button" accessibilityLabel={ariaLabel ?? (typeof title === "string" ? title : undefined)} accessibilityState={{ disabled }} disabled={disabled}

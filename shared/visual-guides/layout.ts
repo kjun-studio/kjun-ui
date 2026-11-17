@@ -87,4 +87,11 @@ export const layout: Record<string, GuideAuthor> = {
     ],
     related: "toolbar",
   },
+  KjunTiles: {
+    parts: [
+      t("첫 칸", "칸의 최소 폭(minItem)을 지키는 만큼 한 줄에 놓이고, 같은 줄 칸은 가장 높은 칸에 맞춰 늘어납니다.", "모바일 앱 리뉴얼"),
+      t("다음 칸", "영역 폭이 768px 이상이면 칸 사이가 24px, 좁으면 16px입니다.", "파트너 대시보드"),
+    ],
+    related: "form",
+  },
 };

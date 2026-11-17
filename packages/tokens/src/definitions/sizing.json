@@ -25,6 +25,9 @@
     "sortMinimumWidth": 120
   },
   "extensions": {
+    "tiles": {
+      "minItem": { "sm": { "$ref": "extensions.tableCard.tileMinWidth" }, "md": 240, "lg": 320 }
+    },
     "spinner": {
       "sizes": {
         "xs": 12,

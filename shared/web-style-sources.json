@@ -26,5 +26,6 @@
   "color-picker.css",
   "split-pane.css",
   "distribution.css",
-  "file-upload.css"
+  "file-upload.css",
+  "tiles.css"
 ]

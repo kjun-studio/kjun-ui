@@ -323,6 +323,12 @@ set("Inline", {
 set("Spacer", {
   style: { summary: "Native 바깥 스타일입니다. 길이는 Spacer가 남는 공간으로 정하므로 크기를 주지 않습니다." },
 }, "native");
+set("Tiles", {
+  gap: { default: '"auto"', summary: "칸 사이 가로·세로 간격입니다. compact는 space.stack.md(16px), regular는 space.stack.lg(24px)이고, auto는 목록이 놓인 영역 폭이 768px보다 좁으면 compact, 넓으면 regular입니다." },
+  minItem: { default: '"md"', summary: "칸의 최소 폭입니다(sm 160·md 240·lg 320px). 칸이 이보다 좁아지면 열을 줄이고, 1열에서는 영역 폭까지 줄어듭니다." },
+  maxColumns: { default: "4", summary: "넓은 영역에서도 넘지 않는 최대 열 수(2·3·4)입니다." },
+});
+set("Tiles", { ariaLabel: "화면 낭독기가 읽는 목록 이름입니다." }, "native");
 set("KpiHero", {
   asideMobile: { default: '"below"', summary: "좁은 화면(640px 이하)에서 aside를 변동선 아래 전폭으로 내립니다. hidden이면 숨깁니다." },
   deltaIcon: { default: "false", summary: "첫 번째 증감 숫자(deltaAbsolute, 없으면 deltaPercent) 앞에 방향 삼각형을 그리고 그 숫자의 부호를 뺍니다. 부호는 스크린 리더에 그대로 읽힙니다. deltaFormatter의 글자는 바꾸지 않습니다." },

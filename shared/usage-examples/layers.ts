@@ -87,6 +87,9 @@ export function generate(input: UsageInput) {
     case 'KjunSpacer':
       content = b.node('KjunStack', { gap: 'xs', style: { height: b.vue ? '240px' : 240 } }, [...['홈', '자산', '혜택'].map(label => b.node('KjunText', {}, b.text(label))),
         b.node(name), b.node('KjunText', {}, b.text('프로필')), b.node('KjunText', {}, b.text('설정'))].join('\n')); break;
+    case 'KjunTiles':
+      content = b.node(name, { minItem: 'md' }, ['모바일 앱 리뉴얼', '파트너 대시보드', '온보딩 개선'].map(title =>
+        b.node('KjunCard', { title }, b.node('KjunText', { tone: 'secondary' }, b.text('진행 중')))).join('\n')); break;
     case 'KjunScrollFade':
       content = b.node(name, {}, b.group(Array.from({ length: 12 }, (_, i) => b.button('항목 ' + (i + 1), undefined, { variant: 'secondary', size: 'sm' })))); break;
     case 'KjunErrorBoundary':

@@ -13454,7 +13454,7 @@
       },
       {
         "name": "variant",
-        "type": "\"compact\" | \"market\" | \"notification\" | \"row\"",
+        "type": "\"compact\" | \"row\" | \"market\" | \"notification\"",
         "required": false,
         "default": "\"market\"",
         "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked."
@@ -13572,7 +13572,7 @@
       },
       {
         "name": "variant",
-        "type": "\"compact\" | \"market\" | \"notification\" | \"row\" | undefined",
+        "type": "\"compact\" | \"row\" | \"market\" | \"notification\" | undefined",
         "required": false,
         "default": "—",
         "description": "\"row\" is the silhouette of KjunListRow: title and description lines, a text-start divider, no avatar unless asked."
@@ -25429,7 +25429,7 @@
       },
       {
         "name": "responsive",
-        "type": "\"card\" | \"none\" | \"compact\" | \"list\" | null",
+        "type": "\"card\" | \"compact\" | \"none\" | \"list\" | null",
         "required": false,
         "default": "null",
         "description": ""
@@ -27676,6 +27676,134 @@
         "required": false,
         "default": "—",
         "description": "Used to reference react managed views from native code."
+      }
+    ]
+  },
+  "KjunTiles": {
+    "vue3": [
+      {
+        "name": "gap",
+        "type": "TilesGap",
+        "required": false,
+        "default": "\"auto\"",
+        "description": "Space between cells. auto is compact (16) in a container narrower than 768 and regular (24) from it."
+      },
+      {
+        "name": "minItem",
+        "type": "TilesMinItem",
+        "required": false,
+        "default": "\"md\"",
+        "description": "A cell's narrowest width before a column is dropped: sm 160, md 240, lg 320."
+      },
+      {
+        "name": "maxColumns",
+        "type": "TilesMaxColumns | \"2\" | \"3\" | \"4\"",
+        "required": false,
+        "default": "4",
+        "description": "The most columns in a wide container."
+      }
+    ],
+    "events": [],
+    "slots": [
+      {
+        "name": "default",
+        "data": [],
+        "source": "packages/vue3/src/tiles.tsx"
+      }
+    ],
+    "react": [
+      {
+        "name": "gap",
+        "type": "import(\"/workspace/shared/package-runtime/tiles\").TilesGap | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Space between cells. auto is compact (16) in a container narrower than 768 and regular (24) from it."
+      },
+      {
+        "name": "minItem",
+        "type": "import(\"/workspace/shared/package-runtime/tiles\").TilesMinItem | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A cell's narrowest width before a column is dropped: sm 160, md 240, lg 320."
+      },
+      {
+        "name": "maxColumns",
+        "type": "import(\"/workspace/shared/package-runtime/tiles\").TilesMaxColumns | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The most columns in a wide container."
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Each child is one cell; false, null and empty strings add none, and fragments count their children."
+      }
+    ],
+    "native": [
+      {
+        "name": "gap",
+        "type": "import(\"/workspace/shared/package-runtime/tiles\").TilesGap | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Space between cells. auto is compact (16) in a container narrower than 768 and regular (24) from it."
+      },
+      {
+        "name": "minItem",
+        "type": "import(\"/workspace/shared/package-runtime/tiles\").TilesMinItem | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A cell's narrowest width before a column is dropped: sm 160, md 240, lg 320."
+      },
+      {
+        "name": "maxColumns",
+        "type": "import(\"/workspace/shared/package-runtime/tiles\").TilesMaxColumns | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The most columns in a wide container."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The list's name for screen readers."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "children",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Each child is one cell; false, null and empty strings add none, and fragments count their children."
       }
     ]
   },

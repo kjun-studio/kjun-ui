@@ -15,6 +15,7 @@ export function layout(name: string) {
     case 'KjunStack': return <K.KjunStack gap="md"><K.KjunText variant="cardTitle">알림 설정</K.KjunText><K.KjunText tone="secondary">받을 알림을 고르세요.</K.KjunText><K.KjunButton>저장</K.KjunButton></K.KjunStack>;
     case 'KjunSpacer': return <div style={{ height: 160 }}><K.KjunStack gap="xs" style={{ height: '100%' }}><K.KjunText>홈</K.KjunText><K.KjunText>자산</K.KjunText><K.KjunSpacer /><K.KjunText>설정</K.KjunText></K.KjunStack></div>;
     case 'KjunInline': return <K.KjunInline gap="sm" justify="end"><K.KjunButton variant="secondary">취소</K.KjunButton><K.KjunButton>저장</K.KjunButton></K.KjunInline>;
+    case 'KjunTiles': return <K.KjunTiles minItem="md">{['모바일 앱 리뉴얼', '파트너 대시보드', '온보딩 개선'].map(title => <K.KjunCard key={title} title={title}><K.KjunText tone="secondary">진행 중</K.KjunText></K.KjunCard>)}</K.KjunTiles>;
     case 'KjunDropdown': case 'KjunDropdownItem': case 'KjunDropdownDivider': case 'KjunDropdownSection': case 'KjunDropdownSubmenu': case 'KjunMenuButton': return <Menu name={name} />;
     case 'KjunModal': return <K.KjunModal open onOpenChange={noop} title="목록 이름 변경" size="sm" showFooter confirmText="변경 사항 저장">{field(input())}</K.KjunModal>;
     case 'KjunDrawer': return <K.KjunDrawer open onOpenChange={noop} title="목록 설정" width={360} footer={<K.KjunFormActions confirmText="저장" />}>{stack(<>{field(input())}<K.KjunSwitch value label="활동 알림 받기" /></>)}</K.KjunDrawer>;

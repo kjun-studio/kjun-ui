@@ -36,7 +36,7 @@ export function FoundationLayoutGuide() {
       <h2>보조 정보가 필요할 때 두 열로</h2>
       <p className="body-copy">폼과 긴 본문은 넓은 화면에서도 한 열이 기본입니다. 변경 기록·담당자 같은 보조 정보가 있고 가용 폭이 {rules.columnsFrom}px 이상일 때 본문과 보조 영역을 2:1로 나눕니다.</p>
       <ColumnsFigure />
-      <p className="layout-caption">두 열의 최소 가독 폭을 확보할 수 없으면 한 열을 유지합니다. 폭이 바뀌어도 필수 입력은 본문에 모으고 입력값과 읽기·Tab 순서를 유지하세요.</p>
+      <p className="layout-caption">두 열의 최소 가독 폭을 확보할 수 없으면 한 열을 유지합니다. 폭이 바뀌어도 필수 입력은 본문에 모으고 입력값과 읽기·Tab 순서를 유지하세요. 이 분할은 페이지 구조에만 씁니다. 같은 카드를 여러 개 나열할 때는 KjunTiles를 쓰세요.</p>
       <h3>열 전환 확인하기</h3>
       <CatalogPreview name="GuideScreenLayout" layoutGuide="columns" />
     </section>

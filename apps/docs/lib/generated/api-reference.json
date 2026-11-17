@@ -46873,6 +46873,184 @@
         "ownership": [],
         "types": []
       }
+    },
+    "KjunTiles": {
+      "vue3": {
+        "props": [
+          {
+            "name": "gap",
+            "type": "TilesGap",
+            "required": false,
+            "default": "\"auto\"",
+            "description": "Space between cells. auto is compact (16) in a container narrower than 768 and regular (24) from it.",
+            "summary": "칸 사이 가로·세로 간격입니다. compact는 space.stack.md(16px), regular는 space.stack.lg(24px)이고, auto는 목록이 놓인 영역 폭이 768px보다 좁으면 compact, 넓으면 regular입니다.",
+            "source": "packages/vue3/src/tiles.tsx"
+          },
+          {
+            "name": "minItem",
+            "type": "TilesMinItem",
+            "required": false,
+            "default": "\"md\"",
+            "description": "A cell's narrowest width before a column is dropped: sm 160, md 240, lg 320.",
+            "summary": "칸의 최소 폭입니다(sm 160·md 240·lg 320px). 칸이 이보다 좁아지면 열을 줄이고, 1열에서는 영역 폭까지 줄어듭니다.",
+            "source": "packages/vue3/src/tiles.tsx"
+          },
+          {
+            "name": "maxColumns",
+            "type": "TilesMaxColumns | \"2\" | \"3\" | \"4\"",
+            "required": false,
+            "default": "4",
+            "description": "The most columns in a wide container.",
+            "summary": "넓은 영역에서도 넘지 않는 최대 열 수(2·3·4)입니다.",
+            "source": "packages/vue3/src/tiles.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [
+          {
+            "name": "default",
+            "data": [],
+            "source": "packages/vue3/src/tiles.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "default 영역의 기본 내용을 교체합니다."
+          }
+        ],
+        "ownership": [],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "gap",
+            "type": "TilesGap | undefined",
+            "required": false,
+            "default": "\"auto\"",
+            "description": "Space between cells. auto is compact (16) in a container narrower than 768 and regular (24) from it.",
+            "summary": "칸 사이 가로·세로 간격입니다. compact는 space.stack.md(16px), regular는 space.stack.lg(24px)이고, auto는 목록이 놓인 영역 폭이 768px보다 좁으면 compact, 넓으면 regular입니다.",
+            "source": "packages/react/src/tiles.tsx"
+          },
+          {
+            "name": "minItem",
+            "type": "TilesMinItem | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "A cell's narrowest width before a column is dropped: sm 160, md 240, lg 320.",
+            "summary": "칸의 최소 폭입니다(sm 160·md 240·lg 320px). 칸이 이보다 좁아지면 열을 줄이고, 1열에서는 영역 폭까지 줄어듭니다.",
+            "source": "packages/react/src/tiles.tsx"
+          },
+          {
+            "name": "maxColumns",
+            "type": "TilesMaxColumns | undefined",
+            "required": false,
+            "default": "4",
+            "description": "The most columns in a wide container.",
+            "summary": "넓은 영역에서도 넘지 않는 최대 열 수(2·3·4)입니다.",
+            "source": "packages/react/src/tiles.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소 또는 연결할 필드의 식별자입니다.",
+            "source": "packages/react/src/tiles.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소에 추가할 CSS 클래스입니다.",
+            "source": "packages/react/src/tiles.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
+            "source": "packages/react/src/tiles.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Each child is one cell; false, null and empty strings add none, and fragments count their children.",
+            "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/react/src/tiles.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "gap",
+            "type": "TilesGap | undefined",
+            "required": false,
+            "default": "\"auto\"",
+            "description": "Space between cells. auto is compact (16) in a container narrower than 768 and regular (24) from it.",
+            "summary": "칸 사이 가로·세로 간격입니다. compact는 space.stack.md(16px), regular는 space.stack.lg(24px)이고, auto는 목록이 놓인 영역 폭이 768px보다 좁으면 compact, 넓으면 regular입니다.",
+            "source": "packages/native/src/tiles.tsx"
+          },
+          {
+            "name": "minItem",
+            "type": "TilesMinItem | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "A cell's narrowest width before a column is dropped: sm 160, md 240, lg 320.",
+            "summary": "칸의 최소 폭입니다(sm 160·md 240·lg 320px). 칸이 이보다 좁아지면 열을 줄이고, 1열에서는 영역 폭까지 줄어듭니다.",
+            "source": "packages/native/src/tiles.tsx"
+          },
+          {
+            "name": "maxColumns",
+            "type": "TilesMaxColumns | undefined",
+            "required": false,
+            "default": "4",
+            "description": "The most columns in a wide container.",
+            "summary": "넓은 영역에서도 넘지 않는 최대 열 수(2·3·4)입니다.",
+            "source": "packages/native/src/tiles.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The list's name for screen readers.",
+            "summary": "화면 낭독기가 읽는 목록 이름입니다.",
+            "source": "packages/native/src/tiles.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
+            "source": "packages/native/src/tiles.tsx"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Each child is one cell; false, null and empty strings add none, and fragments count their children.",
+            "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/native/src/tiles.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [],
+        "types": []
+      }
     }
   },
   "feedback": {

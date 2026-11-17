@@ -20,6 +20,7 @@ export type {
 export * from "./display";
 
 export * from "./layout-primitives";
+export * from "./tiles";
 
 export * from "./feedback";
 

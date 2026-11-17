@@ -61,7 +61,7 @@ Vue 3·React 모달은 가장 가까운 Provider 안에 렌더링되어 해당 �
 
 ### 글자와 간격은 KjunText·KjunStack·KjunInline으로
 
-화면의 제목·본문·보조 문구와 요소 사이 간격은 앱 CSS로 정하지 않고 KJUN 컴포넌트의 이름(역할·단계)으로 고릅니다. 앱 CSS에는 페이지 폭·그리드 열 같은 큰 배치만 남깁니다. 이렇게 하면 화면마다 `font-size: 28px`, `margin-top: 18px` 같은 값이 따로 생기지 않습니다.
+화면의 제목·본문·보조 문구와 요소 사이 간격은 앱 CSS로 정하지 않고 KJUN 컴포넌트의 이름(역할·단계)으로 고릅니다. 앱 CSS에는 페이지 폭·본문 분할 같은 큰 배치만 남기고, 같은 카드를 나열할 때는 `KjunTiles`를 씁니다. 이렇게 하면 화면마다 `font-size: 28px`, `margin-top: 18px` 같은 값이 따로 생기지 않습니다.
 
 ```vue
 <KjunStack gap="sectionMd">

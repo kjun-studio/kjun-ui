@@ -324,6 +324,11 @@ export const kjunPropValues = Object.freeze({
     submitOn: Object.freeze(["enter","mod-enter"] as const),
     variant: Object.freeze(["default","plain"] as const),
   }),
+  KjunTiles: Object.freeze({
+    gap: Object.freeze(["auto","compact","regular"] as const),
+    maxColumns: Object.freeze([2,3,4,"2","3","4"] as const),
+    minItem: Object.freeze(["sm","md","lg"] as const),
+  }),
   KjunTimePicker: Object.freeze({
     hourCycle: Object.freeze([12,24] as const),
     precision: Object.freeze(["minute","second"] as const),

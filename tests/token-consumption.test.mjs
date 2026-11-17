@@ -56,3 +56,15 @@ test('shared CSS only establishes a connection for a platform that uses its sele
   assert.equal(connectedCss(css, '<div class="kjun-scope kjun-tabs"></div>'), '');
   assert.match(connectedCss(css, '<div class="kjun-pagination"></div>'), /pagination-item-size/);
 });
+
+test('a rule selected by a data-kjun attribute connects only for a platform that writes that attribute', () => {
+  const css = '[data-kjun-tiles][data-min-item="sm"] > [data-kjun-tiles-grid] { --x: var(--_kjun-extension-tiles-min-item-sm) }';
+  assert.equal(connectedCss(css, '<div data-kjun-stack="">'), '');
+  assert.equal(connectedCss(css, '<div data-kjun-tiles-grid="">'), '', 'data-kjun-tiles-grid does not count as data-kjun-tiles');
+  assert.equal(connectedCss(css, '<div data-kjun-tiles="">'), '', 'every attribute in the selector must be written');
+  assert.match(connectedCss(css, '<div data-kjun-tiles=""><div data-kjun-tiles-grid="">'), /tiles-min-item-sm/);
+  const classRule = ':is([data-kjun-stack], [data-kjun-inline]) > .kjun-form-group { margin:var(--_kjun-extension-form-gap) }';
+  assert.equal(connectedCss(classRule, '<div data-kjun-stack="" data-kjun-inline="">'), '', 'a rule with a class connects only through the class');
+  const negated = '[data-kjun-tiles]:not([data-kjun-dense]) { gap:var(--_kjun-extension-tiles-min-item-md) }';
+  assert.match(connectedCss(negated, '<div data-kjun-tiles="">'), /min-item-md/, 'an attribute inside :not() is not required');
+});
