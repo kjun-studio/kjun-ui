@@ -50,6 +50,8 @@ export function KjunNumberInput({
   const [issue, setIssue] = useState<Issue>(null);
   const input = useRef<HTMLInputElement>(null);
   const composing = useRef(false), dirty = useRef(false);
+  // The text before a composition: an IME (or Firefox inserting text) that adds several characters at once is read as a paste.
+  const composedFrom = useRef("");
   // `emitted` is the last value this field reported; `accepted` the last committed one, which Escape restores.
   const emitted = useRef(value), accepted = useRef(value), acceptedIssue = useRef<Issue>(null);
   const aidId = "kjun-number-reading-" + useId().replace(/:/g, "");
@@ -153,11 +155,11 @@ export function KjunNumberInput({
       prefix={prefix} suffix={suffix ?? o.suffix} disabled={disabled} readOnly={readOnly} error={error} errorMessage={message}
       id={id} ariaLabel={ariaLabel} placeholder={placeholder} aria-describedby={aid ? aidId : undefined}
       onChange={change} onBlur={() => commit()} onEnter={() => commit()} onKeyDown={key}
-      onCompositionStart={() => { composing.current = true; }}
+      onCompositionStart={() => { composing.current = true; composedFrom.current = view.text; }}
       onCompositionEnd={event => {
         composing.current = false;
         const el = event.currentTarget;
-        edit(el.value, el.selectionStart ?? el.value.length);
+        edit(el.value, el.selectionStart ?? el.value.length, isPasteEdit(composedFrom.current, el.value));
         // Some IMEs end composition after blur, when the blur commit was skipped; commit now so the field does not stay dirty.
         if (el.ownerDocument.activeElement !== el) commit(el.value);
       }} />

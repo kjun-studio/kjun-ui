@@ -55,6 +55,8 @@ export const KjunNumberInput = defineComponent({
     const issue = ref<Issue>(null);
     const input = ref<InstanceType<typeof KjunInput> | null>(null);
     let composing = false, dirty = false;
+    // The text before a composition: an IME (or Firefox inserting text) that adds several characters at once is read as a paste.
+    let composedFrom = "";
     // `emitted` is the last value this field reported; `accepted` the last committed one, which Escape restores.
     let emitted = props.modelValue, accepted = props.modelValue, acceptedIssue: Issue = null;
     const aidId = useKjunId("kjun-number-reading-");
@@ -160,11 +162,11 @@ export const KjunNumberInput = defineComponent({
         type: "text", inputmode: numberKeyboard(resolved).inputMode, placeholder: props.placeholder,
         "aria-describedby": aid ? aidId : undefined,
         onInput: change, onBlur: () => commit(), onKeydown: key,
-        onCompositionstart: () => { composing = true; },
+        onCompositionstart: () => { composing = true; composedFrom = view.value.text; },
         onCompositionend: (event: CompositionEvent) => {
           composing = false;
           const el = event.currentTarget as HTMLInputElement;
-          edit(el.value, el.selectionStart ?? el.value.length);
+          edit(el.value, el.selectionStart ?? el.value.length, isPasteEdit(composedFrom, el.value));
           // Some IMEs end composition after blur, when the blur commit was skipped; commit now so the field does not stay dirty.
           if (el.ownerDocument.activeElement !== el) commit(el.value);
         },
