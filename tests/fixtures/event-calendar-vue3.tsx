@@ -16,6 +16,8 @@ createApp(defineComponent(() => () => <K.KjunProvider><main style={{ padding: '1
     marks={eventMarks} isHoliday={eventHoliday} swipeable={false} /></div>
   <div data-testid="plain"><K.KjunEventCalendar month={s.plainMonth} onUpdate:month={(v: string) => { s.plainMonth = v; }} modelValue={s.plainValue}
     onUpdate:modelValue={(v: string) => { s.plainValue = v; }} /></div>
+  {/* A month with no update:month listener: keys stop at the edge of the month. */}
+  <div data-testid="unlistened"><K.KjunEventCalendar month="2026-11" /></div>
   <div data-testid="deferred"><K.KjunEventCalendar month={s.deferredMonth} onUpdate:month={(v: string) => { setTimeout(() => { s.deferredMonth = v; }, 50); }} /></div>
   <output data-testid="deferred-month" style={{ display: 'none' }}>{s.deferredMonth}</output>
   <output data-testid="values" style={{ display: 'none' }}>{s.month}|{s.week}|{s.value ?? ''}|{s.longPressed}</output>

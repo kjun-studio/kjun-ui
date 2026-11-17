@@ -68,9 +68,10 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
             backgroundColor: selected ? colors.active : pressed ? colors.hover : "transparent" }} />}
         <View pointerEvents="none" collapsable={false} {...data({ kjunPart: "pill" })}
           style={{ minWidth: calendar.todayPillMinWidth, height: calendar.todayPillHeight, borderRadius: calendar.todayPillCorner,
-            alignItems: "center", justifyContent: "center", backgroundColor: pill }}>
+            // The fade sits on the pill, which owns both the fill and the number, as on the web.
+            alignItems: "center", justifyContent: "center", backgroundColor: pill, opacity: numberDim }}>
           <KText {...data({ kjunPart: "number" })} style={{ ...typeStyle("numberMd"), fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"],
-            color: ink, opacity: numberDim, fontWeight: selected ? `${calendar.selectedWeight}` as "800" : typeStyle("numberMd").fontWeight,
+            color: ink, fontWeight: selected ? `${calendar.selectedWeight}` as "800" : typeStyle("numberMd").fontWeight,
             textDecorationLine: day.blocked ? "line-through" : "none", textDecorationColor: colors.borderStrong }}>{day.day}</KText>
         </View>
         {event && (icon || dots.length > 0) && (
@@ -83,9 +84,9 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
               style={{ width: calendar.eventDotSize, height: calendar.eventDotSize, borderRadius: calendar.eventDotSize / 2, backgroundColor: color }} />)}
           </View>
         )}
-        {/* The span bar crosses the whole cell and one unit into the next, above the square, in the bottom padding; it never fades. */}
+        {/* The span bar crosses the whole cell, above the square, in the bottom padding; a continuing piece reaches one overlap under the next cell, an end piece stops at its edge. It never fades. */}
         {span && segment ? <View pointerEvents="none" {...data({ kjunPart: "span", start: segment.start || undefined, end: segment.end || undefined })}
-          style={{ position: "absolute", left: 0, right: 0, marginRight: -calendar.eventSpanOverlap, bottom: calendar.eventDayPaddingBottom - calendar.eventSpanHeight,
+          style={{ position: "absolute", left: 0, right: segment.end ? 0 : -calendar.eventSpanOverlap, bottom: calendar.eventDayPaddingBottom - calendar.eventSpanHeight,
             height: calendar.eventSpanHeight, backgroundColor: span.color,
             borderTopLeftRadius: segment.start ? calendar.eventSpanCorner : 0, borderBottomLeftRadius: segment.start ? calendar.eventSpanCorner : 0,
             borderTopRightRadius: segment.end ? calendar.eventSpanCorner : 0, borderBottomRightRadius: segment.end ? calendar.eventSpanCorner : 0 }} /> : null}

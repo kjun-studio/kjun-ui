@@ -30,13 +30,14 @@
 .kjun-event-calendar-marks { display: flex; align-items: center; justify-content: center; flex: none; gap: var(--_kjun-extension-calendar-event-dot-gap); height: var(--_kjun-extension-calendar-event-mark-height); }
 .kjun-event-calendar-dot { flex: none; width: var(--_kjun-extension-calendar-event-dot-size); height: var(--_kjun-extension-calendar-event-dot-size); border-radius: 50%; }
 .kjun-event-calendar-icon { flex: none; width: var(--_kjun-extension-calendar-event-icon-size); height: var(--_kjun-extension-calendar-event-icon-size); }
-/* The span bar crosses the full cell width in the bottom padding zone (padding minus bar height from the cell bottom), above the selected square, clear of the marks row. */
+/* The span bar crosses the full cell width in the bottom padding zone (padding minus bar height from the cell bottom), above the selected square, clear of the marks row.
+   A piece that continues reaches one overlap under the next cell's piece, so fractional widths leave no hairline; an end piece stops at its cell's edge. */
 .kjun-event-calendar-span {
-  position: absolute; z-index: 2; left: 0; right: 0; bottom: calc(var(--_kjun-extension-calendar-event-day-padding-bottom) - var(--_kjun-extension-calendar-event-span-height));
-  height: var(--_kjun-extension-calendar-event-span-height); margin-right: calc(0px - var(--_kjun-extension-calendar-event-span-overlap));
+  position: absolute; z-index: 2; left: 0; right: calc(0px - var(--_kjun-extension-calendar-event-span-overlap)); bottom: calc(var(--_kjun-extension-calendar-event-day-padding-bottom) - var(--_kjun-extension-calendar-event-span-height));
+  height: var(--_kjun-extension-calendar-event-span-height);
 }
 .kjun-event-calendar-span[data-start] { border-top-left-radius: var(--_kjun-extension-calendar-event-span-corner); border-bottom-left-radius: var(--_kjun-extension-calendar-event-span-corner); }
-.kjun-event-calendar-span[data-end] { border-top-right-radius: var(--_kjun-extension-calendar-event-span-corner); border-bottom-right-radius: var(--_kjun-extension-calendar-event-span-corner); }
+.kjun-event-calendar-span[data-end] { right: 0; border-top-right-radius: var(--_kjun-extension-calendar-event-span-corner); border-bottom-right-radius: var(--_kjun-extension-calendar-event-span-corner); }
 /* A month or week change slides the grid out toward the old side and back in from the new side. */
 @keyframes kjun-event-calendar-out { to { opacity: 0; transform: translateX(calc(var(--_kjun-slide-sign) * -1 * var(--_kjun-slide-distance))); } }
 @keyframes kjun-event-calendar-in { from { opacity: 0; transform: translateX(calc(var(--_kjun-slide-sign) * var(--_kjun-slide-distance))); } }

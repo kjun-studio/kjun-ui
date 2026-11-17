@@ -132,15 +132,15 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(await color('2026-11-10')).toBe(danger); // holiday on a Tuesday
       expect(await color('2026-11-21')).toBe(info); // Saturday
       await expect(day(page, 'month', '2026-11-10')).toHaveAttribute('data-past', /.*/);
-      expect(await opacity(number(page, 'month', '2026-11-10'))).toBeCloseTo(0.7, 2);
-      expect(await opacity(number(page, 'month', '2026-11-12'))).toBeCloseTo(0.45, 2);
+      expect(await opacity(pillOf(page, 'month', '2026-11-10'))).toBeCloseTo(0.7, 2);
+      expect(await opacity(pillOf(page, 'month', '2026-11-12'))).toBeCloseTo(0.45, 2);
       expect(await opacity(day(page, 'month', '2026-11-12'))).toBe(1);
       await expect(day(page, 'month', '2026-12-01')).toHaveAttribute('data-outside', /.*/);
-      expect(await opacity(number(page, 'month', '2026-12-01'))).toBeCloseTo(0.2, 2);
+      expect(await opacity(pillOf(page, 'month', '2026-12-01'))).toBeCloseTo(0.2, 2);
       expect(await opacity(day(page, 'month', '2026-12-01').locator(part('.kjun-event-calendar-marks', 'marks')))).toBeCloseTo(0.2, 2);
       // The bar on a past day keeps its colour.
       expect(await opacity(day(page, 'month', '2026-11-13').locator(part('.kjun-event-calendar-span', 'span')))).toBe(1);
-      expect(await opacity(number(page, 'month', '2026-11-18'))).toBe(1);
+      expect(await opacity(pillOf(page, 'month', '2026-11-18'))).toBe(1);
     });
 
     test('marks: three dots at most, one icon, a bar that joins across cells', async ({ page }) => {
@@ -163,6 +163,46 @@ for (const platform of ['react', 'vue3', 'native']) {
       // Neighbouring pieces touch or overlap, so fractional cell widths leave no hairline.
       expect((await edge('2026-11-13')).right).toBeGreaterThanOrEqual((await edge('2026-11-14')).left);
       expect((await edge('2026-11-15')).right).toBeGreaterThanOrEqual((await edge('2026-11-16')).left);
+    });
+
+    test('today selected shows the pill inside the square', async ({ page }) => {
+      const today = day(page, 'month', '2026-11-17');
+      await today.click();
+      await expect(today).toHaveAttribute('aria-pressed', 'true');
+      expect(await squareColor(today)).toBe(await role(page, 'active'));
+      expect(await pillOf(page, 'month', '2026-11-17').evaluate(el => getComputedStyle(el).backgroundColor)).toBe(await role(page, 'brand'));
+      const text = await number(page, 'month', '2026-11-17').evaluate(el => ({ color: getComputedStyle(el).color, weight: getComputedStyle(el).fontWeight }));
+      expect(text).toEqual({ color: await role(page, 'on-brand'), weight: '800' });
+    });
+
+    test('the bar crosses a selected cell and an outside day unbroken', async ({ page }) => {
+      const bar = (iso: string) => day(page, 'month', iso).locator(part('.kjun-event-calendar-span', 'span'));
+      const box = async (target: Locator) => { const b = (await target.boundingBox())!; return { left: b.x, right: b.x + b.width }; };
+      for (const iso of ['2026-11-13', '2026-11-14']) {
+        await day(page, 'month', iso).click();
+        await expect(day(page, 'month', iso)).toHaveAttribute('aria-pressed', 'true');
+        expect(await opacity(bar(iso))).toBe(1);
+        const cell = await box(day(page, 'month', iso)), piece = await box(bar(iso));
+        expect(Math.abs(piece.left - cell.left)).toBeLessThan(0.5);
+        // A piece that continues reaches under the next cell; an end piece stops at its own edge.
+        if (iso === '2026-11-14') expect(Math.abs(piece.right - cell.right)).toBeLessThan(0.5);
+        else expect(piece.right).toBeGreaterThanOrEqual(cell.right);
+        // The bar paints above the selected square.
+        const above = native
+          ? await day(page, 'month', iso).evaluate(el => {
+            const square = el.querySelector('[data-kjun-part="square"]')!, span = el.querySelector('[data-kjun-part="span"]')!;
+            return !!(square.compareDocumentPosition(span) & Node.DOCUMENT_POSITION_FOLLOWING);
+          })
+          : await day(page, 'month', iso).evaluate(el => Number(getComputedStyle(el.querySelector('.kjun-event-calendar-span')!).zIndex) > Number(getComputedStyle(el, '::before').zIndex));
+        expect(above).toBe(true);
+      }
+      // The last column's end piece stays inside the grid.
+      expect((await box(bar('2026-11-14'))).right).toBeLessThanOrEqual((await box(grid(page, 'month'))).right + 0.5);
+      // An outside day keeps its bar at full strength while its number fades.
+      await expect(day(page, 'month', '2026-12-01')).toHaveAttribute('data-outside', /.*/);
+      expect(await opacity(bar('2026-12-01'))).toBe(1);
+      expect(await opacity(pillOf(page, 'month', '2026-12-01'))).toBeCloseTo(0.2, 2);
+      expect((await box(bar('2026-11-30'))).right).toBeGreaterThanOrEqual((await box(bar('2026-12-01'))).left);
     });
 
     test('an outside day picks and moves the month', async ({ page }) => {
@@ -190,6 +230,42 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.keyboard.press('ArrowDown');
       await expect(day(page, 'month', '2027-01-08')).toBeFocused();
       await expect(values(page)).toHaveText(/^2027-01\|/);
+    });
+
+    test('without a month listener the keys stay inside the month', async ({ page }) => {
+      test.skip(native, 'Native has no keyboard roving between days.');
+      const last = day(page, 'unlistened', '2026-11-30');
+      await last.focus();
+      for (const key of ['ArrowRight', 'PageDown']) {
+        await page.keyboard.press(key);
+        await page.waitForTimeout(300);
+        await expect(grid(page, 'unlistened')).not.toHaveAttribute('data-slide');
+        await expect(day(page, 'unlistened', '2026-11-15')).toHaveCount(1);
+        await expect(day(page, 'unlistened', '2026-11-15')).not.toHaveAttribute('data-outside');
+        await expect(last).toBeFocused();
+      }
+    });
+
+    test('going back slides the other way', async ({ page }) => {
+      test.skip(native, 'Moved by keys here; Native has no keyboard roving.');
+      await grid(page, 'month').evaluate(el => {
+        const seen: (string | null)[] = (window as any).directions = [];
+        new MutationObserver(() => seen.push(el.getAttribute('data-direction'))).observe(el, { attributes: true, attributeFilter: ['data-direction'] });
+      });
+      const directions = () => page.evaluate(() => ((window as any).directions as (string | null)[]).filter(Boolean));
+      await day(page, 'month', '2026-11-01').focus();
+      await page.keyboard.press('ArrowLeft');
+      await expect(values(page)).toHaveText(/^2026-10\|/);
+      await expect(grid(page, 'month')).not.toHaveAttribute('data-slide');
+      expect(await directions()).toContain('-1');
+      expect(await directions()).not.toContain('1');
+      await page.evaluate(() => { (window as any).directions.length = 0; });
+      await expect(day(page, 'month', '2026-10-31')).toBeFocused();
+      await page.keyboard.press('ArrowRight');
+      await expect(values(page)).toHaveText(/^2026-11\|/);
+      await expect(grid(page, 'month')).not.toHaveAttribute('data-slide');
+      expect(await directions()).toContain('1');
+      expect(await directions()).not.toContain('-1');
     });
 
     test('a parent that applies the month later still gets focus on the new day', async ({ page }) => {
@@ -292,7 +368,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(grid(page, 'week').locator('[aria-pressed="true"]')).toHaveCount(0);
       // A week across two months names both.
       await expect(grid(page, 'week')).toHaveAttribute('aria-label', '2026년 11월 – 2026년 12월');
-      expect(await opacity(number(page, 'week', '2026-12-01'))).toBe(1);
+      expect(await opacity(pillOf(page, 'week', '2026-12-01'))).toBe(1);
       expect(Math.round((await day(page, 'week', '2026-12-01').boundingBox())!.height)).toBe(49);
       if (native) return; // No keyboard roving on Native.
       // Arrow keys past the week's end ask for the next week by its first day.

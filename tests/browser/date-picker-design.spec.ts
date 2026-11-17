@@ -322,10 +322,11 @@ for (const platform of NEW_CELLS) {
 
     test('outside days fade to 0.2', async ({ page }) => {
       await open(page, 'date');
-      const outside = number(page, '2026년 8월 30일 일요일', platform);
+      // The fade sits on the element that owns the pill and the number: the number itself on the web, the pill view on Native.
+      const outside = pillOf(page, '2026년 8월 30일 일요일', platform);
       await expect(day(page, '2026년 8월 30일 일요일')).toHaveAttribute('data-outside', 'true');
       expect(Number(await style(outside, 'opacity'))).toBeCloseTo(0.2, 2);
-      expect(Number(await style(number(page, '2026년 9월 15일 화요일', platform), 'opacity'))).toBe(1);
+      expect(Number(await style(pillOf(page, '2026년 9월 15일 화요일', platform), 'opacity'))).toBe(1);
     });
   });
 }
