@@ -37,3 +37,64 @@ test('ko and en carry every steps message', () => {
   assert.deepEqual(keys.map(k => ko[k]), ['진행 단계','완료','현재 단계','오류','예정','다음']);
   assert.deepEqual(keys.map(k => en[k]), ['Progress steps','Complete','Current step','Error','Upcoming','Next']);
 });
+
+// --- web stylesheet (Task 2) ---
+import postcss from 'postcss';
+import { STEPS_AUTO_MAX } from '../shared/package-runtime/steps.ts';
+const stepsCss = () => readFileSync(new URL('../packages/tokens/src/steps.css', import.meta.url), 'utf8');
+const containerRules = () => { const rules = []; postcss.parse(stepsCss()).walkAtRules('container', at => rules.push(at)); return rules; };
+
+test('steps.css is registered for the web packages', () => {
+  const sources = JSON.parse(readFileSync(new URL('../shared/web-style-sources.json', import.meta.url), 'utf8'));
+  assert.ok(sources.includes('steps.css'));
+});
+test('steps.css has one container query per count 2..10 at count x min column minus 0.02px', () => {
+  for (let n = 2; n <= STEPS_AUTO_MAX; n++) {
+    const matches = containerRules().filter(at => at.nodes.some(rule => rule.selector.includes(`[data-count="${n}"]`)));
+    assert.equal(matches.length, 1, `count ${n}`);
+    assert.equal(matches[0].params, `(max-width: ${(n * STEPS_MIN_COLUMN - 0.02).toFixed(2)}px)`);
+  }
+  assert.equal(containerRules().length, STEPS_AUTO_MAX - 1);
+});
+test('steps.css minimum column variable matches the runtime constant', () => {
+  const bindings = readFileSync(new URL('../packages/tokens/src/bindings.css', import.meta.url), 'utf8');
+  assert.equal(bindings.match(/--_kjun-extension-steps-min-column:\s*(\d+)px/)[1], String(STEPS_MIN_COLUMN));
+});
+test('steps.css forced layouts and more than ten steps', () => {
+  const css = stepsCss();
+  assert.match(css, /\.kjun-steps\[data-layout="compact"\]/);
+  assert.match(css, /\.kjun-steps\[data-layout="full"\]/);
+  assert.match(css, /\[data-layout="auto"\][^{,]*:not\(:is\(\[data-count="1"\](?:, \[data-count="\d+"\])*, \[data-count="10"\]\)\)/);
+  // Container queries only ever touch auto, so forced layouts always win.
+  for (const at of containerRules()) for (const rule of at.nodes) assert.match(rule.selector, /\[data-layout="auto"\]/);
+  // Vertical ignores layout: every rule that switches to the narrow layout excludes it.
+  const narrow = [];
+  postcss.parse(css).walkRules(rule => { if (/--_kjun-steps-hit-display:\s*none/.test(rule.toString())) narrow.push(rule.selector); });
+  assert.equal(narrow.length, 1 + (STEPS_AUTO_MAX - 1)); // forced compact + 11+, and one per count 2..10 inside @container
+  for (const selector of narrow) for (const part of selector.split(/,\s*(?=\.kjun-steps\[)/)) assert.match(part, /:not\(\[data-orientation="vertical"\]\)/);
+});
+test('steps.css draws no borders or outlines but the focus ring', () => {
+  postcss.parse(stepsCss()).walkDecls(decl => {
+    if (/^border(?!-radius)/.test(decl.prop)) assert.match(decl.value, /^(0|none)$/, `${decl.parent.selector} ${decl.prop}`);
+    if (/^outline/.test(decl.prop)) assert.match(decl.parent.selector, /focus-visible/, decl.parent.selector);
+  });
+});
+test('steps.css consumes every web steps token and stays short', () => {
+  const css = stepsCss();
+  for (const name of ['marker-large','marker-small','marker-icon','halo','halo-small','connector','label-gap','column-gap','row-gap','min-column'])
+    assert.ok(css.includes(`--_kjun-extension-steps-${name}`), name);
+  assert.ok(css.split('\n').length < 500);
+});
+test('exclamation-mark is registered next to minus', () => {
+  const source = readFileSync(new URL('../shared/package-runtime/component-icons.ts', import.meta.url), 'utf8');
+  assert.match(source, /import exclamationMark from '@kjun-ui\/icons\/icons\/exclamation-mark'/);
+  assert.match(source, /componentIcons[^=]*=\s*\{[^}]*\bminus\b[^}]*'exclamation-mark': exclamationMark/);
+});
+test('vertical connector runs from under this dot to the top of the next dot', () => {
+  let rule;
+  postcss.parse(stepsCss()).walkRules(r => { if (r.selector.endsWith('.kjun-steps-item:not(:last-child)::after')) rule = r; });
+  const decl = prop => rule.nodes.find(n => n.prop === prop).value;
+  const line = 'var(--_kjun-steps-title-line)', dot = 'var(--_kjun-extension-steps-marker-small)', gap = 'var(--_kjun-extension-steps-row-gap)';
+  assert.equal(decl('top'), `calc((${line} + ${dot}) / 2)`);
+  assert.equal(decl('bottom'), `calc(-1 * (${gap} + (${line} - ${dot}) / 2))`);
+});

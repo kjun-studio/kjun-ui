@@ -27,5 +27,6 @@
   "split-pane.css",
   "distribution.css",
   "file-upload.css",
-  "tiles.css"
+  "tiles.css",
+  "steps.css"
 ]
