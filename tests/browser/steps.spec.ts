@@ -32,6 +32,19 @@ for (const platform of ['react', 'vue3', 'native']) {
       await openFixture(page, platform, '', 'steps');
     });
 
+    test('the next connector never crosses a marker', async ({ page }) => {
+      test.skip(!web, 'Native lines are separate views stacked by order');
+      // Every marker centre must hit the marker itself, not the line that starts there.
+      const hits = await items(page, 'wizard').evaluateAll(list => list.map(li => {
+        // A pickable step shows its button copy; the static copy is display:none.
+        const marker = [...li.querySelectorAll('.kjun-steps-marker')].find(m => m.getBoundingClientRect().width > 0)!;
+        const box = marker.getBoundingClientRect();
+        const top = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+        return !!top && marker.contains(top);
+      }));
+      expect(hits).toEqual([true, true, true, true, true]);
+    });
+
     test('marks each status', async ({ page }) => {
       if (!web) {
         await expect(rows(page, 'wizard')).toHaveCount(5);
