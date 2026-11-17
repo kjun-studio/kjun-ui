@@ -452,6 +452,16 @@
   --_kjun-extension-avatar-fallback-icon-sizes-lg: 24px;
   --_kjun-extension-avatar-fallback-icon-sizes-xl: 32px;
   --_kjun-extension-avatar-fallback-icon-size: 18px;
+  --_kjun-extension-avatar-group-overlap-xs: 6px;
+  --_kjun-extension-avatar-group-overlap-sm: 8px;
+  --_kjun-extension-avatar-group-overlap-md: 12px;
+  --_kjun-extension-avatar-group-overlap-lg: 16px;
+  --_kjun-extension-avatar-group-overlap-xl: 20px;
+  --_kjun-extension-avatar-group-square-gap-xs: 2px;
+  --_kjun-extension-avatar-group-square-gap-sm: 4px;
+  --_kjun-extension-avatar-group-square-gap-md: 4px;
+  --_kjun-extension-avatar-group-square-gap-lg: 6px;
+  --_kjun-extension-avatar-group-square-gap-xl: 8px;
   --_kjun-extension-chip-sm: 28px;
   --_kjun-extension-chip-md: 32px;
   --_kjun-extension-chip-lg: 40px;

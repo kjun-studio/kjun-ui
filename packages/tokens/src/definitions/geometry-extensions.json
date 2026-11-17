@@ -233,6 +233,10 @@
       "lg": 56,
       "xl": 72
     },
+    "avatarGroup": {
+      "overlap": { "xs": { "$ref": "dimension.value6" }, "sm": { "$ref": "dimension.value8" }, "md": { "$ref": "dimension.value12" }, "lg": { "$ref": "dimension.value16" }, "xl": { "$ref": "dimension.value20" } },
+      "squareGap": { "xs": { "$ref": "dimension.value2" }, "sm": { "$ref": "dimension.value4" }, "md": { "$ref": "dimension.value4" }, "lg": { "$ref": "dimension.value6" }, "xl": { "$ref": "dimension.value8" } }
+    },
     "chip": {
       "sm": 28,
       "md": 32,
