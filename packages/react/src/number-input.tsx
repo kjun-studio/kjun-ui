@@ -97,10 +97,10 @@ export function KjunNumberInput({
     if (composing.current) { dirty.current = true; setView({ text: el.value, caret: null }); return; }
     edit(el.value, el.selectionStart ?? el.value.length);
   };
-  const commit = () => {
+  const commit = (text = view.text) => {
     if (composing.current || !dirty.current || disabled || readOnly) return;
     dirty.current = false;
-    const next = commitNumber(sanitizeNumber(view.text, o), o);
+    const next = commitNumber(sanitizeNumber(text, o), o);
     const found = rangeIssue(next, o);
     setView({ text: formatNumber(next, o), caret: null });
     setIssue(found);
@@ -136,9 +136,15 @@ export function KjunNumberInput({
     <KjunInput ref={input} type="text" inputMode={numberKeyboard(o).inputMode} value={view.text} size={size}
       prefix={prefix} suffix={suffix ?? o.suffix} disabled={disabled} readOnly={readOnly} error={error} errorMessage={message}
       id={id} ariaLabel={ariaLabel} placeholder={placeholder} aria-describedby={aid ? aidId : undefined}
-      onChange={change} onBlur={commit} onEnter={commit} onKeyDown={key}
+      onChange={change} onBlur={() => commit()} onEnter={() => commit()} onKeyDown={key}
       onCompositionStart={() => { composing.current = true; }}
-      onCompositionEnd={event => { composing.current = false; const el = event.currentTarget; edit(el.value, el.selectionStart ?? el.value.length); }} />
+      onCompositionEnd={event => {
+        composing.current = false;
+        const el = event.currentTarget;
+        edit(el.value, el.selectionStart ?? el.value.length);
+        // Some IMEs end composition after blur, when the blur commit was skipped; commit now so the field does not stay dirty.
+        if (el.ownerDocument.activeElement !== el) commit(el.value);
+      }} />
     {aid && <p id={aidId} className="kjun-form-hint kjun-number-input-reading">{aid}</p>}
   </div>;
 }

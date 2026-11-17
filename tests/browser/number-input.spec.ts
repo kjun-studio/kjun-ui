@@ -73,6 +73,34 @@ for (const platform of ['react']) {
       await expect(commit(page, 'decimals')).toHaveText('12.3');
     });
 
+    test('leading dot', async ({ page }) => {
+      await field(page, 'decimals').pressSequentially('.5');
+      await expect(field(page, 'decimals')).toHaveValue('0.5');
+      await expect(value(page, 'decimals')).toHaveText('0.5');
+      expect(await caret(page, 'decimals')).toBe(3);
+      await field(page, 'percent').pressSequentially('-.');
+      await expect(field(page, 'percent')).toHaveValue('-0.');
+      await field(page, 'percent').fill('');
+      await field(page, 'percent').pressSequentially('.');
+      await expect(field(page, 'percent')).toHaveValue('0.');
+      await field(page, 'percent').press('Tab');
+      await expect(field(page, 'percent')).toHaveValue('0.0');
+      await expect(commit(page, 'percent')).toHaveText('0.0');
+    });
+
+    test('ime end after blur commits', async ({ page, browserName }) => {
+      test.skip(browserName !== 'chromium', 'IME composition is driven through the Chromium DevTools protocol.');
+      const amount = field(page, 'amount');
+      await amount.pressSequentially('12');
+      const cdp = await page.context().newCDPSession(page);
+      await cdp.send('Input.imeSetComposition', { text: 'ㅎ', selectionStart: 1, selectionEnd: 1 });
+      // Blur while composing, then end the composition on the detached field.
+      await amount.evaluate(el => { el.blur(); el.dispatchEvent(new CompositionEvent('compositionend', { bubbles: true, data: 'ㅎ' })); });
+      await expect(commit(page, 'amount')).toHaveText('12');
+      await page.getByTestId('amount-set').click();
+      await expect(amount).toHaveValue('777');
+    });
+
     test('negative', async ({ page }) => {
       await field(page, 'percent').pressSequentially('3.5-');
       await expect(field(page, 'percent')).toHaveValue('-3.5');

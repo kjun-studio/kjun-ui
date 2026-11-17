@@ -62,15 +62,23 @@ test('format', () => {
 test('commit', () => {
   const two = r({ decimals: 2, allowNegative: true });
   assert.equal(commitNumber('3.5', two), '3.50');
-  for (const v of ['-', '.', '-.', '']) assert.equal(commitNumber(v, two), '');
+  for (const v of ['-', '']) assert.equal(commitNumber(v, two), '');
+  for (const v of ['.', '-.', '0.']) assert.equal(commitNumber(v, two), '0.00');
   assert.equal(commitNumber('-0', two.allowNegative ? r({ allowNegative: true }) : two), '0');
   assert.equal(commitNumber('12.', r()), '12');
   assert.equal(commitNumber('-5', two), '-5.00');
   const pct = r({ format: 'percent' });
-  assert.equal(sanitizeNumber('.', pct), '');
-  assert.equal(sanitizeNumber('-.', pct), '-');
-  assert.equal(commitNumber(sanitizeNumber('.', pct), pct), '');
-  assert.equal(commitNumber(sanitizeNumber('-.', pct), pct), '');
+  // A leading dot types as "0." so ".5" can be entered; with decimals 0 the dot is ignored.
+  assert.equal(sanitizeNumber('.', pct), '0.');
+  assert.equal(sanitizeNumber('-.', pct), '-0.');
+  assert.equal(sanitizeNumber('-.', r({ decimals: 1 })), '0.');
+  assert.equal(sanitizeNumber('.', r()), '');
+  assert.equal(sanitizeNumber('-', pct), '-');
+  assert.equal(commitNumber(sanitizeNumber('.', pct), pct), '0.0');
+  assert.equal(commitNumber(sanitizeNumber('-.', pct), pct), '0.0');
+  assert.equal(commitNumber(sanitizeNumber('.', r()), r()), '');
+  assert.equal(commitNumber('0.', r()), '0');
+  assert.equal(commitNumber('-', pct), '');
   assert.equal(sanitizeNumber('.5', pct), '0.5');
 });
 

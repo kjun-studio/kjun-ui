@@ -31,7 +31,8 @@ export function resolveNumberInput(options: NumberInputOptions): ResolvedNumberI
   };
 }
 
-/** Keeps digits, one ".", and "-" when allowed; any "-" in the text makes the value negative. Returns the draft ("-12.5", "12.", ""). */
+/** Keeps digits, one ".", and "-" when allowed; any "-" in the text makes the value negative. Returns the draft ("-12.5", "12.", "").
+ * A dot with no digits becomes "0." (or "-0.") when decimals are allowed, so ".5" can be typed. */
 export function sanitizeNumber(text: string, o: ResolvedNumberInput): string {
   const negative = o.allowNegative && text.includes("-");
   const kept = text.replace(/[^0-9.]/g, "");
@@ -39,7 +40,7 @@ export function sanitizeNumber(text: string, o: ResolvedNumberInput): string {
   const rawInt = (dot < 0 ? kept.replace(/\./g, "") : kept.slice(0, dot)).replace(/^0+(?=\d)/, "");
   const int = rawInt.slice(0, o.maxIntegerDigits);
   const frac = dot < 0 ? "" : kept.slice(dot + 1).replace(/\./g, "").slice(0, o.decimals);
-  const body = dot < 0 || (!int && !frac) ? int : `${int || "0"}.${frac}`;
+  const body = dot < 0 ? int : `${int || "0"}.${frac}`;
   return (negative ? "-" : "") + body;
 }
 
@@ -51,9 +52,8 @@ export function formatNumber(raw: string, o: ResolvedNumberInput): string {
   return (negative ? "-" : "") + grouped + (frac === undefined ? "" : "." + frac);
 }
 
-/** The value kept on blur/Enter: "-" and "." become "", "-0" becomes "0", the fraction is padded to decimals. */
+/** The value kept on blur/Enter: "" and "-" become "", a bare dot ("0.") is zero, "-0" becomes "0", the fraction is padded to decimals. */
 export function commitNumber(raw: string, o: ResolvedNumberInput): string {
-  if (/^-?\.?$/.test(raw)) return "";
   const clean = sanitizeNumber(raw, o);
   if (/^-?\.?$/.test(clean)) return "";
   const negative = clean.startsWith("-");
