@@ -243,6 +243,10 @@ export const kjunMessagesKo = {
     [types, size ? `파일당 ${size}` : "", count ? `${count}개까지` : ""].filter(Boolean).join(" · "),
   uploadAnnounce: (name: string, status: string) => `${name} ${status === "done" ? "올렸어요" : "올리지 못했어요"}`,
   uploadGroup: (group: string) => ({ image: "이미지", video: "동영상", audio: "오디오", text: "텍스트" } as Record<string, string>)[group] ?? String(group),
+  numberRangeMin: (limit: string) => `${limit} 이상 입력해 주세요`,
+  numberRangeMax: (limit: string) => `${limit} 이하로 입력해 주세요`,
+  numberUnitEok: "억",
+  numberUnitMan: "만",
 };
 
 export type KjunMessages = typeof kjunMessagesKo;

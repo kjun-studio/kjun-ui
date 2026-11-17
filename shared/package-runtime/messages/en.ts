@@ -232,4 +232,8 @@ export const kjunMessagesEn: KjunMessages = {
     [types, size ? `Up to ${size} each` : "", count ? `Up to ${count} files` : ""].filter(Boolean).join(" · "),
   uploadAnnounce: (name: string, status: string) => `${name} ${status === "done" ? "uploaded" : "failed to upload"}`,
   uploadGroup: (group: string) => ({ image: "images", video: "videos", audio: "audio", text: "text" } as Record<string, string>)[group] ?? String(group),
+  numberRangeMin: (limit: string) => `Enter ${limit} or more`,
+  numberRangeMax: (limit: string) => `Enter ${limit} or less`,
+  numberUnitEok: "eok",
+  numberUnitMan: "man",
 };

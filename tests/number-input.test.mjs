@@ -1,0 +1,111 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { build } from 'esbuild';
+
+// number-input.ts reads the message folder, which Node cannot import directly, so the test bundles it.
+const output = await build({
+  stdin: { contents: "export * from './shared/package-runtime/number-input.ts'; export { resolveMessageScope } from './shared/package-runtime/messages/index.ts';", resolveDir: process.cwd(), loader: 'ts' },
+  bundle: true, write: false, format: 'esm', platform: 'node',
+});
+const {
+  caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, numberKeyboard, rangeIssue, rangeMessage, readingAid, resolveMessageScope, resolveNumberInput, sanitizeNumber, significantCount,
+} = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
+
+const r = (o = {}) => resolveNumberInput(o);
+const en = resolveMessageScope(undefined, 'en');
+
+test('presets and overrides', () => {
+  assert.deepEqual(
+    (({ grouping, decimals, allowNegative, suffix }) => ({ grouping, decimals, allowNegative, suffix }))(r()),
+    { grouping: true, decimals: 0, allowNegative: false, suffix: undefined },
+  );
+  const p = r({ format: 'percent' });
+  assert.deepEqual({ g: p.grouping, d: p.decimals, n: p.allowNegative, s: p.suffix }, { g: false, d: 1, n: true, s: '%' });
+  assert.equal(r({ decimals: 9 }).decimals, 6);
+  assert.equal(r({ decimals: 2.7 }).decimals, 2);
+  assert.equal(r({ decimals: 2 }).maxIntegerDigits, 13);
+  assert.equal(r({ suffix: {} }).suffix, undefined);
+  assert.equal(r({ format: 'percent', grouping: true }).grouping, true);
+});
+
+test('sanitize', () => {
+  const amount = r({ format: 'amount' });
+  const pct = r({ format: 'percent' });
+  assert.equal(sanitizeNumber('₩1,234,000원', amount), '1234000');
+  assert.equal(sanitizeNumber(' 12.5 % ', pct), '12.5');
+  assert.equal(sanitizeNumber('3.5-', pct), '-3.5');
+  assert.equal(sanitizeNumber('--5', pct), '-5');
+  assert.equal(sanitizeNumber('-5', amount), '5');
+  assert.equal(sanitizeNumber('007', r()), '7');
+  assert.equal(sanitizeNumber('0.5', pct), '0.5');
+  assert.equal(sanitizeNumber('.5', pct), '0.5');
+  assert.equal(sanitizeNumber('12.', pct), '12.');
+  assert.equal(sanitizeNumber('1.2.3', pct), '1.2');
+  assert.equal(sanitizeNumber('1.27', pct), '1.2');
+  assert.equal(sanitizeNumber('1.5', r()), '15');
+  assert.equal(sanitizeNumber('1,000ㅁ', r()), '1000');
+});
+
+test('integer digit cap', () => {
+  assert.equal(sanitizeNumber('1234567890123456', r({ format: 'amount' })), '123456789012345');
+  assert.equal(sanitizeNumber('12345678901.5', r({ decimals: 5 })), '1234567890.5');
+  assert.equal(sanitizeNumber('12345678901.5', r({ decimals: 6 })), '123456789.5');
+});
+
+test('format', () => {
+  assert.equal(formatNumber('1234567', r()), '1,234,567');
+  assert.equal(formatNumber('-1234.5', r({ decimals: 1, allowNegative: true })), '-1,234.5');
+  assert.equal(formatNumber('12345', r({ grouping: false })), '12345');
+  assert.equal(formatNumber('12.', r({ decimals: 1 })), '12.');
+});
+
+test('commit', () => {
+  const two = r({ decimals: 2, allowNegative: true });
+  assert.equal(commitNumber('3.5', two), '3.50');
+  for (const v of ['-', '.', '-.', '']) assert.equal(commitNumber(v, two), '');
+  assert.equal(commitNumber('-0', two.allowNegative ? r({ allowNegative: true }) : two), '0');
+  assert.equal(commitNumber('12.', r()), '12');
+  assert.equal(commitNumber('-5', two), '-5.00');
+});
+
+test('caret keeps the significant count', () => {
+  assert.equal(significantCount('1,234,567', 5), 4);
+  assert.equal(caretForCount('12,345,678', 4), 5);
+  assert.equal(caretForCount('1,234', 0), 0);
+});
+
+test('deleteAcrossSeparator', () => {
+  assert.deepEqual(deleteAcrossSeparator('1,234', 2, 2, 'Backspace'), { text: '234', caret: 0 });
+  assert.deepEqual(deleteAcrossSeparator('1,234', 1, 1, 'Delete'), { text: '134', caret: 1 });
+  assert.equal(deleteAcrossSeparator('1,234', 3, 3, 'Backspace'), null);
+  assert.equal(deleteAcrossSeparator('1,234', 0, 3, 'Backspace'), null);
+});
+
+test('rangeIssue and its message', () => {
+  const pct = r({ format: 'percent', max: 100 });
+  const amount = r({ format: 'amount', min: 1000, suffix: '원' });
+  assert.equal(rangeIssue('120', pct), 'max');
+  assert.equal(rangeIssue('999', amount), 'min');
+  assert.equal(rangeIssue('', amount), null);
+  assert.equal(rangeIssue('-', amount), null);
+  assert.equal(rangeMessage('max', pct), '100% 이하로 입력해 주세요');
+  assert.equal(rangeMessage('min', amount), '1,000원 이상 입력해 주세요');
+  assert.equal(rangeMessage('min', amount, en), 'Enter 1,000원 or more');
+});
+
+test('readingAid', () => {
+  const ko = r({ format: 'amount', suffix: '원' });
+  assert.equal(readingAid('120035000', ko), '1억 2,003만 5,000 원');
+  assert.equal(readingAid('100005000', ko), '1억 5,000 원');
+  assert.equal(readingAid('1250000', r()), '125만');
+  assert.equal(readingAid('9999', ko), '');
+  assert.equal(readingAid('120035000', r({ format: 'percent' })), '');
+  assert.equal(readingAid('120035000', ko, en), '');
+});
+
+test('numberKeyboard', () => {
+  assert.equal(numberKeyboard(r({ format: 'percent' })).inputMode, 'text');
+  assert.equal(numberKeyboard(r({ decimals: 1 })).inputMode, 'decimal');
+  assert.equal(numberKeyboard(r({ format: 'amount' })).inputMode, 'numeric');
+  assert.deepEqual(numberKeyboard(r({ allowNegative: true })), { inputMode: 'text', ios: 'numbers-and-punctuation', android: 'numeric' });
+});
