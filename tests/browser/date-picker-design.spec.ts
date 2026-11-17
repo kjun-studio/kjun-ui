@@ -1,18 +1,23 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
-// Platforms that already draw the redesigned picker cells (squared picks, a pill for today, tones by data-tone). Task 6 adds native.
-const NEW_CELLS = ['react', 'vue3'];
+// Platforms that draw the redesigned picker cells (squared picks, a pill for today, tones by data-tone).
+const NEW_CELLS = ['react', 'vue3', 'native'];
 // A colour role as the browser computes it inside the KJUN scope.
+// Native has no .kjun-scope; its fixture passes the provider the same palette it sets as the public --kjun-* values.
 const role = (page: Page, name: string) => page.evaluate(name => {
-  const probe = document.createElement('i');
-  probe.style.color = `var(--_kjun-color-${name})`;
-  document.querySelector('.kjun-scope')!.append(probe);
+  const probe = document.createElement('i'), scope = document.querySelector('.kjun-scope');
+  probe.style.color = scope ? `var(--_kjun-color-${name})` : `var(--kjun-${name})`;
+  (scope ?? document.body).append(probe);
   const color = getComputedStyle(probe).color;
   probe.remove();
   return color;
 }, name);
 const style = (cell: Locator, property: string) => cell.evaluate((el, property) => (getComputedStyle(el) as any)[property] as string, property);
-const number = (page: Page, name: string) => day(page, name).locator('.kjun-calendar-day-number');
+// React Native Web prints no kjun-* classes: the Native number text and the pill view around it carry data-kjun-part.
+const numberIn = (cell: Locator, platform = 'react') => cell.locator(platform === 'native' ? '[data-kjun-part="number"]' : '.kjun-calendar-day-number');
+const number = (page: Page, name: string, platform = 'react') => numberIn(day(page, name), platform);
+// The web number draws its own pill; Native wraps the number in a pill view.
+const pillOf = (page: Page, name: string, platform: string) => platform === 'native' ? day(page, name).locator('[data-kjun-part="pill"]') : number(page, name);
 const clear = 'rgba(0, 0, 0, 0)';
 const values = (page: Page) => page.getByTestId('values');
 const day = (page: Page, name: string) => page.getByRole('button', { name, exact: true });
@@ -32,7 +37,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(Math.round(box.width)).toBe(40); expect(Math.round(box.height)).toBe(40);
     if (NEW_CELLS.includes(platform)) {
       expect(await style(selected, 'borderRadius')).toBe('12px');
-      expect(await style(selected.locator('.kjun-calendar-day-number'), 'fontWeight')).toBe('800');
+      expect(await style(numberIn(selected, platform), 'fontWeight')).toBe('800');
     }
     // Neighbouring months show faintly; the bounds block days and the previous month.
     await expect(day(page, '2026년 9월 2일 수요일')).toBeDisabled();
@@ -241,10 +246,10 @@ for (const platform of NEW_CELLS) {
       await expect(today).not.toHaveAttribute('data-selected', /.*/);
       expect(await style(today, 'boxShadow')).toBe('none');
       expect(await style(today, 'borderTopWidth')).toBe('0px');
-      const pill = number(page, '2026년 9월 12일 토요일');
+      const pill = pillOf(page, '2026년 9월 12일 토요일', platform);
       expect(await style(pill, 'backgroundColor')).toBe(await role(page, 'brand-subtle-bg'));
       expect(Math.round((await pill.boundingBox())!.height)).toBe(26);
-      expect(await style(pill, 'fontWeight')).toBe('600');
+      expect(await style(number(page, '2026년 9월 12일 토요일', platform), 'fontWeight')).toBe('600');
     });
 
     test('today inside a range', async ({ page }) => {
@@ -252,8 +257,8 @@ for (const platform of NEW_CELLS) {
       const today = day(page, '2026년 9월 12일 토요일');
       await expect(today).toHaveAttribute('data-in-range', 'true');
       // The band already shows today, so the number is bare and brand-coloured.
-      expect(await style(number(page, '2026년 9월 12일 토요일'), 'backgroundColor')).toBe(clear);
-      expect(await style(number(page, '2026년 9월 12일 토요일'), 'color')).toBe(await role(page, 'brand'));
+      expect(await style(pillOf(page, '2026년 9월 12일 토요일', platform), 'backgroundColor')).toBe(clear);
+      expect(await style(number(page, '2026년 9월 12일 토요일', platform), 'color')).toBe(await role(page, 'brand'));
       await close(page);
       // When today ends the range it is a selected day: filled with brand.
       await page.evaluate(() => (window as any).showTodayEnd());
@@ -262,13 +267,13 @@ for (const platform of NEW_CELLS) {
       const end = day(page, '2026년 9월 12일 토요일');
       await expect(end).toHaveAttribute('data-selected', 'true');
       expect(await style(end, 'backgroundColor')).toBe(await role(page, 'brand'));
-      expect(await style(number(page, '2026년 9월 12일 토요일'), 'color')).toBe(await role(page, 'on-brand'));
+      expect(await style(number(page, '2026년 9월 12일 토요일', platform), 'color')).toBe(await role(page, 'on-brand'));
     });
 
     test('Saturdays read info and markSaturday={false} turns it off', async ({ page }) => {
       await open(page, 'date');
-      const saturday = number(page, '2026년 9월 19일 토요일'), sunday = number(page, '2026년 9월 20일 일요일');
-      const header = (name: string) => page.locator('.kjun-calendar-weekday', { hasText: name });
+      const saturday = number(page, '2026년 9월 19일 토요일', platform), sunday = number(page, '2026년 9월 20일 일요일', platform);
+      const header = (name: string) => page.locator(platform === 'native' ? '[data-kjun-part="weekday"]' : '.kjun-calendar-weekday', { hasText: name });
       await expect(day(page, '2026년 9월 19일 토요일')).toHaveAttribute('data-tone', 'info');
       expect(await style(saturday, 'color')).toBe(await role(page, 'info'));
       expect(await style(sunday, 'color')).toBe(await role(page, 'danger'));
@@ -314,10 +319,10 @@ for (const platform of NEW_CELLS) {
 
     test('outside days fade to 0.2', async ({ page }) => {
       await open(page, 'date');
-      const outside = number(page, '2026년 8월 30일 일요일');
+      const outside = number(page, '2026년 8월 30일 일요일', platform);
       await expect(day(page, '2026년 8월 30일 일요일')).toHaveAttribute('data-outside', 'true');
       expect(Number(await style(outside, 'opacity'))).toBeCloseTo(0.2, 2);
-      expect(Number(await style(number(page, '2026년 9월 15일 화요일'), 'opacity'))).toBe(1);
+      expect(Number(await style(number(page, '2026년 9월 15일 화요일', platform), 'opacity'))).toBe(1);
     });
   });
 }

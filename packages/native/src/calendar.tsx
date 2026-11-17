@@ -5,11 +5,13 @@ import {
   parseDate, pickMonth, pickYear, rangeRole, stepDisabled, stepTarget, todayIso, toIsoDate, yearChoices, yearGrid, yearOutside,
   type CalendarMode, type DateRange, type DateUnavailable, type WeekStart,
 } from "../../../shared/package-runtime/calendar";
+import { dayTone } from "../../../shared/package-runtime/event-calendar";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useRef, useState } from "react";
 import { AccessibilityInfo, Platform, View } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunButton, KjunIcon } from "./button";
+import { CalendarDayCell } from "./calendar-day";
 import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
@@ -19,6 +21,8 @@ export interface CalendarOptions {
   weekStart?: WeekStart;
   /** Paints Sundays with the danger role, as Korean calendars do (default true). */
   markSunday?: boolean;
+  /** Paints Saturdays with the info role (default true). */
+  markSaturday?: boolean;
   /** Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one. */
   isDateUnavailable?: DateUnavailable;
 }
@@ -39,7 +43,7 @@ export interface CalendarViewProps extends CalendarOptions {
   onPreset?: (range: DateRange) => void;
 }
 /** KJUN's calendar, as on Web: a day grid, and month and year views opened from the heading. */
-export function CalendarView({ value, range, min, max, clearable = false, weekStart = 0, markSunday = true, isDateUnavailable,
+export function CalendarView({ value, range, min, max, clearable = false, weekStart = 0, markSunday = true, markSaturday = true, isDateUnavailable,
   onSelect, onClear, onApply, presets, onPreset }: CalendarViewProps) {
   const scope = useKjunMessageScope(), m = scope.messages, { colors } = useKjunStyles();
   const geometry = tokens.extensions.calendar;
@@ -54,7 +58,7 @@ export function CalendarView({ value, range, min, max, clearable = false, weekSt
   const announcement = picking ? m.chooseEndDate : title;
   const footer = calendarFooter({ range: !!range, apply: !!onApply, clearable, todayBlocked: isBlocked(today, min, max) || !!isDateUnavailable?.(today) });
   const selectedMonth = parseDate(range ? range.start : value);
-  const sunday = (weekday: number) => markSunday && weekday === 0;
+  const tone = (weekday: number) => dayTone(weekday, { markSunday, markSaturday, holiday: false });
   // The heading and the range step are announced only as they change: devices speak them directly,
   // the web through an empty live region that fills on change.
   const announced = useRef(announcement), [spoken, setSpoken] = useState("");
@@ -75,8 +79,11 @@ export function CalendarView({ value, range, min, max, clearable = false, weekSt
   const cell = (key: string | number, label: string, { selected, disabled, current, onPress }: { selected: boolean; disabled: boolean; current: boolean; onPress: () => void }) =>
     <Pressable key={key} accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ selected, disabled }} disabled={disabled} onPress={onPress}
       style={({ pressed }) => ({ flexBasis: "30%", flexGrow: 1, height: geometry.monthHeight, borderRadius: geometry.monthRadius, alignItems: "center", justifyContent: "center",
-        backgroundColor: selected ? colors.brand : pressed ? colors.hover : undefined, ...(current && !selected ? { borderWidth: geometry.todayRing, borderColor: colors.borderStrong } : {}) })}>
-      <KText style={{ ...typeStyle("label"), fontVariant: ["tabular-nums"], color: selected ? colors.onBrand : disabled ? colors.textDisabled : colors.text }}>{label}</KText>
+        // This month and this year are filled, never outlined; the fill is always there so only its colour changes.
+        backgroundColor: selected ? colors.brand : pressed && !disabled ? colors.hover : current ? colors.brandSubtleBg : "transparent" })}
+      {...(Platform.OS === "web" ? { dataSet: { current: current || undefined, selected: selected || undefined } } : {})}>
+      <KText style={{ ...typeStyle("label"), fontVariant: ["tabular-nums"], color: selected ? colors.onBrand : disabled ? colors.textDisabled : colors.text,
+        fontWeight: selected ? typeStyle("control").fontWeight : typeStyle("label").fontWeight }}>{label}</KText>
     </Pressable>;
   const chip = (key: string | number, label: string, selected: boolean, onPress: () => void, grow = true) => (
     <Pressable key={key} accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ selected }} onPress={onPress}
@@ -105,34 +112,21 @@ export function CalendarView({ value, range, min, max, clearable = false, weekSt
       )}
       {days ? (
         <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: geometry.rowGap }}>
-          {orderWeekdays(labels.weekdays, weekStart).map((day, index) => (
-            <View key={day} aria-hidden={true} style={{ width: geometry.daySize, height: geometry.weekdayHeight, alignItems: "center", justifyContent: "center" }}>
-              <KText style={{ ...typeStyle("meta"), color: sunday((index + weekStart) % 7) ? colors.danger : colors.textTertiary }}>{day}</KText>
-            </View>
-          ))}
+          {orderWeekdays(labels.weekdays, weekStart).map((day, index) => {
+            const t = tone((index + weekStart) % 7);
+            return <View key={day} aria-hidden={true} style={{ width: geometry.daySize, height: geometry.weekdayHeight, alignItems: "center", justifyContent: "center" }}>
+              <KText {...(Platform.OS === "web" ? { dataSet: { kjunPart: "weekday", tone: t === "text" ? undefined : t } } : {})}
+                style={{ ...typeStyle("meta"), color: t === "danger" ? colors.danger : t === "info" ? colors.info : colors.textTertiary }}>{day}</KText>
+            </View>;
+          })}
           {calendarDays(shown.year, shown.month, { value, range, min, max, today, weekStart, unavailable: isDateUnavailable }).map(day => {
-            const ink = day.selected ? colors.onBrand : day.blocked || day.outside ? colors.textDisabled : sunday(day.weekday) ? colors.danger : colors.text;
-            const band = (day.inRange || day.rangeStart || day.rangeEnd) && !(day.rangeStart && day.rangeEnd);
             const role = range ? rangeRole(day) : null;
-            // Devices have no "current date" state, so today joins the name.
-            const label = dateLabel(day.iso, scope) + (day.today && Platform.OS !== "web" ? ", " + m.today : "");
-            return (
-              <View key={day.iso} style={{ width: geometry.daySize, height: geometry.daySize }}>
-                {/* A range joins its ends with a quiet band that runs under the days between them. */}
-                {band && <View pointerEvents="none" style={{ position: "absolute", top: 0, bottom: 0, backgroundColor: colors.brandSubtleBg,
-                  left: day.rangeStart ? geometry.daySize / 2 : -geometry.rangeBleed, right: day.rangeEnd ? geometry.daySize / 2 : -geometry.rangeBleed }} />}
-                <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ selected: day.selected, disabled: day.blocked }}
-                  accessibilityHint={role === "start" ? m.rangeStartDay : role === "end" ? m.rangeEndDay : role === "between" ? m.inRangeDay : undefined}
-                  {...(Platform.OS === "web" && day.today ? { "aria-current": "date" } : {})}
-                  disabled={day.blocked} onPress={() => { setFocus(day.iso); onSelect(day.iso); }}
-                  style={({ pressed }) => ({ width: geometry.daySize, height: geometry.daySize, borderRadius: geometry.daySize / 2, alignItems: "center", justifyContent: "center",
-                    backgroundColor: day.selected ? colors.brand : pressed ? colors.hover : undefined,
-                    ...(day.today && !day.selected ? { borderWidth: geometry.todayRing, borderColor: colors.borderStrong } : {}) })}>
-                  <KText style={{ ...typeStyle("body"), fontVariant: ["tabular-nums"], color: ink, textDecorationLine: day.blocked ? "line-through" : "none",
-                    fontWeight: day.selected || day.today ? typeStyle("control").fontWeight : typeStyle("body").fontWeight }}>{day.day}</KText>
-                </Pressable>
-              </View>
-            );
+            return <CalendarDayCell key={day.iso} day={day} density="compact" emphasis="picker" tone={tone(day.weekday)}
+              // Devices have no "current date" state, so today joins the name.
+              label={dateLabel(day.iso, scope) + (day.today && Platform.OS !== "web" ? ", " + m.today : "")}
+              hint={role === "start" ? m.rangeStartDay : role === "end" ? m.rangeEndDay : role === "between" ? m.inRangeDay : undefined}
+              dim={day.outside ? geometry.outsideOpacity : undefined} inRangeToday={day.today && (day.inRange || day.rangeStart || day.rangeEnd)}
+              onPress={() => { setFocus(day.iso); onSelect(day.iso); }} />;
           })}
         </View>
       ) : mode === "months" ? (

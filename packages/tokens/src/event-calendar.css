@@ -1,7 +1,8 @@
 /* KjunEventCalendar: a month or week of day cells that show events as dots, an icon and a span bar. Cells share the picker's rules in calendar.css. */
 .kjun-event-calendar { display: flex; flex-direction: column; color: var(--_kjun-color-text); }
 .kjun-event-calendar-weekdays, .kjun-event-calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
-.kjun-event-calendar-grid { isolation: isolate; --_kjun-slide-sign: 1; }
+/* The slide distance is read here, on the grid, so the keyframes below take it from the element they animate. */
+.kjun-event-calendar-grid { isolation: isolate; --_kjun-slide-sign: 1; --_kjun-slide-distance: var(--_kjun-extension-calendar-slide-distance); }
 .kjun-event-calendar-grid[data-direction="-1"] { --_kjun-slide-sign: -1; }
 .kjun-event-calendar[data-swipeable] .kjun-event-calendar-grid { touch-action: pan-y; }
 /* Full-width cell: top padding, number, space, marks row, bottom padding add up to the event day height. */
@@ -37,8 +38,8 @@
 .kjun-event-calendar-span[data-start] { border-top-left-radius: var(--_kjun-extension-calendar-event-span-corner); border-bottom-left-radius: var(--_kjun-extension-calendar-event-span-corner); }
 .kjun-event-calendar-span[data-end] { border-top-right-radius: var(--_kjun-extension-calendar-event-span-corner); border-bottom-right-radius: var(--_kjun-extension-calendar-event-span-corner); }
 /* A month or week change slides the grid out toward the old side and back in from the new side. */
-@keyframes kjun-event-calendar-out { to { opacity: 0; transform: translateX(calc(var(--_kjun-slide-sign) * -1 * var(--_kjun-extension-calendar-slide-distance))); } }
-@keyframes kjun-event-calendar-in { from { opacity: 0; transform: translateX(calc(var(--_kjun-slide-sign) * var(--_kjun-extension-calendar-slide-distance))); } }
+@keyframes kjun-event-calendar-out { to { opacity: 0; transform: translateX(calc(var(--_kjun-slide-sign) * -1 * var(--_kjun-slide-distance))); } }
+@keyframes kjun-event-calendar-in { from { opacity: 0; transform: translateX(calc(var(--_kjun-slide-sign) * var(--_kjun-slide-distance))); } }
 .kjun-event-calendar-grid[data-slide="out"] { animation: kjun-event-calendar-out var(--_kjun-extension-calendar-slide-out) var(--_kjun-ease-in) both; }
 .kjun-event-calendar-grid[data-slide="in"] { animation: kjun-event-calendar-in var(--_kjun-extension-calendar-slide-in) var(--_kjun-ease-out) both; }
 @media (prefers-reduced-motion: reduce) {

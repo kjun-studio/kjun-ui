@@ -2,22 +2,41 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 
 // KjunEventCalendar: six fixed weeks (or one week) of 49px day cells with dots, an icon and a span bar; today is pinned to 2026-11-17.
+// React Native Web prints no kjun-* classes or ::before: Native parts carry data-kjun-part, set per test from the platform.
+let native = false;
+const part = (web: string, name: string) => native ? `[data-kjun-part="${name}"]` : web;
 const values = (page: Page) => page.getByTestId('values');
-const grid = (page: Page, id: string) => page.getByTestId(id).locator('.kjun-event-calendar-grid');
+const grid = (page: Page, id: string) => page.getByTestId(id).locator(part('.kjun-event-calendar-grid', 'event-calendar-grid'));
+const cells = (page: Page, id: string) => grid(page, id).locator(native ? '[data-iso]' : 'button');
 const day = (page: Page, id: string, iso: string) => page.getByTestId(id).locator(`[data-iso="${iso}"]`);
-const number = (page: Page, id: string, iso: string) => day(page, id, iso).locator('.kjun-calendar-day-number');
+const number = (page: Page, id: string, iso: string) => day(page, id, iso).locator(part('.kjun-calendar-day-number', 'number'));
+// The web number draws its own pill; Native wraps the number text in a pill view.
+const pillOf = (page: Page, id: string, iso: string) => native ? day(page, id, iso).locator('[data-kjun-part="pill"]') : number(page, id, iso);
+// The selected square: the web cell's ::before, a Native view behind the number.
+const squareColor = (cell: Locator) => native ? cell.locator('[data-kjun-part="square"]').evaluate(el => getComputedStyle(el).backgroundColor)
+  : cell.evaluate(el => getComputedStyle(el, '::before').backgroundColor);
 const opacity = (cell: Locator) => cell.evaluate(el => Number(getComputedStyle(el).opacity));
 // A colour role as the browser computes it inside the KJUN scope.
+// Native has no .kjun-scope; its fixture passes the provider the same palette it sets as the public --kjun-* values.
 const role = (page: Page, name: string) => page.evaluate(name => {
-  const probe = document.createElement('i');
-  probe.style.color = `var(--_kjun-color-${name})`;
-  document.querySelector('.kjun-scope')!.append(probe);
+  const probe = document.createElement('i'), scope = document.querySelector('.kjun-scope');
+  probe.style.color = scope ? `var(--_kjun-color-${name})` : `var(--kjun-${name})`;
+  (scope ?? document.body).append(probe);
   const color = getComputedStyle(probe).color;
   probe.remove();
   return color;
 }, name);
 // Pointer events as a finger (or mouse) would send them, from the middle of a cell.
-const drag = (cell: Locator, dx: number, dy: number, pointerType = 'touch') => cell.evaluate((el, { dx, dy, pointerType }) => {
+// React Native Web's responder system reads mouse and touch events, not pointer events: Native drags with the mouse, which it takes as a finger.
+async function drag(cell: Locator, dx: number, dy: number, pointerType = 'touch') {
+  if (native) {
+    const box = (await cell.boundingBox())!, mouse = cell.page().mouse, x = box.x + box.width / 2, y = box.y + box.height / 2;
+    await mouse.move(x, y); await mouse.down();
+    await mouse.move(x + dx / 2, y + dy / 2); await mouse.move(x + dx, y + dy);
+    await mouse.up();
+    return;
+  }
+  await cell.evaluate((el, { dx, dy, pointerType }) => {
   const box = el.getBoundingClientRect(), x = box.x + box.width / 2, y = box.y + box.height / 2;
   const fire = (type: string, cx: number, cy: number) => el.dispatchEvent(new PointerEvent(type, {
     bubbles: true, cancelable: true, pointerId: 21, pointerType, isPrimary: true, button: 0, buttons: type === 'pointerup' ? 0 : 1, clientX: cx, clientY: cy,
@@ -26,8 +45,22 @@ const drag = (cell: Locator, dx: number, dy: number, pointerType = 'touch') => c
   fire('pointermove', x + dx / 2, y + dy / 2);
   fire('pointermove', x + dx, y + dy);
   fire('pointerup', x + dx, y + dy);
-}, { dx, dy, pointerType });
-const middleCell = (page: Page, id: string) => grid(page, id).locator('button').nth(17);
+  }, { dx, dy, pointerType });
+}
+const middleCell = (page: Page, id: string) => cells(page, id).nth(17);
+// A finger held on a cell for 800ms, then lifted.
+const hold = (cell: Locator) => cell.evaluate(el => {
+  const box = el.getBoundingClientRect(), init = { bubbles: true, cancelable: true, pointerId: 31, pointerType: 'touch', isPrimary: true, clientX: box.x + box.width / 2, clientY: box.y + box.height / 2 };
+  el.dispatchEvent(new PointerEvent('pointerdown', { ...init, buttons: 1 }));
+  return new Promise<void>(done => setTimeout(() => {
+    el.dispatchEvent(new PointerEvent('pointerup', init));
+    // The click a browser sends when the finger lifts.
+    (el as HTMLElement).click();
+    done();
+  }, 800));
+});
+// Native: the mouse held down for 800ms (React Native Web's Pressable takes it as a long press), then released, which clicks.
+const mouseHold = async (cell: Locator) => { await cell.hover(); await cell.page().mouse.down(); await cell.page().waitForTimeout(800); await cell.page().mouse.up(); };
 // Records every data-slide value the grid takes from now on.
 const recordSlides = (target: Locator) => target.evaluate(el => {
   const seen: (string | null)[] = (window as any).slides = [];
@@ -35,28 +68,29 @@ const recordSlides = (target: Locator) => target.evaluate(el => {
 });
 const slides = (page: Page) => page.evaluate(() => ((window as any).slides as (string | null)[]).filter(Boolean));
 
-for (const platform of ['react', 'vue3']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test.describe(platform, () => {
     test.beforeEach(async ({ page }) => {
+      native = platform === 'native';
       await page.clock.setFixedTime(new Date('2026-11-17T12:00:00'));
       await openFixture(page, platform, '', 'event-calendar');
       await expect(day(page, 'month', '2026-11-17')).toBeVisible();
     });
 
     test('six weeks at a fixed height', async ({ page }) => {
-      await expect(grid(page, 'month').locator('button')).toHaveCount(42);
+      await expect(cells(page, 'month')).toHaveCount(42);
       expect(Math.round((await day(page, 'month', '2026-11-17').boundingBox())!.height)).toBe(49);
       const november = (await grid(page, 'plain').boundingBox())!.height;
       // February 2026 fits in four weeks; the grid still draws six.
       await page.evaluate(() => (window as any).configureEvents({ plainMonth: '2026-02' }));
       await expect(day(page, 'plain', '2026-02-14')).toBeVisible();
       await expect(grid(page, 'plain')).not.toHaveAttribute('data-slide');
-      await expect(grid(page, 'plain').locator('button')).toHaveCount(42);
+      await expect(cells(page, 'plain')).toHaveCount(42);
       expect((await grid(page, 'plain').boundingBox())!.height).toBe(november);
     });
 
     test('today is a filled pill and the picked day a grey square', async ({ page }) => {
-      const today = number(page, 'month', '2026-11-17');
+      const today = pillOf(page, 'month', '2026-11-17');
       await expect(day(page, 'month', '2026-11-17')).toHaveAttribute('data-today', /.*/);
       const pill = await today.evaluate(el => {
         const style = getComputedStyle(el), box = el.getBoundingClientRect();
@@ -70,10 +104,10 @@ for (const platform of ['react', 'vue3']) {
       await picked.click();
       await expect(picked).toHaveAttribute('aria-pressed', 'true');
       await expect(values(page)).toHaveText('2026-11|2026-11-30|2026-11-20|');
-      expect(await picked.evaluate(el => getComputedStyle(el, '::before').backgroundColor)).toBe(await role(page, 'active'));
+      expect(await squareColor(picked)).toBe(await role(page, 'active'));
       expect(await number(page, 'month', '2026-11-20').evaluate(el => getComputedStyle(el).fontWeight)).toBe('800');
       // Cells carry no border or ring; the selected square is a fill.
-      const edges = await grid(page, 'month').locator('button').evaluateAll(cells => cells.map(el => {
+      const edges = await cells(page, 'month').evaluateAll(cells => cells.map(el => {
         const style = getComputedStyle(el);
         return [style.borderTopWidth, style.borderRightWidth, style.borderBottomWidth, style.borderLeftWidth, style.boxShadow].join(' ');
       }));
@@ -92,19 +126,19 @@ for (const platform of ['react', 'vue3']) {
       expect(await opacity(day(page, 'month', '2026-11-12'))).toBe(1);
       await expect(day(page, 'month', '2026-12-01')).toHaveAttribute('data-outside', /.*/);
       expect(await opacity(number(page, 'month', '2026-12-01'))).toBeCloseTo(0.2, 2);
-      expect(await opacity(day(page, 'month', '2026-12-01').locator('.kjun-event-calendar-marks'))).toBeCloseTo(0.2, 2);
+      expect(await opacity(day(page, 'month', '2026-12-01').locator(part('.kjun-event-calendar-marks', 'marks')))).toBeCloseTo(0.2, 2);
       // The bar on a past day keeps its colour.
-      expect(await opacity(day(page, 'month', '2026-11-13').locator('.kjun-event-calendar-span'))).toBe(1);
+      expect(await opacity(day(page, 'month', '2026-11-13').locator(part('.kjun-event-calendar-span', 'span')))).toBe(1);
       expect(await opacity(number(page, 'month', '2026-11-18'))).toBe(1);
     });
 
     test('marks: three dots at most, one icon, a bar that joins across cells', async ({ page }) => {
       const busy = day(page, 'month', '2026-11-11');
-      await expect(busy.locator('.kjun-event-calendar-dot')).toHaveCount(3);
-      await expect(busy.locator('.kjun-event-calendar-icon')).toHaveCount(1);
-      expect(Math.round((await busy.locator('.kjun-event-calendar-icon').boundingBox())!.width)).toBe(11);
-      expect(Math.round((await busy.locator('.kjun-event-calendar-dot').first().boundingBox())!.width)).toBe(5);
-      const bar = (iso: string) => day(page, 'month', iso).locator('.kjun-event-calendar-span');
+      await expect(busy.locator(part('.kjun-event-calendar-dot', 'dot'))).toHaveCount(3);
+      await expect(busy.locator(part('.kjun-event-calendar-icon', 'icon'))).toHaveCount(1);
+      expect(Math.round((await busy.locator(part('.kjun-event-calendar-icon', 'icon')).boundingBox())!.width)).toBe(11);
+      expect(Math.round((await busy.locator(part('.kjun-event-calendar-dot', 'dot')).first().boundingBox())!.width)).toBe(5);
+      const bar = (iso: string) => day(page, 'month', iso).locator(part('.kjun-event-calendar-span', 'span'));
       await expect(bar('2026-11-12')).toHaveCount(0);
       await expect(bar('2026-11-13')).toHaveAttribute('data-start', /.*/);
       await expect(bar('2026-11-13')).not.toHaveAttribute('data-end');
@@ -128,6 +162,7 @@ for (const platform of ['react', 'vue3']) {
     });
 
     test('arrow keys cross the month and carry focus', async ({ page }) => {
+      test.skip(native, 'Native has no keyboard roving between days, as its date picker.');
       // Before any pick, today holds the only tab stop.
       await expect(grid(page, 'month').locator('button[tabindex="0"]')).toHaveAttribute('data-iso', '2026-11-17');
       await day(page, 'month', '2026-11-30').focus();
@@ -147,6 +182,7 @@ for (const platform of ['react', 'vue3']) {
     });
 
     test('a parent that applies the month later still gets focus on the new day', async ({ page }) => {
+      test.skip(native, 'Focus follows keyboard movement, which Native does not have.');
       // 12-12 is the last of November's 42 cells; 12-19 is drawn only once December is.
       await day(page, 'deferred', '2026-12-12').focus();
       await page.keyboard.press('ArrowDown');
@@ -162,10 +198,13 @@ for (const platform of ['react', 'vue3']) {
       await page.waitForTimeout(300);
       await expect(grid(page, 'month')).not.toHaveAttribute('data-slide');
       await expect(values(page)).toHaveText('2026-11|2026-11-30||');
-      await drag(middleCell(page, 'month'), -60, 0, 'mouse');
-      await page.waitForTimeout(300);
-      await expect(grid(page, 'month')).not.toHaveAttribute('data-slide');
-      await expect(values(page)).toHaveText('2026-11|2026-11-30||');
+      // The web ignores mouse drags; Native has no mouse on devices, and its web preview takes a mouse drag as a finger.
+      if (!native) {
+        await drag(middleCell(page, 'month'), -60, 0, 'mouse');
+        await page.waitForTimeout(300);
+        await expect(grid(page, 'month')).not.toHaveAttribute('data-slide');
+        await expect(values(page)).toHaveText('2026-11|2026-11-30||');
+      }
       await drag(middleCell(page, 'month'), -60, 0);
       await expect(values(page)).toHaveText('2026-12|2026-11-30||');
       await expect(day(page, 'month', '2026-12-15')).not.toHaveAttribute('data-outside');
@@ -173,7 +212,7 @@ for (const platform of ['react', 'vue3']) {
       await drag(middleCell(page, 'month'), 60, 0);
       await expect(values(page)).toHaveText('2026-11|2026-11-30||');
       // The week calendar is not swipeable.
-      await drag(grid(page, 'week').locator('button').nth(3), -60, 0);
+      await drag(cells(page, 'week').nth(3), -60, 0);
       await page.waitForTimeout(300);
       await expect(grid(page, 'week')).not.toHaveAttribute('data-slide');
       await expect(values(page)).toHaveText('2026-11|2026-11-30||');
@@ -194,19 +233,18 @@ for (const platform of ['react', 'vue3']) {
 
     test('long press: touch hold, right click and Shift+Enter; the hold does not pick', async ({ page }) => {
       const cell = day(page, 'month', '2026-11-19');
+      if (native) {
+        // Native offers the long press as an accessibility action on devices; its web preview has no right click or Shift+Enter for it.
+        await mouseHold(cell);
+        await expect(values(page)).toHaveText('2026-11|2026-11-30||2026-11-19');
+        await day(page, 'month', '2026-11-26').click();
+        await expect(values(page)).toHaveText('2026-11|2026-11-30|2026-11-26|2026-11-19');
+        return;
+      }
       await expect(cell).toHaveAttribute('aria-keyshortcuts', 'Shift+Enter');
       const described = await cell.getAttribute('aria-describedby');
       await expect(page.locator(`[id="${described}"]`)).toHaveText('이날 약속 추가');
-      await cell.evaluate(el => {
-        const box = el.getBoundingClientRect(), init = { bubbles: true, cancelable: true, pointerId: 31, pointerType: 'touch', isPrimary: true, clientX: box.x + box.width / 2, clientY: box.y + box.height / 2 };
-        el.dispatchEvent(new PointerEvent('pointerdown', { ...init, buttons: 1 }));
-        return new Promise<void>(done => setTimeout(() => {
-          el.dispatchEvent(new PointerEvent('pointerup', init));
-          // The click a browser sends when the finger lifts.
-          (el as HTMLElement).click();
-          done();
-        }, 800));
-      });
+      await hold(cell);
       await expect(values(page)).toHaveText('2026-11|2026-11-30||2026-11-19');
       await day(page, 'month', '2026-11-24').click({ button: 'right' });
       await expect(values(page)).toHaveText('2026-11|2026-11-30||2026-11-24');
@@ -228,16 +266,16 @@ for (const platform of ['react', 'vue3']) {
       expect(prevented).toBe(false);
       await expect(cell).not.toHaveAttribute('aria-keyshortcuts');
       await expect(cell).not.toHaveAttribute('aria-describedby');
-      // Shift+Enter falls through to the button and picks the day.
-      await cell.focus();
-      await page.keyboard.press('Shift+Enter');
+      // Shift+Enter falls through to the button and picks the day; on Native a hold without onDayLongPress is an ordinary press.
+      if (native) await mouseHold(cell);
+      else { await cell.focus(); await page.keyboard.press('Shift+Enter'); }
       await expect(cell).toHaveAttribute('aria-pressed', 'true');
     });
 
     test('week view: seven days, no dimming of the other month, null value', async ({ page }) => {
-      const cells = grid(page, 'week').locator('button');
-      await expect(cells).toHaveCount(7);
-      expect(await cells.evaluateAll(list => list.map(el => (el as HTMLElement).dataset.iso))).toEqual(
+      const week = cells(page, 'week');
+      await expect(week).toHaveCount(7);
+      expect(await week.evaluateAll(list => list.map(el => (el as HTMLElement).dataset.iso))).toEqual(
         ['2026-11-29', '2026-11-30', '2026-12-01', '2026-12-02', '2026-12-03', '2026-12-04', '2026-12-05']);
       await expect(grid(page, 'week').locator('[data-outside]')).toHaveCount(0);
       await expect(grid(page, 'week').locator('[aria-pressed="true"]')).toHaveCount(0);
@@ -245,6 +283,7 @@ for (const platform of ['react', 'vue3']) {
       await expect(grid(page, 'week')).toHaveAttribute('aria-label', '2026년 11월 – 2026년 12월');
       expect(await opacity(number(page, 'week', '2026-12-01'))).toBe(1);
       expect(Math.round((await day(page, 'week', '2026-12-01').boundingBox())!.height)).toBe(49);
+      if (native) return; // No keyboard roving on Native.
       // Arrow keys past the week's end ask for the next week by its first day.
       await day(page, 'week', '2026-12-05').focus();
       await page.keyboard.press('ArrowRight');

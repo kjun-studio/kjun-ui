@@ -331,7 +331,6 @@
       "footerGap": { "$ref": "dimension.value8" },
       "radius": { "$ref": "radius.radius16" },
       "monthRadius": { "$ref": "radius.radius12" },
-      "todayRing": 1.5,
       "rangeBleed": 3,
       "dayRadius": { "$ref": "radius.radius12" },
       "todayPillMinWidth": { "$ref": "dimension.value32" },
