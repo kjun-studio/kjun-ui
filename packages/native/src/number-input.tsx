@@ -164,7 +164,11 @@ export function KjunNumberInput({
   const keyPress = (event: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
     if (!disabled && !readOnly && event.nativeEvent.key === "Escape" && dirty.current) cancel();
   };
+  // A report about text that is no longer on screen (Firefox reports the old caret on the same keydown that reformats) keeps
+  // the requested caret; React Native Web sends the input's text with the selection, other platforms do not.
   const selectionChange = (event: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
+    const reported = (event.nativeEvent as { text?: string }).text;
+    if (reported !== undefined && reported !== text.current) return;
     selection.current = event.nativeEvent.selection;
     setView(old => old.selection ? { text: old.text } : old);
   };
