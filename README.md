@@ -11,25 +11,25 @@
 | 공통 아이콘 데이터 | `@kjun-ui/icons` |
 | 공통 토큰과 타입 | `@kjun-ui/tokens` |
 | Vue 3 (3.5 이상) | `@kjun-ui/vue3` |
-| React | `@kjun-ui/react` |
-| React Native | `@kjun-ui/native` |
+| React (19.2.3 이상) | `@kjun-ui/react` |
+| React Native (0.86.3 이상, `react-native-svg` 15.15.5 이상) | `@kjun-ui/native` |
 
 사용하는 플랫폼의 패키지와 `@kjun-ui/tokens`·`@kjun-ui/icons`를 함께 설치합니다. Vue 2용 `@kjun-ui/vue2`는 0.5.x가 마지막 버전입니다. Vue 3로 옮기는 방법은 [CHANGELOG](CHANGELOG.md)의 0.6.0 항목을 참고하세요.
 
-문서 페이지도 패키징된 `@kjun-ui/react`·`@kjun-ui/tokens`·`@kjun-ui/icons`를 사용합니다. 색상·서체는 문서 앱이 제공하고 컨트롤의 규격·동작은 패키지에서 가져옵니다. 패키지를 수정했다면 Docker 안에서 `build:packages` → `pack:local` → `docs:install` 순으로 갱신하세요. 전체 `build`에는 이 과정이 포함됩니다.
+문서 페이지도 패키징된 `@kjun-ui/react`·`@kjun-ui/tokens`·`@kjun-ui/icons`를 사용합니다. 색상·서체는 문서 앱이 제공하고 컨트롤의 규격·동작은 패키지에서 가져옵니다. 패키지를 수정했다면 Docker 안에서 `build:packages` → `pack:local` → `docs:install` 순으로 갱신하세요. 독립 소비 검증은 `verify:consumers`로 갱신합니다. 전체 `build`에는 이 과정이 포함됩니다.
 
 ## 컴포넌트와 사용 가이드
 
-[전체 컴포넌트](https://ui.kjun.dev/components)에서 77개 컴포넌트를 이름·용도·API로 탐색할 수 있습니다. 각 문서에는 조작 가능한 예제, 현재 입력값을 반영하는 사용 코드, 구조·상태·크기 비교와 API가 있습니다. 문서 검색은 Cmd/Ctrl+K로 열 수 있습니다.
+[전체 컴포넌트](https://ui.kjun.dev/components)에서 95개 컴포넌트를 이름·용도·API로 탐색할 수 있습니다. 각 문서에는 조작 가능한 예제, 현재 입력값을 반영하는 사용 코드, 구조·상태·크기 비교와 API가 있습니다. 문서 검색은 Cmd/Ctrl+K로 열 수 있습니다.
 
 - [전체 지원 현황](https://ui.kjun.dev/catalog): 컴포넌트·서비스의 플랫폼별 사용 범위
-- [검증 근거](https://ui.kjun.dev/verification): 접근성 항목별 실행 결과·환경·원본 기록
+- [검증 기록](https://ui.kjun.dev/verification): 접근성 항목별 실행 결과·환경·원본 기록
 - [사용 가이드](https://ui.kjun.dev/usage-guide): 컴포넌트 선택, 버튼 배치, 오류·빈 상태, 문구의 전후 비교
 - [화면 배치](https://ui.kjun.dev/layout): 최대 폭, 열 전환, 스크롤과 하단 CTA
 - [레이어·Elevation](https://ui.kjun.dev/elevation): 그림자와 Modal·Toast·하단 CTA의 겹침
 - [피드백 서비스](https://ui.kjun.dev/feedback): Toast·Confirm·Prompt
 
-KjunProvider로 색상·서체 변수와 레이어 영역을 만들고 KjunFeedbackProvider로 영역별 피드백을 제공합니다. Provider로 앱 전체를 감싸도 앱 마크업의 스타일은 바뀌지 않습니다. Native의 KjunFormLayout은 여러 FormGroup의 간격을 연결합니다. `@kjun-ui/icons`는 Tabler 3.48.0 선형 5,166개와 채움형 1,054개를 제공합니다. 기본 제공 범위는 선형 153개와 heart·star 채움형 2개이며, 추가 아이콘은 개별 import 후 KjunProvider의 icons에 등록합니다.
+KjunProvider로 색상·서체 변수와 레이어 영역을 만들고 KjunFeedbackProvider로 영역별 피드백을 제공합니다. Provider로 앱 전체를 감싸도 앱 마크업의 스타일은 바뀌지 않습니다. KjunProvider의 `locale`·`messages`로 KJUN 문구의 언어를, `safeArea`로 화면 안전 영역을 전달합니다. Native의 KjunFormLayout은 여러 FormGroup의 간격을 연결합니다. `@kjun-ui/icons`는 Tabler 3.48.0 선형 5,166개와 채움형 1,054개를 제공합니다. 기본 제공 범위는 선형 153개와 채움형 12개(heart·star·info-circle·circle-check·alert-triangle·alert-circle·home·search·bell·user·settings·list)이며, 추가 아이콘은 개별 import 후 KjunProvider의 icons에 등록합니다.
 
 ## 프로젝트에 연결하기
 

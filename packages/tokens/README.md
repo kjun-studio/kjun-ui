@@ -16,17 +16,17 @@ Input fields use sm/md/lg heights of 32/40/48px and Button radii of 10/12/14px. 
 
 ## Card composition
 
-Card uses `surface` for its background/foreground roles, `padding` for section insets, `bodyPadding` for an independent body inset, and `radius` for none/sm/md/lg corners. `border`, `elevation` and `dividers` are independent. Use `bodyPadding="none"` to embed a table while retaining header/footer insets. `headerActions` works without a title and alongside a custom `header`. The `media` area clips only its own top corners. Native uses the supplied glass background; Web also applies backdrop blur.
+Card uses `surface` for its background/foreground roles, `padding` for section insets, `bodyPadding` for an independent body inset, and `radius` for none/sm/md/lg/xl corners (0/8/12/16/24px). `border`, `elevation` and `dividers` are independent. Use `bodyPadding="none"` to embed a table while retaining header/footer insets. `headerActions` works without a title and alongside a custom `header`. The `media` area clips only its own top corners. Native uses the supplied glass background; Web also applies backdrop blur.
 
 ## Dimension scale
 
-`tokens.dimension.value2` … `value80` is the shared length scale for gaps, padding, widths and heights. Web uses CSS px; Native uses the same numbers in logical units. Numeric names are fixed: `value48` always means 48. Select another dimension from a component role when its geometry changes, e.g. `extensions.accordion.minimumHeight` references `dimension.value48`.
+`tokens.dimension.value2` … `value96` (including `value3`) is the shared length scale for gaps, padding, widths and heights. Web uses CSS px; Native uses the same numbers in logical units. Numeric names are fixed: `value48` always means 48. Select another dimension from a component role when its geometry changes, e.g. `extensions.accordion.minimumHeight` references `dimension.value56`.
 
 `tokens.spacing.space*` and its CSS bindings have been removed before the first release; no compatibility aliases are provided. Definitions and consumers use `dimension`. Vue numeric utility names retain their values. Radius remains a separate scale.
 
 ## Geometry and state roles
 
-`extensions.form.itemGap` is 20px for normal form flow; Web flex/grid parents own their gap. Checkbox radii remain 5/6/7px and Switch inset remains 3px. `dimension.value80` serves large state messages. These are shared KJUN rules, not per-project overrides.
+`extensions.form.itemGap` is 20px for normal form flow; Web flex/grid parents own their gap. Checkbox radii for sm/md/lg are 6/6/8px and the Switch inset (`extensions.switch.padding`) is 2px. `dimension.value80` serves large state messages. These are shared KJUN rules, not per-project overrides.
 
 `states.opacity` defines disabled (0.5), disabledStrong (0.4 for filters and unavailable dates), pressed (0.8), and pending (0.55 for retained content during refresh). `states.focus` defines the 2px outline, 2px outer offset, 3px choice-control offset, -2px inset offset, and 3px shadow ring. `border.defaultWidth/controlWidth` define 1/2px strokes. Colors remain app-owned. `effects.glassBlur` is independent of spacing.
 
@@ -42,7 +42,7 @@ MarketTable identity text uses `body` and `caption` on every platform. Its skele
 
 `motionDistance` defines positive displacement magnitudes: modalEnter=16, modalExit=8, popup=4 and toast=8. Direction is applied by the component. These lengths are independent of `motion` durations and spacing; reduced motion still suppresses interpolation.
 
-Chip typography is defined by `extensions.chip.typography.sm/md/lg`, referencing caption/body/input on every platform. `removeSize` controls the Web removal button; `nativeRemoveSize` includes the Native minimum touch target. Toast defines `minWidth` (Web desktop), `maxWidth`, `closeSize` and `progressHeight`. Native and narrow Web Toast close controls retain their minimum touch targets.
+Chip typography is defined by `extensions.chip.typography.sm/md/lg`, referencing caption/body/input on every platform. `removeSize` controls the Web removal button; `nativeRemoveSize` includes the Native minimum touch target. Toast defines `minWidth` (Web desktop), `maxWidth`, `closeSize` and `iconSize`. Native and narrow Web Toast close controls retain their minimum touch targets.
 
 Generation rejects empty control dimensions, button/input content that cannot fit, checkbox/radio icons larger than their inner boxes, undersized Native Chip removal targets and reversed Toast width limits. Page layers must satisfy content < sticky < navigation, and base breakpoints compact < medium < wide. Component thresholds remain independent. Zero padding/radius resets and zero motion durations remain valid.
 
@@ -52,4 +52,4 @@ Generation rejects empty control dimensions, button/input content that cannot fi
 
 `@kjun-ui/tokens/icons` is a compatibility re-export of `icons` and `filledIcons` from
 `@kjun-ui/icons/defaults`, plus the shared `IconNode` type. Icon data is maintained in
-`@kjun-ui/icons`, pinned to Tabler 3.48.0. Install its local tarball alongside tokens.
+`@kjun-ui/icons`, pinned to Tabler 3.48.0. `@kjun-ui/icons` is a dependency of this package at the same version.

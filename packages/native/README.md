@@ -10,11 +10,25 @@ Browser bundlers use the `browser` export and require React DOM matching React. 
 
 Project color and font setup: https://ui.kjun.dev/styling.
 
-Install: `npm install @kjun-ui/native @kjun-ui/tokens @kjun-ui/icons`
+Install: `npm install @kjun-ui/native @kjun-ui/tokens @kjun-ui/icons react-native-svg`
+
+Peer requirements: `react` `^19.2.3`, `react-native` `>=0.86.3` and `react-native-svg` `^15.15.5`. `react-dom` `^19.2.3` is an optional peer, needed only for the browser entry.
+
+## Provider options
+
+`KjunProvider` also accepts:
+
+- `fontFamily` / `numericFontFamily`: one family name, or names by weight such as `{ 400: "Pretendard-Regular", 700: "Pretendard-Bold" }` for Android and Expo, where each weight is a separate family (`KjunFontFamily`).
+- `locale`: a BCP 47 tag such as `"en-US"` for KJUN's own copy and Intl formats. Without it KJUN stays Korean.
+- `messages`: `Partial<KjunMessages>` that replaces part of KJUN's copy, for example with the app's translations. `kjunMessagesKo` and `kjunMessagesEn` are exported as starting points.
+- `safeArea`: `{ top?: number; bottom?: number }` in px, for example from `react-native-safe-area-context`, for toasts, modals, menus and edge components.
+- `icons`: the project icon registry described below.
+
+The root Provider requires `colors`; a nested Provider may omit them to inherit its parent's, for example to change only `safeArea`.
 
 ## Card composition
 
-Card uses `surface` for its background/foreground roles, `padding` for section insets, `bodyPadding` for an independent body inset, and `radius` for none/sm/md/lg corners. `border`, `elevation` and `dividers` are independent. Use `bodyPadding="none"` to embed a table while retaining header/footer insets. `headerActions` works without a title and alongside a custom `header`. The `media` area clips only its own top corners. Native uses the supplied glass background; Web also applies backdrop blur.
+Card uses `surface` for its background/foreground roles, `padding` for section insets, `bodyPadding` for an independent body inset, and `radius` for none/sm/md/lg/xl corners (0/8/12/16/24px). `border`, `elevation` and `dividers` are independent. Use `bodyPadding="none"` to embed a table while retaining header/footer insets. `headerActions` works without a title and alongside a custom `header`. The `media` area clips only its own top corners. Native uses the supplied glass background; Web also applies backdrop blur.
 
 ## Tab panel state
 
@@ -24,9 +38,10 @@ Disabled tabs block selection and auxiliary menu callbacks. Disabling or removin
 
 ## Icons
 
-Install the local `@kjun-ui/icons` tarball together with this package and `@kjun-ui/tokens`.
-Tabler 3.48.0 includes 5,166 outline and 1,054 filled icons. The existing 153 outline
-names and heart/star filled shapes remain available by default. Additional icons
+`@kjun-ui/icons` and `@kjun-ui/tokens` are dependencies of this package at the same version.
+Tabler 3.48.0 includes 5,166 outline and 1,054 filled icons. 153 outline names and
+12 filled shapes (heart, star, info-circle, circle-check, alert-triangle, alert-circle, home, search, bell, user, settings and list)
+are available by default. Additional icons
 require an explicit import and Provider registration; `KjunIcon`, `prefixIcon` and
 `suffixIcon` use the same registry.
 

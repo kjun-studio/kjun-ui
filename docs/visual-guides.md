@@ -1,6 +1,6 @@
 # 시각 가이드 유지보수
 
-공개 77개와 피드백 서비스의 시각 가이드는 문서 전용 데이터입니다. 패키지 API와 컴포넌트 내부 규격은 변경하지 않습니다. `/usage-guide`의 네 주제 페이지와 각 문서의 `#anatomy`, `#states`는 상단의 문서 플랫폼 선택을 따릅니다.
+공개 95개와 피드백 서비스의 시각 가이드는 문서 전용 데이터입니다. 패키지 API와 컴포넌트 내부 규격은 변경하지 않습니다. `/usage-guide`의 네 주제 페이지와 각 문서의 `#anatomy`, `#states`는 상단의 문서 플랫폼 선택을 따릅니다.
 
 사용 가이드는 `/usage-guide/forms`(폼·입력), `/usage-guide/data`(조회·목록), `/usage-guide/mobile`(모바일 배치), `/usage-guide/feedback`(피드백·문구)로 나뉩니다. 개요에는 주제와 사례 링크를 표시합니다. `shared/document-navigation.ts`가 기존 23개 섹션의 목적지를 정의하며 실행 예제의 설정·상태를 유지합니다. 코드는 `shared/implementation-examples.ts`의 15개 사례에만 별도 구현 방법으로 제공하고 단순 비교는 컴포넌트 `#usage`로 연결합니다. 예전 `/usage-guide#섹션` 링크도 해당 주제로 연결됩니다.
 
@@ -34,11 +34,11 @@ docker exec -w /workspace kjun_ui_dev npm --prefix apps/docs run build
 
 ## 검증
 
-생성 결과는 225개 구조 이미지(68 × 3, 피드백 세 서비스 × 3, 추가 열림·오류 도해), 854개 상태·크기 비교, 51개 선택·문구 비교입니다. 기존 예제·프리셋·현재 값 검증 375개에 더해 비교 코드 905개를 독립 packed 소비 환경에서 컴파일합니다.
+생성 결과는 구조 이미지(공개 컴포넌트와 피드백 세 서비스 × 세 플랫폼, 추가 열림·오류 도해), 상태·크기 비교, 선택·문구 비교입니다. 기존 예제·프리셋·현재 값 검증에 더해 비교 코드를 독립 packed 소비 환경에서 컴파일합니다. 개수는 컴포넌트를 추가할 때마다 달라지므로 생성 결과에서 확인합니다.
 
-`tests/visual-guides.test.mjs`는 공개 커버리지, 부모 안의 하위 구성, 플랫폼별 API 차이, 잘못된 API 참조, 생성 결과와 이미지 해시·좌표, 검색 목적지를 검사합니다. `tests/browser/visual-guides.spec.ts`는 비교 코드 전체 실행, 네 선택 비교, 도해 확대·포커스 복귀, 세 배치의 입력·검증·복사 재실행·필터·재시도와 모바일을 검사합니다.
+`tests/visual-guides.test.mjs`는 공개 커버리지, 부모 안의 하위 구성, 플랫폼별 API 차이, 잘못된 API 참조, 생성 결과와 이미지 해시·좌표, 검색 목적지를 검사합니다. `tests/browser/docs/visual-guides.spec.ts`는 비교 코드 전체 실행, 네 선택 비교, 도해 확대·포커스 복귀, 세 배치의 입력·검증·복사 재실행·필터·재시도와 모바일을 검사합니다.
 
-`tests/browser/visual-zoom.spec.ts`는 전체 Chromium의 페이지 확대 설정을 200%로 적용합니다. `devicePixelRatio: 2`와 1440px 창의 `innerWidth: 720`을 확인한 뒤 세 플랫폼의 긴 배치를 검사합니다. CSS 배율이나 DPR만 변경한 화면을 페이지 확대 검증으로 간주하지 않습니다. 이는 Native 기기의 시스템 글자 크기 검증이 아닙니다.
+`tests/browser/docs/visual-zoom.spec.ts`는 전체 Chromium의 페이지 확대 설정을 200%로 적용합니다. `devicePixelRatio: 2`와 1440px 창의 `innerWidth: 720`을 확인한 뒤 세 플랫폼의 긴 배치를 검사합니다. CSS 배율이나 DPR만 변경한 화면을 페이지 확대 검증으로 간주하지 않습니다. 이는 Native 기기의 시스템 글자 크기 검증이 아닙니다.
 
 현재 빌드 절차는 [유지보수 안내](maintenance.md)를 따릅니다.
 
@@ -57,4 +57,4 @@ docker exec -w /workspace kjun_ui_dev npm --prefix apps/docs run build
 - `build:design-figures`는 전체 빌드에 포함됩니다. `design-figures:check`는 누락·변경된 이미지와 잘못된 좌표·오래된 생성 결과를 실패 처리합니다. 이미지·manifest를 직접 편집하지 마세요.
 - 기본 화면에는 도해와 번호별 해설을 표시합니다. 실행 프레임과 코드는 펼친 뒤에만 로드합니다. 삭제 확인은 기존 레이어 예제처럼 각 프레임의 ‘실행 비교 열기’를 눌렀을 때 Modal을 시작해 두 프레임의 자동 포커스 경쟁을 피합니다. 폭 변경은 해당 폭의 새 예제로 시작합니다. 이미지 실패 시 해설, 재시도와 실행 예제 진입을 제공합니다.
 
-`tests/design-cases.test.mjs`, `tests/browser/design-cases.spec.ts`, `tests/browser/design-case-actions.ts`와 기존 200% 확대 검사에서 데이터·캡처·검색 목적지, 입력 재검증·삭제·동일 조건 갱신·독립적인 복구·본문 스크롤·모의 키보드, 현재 값 복사·재실행, 실제 프레임 폭, 모바일 확대·포커스 복귀·이미지 복구를 검증합니다. Native Web 캡처와 상호작용은 기기 검증을 뜻하지 않습니다.
+`tests/design-cases.test.mjs`, `tests/browser/docs/design-cases.spec.ts`, `tests/browser/docs/design-case-actions.ts`와 기존 200% 확대 검사에서 데이터·캡처·검색 목적지, 입력 재검증·삭제·동일 조건 갱신·독립적인 복구·본문 스크롤·모의 키보드, 현재 값 복사·재실행, 실제 프레임 폭, 모바일 확대·포커스 복귀·이미지 복구를 검증합니다. Native Web 캡처와 상호작용은 기기 검증을 뜻하지 않습니다.

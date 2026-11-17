@@ -11,7 +11,7 @@ export function FoundationElevationGuide() {
   return <>
     <div className="elevation-intro">
       <dl className="elevation-concepts">
-        <div><dt>표면 표현</dt><dd>그림자로 배경과 얼마나 분리해 보일지 정합니다. flat·raised·floating 중 역할을 선택합니다.</dd></div>
+        <div><dt>표면 표현</dt><dd>그림자로 배경과 얼마나 분리해 보일지 정합니다. 역할은 flat·raised·handle·lifted·floating·docked 여섯 가지이며 컴포넌트마다 정해져 있습니다.</dd></div>
         <div><dt>표시 순서</dt><dd>겹치는 창 중 무엇을 앞에 보여줄지 정합니다. 창의 소유 관계와 열린 순서를 따릅니다.</dd></div>
         <div><dt>입력·포커스</dt><dd>어디를 클릭하고 키보드로 이동할 수 있는지 정합니다. 새 창이 열리면 배경 입력을 차단합니다.</dd></div>
       </dl>
@@ -22,7 +22,10 @@ export function FoundationElevationGuide() {
       <DataTable headings={['역할', '사용 상황', '표현']} rows={[
         ['flat', '일반 콘텐츠·기본 Card·Tooltip', '그림자 없음. 간격·표면색·필요한 테두리로 구분'],
         ['raised', '배경에서 살짝 분리할 Card', '작고 옅은 접촉 그림자'],
-        ['floating', 'Select·메뉴·Popover·Modal·Drawer·Toast', '옅은 주변 그림자. 차단 창은 배경 차단과 활성 영역으로 구분'],
+        ['handle', 'Switch·Slider의 손잡이', '손잡이를 트랙과 구분하는 작은 그림자'],
+        ['lifted', 'Modal·Drawer·FAB·Carousel 이동 버튼', '옅은 한 겹 그림자. 차단 창은 배경 차단과 활성 영역으로 구분'],
+        ['floating', 'Select·메뉴·Popover·Toast·FloatingNavigation', '주변 그림자와 접촉 그림자 두 겹'],
+        ['docked', 'BottomNavigation', '화면 아래에 붙은 바의 위쪽 1px 선'],
       ]} />
       <p className="body-copy">Card는 내용을 묶는 컨테이너입니다. 행동은 내부 Button·Link에 연결합니다. 마우스를 올리거나 내부 버튼에 포커스를 옮겨도 카드 전체가 떠오르지 않습니다.</p>
     </section>

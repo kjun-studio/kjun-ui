@@ -62,14 +62,14 @@ export function Styling() {
           transform·filter로 고정 위치의 기준을 바꾸거나 모달을 자르는 상위 요소
           밖에 배치하세요.
         </p>
-        <p className="body-copy">웹 Provider는 마운트·갱신 시 필수 색상과 --kjun-font 누락을 오류로 알립니다.
+        <p className="body-copy">웹 Provider는 화면에 붙을 때 한 번 필수 색상과 --kjun-font 누락을 오류로 알립니다.
           금융 표현을 사용하는 컴포넌트는 해당 범위의 금융 역할 13개도 검사합니다.
           일반 버튼·입력·숫자 표시에는 금융 역할이 필요하지 않습니다. 폰트 파일 로딩은 프로젝트에서 확인하세요.</p>
       </section>
       <section id="native">
         <h2>Native: 프로젝트 값을 앱 루트에서 전달하세요</h2>
         <p className="body-copy">
-          CSS를 사용하지 않는 Native는 colors를 필수로 받습니다. 각 항목의
+          CSS를 사용하지 않는 Native는 앱 루트의 Provider에서 colors를 필수로 받습니다. 각 항목의
           오른쪽은 기존 프로젝트 토큰에 연결하세요. KjunColors는 필수 {tokens.coreColorRoles.length}개 역할의
           누락을 타입으로 확인하며, DynamicColorIOS 같은 ColorValue도 사용할 수
           있습니다.
@@ -83,9 +83,11 @@ export function Styling() {
         />
         <p className="body-copy">
           라이트·다크 전환 시 프로젝트에서 colors 값을 교체하면 열린 모달에도
-          반영됩니다. 중첩 Provider는 자신의 colors를 사용하며, fontFamily를
-          생략하면 부모 값을 상속합니다. 루트에서 fontFamily를 생략하면 시스템
+          반영됩니다. 중첩 Provider는 colors와 fontFamily를 생략하면 부모 값을
+          상속합니다. 루트에서 fontFamily를 생략하면 시스템
           글꼴을 사용합니다. 사용자 정의 폰트는 앱에서 먼저 로드하세요.
+          Android·Expo처럼 굵기마다 서체 이름이 다르면 fontFamily와 numericFontFamily에
+          {"{ 400: \"Pretendard-Regular\", 700: \"Pretendard-Bold\" }"}처럼 굵기별 이름을 전달합니다.
           Provider나 필수 색상이 누락되면 오류를 표시하며 내장 팔레트로 대체하지
           않습니다.
         </p>
@@ -101,8 +103,8 @@ export function Styling() {
         <OptionalColorRoles />
         <p className="body-copy">
           Card의 surface="accent"는 강조 배경, surface="subtle"은 은은한 강조 배경입니다.
-          테두리는 모든 표면에서 border로 선택합니다. cardAccentStart/End와 cardSubtleStart/End/Border에
-          프로젝트 색상을 연결하세요. 이름은 용도를 나타내며 실제 색상과 강도는 프로젝트가 정합니다.
+          테두리는 모든 표면에서 border로 선택합니다. cardAccentStart와 cardSubtleStart·cardSubtleBorder에
+          프로젝트 색상을 연결하세요. 카드 표면은 단색입니다. 이름은 용도를 나타내며 실제 색상과 강도는 프로젝트가 정합니다.
         </p>
       </section>
       <section id="domain"><h2>금융 역할과 숫자 서체</h2><p className="body-copy">금융 컴포넌트를 사용할 때만 별도 KjunDomainColors 역할을 연결합니다. 같은 값을 사용해도 역할의 의미는 유지합니다. 웹 숫자 서체는 --kjun-font-numeric, Native는 numericFontFamily이며 생략하면 영역 본문 서체를 사용합니다.</p><CodeBlock label="금융 역할 연결" code={"/* 웹: 프로젝트의 기존 토큰에 연결 */\n"+tokens.domainColorRoles.map(role=>`--kjun-${kebab(role)}: var(--app-${kebab(role)});`).join("\n")+"\n\n// Native\n<KjunProvider colors={appColors} domainColors={appDomainColors}\n  fontFamily={appFont} numericFontFamily={appNumericFont}>\n  <App />\n</KjunProvider>"}/></section>
@@ -132,13 +134,16 @@ export function Styling() {
             [<ColorRoleList key="success / successDark / successActive / warning / warningDark / warningActive" roles="success / successDark / successActive / warning / warningDark / warningActive" />,
               "완료·주의와 hover·누름 상태",
             ],
+            [<ColorRoleList key="info" roles="info" />, "정보 상태"],
+            [<ColorRoleList key="focusRing" roles="focusRing" />, "키보드 포커스 표시"],
             [<ColorRoleList key="overlay / shadow / shadowSubtle" roles="overlay / shadow / shadowSubtle" />,
               "모달 배경과 공통 그림자의 색상",
             ],
           ]}
         />
         <p className="body-copy">
-          역할의 의미와 상태별 사용 규칙은 공통으로 유지합니다. 손익·지출 같은
+          표의 borderSecondary·dangerDark·dangerBg·successDark·warningDark·shadowSubtle은 선택 역할이며
+          나머지는 필수 역할입니다. 역할의 의미와 상태별 사용 규칙은 공통으로 유지합니다. 손익·지출 같은
           업무 색상은 프로젝트에서 별도로 관리합니다. 프로젝트는
           글자·배경·포커스의 대비를 함께 확인하세요.
         </p>
@@ -147,9 +152,9 @@ export function Styling() {
           ["text / surface·background·secondary", "본문은 각 표면 위에서 읽혀야 합니다. textSecondary·textTertiary는 중요도가 낮은 설명에 사용하며 필수 정보를 희미한 색만으로 구분하지 않습니다."],
           ["buttonSecondary* / secondary·surface", "secondary 버튼은 muted 카드처럼 secondary로 칠한 표면 위에도 놓입니다. 버튼 역할은 surface와 secondary 양쪽에서 구분되는 값으로 지정합니다."],
           ["textDisabled / buttonSecondary", "비활성 버튼은 variant와 관계없이 buttonSecondary 배경과 textDisabled 글자를 사용합니다. ghost 계열은 배경 없이 글자만 바뀝니다."],
-          ["onBrand / brand·brandHover·brandActive", "브랜드 버튼과 Card의 brand 표면에 사용합니다. 그라데이션의 양 끝과 중간, hover·active 상태에서 함께 확인합니다."],
+          ["onBrand / brand·brandHover·brandActive", "브랜드 버튼과 Card의 brand 표면에 사용합니다. hover·active 상태에서 함께 확인합니다."],
           ["onDanger·onSuccess·onWarning / danger·success·warning", "채운 상태 버튼의 전경입니다. 기본 대체값 inverse가 해당 배경과 맞지 않으면 on* 역할을 직접 지정합니다."],
-          ["success·warning·danger / *Bg·*Light", "Bg는 상태 설명의 옅은 바탕, Light와 LightEnd는 카드 그라데이션, Accent는 강조 아이콘·장식에 사용합니다. 배경·아이콘·문구를 함께 확인합니다."],
+          ["success·warning·danger / *Bg·*Light", "Bg는 상태 설명의 옅은 바탕, Light는 상태 카드의 표면, Accent는 강조 아이콘·장식에 사용합니다. 배경·아이콘·문구를 함께 확인합니다."],
           ["focusRing / 인접 표면·테두리", "키보드 포커스가 기본·선택·오류 표면 모두에서 구분되도록 지정합니다."],
           ["glassBg·glassBorder / 실제 뒤쪽 콘텐츠", "반투명색은 겹쳐 보이는 배경에 따라 결과가 달라집니다. 밝고 어두운 이미지 위에서 본문과 테두리를 확인합니다."],
         ]} />

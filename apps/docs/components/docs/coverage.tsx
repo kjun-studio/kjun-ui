@@ -25,7 +25,7 @@ function ServicesAndRecords() {
     </section>
     <section id="verification">
       <h2>검증 기록</h2>
-      <p className="body-copy">기록일은 원문에 적힌 날짜이며 최종 검증일이 아닙니다. 연결 수는 현재 카탈로그의 공개 컴포넌트 기준입니다. 당시 범위와 제약은 원문에서 확인하세요.</p>
+      <p className="body-copy">기록일은 원문에 적힌 날짜이며 최종 검증일이 아닙니다. 연결 수는 현재 카탈로그의 공개 컴포넌트 기준입니다. 당시 범위와 제약은 원문에서 확인하세요. v0.3.0 기록은 당시 패키지(Vue 2 포함)와 공개 컴포넌트 77개를 대상으로 했습니다. Vue 3 패키지와 그 뒤에 추가된 컴포넌트는 배포할 때마다 단위 테스트와 기본 브라우저 검사를 실행하지만, 별도 검증 기록으로 남기지 않았습니다.</p>
       <div className="coverage-records">{coverage.records.map(record => <Card surface="muted" key={record.id} id={`record-${record.id}`} className="coverage-record" tabIndex={-1}>
         <h3>{record.title}</h3>
         <p>기록일 · <time dateTime={record.date}>{record.date}</time></p>

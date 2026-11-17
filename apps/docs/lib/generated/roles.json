@@ -1390,17 +1390,6 @@
     "implementationFiles": []
   },
   {
-    "role": "cardAccentEnd",
-    "contract": "common",
-    "required": false,
-    "fallback": "surface",
-    "variable": "--kjun-card-accent-end",
-    "upstreamAliases": [
-      "--card-accent-end"
-    ],
-    "implementationFiles": []
-  },
-  {
     "role": "cardSubtleStart",
     "contract": "common",
     "required": false,
@@ -1412,17 +1401,6 @@
     "implementationFiles": []
   },
   {
-    "role": "cardSubtleEnd",
-    "contract": "common",
-    "required": false,
-    "fallback": "surface",
-    "variable": "--kjun-card-subtle-end",
-    "upstreamAliases": [
-      "--card-subtle-end"
-    ],
-    "implementationFiles": []
-  },
-  {
     "role": "cardSubtleBorder",
     "contract": "common",
     "required": false,
@@ -1430,39 +1408,6 @@
     "variable": "--kjun-card-subtle-border",
     "upstreamAliases": [
       "--card-subtle-border"
-    ],
-    "implementationFiles": []
-  },
-  {
-    "role": "successLightEnd",
-    "contract": "common",
-    "required": false,
-    "fallback": "successLight",
-    "variable": "--kjun-success-light-end",
-    "upstreamAliases": [
-      "--success-light-end"
-    ],
-    "implementationFiles": []
-  },
-  {
-    "role": "warningLightEnd",
-    "contract": "common",
-    "required": false,
-    "fallback": "warningLight",
-    "variable": "--kjun-warning-light-end",
-    "upstreamAliases": [
-      "--warning-light-end"
-    ],
-    "implementationFiles": []
-  },
-  {
-    "role": "dangerLightEnd",
-    "contract": "common",
-    "required": false,
-    "fallback": "dangerLight",
-    "variable": "--kjun-danger-light-end",
-    "upstreamAliases": [
-      "--danger-light-end"
     ],
     "implementationFiles": []
   },

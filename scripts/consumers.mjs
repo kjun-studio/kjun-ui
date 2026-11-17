@@ -112,7 +112,7 @@ const ${namespace}OldIndigoCard: ${namespace}.KjunCardProps={gradient:'indigo'};
 `,
   )
   .join("\n")}
-const cardColors: KjunColors={...appColors,cardAccentStart:'app-accent',cardAccentEnd:'app-accent-end',cardSubtleStart:'app-subtle',cardSubtleEnd:'app-subtle-end',cardSubtleBorder:'app-outline'};
+const cardColors: KjunColors={...appColors,cardAccentStart:'app-accent',cardSubtleStart:'app-subtle',cardSubtleBorder:'app-outline'};
 ${["cardBlueStart", "cardBlueEnd", "cardIndigoStart", "cardIndigoEnd", "cardIndigoBorder"]
   .map(
     (role) => `

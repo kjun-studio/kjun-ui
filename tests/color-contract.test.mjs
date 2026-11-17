@@ -12,9 +12,7 @@ test("core colors resolve every optional role without supplying a package palett
   assert.equal(resolved.inputBorderFocus, app.focusRing);
   assert.equal(resolved.chartTooltipBg, app.text);
   assert.equal(resolved.cardAccentStart, app.secondary);
-  assert.equal(resolved.cardAccentEnd, app.surface);
   assert.equal(resolved.cardSubtleStart, app.secondary);
-  assert.equal(resolved.cardSubtleEnd, app.surface);
   assert.equal(resolved.cardSubtleBorder, app.border);
   assert.equal(Object.keys(app).length, 27);
 });
@@ -24,8 +22,7 @@ test("card role overrides retain project values without exposing retired names",
   const resolved = resolveKjunColors(app);
   assert.equal(resolved.cardAccentStart, app.cardAccentStart);
   assert.equal(resolved.cardSubtleBorder, app.cardSubtleBorder);
-  assert.equal(resolved.cardAccentEnd, app.surface);
-  for (const name of ["cardBlueStart", "cardBlueEnd", "cardIndigoStart", "cardIndigoEnd", "cardIndigoBorder"])
+  for (const name of ["cardBlueStart", "cardBlueEnd", "cardIndigoStart", "cardIndigoEnd", "cardIndigoBorder", "cardAccentEnd", "cardSubtleEnd", "successLightEnd", "warningLightEnd", "dangerLightEnd"])
     assert.ok(!colorRoles.includes(name));
 });
 
@@ -35,7 +32,6 @@ test("optional overrides and native ColorValue objects survive role resolution",
   const resolved = resolveKjunColors(app);
   assert.equal(resolved.dangerBg, dynamic);
   assert.equal(resolved.dangerLight, dynamic);
-  assert.equal(resolved.dangerLightEnd, dynamic);
   assert.equal(resolved.chartGrid, "app-grid");
   const complete = Object.fromEntries(colorRoles.map(role => [role, `app-${role}`]));
   assert.deepEqual(resolveKjunColors(complete), complete);

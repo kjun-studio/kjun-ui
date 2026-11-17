@@ -21,7 +21,9 @@ export function mergeTokenDefinitions(...parts) {
 export async function readTokenDefinitions(root) {
   const read = async name => JSON.parse(await readFile(`${root}/packages/tokens/src/definitions/${name}.json`, 'utf8'));
   const [geometry, extensions, details, kpi, colors, typography, shadows, states, responsive, sizing] = await Promise.all(['geometry', 'geometry-extensions', 'geometry-details', 'geometry-kpi', 'colors', 'typography', 'shadows', 'states', 'responsive-motion', 'sizing'].map(read));
-  return mergeTokenDefinitions(geometry, extensions, details, kpi, colors, { typography }, shadows, states, responsive, sizing);
+  // tokens.version is the package version, so the published contract never names an older release.
+  const { version } = JSON.parse(await readFile(`${root}/packages/tokens/package.json`, 'utf8'));
+  return mergeTokenDefinitions({ version }, geometry, extensions, details, kpi, colors, { typography }, shadows, states, responsive, sizing);
 }
 // Keep existing flat bindings stable while supporting component variants and nested references.
 export function extensionGeometryCss(data, definitions) {

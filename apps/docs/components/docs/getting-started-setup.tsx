@@ -69,5 +69,24 @@ export function GettingStartedExtras({ platform }: { platform: PlatformName }) {
         ? '<KjunProvider :icons="projectIcons">\n  <KjunButton prefix-icon="rocket">시작</KjunButton>\n</KjunProvider>'
         : `<KjunProvider ${platform === 'native' ? 'colors={appColors} ' : ''}icons={projectIcons}>\n  <KjunButton prefixIcon="rocket">시작</KjunButton>\n</KjunProvider>`} />
     </section>
+    <section id="provider-options" className="setup-extra">
+      <h3>언어·안전 영역</h3>
+      <p className="body-copy">KjunProvider의 <code>locale</code>을 생략하면 KJUN의 기본 문구와 날짜·숫자 형식은 한국어입니다. <code>locale</code>에 "en-US" 같은 언어 태그를 전달하면 영어 문구와 해당 형식을 사용합니다. 일부 문구만 바꾸려면 <code>messages</code>에 바꿀 항목만 전달합니다. 전체 문구는 <code>kjunMessagesKo</code>·<code>kjunMessagesEn</code>에서 확인할 수 있습니다.</p>
+      <CodeBlock label="언어와 문구" code={platform === 'vue3'
+        ? '<KjunProvider locale="en-US" :messages="{ close: \'Dismiss\' }">\n  <App />\n</KjunProvider>'
+        : `<KjunProvider ${platform === 'native' ? 'colors={appColors} ' : ''}locale="en-US" messages={{ close: 'Dismiss' }}>\n  <App />\n</KjunProvider>`} />
+      <p className="body-copy"><code>safeArea</code>는 Toast·Modal·메뉴와 화면 가장자리 컴포넌트가 피할 위·아래 여백(px)입니다. {platform === 'native'
+        ? 'Native는 react-native-safe-area-context 같은 라이브러리에서 읽은 값을 전달하세요.'
+        : '웹은 생략하면 브라우저의 env(safe-area-inset-*)를 사용하므로, 앱이 자체 상단·하단 바로 그 영역을 이미 차지할 때만 전달합니다.'}</p>
+      <CodeBlock label="안전 영역" code={platform === 'vue3'
+        ? '<KjunProvider :safe-area="{ top: 0, bottom: 34 }">\n  <App />\n</KjunProvider>'
+        : platform === 'native'
+          ? 'const insets = useSafeAreaInsets();\n\n<KjunProvider colors={appColors} safeArea={{ top: insets.top, bottom: insets.bottom }}>\n  <App />\n</KjunProvider>'
+          : '<KjunProvider safeArea={{ top: 0, bottom: 34 }}>\n  <App />\n</KjunProvider>'} />
+      {platform === 'vue3' && <>
+        <p className="body-copy">컴포넌트를 전역으로 등록하려면 플러그인을 사용합니다. 앱이 같은 이름의 컴포넌트를 이미 등록했다면 <code>skipExisting</code>으로 기존 등록을 유지합니다.</p>
+        <CodeBlock label="전역 등록(선택)" code={"import KjunUI from '@kjun-ui/vue3/plugin';\n\napp.use(KjunUI);\n// app.use(KjunUI, { skipExisting: true });"} />
+      </>}
+    </section>
   </section>;
 }

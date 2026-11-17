@@ -22,6 +22,7 @@ const groups: { id: string; label: string; match: (role: string) => boolean }[] 
   { id: "surface", label: "표면·카드·선택", match: role => /^(card|glass|brand|selected|tertiary)/.test(role) },
   { id: "input", label: "입력·스위치·필터", match: role => /^(input|switch|filter)/.test(role) },
   { id: "data", label: "표·차트·로딩", match: role => /^(table|chart|skeleton)/.test(role) },
+  { id: "navigation", label: "내비게이션", match: role => /^navigation/.test(role) },
   { id: "line", label: "테두리·그림자·오버레이", match: () => true },
 ];
 

@@ -2,7 +2,7 @@
 
 ## Icons
 
-Tabler Icons — `Tabler-LICENSE` (MIT). The build copies it next to each package's `dist/styles.css`.
+Tabler Icons — `Tabler-LICENSE` (MIT). The build copies it, together with the root `LICENSE`, into the `dist/` of all five packages.
 
 ## Fonts
 

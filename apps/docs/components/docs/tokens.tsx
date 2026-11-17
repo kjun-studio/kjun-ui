@@ -36,7 +36,7 @@ export function Tokens() {
         <p className="body-copy">2·3·6·10·14px는 작은 요소 사이를 미세하게 맞출 때만 씁니다. 28px와 40px 이상은 큰 영역을 구분할 때 씁니다.</p>
         <SpacingSamples values={spacing.filter(([, value]) => !preferredSpacing.includes(value))} />
       </details>
-      <Related><Link href="/layout">화면 배치</Link><Link href="/components/form-group#states">FormGroup의 항목 간격</Link></Related>
+      <Related><Link href="/layout">화면 배치</Link><Link href="/components/stack">Stack·Inline의 간격 단계</Link><Link href="/components/form-group#states">FormGroup의 항목 간격</Link></Related>
     </section>
 
     <section id="radius">
@@ -71,7 +71,7 @@ export function Tokens() {
         <div className="token-touch-area" style={{ width: tokens.native.minimumTouchTarget, height: tokens.native.minimumTouchTarget }} aria-hidden="true">
           <span style={{ width: tokens.button.heights.xs, height: tokens.button.heights.xs }} />
         </div>
-        <p>보이는 크기와 누를 수 있는 영역은 다릅니다.<span className="token-caption">{tokens.button.heights.xs}px 컨트롤도 Native와 Web 터치 모드에서 최소 {tokens.native.minimumTouchTarget}px 터치 영역을 확보합니다.</span></p>
+        <p>보이는 크기와 누를 수 있는 영역은 다릅니다.<span className="token-caption">{tokens.button.heights.xs}px 컨트롤도 Native에서는 최소 {tokens.native.minimumTouchTarget}px 터치 영역을 확보합니다. Web은 터치 입력에서 선택 컨트롤·메뉴 항목처럼 정해진 컴포넌트만 {tokens.native.minimumTouchTarget}px로 넓힙니다. 작은 Button은 주변 간격으로 누를 자리를 확보하세요.</span></p>
       </div>
       <Related><Link href="/components/button#states">Button 크기 선택</Link><Link href="/components/input#states">Input 크기 선택</Link></Related>
     </section>
@@ -80,15 +80,15 @@ export function Tokens() {
       <h2>타이포그래피</h2>
       <p className="body-copy">글자는 역할로 고릅니다. 한 역할은 크기·줄높이·굵기를 함께 정하므로 셋을 따로 바꾸지 마세요. 서체는 프로젝트가 연결합니다.</p>
       <TypeScale />
-      <p className="token-caption">크기/줄높이 단위: px. 숫자 표시용 역할(number·display)은 같은 크기의 제목 역할을 따르며 숫자 서체와 고정폭 숫자를 씁니다.</p>
-      <Related><Link href="/styling">프로젝트 서체 연결</Link></Related>
+      <p className="token-caption">크기/줄높이 단위: px. 숫자 표시용 역할(number·display)은 표에 적힌 자체 크기·굵기를 가지며 숫자 서체와 고정폭 숫자를 씁니다.</p>
+      <Related><Link href="/styling">프로젝트 서체 연결</Link><Link href="/components/text">Text로 글자 역할 지정</Link></Related>
     </section>
 
     <section id="responsive">
       <h2>반응형 전환</h2>
-      <p className="body-copy">기기 이름보다 콘텐츠가 차지하는 너비를 기준으로 배치를 바꿉니다. 컴포넌트는 아래 기준보다 좁아지면 쌓거나 카드로 바꿉니다.</p>
+      <p className="body-copy">기기 이름이 아니라 너비 기준으로 배치를 바꿉니다. 창이 아래 기준보다 좁아지면 컴포넌트는 쌓거나 카드로 바꿉니다.</p>
       <BreakpointTable />
-      <p className="token-caption">단위: px. 컴포넌트는 창이 아니라 자신이 놓인 영역의 너비를 기준으로 전환합니다.</p>
+      <p className="token-caption">단위: px. Web은 창 너비를 기준으로 전환합니다. 넓은 창 안의 좁은 패널에 놓인 컴포넌트는 스스로 바뀌지 않으므로 그 자리에 맞는 배치를 직접 지정하세요. 하단 액션 바만 자신이 놓인 영역의 너비를 봅니다.</p>
       <Related><Link href="/layout#columns">반응형 화면 배치</Link><Link href="/components/table#states">Table의 반응형 표시</Link></Related>
     </section>
 

@@ -31,10 +31,10 @@
 ```sh
 docker exec kjun_ui_dev npm run build
 docker exec kjun_ui_dev npm test
-docker exec kjun_ui_dev npx playwright test tests/browser/foundations.spec.ts
+docker exec kjun_ui_dev npm run test:docs -- tests/browser/docs/foundations.spec.ts
 ```
 
-Foundation 상호작용 검사는 최신 packed 정적 예제를 별도 임시 HTTP 서버에서 읽는다. 문서 경로 검사는 `KJUN_TEST_URL` 또는 기본 `http://127.0.0.1:4173`의 최신 문서 서버가 필요하다.
+Foundation 상호작용 검사는 최신 packed 정적 예제를 별도 임시 HTTP 서버에서 읽는다. 문서 경로 검사는 `test:docs`가 문서 앱을 직접 빌드해 `http://127.0.0.1:4174`에서 제공하므로 실행 중인 개발 서버가 필요하지 않다.
 
 검사 범위는 320·375px, 767/768·1023/1024·1199/1200px, 1440px, 입력값과 읽기 순서, 720px 읽기 폭, 두 CTA 배치의 높이 재계산, 안전 영역 한 번 적용, 모달 배경 입력 제한·본문 스크롤·Toast 행동·포커스 복귀, 복사 코드 독립 실행, 실제 Chromium 200% 확대다.
 

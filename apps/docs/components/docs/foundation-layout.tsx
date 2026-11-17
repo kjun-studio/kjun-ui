@@ -24,13 +24,13 @@ export function FoundationLayoutGuide() {
         [`${rules.mediumFrom}–${rules.wideFrom - 1}px`, `${rules.gutters.medium}px`, `${rules.gaps.regular}px`],
         [`${rules.wideFrom}px 이상`, `${rules.gutters.wide}px`, `${rules.gaps.regular}px`],
       ]} />
-      <p className="layout-caption">좌우 여백은 한쪽 기준입니다. Web은 CSS px, Native는 같은 숫자의 논리 단위를 사용합니다. 여백을 바꾸는 기준과 두 열로 전환하는 기준은 별개입니다.</p>
+      <p className="layout-caption">좌우 여백은 한쪽 기준입니다. Web은 CSS px, Native는 같은 숫자의 논리 단위를 사용합니다. 여백을 바꾸는 기준과 두 열로 전환하는 기준은 별개입니다. 이 표는 화면 배치 권장값이며 패키지 토큰이 아닙니다. 컴포넌트가 스스로 전환하는 너비는 <Link href="/tokens#responsive">디자인 토큰의 반응형 전환</Link>에 있습니다.</p>
     </section>
     <section id="spacing">
       <h2>내용의 관계를 드러내는 세로 간격</h2>
       <p className="body-copy">관련된 내용은 가깝게 묶고, 주제가 달라지면 간격을 넓힙니다. 아래 견본은 표시된 간격을 실제 CSS px로 보여줍니다.</p>
       <VerticalSpacingGuide />
-      <p className="layout-related"><Link href="/tokens#spacing">간격 값 선택 기준</Link></p>
+      <p className="layout-related"><Link href="/tokens#spacing">간격 값 선택 기준</Link><Link href="/components/stack">Stack으로 세로 간격 지정</Link><Link href="/components/inline">Inline으로 가로 간격 지정</Link></p>
     </section>
     <section id="columns">
       <h2>보조 정보가 필요할 때 두 열로</h2>
@@ -68,6 +68,7 @@ export function FoundationLayoutGuide() {
         <li>내비게이션이 있으면 내비게이션 아래에 적용합니다.</li>
         <li>내비게이션이 없으면 CTA 아래에 적용합니다.</li>
         <li>측정한 하단 높이에 안전 영역이 포함되어 있으면 다시 더하지 않습니다.</li>
+        <li>Toast·Modal·메뉴와 하단 바가 사용할 안전 영역 값은 KjunProvider의 <code>safeArea</code>로 전달합니다. <Link href="/getting-started#provider-options">설정 방법</Link></li>
       </ul>
       <h3>키보드가 나타나도 저장 행동에 도달하게</h3>
       <p className="body-copy">입력 필드와 저장 버튼이 키보드에 가려지지 않도록 앱에서 키보드 회피와 창 크기 변화를 연결합니다. 예제의 키보드 버튼은 높이 변화를 모의 적용하며 실제 기기 키보드를 감지하지 않습니다.</p>

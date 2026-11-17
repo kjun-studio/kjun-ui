@@ -40,7 +40,7 @@ export function FoundationAccessibilityGuide() {
       <p className="body-copy"><Link href="/components/form-group">FormGroup</Link>과 <Link href="/components/input">Input</Link>은 필드마다 고유한 ID로 라벨·도움말·오류를 연결합니다. 오류 상태에서는 원인과 수정 방법을 전달하고 해제 후 오래된 오류 참조를 남기지 않습니다. 두 필드의 연결이 서로 섞이지 않는지 확인하세요.</p>
       <p className="body-copy">FormGroup의 <code>required</code>는 Input·Textarea에 필수 입력 의미를 전달합니다. 비활성 입력은 Tab 순서에서 제외하고, 읽기 전용 입력은 내용을 확인·선택할 수 있도록 진입을 유지합니다. 오류가 있는 입력에도 현재 위치를 구분하는 포커스 테두리를 표시합니다.</p>
       <p className="body-copy">오류 설명의 연결은 즉시 낭독이나 첫 오류로의 포커스 이동을 보장하지 않습니다. 제출 후 오류 요약, 알림 시점, 수정할 위치로의 이동은 프로젝트의 폼 흐름에서 설계하고 보조 기술로 확인하세요. 예제의 검색 결과 문구도 화면의 실행 결과이며 실시간 알림을 검증하는 예제가 아닙니다.</p>
-      <p className="body-copy">모든 플랫폼의 Tabs는 <code>ariaLabel</code>로 탭 목록의 이름을 지정하며 기본값은 ‘탭’입니다.</p>
+      <p className="body-copy">모든 플랫폼의 Tabs는 <code>ariaLabel</code>로 탭 목록의 이름을 지정하며 기본값은 한국어 ‘탭’이며 KjunProvider의 <code>locale</code>·<code>messages</code>를 따릅니다.</p>
     </section>
     <section id="text-resize">
       <h2>글자 확대</h2>

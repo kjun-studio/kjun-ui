@@ -23,7 +23,8 @@ Registrations are scoped to the provider and update when its prop changes.
 - `@kjun-ui/icons`: types and `tablerVersion`, without icon data.
 - `@kjun-ui/icons/icons/<official-name>`: default export for one icon family.
 - `@kjun-ui/icons/defaults`: `defaultIcons`, and compatible `icons` / `filledIcons`
-  maps for the existing 153 outline names and heart/star filled variants.
+  maps for the 153 default outline names and 12 default filled variants
+  (heart, star, info-circle, circle-check, alert-triangle, alert-circle, home, search, bell, user, settings and list).
 - `@kjun-ui/icons/metadata`: `iconMetadata` without SVG data.
 - `@kjun-ui/icons/all`: `allIcons` for explicitly registering the entire library.
 

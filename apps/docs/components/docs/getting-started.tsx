@@ -72,12 +72,13 @@ export function GettingStarted() {
           headings={["기능", "프로젝트에서 연결할 입력"]}
           rows={[
             ["검색", <><code>SearchInput</code>의 <code>loadOptions(query, {"{ signal }"})</code></>],
-            ["숫자·가격 표시", <><code>formatter</code> · <code>formatValue</code> · <code>formatMetric</code>, Vue <code>KjunProvider.formatters</code></>],
+            ["숫자·가격 표시", <><code>formatter</code> · <code>formatValue</code> · <code>formatMetric</code></>],
             ["자산 식별", <><code>renderIdentity</code> 또는 이름·자산 슬롯</>],
             ["조회 상태", <><code>DataState</code>의 <code>queryKey</code> · <code>resultKey</code> · <code>loading</code> · <code>error</code></>],
             [<>Toast·<wbr />Confirm·<wbr />Prompt</>, <>영역별 <code>KjunFeedbackProvider</code></>],
             ["기기 기능", <>Native <code>copyText(value)</code> · <code>openUrl(url)</code> 콜백</>],
-            ["페이지 이동", <>Vue <code>to</code> + <code>navigate</code> 이벤트, React <code>renderLink</code>, Native <code>onNavigate</code></>],
+            ["Breadcrumb 링크", <>Vue <code>link</code> 슬롯, React <code>renderLink</code>, Native <code>renderLink</code> 또는 <code>onNavigate</code></>],
+            ["내비게이션 이동", <>Bottom·Floating·SideNavigation의 React·Native <code>onNavigate(key)</code>, Vue <code>navigate</code> 이벤트. SideNavigation의 라우터 링크는 <code>linkAs</code></>],
           ]}
         />
         <p className="body-copy">

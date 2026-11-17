@@ -1,5 +1,4 @@
 {
-  "version": "0.3.0",
   "basis": "KJUN",
   "space": {
     "inline": { "xs": { "$ref": "dimension.value4" }, "sm": { "$ref": "dimension.value8" }, "md": { "$ref": "dimension.value12" }, "lg": { "$ref": "dimension.value16" } },

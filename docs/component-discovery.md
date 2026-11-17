@@ -1,6 +1,6 @@
 # 컴포넌트 탐색 유지보수
 
-`/components`는 공개 컴포넌트 80개를 일곱 분류로 탐색하는 갤러리입니다. 상세 URL과 `/catalog`는 유지합니다. 상단 문서 검색은 Cmd/Ctrl+K로도 열며 한국어 동의어·용도·API 항목을 검색합니다.
+`/components`는 공개 컴포넌트 95개를 일곱 분류로 탐색하는 갤러리입니다. 상세 URL과 `/catalog`는 유지합니다. 상단 문서 검색은 Cmd/Ctrl+K로도 열며 한국어 동의어·용도·API 항목을 검색합니다.
 
 ## 탐색 데이터
 
@@ -14,7 +14,7 @@
 
 일반 문서의 `parentPageId`는 컴포넌트의 `parent`와 별개입니다. 사용 가이드 하위 페이지에 진입하면 부모 메뉴가 펼쳐지며 breadcrumb에서 개요로 돌아갈 수 있습니다. 가이드의 23개 기존 섹션은 한 주제에만 속해야 합니다. 상세 문서의 `sectionGroups` 순서도 실제 섹션 순서와 일치해야 합니다.
 
-공개 80개 상세 문서와 피드백 서비스는 상단에 네 그룹 이동을 제공합니다. 본문을 교체하지 않는 앵커이므로 입력값과 코드 펼침 상태가 유지됩니다. 헤더와 이동 메뉴의 실제 높이를 측정해 이동 위치를 맞추며, 상단 이동 메뉴에서 현재 위치를 표시합니다. 전체 사이트에서 오른쪽 목차를 제거하고 본문을 가운데 정렬합니다. 데스크톱 본문 최대 폭은 일반 문서 960px, 소개 800px이며 갤러리는 더 넓은 기존 구성을 유지합니다. 사용 가이드의 이전 `/usage-guide?...#섹션` 주소는 쿼리와 해시를 유지해 해당 주제로 연결됩니다.
+공개 95개 상세 문서와 피드백 서비스는 상단에 네 그룹 이동을 제공합니다. 본문을 교체하지 않는 앵커이므로 입력값과 코드 펼침 상태가 유지됩니다. 헤더와 이동 메뉴의 실제 높이를 측정해 이동 위치를 맞추며, 상단 이동 메뉴에서 현재 위치를 표시합니다. 전체 사이트에서 오른쪽 목차를 제거하고 본문을 가운데 정렬합니다. 데스크톱 본문 최대 폭은 일반 문서 960px, 소개 800px이며 갤러리는 더 넓은 기존 구성을 유지합니다. 사용 가이드의 이전 `/usage-guide?...#섹션` 주소는 쿼리와 해시를 유지해 해당 주제로 연결됩니다.
 
 문서 내부 링크는 `doc-link.tsx`에서 `useRouter().push`로 클라이언트 이동하므로 이동할 때 문서 셸과 React를 다시 불러오지 않습니다. Vinext 프로덕션 빌드는 `next/link`가 이동 모듈을 축약 전 export 이름으로 불러와 클릭 시 실패하므로 `next/link`는 사용하지 않습니다. 링크는 실제 `href`를 유지해 새 탭 열기·수정키 클릭·브라우저 뒤로 가기를 그대로 지원하며, 같은 문서의 해시·외부·다운로드 링크는 기본 동작을 따릅니다. 펼침 상태는 sessionStorage, 갤러리 조건은 URL에서 복원합니다.
 
@@ -30,19 +30,20 @@
 
 검증 원문은 현재 연결된 기록만 `/downloads/verification/`에 바이트 그대로 복사합니다. 제목과 기록일은 원문의 제목·첫 문단에서 읽고, 기록일을 최종 검증일로 해석하지 않습니다. `KjunProvider`·`KjunFeedbackProvider`는 세 플랫폼, `KjunFormLayout`은 Native 제공이며 서비스의 제공 여부와 개별 검증 통과를 구분합니다.
 
-생성 데이터와 실패 경로는 `tests/coverage.test.mjs`, URL·검색·분류·펼침·반응형·실제 200% 확대·다운로드는 `tests/browser/coverage.spec.ts`에서 검사합니다.
+생성 데이터와 실패 경로는 `tests/coverage.test.mjs`, URL·검색·분류·펼침·반응형·실제 200% 확대·다운로드는 `tests/browser/docs/coverage.spec.ts`에서 검사합니다.
 
 ## 썸네일 생성
 
 `build:thumbnails`가 독립 소비 프로젝트에 설치한 로컬 tarball로 `previews/presentation/`의 촬영 전용 React 구성을 번들합니다. 임시 정적 서버와 Playwright로 촬영하므로 문서 개발 서버가 필요하지 않습니다. 상세 문서의 `previews/catalog/` 조작 예제와 접근성 검사 정의는 촬영 구성과 분리합니다.
 
-공개 80개 컴포넌트는 `registry.mjs`에 빠짐없이 등록합니다. 대표 상태와 부모 조합을 명시하고 데모 안내·관찰 메시지·실험용 행동을 넣지 않습니다. 메뉴와 도움말은 실제 트리거를 조작하고 모달·Drawer는 공개 open 속성으로 엽니다. 자동 자르기나 컴포넌트 CSS 확대 없이 아래 촬영 화면으로 모두 1280×800 PNG를 생성합니다.
+공개 95개 컴포넌트는 `registry.mjs`에 빠짐없이 등록합니다. 대표 상태와 부모 조합을 명시하고 데모 안내·관찰 메시지·실험용 행동을 넣지 않습니다. 메뉴와 도움말은 실제 트리거를 조작하고 모달·Drawer는 공개 open 속성으로 엽니다. 자동 자르기나 컴포넌트 CSS 확대 없이 아래 촬영 화면으로 모두 1280×800 PNG를 생성합니다.
 
 | 촬영 유형 | CSS 화면 | 해상도 배율 | 안전 여백 | 컴포넌트 수 |
 | --- | --- | --- | --- | --- |
 | 작은 요소 (`small`) | 320×200 | 4 | 24px | 24 |
-| 입력·메뉴 (`control`) | 512×320 | 2.5 | 24px | 28 |
-| 목록·표·큰 구성 (`large`) | 640×400 | 2 | 32px | 28 |
+| 입력·메뉴 (`control`) | 512×320 | 2.5 | 24px | 44 |
+| 목록·표·큰 구성 (`large`) | 640×400 | 2 | 32px | 23 |
+| 넓은 구성 (`desktop`) | 800×500 | 1.6 | 32px | 4 |
 
 너비가 없는 작은 요소, 240·360px 입력·메뉴, 480·576px 큰 구성을 명시적으로 배정합니다. 배경은 문서 기본 팔레트의 `tertiary` 역할을 사용하고 컴포넌트 색상·크기·간격·반경은 packed 패키지 값을 유지합니다. ButtonGroup은 `md`의 일간·주간·월간 중 주간을 선택하며, Chip은 기본·삭제 가능·비활성 상태를 보여줍니다. AccordionItem은 열린 한 항목, DropdownItem은 선택 항목을 부모 안에 배치합니다. MenuButton은 `compact` 점 세 개 트리거로 Dropdown과 구별합니다. DropdownDivider와 TabPane의 점선은 촬영기가 별도 요소로 추가합니다.
 
@@ -62,12 +63,12 @@ docker exec kjun_ui_dev npm run docs:check
 docker exec kjun_ui_dev npm run build
 docker exec kjun_ui_dev npm run thumbnails:check
 docker exec kjun_ui_dev npm test
-docker exec kjun_ui_dev npm run test:browser
+docker exec kjun_ui_dev npm run test:docs:related -- navigation,catalog,overview
 ```
 
-탐색 상호작용은 `tests/browser/discovery.spec.ts`, 색인·검색 계약은 `tests/discovery.test.mjs`에서 검증합니다. Native 상태는 기존 카탈로그의 Native Web 검증과 실제 기기 미검증을 구분합니다.
+탐색 상호작용은 `tests/browser/docs/discovery.spec.ts`, 색인·검색 계약은 `tests/discovery.test.mjs`에서 검증합니다. Native 상태는 기존 카탈로그의 Native Web 검증과 실제 기기 미검증을 구분합니다.
 
-상단 이동·주제 분할은 `tests/document-navigation.test.mjs`와 `tests/browser/document-navigation.spec.ts`에서 검증합니다. 아래 수치는 이전 구현 당시의 기록입니다.
+상단 이동·주제 분할은 `tests/document-navigation.test.mjs`와 `tests/browser/docs/document-navigation.spec.ts`에서 검증합니다. 아래 수치는 이전 구현 당시의 기록입니다.
 
 ## 구현 검증 결과
 

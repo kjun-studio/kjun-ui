@@ -81,10 +81,10 @@ export function TypeScale() {
 
 const breakpointUses: Record<string, string> = {
   modal: 'Modal', drawer: 'Drawer', toast: 'Toast', pagination: 'Pagination', paginationWide: 'Pagination 넓은 보기',
-  kpiHero: 'KPI 강조', kpiRow: 'KPI 행', market: '시장 목록', selection: '선택 그룹', formColumns: '폼 열', table: 'Table 카드 전환', bottomAction: '하단 액션',
+  kpiHero: 'KPI 강조', kpiHeroSecondary: 'KPI 강조 보조 값', kpiRow: 'KPI 행', kpiRowNarrow: 'KPI 행 좁은 보기', empty: '빈 상태', stackCompact: 'Stack 간격(좁은 화면)', stackMedium: 'Stack 간격(중간 화면)', stackWide: 'Stack 간격(넓은 화면)', market: '시장 목록', selection: '선택 그룹', formColumns: '폼 열', table: 'Table 카드 전환', bottomAction: '하단 액션',
 };
 export function BreakpointTable() {
-  const names: Record<string, string> = { actionContent: '액션 내용', compact: '좁은 화면', medium: '중간 화면', wide: '넓은 화면' };
+  const names: Record<string, string> = { narrow: '아주 좁은 화면', actionContent: '액션 내용', compact: '좁은 화면', medium: '중간 화면', wide: '넓은 화면' };
   const rows = Object.entries(tokens.breakpoints).sort(([, a], [, b]) => a - b).map(([name, value]) => {
     const users = Object.entries(tokens.responsive).filter(([, width]) => width === value).map(([key]) => breakpointUses[key] || key);
     return [<strong>{names[name] || name}</strong>, numeric(value), users.join(' · ') || '—'];

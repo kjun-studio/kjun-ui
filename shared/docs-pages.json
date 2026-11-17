@@ -64,7 +64,12 @@
       "공통 설정",
       "피드백 Provider 설정",
       "금융 즐겨찾기 색상 설정",
-      "데이터 연결"
+      "데이터 연결",
+      "언어",
+      "locale",
+      "안전 영역",
+      "safeArea",
+      "Vue 플러그인"
     ],
     "sections": [
       [
@@ -94,6 +99,10 @@
       [
         "icon-setup",
         "추가 아이콘 등록"
+      ],
+      [
+        "provider-options",
+        "언어·안전 영역"
       ],
       [
         "compatibility",
@@ -461,7 +470,7 @@
     "path": "/elevation",
     "title": "레이어·Elevation",
     "group": "Foundations",
-    "description": "flat·raised·floating 표면 선택과 활성 창의 팝업·Toast·포커스 규칙입니다.",
+    "description": "여섯 가지 표면 역할과 활성 창의 팝업·Toast·포커스 규칙입니다.",
     "aliases": [
       "Elevation",
       "레이어",

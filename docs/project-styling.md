@@ -79,9 +79,11 @@ Vue 3·React 모달은 가장 가까운 Provider 안에 렌더링되어 해당 �
 
 - `KjunText`: `variant`로 글자 역할, `tone`으로 색 역할을 고릅니다. 제목 수준은 `as`로 바꿉니다(웹).
   - 기본 tone의 색은 플랫폼마다 다릅니다. 웹은 감싼 영역의 글자색을 따르고, Native는 항상 `text` 색입니다(Native 글자는 부모 View의 색을 이어받지 못합니다). 색이 다른 배경 위에 둔 글자는 웹에서는 배경을 따라가지만 Native에서는 `text` 색으로 남으니, 두 플랫폼에서 모두 확인합니다.
-- `KjunStack`(세로)·`KjunInline`(가로): `gap`으로 간격 단계를 고릅니다. 바로 안의 폼 그룹은 자체 아래 여백 없이 `gap`만 따르므로 `data-kjun-layout="form"`이 필요 없습니다.
+- `KjunStack`(세로)·`KjunInline`(가로): `gap`으로 간격 단계를 고릅니다. Stack의 단계는 `none`·`xs`·`sm`·`md`·`lg`·`section-sm`·`section-md`·`section-lg`입니다.
+  - Stack의 `gap`은 화면 폭별 값도 받습니다. `{ base: "md", medium: "lg" }`처럼 쓰며 `compact`·`medium`·`wide`는 640·768·1024px 이상입니다.
+  - `justify`(start·center·end·between)로 주축 정렬을, Stack의 `divider`로 자식 사이의 구분선을 지정합니다. 웹의 Stack은 `as`로 `ul`·`ol`·`nav`·`section` 같은 목록·랜드마크 태그를 고릅니다. 바로 안의 폼 그룹은 자체 아래 여백 없이 `gap`만 따르므로 `data-kjun-layout="form"`이 필요 없습니다.
 - Stack·Inline은 KJUN 마크업으로 취급하지 않습니다. 안에 넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받습니다.
-- `tone`은 `secondary`·`tertiary`·`disabled` 외에 `brand`·`danger`·`success`·`warning`·`inverse`도 받습니다. `inverse`는 브랜드 색 바탕 위 글자용으로 `onBrand` 역할을 씁니다.
+- `tone`은 `secondary`·`tertiary`·`disabled` 외에 `brand`·`danger`·`success`·`warning`·`info`와, 그 색으로 채운 바탕 위 글자용 `onBrand`·`onDanger`·`onSuccess`·`onWarning`도 받습니다. `inverse`는 `onBrand`의 이전 이름입니다.
 - Native 버튼·Badge는 혼자서는 왼쪽(flex-start)에 놓입니다. `KjunStack`·`KjunInline`에 `align`(start·center·end, Inline은 baseline도)을 **명시**하면 바로 안의 버튼·Badge가 그 정렬을 따릅니다. 기본값과 `stretch`에서는 그대로 왼쪽이고, 꽉 채우려면 버튼의 `block`을 씁니다. 앱이 만든 View 안이나 `style.alignSelf`를 준 경우에는 그 값이 우선합니다. 웹은 원래 부모 정렬을 따릅니다.
 
 ### 카드 안 배치는 KjunStack으로
@@ -228,6 +230,22 @@ import { KjunProvider, kjunMessagesEn } from "@kjun-ui/react";
 - 개발자 콘솔 경고는 한국어로 남습니다.
 - 문구의 띄어쓰기는 문구 안에 들어 있습니다. `newWindow`는 링크 이름 뒤에 붙으므로 앞에 공백이 있고(`" (새 창)"`), `optional`은 KJUN이 라벨 뒤에 공백을 두므로 공백 없이(`"(선택)"`) 씁니다. 바꿀 때도 같은 띄어쓰기를 지키세요.
 
+
+## 안전 영역과 아이콘 (safeArea · icons)
+
+`KjunProvider`의 `safeArea`는 화면 가장자리의 여백(px)을 한 번 전달합니다. Toast·Modal·메뉴와 상하단 컴포넌트가 이 값을 읽습니다. Vue 3·React·Native가 같습니다.
+
+```tsx
+<KjunProvider safeArea={{ top: insets.top, bottom: insets.bottom }}>
+  <App />
+</KjunProvider>
+```
+
+- 값은 `{ top?: number; bottom?: number }`입니다. 중첩 Provider는 부모 값을 이어받고 전달한 쪽만 바꿉니다.
+- 웹은 `safeArea`를 생략하면 브라우저의 `env(safe-area-inset-*)`를 사용합니다(`viewport-fit=cover` 필요). Native는 `react-native-safe-area-context` 등에서 읽은 값을 전달합니다.
+
+`icons`는 기본 제공 범위 밖의 아이콘을 등록합니다. `@kjun-ui/icons/icons/<이름>`에서 개별 import한 뒤 `{ rocket }`처럼 이름을 키로 전달하면 `KjunIcon`·`prefixIcon`·`suffixIcon`이 같은 등록을 사용합니다. 중첩 Provider는 부모 등록을 이어받습니다.
+
 ## 시트를 닫은 뒤 다음 화면 띄우기
 
 `KjunDrawer`·`KjunModal`의 `onClose`는 닫기를 요청한 순간이고, 닫힘 애니메이션은 그 뒤에 진행됩니다. 다음 시트나 완료 안내는 타이머로 추정하지 말고 `onAfterClose`(Vue `@after-close`)에서 띄웁니다.
@@ -292,6 +310,8 @@ export async function removeItem(id: string) {
 
 필터 칩의 선택 색은 `filterSelectedBg`·`filterSelectedText`(웹 `--kjun-filter-selected-bg`·`--kjun-filter-selected-text`)로 따로 정합니다. 지정하지 않으면 이전처럼 `text`·`inverse`입니다. 브랜드 색으로 칠하려면 각각 브랜드 값과 `onBrand` 값을 넘깁니다.
 
+하단 탐색에서 선택하지 않은 목적지의 색은 `navigationInactive`(웹 `--kjun-navigation-inactive`)로 정합니다. 지정하지 않으면 `textTertiary`입니다.
+
 `colorRoles`에 정의된 현재 역할 이름으로 작성한 전체 매핑도 사용할 수 있습니다. 차트·카드·그라데이션 등 특정 표현이 필요할 때만 해당 선택 역할을 추가하세요. 정확한 목록과 연결 대상은 [색상·서체 가이드](https://ui.kjun.dev/styling#optional-colors)와 tokens.json에서 확인할 수 있습니다. 문서 실행 예제의 설정에는 미리보기 색상을 재현하기 위한 선택 역할도 포함됩니다.
 
 ## 카드 표면과 색상 역할
@@ -300,8 +320,8 @@ export async function removeItem(id: string) {
 
 | 표면 | 연결할 선택 역할 |
 | --- | --- |
-| `accent` | `cardAccentStart` / `cardAccentEnd` |
-| `subtle` | `cardSubtleStart` / `cardSubtleEnd` / `cardSubtleBorder` |
+| `accent` | `cardAccentStart` |
+| `subtle` | `cardSubtleStart` / `cardSubtleBorder` |
 | `brand` | 배경은 `brand` / `brandHover`, 전경은 `onBrand` |
 | `brandSoft` | `brandSubtleBg` (달력 범위 띠·표 선택 도구 모음과 같은 역할) |
 | `success` · `warning` · `danger` · `info` | `successLight` · `warningLight` · `dangerLight` · `infoLight` |
