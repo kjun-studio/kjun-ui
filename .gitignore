@@ -32,3 +32,6 @@ docs/migration-0.3.md
 # Internal implementation plans
 docs/superpowers/
 .superpowers/
+
+# Local review captures, logs and scratch output
+output/
