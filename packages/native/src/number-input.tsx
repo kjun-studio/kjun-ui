@@ -3,7 +3,7 @@ import { Platform, View, type KeyboardTypeOptions, type NativeSyntheticEvent, ty
 import { isComposingKey, tokens, type InputSize } from "@kjun-ui/tokens";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import {
-  caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, numberKeyboard, rangeIssue, rangeMessage,
+  addsTooManyDigits, caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage,
   readingAid as readNumber, resolveNumberInput, sanitizeNumber, type NumberInputOptions,
 } from "../../../shared/package-runtime/number-input";
 import { KjunInput, useKjunField } from "./input";
@@ -96,11 +96,18 @@ export function KjunNumberInput({
     if (issue && !rangeIssue(raw, o)) setIssue(null);
     report(raw);
   };
-  const edit = (typed: string, caret: number) => {
+  const edit = (typed: string, caret: number, pasted = false) => {
+    const previous = text.current;
+    // A digit typed past the integer limit is refused: the text and the caret stay where they were.
+    if (!pasted && addsTooManyDigits(previous, typed, o)) {
+      const at = Math.max(0, caret - (typed.length - previous.length));
+      put({ text: previous, selection: { start: at, end: at } });
+      return;
+    }
     dirty.current = true;
-    const raw = sanitizeNumber(typed, o);
+    const raw = sanitizeNumber(typed, o, { pasted });
     // Cleaning the text before the caret counts what survives there: ".5" grows to "0.5", "007" shrinks to "7", a "-" anywhere moves to the front.
-    const before = sanitizeNumber(typed.slice(0, caret), o);
+    const before = sanitizeNumber(typed.slice(0, caret), o, { pasted });
     show(raw, before.length + (raw.startsWith("-") && !before.startsWith("-") ? 1 : 0));
   };
   // Web reads the caret from the input. Native sends onChangeText and onSelectionChange in either order, so the caret comes from the text change.
@@ -119,7 +126,8 @@ export function KjunNumberInput({
   const change = (typed: string) => {
     if (composing.current) { dirty.current = true; put({ text: typed }); return; }
     if (separatorBackspace(typed)) return;
-    edit(typed, caretAfter(typed));
+    // Native reports only the text, so a change that grew by more than one character is read as a paste.
+    edit(typed, caretAfter(typed), isPasteEdit(text.current, typed));
   };
   const commit = (typed = text.current) => {
     if (composing.current || !dirty.current || disabled || readOnly) return;

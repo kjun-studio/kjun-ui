@@ -1,7 +1,7 @@
 import { computed, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { isComposingKey, type InputSize } from "@kjun-ui/tokens";
 import {
-  caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, numberKeyboard, rangeIssue, rangeMessage,
+  addsTooManyDigits, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage,
   readingAid as readNumber, resolveNumberInput, sanitizeNumber, type NumberInputFormat,
 } from "../../../shared/package-runtime/number-input";
 import { defineComponent } from "./runtime/component";
@@ -95,17 +95,23 @@ export const KjunNumberInput = defineComponent({
       if (issue.value && !rangeIssue(raw, o.value)) issue.value = null;
       report(raw);
     };
-    const edit = (text: string, caret: number) => {
+    const edit = (text: string, caret: number, pasted = false) => {
+      const previous = view.value.text;
+      // A digit typed past the integer limit is refused: the text and the caret stay where they were.
+      if (!pasted && addsTooManyDigits(previous, text, o.value)) {
+        void apply({ text: previous, caret: Math.max(0, caret - (text.length - previous.length)) });
+        return;
+      }
       dirty = true;
-      const raw = sanitizeNumber(text, o.value);
+      const raw = sanitizeNumber(text, o.value, { pasted });
       // Cleaning the text before the caret counts what survives there: ".5" grows to "0.5", "007" shrinks to "7", a "-" anywhere moves to the front.
-      const before = sanitizeNumber(text.slice(0, caret), o.value);
+      const before = sanitizeNumber(text.slice(0, caret), o.value, { pasted });
       show(raw, before.length + (raw.startsWith("-") && !before.startsWith("-") ? 1 : 0));
     };
     const change = (event: Event) => {
       const el = event.target as HTMLInputElement;
       if (composing) { dirty = true; void apply({ text: el.value, caret: null }); return; }
-      edit(el.value, el.selectionStart ?? el.value.length);
+      edit(el.value, el.selectionStart ?? el.value.length, isPasteEdit(view.value.text, el.value, (event as InputEvent).inputType));
     };
     const commit = (text = view.value.text) => {
       if (composing || !dirty || props.disabled || props.readOnly) return;

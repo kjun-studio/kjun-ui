@@ -15,7 +15,7 @@ const finite = (value: unknown): number | undefined => typeof value === "number"
 
 /** Preset plus the caller's overrides; decimals are cut to a whole 0-6 so the scaled value stays a safe integer. */
 export function resolveNumberInput(options: NumberInputOptions): ResolvedNumberInput {
-  const format: NumberInputFormat = options.format && options.format in presets ? options.format : "number";
+  const format: NumberInputFormat = options.format && Object.prototype.hasOwnProperty.call(presets, options.format) ? options.format : "number";
   const preset = presets[format];
   const given = finite(options.decimals);
   const decimals = given === undefined ? preset.decimals : Math.min(6, Math.max(0, Math.trunc(given)));
@@ -31,17 +31,40 @@ export function resolveNumberInput(options: NumberInputOptions): ResolvedNumberI
   };
 }
 
-/** Keeps digits, one ".", and "-" when allowed; any "-" in the text makes the value negative. Returns the draft ("-12.5", "12.", "").
- * A dot with no digits becomes "0." (or "-0.") when decimals are allowed, so ".5" can be typed. */
-export function sanitizeNumber(text: string, o: ResolvedNumberInput): string {
-  const negative = o.allowNegative && text.includes("-");
-  const kept = text.replace(/[^0-9.]/g, "");
+export interface SanitizeOptions {
+  /** Pasted or dropped text: with no decimals allowed, the fraction is dropped at the first "." ("1,234,000.00" → "1234000") instead of the dots being ignored. */
+  pasted?: boolean;
+}
+// "-", the minus sign U+2212 and the en dash U+2013 all read as minus.
+const minus = /[-\u2212\u2013]/;
+function parts(text: string, o: ResolvedNumberInput, options: SanitizeOptions) {
+  const negative = o.allowNegative && minus.test(text);
+  let kept = text.replace(/[^0-9.]/g, "");
+  if (options.pasted && o.decimals === 0 && kept.includes(".")) kept = kept.slice(0, kept.indexOf("."));
   const dot = o.decimals > 0 ? kept.indexOf(".") : -1;
-  const rawInt = (dot < 0 ? kept.replace(/\./g, "") : kept.slice(0, dot)).replace(/^0+(?=\d)/, "");
-  const int = rawInt.slice(0, o.maxIntegerDigits);
+  const int = (dot < 0 ? kept.replace(/\./g, "") : kept.slice(0, dot)).replace(/^0+(?=\d)/, "");
   const frac = dot < 0 ? "" : kept.slice(dot + 1).replace(/\./g, "").slice(0, o.decimals);
+  return { negative, int, frac, dot };
+}
+
+/** Keeps digits, one ".", and "-" when allowed; any "-" in the text makes the value negative. Returns the draft ("-12.5", "12.", "").
+ * A dot with no digits becomes "0." (or "-0.") when decimals are allowed, so ".5" can be typed. Integer digits past the limit are cut. */
+export function sanitizeNumber(text: string, o: ResolvedNumberInput, options: SanitizeOptions = {}): string {
+  const { negative, int: rawInt, frac, dot } = parts(text, o, options);
+  const int = rawInt.slice(0, o.maxIntegerDigits);
   const body = dot < 0 ? int : `${int || "0"}.${frac}`;
   return (negative ? "-" : "") + body;
+}
+
+/** True when `next` holds more integer digits than the field keeps and more than `previous` did: a typed edit like that is refused, not cut. */
+export function addsTooManyDigits(previous: string, next: string, o: ResolvedNumberInput): boolean {
+  const count = parts(next, o, {}).int.length;
+  return count > o.maxIntegerDigits && count > parts(previous, o, {}).int.length;
+}
+
+/** An edit that inserted more than one character at once, or that the browser reports as a paste or drop. */
+export function isPasteEdit(before: string, after: string, inputType?: string): boolean {
+  return inputType === "insertFromPaste" || inputType === "insertFromDrop" || after.length - before.length > 1;
 }
 
 /** Display text: thousands commas only, nothing padded. */

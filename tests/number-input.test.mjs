@@ -8,7 +8,7 @@ const output = await build({
   bundle: true, write: false, format: 'esm', platform: 'node',
 });
 const {
-  caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, numberKeyboard, rangeIssue, rangeMessage, readingAid, resolveMessageScope, resolveNumberInput, sanitizeNumber, significantCount,
+  addsTooManyDigits, caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage, readingAid, resolveMessageScope, resolveNumberInput, sanitizeNumber, significantCount,
 } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 
 const r = (o = {}) => resolveNumberInput(o);
@@ -26,6 +26,9 @@ test('presets and overrides', () => {
   assert.equal(r({ decimals: 2 }).maxIntegerDigits, 13);
   assert.equal(r({ suffix: {} }).suffix, undefined);
   assert.equal(r({ format: 'percent', grouping: true }).grouping, true);
+  // Only the three formats count; inherited object keys fall back to "number".
+  assert.equal(r({ format: 'toString' }).format, 'number');
+  assert.equal(r({ format: 'constructor' }).decimals, 0);
 });
 
 test('sanitize', () => {
@@ -46,10 +49,42 @@ test('sanitize', () => {
   assert.equal(sanitizeNumber('1,000ㅁ', r()), '1000');
 });
 
+test('paste drops the fraction when no decimals are allowed', () => {
+  const amount = r({ format: 'amount' });
+  assert.equal(sanitizeNumber('1,234,000.00', amount, { pasted: true }), '1234000');
+  assert.equal(sanitizeNumber('₩1,234,000.99원', amount, { pasted: true }), '1234000');
+  assert.equal(sanitizeNumber('.5', amount, { pasted: true }), '');
+  // A typed "." is still ignored.
+  assert.equal(sanitizeNumber('1,234.', amount), '1234');
+  assert.equal(sanitizeNumber('12.5', amount), '125');
+  // With decimals the paste keeps its fraction as before.
+  assert.equal(sanitizeNumber('1,234.567', r({ decimals: 2 }), { pasted: true }), '1234.56');
+  assert.equal(isPasteEdit('1', '1.00', 'insertFromPaste'), true);
+  assert.equal(isPasteEdit('1', '12', 'insertFromPaste'), true);
+  assert.equal(isPasteEdit('', '5', 'insertFromDrop'), true);
+  assert.equal(isPasteEdit('1', '12', 'insertText'), false);
+  assert.equal(isPasteEdit('1', '123'), true);
+  assert.equal(isPasteEdit('1,234', '1,23'), false);
+});
+
+test('minus sign and en dash read as minus', () => {
+  const pct = r({ format: 'percent' });
+  assert.equal(sanitizeNumber('\u22123.5', pct), '-3.5');
+  assert.equal(sanitizeNumber('\u20133.5', pct), '-3.5');
+  assert.equal(sanitizeNumber('\u22123', r({ format: 'amount' })), '3');
+});
+
 test('integer digit cap', () => {
   assert.equal(sanitizeNumber('1234567890123456', r({ format: 'amount' })), '123456789012345');
   assert.equal(sanitizeNumber('12345678901.5', r({ decimals: 5 })), '1234567890.5');
   assert.equal(sanitizeNumber('12345678901.5', r({ decimals: 6 })), '123456789.5');
+  // At the limit a typed digit is refused wherever it goes; removing digits or staying at the limit is not.
+  const amount = r({ format: 'amount' });
+  assert.equal(addsTooManyDigits('123,456,789,012,345', '1239,456,789,012,345', amount), true);
+  assert.equal(addsTooManyDigits('123,456,789,012,345', '123,456,789,012,3459', amount), true);
+  assert.equal(addsTooManyDigits('123,456,789,012,345', '123,456,789,012,34', amount), false);
+  assert.equal(addsTooManyDigits('12,345', '123,345', amount), false);
+  assert.equal(addsTooManyDigits('1,234,567,890,123.45', '123456789012345', r({ decimals: 2 })), true);
 });
 
 test('format', () => {
@@ -67,6 +102,7 @@ test('commit', () => {
   assert.equal(commitNumber('-0', two.allowNegative ? r({ allowNegative: true }) : two), '0');
   assert.equal(commitNumber('12.', r()), '12');
   assert.equal(commitNumber('-5', two), '-5.00');
+  assert.equal(commitNumber('-0.00', two), '0.00');
   const pct = r({ format: 'percent' });
   // A leading dot types as "0." so ".5" can be entered; with decimals 0 the dot is ignored.
   assert.equal(sanitizeNumber('.', pct), '0.');

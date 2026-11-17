@@ -56,6 +56,28 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(value(page, 'percent')).toHaveText('12.5');
     });
 
+    test('paste into a field without decimals drops the fraction', async ({ page }) => {
+      const amount = field(page, 'amount');
+      await amount.focus();
+      await page.keyboard.insertText('1,234,000.00');
+      await expect(amount).toHaveValue('1,234,000');
+      await expect(value(page, 'amount')).toHaveText('1234000');
+      // A typed "." is still ignored.
+      await amount.fill('');
+      await amount.pressSequentially('12.5');
+      await expect(amount).toHaveValue('125');
+    });
+
+    test('a digit past the integer limit is refused', async ({ page }) => {
+      const plain = field(page, 'grouped-off');
+      await plain.pressSequentially('123456789012345');
+      await expect(plain).toHaveValue('123456789012345');
+      await setCaret(page, 'grouped-off', 3);
+      await page.keyboard.type('9');
+      await expect(plain).toHaveValue('123456789012345');
+      expect(await caret(page, 'grouped-off')).toBe(3);
+    });
+
     test('commit pads', async ({ page }) => {
       await field(page, 'prefix').pressSequentially('3.5');
       await expect(field(page, 'prefix')).toHaveValue('3.5');
