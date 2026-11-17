@@ -138,7 +138,7 @@
 /* Marker: numbered circle, filled by status. */
 .kjun-steps-marker {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: inline-flex;
   flex: none;
   align-items: center;
@@ -171,7 +171,7 @@
   box-shadow: 0 0 0 var(--_kjun-extension-steps-halo) var(--_kjun-color-danger-bg);
 }
 
-/* Connector: drawn above a pressed or hovered step's fill (markers stay above it, later in the tree). From the previous marker's centre to this one's, coloured by this step (brand once it is reached). */
+/* Connector: drawn above a pressed or hovered step's fill (markers sit one layer higher, so the next step's connector never crosses them). From the previous marker's centre to this one's, coloured by this step (brand once it is reached). */
 .kjun-steps[data-orientation="horizontal"] .kjun-steps-item:not(:first-child)::before {
   content: "";
   position: absolute;
