@@ -61,7 +61,8 @@ const componentGroups = {
   progress: files('progress-marker', 'adoption-values', 'adoption', 'size-contracts', 'token-display-propagation'),
   'time-picker': [...files('elevation-inputs'), ...fields, ...visuals],
   switch: [...files('token-choice-propagation', 'token-form-propagation', 'accessibility-components', 'additions', 'layer-motion-edges'), ...fields, ...visuals],
-  'date-picker': [...files('date-picker-design', 'input-design', 'additions', 'i18n'), ...fields, ...visuals],
+  'date-picker': [...files('date-picker-design', 'event-calendar', 'input-design', 'additions', 'i18n'), ...fields, ...visuals],
+  'event-calendar': files('event-calendar', 'date-picker-design'),
   radio: [...files('radio-design', 'expanded'), ...fields, ...visuals],
   accessibility: files('accessibility-tabs', 'accessibility-components', 'accessibility-controls', 'elevation-keyboard', 'input-contracts'),
 };

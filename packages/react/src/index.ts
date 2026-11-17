@@ -82,6 +82,7 @@ export { KjunColorPicker, type KjunColorPickerProps, type KjunColorSwatch } from
 export { KjunFileUpload, type KjunFileUploadProps, type KjunUploadFile, type KjunUploadStatus, type KjunRejectedFile, type KjunRejectReason } from "./file-upload";
 export type { KjunCarouselProps } from "./carousel";
 export { KjunSteps, type KjunStepsProps, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout } from "./steps";
+export { KjunEventCalendar, type KjunEventCalendarProps, type DayMarks, type DaySpan, type HolidayTest } from "./event-calendar";
 export { KjunSplitPane, type KjunSplitPaneProps } from "./split-pane";
 export { KjunZoneGauge, type KjunZoneGaugeProps, type KjunGaugeZone } from "./zone-gauge";
 export { KjunStackedBar, type KjunStackedBarProps, type KjunStackedBarItem } from "./stacked-bar";
