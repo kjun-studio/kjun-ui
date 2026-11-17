@@ -152,6 +152,7 @@ export * from "./side-navigation";
 export * from "./side-navigation-layout";
 export * from "./pressable";
 export * from "./media";
+export * from "./avatar-group";
 export * from "./chip";
 export * from "./fab";
 export * from "./range-input";

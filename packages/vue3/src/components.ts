@@ -7,6 +7,7 @@ export { KjunCard } from "./card";
 export { KjunChip } from "./chip";
 export { KjunFab } from "./fab";
 export { KjunImage, KjunAvatar } from "./media";
+export { KjunAvatarGroup } from "./avatar-group";
 export { KjunListSkeleton, KjunFormSkeleton, KjunChartSkeleton } from "./skeletons";
 export { KjunInput, KjunFormGroup } from "./input";
 export { KjunCheckbox, KjunSwitch, KjunRadio, KjunRadioGroup, KjunTextarea, KjunButtonGroup, KjunFilterGroup } from "./controls";

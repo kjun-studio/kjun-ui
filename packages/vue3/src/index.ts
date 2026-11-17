@@ -10,6 +10,7 @@ export type { KjunCardProps } from "./card";
 export type { KjunChipProps } from "./chip";
 export type { KjunFabProps, KjunFabSize } from "./fab";
 export type { KjunImageProps, KjunAvatarProps } from "./media";
+export type { KjunAvatarGroupProps, KjunAvatarGroupItem } from "./avatar-group";
 export type { KjunListSkeletonProps, KjunFormSkeletonProps, KjunChartSkeletonProps } from "./skeletons";
 export type { KjunInputProps, KjunFormGroupProps } from "./input";
 export type { ChoiceValue, ChoiceOption, KjunCheckboxProps, KjunSwitchProps, KjunRadioProps, KjunRadioGroupProps, KjunTextareaProps, KjunButtonGroupProps, KjunFilterGroupProps } from "./controls";
