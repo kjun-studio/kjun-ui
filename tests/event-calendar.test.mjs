@@ -95,5 +95,10 @@ test('day cells carry no ring and the event calendar css ships', async () => {
   assert.ok(!/\.kjun-calendar-(day|month)[^{]*\{[^}]*box-shadow/.test(css));
   assert.ok(JSON.parse(await readFile('shared/web-style-sources.json', 'utf8')).includes('event-calendar.css'));
   const event = await readFile('packages/tokens/src/event-calendar.css', 'utf8');
+  const rules = text => [...text.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(/([^{}@]+)\{([^{}]*)\}/g)].map(m => ({ selector: m[1].trim(), body: m[2] }));
+  const bad = /(^|[;\s])(box-shadow|border(-(top|right|bottom|left))?(-(width|style|color))?)\s*:(?!\s*(0|none)\s*(;|$))/;
+  for (const rule of [...rules(css).filter(r => /\.kjun-calendar-(day|month)/.test(r.selector)), ...rules(event)])
+    assert.ok(!bad.test(rule.body), 'no shadow or border (a border: 0 reset is allowed): ' + rule.selector);
+  assert.ok(!/:has\(/.test(event));
   assert.ok(/prefers-reduced-motion/.test(event) && /touch-action:\s*pan-y/.test(event));
 });

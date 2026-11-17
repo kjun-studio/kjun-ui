@@ -56,9 +56,9 @@
   left: calc(0px - var(--_kjun-extension-calendar-range-bleed)); right: calc(0px - var(--_kjun-extension-calendar-range-bleed));
   background: var(--_kjun-color-brand-subtle-bg);
 }
-.kjun-calendar-day[data-range-start]::before { left: 50%; }
-.kjun-calendar-day[data-range-end]::before { right: 50%; }
-.kjun-calendar-day[data-range-start][data-range-end]::before { display: none; }
+.kjun-calendar-day[data-density="compact"][data-range-start]::before { left: 50%; }
+.kjun-calendar-day[data-density="compact"][data-range-end]::before { right: 50%; }
+.kjun-calendar-day[data-density="compact"][data-range-start][data-range-end]::before { display: none; }
 .kjun-calendar-months { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--_kjun-extension-calendar-month-gap); margin-top: var(--_kjun-extension-calendar-month-gap); }
 .kjun-calendar-month {
   height: var(--_kjun-extension-calendar-month-height); border: 0; border-radius: var(--_kjun-extension-calendar-month-radius);

@@ -29,10 +29,9 @@
 .kjun-event-calendar-marks { display: flex; align-items: center; justify-content: center; flex: none; gap: var(--_kjun-extension-calendar-event-dot-gap); height: var(--_kjun-extension-calendar-event-mark-height); }
 .kjun-event-calendar-dot { flex: none; width: var(--_kjun-extension-calendar-event-dot-size); height: var(--_kjun-extension-calendar-event-dot-size); border-radius: 50%; }
 .kjun-event-calendar-icon { flex: none; width: var(--_kjun-extension-calendar-event-icon-size); height: var(--_kjun-extension-calendar-event-icon-size); }
-/* The span bar crosses the full cell width at the bottom of the marks row, above the selected square. With a bar, dots and icon sit at the top of the row so both show. */
-.kjun-calendar-day[data-density="comfortable"]:has(> .kjun-event-calendar-span) .kjun-event-calendar-marks { align-items: flex-start; }
+/* The span bar crosses the full cell width in the bottom padding zone (padding minus bar height from the cell bottom), above the selected square, clear of the marks row. */
 .kjun-event-calendar-span {
-  position: absolute; z-index: 2; left: 0; right: 0; bottom: var(--_kjun-extension-calendar-event-day-padding-bottom);
+  position: absolute; z-index: 2; left: 0; right: 0; bottom: calc(var(--_kjun-extension-calendar-event-day-padding-bottom) - var(--_kjun-extension-calendar-event-span-height));
   height: var(--_kjun-extension-calendar-event-span-height); margin-right: calc(0px - var(--_kjun-extension-calendar-event-span-overlap));
 }
 .kjun-event-calendar-span[data-start] { border-top-left-radius: var(--_kjun-extension-calendar-event-span-corner); border-bottom-left-radius: var(--_kjun-extension-calendar-event-span-corner); }
