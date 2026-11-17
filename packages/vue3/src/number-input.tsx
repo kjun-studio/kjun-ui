@@ -2,7 +2,7 @@ import { computed, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes
 import { isComposingKey, type InputSize } from "@kjun-ui/tokens";
 import {
   addsTooManyDigits, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage,
-  readingAid as readNumber, resolveNumberInput, sanitizeNumber, type NumberInputFormat,
+  readingAid as readNumber, resolveNumberInput, sameNumber, sanitizeNumber, type NumberInputFormat,
 } from "../../../shared/package-runtime/number-input";
 import { defineComponent } from "./runtime/component";
 import { useKjunMessageScope } from "./runtime/messages";
@@ -50,6 +50,7 @@ export const KjunNumberInput = defineComponent({
       min: props.min, max: props.max, suffix: slots.suffix ? null : props.suffix,
     }));
     const shown = (raw: string) => formatNumber(sanitizeNumber(raw, o.value), o.value);
+    const outOfRange = (raw: string) => rangeIssue(sanitizeNumber(raw, o.value), o.value);
     const view = shallowRef<View>({ text: shown(props.modelValue), caret: null });
     const issue = ref<Issue>(null);
     const input = ref<InstanceType<typeof KjunInput> | null>(null);
@@ -68,17 +69,21 @@ export const KjunNumberInput = defineComponent({
       if (el.value !== next.text) el.value = next.text;
       if (next.caret !== null && el.ownerDocument.activeElement === el) el.setSelectionRange(next.caret, next.caret);
     };
-    // A new value from outside rebuilds the text, except while the user is editing (a parent that echoes "12" for "12." must not drop the dot).
+    // A new value from outside rebuilds the text and ends an edit in progress (an app's quick-amount button), unless it is the
+    // same number as the draft: a parent that echoes "12" for "12." must not drop the dot.
     watch(() => props.modelValue, value => {
-      if (value === emitted || dirty) return;
+      if (value === emitted || (dirty && sameNumber(value, emitted))) return;
+      dirty = false;
       emitted = accepted = value;
-      acceptedIssue = null;
-      issue.value = null;
-      void apply({ text: shown(value), caret: null });
+      acceptedIssue = issue.value = outOfRange(value);
+      const text = shown(value);
+      void apply({ text, caret: text.length });
     });
-    // Options can change how the same value is written (grouping, decimals).
+    // Options can change how the same value is written (grouping, decimals) and whether it is in range (min, max).
     watch(o, () => {
+      acceptedIssue = outOfRange(accepted);
       if (dirty) return;
+      issue.value = acceptedIssue;
       const text = shown(accepted);
       if (view.value.text !== text) void apply({ text, caret: null });
     });

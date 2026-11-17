@@ -67,6 +67,13 @@ export function isPasteEdit(before: string, after: string, inputType?: string): 
   return inputType === "insertFromPaste" || inputType === "insertFromDrop" || after.length - before.length > 1;
 }
 
+/** Whether two values name the same number: "12." and "12" do, "", "-" and "." are all empty, "" and "0" are not. */
+export function sameNumber(a: string, b: string): boolean {
+  const empty = (s: string) => /^-?\.?$/.test(s);
+  if (empty(a) || empty(b)) return empty(a) && empty(b);
+  return Number(a) === Number(b);
+}
+
 /** Display text: thousands commas only, nothing padded. */
 export function formatNumber(raw: string, o: ResolvedNumberInput): string {
   const negative = raw.startsWith("-");

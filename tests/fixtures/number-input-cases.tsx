@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 // KjunNumberInput cases for React and Native (Vue 3 mirrors this in number-input-vue3.tsx).
-// Each section shows the last onValueChange value, the last onChangeCommit value and a button that sets the value to "777".
+// Each section shows the last onValueChange value, the last onChangeCommit value, a button that sets the value to "777"
+// and a quick-amount button that sets "50000" without taking the focus.
 export const numberInputInitial: Record<string, string> = { disabled: '1234' };
 export function NumberInputCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const [values, setValues] = useState<Record<string, string>>(numberInputInitial);
@@ -15,6 +16,8 @@ export function NumberInputCases({ K, native = false, providerProps = {} }: { K:
     <output data-testid={id + '-value'}>{values[id] ?? ''}</output>
     <output data-testid={id + '-commit'}>{commits[id] ?? ''}</output>
     <button type="button" data-testid={id + '-set'} onClick={() => setValues(old => ({ ...old, [id]: '777' }))}>{id} 777</button>
+    {/* A quick-amount button: it keeps the focus in the field, so the value arrives while the edit is still open. */}
+    <button type="button" data-testid={id + '-quick'} onMouseDown={event => event.preventDefault()} onClick={() => setValues(old => ({ ...old, [id]: '50000' }))}>{id} 50000</button>
   </div>;
   return <K.KjunProvider {...providerProps}><div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16, width: 360 }}>
     {section('amount', <K.KjunNumberInput {...bind('amount')} format="amount" suffix="원" readingAid max={5000000} ariaLabel="금액" />)}

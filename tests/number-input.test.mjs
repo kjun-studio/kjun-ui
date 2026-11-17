@@ -8,7 +8,7 @@ const output = await build({
   bundle: true, write: false, format: 'esm', platform: 'node',
 });
 const {
-  addsTooManyDigits, caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage, readingAid, resolveMessageScope, resolveNumberInput, sanitizeNumber, significantCount,
+  addsTooManyDigits, caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage, readingAid, resolveMessageScope, resolveNumberInput, sameNumber, sanitizeNumber, significantCount,
 } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 
 const r = (o = {}) => resolveNumberInput(o);
@@ -72,6 +72,16 @@ test('minus sign and en dash read as minus', () => {
   assert.equal(sanitizeNumber('\u22123.5', pct), '-3.5');
   assert.equal(sanitizeNumber('\u20133.5', pct), '-3.5');
   assert.equal(sanitizeNumber('\u22123', r({ format: 'amount' })), '3');
+});
+
+test('sameNumber compares an outside value with the draft', () => {
+  assert.equal(sameNumber('12.', '12'), true);
+  assert.equal(sameNumber('12.50', '12.5'), true);
+  assert.equal(sameNumber('', ''), true);
+  assert.equal(sameNumber('', '-'), true);
+  assert.equal(sameNumber('', '0'), false);
+  assert.equal(sameNumber('50000', '12'), false);
+  assert.equal(sameNumber('-0', '0'), true);
 });
 
 test('integer digit cap', () => {

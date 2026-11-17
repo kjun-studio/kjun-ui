@@ -4,7 +4,7 @@ import { isComposingKey, tokens, type InputSize } from "@kjun-ui/tokens";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import {
   addsTooManyDigits, caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage,
-  readingAid as readNumber, resolveNumberInput, sanitizeNumber, type NumberInputOptions,
+  readingAid as readNumber, resolveNumberInput, sameNumber, sanitizeNumber, type NumberInputOptions,
 } from "../../../shared/package-runtime/number-input";
 import { KjunInput, useKjunField } from "./input";
 import type { KjunTextInputHandle } from "./handles";
@@ -53,6 +53,7 @@ export function KjunNumberInput({
   const o = useMemo(() => resolveNumberInput({ format, decimals, grouping, allowNegative, min, max, suffix: suffixText }),
     [format, decimals, grouping, allowNegative, min, max, suffixText]);
   const shown = (raw: string) => formatNumber(sanitizeNumber(raw, o), o);
+  const outOfRange = (raw: string) => rangeIssue(sanitizeNumber(raw, o), o);
   const [view, setView] = useState<Shown>(() => ({ text: shown(value) }));
   const [issue, setIssue] = useState<Issue>(null);
   const input = useRef<KjunTextInputHandle | null>(null);
@@ -69,17 +70,29 @@ export function KjunNumberInput({
     setView(next);
   };
 
-  // A new value from outside rebuilds the text, except while the user is editing (a parent that echoes "12" for "12." must not drop the dot).
+  // A new value from outside rebuilds the text and ends an edit in progress (an app's quick-amount button), unless it is the
+  // same number as the draft: a parent that echoes "12" for "12." must not drop the dot.
   useEffect(() => {
-    if (value === emitted.current || dirty.current) return;
+    if (value === emitted.current || (dirty.current && sameNumber(value, emitted.current))) return;
+    const editing = dirty.current;
+    dirty.current = false;
     emitted.current = accepted.current = value;
-    acceptedIssue.current = null;
-    setIssue(null);
-    put({ text: shown(value) });
+    const found = outOfRange(value);
+    acceptedIssue.current = found;
+    setIssue(found);
+    const next = shown(value);
+    // While editing the field has focus, so the caret is placed at the end; otherwise the platform keeps its own.
+    put(editing ? { text: next, selection: { start: next.length, end: next.length } } : { text: next });
   }, [value]);
-  // Options can change how the same value is written (grouping, decimals).
+  // Options can change how the same value is written (grouping, decimals) and whether it is in range (min, max).
+  const options = useRef(o);
   useEffect(() => {
+    if (options.current === o) return;
+    options.current = o;
+    const found = outOfRange(accepted.current);
+    acceptedIssue.current = found;
     if (dirty.current) return;
+    setIssue(found);
     const next = shown(accepted.current);
     if (next !== text.current) put({ text: next });
   }, [o]);

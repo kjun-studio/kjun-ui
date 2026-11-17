@@ -3,7 +3,7 @@ import { isComposingKey, type InputSize } from "@kjun-ui/tokens";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import {
   addsTooManyDigits, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage,
-  readingAid as readNumber, resolveNumberInput, sanitizeNumber, type NumberInputOptions,
+  readingAid as readNumber, resolveNumberInput, sameNumber, sanitizeNumber, type NumberInputOptions,
 } from "../../../shared/package-runtime/number-input";
 import { KjunInput, useKjunField } from "./input";
 
@@ -45,6 +45,7 @@ export function KjunNumberInput({
   const o = useMemo(() => resolveNumberInput({ format, decimals, grouping, allowNegative, min, max, suffix: suffixText }),
     [format, decimals, grouping, allowNegative, min, max, suffixText]);
   const shown = (raw: string) => formatNumber(sanitizeNumber(raw, o), o);
+  const outOfRange = (raw: string) => rangeIssue(sanitizeNumber(raw, o), o);
   const [view, setView] = useState<View>(() => ({ text: shown(value), caret: null }));
   const [issue, setIssue] = useState<Issue>(null);
   const input = useRef<HTMLInputElement>(null);
@@ -53,17 +54,27 @@ export function KjunNumberInput({
   const emitted = useRef(value), accepted = useRef(value), acceptedIssue = useRef<Issue>(null);
   const aidId = "kjun-number-reading-" + useId().replace(/:/g, "");
 
-  // A new value from outside rebuilds the text, except while the user is editing (a parent that echoes "12" for "12." must not drop the dot).
+  // A new value from outside rebuilds the text and ends an edit in progress (an app's quick-amount button), unless it is the
+  // same number as the draft: a parent that echoes "12" for "12." must not drop the dot.
   useEffect(() => {
-    if (value === emitted.current || dirty.current) return;
+    if (value === emitted.current || (dirty.current && sameNumber(value, emitted.current))) return;
+    dirty.current = false;
     emitted.current = accepted.current = value;
-    acceptedIssue.current = null;
-    setIssue(null);
-    setView({ text: shown(value), caret: null });
+    const found = outOfRange(value);
+    acceptedIssue.current = found;
+    setIssue(found);
+    const text = shown(value);
+    setView({ text, caret: text.length });
   }, [value]);
-  // Options can change how the same value is written (grouping, decimals).
+  // Options can change how the same value is written (grouping, decimals) and whether it is in range (min, max).
+  const options = useRef(o);
   useEffect(() => {
+    if (options.current === o) return;
+    options.current = o;
+    const found = outOfRange(accepted.current);
+    acceptedIssue.current = found;
     if (dirty.current) return;
+    setIssue(found);
     const text = shown(accepted.current);
     setView(old => old.text === text ? old : { text, caret: null });
   }, [o]);

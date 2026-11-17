@@ -15,6 +15,7 @@ const App = defineComponent(() => {
     <output data-testid={id + '-value'}>{values[id] ?? ''}</output>
     <output data-testid={id + '-commit'}>{commits[id] ?? ''}</output>
     <button type="button" data-testid={id + '-set'} onClick={() => { values[id] = '777'; }}>{id} 777</button>
+    <button type="button" data-testid={id + '-quick'} onMousedown={(event: MouseEvent) => event.preventDefault()} onClick={() => { values[id] = '50000'; }}>{id} 50000</button>
   </div>;
   return () => <K.KjunProvider>{{ default: () => <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px', width: '360px' }}>
     {section('amount', <K.KjunNumberInput {...bind('amount')} format="amount" suffix="원" readingAid max={5000000} ariaLabel="금액" />)}

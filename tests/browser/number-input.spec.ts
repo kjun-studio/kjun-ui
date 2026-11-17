@@ -196,6 +196,34 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(field(page, 'disabled')).toHaveValue('1,234');
     });
 
+    test('external value while dirty', async ({ page }) => {
+      // The app's quick-amount button sets the value while the user is still editing (no blur in between).
+      const amount = field(page, 'amount');
+      await amount.pressSequentially('12');
+      await page.getByTestId('amount-quick').click();
+      await expect(amount).toBeFocused();
+      await expect(amount).toHaveValue('50,000');
+      await expect(value(page, 'amount')).toHaveText('50000');
+      expect(await caret(page, 'amount')).toBe(6);
+      // Leaving the field keeps the app's value; nothing was typed after it, so nothing is committed.
+      await amount.press('Tab');
+      await expect(amount).toHaveValue('50,000');
+      await expect(value(page, 'amount')).toHaveText('50000');
+      await expect(commit(page, 'amount')).toHaveText('');
+      // Typing continues from the app's value.
+      await amount.focus();
+      await amount.press('End');
+      await page.keyboard.type('1');
+      await expect(amount).toHaveValue('500,001');
+      // An outside value past the range shows the built-in message at once.
+      const percent = field(page, 'percent');
+      await percent.pressSequentially('5');
+      await page.getByTestId('percent-quick').click();
+      await expect(percent).toHaveValue('50000');
+      await expect(percent).toHaveAttribute('aria-invalid', 'true');
+      await expect(page.getByTestId('percent')).toContainText('100% 이하로 입력해 주세요');
+    });
+
     test('keyboard', async ({ page }) => {
       if (web) {
         await expect(field(page, 'percent')).toHaveAttribute('inputmode', 'text');
