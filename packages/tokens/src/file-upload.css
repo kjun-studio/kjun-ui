@@ -262,7 +262,10 @@
 .kjun-file-upload-notice-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .kjun-file-upload-notice-text > span { display: block; }
 .kjun-file-upload-notice > svg { flex: none; margin-top: calc((var(--_kjun-type-caption-line) - var(--_kjun-extension-form-message-icon-size)) / 2); }
-.kjun-file-upload-notice .kjun-file-upload-action { width: auto; height: auto; color: var(--_kjun-color-text-secondary); }
+.kjun-file-upload-notice .kjun-file-upload-action { flex: none; margin-top: calc((var(--_kjun-type-caption-line) - var(--_kjun-extension-file-upload-action-size)) / 2); }
+
+/* While a drag is over the card only the card takes pointer events, so a child swapped under the pointer cannot leave a dragleave unpaired. */
+.kjun-file-upload:not([data-drag="none"]) * { pointer-events: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .kjun-file-upload > :is(.kjun-file-upload-zone, .kjun-file-upload-head) { animation: none; }

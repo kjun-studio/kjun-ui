@@ -22,6 +22,10 @@ const Case = defineComponent({
     return () => <div data-testid={props.caseId} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {props.form ? <K.KjunFormGroup {...props.form}>{{ default: field }}</K.KjunFormGroup> : field()}
       <button type="button" data-testid={props.caseId + '-advance'} onClick={() => { files.value = fuAdvance(files.value); }}>advance</button>
+      {/* Edits the same file objects in place, as an app holding a reactive() array would. */}
+      <button type="button" data-testid={props.caseId + '-advance-in-place'} onClick={() => {
+        for (const f of files.value) { const next = fuAdvance([f])[0]; f.status = next.status; f.progress = next.progress; }
+      }}>advance in place</button>
       <output data-testid={props.caseId + '-log'}>{JSON.stringify(log.value)}</output>
     </div>;
   },

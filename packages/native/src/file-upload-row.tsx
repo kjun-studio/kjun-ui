@@ -22,7 +22,7 @@ export interface FileUploadRowProps {
 }
 
 /** A row action: a 44pt touch target around the same icon as Web. */
-function Action({ name, label, disabled, strong, onPress }: { name: string; label: string; disabled: boolean; strong?: boolean; onPress: () => void }) {
+export function Action({ name, label, disabled, strong, onPress }: { name: string; label: string; disabled: boolean; strong?: boolean; onPress: () => void }) {
   const { colors } = useKjunStyles();
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled }} disabled={disabled} onPress={onPress}

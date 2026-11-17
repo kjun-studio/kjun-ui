@@ -66,7 +66,9 @@ export const KjunFileUpload = defineComponent({
 
     let statuses = uploadStatuses(props.files);
     let pendingFocus: { removed: string; next: string | null } | null = null;
-    watch(() => props.files, files => {
+    // Watch ids and statuses, not the array, so an app that edits file objects in place is still heard.
+    watch(() => props.files.map(file => file.id + ":" + file.status).join("|"), () => {
+      const files = props.files;
       const changed = uploadTransitions(statuses, files);
       statuses = uploadStatuses(files);
       if (changed.length) live.value = changed.map(file => scope.value.messages.uploadAnnounce(file.name, file.status)).join(" ");
@@ -145,7 +147,7 @@ export const KjunFileUpload = defineComponent({
             onChange={(event: Event) => { const el = event.currentTarget as HTMLInputElement; select(Array.from(el.files ?? [])); el.value = ""; }} />
           {!filled ? (
             <button type="button" class="kjun-file-upload-zone" aria-disabled={props.disabled || undefined}
-              aria-labelledby={titleId} aria-describedby={hintId} onClick={open}>
+              aria-labelledby={titleId} aria-describedby={mergeIds(hintId, owner?.describedBy, props.ariaDescribedBy)} onClick={open}>
               <span class="kjun-file-upload-icon"><KjunIcon name={d ? dragIcon : "cloud-upload"} size={iconSize} /></span>
               <span class="kjun-file-upload-title" id={titleId}>{dragTitle ?? m.uploadDropOrSelect}</span>
               <span class="kjun-file-upload-hint" id={hintId}>{dragHint ?? zoneHint}</span>
@@ -169,7 +171,7 @@ export const KjunFileUpload = defineComponent({
             props.multiple ? (
               <div class="kjun-file-upload-foot">
                 <button type="button" class="kjun-file-upload-add" aria-disabled={props.disabled || full.value || undefined}
-                  aria-labelledby={titleId} aria-describedby={hintId} onClick={open}>
+                  aria-labelledby={titleId} aria-describedby={mergeIds(hintId, owner?.describedBy, props.ariaDescribedBy)} onClick={open}>
                   <span class="kjun-file-upload-icon"><KjunIcon name="plus" size={iconSize} /></span>
                   <span class="kjun-file-upload-text">
                     <span class="kjun-file-upload-title" id={titleId}>{full.value && props.maxFiles != null ? m.uploadFull(props.maxFiles) : m.uploadAddOrDrop}</span>

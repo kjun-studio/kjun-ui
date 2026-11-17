@@ -90,7 +90,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       const s = section(page, 'fu-filled');
       await expect(s.getByRole('button', { name: '사업자등록증.pdf 삭제' })).toBeVisible();
       await expect(s.getByRole('button', { name: '사업자등록증.pdf 다시 시도' })).toBeVisible();
-      await expect(s.getByRole('button', { name: /다시 시도$/ })).toHaveCount(1);
+      await expect(s.getByRole('button', { name: /\.pdf 다시 시도$/ })).toHaveCount(1);
       await s.getByRole('button', { name: '실패한 파일 다시 시도' }).click();
       expect(await log(page, 'fu-filled')).toEqual([{ retry: 'fail' }]);
     });
@@ -172,7 +172,38 @@ for (const platform of ['react', 'vue3', 'native']) {
     test('FormGroup label names the field and its error describes it', async ({ page }) => {
       const group = section(page, 'fu-form').getByRole('group', { name: /증빙 자료/ });
       await expect(group).toBeVisible();
-      if (web) await expect(group).toHaveAccessibleDescription(/필수 항목이에요/);
+      if (!web) return;
+      await expect(group).toHaveAccessibleDescription(/필수 항목이에요/);
+      // Screen readers announce the focused button's description, not the group's, so the error reaches the pick button too.
+      const zone = section(page, 'fu-form').getByRole('button', { name: '파일을 끌어다 놓거나 눌러서 선택' });
+      await expect(zone).toHaveAccessibleDescription(/PDF, XLSX, 이미지.*필수 항목이에요/);
+    });
+
+    test('an in-place status change still announces and keeps focus where it is', async ({ page }) => {
+      test.skip(platform !== 'vue3', 'only Vue apps can edit the file objects in place');
+      const s = section(page, 'fu-basic'), live = card(page, 'fu-basic').locator('[aria-live=polite]');
+      await card(page, 'fu-basic').locator('input[type=file]').setInputFiles([file('a.pdf', 1024, 'application/pdf')]);
+      await s.getByTestId('fu-basic-advance-in-place').click();
+      await s.getByTestId('fu-basic-advance-in-place').click();
+      await expect(live).toHaveText('a.pdf 올렸어요');
+    });
+
+    test('the notice close button has the same target as a row action', async ({ page }) => {
+      if (web) await card(page, 'fu-basic').locator('input[type=file]').setInputFiles([file('b.hwp', 10, 'application/x-hwp')]);
+      else await section(page, 'fu-basic').getByRole('button', { name: '파일 선택' }).click();
+      const close = section(page, 'fu-basic').getByRole('button', { name: '닫기' });
+      const box = (await close.boundingBox())!;
+      const min = web ? 32 : 44;
+      expect(box.width).toBeGreaterThanOrEqual(min);
+      expect(box.height).toBeGreaterThanOrEqual(min);
+    });
+
+    test('while dragging, children ignore the pointer so swapping the icon cannot strand the veil', async ({ page }) => {
+      test.skip(!web, 'Native has no drag and drop');
+      await drag(page, 'fu-basic', '.kjun-file-upload-zone', 'dragenter', [{ name: 'x.pdf', type: 'application/pdf' }]);
+      await expect(card(page, 'fu-basic')).toHaveAttribute('data-drag', 'over');
+      const events = await card(page, 'fu-basic').evaluate(el => [...el.querySelectorAll('*')].map(child => getComputedStyle(child).pointerEvents));
+      expect(events.filter(value => value !== 'none')).toEqual([]);
     });
 
     test('no horizontal overflow at 360px', async ({ page }) => {
@@ -186,6 +217,26 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect.poll(() => log(page, 'fu-basic')).toEqual([{ select: { accepted: ['a.pdf'], rejected: [['b.hwp', 'type'], ['big.pdf', 'size']] } }]);
       await expect(section(page, 'fu-basic')).toContainText('big.pdf: 20MB를 넘어 추가하지 않았어요');
       await expect(section(page, 'fu-basic').getByRole('button', { name: '파일 추가' })).toBeVisible();
+    });
+
+    test('a second press while the picker is open does not open it again', async ({ page }) => {
+      test.skip(web, 'Web picks through the hidden input');
+      const zone = section(page, 'fu-slow').getByRole('button', { name: '파일 선택' });
+      await zone.click();
+      await zone.click({ force: true });
+      await expect.poll(() => log(page, 'fu-slow')).toEqual([{ pick: true }, { select: { accepted: ['a.pdf'], rejected: [['b.hwp', 'type'], ['big.pdf', 'size']] } }]);
+    });
+
+    test('a picker that throws leaves the field usable and raises no page error', async ({ page }) => {
+      test.skip(web, 'Web picks through the hidden input');
+      const errors: string[] = [];
+      page.on('pageerror', error => errors.push(error.message));
+      const zone = section(page, 'fu-throw').getByRole('button', { name: '파일 선택' });
+      await zone.click();
+      await zone.click();
+      await expect.poll(() => log(page, 'fu-throw')).toEqual([{ pick: true }, { pick: true }]);
+      await page.waitForTimeout(200);
+      expect(errors).toEqual([]);
     });
 
     test('a cancelled pick (null) changes nothing', async ({ page }) => {

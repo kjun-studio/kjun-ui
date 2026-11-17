@@ -174,7 +174,7 @@ export function KjunFileUpload({
         />
         {!filled ? (
           <button type="button" className="kjun-file-upload-zone" aria-disabled={disabled || undefined}
-            aria-labelledby={titleId} aria-describedby={hintId} onClick={open}>
+            aria-labelledby={titleId} aria-describedby={mergeIds(hintId, field?.describedBy, ariaDescribedBy)} onClick={open}>
             <span className="kjun-file-upload-icon"><KjunIcon name={drag ? dragIcon : "cloud-upload"} size={iconSize} /></span>
             <span className="kjun-file-upload-title" id={titleId}>{dragTitle ?? m.uploadDropOrSelect}</span>
             <span className="kjun-file-upload-hint" id={hintId}>{dragHint ?? zoneHint}</span>
@@ -203,7 +203,7 @@ export function KjunFileUpload({
             {multiple && (
               <div className="kjun-file-upload-foot">
                 <button type="button" className="kjun-file-upload-add" aria-disabled={disabled || full || undefined}
-                  aria-labelledby={titleId} aria-describedby={hintId} onClick={open}>
+                  aria-labelledby={titleId} aria-describedby={mergeIds(hintId, field?.describedBy, ariaDescribedBy)} onClick={open}>
                   <span className="kjun-file-upload-icon"><KjunIcon name="plus" size={iconSize} /></span>
                   <span className="kjun-file-upload-text">
                     <span className="kjun-file-upload-title" id={titleId}>{full && maxFiles != null ? m.uploadFull(maxFiles) : m.uploadAddOrDrop}</span>

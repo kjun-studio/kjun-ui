@@ -7,7 +7,7 @@ import { KText } from "./internal";
 import { typeStyle } from "./typography";
 import { useKjunStyles } from "./provider";
 import { useKjunField } from "./input";
-import { FileUploadRow } from "./file-upload-row";
+import { Action, FileUploadRow } from "./file-upload-row";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
 import { IconFallbacks } from "../../../shared/package-runtime/icon-context";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
@@ -66,9 +66,13 @@ export function KjunFileUpload({
   const lines = rejected.slice(0, REJECTION_LINES).map(({ file, reason }) => m.uploadRejected(file.name, reason, sizeText ?? ""));
   if (rejected.length > REJECTION_LINES) lines.push(m.uploadRejectedMore(rejected.length - REJECTION_LINES));
 
+  const picking = useRef(false);
   async function pick() {
-    if (blocked) return;
-    const picked = await onPick();
+    // One picker at a time; a picker that throws counts as a cancel.
+    if (blocked || picking.current) return;
+    picking.current = true;
+    let picked: KjunPickedFile[] | null;
+    try { picked = await onPick(); } catch { picked = null; } finally { picking.current = false; }
     if (!picked?.length) return;
     const result = screenFiles(picked, limits);
     setRejected(result.rejected);
@@ -144,9 +148,9 @@ export function KjunFileUpload({
             <View style={{ flex: 1, minWidth: 0 }}>
               {lines.map(line => <KText key={line} style={{ ...typeStyle("caption"), color: colors.danger }}>{line}</KText>)}
             </View>
-            <Pressable accessibilityRole="button" accessibilityLabel={m.close} onPress={() => setRejected([])}>
-              <KjunIcon name="x" size={tokens.extensions.form.messageIconSize} color={colors.textSecondary} />
-            </Pressable>
+            <View style={{ marginVertical: (typeStyle("caption").lineHeight - g.touchTarget) / 2 }}>
+              <Action name="x" label={m.close} disabled={false} onPress={() => setRejected([])} />
+            </View>
           </View>
         )}
         {Platform.OS === "web" ? <View role="status" pointerEvents="none" style={{ position: "absolute", opacity: 0 }}><KText>{said}</KText></View> : null}

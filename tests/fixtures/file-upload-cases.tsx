@@ -22,15 +22,22 @@ function useCase(initial: any[]) {
     onRemove: (id: string) => { push({ remove: id }); setFiles(list => list.filter(f => f.id !== id)); },
     onRetry: (id: string) => { push({ retry: id }); setFiles(list => list.map(f => f.id === id ? { ...f, status: 'uploading', progress: 10 } : f)); },
   };
-  return { files, setFiles, log, handlers };
+  return { files, setFiles, log, handlers, push };
 }
 
-function Case({ K, id, native, initial = [], picks = fuPicks, props = {}, form }: {
-  K: any; id: string; native: boolean; initial?: any[]; picks?: any[] | null; props?: Record<string, any>; form?: Record<string, any>;
+function Case({ K, id, native, initial = [], picks = fuPicks, props = {}, form, pickMode }: {
+  K: any; id: string; native: boolean; initial?: any[]; picks?: any[] | null; props?: Record<string, any>; form?: Record<string, any>; pickMode?: 'slow' | 'throw';
 }) {
-  const { files, setFiles, log, handlers } = useCase(initial);
+  const { files, setFiles, log, handlers, push } = useCase(initial);
   const advance = () => setFiles(fuAdvance);
-  const field = <K.KjunFileUpload files={files} {...handlers} {...props} onPick={native ? async () => picks : undefined} />;
+  // fu-slow and fu-throw log each onPick call so a test can count them.
+  const onPick = async () => {
+    if (pickMode) push({ pick: true });
+    if (pickMode === 'throw') throw new Error('picker failed');
+    if (pickMode === 'slow') await new Promise(resolve => setTimeout(resolve, 300));
+    return picks;
+  };
+  const field = <K.KjunFileUpload files={files} {...handlers} {...props} onPick={native ? onPick : undefined} />;
   return <div data-testid={id} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
     {form ? <K.KjunFormGroup {...form}>{field}</K.KjunFormGroup> : field}
     <button type="button" data-testid={id + '-advance'} onClick={advance}>advance</button>
@@ -40,7 +47,7 @@ function Case({ K, id, native, initial = [], picks = fuPicks, props = {}, form }
 
 const limits = { accept: '.pdf,image/*,.xlsx', maxSize: 20 * MB, maxFiles: 5 };
 /** Every case, shared with the Vue 3 fixture. */
-export const fuCases: { id: string; props: Record<string, any>; initial?: any[]; form?: Record<string, any>; picks?: any[] | null }[] = [
+export const fuCases: { id: string; props: Record<string, any>; initial?: any[]; form?: Record<string, any>; picks?: any[] | null; pickMode?: 'slow' | 'throw' }[] = [
   { id: 'fu-basic', props: limits },
   { id: 'fu-form', props: limits, form: { label: '증빙 자료', required: true, error: '필수 항목이에요' } },
   { id: 'fu-filled', props: limits, initial: [
@@ -58,6 +65,8 @@ export const fuCases: { id: string; props: Record<string, any>; initial?: any[];
     { id: 'p-high', name: 'high.pdf', size: MB, status: 'uploading', progress: 140 },
   ] },
   { id: 'fu-cancel', props: limits, picks: null },
+  { id: 'fu-slow', props: limits, pickMode: 'slow' },
+  { id: 'fu-throw', props: limits, pickMode: 'throw' },
 ];
 /** The fake uploader's step: queued → uploading 40% → done, or error for names containing "fail". */
 export const fuAdvance = (list: any[]) => list.map(f => f.status === 'queued' ? { ...f, status: 'uploading', progress: 40 }
@@ -67,6 +76,6 @@ export const fuAccepted = (list: any[], accepted: any[]) =>
 
 export function FileUploadCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   return <K.KjunProvider {...providerProps}><div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 16, width: 360 }}>
-    {fuCases.map(c => <Case key={c.id} K={K} native={native} id={c.id} props={c.props} initial={c.initial} form={c.form} picks={c.picks === undefined ? fuPicks : c.picks} />)}
+    {fuCases.map(c => <Case key={c.id} K={K} native={native} id={c.id} props={c.props} initial={c.initial} form={c.form} pickMode={c.pickMode} picks={c.picks === undefined ? fuPicks : c.picks} />)}
   </div></K.KjunProvider>;
 }
