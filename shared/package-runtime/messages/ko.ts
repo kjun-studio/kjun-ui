@@ -166,9 +166,9 @@ export const kjunMessagesKo = {
   goToSlide: (slide: number) => `${slide}번 슬라이드`,
   slideOf: (slide: number, total: number) => `${total}개 중 ${slide}번째`,
   // Steps
-  steps: "단계",
+  steps: "진행 단계",
   stepComplete: "완료",
-  stepCurrent: "진행 중",
+  stepCurrent: "현재 단계",
   stepError: "오류",
   stepUpcoming: "예정",
   stepNext: "다음",

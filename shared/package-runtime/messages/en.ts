@@ -157,9 +157,9 @@ export const kjunMessagesEn: KjunMessages = {
   goToSlide: (slide: number) => `Slide ${slide}`,
   slideOf: (slide: number, total: number) => `${slide} of ${total}`,
   // Steps
-  steps: "Steps",
+  steps: "Progress steps",
   stepComplete: "Complete",
-  stepCurrent: "In progress",
+  stepCurrent: "Current step",
   stepError: "Error",
   stepUpcoming: "Upcoming",
   stepNext: "Next",

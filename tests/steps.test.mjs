@@ -33,5 +33,7 @@ test('steps tokens reference the shared scale', () => {
 test('ko and en carry every steps message', () => {
   assert.equal(ko.stepPosition(3), '3단계'); assert.equal(en.stepPosition(3), 'Step 3');
   assert.equal(ko.stepCount(2, 5), '2 / 5'); assert.equal(en.stepCount(2, 5), '2 / 5');
-  for (const m of [ko, en]) for (const k of ['steps','stepComplete','stepCurrent','stepError','stepUpcoming','stepNext']) assert.equal(typeof m[k], 'string');
+  const keys = ['steps','stepComplete','stepCurrent','stepError','stepUpcoming','stepNext'];
+  assert.deepEqual(keys.map(k => ko[k]), ['진행 단계','완료','현재 단계','오류','예정','다음']);
+  assert.deepEqual(keys.map(k => en[k]), ['Progress steps','Complete','Current step','Error','Upcoming','Next']);
 });
