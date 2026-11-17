@@ -26,6 +26,8 @@ export function definitions() {
       ? { procedure: '키보드로 Native 선택 Modal을 열고 내부 입력·radio 옵션에서 방향키와 Enter로 값을 선택합니다.', expected: 'Modal 내부 활성 옵션이 방향키에 반응하고 Enter로 선택값을 전달하며 닫힙니다.' }
       : platform === 'native' && ['select', 'search', 'time'].includes(target.profile) && item === 'focus'
       ? { procedure: '키보드 진입으로 열린 Modal의 초기 포커스를 확인하고 Escape로 닫습니다.', expected: '내부 입력 또는 옵션으로 포커스가 이동하고 닫힌 뒤 외부 입력·트리거로 복귀합니다.' }
+      : platform === 'native' && target.profile === 'calendar' && item === 'keyboard'
+      ? { procedure: '날짜 칸에 Tab으로 진입해 Enter로 고릅니다. 화살표 이동과 Shift+Enter는 Native에 없으므로 검사하지 않습니다.', expected: '날짜 칸마다 포커스를 받고, Enter로 고른 날의 상태가 바뀝니다.' }
       : profiles[target.profile]?.[index];
     if (!profiles[target.profile]) throw Error('Unknown accessibility profile: ' + target.profile);
     const native = platform === 'native';

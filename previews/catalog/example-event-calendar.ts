@@ -23,9 +23,9 @@ export function renderEventCalendarExample(name: string, tools: ExampleTools): a
         };
       };
       const isHoliday = (iso: string) => iso.slice(8) === "05" ? "임시 휴일" : false;
-      const picked = get("picked", week ? null : today);
+      const picked = get(week ? "weekPicked" : "picked", week ? null : today);
       const common = { marks, isHoliday, dimPast: settings.dimPast, markSaturday: settings.markSaturday, swipeable: settings.swipeable, weekStart,
-        value: picked, onSelect: change("picked"), ...(settings.longPress ? { dayLongPressLabel: "이날 약속 추가", onDayLongPress: (iso: string) => set("added", [...added, iso]) } : {}) };
+        value: picked, onSelect: change(week ? "weekPicked" : "picked"), ...(settings.longPress ? { dayLongPressLabel: "이날 약속 추가", onDayLongPress: (iso: string) => set("added", [...added, iso]) } : {}) };
       const nav = (label: string, icon: string, fn: () => void) => h("KjunButton", { variant: "ghost", shape: "circle", prefixIcon: icon, ariaLabel: label, ...action(fn) });
       const status = h("KjunText", { tone: "secondary" }, week || !settings.longPress ? `고른 날: ${picked ?? "없음"}` : added.length ? `약속을 추가한 날: ${added.join(", ")}` : "날짜를 길게 눌러 약속을 추가해 보세요.");
       if (week) {
@@ -39,7 +39,7 @@ export function renderEventCalendarExample(name: string, tools: ExampleTools): a
       const month = get("month", today.slice(0, 7));
       return h("Stack", {}, [
         h("Box", { width: 360 }, h("Stack", {}, [
-          h("Group", {}, [nav("이전 달", "chevron-left", () => set("month", addMonths(month, -1))), h("KjunText", { variant: "cardTitle" }, titleOf(month + "-01")), nav("다음 달", "chevron-right", () => set("month", addMonths(month, 1)))]),
+          h("Group", { style: { width: "100%", flexWrap: "nowrap", justifyContent: "space-between" } }, [nav("이전 달", "chevron-left", () => set("month", addMonths(month, -1))), h("KjunText", { variant: "cardTitle" }, titleOf(month + "-01")), nav("다음 달", "chevron-right", () => set("month", addMonths(month, 1)))]),
           h(name, { ...common, view: "month", month, onMonthChange: change("month") })])),
         status]);
     }

@@ -59,6 +59,7 @@ export function platformBehavior(target, platform, item) {
   if (target.scenario.parent) description = `${target.scenario.parent} 안에서 사용하는 하위 구성입니다. ` + description;
   if (target.scenario.children) description += ' 이 항목은 문서에 명시한 하위 컨트롤을 공급한 조합을 검사합니다.';
   if (platform === 'native' && ['select', 'search', 'time'].includes(target.profile)) description += ' Native는 DOM listbox 대신 Modal 내부 입력·radio 옵션을 사용하며 입력 포커스가 내부 입력으로 이동할 수 있습니다.';
+  if (platform === 'native' && target.profile === 'calendar') description = '날짜 칸은 각각 버튼이며 저마다 포커스 대상입니다(한 칸만 Tab 대상이 되는 roving은 없고, 화살표·Home·End·PageUp·PageDown 이동과 Shift+Enter도 없습니다). 고르면 selected 상태가 되고 칸 이름은 날짜·요일에 휴일 이름과 일정 수를 붙여 읽으며 오늘에는 \'오늘\'이 붙습니다. 달·주는 스와이프나 화면의 버튼으로 바꾸고, 길게 누르기는 접근성 동작(longpress)으로 노출되며 onDayLongPress가 있을 때만 켜집니다. 달·주를 바꾸는 요청은 소비 코드가 처리합니다.';
   if (platform === 'native' && target.profile === 'menu') description += ' Native는 Modal과 menuitem을 사용합니다. DOM menu 역할과 방향키 동작의 제공 여부는 결과에서 구분합니다.';
   return target.subject + '. ' + description;
 }
