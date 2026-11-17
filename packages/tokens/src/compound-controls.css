@@ -46,6 +46,10 @@
 .kjun-quantity .kjun-input:is(:focus,:focus-visible,[aria-invalid="true"]):not(:disabled) { outline:none; box-shadow:none; border-color:transparent; }
 .kjun-quantity input:is(:hover,:focus):not(:disabled) { background:var(--_kjun-color-hover); }
 
+/* NumberInput keeps Input geometry; only the digits change, to the numeric font with equal widths so grouping does not shift them. */
+.kjun-number-input .kjun-input { font-family:var(--_kjun-font-numeric); font-variant-numeric:tabular-nums; }
+.kjun-number-input[data-align="end"] .kjun-input { text-align:end; }
+
 /* A time is a short fixed-length value, so the field hugs it; block stretches it like Input. */
 .kjun-time-picker { display:inline-flex; align-items:center; width:max-content; border-radius:var(--_kjun-compound-radius); background:var(--_kjun-color-input-bg); }
 .kjun-time-picker[data-block="true"] { display:flex; width:100%; }
