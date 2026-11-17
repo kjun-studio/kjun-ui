@@ -37,7 +37,9 @@ for (const platform of platforms) {
       await expect(group(page, 'total')).toHaveAccessibleName('128명');
       // The number sits right of the chip's middle, in the part the avatar in front leaves visible.
       const [box, text] = await chip.evaluate(el => {
-        const range = document.createRange(); range.selectNodeContents(el);
+        // Measure the text node itself: on Native the number sits in an inner View the size of the chip.
+        const node = document.createTreeWalker(el, NodeFilter.SHOW_TEXT).nextNode()!;
+        const range = document.createRange(); range.selectNodeContents(node);
         const b = el.getBoundingClientRect(), t = range.getBoundingClientRect();
         return [b.x + b.width / 2, t.x + t.width / 2];
       });
@@ -71,11 +73,6 @@ for (const platform of platforms) {
       }
     });
 
-    test(`${platform}: right-to-left groups overlap the other way`, async ({ page }) => {
-      const centres = await xs(group(page, 'rtl'));
-      expect(centres[1]).toBeLessThan(centres[0]);
-    });
-
     test(`${platform}: an empty group shows only the total and a broken image keeps its initial`, async ({ page }) => {
       await expect(items(group(page, 'empty'))).toHaveCount(1);
       await expect(items(group(page, 'empty'))).toHaveText('+4');
@@ -94,6 +91,13 @@ for (const platform of ['react', 'vue3'] as const) {
     expect(await style(items(group(page, 'square')).first(), 'box-shadow')).toBe('none');
     expect(await style(items(group(page, 'total')).last(), 'padding-left')).toBe('12px');
     expect(await style(items(group(page, 'rtl')).last(), 'padding-right')).toBe('12px');
+  });
+  // Native RTL follows I18nManager (start/end styles), which a dir="rtl" element on React Native Web does not set.
+  test(`${platform}: right-to-left groups overlap the other way`, async ({ page }) => {
+    await openFixture(page, platform, '', 'avatar-group');
+    const centres = await xs(group(page, 'rtl'));
+    expect(centres[1]).toBeLessThan(centres[0]);
+    expect(centres[0] - centres[1]).toBeCloseTo(40 - 12, 0);
   });
 }
 test('native: the ring is a wrapper painted in the colour behind the group', async ({ page }) => {

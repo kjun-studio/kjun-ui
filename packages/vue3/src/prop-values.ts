@@ -15,6 +15,10 @@ export const kjunPropValues = Object.freeze({
     shape: Object.freeze(["circle","square"] as const),
     size: Object.freeze(["xs","sm","md","lg","xl"] as const),
   }),
+  KjunAvatarGroup: Object.freeze({
+    shape: Object.freeze(["circle","square"] as const),
+    size: Object.freeze(["xs","sm","md","lg","xl"] as const),
+  }),
   KjunBadge: Object.freeze({
     size: Object.freeze(["xs","sm","md","lg","xl"] as const),
     variant: Object.freeze(["danger","default","info","price-down","price-up","primary","secondary","success","warning"] as const),

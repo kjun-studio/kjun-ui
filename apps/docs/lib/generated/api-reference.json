@@ -37642,6 +37642,459 @@
         "types": []
       }
     },
+    "KjunAvatarGroup": {
+      "vue3": {
+        "props": [
+          {
+            "name": "items",
+            "type": "KjunAvatarGroupItem[]",
+            "required": true,
+            "default": "—",
+            "description": "The people shown, front first.",
+            "summary": "앞에서부터 그릴 사람 목록입니다.",
+            "details": [
+              {
+                "label": "항목 필드",
+                "text": "key: 고유 문자열, src?: 사진 주소, name?: 이름(첫 글자를 대신 그림), color?·textColor?: 첫 글자 바탕·글자 색."
+              },
+              {
+                "label": "읽기",
+                "text": "각 아바타는 낭독되지 않고 그룹 이름 하나로 읽힙니다."
+              }
+            ],
+            "source": "packages/vue3/src/avatar-group.tsx",
+            "example": "/components/avatar-group#preview"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "4",
+            "description": "Most avatars drawn (default 4); the rest fold into a \"+N\" chip that is not counted here.",
+            "summary": "그릴 아바타의 최대 수입니다. 넘는 사람은 \"+N\" 칩으로 모으며, 칩은 이 수에 들어가지 않습니다. 1보다 작은 값은 1로 봅니다.",
+            "source": "packages/vue3/src/avatar-group.tsx"
+          },
+          {
+            "name": "total",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "The whole headcount when the server sends only a few avatars (default items.length).",
+            "summary": "전체 인원입니다. 서버가 일부 사람만 보낼 때 줍니다.",
+            "details": [
+              {
+                "label": "기본",
+                "text": "생략하면 items의 수입니다. items보다 작으면 items의 수를 씁니다."
+              },
+              {
+                "label": "+N",
+                "text": "total에서 그린 수를 뺀 값이 \"+N\"이 되고, 100 이상은 \"+99\"로 줄여 보이며 그룹 이름에는 실제 인원을 읽습니다."
+              }
+            ],
+            "source": "packages/vue3/src/avatar-group.tsx",
+            "example": "/components/avatar-group#preview"
+          },
+          {
+            "name": "size",
+            "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "KjunAvatar와 같은 크기입니다. 원형이 겹치는 폭은 xs 6, sm 8, md 12, lg 16, xl 20px입니다.",
+            "source": "packages/vue3/src/avatar-group.tsx"
+          },
+          {
+            "name": "shape",
+            "type": "\"circle\" | \"square\"",
+            "required": false,
+            "default": "\"circle\"",
+            "description": "Circles overlap; squares sit apart with no ring.",
+            "summary": "circle은 겹쳐 놓고 배경색 링으로 경계를 오립니다. square는 겹치지 않고 크기별 2·4·4·6·8px 간격을 둡니다.",
+            "source": "packages/vue3/src/avatar-group.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The one name the group is read by, e.g. \"참여자 128명\"; defaults to the headcount.",
+            "summary": "그룹을 읽는 하나의 이름입니다(예: \"참여자 128명\"). 생략하면 인원 수(\"3명\")를 읽습니다.",
+            "source": "packages/vue3/src/avatar-group.tsx"
+          },
+          {
+            "name": "ringColor",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The colour behind the group, for the ring that cuts each circle out of its neighbour (default the surface colour).",
+            "summary": "원을 서로 오려 내는 2px 링의 색입니다. 그룹이 놓인 바탕색과 같게 둡니다. 생략하면 표면색(surface)입니다. square에서는 쓰지 않습니다.",
+            "source": "packages/vue3/src/avatar-group.tsx"
+          },
+          {
+            "name": "pressable",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Makes the whole group one button (click), for example to open the full list.",
+            "summary": "그룹 전체를 하나의 버튼으로 만듭니다(전체 목록 열기 등). click 이벤트로 받으며, 누르면 카드처럼 0.99로 줄어듭니다. false면 포커스를 받지 않는 이미지입니다.",
+            "source": "packages/vue3/src/avatar-group.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Blocks a pressable group and dims it.",
+            "summary": "pressable 그룹의 누름을 막고 흐리게 그립니다. 포커스도 받지 않습니다.",
+            "source": "packages/vue3/src/avatar-group.tsx"
+          }
+        ],
+        "events": [
+          {
+            "name": "click",
+            "source": "packages/vue3/src/avatar-group.tsx",
+            "type": "이벤트",
+            "summary": "그룹을 눌렀음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "pressable이고 비활성이 아닌 그룹을 누르거나 Enter·Space로 실행할 때"
+              },
+              {
+                "label": "전달값",
+                "text": "MouseEvent"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "전체 목록을 여는 등 다음 행동은 앱이 정합니다."
+              }
+            ],
+            "example": "/components/avatar-group#preview"
+          }
+        ],
+        "slots": [],
+        "ownership": [
+          "pressable이면 그룹 전체가 버튼 하나가 되어 참여자 목록 같은 화면을 엽니다. 목록은 소비자가 onClick에서 KjunPopover나 KjunDrawer로 엽니다. 사람마다 따로 눌러야 하면 겹치지 않는 KjunInline과 KjunAvatar를 사용합니다.",
+          "웹은 바탕색 링을 box-shadow로, Native는 링 색으로 칠한 감싸기 View로 그리며 원 중심 간격은 같습니다. 클릭 이벤트는 React onClick, Vue click, Native onPress입니다."
+        ],
+        "types": []
+      },
+      "react": {
+        "props": [
+          {
+            "name": "items",
+            "type": "KjunAvatarGroupItem[]",
+            "required": true,
+            "default": "—",
+            "description": "The people shown, front first.",
+            "summary": "앞에서부터 그릴 사람 목록입니다.",
+            "details": [
+              {
+                "label": "항목 필드",
+                "text": "key: 고유 문자열, src?: 사진 주소, name?: 이름(첫 글자를 대신 그림), color?·textColor?: 첫 글자 바탕·글자 색, 그 밖의 KjunAvatar 속성. size·shape·alt·decorative는 그룹이 정합니다."
+              },
+              {
+                "label": "읽기",
+                "text": "각 아바타는 낭독되지 않고 그룹 이름 하나로 읽힙니다."
+              }
+            ],
+            "source": "packages/react/src/avatar-group.tsx",
+            "example": "/components/avatar-group#preview"
+          },
+          {
+            "name": "max",
+            "type": "number | undefined",
+            "required": false,
+            "default": "4",
+            "description": "Most avatars drawn (default 4); the rest fold into a \"+N\" chip that is not counted here.",
+            "summary": "그릴 아바타의 최대 수입니다. 넘는 사람은 \"+N\" 칩으로 모으며, 칩은 이 수에 들어가지 않습니다. 1보다 작은 값은 1로 봅니다.",
+            "source": "packages/react/src/avatar-group.tsx"
+          },
+          {
+            "name": "total",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The whole headcount when the server sends only a few avatars (default items.length).",
+            "summary": "전체 인원입니다. 서버가 일부 사람만 보낼 때 줍니다.",
+            "details": [
+              {
+                "label": "기본",
+                "text": "생략하면 items의 수입니다. items보다 작으면 items의 수를 씁니다."
+              },
+              {
+                "label": "+N",
+                "text": "total에서 그린 수를 뺀 값이 \"+N\"이 되고, 100 이상은 \"+99\"로 줄여 보이며 그룹 이름에는 실제 인원을 읽습니다."
+              }
+            ],
+            "source": "packages/react/src/avatar-group.tsx",
+            "example": "/components/avatar-group#preview"
+          },
+          {
+            "name": "size",
+            "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "KjunAvatar와 같은 크기입니다. 원형이 겹치는 폭은 xs 6, sm 8, md 12, lg 16, xl 20px입니다.",
+            "source": "packages/react/src/avatar-group.tsx"
+          },
+          {
+            "name": "shape",
+            "type": "\"circle\" | \"square\"",
+            "required": false,
+            "default": "\"circle\"",
+            "description": "Circles overlap; squares sit apart with no ring.",
+            "summary": "circle은 겹쳐 놓고 배경색 링으로 경계를 오립니다. square는 겹치지 않고 크기별 2·4·4·6·8px 간격을 둡니다.",
+            "source": "packages/react/src/avatar-group.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The one name the group is read by, e.g. \"참여자 128명\"; defaults to the headcount.",
+            "summary": "그룹을 읽는 하나의 이름입니다(예: \"참여자 128명\"). 생략하면 인원 수(\"3명\")를 읽습니다.",
+            "source": "packages/react/src/avatar-group.tsx"
+          },
+          {
+            "name": "ringColor",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The colour behind the group, for the ring that cuts each circle out of its neighbour (default the surface colour).",
+            "summary": "원을 서로 오려 내는 2px 링의 색입니다. 그룹이 놓인 바탕색과 같게 둡니다. 생략하면 표면색(surface)입니다. square에서는 쓰지 않습니다.",
+            "source": "packages/react/src/avatar-group.tsx"
+          },
+          {
+            "name": "pressable",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Makes the whole group one button (onClick), for example to open the full list.",
+            "summary": "그룹 전체를 하나의 버튼으로 만듭니다(전체 목록 열기 등). onClick로 받으며, 누르면 카드처럼 0.99로 줄어듭니다. false면 포커스를 받지 않는 이미지입니다.",
+            "source": "packages/react/src/avatar-group.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Blocks a pressable group and dims it.",
+            "summary": "pressable 그룹의 누름을 막고 흐리게 그립니다. 포커스도 받지 않습니다.",
+            "source": "packages/react/src/avatar-group.tsx"
+          },
+          {
+            "name": "onClick",
+            "type": "((event: MouseEvent<HTMLButtonElement>) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "그룹을 눌렀음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "pressable이고 비활성이 아닌 그룹을 누르거나 Enter·Space로 실행할 때"
+              },
+              {
+                "label": "전달값",
+                "text": "MouseEvent"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "전체 목록을 여는 등 다음 행동은 앱이 정합니다."
+              }
+            ],
+            "source": "packages/react/src/avatar-group.tsx",
+            "example": "/components/avatar-group#preview"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트(div 또는 button)에 KJUN 클래스 뒤로 더할 클래스입니다. 바깥 여백·배치에 씁니다.",
+            "source": "packages/react/src/avatar-group.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 스타일입니다. 바깥 여백·배치에 쓰고, 겹침·크기는 size·shape로 정하세요.",
+            "source": "packages/react/src/avatar-group.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "pressable이면 그룹 전체가 버튼 하나가 되어 참여자 목록 같은 화면을 엽니다. 목록은 소비자가 onClick에서 KjunPopover나 KjunDrawer로 엽니다. 사람마다 따로 눌러야 하면 겹치지 않는 KjunInline과 KjunAvatar를 사용합니다.",
+          "웹은 바탕색 링을 box-shadow로, Native는 링 색으로 칠한 감싸기 View로 그리며 원 중심 간격은 같습니다. 클릭 이벤트는 React onClick, Vue click, Native onPress입니다."
+        ],
+        "types": []
+      },
+      "native": {
+        "props": [
+          {
+            "name": "items",
+            "type": "KjunAvatarGroupItem[]",
+            "required": true,
+            "default": "—",
+            "description": "The people shown, front first.",
+            "summary": "앞에서부터 그릴 사람 목록입니다.",
+            "details": [
+              {
+                "label": "항목 필드",
+                "text": "key: 고유 문자열, src?: 사진 주소, name?: 이름(첫 글자를 대신 그림), color?·textColor?: 첫 글자 바탕·글자 색, 그 밖의 KjunAvatar 속성. size·shape·alt·decorative는 그룹이 정합니다."
+              },
+              {
+                "label": "읽기",
+                "text": "각 아바타는 낭독되지 않고 그룹 이름 하나로 읽힙니다."
+              }
+            ],
+            "source": "packages/native/src/avatar-group.tsx",
+            "example": "/components/avatar-group#preview"
+          },
+          {
+            "name": "max",
+            "type": "number | undefined",
+            "required": false,
+            "default": "4",
+            "description": "Most avatars drawn (default 4); the rest fold into a \"+N\" chip that is not counted here.",
+            "summary": "그릴 아바타의 최대 수입니다. 넘는 사람은 \"+N\" 칩으로 모으며, 칩은 이 수에 들어가지 않습니다. 1보다 작은 값은 1로 봅니다.",
+            "source": "packages/native/src/avatar-group.tsx"
+          },
+          {
+            "name": "total",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The whole headcount when the server sends only a few avatars (default items.length).",
+            "summary": "전체 인원입니다. 서버가 일부 사람만 보낼 때 줍니다.",
+            "details": [
+              {
+                "label": "기본",
+                "text": "생략하면 items의 수입니다. items보다 작으면 items의 수를 씁니다."
+              },
+              {
+                "label": "+N",
+                "text": "total에서 그린 수를 뺀 값이 \"+N\"이 되고, 100 이상은 \"+99\"로 줄여 보이며 그룹 이름에는 실제 인원을 읽습니다."
+              }
+            ],
+            "source": "packages/native/src/avatar-group.tsx",
+            "example": "/components/avatar-group#preview"
+          },
+          {
+            "name": "size",
+            "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "",
+            "summary": "KjunAvatar와 같은 크기입니다. 원형이 겹치는 폭은 xs 6, sm 8, md 12, lg 16, xl 20px입니다.",
+            "source": "packages/native/src/avatar-group.tsx"
+          },
+          {
+            "name": "shape",
+            "type": "\"circle\" | \"square\"",
+            "required": false,
+            "default": "\"circle\"",
+            "description": "Circles overlap; squares sit apart with no ring.",
+            "summary": "circle은 겹쳐 놓고 배경색 링으로 경계를 오립니다. square는 겹치지 않고 크기별 2·4·4·6·8px 간격을 둡니다.",
+            "source": "packages/native/src/avatar-group.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The one name the group is read by, e.g. \"참여자 128명\"; defaults to the headcount.",
+            "summary": "그룹을 읽는 하나의 이름입니다(예: \"참여자 128명\"). 생략하면 인원 수(\"3명\")를 읽습니다.",
+            "source": "packages/native/src/avatar-group.tsx"
+          },
+          {
+            "name": "ringColor",
+            "type": "ColorValue",
+            "required": false,
+            "default": "—",
+            "description": "The colour behind the group, for the ring that cuts each circle out of its neighbour (default the surface colour).",
+            "summary": "원을 서로 오려 내는 2px 링의 색입니다. 그룹이 놓인 바탕색과 같게 둡니다. 생략하면 표면색(surface)입니다. square에서는 쓰지 않습니다.",
+            "source": "packages/native/src/avatar-group.tsx"
+          },
+          {
+            "name": "pressable",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Makes the whole group one button (onPress), for example to open the full list.",
+            "summary": "그룹 전체를 하나의 버튼으로 만듭니다(전체 목록 열기 등). onPress로 받으며, 누르면 카드처럼 0.99로 줄어듭니다. false면 포커스를 받지 않는 이미지입니다.",
+            "source": "packages/native/src/avatar-group.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Blocks a pressable group and dims it.",
+            "summary": "pressable 그룹의 누름을 막고 흐리게 그립니다. 포커스도 받지 않습니다.",
+            "source": "packages/native/src/avatar-group.tsx"
+          },
+          {
+            "name": "onPress",
+            "type": "((event: GestureResponderEvent) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "그룹을 눌렀음을 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "pressable이고 비활성이 아닌 그룹을 누르거나 Enter·Space로 실행할 때"
+              },
+              {
+                "label": "전달값",
+                "text": "GestureResponderEvent"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "전체 목록을 여는 등 다음 행동은 앱이 정합니다."
+              }
+            ],
+            "source": "packages/native/src/avatar-group.tsx",
+            "example": "/components/avatar-group#preview"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트에 더할 스타일입니다. 바깥 여백·배치에 쓰고, 겹침·크기는 size·shape로 정하세요.",
+            "source": "packages/native/src/avatar-group.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "pressable이면 그룹 전체가 버튼 하나가 되어 참여자 목록 같은 화면을 엽니다. 목록은 소비자가 onClick에서 KjunPopover나 KjunDrawer로 엽니다. 사람마다 따로 눌러야 하면 겹치지 않는 KjunInline과 KjunAvatar를 사용합니다.",
+          "웹은 바탕색 링을 box-shadow로, Native는 링 색으로 칠한 감싸기 View로 그리며 원 중심 간격은 같습니다. 클릭 이벤트는 React onClick, Vue click, Native onPress입니다."
+        ],
+        "types": []
+      }
+    },
     "KjunChip": {
       "vue3": {
         "props": [

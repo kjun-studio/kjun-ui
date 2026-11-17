@@ -224,6 +224,7 @@ const callback = (name, key, platform) => {
   if (key === "onOrderChange") return event("행을 옮긴 뒤의 새 순서를 알립니다.", "행의 위·아래 이동 버튼을 누를 때. 맨 위·맨 아래에서 더 갈 수 없는 방향과 reorderDisabled일 때는 발생하지 않습니다.", "(string | number)[]: 옮긴 뒤의 행 value 배열", "반환값을 사용하지 않습니다.", "소비자가 order를 갱신하고 그 순서로 행을 다시 그립니다. 갱신하지 않으면 행은 움직이지 않습니다. 저장도 소비자가 맡습니다.");
   if (key === "onReorder") return event("같은 이동을 자세히 알립니다.", "onOrderChange와 같은 시점", "{ value, from, to, order }: 옮긴 행의 value, 원래 위치와 새 위치(0부터), 새 순서", "반환값을 사용하지 않습니다.", "서버에 한 건의 이동만 보내는 식으로 쓸 때 사용합니다. order 갱신은 onOrderChange에서 합니다.");
   if (name === "KjunColorPicker") return colorPickerCallback(key);
+  if (name === "KjunAvatarGroup") return event("그룹을 눌렀음을 알립니다.", "pressable이고 비활성이 아닌 그룹을 누르거나 Enter·Space로 실행할 때", platform === "native" ? "GestureResponderEvent" : "MouseEvent", "반환값을 사용하지 않습니다.", "전체 목록을 여는 등 다음 행동은 앱이 정합니다.");
   const changeWhen = name.includes("Slider") ? "드래그·트랙 선택·키보드·접근성 증감으로 실제 값이 바뀔 때" : name === "KjunTimePicker" ? "시·분·초 선택 또는 지우기로 완전한 시각이 바뀔 때" : "Enter·blur 확정 또는 증감 버튼으로 숫자가 바뀔 때";
   const arg = name === "KjunRangeSlider" ? "[시작 숫자, 끝 숫자]" : name === "KjunTimePicker" ? "HH:mm 또는 HH:mm:ss 문자열 / null" : "새 숫자";
   if (key === "onValueChange" && name === "KjunListSection") return event("고른 행 값의 변경을 요청합니다.", "value를 가진 행을 누를 때(single은 이미 고른 행을 누르면 알리지 않음)" + (platform === "vue3" ? "" : ", 행의 " + (platform === "native" ? "onPress" : "onClick") + "보다 먼저"), "single은 누른 행의 value, multiple은 그 행을 넣거나 뺀 새 배열", "반환값을 사용하지 않습니다.", "소비자가 섹션의 value를 갱신합니다. 갱신하지 않으면 선택 표시도 바뀌지 않습니다.");
@@ -240,10 +241,24 @@ const callback = (name, key, platform) => {
   if (key === "onIndexChange") return event("현재 슬라이드가 바뀌었음을 알립니다.", "스크롤이 멈춘 위치, 화살표 키, 이전·다음 버튼, 표시 점으로 다른 슬라이드에 도착할 때", "새 슬라이드 번호(0부터)", "반환값을 사용하지 않습니다.", "제어할 때는 소비자가 index를 갱신합니다. 갱신하지 않으면 표시 점은 index를 따르고 스크롤 위치는 사용자가 놓은 자리에 둡니다.");
   throw Error("Missing extension callback: " + name + "." + key);
 };
+const avatarGroupProps = platform => ({
+  items: { type: "KjunAvatarGroupItem[]", ...detail("앞에서부터 그릴 사람 목록입니다.", { "항목 필드": "key: 고유 문자열, src?: 사진 주소, name?: 이름(첫 글자를 대신 그림), color?·textColor?: 첫 글자 바탕·글자 색" + (platform === "vue3" ? "." : ", 그 밖의 KjunAvatar 속성. size·shape·alt·decorative는 그룹이 정합니다."), "읽기": "각 아바타는 낭독되지 않고 그룹 이름 하나로 읽힙니다." }) },
+  max: { default: "4", summary: "그릴 아바타의 최대 수입니다. 넘는 사람은 \"+N\" 칩으로 모으며, 칩은 이 수에 들어가지 않습니다. 1보다 작은 값은 1로 봅니다." },
+  total: detail("전체 인원입니다. 서버가 일부 사람만 보낼 때 줍니다.", { "기본": "생략하면 items의 수입니다. items보다 작으면 items의 수를 씁니다.", "+N": "total에서 그린 수를 뺀 값이 \"+N\"이 되고, 100 이상은 \"+99\"로 줄여 보이며 그룹 이름에는 실제 인원을 읽습니다." }),
+  size: { type: '"xs" | "sm" | "md" | "lg" | "xl"', default: '"md"', summary: "KjunAvatar와 같은 크기입니다. 원형이 겹치는 폭은 xs 6, sm 8, md 12, lg 16, xl 20px입니다." },
+  shape: { type: '"circle" | "square"', default: '"circle"', summary: "circle은 겹쳐 놓고 배경색 링으로 경계를 오립니다. square는 겹치지 않고 크기별 2·4·4·6·8px 간격을 둡니다." },
+  ariaLabel: { summary: "그룹을 읽는 하나의 이름입니다(예: \"참여자 128명\"). 생략하면 인원 수(\"3명\")를 읽습니다." },
+  ringColor: { type: platform === "native" ? "ColorValue" : "string", summary: "원을 서로 오려 내는 2px 링의 색입니다. 그룹이 놓인 바탕색과 같게 둡니다. 생략하면 표면색(surface)입니다. square에서는 쓰지 않습니다." },
+  pressable: { default: "false", summary: "그룹 전체를 하나의 버튼으로 만듭니다(전체 목록 열기 등). " + (platform === "native" ? "onPress" : platform === "vue3" ? "click 이벤트" : "onClick") + "로 받으며, 누르면 카드처럼 0.99로 줄어듭니다. false면 포커스를 받지 않는 이미지입니다." },
+  disabled: { default: "false", summary: "pressable 그룹의 누름을 막고 흐리게 그립니다. 포커스도 받지 않습니다." },
+  className: { summary: "루트(div 또는 button)에 KJUN 클래스 뒤로 더할 클래스입니다. 바깥 여백·배치에 씁니다." },
+  style: { summary: "루트에 더할 스타일입니다. 바깥 여백·배치에 쓰고, 겹침·크기는 size·shape로 정하세요." },
+});
 export const extensionContracts = Object.fromEntries(Object.entries(bindings).map(([name, platforms]) => [name, Object.fromEntries(Object.entries(platforms).map(([platform, keys]) => {
   const props = Object.fromEntries(keys.map(key => {
     let entry;
-    if (name === "KjunZoneGauge" || name === "KjunStackedBar") {
+    if (name === "KjunAvatarGroup" && avatarGroupProps(platform)[key]) entry = avatarGroupProps(platform)[key];
+    else if (name === "KjunZoneGauge" || name === "KjunStackedBar") {
       entry = distributionSummaries(platform)[name][key];
       if (!entry) throw Error("Missing extension prop description: " + name + "." + key);
       entry = { ...entry };
@@ -314,7 +329,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (name === "KjunRangeSlider" && platform === "vue3") props.modelValue.type = "[number, number]";
   const events = {}, slots = {};
   if (platform === "vue3") {
-    const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange", "update:expanded": "onExpandedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange", "update:order": "onOrderChange", reorder: "onReorder" } : {};
+    const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : name === "KjunAvatarGroup" ? { click: "onClick" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange", "update:expanded": "onExpandedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange", "update:order": "onOrderChange", reorder: "onReorder" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
     const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions", "expanded"], KjunListSection: ["actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"] }[name] || [];
     for (const key of slotNames) {

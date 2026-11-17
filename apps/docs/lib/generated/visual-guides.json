@@ -15869,6 +15869,311 @@
       }
     }
   },
+  "KjunAvatarGroup": {
+    "name": "KjunAvatarGroup",
+    "path": "/components/avatar-group",
+    "related": "generic-lists",
+    "description": "여러 사람을 겹친 아바타와 \"+N\"으로 한 자리에 보여 줍니다.",
+    "platforms": {
+      "vue3": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "그룹 이름",
+                "description": "그룹 전체를 이름 하나로 읽고 안의 아바타는 하나하나 읽지 않습니다.",
+                "target": "[aria-label=\"참여자 5명\"]",
+                "optional": false
+              },
+              {
+                "label": "나머지 인원",
+                "description": "max를 넘는 사람 수입니다. 앞 아바타에 가리지 않는 부분 가운데에 숫자를 둡니다.",
+                "target": "text=+2",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "many",
+            "label": "전체 128명",
+            "description": "total로 받은 전체 인원을 \"+99\"까지 표시합니다.",
+            "settings": {
+              "people": "128명"
+            }
+          },
+          {
+            "id": "pressable",
+            "label": "목록 열기",
+            "description": "그룹 전체가 버튼 하나가 됩니다.",
+            "settings": {
+              "people": "5명",
+              "pressable": true
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-xs",
+            "label": "xs",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"xs\"}}}"
+            }
+          },
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          },
+          {
+            "id": "size-xl",
+            "label": "xl",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"xl\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "max를 넘는 사람은 \"+N\"으로 접고 99를 넘으면 \"+99\"로 표시합니다. total로 서버가 준 전체 인원을 받습니다. 원형은 지름의 약 4분의 1씩 겹치고, 사각형은 겹치지 않고 간격을 둡니다. 바탕이 surface가 아니면 ringColor에 바탕색을 넘깁니다."
+      },
+      "react": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "그룹 이름",
+                "description": "그룹 전체를 이름 하나로 읽고 안의 아바타는 하나하나 읽지 않습니다.",
+                "target": "[aria-label=\"참여자 5명\"]",
+                "optional": false
+              },
+              {
+                "label": "나머지 인원",
+                "description": "max를 넘는 사람 수입니다. 앞 아바타에 가리지 않는 부분 가운데에 숫자를 둡니다.",
+                "target": "text=+2",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "many",
+            "label": "전체 128명",
+            "description": "total로 받은 전체 인원을 \"+99\"까지 표시합니다.",
+            "settings": {
+              "people": "128명"
+            }
+          },
+          {
+            "id": "pressable",
+            "label": "목록 열기",
+            "description": "그룹 전체가 버튼 하나가 됩니다.",
+            "settings": {
+              "people": "5명",
+              "pressable": true
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-xs",
+            "label": "xs",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"xs\"}}}"
+            }
+          },
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          },
+          {
+            "id": "size-xl",
+            "label": "xl",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"xl\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "max를 넘는 사람은 \"+N\"으로 접고 99를 넘으면 \"+99\"로 표시합니다. total로 서버가 준 전체 인원을 받습니다. 원형은 지름의 약 4분의 1씩 겹치고, 사각형은 겹치지 않고 간격을 둡니다. 바탕이 surface가 아니면 ringColor에 바탕색을 넘깁니다."
+      },
+      "native": {
+        "figures": [
+          {
+            "id": "default",
+            "label": "구성 영역",
+            "description": "문서 기본 색상과 서체로 캡처한 대표 예제입니다.",
+            "parts": [
+              {
+                "label": "그룹 이름",
+                "description": "그룹 전체를 이름 하나로 읽고 안의 아바타는 하나하나 읽지 않습니다.",
+                "target": "[aria-label=\"참여자 5명\"]",
+                "optional": false
+              },
+              {
+                "label": "나머지 인원",
+                "description": "max를 넘는 사람 수입니다. 앞 아바타에 가리지 않는 부분 가운데에 숫자를 둡니다.",
+                "target": "text=+2",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "states": [
+          {
+            "id": "default",
+            "label": "기본 예제",
+            "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
+          },
+          {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "many",
+            "label": "전체 128명",
+            "description": "total로 받은 전체 인원을 \"+99\"까지 표시합니다.",
+            "settings": {
+              "people": "128명"
+            }
+          },
+          {
+            "id": "pressable",
+            "label": "목록 열기",
+            "description": "그룹 전체가 버튼 하나가 됩니다.",
+            "settings": {
+              "people": "5명",
+              "pressable": true
+            }
+          }
+        ],
+        "sizes": [
+          {
+            "id": "size-xs",
+            "label": "xs",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"xs\"}}}"
+            }
+          },
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          },
+          {
+            "id": "size-xl",
+            "label": "xl",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunAvatarGroup\":{\"props\":{\"size\":\"xl\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "max를 넘는 사람은 \"+N\"으로 접고 99를 넘으면 \"+99\"로 표시합니다. total로 서버가 준 전체 인원을 받습니다. 원형은 지름의 약 4분의 1씩 겹치고, 사각형은 겹치지 않고 간격을 둡니다. 바탕이 surface가 아니면 ringColor에 바탕색을 넘깁니다."
+      }
+    }
+  },
   "KjunChip": {
     "name": "KjunChip",
     "path": "/components/chip",
