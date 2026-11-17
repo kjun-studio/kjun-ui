@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 
 // event-calendar.ts reads the message folder, which Node cannot import directly, so the test bundles it.
-const output = await build({ entryPoints: ['shared/package-runtime/event-calendar.ts'], bundle: true, write: false, format: 'esm', platform: 'node' });
+const output = await build({ entryPoints: ['shared/package-runtime/event-calendar.ts'], bundle: true, write: false, format: 'esm', platform: 'node',
+  alias: { '@kjun-ui/tokens': './packages/tokens/src/index.ts' }, define: { 'process.env.NODE_ENV': '"production"' } });
 const {
   resolveMonth, resolveWeek, stepMonth, weekDays, spanSegment, visibleDots, swipeStep, dayTone, holidayOf, isPast, eventDayLabel, slideStart, slideNext,
 } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
@@ -61,6 +62,8 @@ test('the spoken name carries the holiday and the event count', () => {
   assert.equal(eventDayLabel('2026-11-10', { holiday: '창립기념일', count: 1 }), '2026년 11월 10일 화요일, 창립기념일, 일정 1개');
   for (const count of [0, -2, undefined]) assert.equal(eventDayLabel('2026-11-10', { count }), '2026년 11월 10일 화요일');
   assert.equal(eventDayLabel('2026-11-10', { count: 2.7 }), '2026년 11월 10일 화요일, 일정 2개');
+  for (const count of [Infinity, NaN]) assert.equal(eventDayLabel('2026-11-10', { count }), '2026년 11월 10일 화요일');
+  assert.equal(eventDayLabel('2026-11-10', { today: true, holiday: '창립기념일', count: 1 }), '2026년 11월 10일 화요일, 오늘, 창립기념일, 일정 1개');
   assert.deepEqual(holidayOf(() => true, '2026-11-10'), { holiday: true, name: '휴일' });
   assert.deepEqual(holidayOf(() => '창립기념일', '2026-11-10'), { holiday: true, name: '창립기념일' });
   assert.deepEqual(holidayOf(undefined, '2026-11-10'), { holiday: false });
@@ -74,4 +77,13 @@ test('a slide queues the newest month and always settles', () => {
   s = slideNext(s); assert.deepEqual([s.phase, s.pending], ['idle', null]);
   assert.equal(slideStart(s, '2026-10').direction, -1);
   assert.equal(slideStart(s, '2027-01').phase, 'idle'); // same month: no transition
+});
+
+test('a slide that returns to the shown month settles without entering, and direction follows the final target', () => {
+  let s = { shown: '2026-11', pending: null, phase: 'idle', direction: 1 };
+  s = slideStart(s, '2026-12'); s = slideStart(s, '2026-11');
+  s = slideNext(s); assert.deepEqual([s.phase, s.shown, s.pending], ['idle', '2026-11', null]);
+  s = slideStart(s, '2026-12'); assert.equal(s.direction, 1);
+  s = slideStart(s, '2026-09'); assert.equal(s.direction, -1);
+  s = slideNext(s); assert.deepEqual([s.phase, s.shown], ['in', '2026-09']);
 });

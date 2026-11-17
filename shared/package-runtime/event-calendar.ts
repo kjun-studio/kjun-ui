@@ -1,3 +1,4 @@
+import { tokens } from "@kjun-ui/tokens";
 import { addDays, addMonths, dateLabel, parseDate, todayIso, weekdayOf } from "./calendar";
 import type { CalendarDay, WeekStart } from "./calendar";
 import { defaultMessageScope } from "./messages";
@@ -37,10 +38,9 @@ export function spanSegment(span: DaySpan<unknown>, iso: string, column: number)
 const maxDots = 3;
 export const visibleDots = <C,>(dots: readonly C[] | undefined): C[] => (dots ?? []).slice(0, maxDots);
 
-const swipeDistance = 20, swipeRatio = 2;
 /** The month step of a horizontal swipe: left is next (+1), right is previous (-1). */
 export const swipeStep = (dx: number, dy: number): -1 | 0 | 1 =>
-  Math.abs(dx) > swipeDistance && Math.abs(dx) > Math.abs(dy) * swipeRatio ? (dx < 0 ? 1 : -1) : 0;
+  Math.abs(dx) > tokens.extensions.calendar.swipeDistance && Math.abs(dx) > Math.abs(dy) * tokens.extensions.calendar.swipeRatio ? (dx < 0 ? 1 : -1) : 0;
 
 /** The colour role of a day's number: holidays and Sundays danger, Saturdays info. */
 export function dayTone(weekday: number, { markSunday, markSaturday, holiday }: { markSunday: boolean; markSaturday: boolean; holiday: boolean }): "danger" | "info" | "text" {
@@ -54,22 +54,27 @@ export function holidayOf(test: HolidayTest | undefined, iso: string, scope: Kju
 }
 export const isPast = (iso: string, today: string) => iso < today;
 
-/** A spoken name for an event day: the date, then the holiday name and the event count when present. */
-export function eventDayLabel(iso: string, { holiday, count }: { holiday?: string; count?: number; today?: boolean }, scope: KjunMessageScope = defaultMessageScope) {
-  const events = Math.floor(count ?? 0);
-  return [dateLabel(iso, scope), holiday, events >= 1 ? scope.messages.eventCount(events) : ""].filter(Boolean).join(", ");
+/** A spoken name for an event day: the date, then "today", the holiday name and the event count when present. */
+export function eventDayLabel(iso: string, { holiday, count, today }: { holiday?: string; count?: number; today?: boolean }, scope: KjunMessageScope = defaultMessageScope) {
+  const events = Number.isFinite(count) ? Math.floor(count!) : 0;
+  return [dateLabel(iso, scope), today ? scope.messages.today : "", holiday, events >= 1 ? scope.messages.eventCount(events) : ""].filter(Boolean).join(", ");
 }
 
 /** The month slide: the old month leaves, then the newest requested one enters. */
 export interface SlideState { shown: string; pending: string | null; phase: "idle" | "out" | "in"; direction: -1 | 1 }
+const directionOf = (shown: string, target: string): -1 | 1 => target > shown ? 1 : -1;
 export function slideStart(state: SlideState, next: string): SlideState {
-  if (state.phase !== "idle") return { ...state, pending: next };
+  if (state.phase !== "idle") return { ...state, pending: next, direction: next === state.shown ? state.direction : directionOf(state.shown, next) };
   if (next === state.shown) return state;
-  return { shown: state.shown, pending: next, phase: "out", direction: next > state.shown ? 1 : -1 };
+  return { shown: state.shown, pending: next, phase: "out", direction: directionOf(state.shown, next) };
 }
 export function slideNext(state: SlideState): SlideState {
-  if (state.phase === "out") return { ...state, shown: state.pending ?? state.shown, pending: null, phase: "in" };
+  if (state.phase === "out") {
+    // The target came back to the shown month: nothing to enter.
+    if (!state.pending || state.pending === state.shown) return { ...state, pending: null, phase: "idle" };
+    return { ...state, shown: state.pending, pending: null, phase: "in" };
+  }
   if (state.phase === "in" && state.pending && state.pending !== state.shown)
-    return { shown: state.shown, pending: state.pending, phase: "out", direction: state.pending > state.shown ? 1 : -1 };
+    return { shown: state.shown, pending: state.pending, phase: "out", direction: directionOf(state.shown, state.pending) };
   return { ...state, pending: null, phase: "idle" };
 }
