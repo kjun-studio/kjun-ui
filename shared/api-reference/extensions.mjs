@@ -144,7 +144,7 @@ const numberInputSummaries = platform => ({
   format: { summary: "기본값 묶음을 고릅니다. number는 천 단위 쉼표·정수, amount는 같은 규칙에 앱이 suffix를 지정하는 금액, percent는 쉼표 없이 소수 1자리·음수 허용·\"%\"입니다. 동작은 갈라지지 않고 아래 개별 prop이 항상 프리셋을 덮습니다.", default: '"number"' },
   decimals: { summary: "소수 자릿수 상한(0~6의 정수)입니다. 확정할 때 이 자릿수까지 0으로 채웁니다(3.5 → 3.50). 생략하면 format 프리셋(number·amount 0, percent 1)을 씁니다." },
   grouping: { summary: "정수부에 천 단위 쉼표를 보입니다. 값에는 쉼표가 들어가지 않습니다. 생략하면 format 프리셋(percent만 false)을 씁니다." },
-  allowNegative: { summary: "음수를 받습니다. 허용하면 텍스트 어디에 -가 있어도 음수로 보고, 허용하지 않으면 -를 무시합니다. 생략하면 format 프리셋(percent만 true)을 씁니다. 음수를 받는 입력은 웹 inputMode가 text, Native 키보드가 iOS numbers-and-punctuation·Android numeric입니다." },
+  allowNegative: { summary: "음수를 받습니다. 허용하면 텍스트 어디에 -가 있어도 음수로 보고, 허용하지 않으면 -를 무시합니다. 생략하면 format 프리셋(percent만 true)을 씁니다. 음수를 받는 입력은 웹 inputMode가 text, Native 키보드가 iOS는 numbers-and-punctuation, Android는 numeric입니다." },
   min: detail("허용하는 최솟값입니다.", { "동작": "편집 중에는 그대로 두고, 확정(blur·Enter)할 때 벗어나 있으면 오류 상태와 내장 문구(\"1,000원 이상 입력해 주세요\")를 보입니다. 값을 고치지 않으므로 거부는 앱이 정합니다. 편집 중 값이 범위로 돌아오면 오류를 바로 지웁니다. 오류 prop이나 FormGroup 오류가 있으면 그쪽이 우선합니다." }),
   max: detail("허용하는 최댓값입니다.", { "동작": "min과 같습니다. 확정할 때 벗어나면 오류 상태와 내장 문구(\"100% 이하로 입력해 주세요\")를 보입니다." }),
   prefix: { summary: platform === "vue3" ? "숫자 앞에 붙는 글자입니다. 노드가 필요하면 prefix 슬롯을 씁니다." : "숫자 앞에 붙는 단위 장식입니다. 문자열이 아니면 화면 장식으로만 쓰고 내장 문구에는 붙지 않습니다." },
