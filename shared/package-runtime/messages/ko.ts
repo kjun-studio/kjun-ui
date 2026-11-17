@@ -54,6 +54,7 @@ export const kjunMessagesKo = {
   optional: "(선택)",
   clearSelection: "선택 지우기",
   searchOptions: "선택 항목 검색",
+  avatarGroupCount: (count: number) => `${count}명`,
   selectedCount: (count: number) => `${count}개 선택됨`,
   loadMore: "더 보기",
   clearInput: "입력 지우기",

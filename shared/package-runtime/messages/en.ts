@@ -50,6 +50,7 @@ export const kjunMessagesEn: KjunMessages = {
   optional: "(optional)",
   clearSelection: "Clear selection",
   searchOptions: "Search options",
+  avatarGroupCount: (count: number) => plural(count, "person", "people"),
   selectedCount: (count: number) => `${count} selected`,
   loadMore: "Show more",
   clearInput: "Clear input",
