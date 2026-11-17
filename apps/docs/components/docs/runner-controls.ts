@@ -28,6 +28,7 @@ const hints: Record<string, string> = {
   KjunSearchInput: 'AAA를 검색해 보세요. 예제를 바꾸면 지연·빈 결과·요청 실패를 확인할 수 있습니다.',
   KjunDatePicker: '날짜를 열어 2026년 9월 안에서 선택해 보세요.',
   KjunDateRangePicker: '달력을 열어 시작일과 종료일을 차례로 고른 뒤 적용해 보세요.',
+  KjunFileUpload: '선택 영역을 눌러 파일을 고르거나 끌어다 놓아 보세요. 고른 파일은 바로 완료 상태로 들어가고, 설정에서 여러 상태를 볼 수 있습니다.',
   KjunColorPicker: '색 버튼을 눌러 견본을 고르거나, 설정에서 자유 선택·투명도·HEX 입력을 켜 보세요.',
   KjunTimePicker: '시각을 선택해 보세요. 설정에서 초 단위와 허용 범위를 바꿀 수 있습니다.',
   KjunTable: '열 제목으로 정렬하고 행을 선택하거나 펼쳐 보세요.',

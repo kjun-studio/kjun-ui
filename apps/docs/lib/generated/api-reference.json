@@ -41174,6 +41174,741 @@
         "types": []
       }
     },
+    "KjunFileUpload": {
+      "vue3": {
+        "props": [
+          {
+            "name": "files",
+            "type": "KjunUploadFile[]",
+            "required": false,
+            "default": "[]",
+            "description": "The app's files. Empty shows the wide pick zone; any file folds it into a list with an add row.",
+            "summary": "앱이 가진 파일 목록입니다. 각 항목은 id·name·size(바이트)·status(queued·uploading·done·error)와 선택적인 progress(0~100)·error(실패 문구)·previewUrl(썸네일)·type입니다. 비어 있으면 넓은 선택 영역을, 하나라도 있으면 목록과 추가 행을 그립니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          },
+          {
+            "name": "accept",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "<input accept> rules such as \".pdf,image/*\". Also lists the allowed types in the hint.",
+            "summary": "<input accept>와 같은 규칙(.pdf, image/*, application/pdf)입니다. 고를 때의 사전 검사와 안내 문구의 형식 목록에 씁니다. 서버 검증을 대신하지 않습니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          },
+          {
+            "name": "maxSize",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "Largest file in bytes.",
+            "summary": "파일 하나의 최대 크기(바이트)입니다. 넘는 파일은 놓거나 고른 뒤 거부하고 이유를 알립니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          },
+          {
+            "name": "maxFiles",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "최대 개수입니다. files 길이와 비교해 남은 자리만큼 앞에서부터 받고, 다 차면 추가 행을 비활성으로 바꿉니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          },
+          {
+            "name": "multiple",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "false: one file; a new pick asks to replace it.",
+            "summary": "false면 파일 하나만 다룹니다. 추가 행 대신 행에 바꾸기 버튼을 두고, 새로 고른 파일을 onSelect로 넘겨 앱이 교체합니다. 기본값 true입니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "고르기·끌어다 놓기와 행의 삭제·다시 시도를 막습니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Second line of the zone; built from accept, maxSize and maxFiles when left out.",
+            "summary": "선택 영역 둘째 줄 문구입니다. 생략하면 accept·maxSize·maxFiles로 ‘PDF, 이미지 · 파일당 20MB · 5개까지’처럼 만듭니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          },
+          {
+            "name": "onSelect",
+            "type": "((accepted: File[], rejected: KjunRejectedFile<File>[]) => void)",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "고른 파일을 사전 검사한 결과를 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "파일 선택 창에서 고르거나(웹), 카드에 놓거나(웹), onPick이 파일을 돌려줄 때(Native). 고른 파일이 없거나 취소하면 알리지 않습니다"
+              },
+              {
+                "label": "전달값",
+                "text": "(accepted, rejected): 통과한 파일 배열(웹 File, Native KjunPickedFile)과 { file, reason: \"type\" | \"size\" | \"count\" } 배열"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 accepted를 files에 넣고 업로드를 시작합니다. 거부 이유는 KJUN이 추가 행 아래에 알립니다."
+              }
+            ],
+            "source": "packages/vue3/src/file-upload.tsx",
+            "example": "/components/file-upload#preview"
+          },
+          {
+            "name": "onRemove",
+            "type": "((id: string) => void)",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "행의 삭제를 요청합니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "행의 ×를 누를 때. 업로드 중인 행도 같습니다"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 파일 id"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 files에서 빼고, 필요하면 전송 취소·서버 삭제를 합니다. 빠진 뒤 포커스는 다음 행으로 옮깁니다(웹)."
+              }
+            ],
+            "source": "packages/vue3/src/file-upload.tsx",
+            "example": "/components/file-upload#preview"
+          },
+          {
+            "name": "onRetry",
+            "type": "((id: string) => void)",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "실패한 파일의 재시도를 요청합니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "실패한 행의 다시 시도, 또는 머리의 다시 시도(실패한 행마다 한 번씩)"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 파일 id"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 status를 uploading으로 바꾸고 다시 보냅니다."
+              }
+            ],
+            "source": "packages/vue3/src/file-upload.tsx",
+            "example": "/components/file-upload#preview"
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Id of the hidden file input, for an outside <label for>; defaults to the FormGroup's id.",
+            "summary": "숨은 파일 입력의 ID입니다. 바깥 <label for>와 연결할 때 씁니다. FormGroup 안에서는 그룹 ID를 씁니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Names the field when no FormGroup label does.",
+            "summary": "FormGroup 라벨이 없을 때 필드 묶음의 이름입니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          },
+          {
+            "name": "ariaDescribedBy",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Extra description ids, merged with the FormGroup's hint and error.",
+            "summary": "FormGroup의 도움말·오류에 더해 연결할 설명 ID입니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "완전 제어형입니다. 앱이 files(id·name·size·status·progress·error·previewUrl)를 넘기고 onSelect(accepted, rejected)로 받은 파일을 넣어 업로드합니다. accept·maxSize·maxFiles는 고를 때의 사전 검사이며 서버 검증을 대신하지 않습니다. 형식·크기·개수 순서로 걸러 남는 자리를 앞에서부터 채우고, 거부한 파일은 이유와 함께 추가 행 아래에 알립니다. 행의 ×는 onRemove, 실패한 행의 다시 시도는 onRetry이며, 서버에서도 지울지는 앱이 정합니다. 삭제 뒤 포커스는 다음 행, 이전 행, 추가 버튼 순으로 옮깁니다. 완료·실패로 바뀔 때만 화면 낭독기에 알립니다.",
+          "웹은 카드 전체가 끌어다 놓기를 받습니다. 놓기 전에는 개수와 MIME 형식만 알 수 있어 크기 초과는 놓은 뒤에 알리고, accept에 확장자 규칙이 있으면 놓기 전에는 막지 않습니다. 카드 밖에 떨어진 파일은 앱이 처리합니다. Native는 끌어다 놓기가 없고 영역·추가 행이 onPick을 부릅니다. 파일 선택기는 앱이 연결하며 패키지는 선택 라이브러리에 의존하지 않습니다. Native는 RN Web에서만 확인했습니다."
+        ],
+        "types": [
+          {
+            "name": "KjunUploadFile",
+            "summary": "files의 항목입니다.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "summary": "고유한 파일 id"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "summary": "파일 이름"
+              },
+              {
+                "name": "size",
+                "type": "number",
+                "summary": "바이트 크기"
+              },
+              {
+                "name": "status",
+                "type": "\"queued\" | \"uploading\" | \"done\" | \"error\"",
+                "summary": "업로드 상태"
+              },
+              {
+                "name": "progress",
+                "type": "number | undefined",
+                "summary": "uploading일 때 0~100. 없으면 막대가 불확정으로 움직입니다."
+              },
+              {
+                "name": "error",
+                "type": "string | undefined",
+                "summary": "실패 행에 보일 문구"
+              },
+              {
+                "name": "previewUrl",
+                "type": "string | undefined",
+                "summary": "이미지 썸네일 주소"
+              },
+              {
+                "name": "type",
+                "type": "string | undefined",
+                "summary": "MIME 형식"
+              }
+            ]
+          }
+        ]
+      },
+      "react": {
+        "props": [
+          {
+            "name": "files",
+            "type": "KjunUploadFile[] | undefined",
+            "required": false,
+            "default": "[]",
+            "description": "The app's files. Empty shows the wide pick zone; any file folds it into a list with an add row.",
+            "summary": "앱이 가진 파일 목록입니다. 각 항목은 id·name·size(바이트)·status(queued·uploading·done·error)와 선택적인 progress(0~100)·error(실패 문구)·previewUrl(썸네일)·type입니다. 비어 있으면 넓은 선택 영역을, 하나라도 있으면 목록과 추가 행을 그립니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "accept",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "<input accept> rules such as \".pdf,image/*\". Also lists the allowed types in the hint.",
+            "summary": "<input accept>와 같은 규칙(.pdf, image/*, application/pdf)입니다. 고를 때의 사전 검사와 안내 문구의 형식 목록에 씁니다. 서버 검증을 대신하지 않습니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "maxSize",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Largest file in bytes.",
+            "summary": "파일 하나의 최대 크기(바이트)입니다. 넘는 파일은 놓거나 고른 뒤 거부하고 이유를 알립니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "maxFiles",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "최대 개수입니다. files 길이와 비교해 남은 자리만큼 앞에서부터 받고, 다 차면 추가 행을 비활성으로 바꿉니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "multiple",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "false: one file; a new pick asks to replace it.",
+            "summary": "false면 파일 하나만 다룹니다. 추가 행 대신 행에 바꾸기 버튼을 두고, 새로 고른 파일을 onSelect로 넘겨 앱이 교체합니다. 기본값 true입니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "고르기·끌어다 놓기와 행의 삭제·다시 시도를 막습니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "hint",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Second line of the zone; built from accept, maxSize and maxFiles when left out.",
+            "summary": "선택 영역 둘째 줄 문구입니다. 생략하면 accept·maxSize·maxFiles로 ‘PDF, 이미지 · 파일당 20MB · 5개까지’처럼 만듭니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "onSelect",
+            "type": "(accepted: File[], rejected: KjunRejectedFile<File>[]) => void",
+            "required": true,
+            "default": "—",
+            "description": "Picks that passed the pre-screen, and the ones that did not. The app adds `accepted` to `files` and uploads them.",
+            "summary": "고른 파일을 사전 검사한 결과를 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "파일 선택 창에서 고르거나(웹), 카드에 놓거나(웹), onPick이 파일을 돌려줄 때(Native). 고른 파일이 없거나 취소하면 알리지 않습니다"
+              },
+              {
+                "label": "전달값",
+                "text": "(accepted, rejected): 통과한 파일 배열(웹 File, Native KjunPickedFile)과 { file, reason: \"type\" | \"size\" | \"count\" } 배열"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 accepted를 files에 넣고 업로드를 시작합니다. 거부 이유는 KJUN이 추가 행 아래에 알립니다."
+              }
+            ],
+            "source": "packages/react/src/file-upload.tsx",
+            "example": "/components/file-upload#preview"
+          },
+          {
+            "name": "onRemove",
+            "type": "((id: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The × on a row. Whether the file is also deleted on the server is the app's call.",
+            "summary": "행의 삭제를 요청합니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "행의 ×를 누를 때. 업로드 중인 행도 같습니다"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 파일 id"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 files에서 빼고, 필요하면 전송 취소·서버 삭제를 합니다. 빠진 뒤 포커스는 다음 행으로 옮깁니다(웹)."
+              }
+            ],
+            "source": "packages/react/src/file-upload.tsx",
+            "example": "/components/file-upload#preview"
+          },
+          {
+            "name": "onRetry",
+            "type": "((id: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Retry on a failed row; the head's retry calls it for each failed row.",
+            "summary": "실패한 파일의 재시도를 요청합니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "실패한 행의 다시 시도, 또는 머리의 다시 시도(실패한 행마다 한 번씩)"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 파일 id"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 status를 uploading으로 바꾸고 다시 보냅니다."
+              }
+            ],
+            "source": "packages/react/src/file-upload.tsx",
+            "example": "/components/file-upload#preview"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Id of the hidden file input, for an outside <label for>; defaults to the FormGroup's id.",
+            "summary": "숨은 파일 입력의 ID입니다. 바깥 <label for>와 연결할 때 씁니다. FormGroup 안에서는 그룹 ID를 씁니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트 카드에 더할 클래스입니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트 카드에 더할 스타일입니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Names the field when no FormGroup label does.",
+            "summary": "FormGroup 라벨이 없을 때 필드 묶음의 이름입니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "ariaDescribedBy",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Extra description ids, merged with the FormGroup's hint and error.",
+            "summary": "FormGroup의 도움말·오류에 더해 연결할 설명 ID입니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "완전 제어형입니다. 앱이 files(id·name·size·status·progress·error·previewUrl)를 넘기고 onSelect(accepted, rejected)로 받은 파일을 넣어 업로드합니다. accept·maxSize·maxFiles는 고를 때의 사전 검사이며 서버 검증을 대신하지 않습니다. 형식·크기·개수 순서로 걸러 남는 자리를 앞에서부터 채우고, 거부한 파일은 이유와 함께 추가 행 아래에 알립니다. 행의 ×는 onRemove, 실패한 행의 다시 시도는 onRetry이며, 서버에서도 지울지는 앱이 정합니다. 삭제 뒤 포커스는 다음 행, 이전 행, 추가 버튼 순으로 옮깁니다. 완료·실패로 바뀔 때만 화면 낭독기에 알립니다.",
+          "웹은 카드 전체가 끌어다 놓기를 받습니다. 놓기 전에는 개수와 MIME 형식만 알 수 있어 크기 초과는 놓은 뒤에 알리고, accept에 확장자 규칙이 있으면 놓기 전에는 막지 않습니다. 카드 밖에 떨어진 파일은 앱이 처리합니다. Native는 끌어다 놓기가 없고 영역·추가 행이 onPick을 부릅니다. 파일 선택기는 앱이 연결하며 패키지는 선택 라이브러리에 의존하지 않습니다. Native는 RN Web에서만 확인했습니다."
+        ],
+        "types": [
+          {
+            "name": "KjunUploadFile",
+            "summary": "files의 항목입니다.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "summary": "고유한 파일 id"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "summary": "파일 이름"
+              },
+              {
+                "name": "size",
+                "type": "number",
+                "summary": "바이트 크기"
+              },
+              {
+                "name": "status",
+                "type": "\"queued\" | \"uploading\" | \"done\" | \"error\"",
+                "summary": "업로드 상태"
+              },
+              {
+                "name": "progress",
+                "type": "number | undefined",
+                "summary": "uploading일 때 0~100. 없으면 막대가 불확정으로 움직입니다."
+              },
+              {
+                "name": "error",
+                "type": "string | undefined",
+                "summary": "실패 행에 보일 문구"
+              },
+              {
+                "name": "previewUrl",
+                "type": "string | undefined",
+                "summary": "이미지 썸네일 주소"
+              },
+              {
+                "name": "type",
+                "type": "string | undefined",
+                "summary": "MIME 형식"
+              }
+            ]
+          }
+        ]
+      },
+      "native": {
+        "props": [
+          {
+            "name": "files",
+            "type": "KjunUploadFile[] | undefined",
+            "required": false,
+            "default": "[]",
+            "description": "The app's files. Empty shows the wide pick zone; any file folds it into a list with an add row.",
+            "summary": "앱이 가진 파일 목록입니다. 각 항목은 id·name·size(바이트)·status(queued·uploading·done·error)와 선택적인 progress(0~100)·error(실패 문구)·previewUrl(썸네일)·type입니다. 비어 있으면 넓은 선택 영역을, 하나라도 있으면 목록과 추가 행을 그립니다.",
+            "source": "packages/native/src/file-upload.tsx"
+          },
+          {
+            "name": "accept",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "<input accept>-style rules such as \".pdf,image/*\", checked against what onPick returns.",
+            "summary": "<input accept>와 같은 규칙(.pdf, image/*, application/pdf)입니다. 고를 때의 사전 검사와 안내 문구의 형식 목록에 씁니다. 서버 검증을 대신하지 않습니다.",
+            "source": "packages/native/src/file-upload.tsx"
+          },
+          {
+            "name": "maxSize",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "파일 하나의 최대 크기(바이트)입니다. 넘는 파일은 놓거나 고른 뒤 거부하고 이유를 알립니다.",
+            "source": "packages/native/src/file-upload.tsx"
+          },
+          {
+            "name": "maxFiles",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "최대 개수입니다. files 길이와 비교해 남은 자리만큼 앞에서부터 받고, 다 차면 추가 행을 비활성으로 바꿉니다.",
+            "source": "packages/native/src/file-upload.tsx"
+          },
+          {
+            "name": "multiple",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "",
+            "summary": "false면 파일 하나만 다룹니다. 추가 행 대신 행에 바꾸기 버튼을 두고, 새로 고른 파일을 onSelect로 넘겨 앱이 교체합니다. 기본값 true입니다.",
+            "source": "packages/native/src/file-upload.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "고르기·끌어다 놓기와 행의 삭제·다시 시도를 막습니다.",
+            "source": "packages/native/src/file-upload.tsx"
+          },
+          {
+            "name": "hint",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "선택 영역 둘째 줄 문구입니다. 생략하면 accept·maxSize·maxFiles로 ‘PDF, 이미지 · 파일당 20MB · 5개까지’처럼 만듭니다.",
+            "source": "packages/native/src/file-upload.tsx"
+          },
+          {
+            "name": "onPick",
+            "type": "() => Promise<KjunPickedFile[] | null>",
+            "required": true,
+            "default": "—",
+            "description": "The app's file picker (expo-document-picker or any other); KJUN depends on none. Resolve null when the user cancels.",
+            "summary": "Native에서 앱의 파일 선택기를 엽니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "선택 영역·추가 행·바꾸기를 누를 때"
+              },
+              {
+                "label": "전달값",
+                "text": "없음"
+              },
+              {
+                "label": "반환값",
+                "text": "Promise<KjunPickedFile[] | null>: { name, size, type?, uri? } 배열, 취소면 null"
+              },
+              {
+                "label": "상태 책임",
+                "text": "expo-document-picker 같은 선택기를 앱이 연결합니다. 패키지는 선택 라이브러리에 의존하지 않습니다."
+              }
+            ],
+            "source": "packages/native/src/file-upload.tsx",
+            "example": "/components/file-upload#preview"
+          },
+          {
+            "name": "onSelect",
+            "type": "(accepted: KjunPickedFile[], rejected: KjunRejectedFile<KjunPickedFile>[]) => void",
+            "required": true,
+            "default": "—",
+            "description": "",
+            "summary": "고른 파일을 사전 검사한 결과를 알립니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "파일 선택 창에서 고르거나(웹), 카드에 놓거나(웹), onPick이 파일을 돌려줄 때(Native). 고른 파일이 없거나 취소하면 알리지 않습니다"
+              },
+              {
+                "label": "전달값",
+                "text": "(accepted, rejected): 통과한 파일 배열(웹 File, Native KjunPickedFile)과 { file, reason: \"type\" | \"size\" | \"count\" } 배열"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 accepted를 files에 넣고 업로드를 시작합니다. 거부 이유는 KJUN이 추가 행 아래에 알립니다."
+              }
+            ],
+            "source": "packages/native/src/file-upload.tsx",
+            "example": "/components/file-upload#preview"
+          },
+          {
+            "name": "onRemove",
+            "type": "((id: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "행의 삭제를 요청합니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "행의 ×를 누를 때. 업로드 중인 행도 같습니다"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 파일 id"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 files에서 빼고, 필요하면 전송 취소·서버 삭제를 합니다. 빠진 뒤 포커스는 다음 행으로 옮깁니다(웹)."
+              }
+            ],
+            "source": "packages/native/src/file-upload.tsx",
+            "example": "/components/file-upload#preview"
+          },
+          {
+            "name": "onRetry",
+            "type": "((id: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "실패한 파일의 재시도를 요청합니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "실패한 행의 다시 시도, 또는 머리의 다시 시도(실패한 행마다 한 번씩)"
+              },
+              {
+                "label": "전달값",
+                "text": "string: 파일 id"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "앱이 status를 uploading으로 바꾸고 다시 보냅니다."
+              }
+            ],
+            "source": "packages/native/src/file-upload.tsx",
+            "example": "/components/file-upload#preview"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "FormGroup 라벨이 없을 때 필드 묶음의 이름입니다.",
+            "source": "packages/native/src/file-upload.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "루트 카드에 더할 스타일입니다.",
+            "source": "packages/native/src/file-upload.tsx"
+          }
+        ],
+        "events": [],
+        "slots": [],
+        "ownership": [
+          "완전 제어형입니다. 앱이 files(id·name·size·status·progress·error·previewUrl)를 넘기고 onSelect(accepted, rejected)로 받은 파일을 넣어 업로드합니다. accept·maxSize·maxFiles는 고를 때의 사전 검사이며 서버 검증을 대신하지 않습니다. 형식·크기·개수 순서로 걸러 남는 자리를 앞에서부터 채우고, 거부한 파일은 이유와 함께 추가 행 아래에 알립니다. 행의 ×는 onRemove, 실패한 행의 다시 시도는 onRetry이며, 서버에서도 지울지는 앱이 정합니다. 삭제 뒤 포커스는 다음 행, 이전 행, 추가 버튼 순으로 옮깁니다. 완료·실패로 바뀔 때만 화면 낭독기에 알립니다.",
+          "웹은 카드 전체가 끌어다 놓기를 받습니다. 놓기 전에는 개수와 MIME 형식만 알 수 있어 크기 초과는 놓은 뒤에 알리고, accept에 확장자 규칙이 있으면 놓기 전에는 막지 않습니다. 카드 밖에 떨어진 파일은 앱이 처리합니다. Native는 끌어다 놓기가 없고 영역·추가 행이 onPick을 부릅니다. 파일 선택기는 앱이 연결하며 패키지는 선택 라이브러리에 의존하지 않습니다. Native는 RN Web에서만 확인했습니다."
+        ],
+        "types": [
+          {
+            "name": "KjunUploadFile",
+            "summary": "files의 항목입니다.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "summary": "고유한 파일 id"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "summary": "파일 이름"
+              },
+              {
+                "name": "size",
+                "type": "number",
+                "summary": "바이트 크기"
+              },
+              {
+                "name": "status",
+                "type": "\"queued\" | \"uploading\" | \"done\" | \"error\"",
+                "summary": "업로드 상태"
+              },
+              {
+                "name": "progress",
+                "type": "number | undefined",
+                "summary": "uploading일 때 0~100. 없으면 막대가 불확정으로 움직입니다."
+              },
+              {
+                "name": "error",
+                "type": "string | undefined",
+                "summary": "실패 행에 보일 문구"
+              },
+              {
+                "name": "previewUrl",
+                "type": "string | undefined",
+                "summary": "이미지 썸네일 주소"
+              },
+              {
+                "name": "type",
+                "type": "string | undefined",
+                "summary": "MIME 형식"
+              }
+            ]
+          }
+        ]
+      }
+    },
     "KjunZoneGauge": {
       "vue3": {
         "props": [

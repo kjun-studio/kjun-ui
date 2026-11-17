@@ -8428,6 +8428,303 @@
       }
     ]
   },
+  "KjunFileUpload": {
+    "vue3": [
+      {
+        "name": "files",
+        "type": "KjunUploadFile[]",
+        "required": false,
+        "default": "[]",
+        "description": "The app's files. Empty shows the wide pick zone; any file folds it into a list with an add row."
+      },
+      {
+        "name": "accept",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "<input accept> rules such as \".pdf,image/*\". Also lists the allowed types in the hint."
+      },
+      {
+        "name": "maxSize",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": "Largest file in bytes."
+      },
+      {
+        "name": "maxFiles",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "multiple",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "false: one file; a new pick asks to replace it."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Second line of the zone; built from accept, maxSize and maxFiles when left out."
+      },
+      {
+        "name": "onSelect",
+        "type": "((accepted: File[], rejected: KjunRejectedFile<File>[]) => void)",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onRemove",
+        "type": "((id: string) => void)",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "((id: string) => void)",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Id of the hidden file input, for an outside <label for>; defaults to the FormGroup's id."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Names the field when no FormGroup label does."
+      },
+      {
+        "name": "ariaDescribedBy",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Extra description ids, merged with the FormGroup's hint and error."
+      }
+    ],
+    "events": [],
+    "slots": [],
+    "react": [
+      {
+        "name": "files",
+        "type": "import(\"/workspace/shared/package-runtime/file-upload\").KjunUploadFile[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The app's files. Empty shows the wide pick zone; any file folds it into a list with an add row."
+      },
+      {
+        "name": "accept",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "<input accept> rules such as \".pdf,image/*\". Also lists the allowed types in the hint."
+      },
+      {
+        "name": "maxSize",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Largest file in bytes."
+      },
+      {
+        "name": "maxFiles",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "multiple",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false: one file; a new pick asks to replace it."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "hint",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Second line of the zone; built from accept, maxSize and maxFiles when left out."
+      },
+      {
+        "name": "onSelect",
+        "type": "(accepted: File[], rejected: import(\"/workspace/shared/package-runtime/file-upload\").KjunRejectedFile<File>[]) => void",
+        "required": true,
+        "default": "—",
+        "description": "Picks that passed the pre-screen, and the ones that did not. The app adds `accepted` to `files` and uploads them."
+      },
+      {
+        "name": "onRemove",
+        "type": "((id: string) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The × on a row. Whether the file is also deleted on the server is the app's call."
+      },
+      {
+        "name": "onRetry",
+        "type": "((id: string) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Retry on a failed row; the head's retry calls it for each failed row."
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Id of the hidden file input, for an outside <label for>; defaults to the FormGroup's id."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Names the field when no FormGroup label does."
+      },
+      {
+        "name": "ariaDescribedBy",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Extra description ids, merged with the FormGroup's hint and error."
+      }
+    ],
+    "native": [
+      {
+        "name": "files",
+        "type": "import(\"/workspace/shared/package-runtime/file-upload\").KjunUploadFile[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The app's files. Empty shows the wide pick zone; any file folds it into a list with an add row."
+      },
+      {
+        "name": "accept",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "<input accept>-style rules such as \".pdf,image/*\", checked against what onPick returns."
+      },
+      {
+        "name": "maxSize",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "maxFiles",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "multiple",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "hint",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onPick",
+        "type": "() => Promise<import(\"/workspace/shared/package-runtime/file-upload\").KjunPickedFile[] | null>",
+        "required": true,
+        "default": "—",
+        "description": "The app's file picker (expo-document-picker or any other); KJUN depends on none. Resolve null when the user cancels."
+      },
+      {
+        "name": "onSelect",
+        "type": "(accepted: import(\"/workspace/shared/package-runtime/file-upload\").KjunPickedFile[], rejected: import(\"/workspace/shared/package-runtime/file-upload\").KjunRejectedFile<import(\"/workspace/shared/package-runtime/file-upload\").KjunPickedFile>[]) => void",
+        "required": true,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onRemove",
+        "type": "((id: string) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "((id: string) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
+      }
+    ]
+  },
   "KjunFilterGroup": {
     "vue3": [
       {

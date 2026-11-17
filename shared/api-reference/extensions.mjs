@@ -178,6 +178,27 @@ const distributionSummaries = (platform) => ({
     ...Object.fromEntries(Object.entries(distributionRoot).map(([key, summary]) => [key, { summary }])),
   },
 });
+const fileUploadSummaries = {
+  files: "앱이 가진 파일 목록입니다. 각 항목은 id·name·size(바이트)·status(queued·uploading·done·error)와 선택적인 progress(0~100)·error(실패 문구)·previewUrl(썸네일)·type입니다. 비어 있으면 넓은 선택 영역을, 하나라도 있으면 목록과 추가 행을 그립니다.",
+  accept: "<input accept>와 같은 규칙(.pdf, image/*, application/pdf)입니다. 고를 때의 사전 검사와 안내 문구의 형식 목록에 씁니다. 서버 검증을 대신하지 않습니다.",
+  maxSize: "파일 하나의 최대 크기(바이트)입니다. 넘는 파일은 놓거나 고른 뒤 거부하고 이유를 알립니다.",
+  maxFiles: "최대 개수입니다. files 길이와 비교해 남은 자리만큼 앞에서부터 받고, 다 차면 추가 행을 비활성으로 바꿉니다.",
+  multiple: "false면 파일 하나만 다룹니다. 추가 행 대신 행에 바꾸기 버튼을 두고, 새로 고른 파일을 onSelect로 넘겨 앱이 교체합니다. 기본값 true입니다.",
+  disabled: "고르기·끌어다 놓기와 행의 삭제·다시 시도를 막습니다.",
+  hint: "선택 영역 둘째 줄 문구입니다. 생략하면 accept·maxSize·maxFiles로 ‘PDF, 이미지 · 파일당 20MB · 5개까지’처럼 만듭니다.",
+  id: "숨은 파일 입력의 ID입니다. 바깥 <label for>와 연결할 때 씁니다. FormGroup 안에서는 그룹 ID를 씁니다.",
+  ariaLabel: "FormGroup 라벨이 없을 때 필드 묶음의 이름입니다.",
+  ariaDescribedBy: "FormGroup의 도움말·오류에 더해 연결할 설명 ID입니다.",
+  className: "루트 카드에 더할 클래스입니다.",
+  style: "루트 카드에 더할 스타일입니다.",
+};
+const fileUploadCallbacks = {
+  onSelect: event("고른 파일을 사전 검사한 결과를 알립니다.", "파일 선택 창에서 고르거나(웹), 카드에 놓거나(웹), onPick이 파일을 돌려줄 때(Native). 고른 파일이 없거나 취소하면 알리지 않습니다", "(accepted, rejected): 통과한 파일 배열(웹 File, Native KjunPickedFile)과 { file, reason: \"type\" | \"size\" | \"count\" } 배열", "반환값을 사용하지 않습니다.", "앱이 accepted를 files에 넣고 업로드를 시작합니다. 거부 이유는 KJUN이 추가 행 아래에 알립니다."),
+  onRemove: event("행의 삭제를 요청합니다.", "행의 ×를 누를 때. 업로드 중인 행도 같습니다", "string: 파일 id", "반환값을 사용하지 않습니다.", "앱이 files에서 빼고, 필요하면 전송 취소·서버 삭제를 합니다. 빠진 뒤 포커스는 다음 행으로 옮깁니다(웹)."),
+  onRetry: event("실패한 파일의 재시도를 요청합니다.", "실패한 행의 다시 시도, 또는 머리의 다시 시도(실패한 행마다 한 번씩)", "string: 파일 id", "반환값을 사용하지 않습니다.", "앱이 status를 uploading으로 바꾸고 다시 보냅니다."),
+  onPick: event("Native에서 앱의 파일 선택기를 엽니다.", "선택 영역·추가 행·바꾸기를 누를 때", "없음", "Promise<KjunPickedFile[] | null>: { name, size, type?, uri? } 배열, 취소면 null", "expo-document-picker 같은 선택기를 앱이 연결합니다. 패키지는 선택 라이브러리에 의존하지 않습니다."),
+};
+const fileUploadTypes = [fields("KjunUploadFile", "files의 항목입니다.", [["id", "string", "고유한 파일 id"], ["name", "string", "파일 이름"], ["size", "number", "바이트 크기"], ["status", "\"queued\" | \"uploading\" | \"done\" | \"error\"", "업로드 상태"], ["progress", "number | undefined", "uploading일 때 0~100. 없으면 막대가 불확정으로 움직입니다."], ["error", "string | undefined", "실패 행에 보일 문구"], ["previewUrl", "string | undefined", "이미지 썸네일 주소"], ["type", "string | undefined", "MIME 형식"]])];
 const splitPaneSummaries = {
   direction: "나누는 방향입니다. horizontal(기본값)은 패널을 좌우로, vertical은 상하로 둡니다. 상하 분할은 부모가 높이를 정해야 합니다.",
   size: "제어할 때 첫 패널이 차지하는 비율(0~1)입니다. 경계를 뺀 공간 기준이며, 한계를 벗어난 값은 화면에서 가장 가까운 허용 크기로 그립니다.",
@@ -226,6 +247,10 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
       entry = distributionSummaries(platform)[name][key];
       if (!entry) throw Error("Missing extension prop description: " + name + "." + key);
       entry = { ...entry };
+    }
+    else if (name === "KjunFileUpload") {
+      entry = key.startsWith("on") ? fileUploadCallbacks[key] : fileUploadSummaries[key] ? { summary: fileUploadSummaries[key] } : undefined;
+      if (!entry) throw Error("Missing extension prop description: " + name + "." + key);
     }
     else if (name === "KjunSplitPane") {
       entry = key.startsWith("on") ? callback(name, key, platform) : splitPaneSlots[key] ?? (splitPaneSummaries[key] ? { summary: splitPaneSummaries[key] } : undefined);
@@ -298,5 +323,5 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
       slots[key] = { ...definition, details: definition.details.map(row => row.label === "슬롯 데이터" ? { ...row, text: "제공 데이터 없음" } : row) };
     }
   }
-  return [platform, { props, events, slots, ownership: [guides[name].interaction, guides[name].differences], types: ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? [fields("NavigationDestination", "목적지 목록의 항목입니다.", [["key", "string", "고유한 목적지 key"], ["label", "string", "전체 목적지 이름"], ["href", platform === "native" ? "string | undefined" : "string", "웹 이동 주소. Native에서는 앱 콜백으로 이동합니다."], ["icon", "string | undefined", "보조 아이콘"], ["badge", "string | number | boolean | undefined", "보조 수치 또는 짧은 라벨. true는 점으로 표시하고 99보다 큰 숫자는 99+로 줄입니다."], ["disabled", "boolean | undefined", "이 목적지 이동 비활성"]])] : [] }];
+  return [platform, { props, events, slots, ownership: [guides[name].interaction, guides[name].differences], types: name === "KjunFileUpload" ? fileUploadTypes : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? [fields("NavigationDestination", "목적지 목록의 항목입니다.", [["key", "string", "고유한 목적지 key"], ["label", "string", "전체 목적지 이름"], ["href", platform === "native" ? "string | undefined" : "string", "웹 이동 주소. Native에서는 앱 콜백으로 이동합니다."], ["icon", "string | undefined", "보조 아이콘"], ["badge", "string | number | boolean | undefined", "보조 수치 또는 짧은 라벨. true는 점으로 표시하고 99보다 큰 숫자는 99+로 줄입니다."], ["disabled", "boolean | undefined", "이 목적지 이동 비활성"]])] : [] }];
 }))]));

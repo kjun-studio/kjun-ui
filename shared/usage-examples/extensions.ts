@@ -170,6 +170,23 @@ export function generate(input: UsageInput) {
         ...b.props('custom', 'alpha', 'input', 'clearable', 'eyeDropper', 'disabled', 'error', 'size'),
         recentColors: s.recent ? b.state('recentColors', ['#0EA5E9', '#7C3AED']) : undefined, onRecentColorsChange: s.recent ? b.update('recentColors') : undefined,
         ariaLabel: '라벨 색', onChangeCommit: commit() }); break;
+    case 'KjunFileUpload': {
+      // The app uploads; this example marks each accepted file as done right away.
+      const sample = s.sample === '여러 상태' ? [
+        { id: 'receipt', name: '영수증_11월.pdf', size: 245760, status: 'done' },
+        { id: 'photo', name: '매장_외관_사진_2026.jpg', size: 4404019, status: 'uploading', progress: 64 },
+        { id: 'license', name: '사업자등록증.pdf', size: 1153434, status: 'error' },
+        { id: 'clients', name: '거래처_목록.xlsx', size: 327680, status: 'queued' },
+      ].slice(0, s.multiple === false ? 1 : 4) : [];
+      const add = 'accepted.map(file => ({ id: file.name + "-" + Date.now(), name: file.name, size: file.size, type: file.type, status: "done" }))';
+      content = b.node(name, { files: b.state('files', sample), accept: '.pdf,image/*,.xlsx', maxSize: 20 * 1024 * 1024, maxFiles: 5,
+        ...b.props('multiple', 'disabled'),
+        onSelect: b.handler('select', 'accepted', b.set('files', s.multiple === false ? add : `[...${b.read('files')}, ...${add}]`)),
+        onRemove: b.handler('remove', 'id', b.set('files', `${b.read('files')}.filter(file => file.id !== id)`)),
+        onRetry: b.handler('retry', 'id', b.set('files', `${b.read('files')}.map(file => file.id === id ? { ...file, status: "done" } : file)`)),
+        ...(b.native ? { onPick: b.handler('pick', '', '// Connect the app\'s picker, for example expo-document-picker.\nreturn [{ name: "영수증_12월.pdf", size: 245760, type: "application/pdf" }];', true) } : {}),
+      }); break;
+    }
     case 'KjunQuantityStepper':
       content = b.node(name, { value: b.state('quantity', s.decimal ? 1.25 : 2), onValueChange: b.update('quantity'), min: s.negative ? -10 : 0, max: 10, step: s.decimal ? .1 : 1, precision: s.decimal ? 2 : 0,
         ...b.props('disabled', 'error', 'size', 'block'), ariaLabel: '주문 수량', onChangeCommit: commit(), onInvalidInput: b.handler('invalid', 'draft', b.result('"잘못된 수량: " + draft')),
@@ -177,9 +194,9 @@ export function generate(input: UsageInput) {
     default: throw Error('기본 사용 코드 생성기 누락: ' + name);
   }
   // A visible label and error text so the error state never relies on the border color alone.
-  const fieldLabels: Record<string, [string, string]> = { KjunTimePicker: ['알림 시각', '알림 시각을 선택해 주세요.'], KjunColorPicker: ['라벨 색', '라벨 색을 선택해 주세요.'], KjunQuantityStepper: ['주문 수량', '주문 수량을 확인해 주세요.'] };
+  const fieldLabels: Record<string, [string, string]> = { KjunTimePicker: ['알림 시각', '알림 시각을 선택해 주세요.'], KjunColorPicker: ['라벨 색', '라벨 색을 선택해 주세요.'], KjunFileUpload: ['증빙 자료', '증빙 자료를 첨부해 주세요.'], KjunQuantityStepper: ['주문 수량', '주문 수량을 확인해 주세요.'] };
   if (fieldLabels[name]) content = b.node('KjunFormGroup', { label: fieldLabels[name][0], error: s.error ? fieldLabels[name][1] : '' }, content);
-  if (['KjunTimePicker', 'KjunColorPicker', 'KjunQuantityStepper'].includes(name)) content = b.node(b.native ? 'View' : 'div', { style: { width: b.native ? 360 : '360px', maxWidth: '100%' } }, content);
+  if (['KjunTimePicker', 'KjunColorPicker', 'KjunFileUpload', 'KjunQuantityStepper'].includes(name)) content = b.node(b.native ? 'View' : 'div', { style: { width: b.native ? 360 : '360px', maxWidth: '100%' } }, content);
   return b.finish(content);
 }
 

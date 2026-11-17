@@ -1081,6 +1081,21 @@
       ]
     },
     {
+      "name": "KjunFileUpload",
+      "category": "inputs",
+      "aliases": [
+        "파일 업로드",
+        "파일 첨부",
+        "첨부 파일",
+        "끌어다 놓기",
+        "File upload",
+        "Dropzone"
+      ],
+      "useCases": [
+        "설정 폼"
+      ]
+    },
+    {
       "name": "KjunQuantityStepper",
       "category": "inputs",
       "aliases": [

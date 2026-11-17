@@ -21,6 +21,7 @@ export const extensionControls: Record<string, ExampleControl[]> = {
   KjunStackedBar: [choice("data", "데이터", ["기본", "작은 조각", "모두 0", "없음"]), choice("size", "크기", ["md", "sm"]), bool("legend", "범례", true)],
   KjunSplitPane: [choice("direction", "방향", ["horizontal", "vertical"]), bool("limits", "최소 크기", true), disabled],
   KjunColorPicker: [size, disabled, error, bool("swatches", "견본", true), bool("custom", "자유 선택"), bool("alpha", "투명도"), bool("input", "HEX 입력"), bool("clearable", "색 없음", true), bool("recent", "최근 사용 색"), bool("eyeDropper", "스포이드")],
+  KjunFileUpload: [disabled, error, bool("multiple", "여러 파일", true), choice("sample", "예시 파일", ["비어 있음", "여러 상태"])],
   KjunTimePicker: [size, disabled, error, choice("precision", "시간 정밀도", ["minute", "second"]), number("minuteStep", "분 간격", 1, 1, 59), { ...number("secondStep", "초 간격", 1, 1, 59), when: { precision: ["second"] } }, bool("bounded", "시각 범위 제한"), bool("clearable", "지우기", true), bool("block", "전체 너비")],
   KjunQuantityStepper: [size, disabled, error, bool("block", "전체 너비"), bool("decimal", "소수 수량"), bool("negative", "음수 허용")],
 };
@@ -51,6 +52,7 @@ export const extensionPresets: Record<string, ExamplePreset[]> = {
   KjunStackedBar: [preset("empty", "모두 0", { data: "모두 0" }), preset("missing", "데이터 없음", { data: "없음" })],
   KjunSplitPane: [preset("vertical", "상하 분할", { direction: "vertical" }), preset("free", "한계 없음", { limits: false })],
   KjunColorPicker: [preset("all", "전체 옵션", { custom: true, alpha: true, input: true }, { color: "#3B82F6CC" }), preset("free", "자유 선택만", { swatches: false, clearable: false, custom: true, input: true })],
+  KjunFileUpload: [preset("states", "여러 상태", { sample: "여러 상태" }), preset("single", "파일 1개", { multiple: false, sample: "여러 상태" })],
   KjunTimePicker: [preset("seconds", "초 단위", { precision: "second" }, { time: "09:30:15" }), preset("bounded", "시각 범위", { precision: "second", bounded: true }), preset("error", "오류", { error: true })],
   KjunQuantityStepper: [preset("block", "전체 너비", { block:true }), preset("decimal", "소수 수량", { decimal: true }, { quantity: 1.25 }), preset("negative", "음수와 반올림", { decimal: true, negative: true }, { quantity: -1.25 }), preset("error", "오류", { error: true })],
 };

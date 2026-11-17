@@ -6,6 +6,7 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
 
 적용 프로젝트 네 곳의 0.21.0 사용 기록에서 나온 수정과 추가입니다.
 
+- **새 컴포넌트 `KjunFileUpload`**: 파일 선택 영역, 파일 목록, 파일별 상태(대기·업로드 중·완료·실패)를 한 카드에 담습니다(Vue 3·React·Native). 비어 있으면 넓은 선택 영역, 파일이 생기면 목록과 한 줄 추가 행으로 접힙니다. 업로드는 앱이 하고 KJUN은 `accept`·`maxSize`·`maxFiles` 사전 검사, 거부 이유 안내, 진행률·재시도·삭제 표시를 맡습니다. 웹은 카드 전체가 끌어다 놓기를 받고, Native는 앱이 연결한 `onPick` 선택기를 부릅니다. 새 토큰 `extensions.fileUpload`, 색 역할 추가는 없습니다.
 - **`hidden` 속성이 모든 KJUN 클래스를 숨김 (수정, 호환성 변경)**: `<KjunButton hidden>`처럼 `display`를 정하는 KJUN 클래스에 `hidden`을 주면 그대로 보이던 문제를 고쳤습니다(웹, 528개 클래스 중 216개). 리셋의 `[hidden]` 규칙이 `display: none !important`가 되어 부품 규칙보다 우선합니다. `hidden="until-found"`는 그대로 둡니다. `hidden`인 KJUN 요소를 CSS로 다시 보이게 하던 앱은 `hidden`을 빼야 합니다.
 - **달력이 좁은 자리에서 줄어듦 (수정)**: `KjunDatePicker`·`KjunDateRangePicker`의 달력 7열이 40px로 고정되어 좁은 패널에서 넘치던 문제를 고쳤습니다(웹). 날짜 칸은 자리에 맞춰 줄고 40px를 넘지 않으며 정사각형을 유지합니다.
 - **Native `KjunAlert`가 `live`를 따름 (수정)**: Native에서 `live`를 무시하던 문제를 고쳤습니다. `assertive`·`polite`·`off`가 `accessibilityLiveRegion`으로 전달되고, 기본값은 웹과 같이 `danger`는 assertive, 나머지는 polite입니다.

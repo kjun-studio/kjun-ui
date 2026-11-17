@@ -97,6 +97,11 @@ export const extensions: Record<string, GuideAuthor> = {
     parts: [p("색 버튼", "현재 색 칸과 HEX 값을 보여 주고 누르면 패널을 엽니다.", '[aria-haspopup="dialog"]'), t("값", "현재 색의 HEX 값입니다. 이름 있는 견본이면 이름을 먼저 보이고, 투명도가 100% 미만이면 %를 붙이며, 색이 없으면 ‘색 선택’을 보입니다.", "#3B82F6", true)], related: "input-settings",
     states: [{ id: "all", label: "전체 옵션", description: "채도·명도 영역, 색상·투명도 슬라이더, HEX와 % 입력을 함께 엽니다.", settings: { custom: true, alpha: true, input: true }, values: { color: "#3B82F6CC" } }],
   },
+  KjunFileUpload: {
+    parts: [p("선택 영역", "비어 있을 때의 넓은 버튼입니다. 누르거나 파일을 끌어다 놓아 고릅니다.", ".kjun-file-upload-zone, [role=\"button\"]"), t("안내 문구", "허용 형식·파일당 크기·최대 개수입니다.", "파일당 20MB", true)],
+    related: "input-settings",
+    states: [{ id: "states", label: "여러 상태", description: "업로드 중·완료·실패·대기 행과 머리의 실패 수, 추가 행을 함께 보입니다.", settings: { sample: "여러 상태" } }],
+  },
   KjunQuantityStepper: {
     parts: [p("감소 버튼", "확정값에서 step을 뺍니다.", '[aria-label="수량 줄이기"]'), p("숫자 입력", "입력 문자열은 Enter·blur에서 숫자로 확정합니다.", '[role="spinbutton"]'), p("증가 버튼", "확정값에 step을 더합니다.", '[aria-label="수량 늘리기"]')], related: "input-settings",
     states: [{ id: "decimal", label: "소수 수량", description: "직접 입력은 소수 두 자리로 반올림하고 버튼은 0.1씩 증감합니다.", settings: { decimal: true }, values: { quantity: 1.25 } }],

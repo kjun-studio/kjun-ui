@@ -1,11 +1,11 @@
 {
-  "total": 93,
+  "total": 94,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 93,
+      "provided": 94,
       "counts": {
-        "supported": 93,
+        "supported": 94,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 93,
+      "provided": 94,
       "counts": {
-        "supported": 93,
+        "supported": 94,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 93,
+      "provided": 94,
       "counts": {
         "supported": 0,
-        "preview": 93,
+        "preview": 94,
         "review": 0,
         "unsupported": 0
       },
@@ -1105,6 +1105,37 @@
       "docs": "/components/fab",
       "category": "actions",
       "differences": "웹은 화면(viewport)에 고정되고, Native는 부모 기준으로 놓이므로 화면 최상위 View에 둡니다. KjunBottomNavigation·KjunBottomActionBar가 있으면 그 높이만큼 자동으로 위에 놓입니다. Native에서 FAB의 부모가 탭바 위에서 끝나면 avoidBottomBar를 끕니다. 직접 만든 하단 바는 offsetBottom에 높이를 넘깁니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "KjunFileUpload",
+      "title": "FileUpload",
+      "docs": "/components/file-upload",
+      "category": "inputs",
+      "differences": "웹은 카드 전체가 끌어다 놓기를 받습니다. 놓기 전에는 개수와 MIME 형식만 알 수 있어 크기 초과는 놓은 뒤에 알리고, accept에 확장자 규칙이 있으면 놓기 전에는 막지 않습니다. 카드 밖에 떨어진 파일은 앱이 처리합니다. Native는 끌어다 놓기가 없고 영역·추가 행이 onPick을 부릅니다. 파일 선택기는 앱이 연결하며 패키지는 선택 라이브러리에 의존하지 않습니다. Native는 RN Web에서만 확인했습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -2969,7 +3000,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 93
+      "componentCount": 94
     }
   ]
 }

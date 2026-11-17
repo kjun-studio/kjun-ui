@@ -131,6 +131,22 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         swatches: settings.swatches ? ["#EF4444", "#F97316", "#EAB308", "#22C55E", "#14B8A6", "#3B82F6", "#8B5CF6", "#EC4899", "#64748B", "#111111"] : undefined, custom: settings.custom, alpha: settings.alpha, input: settings.input, clearable: settings.clearable, eyeDropper: settings.eyeDropper,
         recentColors: settings.recent ? get("recentColors", ["#0EA5E9", "#7C3AED"]) : undefined, onRecentColorsChange: settings.recent ? change("recentColors") : undefined,
         size: settings.size, disabled, error, ariaLabel: "라벨 색", onValueChange: change("color") })));
+    case "KjunFileUpload": {
+      const sample = settings.sample === "여러 상태" ? [
+        { id: "receipt", name: "영수증_11월.pdf", size: 245760, status: "done" },
+        { id: "photo", name: "매장_외관_사진_2026.jpg", size: 4404019, status: "uploading", progress: 64 },
+        { id: "license", name: "사업자등록증.pdf", size: 1153434, status: "error" },
+        { id: "clients", name: "거래처_목록.xlsx", size: 327680, status: "queued" },
+      ].slice(0, settings.multiple === false ? 1 : 4) : [];
+      const files = get("files", sample) as any[];
+      const add = (accepted: { name: string; size: number; type?: string }[]) => accepted.map(file => ({ id: file.name + "-" + Date.now(), name: file.name, size: file.size, type: file.type, status: "done" }));
+      return h("Box", { width: 360 }, h("KjunFormGroup", { label: "증빙 자료", error: error ? "증빙 자료를 첨부해 주세요." : "" }, h(name, { files, accept: ".pdf,image/*,.xlsx", maxSize: 20 * 1024 * 1024, maxFiles: 5,
+        multiple: settings.multiple, disabled,
+        onSelect: (accepted: any[]) => set("files", settings.multiple === false ? add(accepted) : [...files, ...add(accepted)]),
+        onRemove: (id: string) => set("files", files.filter(file => file.id !== id)),
+        onRetry: (id: string) => set("files", files.map(file => file.id === id ? { ...file, status: "done" } : file)),
+        onPick: async () => [{ name: "영수증_12월.pdf", size: 245760, type: "application/pdf" }] })));
+    }
     case "KjunQuantityStepper":
       return h("Box", { width: 360 }, h("KjunFormGroup", { label: "주문 수량", error: error ? "주문 수량을 확인해 주세요." : "" }, h(name, { value: get("quantity", settings.decimal ? 1.25 : 2), min: settings.negative ? -10 : 0, max: 10, step: settings.decimal ? .1 : 1, precision: settings.decimal ? 2 : 0, disabled, error, size: settings.size, block: settings.block, ariaLabel: "주문 수량", onValueChange: change("quantity"), onChangeCommit: (value: number) => set("message", "확정: " + value), onInvalidInput: (draft: string) => set("message", "잘못된 수량: " + draft) })));
   }

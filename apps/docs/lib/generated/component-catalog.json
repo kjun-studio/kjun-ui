@@ -3288,6 +3288,42 @@
     "verificationEvidence": "docs/verification-v0.3.0.md"
   },
   {
+    "name": "KjunFileUpload",
+    "sources": {
+      "vue3": "packages/vue3/src/file-upload.tsx",
+      "react": "packages/react/src/file-upload.tsx",
+      "native": "packages/native/src/file-upload.tsx"
+    },
+    "category": "inputs",
+    "kind": "component",
+    "owner": "KjunFileUpload",
+    "platforms": {
+      "vue3": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "react": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "chromium"
+      },
+      "native": {
+        "status": "implemented",
+        "verification": "passed",
+        "runtime": "react-native-web",
+        "deviceVerification": "not-run"
+      }
+    },
+    "docs": "/components/file-upload",
+    "tests": [
+      "tests/file-upload.test.mjs",
+      "tests/browser/file-upload.spec.ts"
+    ],
+    "example": "previews/catalog/example-extensions.ts",
+    "verificationEvidence": "docs/verification-v0.3.0.md"
+  },
+  {
     "name": "KjunZoneGauge",
     "sources": {
       "vue3": "packages/vue3/src/zone-gauge.tsx",

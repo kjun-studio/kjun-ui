@@ -816,6 +816,55 @@
       "testID"
     ]
   },
+  "KjunFileUpload": {
+    "vue3": [
+      "files",
+      "accept",
+      "maxSize",
+      "maxFiles",
+      "multiple",
+      "disabled",
+      "hint",
+      "onSelect",
+      "onRemove",
+      "onRetry",
+      "id",
+      "ariaLabel",
+      "ariaDescribedBy"
+    ],
+    "react": [
+      "files",
+      "accept",
+      "maxSize",
+      "maxFiles",
+      "multiple",
+      "disabled",
+      "hint",
+      "onSelect",
+      "onRemove",
+      "onRetry",
+      "id",
+      "ariaLabel",
+      "ariaDescribedBy",
+      "className",
+      "style"
+    ],
+    "native": [
+      "files",
+      "accept",
+      "maxSize",
+      "maxFiles",
+      "multiple",
+      "disabled",
+      "hint",
+      "onPick",
+      "onSelect",
+      "onRemove",
+      "onRetry",
+      "ariaLabel",
+      "style"
+    ]
+  },
   "KjunQuantityStepper": {
     "vue3": [
       "modelValue",
