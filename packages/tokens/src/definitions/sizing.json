@@ -359,7 +359,8 @@
       "slideIn": 220,
       "slideDistance": { "$ref": "dimension.value24" },
       "longPressDelay": 500,
-      "longPressSlop": { "$ref": "dimension.value10" }
+      "longPressSlop": { "$ref": "dimension.value10" },
+      "pressGuard": { "$ref": "motion.instant" }
     },
     "financial": {
       "warningIconSize": {

@@ -154,7 +154,7 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
   const onPointerEnd = () => {
     endTouch();
     clearTimeout(swallowTimer.current);
-    if (swallow.current) swallowTimer.current = setTimeout(() => { swallow.current = false; }, tokens.motion.instant);
+    if (swallow.current) swallowTimer.current = setTimeout(() => { swallow.current = false; }, calendar.pressGuard);
   };
   const onContextMenu = (event: MouseEvent<HTMLDivElement>) => {
     const iso = isoOf(event.target);

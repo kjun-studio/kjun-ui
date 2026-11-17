@@ -10,7 +10,7 @@ export function tokenKind(path) {
   // Calendar extension values that are not lengths: opacities are plain numbers, slide and long-press times are milliseconds.
   if (/^extensions\.calendar\./.test(path) && /Opacity$/.test(name)) return 'opacity';
   if (path === 'extensions.calendar.swipeRatio') return 'ratio';
-  if (/^extensions\.calendar\./.test(path) && /^(slideOut|slideIn|longPressDelay)$/.test(name)) return 'duration';
+  if (/^extensions\.calendar\./.test(path) && /^(slideOut|slideIn|longPressDelay|pressGuard)$/.test(name)) return 'duration';
   if (name === 'letterSpacingEm') return 'tracking';
   if (name === 'inset' && isShadow(path)) return 'boolean';
   if (name === 'colorRole') return 'colorRole';

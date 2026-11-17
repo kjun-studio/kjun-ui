@@ -5,7 +5,7 @@ import {
   dayTone, eventDayLabel, holidayOf, isPast, resolveMonth, resolveWeek, spanSegment, stepMonth, swipeStep, visibleDots, weekDays,
   type DayMarks, type HolidayTest,
 } from "../../../shared/package-runtime/event-calendar";
-import { getCurrentInstance, onBeforeUnmount, onMounted, onUpdated, ref, useId, type ExtractPublicPropTypes, type PropType } from "vue";
+import { onBeforeUnmount, onMounted, onUpdated, ref, useId, type ExtractPublicPropTypes, type PropType } from "vue";
 import { defineComponent } from "./runtime/component";
 import { useReducedMotion } from "./runtime/presence";
 import { useSlide } from "./runtime/slide";
@@ -26,6 +26,12 @@ const kjunEventCalendarProps = {
   week: { type: String, default: undefined },
   /** v-model. The picked day, "YYYY-MM-DD"; null picks nothing. Clearing it is up to the app. */
   modelValue: { type: String as PropType<string | null>, default: null },
+  /**
+   * Declared as props so the calendar knows whether the app listens: without a listener, arrow keys stop at the edge of the shown month (week).
+   * emit("update:month") and v-model:month still reach them.
+   */
+  "onUpdate:month": { type: Function as PropType<(month: string) => void>, default: undefined },
+  "onUpdate:week": { type: Function as PropType<(week: string) => void>, default: undefined },
   /** @day-long-press: touch hold, right click or Shift+Enter on a day; without it these are left to the browser. */
   onDayLongPress: { type: Function as PropType<(iso: string) => void>, default: undefined },
   /** Describes the long press to screen readers, e.g. "이날 약속 추가". */
@@ -71,7 +77,6 @@ export const KjunEventCalendar = defineComponent({
   setup(props, { emit }) {
     const scope = useKjunMessageScope();
     const reduced = useReducedMotion();
-    const instance = getCurrentInstance();
     const key = () => props.view === "week" ? resolveWeek(props.week, props.weekStart, todayIso()) : resolveMonth(props.month, todayIso());
     // The grid draws the shown month, so the old one stays while it slides out.
     const slide = useSlide(key, () => reduced.value);
@@ -105,9 +110,7 @@ export const KjunEventCalendar = defineComponent({
     const endTouch = () => { clearTimeout(touch?.timer); touch = null; };
     onBeforeUnmount(() => { endTouch(); clearTimeout(swallowTimer); });
 
-    // Listeners declared in emits are not props; whether the app listens is read from the component's vnode when a key is pressed.
-    const listens = (event: "update:month" | "update:week") => !!instance?.vnode.props?.["on" + event[0].toUpperCase() + event.slice(1)];
-    const canChange = () => listens(props.view === "week" ? "update:week" : "update:month");
+    const canChange = () => !!(props.view === "week" ? props["onUpdate:week"] : props["onUpdate:month"]);
     // Asks the app for the month (week) holding iso.
     const change = (iso: string) => props.view === "week" ? emit("update:week", resolveWeek(iso, props.weekStart)) : emit("update:month", iso.slice(0, 7));
     const step = (delta: -1 | 1) => change(props.view === "week" ? addDays(key(), 7 * delta) : stepMonth(key(), delta) + "-01");
@@ -157,7 +160,7 @@ export const KjunEventCalendar = defineComponent({
     const onPointerEnd = () => {
       endTouch();
       clearTimeout(swallowTimer);
-      if (swallow) swallowTimer = setTimeout(() => { swallow = false; }, tokens.motion.instant);
+      if (swallow) swallowTimer = setTimeout(() => { swallow = false; }, calendar.pressGuard);
     };
     const onContextmenu = (event: MouseEvent) => {
       const iso = isoOf(event.target);
