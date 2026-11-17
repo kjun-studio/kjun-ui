@@ -96,7 +96,6 @@ export const KjunPriceCell = defineComponent({
 const kjunSignedValueProps = {
   value: { type: [Number, String, null] as PropType<number | string | null>, default: undefined },
   format: { type: String as PropType<"number" | "percent">, default: "number" },
-  isRaw: { type: Boolean, default: false },
   decimals: { type: Number, default: 2 },
   prefix: { type: String, default: "" },
   suffix: { type: String, default: "" },
@@ -115,7 +114,7 @@ export const KjunSignedValue = defineComponent({
       const n = finiteNumber(props.value);
       const role = props.loading || n === null ? "text-secondary" : props.stale ? "text-tertiary" : n > 0 ? "price-up" : n < 0 ? "price-down" : "price-neutral";
       const display = n === null ? "—" : props.formatter ? props.formatter(n)
-        : props.prefix + (props.showSign && n > 0 ? "+" : "") + format(props.format === "percent" && !props.isRaw ? n * 100 : n, props.decimals) +
+        : props.prefix + (props.showSign && n > 0 ? "+" : "") + format(n, props.decimals) +
           (props.format === "percent" ? "%" : "") + props.suffix;
       return (
         <span class="kjun-signed-value" ref={domainRef(role.startsWith("price-"))} data-tone={props.tone} aria-busy={props.loading}

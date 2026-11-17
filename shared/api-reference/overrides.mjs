@@ -329,7 +329,7 @@ set("KpiHero KpiRow", { surface: { default: '"card"', summary: "none이면 자�
 set("Table", { edgeInset: { default: "\"default\"", summary: "none이면 격자 표에서 첫 열의 시작 쪽 여백과 끝 열의 끝 쪽 여백을 없애, 표의 글자와 구분선이 주변 글과 같은 선에 놓입니다. 머리글·본문·묶음 제목·펼친 내용·요약·빈 상태에 모두 적용하고, 열 사이 여백과 카드·목록 배치는 그대로입니다. 줄무늬·선택·hover처럼 줄에 배경이 깔리는 표에서는 배경이 글자에 붙으므로 배경 없는 표에 씁니다." } });
 set("Table MarketCards MarketSimpleList MarketTable", { skeleton: { default: "true", summary: "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다." } });
 set("SignedValue", {
-  isRaw: "percent 형식에서 true면 퍼센트 단위(2.35), false면 비율 단위(0.0235)를 받습니다.",
+  format: { summary: "표시 형식입니다. percent는 값을 보이는 그대로 퍼센트로 표시합니다(2.35 → +2.35%). 비율(0.0235)을 가진 곳은 value * 100으로 넘기세요." },
 });
 set("PriceCell", {
   flashClass:

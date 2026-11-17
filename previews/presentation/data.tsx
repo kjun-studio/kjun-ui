@@ -16,7 +16,7 @@ export function data(name: string) {
     case 'KjunKpiRow': return <K.KjunKpiRow mobileSummary={false} items={[{ label: '전체 자산', value: '1,284만 원', animated: false }, { label: '수익률', value: 2.35, suffix: '%', decimals: 2, showSign: true, semantic: 'price', animated: false }, { label: '보유 종목', value: 12, suffix: '개', animated: false }]} />;
     case 'KjunAnimatedNumber': return <div className="presentation-number"><K.KjunAnimatedNumber value={12845000} suffix="원" animated={false} /></div>;
     case 'KjunPriceCell': return stack(<><K.KjunPriceCell value={84200} formatter={price} /><K.KjunPriceCell value={36850} formatter={price} /></>);
-    case 'KjunSignedValue': return row(<><K.KjunSignedValue value={2.35} format="percent" isRaw /><K.KjunSignedValue value={-1.25} format="percent" isRaw /><K.KjunSignedValue value={0} format="percent" isRaw /></>);
+    case 'KjunSignedValue': return row(<><K.KjunSignedValue value={2.35} format="percent" /><K.KjunSignedValue value={-1.25} format="percent" /><K.KjunSignedValue value={0} format="percent" /></>);
     case 'KjunDeviation': return row(<><K.KjunDeviation value={2.35} variant="pill" /><K.KjunDeviation value={-1.25} variant="pill" /><K.KjunDeviation value={0} variant="pill" /></>);
     case 'KjunHeatmapCell': return <div className="presentation-heatmap">{[-2.4, -.8, .6, 1.8, 2.6, 4.2].map(v => <K.KjunHeatmapCell key={v} value={v} min={-5} max={5} mode="price">{v > 0 ? '+' : ''}{v}%</K.KjunHeatmapCell>)}</div>;
     case 'KjunProgressCell': return surface(stack(<><K.KjunProgressCell value={72} /><K.KjunProgressCell value={38} /></>));

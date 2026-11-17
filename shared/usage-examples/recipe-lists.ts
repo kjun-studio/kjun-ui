@@ -24,7 +24,7 @@ export function lists(b: RecipeBuilder): string | undefined {
       const status = b.state('status', '정상');
       b.declare('formatPrice', 'function formatPrice(value) {\n  return new Intl.NumberFormat("ko-KR").format(Number(value)) + "원";\n}');
       const price = b.node('KjunPriceCell', { value: expr('row.price'), formatter: expr('formatPrice') });
-      const delta = b.node('KjunSignedValue', { value: expr('row.change'), format: 'percent', isRaw: true });
+      const delta = b.node('KjunSignedValue', { value: expr('row.change'), format: 'percent', });
       const table = b.node('KjunTable', {
         data: b.data('rows', defaultRows), columns: b.data('columns', columns), ariaLabel: '자산 목록', responsive: 'card', cardTitle: 'name', sortable: true,
         renderCell: b.vue ? undefined : expr(`(value, column, row) => column.key === "price" ? (${price}) : column.key === "change" ? (${delta}) : value`),

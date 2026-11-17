@@ -22293,13 +22293,6 @@
         "description": ""
       },
       {
-        "name": "isRaw",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": ""
-      },
-      {
         "name": "decimals",
         "type": "number",
         "required": false,
@@ -22374,13 +22367,6 @@
         "description": ""
       },
       {
-        "name": "isRaw",
-        "type": "boolean | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
         "name": "decimals",
         "type": "number | undefined",
         "required": false,
@@ -22448,13 +22434,6 @@
       {
         "name": "format",
         "type": "\"number\" | \"percent\" | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "isRaw",
-        "type": "boolean | undefined",
         "required": false,
         "default": "—",
         "description": ""

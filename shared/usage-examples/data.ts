@@ -47,7 +47,7 @@ export function generate(input: UsageInput) {
     case 'KjunAnimatedNumber': content = b.group([b.node(name, { value: b.state('number', 1234567), suffix: '원', fromPrevious: true }), b.button('숫자 변경', b.handler('increase', '', b.set('number', b.read('number') + ' + 123')))]); break;
     // Vue's functional PriceCell returns siblings, so the SFC needs a parent.
     case 'KjunPriceCell': content = b.group([b.node(name, { value: 1234567, formatter: formatter(), stale: s.stale })]); break;
-    case 'KjunSignedValue': content = b.group([-1.25, 0, 2.35].map(value => b.node(name, { value, format: 'percent', isRaw: true, ...b.props('loading', 'stale') }))); break;
+    case 'KjunSignedValue': content = b.group([-1.25, 0, 2.35].map(value => b.node(name, { value, format: 'percent',, ...b.props('loading', 'stale') }))); break;
     case 'KjunDeviation': content = b.group([-1.25, 0, 2.35].map(value => b.node(name, { value, variant: 'badge' }))); break;
     case 'KjunHeatmapCell': content = b.group([-1, -.5, 0, .5, 1].map(value => b.node(name, { value, min: -1, max: 1, mode: 'price' }, b.text(String(value))))); break;
     case 'KjunProgressCell': content = b.node(name, { value: 42, max: 100, showLabel: true }); break;

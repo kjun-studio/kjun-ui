@@ -60,7 +60,7 @@ export const KjunMarketSimpleList = defineComponent({
                           {priceStatus(slots.status?.({ row }))}
                           {props.changeLoading(row)
                             ? <KjunSkeleton type="line" width={tokens.extensions.marketList.changeSkeletonWidth} />
-                            : change !== null ? <KjunSignedValue value={change} stale={stale} format="percent" isRaw /> : <span>-</span>}
+                            : change !== null ? <KjunSignedValue value={change} stale={stale} format="percent" /> : <span>-</span>}
                         </div>
                       </div>
                     </div>

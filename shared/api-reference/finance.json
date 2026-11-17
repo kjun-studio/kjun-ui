@@ -45,8 +45,8 @@
     "native": ["value", "formatter", "fromPrevious", "stale", "status"]
   },
   "KjunSignedValue": {
-    "vue3": ["value", "format", "isRaw", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "formatter"],
-    "react": ["value", "format", "isRaw", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "formatter"],
-    "native": ["value", "format", "isRaw", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "formatter"]
+    "vue3": ["value", "format", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "formatter"],
+    "react": ["value", "format", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "formatter"],
+    "native": ["value", "format", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "formatter"]
   }
 }

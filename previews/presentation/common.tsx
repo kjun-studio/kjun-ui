@@ -14,7 +14,7 @@ export const rows = [
 export const price = (value: number) => new Intl.NumberFormat('ko-KR').format(value) + '원';
 export const columns: TableColumn[] = [{ key: 'name', label: '자산', sortable: true }, { key: 'price', label: '현재가', align: 'right', sortable: true }, { key: 'change', label: '등락률', align: 'right', sortable: true }];
 export function DataTable() {
-  return <KjunTable data={rows} columns={columns} responsive="none" ariaLabel="자산 목록" renderCell={(value, column) => column.key === 'price' ? <KjunPriceCell value={Number(value)} formatter={price} /> : column.key === 'change' ? <KjunSignedValue value={Number(value)} format="percent" isRaw /> : String(value)} />;
+  return <KjunTable data={rows} columns={columns} responsive="none" ariaLabel="자산 목록" renderCell={(value, column) => column.key === 'price' ? <KjunPriceCell value={Number(value)} formatter={price} /> : column.key === 'change' ? <KjunSignedValue value={Number(value)} format="percent" /> : String(value)} />;
 }
 export function ActivityList() {
   return <KjunListSection title="활동과 알림">

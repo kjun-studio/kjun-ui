@@ -146,7 +146,7 @@ export function renderLayoutExample(name: string, tools: ExampleTools): any {
           : rows;
       const price = (row: any) => h("KjunPriceCell", { value: row.price, formatter: priceFormat });
       const delta = (row: any) =>
-        h("KjunSignedValue", { value: row.change, format: "percent", isRaw: true });
+        h("KjunSignedValue", { value: row.change, format: "percent", });
       return h("Stack", {}, [
         h(
           "KjunDataState",

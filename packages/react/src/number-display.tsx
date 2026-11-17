@@ -117,7 +117,6 @@ export function KjunPriceCell({
 export interface KjunSignedValueProps {
   value?: number | string | null;
   format?: "number" | "percent";
-  isRaw?: boolean;
   decimals?: number;
   prefix?: string;
   suffix?: string;
@@ -130,7 +129,6 @@ export interface KjunSignedValueProps {
 export function KjunSignedValue({
   value,
   format: kind = "number",
-  isRaw = false,
   decimals = 2,
   prefix = "",
   suffix = "",
@@ -158,7 +156,7 @@ export function KjunSignedValue({
       ? formatter(n)
       : prefix +
         (showSign && n > 0 ? "+" : "") +
-        format(kind === "percent" && !isRaw ? n * 100 : n, decimals) +
+        format(n, decimals) +
         (kind === "percent" ? "%" : "") +
         suffix;
   return (

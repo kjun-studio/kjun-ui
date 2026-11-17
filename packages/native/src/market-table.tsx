@@ -84,7 +84,6 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
         <KjunSignedValue
           value={finiteNumber(value)}
           format="percent"
-          isRaw
           stale={stale}
           formatter={
             formatMetric

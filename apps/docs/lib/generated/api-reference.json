@@ -7248,16 +7248,7 @@
             "required": false,
             "default": "\"number\"",
             "description": "",
-            "summary": "부호 값의 숫자·백분율 등 표시 형식을 지정합니다.",
-            "source": "packages/vue3/src/number-display.tsx"
-          },
-          {
-            "name": "isRaw",
-            "type": "boolean",
-            "required": false,
-            "default": "false",
-            "description": "",
-            "summary": "percent 형식에서 true면 퍼센트 단위(2.35), false면 비율 단위(0.0235)를 받습니다.",
+            "summary": "표시 형식입니다. percent는 값을 보이는 그대로 퍼센트로 표시합니다(2.35 → +2.35%). 비율(0.0235)을 가진 곳은 value * 100으로 넘기세요.",
             "source": "packages/vue3/src/number-display.tsx"
           },
           {
@@ -7355,16 +7346,7 @@
             "required": false,
             "default": "\"number\"",
             "description": "",
-            "summary": "부호 값의 숫자·백분율 등 표시 형식을 지정합니다.",
-            "source": "packages/react/src/number-display.tsx"
-          },
-          {
-            "name": "isRaw",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "false",
-            "description": "",
-            "summary": "percent 형식에서 true면 퍼센트 단위(2.35), false면 비율 단위(0.0235)를 받습니다.",
+            "summary": "표시 형식입니다. percent는 값을 보이는 그대로 퍼센트로 표시합니다(2.35 → +2.35%). 비율(0.0235)을 가진 곳은 value * 100으로 넘기세요.",
             "source": "packages/react/src/number-display.tsx"
           },
           {
@@ -7462,16 +7444,7 @@
             "required": false,
             "default": "\"number\"",
             "description": "",
-            "summary": "부호 값의 숫자·백분율 등 표시 형식을 지정합니다.",
-            "source": "packages/native/src/number-display.tsx"
-          },
-          {
-            "name": "isRaw",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "false",
-            "description": "",
-            "summary": "percent 형식에서 true면 퍼센트 단위(2.35), false면 비율 단위(0.0235)를 받습니다.",
+            "summary": "표시 형식입니다. percent는 값을 보이는 그대로 퍼센트로 표시합니다(2.35 → +2.35%). 비율(0.0235)을 가진 곳은 value * 100으로 넘기세요.",
             "source": "packages/native/src/number-display.tsx"
           },
           {

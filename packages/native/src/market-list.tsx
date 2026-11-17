@@ -109,7 +109,6 @@ export function KjunMarketSimpleList<
                         value={change}
                         stale={stale}
                         format="percent"
-                        isRaw
                       />
                     ) : (
                       <KText

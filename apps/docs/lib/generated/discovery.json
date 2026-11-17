@@ -24798,7 +24798,6 @@
       "api": [
         "value",
         "format",
-        "isRaw",
         "decimals",
         "prefix",
         "suffix",
@@ -24893,8 +24892,8 @@
         "현재 값이 오래된 상태임을 표시합니다. 시간 판정은 소비자가 담당합니다.",
         "현재 숫자·표시 값을 문자열로 변환하는 함수입니다.",
         "숫자와 표시 단위·부호 규칙을 연결합니다. 값 계산과 stale 판정은 소비자 책임이며 formatter는 표시 변환에만 사용합니다.",
-        "양수·음수·중립을 부호와 역할 색상으로 구분합니다. loading·미지정 값·stale 상태를 별도로 표시합니다. format=\"percent\"에서 isRaw=true인 2.35와 isRaw=false인 0.0235는 모두 2.35%입니다.",
-        "세 플랫폼에서 format·isRaw·decimals의 단위 계약과 formatter 함수를 공유합니다.",
+        "양수·음수·중립을 부호와 역할 색상으로 구분합니다. loading·미지정 값·stale 상태를 별도로 표시합니다. format=\"percent\"는 값을 보이는 그대로 표시합니다(2.35는 +2.35%).",
+        "세 플랫폼에서 format·decimals의 단위 계약과 formatter 함수를 공유합니다.",
         "Finance",
         "금융",
         "자산",

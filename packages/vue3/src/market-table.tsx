@@ -62,7 +62,7 @@ export const KjunMarketTable = defineComponent({
       if (col.type === "price") return <KjunPriceCell value={finiteNumber(value)} formatter={props.priceFormatter} stale={stale} />;
       const context = { currency: props.currency, row, column: col };
       if (col.type === "percent") return value == null ? "-" : (
-        <KjunSignedValue value={finiteNumber(value)} format="percent" isRaw stale={stale}
+        <KjunSignedValue value={finiteNumber(value)} format="percent" stale={stale}
           formatter={props.formatMetric ? (number: number) => props.formatMetric!(number, col.type!, context) : undefined} />
       );
       const text = props.formatMetric ? props.formatMetric(value, col.type || "text", context) : value == null ? "-" : String(value);

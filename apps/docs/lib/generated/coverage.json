@@ -2468,7 +2468,7 @@
       "title": "SignedValue",
       "docs": "/components/signed-value",
       "category": "finance",
-      "differences": "세 플랫폼에서 format·isRaw·decimals의 단위 계약과 formatter 함수를 공유합니다.",
+      "differences": "세 플랫폼에서 format·decimals의 단위 계약과 formatter 함수를 공유합니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
