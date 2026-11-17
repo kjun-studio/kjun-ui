@@ -1,11 +1,11 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { clampCurrent, stepStatus, stepsRootStatus, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout } from "../../../shared/package-runtime/steps";
-import { useEffect, type CSSProperties, type HTMLAttributes } from "react";
+import { useEffect, type CSSProperties } from "react";
 import { KjunIcon } from "./button";
 
 export type { KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLayout };
 
-export interface KjunStepsProps extends Omit<HTMLAttributes<HTMLDivElement>, "children" | "className" | "style" | "id"> {
+export interface KjunStepsProps {
   /** The steps in order. Two or more. */
   items: KjunStepItem[];
   /** Index of the current step, counted from 0. items.length means every step is complete. */
@@ -22,6 +22,7 @@ export interface KjunStepsProps extends Omit<HTMLAttributes<HTMLDivElement>, "ch
   className?: string;
   style?: CSSProperties;
   id?: string;
+  [data: `data-${string}`]: string | undefined;
 }
 
 function developmentMode() {
@@ -56,8 +57,9 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
       <ol className="kjun-steps-list" aria-label={ariaLabel ?? m.steps}>
         {items.map((item, i) => {
           const status = stepStatus(i, at, currentStatus);
-          const spoken = m.stepPosition(i + 1) + ", " + item.label + ", " + statusText[status];
           const detail = vertical ? [item.meta, item.description].filter(Boolean).join(" · ") : "";
+          // One phrase names the step for a screen reader: the button carries it as its name, the static copy as hidden text.
+          const spoken = m.stepPosition(i + 1) + ", " + item.label + ", " + statusText[status] + (detail ? ", " + detail : "");
           const body = (
             <>
               {/* steps.css sizes the icon from extensions.steps.markerIcon. */}
@@ -66,17 +68,16 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
                   : status === "error" ? <KjunIcon name="exclamation-mark" />
                   : i + 1}
               </span>
-              <span className="kjun-steps-label" title={item.label}>{item.label}</span>
-              {detail && <span className="kjun-steps-detail">{detail}</span>}
+              <span className="kjun-steps-label" title={item.label} aria-hidden="true">{item.label}</span>
+              {detail && <span className="kjun-steps-detail" aria-hidden="true">{detail}</span>}
             </>
           );
           return (
             <li key={item.key ?? i} className="kjun-steps-item" data-status={status} aria-current={status === "current" || status === "error" ? "step" : undefined}>
-              <span className="kjun-steps-static" aria-hidden="true">{body}</span>
+              <span className="kjun-steps-static">{body}<span className="kjun-sr-only">{spoken}</span></span>
               {onStepSelect && status === "complete" && (
                 <button type="button" className="kjun-steps-hit" aria-label={spoken} onClick={() => onStepSelect(i)}>{body}</button>
               )}
-              <span className="kjun-sr-only">{spoken}</span>
             </li>
           );
         })}

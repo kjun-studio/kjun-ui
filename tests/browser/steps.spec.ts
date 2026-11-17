@@ -35,9 +35,9 @@ for (const platform of ['react']) {
       await expect(section(page, 'wizard').locator('[aria-current="step"]')).toHaveCount(1);
       await expect(items(page, 'wizard').nth(2)).toHaveAttribute('aria-current', 'step');
       await expect(section(page, 'wizard').getByRole('list', { name: '주문 단계' })).toBeVisible();
-      await expect(items(page, 'wizard').nth(0).locator('.kjun-sr-only')).toHaveText('1단계, 약관 동의, 완료');
-      await expect(items(page, 'wizard').nth(2).locator('.kjun-sr-only')).toHaveText('3단계, 배송 정보, 현재 단계');
-      await expect(items(page, 'wizard').nth(3).locator('.kjun-sr-only')).toHaveText('4단계, 결제, 예정');
+      await expect(items(page, 'wizard').nth(0).locator('.kjun-steps-static .kjun-sr-only')).toHaveText('1단계, 약관 동의, 완료');
+      await expect(items(page, 'wizard').nth(2).locator('.kjun-steps-static .kjun-sr-only')).toHaveText('3단계, 배송 정보, 현재 단계');
+      await expect(items(page, 'wizard').nth(3).locator('.kjun-steps-static .kjun-sr-only')).toHaveText('4단계, 결제, 예정');
       await expect(items(page, 'wizard').nth(0).locator('.kjun-steps-static .kjun-steps-marker svg')).toHaveCount(1);
       await expect(items(page, 'wizard').nth(2).locator('.kjun-steps-static .kjun-steps-marker')).toHaveText('3');
       await expect(items(page, 'wizard').nth(2).locator('.kjun-steps-static .kjun-steps-marker svg')).toHaveCount(0);
@@ -47,7 +47,7 @@ for (const platform of ['react']) {
     test('error step', async ({ page }) => {
       await expect(items(page, 'error').nth(2)).toHaveAttribute('data-status', 'error');
       await expect(items(page, 'error').nth(2)).toHaveAttribute('aria-current', 'step');
-      await expect(items(page, 'error').nth(2).locator('.kjun-sr-only')).toHaveText('3단계, 결제, 오류');
+      await expect(items(page, 'error').nth(2).locator('.kjun-steps-static .kjun-sr-only')).toHaveText('3단계, 결제, 오류');
       await expect(root(page, 'error')).toHaveAttribute('data-status', 'error');
       await expect(label(page, 'error', 2)).toHaveCSS('color', await paint(page, 'danger'));
       await expect(items(page, 'error').nth(2).locator('.kjun-steps-static .kjun-steps-marker svg')).toHaveCount(1);
@@ -72,7 +72,7 @@ for (const platform of ['react']) {
       await expect(head.locator('.kjun-steps-head-next')).toHaveText('다음 · 결제');
       // The labels stay in the accessibility tree while they leave the screen.
       expect(await visibleBox(page, label(page, 'fit', 2))).toBeNull();
-      await expect(items(page, 'fit').nth(2).locator('.kjun-sr-only')).toHaveText('3단계, 배송 정보, 현재 단계');
+      await expect(items(page, 'fit').nth(2).locator('.kjun-steps-static .kjun-sr-only')).toHaveText('3단계, 배송 정보, 현재 단계');
       await expect(section(page, 'fit').getByRole('list', { name: '진행 단계' })).toBeAttached();
     });
 
@@ -91,6 +91,7 @@ for (const platform of ['react']) {
         expect(box.x).toBeGreaterThanOrEqual(column.x - 0.5);
         expect(box.x + box.width).toBeLessThanOrEqual(column.x + column.width + 0.5);
         const line = parseFloat(await text.evaluate(el => getComputedStyle(el).lineHeight));
+        expect(Number.isFinite(line)).toBe(true);
         expect(box.height).toBeLessThanOrEqual(line * 2 + 1);
       }
       await expect(label(page, 'long', 0)).toHaveAttribute('title', '배송지 입력 및 확인');
@@ -102,6 +103,8 @@ for (const platform of ['react']) {
       await expect(buttons).toHaveCount(3);
       await expect(buttons.nth(0)).toHaveAccessibleName('1단계, 약관 동의, 완료');
       expect((await buttons.nth(0).boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      // Only the button speaks in the wide layout: the static copy is display:none.
+      await expect(items(page, 'select').nth(0).locator('.kjun-steps-static')).toBeHidden();
       await buttons.nth(1).click();
       await expect(page.getByTestId('selected')).toHaveText('1');
       await buttons.nth(0).focus();
@@ -126,6 +129,7 @@ for (const platform of ['react']) {
     test('vertical', async ({ page }) => {
       await expect(root(page, 'vertical')).toHaveAttribute('data-orientation', 'vertical');
       await expect(items(page, 'vertical').nth(1).locator('.kjun-steps-static .kjun-steps-detail')).toHaveText('11:30 · 포장을 마쳤습니다');
+      await expect(items(page, 'vertical').nth(1).locator('.kjun-steps-static .kjun-sr-only')).toHaveText('2단계, 상품 준비, 완료, 11:30 · 포장을 마쳤습니다');
       await expect(items(page, 'vertical').nth(3).locator('.kjun-steps-static .kjun-steps-detail')).toHaveText('문 앞에 놓아 두었습니다');
       await expect(section(page, 'vertical').locator('.kjun-steps-head')).toHaveCount(0);
       const marker = items(page, 'vertical').nth(0).locator('.kjun-steps-static .kjun-steps-marker');
@@ -143,6 +147,34 @@ for (const platform of ['react']) {
       expect((await line(0)).color).toBe(await paint(page, 'brand'));
       expect((await line(0)).width).toBe('2px');
       expect((await line(2)).color).toBe(await paint(page, 'secondary'));
+    });
+
+    test('vertical step select reaches past the visible row', async ({ page }) => {
+      const buttons = section(page, 'vselect').getByRole('button');
+      await expect(buttons).toHaveCount(2);
+      await expect(buttons.nth(1)).toHaveAccessibleName('2단계, 상품 준비, 완료, 11:30 · 포장을 마쳤습니다');
+      await expect(items(page, 'vselect').nth(1).locator('.kjun-steps-static')).toBeHidden();
+      // The invisible layer is at least 44px tall even when the drawn row is shorter.
+      const reach = await buttons.nth(1).evaluate(el => ({ after: parseFloat(getComputedStyle(el, '::after').height), box: el.getBoundingClientRect().height }));
+      expect(reach.after).toBeGreaterThanOrEqual(44);
+      expect(reach.box).toBeLessThan(reach.after);
+      await buttons.nth(1).click();
+      await expect(page.getByTestId('vselected')).toHaveText('1');
+      await buttons.nth(0).focus();
+      await page.keyboard.press('Enter');
+      await expect(page.getByTestId('vselected')).toHaveText('0');
+    });
+
+    test('more than ten steps always fold', async ({ page }) => {
+      await expect(section(page, 'many').locator('.kjun-steps-head')).toBeVisible();
+      await expect(section(page, 'many').locator('.kjun-steps-head-count')).toHaveText('5 / 11');
+      expect(await visibleBox(page, label(page, 'many', 4))).toBeNull();
+    });
+
+    test('forced full layout keeps labels in a narrow container', async ({ page }) => {
+      await expect(root(page, 'full')).toHaveAttribute('data-layout', 'full');
+      await expect(section(page, 'full').locator('.kjun-steps-head')).toBeHidden();
+      expect(await visibleBox(page, label(page, 'full', 2))).not.toBeNull();
     });
   });
 }
