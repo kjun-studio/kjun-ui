@@ -650,7 +650,7 @@
           },
           {
             "name": "variant",
-            "type": "\"pill\" | \"text\" | \"badge\"",
+            "type": "\"text\" | \"pill\" | \"badge\"",
             "required": false,
             "default": "\"pill\"",
             "description": "",
@@ -703,7 +703,7 @@
           },
           {
             "name": "variant",
-            "type": "\"pill\" | \"text\" | \"badge\" | undefined",
+            "type": "\"text\" | \"pill\" | \"badge\" | undefined",
             "required": false,
             "default": "\"pill\"",
             "description": "",
@@ -7558,7 +7558,7 @@
         "props": [
           {
             "name": "type",
-            "type": "\"block\" | \"text\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
+            "type": "\"text\" | \"block\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
             "required": false,
             "default": "\"text\"",
             "description": "\"line\" is one line of text: a bar in the line box of `role`, or of the surrounding text when no role is given.",
@@ -7647,7 +7647,7 @@
         "props": [
           {
             "name": "type",
-            "type": "\"block\" | \"text\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+            "type": "\"text\" | \"block\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
             "required": false,
             "default": "\"text\"",
             "description": "\"line\" is one line of text: a bar in the line box of `role`, or of the surrounding text when no role is given.",
@@ -12785,7 +12785,7 @@
           },
           {
             "name": "skeletonType",
-            "type": "\"block\" | \"text\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
+            "type": "\"text\" | \"block\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\"",
             "required": false,
             "default": "\"text\"",
             "description": "",
@@ -13110,7 +13110,7 @@
           },
           {
             "name": "skeletonType",
-            "type": "\"block\" | \"text\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+            "type": "\"text\" | \"block\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
             "required": false,
             "default": "\"text\"",
             "description": "",
@@ -26418,6 +26418,15 @@
             "source": "packages/react/src/button.tsx"
           },
           {
+            "name": "type",
+            "type": "\"submit\" | \"reset\" | \"button\" | undefined",
+            "required": false,
+            "default": "\"button\"",
+            "description": "",
+            "summary": "기본 입력 또는 버튼 요소에 전달할 HTML 동작 유형입니다.",
+            "source": "packages/react/src/button.tsx"
+          },
+          {
             "name": "disabled",
             "type": "boolean | undefined",
             "required": false,
@@ -26433,15 +26442,6 @@
             "default": "—",
             "description": "",
             "summary": "폼 제출 또는 항목 식별에 사용하는 이름입니다.",
-            "source": "packages/react/src/button.tsx"
-          },
-          {
-            "name": "type",
-            "type": "\"submit\" | \"reset\" | \"button\" | undefined",
-            "required": false,
-            "default": "\"button\"",
-            "description": "",
-            "summary": "기본 입력 또는 버튼 요소에 전달할 HTML 동작 유형입니다.",
             "source": "packages/react/src/button.tsx"
           },
           {
@@ -27612,21 +27612,21 @@
             "source": "packages/native/src/selection-groups.tsx"
           },
           {
-            "name": "disabled",
-            "type": "boolean | undefined",
-            "required": false,
-            "default": "false",
-            "description": "",
-            "summary": "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
-            "source": "packages/native/src/selection-groups.tsx"
-          },
-          {
             "name": "size",
             "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | undefined",
             "required": false,
             "default": "\"sm\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
+            "source": "packages/native/src/selection-groups.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
             "source": "packages/native/src/selection-groups.tsx"
           },
           {
@@ -28935,6 +28935,15 @@
             "source": "packages/react/src/input.tsx"
           },
           {
+            "name": "type",
+            "type": "HTMLInputTypeAttribute | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 입력 또는 버튼 요소에 전달할 HTML 동작 유형입니다.",
+            "source": "packages/react/src/input.tsx"
+          },
+          {
             "name": "disabled",
             "type": "boolean | undefined",
             "required": false,
@@ -28950,15 +28959,6 @@
             "default": "—",
             "description": "",
             "summary": "폼 제출 또는 항목 식별에 사용하는 이름입니다.",
-            "source": "packages/react/src/input.tsx"
-          },
-          {
-            "name": "type",
-            "type": "HTMLInputTypeAttribute | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "기본 입력 또는 버튼 요소에 전달할 HTML 동작 유형입니다.",
             "source": "packages/react/src/input.tsx"
           },
           {
@@ -30038,6 +30038,15 @@
             "source": "packages/react/src/actions.tsx"
           },
           {
+            "name": "type",
+            "type": "\"submit\" | \"reset\" | \"button\" | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소 또는 표시 종류입니다. 허용값은 해당 타입을 따릅니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
             "name": "disabled",
             "type": "boolean | undefined",
             "required": false,
@@ -30053,15 +30062,6 @@
             "default": "—",
             "description": "",
             "summary": "폼 제출 또는 항목 식별에 사용하는 이름입니다.",
-            "source": "packages/react/src/actions.tsx"
-          },
-          {
-            "name": "type",
-            "type": "\"submit\" | \"reset\" | \"button\" | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "기본 요소 또는 표시 종류입니다. 허용값은 해당 타입을 따릅니다.",
             "source": "packages/react/src/actions.tsx"
           },
           {
@@ -30289,6 +30289,15 @@
             "source": "packages/native/src/actions.tsx"
           },
           {
+            "name": "size",
+            "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | undefined",
+            "required": false,
+            "default": "\"sm\"",
+            "description": "",
+            "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
+            "source": "packages/native/src/actions.tsx"
+          },
+          {
             "name": "style",
             "type": "StyleProp<ViewStyle>",
             "required": false,
@@ -30313,15 +30322,6 @@
             "default": "—",
             "description": "Whether the press behavior is disabled.",
             "summary": "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
-            "source": "packages/native/src/actions.tsx"
-          },
-          {
-            "name": "size",
-            "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | undefined",
-            "required": false,
-            "default": "\"sm\"",
-            "description": "",
-            "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
             "source": "packages/native/src/actions.tsx"
           },
           {
@@ -40152,6 +40152,15 @@
             "example": "/components/range-slider#preview"
           },
           {
+            "name": "size",
+            "type": "\"sm\" | \"md\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "sm: 12px text, 4px rail, 16px thumb. The touch area stays 44pt.",
+            "summary": "sm은 12px 라벨·값, 4px 트랙, 16px 손잡이입니다. 누름 영역은 크기와 상관없이 44px입니다.",
+            "source": "packages/native/src/range-input.tsx"
+          },
+          {
             "name": "disabled",
             "type": "boolean | undefined",
             "required": false,
@@ -40167,15 +40176,6 @@
             "default": "—",
             "description": "",
             "summary": "표시하거나 조절하는 값의 목적을 설명하는 라벨입니다.",
-            "source": "packages/native/src/range-input.tsx"
-          },
-          {
-            "name": "size",
-            "type": "\"sm\" | \"md\"",
-            "required": false,
-            "default": "\"md\"",
-            "description": "sm: 12px text, 4px rail, 16px thumb. The touch area stays 44pt.",
-            "summary": "sm은 12px 라벨·값, 4px 트랙, 16px 손잡이입니다. 누름 영역은 크기와 상관없이 44px입니다.",
             "source": "packages/native/src/range-input.tsx"
           },
           {

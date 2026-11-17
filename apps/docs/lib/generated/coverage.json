@@ -1,11 +1,11 @@
 {
-  "total": 95,
+  "total": 96,
   "summary": [
     {
       "platform": "vue3",
-      "provided": 95,
+      "provided": 96,
       "counts": {
-        "supported": 95,
+        "supported": 96,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -17,9 +17,9 @@
     },
     {
       "platform": "react",
-      "provided": 95,
+      "provided": 96,
       "counts": {
-        "supported": 95,
+        "supported": 96,
         "preview": 0,
         "review": 0,
         "unsupported": 0
@@ -31,10 +31,10 @@
     },
     {
       "platform": "native",
-      "provided": 95,
+      "provided": 96,
       "counts": {
         "supported": 0,
-        "preview": 95,
+        "preview": 96,
         "review": 0,
         "unsupported": 0
       },
@@ -175,6 +175,37 @@
       "docs": "/components/avatar",
       "category": "data-display",
       "differences": "Native는 source로 로컬 리소스도 받습니다. 접근성 이름은 전체 이름을 유지합니다.",
+      "platforms": {
+        "vue3": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "react": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "chromium"
+        },
+        "native": {
+          "status": "implemented",
+          "verification": "passed",
+          "runtime": "react-native-web",
+          "deviceVerification": "not-run"
+        }
+      },
+      "states": {
+        "vue3": "supported",
+        "react": "supported",
+        "native": "preview"
+      },
+      "recordId": "verification-v0.3.0"
+    },
+    {
+      "name": "KjunAvatarGroup",
+      "title": "AvatarGroup",
+      "docs": "/components/avatar-group",
+      "category": "data-display",
+      "differences": "웹은 바탕색 링을 box-shadow로, Native는 링 색으로 칠한 감싸기 View로 그리며 원 중심 간격은 같습니다. 클릭 이벤트는 React onClick, Vue click, Native onPress입니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
@@ -3031,7 +3062,7 @@
       "date": "2026-10-08",
       "source": "docs/verification-v0.3.0.md",
       "download": "/downloads/verification/verification-v0.3.0.md",
-      "componentCount": 95
+      "componentCount": 96
     }
   ]
 }

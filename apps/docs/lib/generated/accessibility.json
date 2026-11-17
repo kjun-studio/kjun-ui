@@ -17695,6 +17695,222 @@
       "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
     },
     {
+      "id": "KjunAvatarGroup.vue3.keyboard.v1",
+      "component": "KjunAvatarGroup",
+      "platform": "vue3",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "image",
+      "scenario": {
+        "text": "참여자 5명"
+      },
+      "behavior": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "total",
+        "pressable"
+      ],
+      "applicable": false,
+      "reason": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunAvatarGroup.vue3.labeling.v1",
+      "component": "KjunAvatarGroup",
+      "platform": "vue3",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "image",
+      "scenario": {
+        "text": "참여자 5명"
+      },
+      "behavior": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. alt·name으로 대체 텍스트를 구성하고 decorative일 때 이미지 역할에서 제외합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "total",
+        "pressable"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "일반·장식 모드를 각각 설정해 이미지의 접근성 이름을 검사합니다.",
+      "expected": "일반 모드는 지정한 대체 텍스트가 있고 장식 모드는 이미지 역할에서 제외됩니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunAvatarGroup.vue3.focus.v1",
+      "component": "KjunAvatarGroup",
+      "platform": "vue3",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "image",
+      "scenario": {
+        "text": "참여자 5명"
+      },
+      "behavior": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "total",
+        "pressable"
+      ],
+      "applicable": false,
+      "reason": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunAvatarGroup.react.keyboard.v1",
+      "component": "KjunAvatarGroup",
+      "platform": "react",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "image",
+      "scenario": {
+        "text": "참여자 5명"
+      },
+      "behavior": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "total",
+        "pressable"
+      ],
+      "applicable": false,
+      "reason": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunAvatarGroup.react.labeling.v1",
+      "component": "KjunAvatarGroup",
+      "platform": "react",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "image",
+      "scenario": {
+        "text": "참여자 5명"
+      },
+      "behavior": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. alt·name으로 대체 텍스트를 구성하고 decorative일 때 이미지 역할에서 제외합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "total",
+        "pressable"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "일반·장식 모드를 각각 설정해 이미지의 접근성 이름을 검사합니다.",
+      "expected": "일반 모드는 지정한 대체 텍스트가 있고 장식 모드는 이미지 역할에서 제외됩니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunAvatarGroup.react.focus.v1",
+      "component": "KjunAvatarGroup",
+      "platform": "react",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "image",
+      "scenario": {
+        "text": "참여자 5명"
+      },
+      "behavior": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
+      "api": [
+        "ariaLabel",
+        "total",
+        "pressable"
+      ],
+      "applicable": false,
+      "reason": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunAvatarGroup.native.keyboard.v1",
+      "component": "KjunAvatarGroup",
+      "platform": "native",
+      "item": "keyboard",
+      "label": "키보드 동작",
+      "profile": "image",
+      "scenario": {
+        "text": "참여자 5명"
+      },
+      "behavior": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "ariaLabel",
+        "total",
+        "pressable"
+      ],
+      "applicable": false,
+      "reason": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunAvatarGroup.native.labeling.v1",
+      "component": "KjunAvatarGroup",
+      "platform": "native",
+      "item": "labeling",
+      "label": "라벨·오류 연결",
+      "profile": "image",
+      "scenario": {
+        "text": "참여자 5명"
+      },
+      "behavior": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. alt·name으로 대체 텍스트를 구성하고 decorative일 때 이미지 역할에서 제외합니다.",
+      "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "ariaLabel",
+        "total",
+        "pressable"
+      ],
+      "applicable": true,
+      "reason": null,
+      "procedure": "일반·장식 모드를 각각 설정해 이미지의 접근성 이름을 검사합니다.",
+      "expected": "일반 모드는 지정한 대체 텍스트가 있고 장식 모드는 이미지 역할에서 제외됩니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
+      "id": "KjunAvatarGroup.native.focus.v1",
+      "component": "KjunAvatarGroup",
+      "platform": "native",
+      "item": "focus",
+      "label": "포커스 이동·복귀",
+      "profile": "image",
+      "scenario": {
+        "text": "참여자 5명"
+      },
+      "behavior": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
+      "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
+      "api": [
+        "ariaLabel",
+        "total",
+        "pressable"
+      ],
+      "applicable": false,
+      "reason": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "procedure": "정의된 비대화형 조건을 확인합니다. 실행 가능한 접근성 검사는 해당 없음으로 기록합니다.",
+      "expected": "참여자 그룹을 이름 하나로 읽고 안의 아바타는 숨기기. 기본 비대화형 표시에는 자체 키보드 명령이나 포커스를 이동·복귀시키는 동작이 없습니다. 슬롯에 추가한 액션은 해당 컨트롤 계약으로 검증합니다.",
+      "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
+    },
+    {
       "id": "KjunCollectionMark.vue3.keyboard.v1",
       "component": "KjunCollectionMark",
       "platform": "vue3",
@@ -19651,32 +19867,32 @@
       "name": "@kjun-ui/tokens",
       "version": "0.21.0",
       "file": "kjun-ui-tokens-0.21.0.tgz",
-      "bytes": 147799,
-      "integrity": "sha512-SwZ1MaJQnxK2w4uKaXTYQZ2y8ezkCZl+ZefWB9OB/lu3ZAorzN+1RqKvsMsSWmB+bbL0uNnTI5zJmJOEYRi4cA=="
+      "bytes": 148695,
+      "integrity": "sha512-jxGfTYLy9cE5nW0Llnkj7/77CxQXNO161IUCC0rAwJUFksGV7X/e2nNGfgj5p/JUhEAgqzHCDK3dGPkSCvrwrA=="
     },
     {
       "name": "@kjun-ui/vue3",
       "version": "0.21.0",
       "file": "kjun-ui-vue3-0.21.0.tgz",
-      "bytes": 669358,
-      "integrity": "sha512-41vsuXIV4tW3DKVP4UVxXuVcc7oDRhTfsU/Vdzmn9UPpHlToKLg/G0YJAF/LeZ1hzh4FTWMUK37KkqHZKTCPRw=="
+      "bytes": 674049,
+      "integrity": "sha512-3+T4U+QCKvluLFCXTXMRETBqP98SC9daAIw/0q/tgdt4ZbhsyFPgVKfDz8j7cgVAKu1AWpE/yLMWSqYXwOPQPQ=="
     },
     {
       "name": "@kjun-ui/react",
       "version": "0.21.0",
       "file": "kjun-ui-react-0.21.0.tgz",
-      "bytes": 567651,
-      "integrity": "sha512-T+2FsufSMe4I6UvRzfuuHUcP9zDyX15yb/A1xar58EB/W7fSBvl5bS+oRYLOrwNHpWFC/deUNfQ9A4+ILZZQ0w=="
+      "bytes": 571113,
+      "integrity": "sha512-xM0KSZlTlb5zVC9Udf5OEtRRcrHY8BW5HpEMufPzIuKpI+ZEZA0qgaol+vaAk8DyoYx+MqtfTCO7mT/ttYgMBw=="
     },
     {
       "name": "@kjun-ui/native",
       "version": "0.21.0",
       "file": "kjun-ui-native-0.21.0.tgz",
-      "bytes": 1004334,
-      "integrity": "sha512-TT+OVaCr+pP/20fJ8BAhCBwbk3Fp+ufmNZNaTN7H+sQmxFpGRH7EixqXuZsDDhLa5g0bPVh4blH2ZEfp156WYA=="
+      "bytes": 1010713,
+      "integrity": "sha512-vQs2aiQHZlA0Rt4IIawhXMbP+pQLujxtC9sQm+JmtyD6WRBVmxosV/VCJCluzdD36oPRxr2xrl8DfGr3JoRtag=="
     }
   ],
-  "definitionHash": "sha256-ac69775c07b071bdb5eabb9db1af17b31a1bc7a60902792f06214af4219558b9",
+  "definitionHash": "sha256-7dbf653fb8b1d62929392a4a93c564b5cf422813e7ac2ed6be478bd91bcaaff2",
   "runs": [
     {
       "schemaVersion": 1,
