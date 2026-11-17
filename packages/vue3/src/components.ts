@@ -13,6 +13,7 @@ export { KjunInput, KjunFormGroup } from "./input";
 export { KjunCheckbox, KjunSwitch, KjunRadio, KjunRadioGroup, KjunTextarea, KjunButtonGroup, KjunFilterGroup } from "./controls";
 export { KjunSlider, KjunRangeSlider } from "./range-input";
 export { KjunQuantityStepper } from "./quantity-stepper";
+export { KjunNumberInput } from "./number-input";
 export { KjunPopover, KjunTooltip } from "./popover";
 export { KjunDropdown, KjunDropdownItem, KjunDropdownDivider, KjunDropdownSection, KjunDropdownSubmenu, KjunMenuButton } from "./dropdown";
 export { KjunSelect } from "./select-control";

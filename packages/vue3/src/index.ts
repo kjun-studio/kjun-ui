@@ -17,6 +17,7 @@ export type { ChoiceValue, ChoiceOption, KjunCheckboxProps, KjunSwitchProps, Kju
 export { groupKeydown } from "../../../shared/package-runtime/group-keyboard";
 export type { KjunSliderProps, KjunRangeSliderProps } from "./range-input";
 export type { KjunQuantityStepperProps } from "./quantity-stepper";
+export type { KjunNumberInputProps } from "./number-input";
 export type { KjunPopoverProps, KjunTooltipProps } from "./popover";
 export type { KjunDropdownProps, KjunDropdownItemProps, KjunDropdownSectionProps, KjunDropdownSubmenuProps, KjunMenuButtonProps } from "./dropdown";
 export type { KjunSelectProps, OptionValue, SelectOption } from "./select-control";

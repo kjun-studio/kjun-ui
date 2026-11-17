@@ -11,7 +11,7 @@ const setCaret = (page: Page, id: string, at: number) => field(page, id).evaluat
 const described = (page: Page, id: string) => field(page, id).evaluate(el =>
   (el.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean).map(ref => document.getElementById(ref)?.textContent?.trim() ?? ''));
 
-for (const platform of ['react']) {
+for (const platform of ['react', 'vue3']) {
   test.describe(platform, () => {
     test.beforeEach(async ({ page }) => {
       await openFixture(page, platform, '', 'number-input');

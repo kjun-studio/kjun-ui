@@ -205,6 +205,11 @@ export const kjunPropValues = Object.freeze({
     footerSize: Object.freeze(["sm","md","lg"] as const),
     size: Object.freeze(["sm","md","lg","xl","full"] as const),
   }),
+  KjunNumberInput: Object.freeze({
+    align: Object.freeze(["end","start"] as const),
+    format: Object.freeze(["amount","number","percent"] as const),
+    size: Object.freeze(["sm","md","lg"] as const),
+  }),
   KjunPopover: Object.freeze({
     placement: Object.freeze(["bottom","bottom-end","bottom-start","left","right","top","top-end","top-start"] as const),
     width: Object.freeze(["sm","md","lg"] as const),
