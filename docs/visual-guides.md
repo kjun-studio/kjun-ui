@@ -1,6 +1,6 @@
 # 시각 가이드 유지보수
 
-공개 96개와 피드백 서비스의 시각 가이드는 문서 전용 데이터입니다. 패키지 API와 컴포넌트 내부 규격은 변경하지 않습니다. `/usage-guide`의 네 주제 페이지와 각 문서의 `#anatomy`, `#states`는 상단의 문서 플랫폼 선택을 따릅니다.
+공개 97개와 피드백 서비스의 시각 가이드는 문서 전용 데이터입니다. 패키지 API와 컴포넌트 내부 규격은 변경하지 않습니다. `/usage-guide`의 네 주제 페이지와 각 문서의 `#anatomy`, `#states`는 상단의 문서 플랫폼 선택을 따릅니다.
 
 사용 가이드는 `/usage-guide/forms`(폼·입력), `/usage-guide/data`(조회·목록), `/usage-guide/mobile`(모바일 배치), `/usage-guide/feedback`(피드백·문구)로 나뉩니다. 개요에는 주제와 사례 링크를 표시합니다. `shared/document-navigation.ts`가 기존 23개 섹션의 목적지를 정의하며 실행 예제의 설정·상태를 유지합니다. 코드는 `shared/implementation-examples.ts`의 15개 사례에만 별도 구현 방법으로 제공하고 단순 비교는 컴포넌트 `#usage`로 연결합니다. 예전 `/usage-guide#섹션` 링크도 해당 주제로 연결됩니다.
 

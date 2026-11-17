@@ -1,6 +1,6 @@
 # API 설명과 사용 계약
 
-공개 컴포넌트 96개, Vue 3·React·Native Web의 문서용 API는 `apps/docs/lib/generated/api-reference.json`에 생성한다. FormGroup·Select·SearchInput·Table·DataState·피드백 서비스는 상태 소유권과 콜백·이벤트·슬롯의 상세 계약을 포함한다. API 화면은 공통 문서 플랫폼 선택을 구독하며 기존 `#api`와 `#preview` 주소를 사용한다.
+공개 컴포넌트 97개, Vue 3·React·Native Web의 문서용 API는 `apps/docs/lib/generated/api-reference.json`에 생성한다. FormGroup·Select·SearchInput·Table·DataState·피드백 서비스는 상태 소유권과 콜백·이벤트·슬롯의 상세 계약을 포함한다. API 화면은 공통 문서 플랫폼 선택을 구독하며 기존 `#api`와 `#preview` 주소를 사용한다.
 
 ## 데이터와 생성
 
@@ -12,7 +12,7 @@
 - `scripts/api-reference.mjs`는 위 데이터를 결합한다. 이 단계는 **패키지 선언·구현을 쓰지 않는다**. 기본 예제의 props를 패키지 기본값으로 읽지 않는다. 훅·조건에 의존하는 기본값은 검토한 문구를 사용하고, 확인되지 않은 기본값은 `—`로 둔다.
 - `scripts/discovery.mjs`는 설명과 계약 키워드를 검색 색인에 추가한다. API 이름 검색의 우선순위와 `#api` 목적지는 유지한다.
 
-`shared/component-guides.json`은 96개 역할·상태·플랫폼 안내의 원본이다. Button·Input·Modal도 전용 사용 안내에 이 가이드를 함께 표시한다. 상세 콜백·슬롯 설명이 없는 다른 문서는 실제 추출한 이름과 짧은 설명까지만 표시한다.
+`shared/component-guides.json`은 97개 역할·상태·플랫폼 안내의 원본이다. Button·Input·Modal도 전용 사용 안내에 이 가이드를 함께 표시한다. 상세 콜백·슬롯 설명이 없는 다른 문서는 실제 추출한 이름과 짧은 설명까지만 표시한다.
 
 ## 변경 절차
 
