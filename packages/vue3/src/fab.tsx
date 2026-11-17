@@ -1,4 +1,5 @@
 import { fabOffset } from "../../../shared/package-runtime/bottom-bar";
+import { spinnerGlyph } from "./spinner-glyph";
 import { type ExtractPublicPropTypes, type PropType } from "vue";
 import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
@@ -33,13 +34,14 @@ export const KjunFab = defineComponent({
     const busy = useMinimumLoading(() => props.loading);
     return () => {
       const loading = busy.value, offset = fabOffset(props.offsetBottom), size = props.size === "sm" ? "sm" : "md";
+      const iconSize = size === "sm" ? tokens.extensions.fab.smallIconSize : tokens.extensions.fab.iconSize;
       return (
         <button type="button" class="kjun-fab" data-size={size} data-label={props.label ? "" : undefined}
           data-safe-area={props.safeArea ? undefined : "false"} data-bottom-bar={props.avoidBottomBar ? undefined : "false"}
           aria-label={props.ariaLabel || undefined} aria-busy={loading ? "true" : undefined} disabled={props.disabled}
           onClick={(event: MouseEvent) => { if (!loading) emit("click", event); }}
           style={offset ? { "--_kjun-fab-offset": offset + "px" } : undefined}>
-          <KjunIcon name={loading ? "loader-2" : props.icon} spin={loading} size={size === "sm" ? tokens.extensions.fab.smallIconSize : tokens.extensions.fab.iconSize} />
+          {loading ? spinnerGlyph({ size: iconSize }) : <KjunIcon name={props.icon} size={iconSize} />}
           {props.label && <span class="kjun-fab-label">{props.label}</span>}
         </button>
       );

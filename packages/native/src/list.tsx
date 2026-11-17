@@ -1,4 +1,5 @@
 import { hasContent } from "../../../shared/package-runtime/content-presence";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { CardTintContext } from "./card-surface-context";
 import { typeStyle } from "./typography";
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
@@ -160,7 +161,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
       {hasContent(children) && <View style={{ marginTop: list.descriptionGap }}>{content(children)}</View>}
     </View>
     {!onTitle && !below && endValue}
-    {endMark === "spinner" ? <View style={end(endIcon)}><KjunIcon name="loader-2" spin size={endIcon} color={colors.textTertiary} /></View>
+    {endMark === "spinner" ? <View style={end(endIcon)}><KjunSpinnerGlyph size={endIcon} color={colors.textTertiary} /></View>
       : endMark === "mark" ? <View style={end(list.markSize)}><ChoiceMark checkbox={kind === "checkbox"} on={!!selected} /></View>
       : endMark === "check" && <View style={description ? end(endIcon) : undefined}><KjunIcon name="check" size={endIcon} color={colors.brand} /></View>}
     {/* A switch row is one switch control: the drawn switch is decoration and the row carries role and state. */}

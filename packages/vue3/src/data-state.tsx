@@ -1,9 +1,10 @@
 import { useKjunMessages } from "./runtime/messages";
+import { spinnerGlyph } from "./spinner-glyph";
 import { getCurrentInstance, onErrorCaptured, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { tokens, advanceQueryDisplay, initialQueryDisplay, queryDisplayStatus, type QueryDisplayProps, type QueryDisplayState } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
-import { KjunAlert, KjunEmpty, KjunSkeleton, KjunSpinner, type KjunSkeletonProps } from "./display";
+import { KjunAlert, KjunEmpty, KjunSkeleton, type KjunSkeletonProps } from "./display";
 import { useLoadingReveal } from "./runtime/loading-reveal";
 import { hasContent } from "./runtime/slots";
 import { css } from "./runtime/style";
@@ -76,7 +77,7 @@ export const KjunDataState = defineComponent({
         <div class="kjun-data-state" aria-busy={props.loading || props.refreshing}>
           <div class="kjun-data-status-slot">
             {(props.refreshing || state.queryRefreshing) && (
-              <div class="kjun-data-status" role="status"><KjunSpinner size="xs" /><span>{(props.refreshingText ?? m.value.refreshing)}</span></div>
+              <div class="kjun-data-status" role="status">{spinnerGlyph({ size: tokens.extensions.spinner.sizes.xs, stroke: tokens.extensions.spinner.strokeWidths.xs })}<span>{(props.refreshingText ?? m.value.refreshing)}</span></div>
             )}
           </div>
           {state.initialLoading ? (
@@ -87,7 +88,7 @@ export const KjunDataState = defineComponent({
                   {Array.from({ length: props.skeletonCount }, (_, i) => <KjunSkeleton key={i} type={props.skeletonType} />)}
                 </div>
               ) : (
-                <div class="kjun-data-loading"><KjunSpinner size="md" /><p>{(props.loadingText ?? m.value.loadingEllipsis)}</p></div>
+                <div class="kjun-data-loading">{spinnerGlyph({ size: tokens.extensions.spinner.sizes.md, stroke: tokens.extensions.spinner.strokeWidths.md })}<p>{(props.loadingText ?? m.value.loadingEllipsis)}</p></div>
               )}
             </div>
           ) : blockingError ? (

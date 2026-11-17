@@ -1,9 +1,10 @@
 import { toastPresentation } from "../../../shared/package-runtime/toast-presentation";
+import { spinnerGlyph } from "./spinner-glyph";
 import { attachToastSwipe } from "../../../shared/package-runtime/toast-swipe";
 import { useKjunMessages } from "./runtime/messages";
 import { onBeforeUnmount, onMounted, ref, type PropType } from "vue";
 import { defineComponent } from "./runtime/component";
-import { createFeedbackController, type ToastItem } from "@kjun-ui/tokens";
+import { createFeedbackController, tokens, type ToastItem } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 
 type Controller = ReturnType<typeof createFeedbackController>;
@@ -35,7 +36,7 @@ export const ToastView = defineComponent({
       return (
         <div ref={card} class="kjun-toast" data-tone={tone} data-title={String(!!toast.title)} data-compact={compact ? "true" : undefined}
           data-loading={toast.loading ? "true" : undefined} data-side={String(sideAction || closable)} role={role} aria-live={live}>
-          <span class="kjun-toast-icon" style={{ color: `var(--_kjun-color-${tone}-accent)` }}><KjunIcon name={icon} spin={!!toast.loading} /></span>
+          <span class="kjun-toast-icon" style={{ color: `var(--_kjun-color-${tone}-accent)` }}>{toast.loading ? spinnerGlyph({ size: tokens.extensions.toast.iconSize }) : <KjunIcon name={icon} />}</span>
           <div class="kjun-toast-content">
             {toast.title && <strong>{toast.title}</strong>}
             <span class="kjun-toast-message">{toast.message}</span>

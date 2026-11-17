@@ -1,4 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
+import { spinnerGlyph } from "./spinner-glyph";
 import { computed, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
@@ -114,7 +115,7 @@ export const KjunSwitch = defineComponent({
             emit("change", next);
           }} />
         <span class={`kjun-switch kjun-switch--${props.size}${props.modelValue ? " kjun-switch--on" : ""}`}>
-          <span class="kjun-switch-thumb">{props.loading && <span class="kjun-switch-spinner" aria-hidden="true" />}</span>
+          <span class="kjun-switch-thumb">{props.loading && spinnerGlyph({ class: "kjun-switch-spinner", size: tokens.extensions.switch.spinnerSize })}</span>
         </span>
         {props.description
           ? <span class="kjun-choice-text">{choiceLabel(props.label, slots.default)}<span id={descriptionId} class="kjun-choice-description">{props.description}</span></span>

@@ -1,4 +1,5 @@
 import { tokens } from "@kjun-ui/tokens";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { Platform, View, type GestureResponderEvent } from "react-native";
 import { fabOffset } from "../../../shared/package-runtime/bottom-bar";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
@@ -46,7 +47,7 @@ export function KjunFab({ icon, label, ariaLabel, size = "md", loading = false, 
       ...(Platform.OS === "web" && busy ? { cursor: "auto" as const } : {}),
     })}>
     {disabled && <View pointerEvents="none" style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: colors.brand, opacity: tokens.states.opacity.disabled }} />}
-    <KjunIcon name={busy ? "loader-2" : icon} spin={busy} size={iconSize} color={colors.onBrand} />
+    {busy ? <KjunSpinnerGlyph size={iconSize} color={colors.onBrand} /> : <KjunIcon name={icon} size={iconSize} color={colors.onBrand} />}
     {!!label && <KText numberOfLines={1} style={{ ...typeStyle(size === "sm" ? "control" : "controlLarge"), color: colors.onBrand, flexShrink: 1 }}>{label}</KText>}
   </Pressable>;
 }

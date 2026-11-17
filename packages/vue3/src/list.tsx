@@ -1,4 +1,5 @@
 import { computed, inject, provide, ref, watch, watchEffect, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { spinnerGlyph } from "./spinner-glyph";
 import { defineComponent } from "./runtime/component";
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
@@ -121,7 +122,7 @@ export const KjunListRow = defineComponent({
       // Like React: choice rows in an open section or a multiple-choice list draw a mark, empty until chosen; other rows
       // draw a check when selected.
       const choiceRow = kind === "radio" || kind === "checkbox", end = listRowEnd({ kind, selected, mode, open, busy: props.busy });
-      const mark = end === "spinner" ? <KjunIcon name="loader-2" spin class="kjun-list-busy" size={tokens.extensions.list.endIconSize} />
+      const mark = end === "spinner" ? spinnerGlyph({ class: "kjun-list-busy", size: tokens.extensions.list.endIconSize })
         : end === "mark" ? <span class="kjun-list-mark" data-kind={kind} data-checked={selected ? "" : undefined} aria-hidden="true">{selected && <KjunIcon name="check" size={tokens.extensions.list.markIconSize} />}</span>
         : end === "check" && <KjunIcon name="check" class="kjun-list-check" size={tokens.iconSizes.default} />;
       const leadingStyle = leading && geometry.size ? { "--_kjun-list-leading-width": `${geometry.column}px`, "--_kjun-list-leading-height": `${geometry.width}px`, "--_kjun-list-tile-size": `${geometry.width}px` } : undefined;
@@ -138,7 +139,7 @@ export const KjunListRow = defineComponent({
         <span class="kjun-list-body">{onTitle ? <span class="kjun-list-value-line">{titleBlock}{endValue}</span> : titleBlock}{below && endValue}{props.description && <span id={id + "-description"} class="kjun-list-description" data-clamp={props.descriptionLines ? "" : undefined} style={props.descriptionLines ? { WebkitLineClamp: props.descriptionLines } : undefined}>{props.description}</span>}{hasBody && <span ref={content} id={id + "-content"} class="kjun-list-content">{body}</span>}</span>
         {!onTitle && !below && endValue}
         {mark}
-        {props.checked !== undefined && <span class={"kjun-switch kjun-switch--md" + (props.checked ? " kjun-switch--on" : "")} aria-hidden="true"><span class="kjun-switch-thumb">{props.busy && <span class="kjun-switch-spinner" />}</span></span>}
+        {props.checked !== undefined && <span class={"kjun-switch kjun-switch--md" + (props.checked ? " kjun-switch--on" : "")} aria-hidden="true"><span class="kjun-switch-thumb">{props.busy && spinnerGlyph({ class: "kjun-switch-spinner", size: tokens.extensions.switch.spinnerSize })}</span></span>}
         {expandable ? end !== "spinner" && <KjunIcon name="chevron-down" class="kjun-list-chevron kjun-list-expand-icon" size={tokens.iconSizes.default} />
           : props.chevron && end !== "spinner" && <KjunIcon name="chevron-right" class="kjun-list-chevron" size={tokens.iconSizes.default} />}
       </>;

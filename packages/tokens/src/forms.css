@@ -254,17 +254,8 @@
 /* switch-thumb falls back to switch-thumb-on, so the thumb keeps one colour unless a palette sets them apart. */
 .kjun-switch--on .kjun-switch-thumb { background: var(--_kjun-switch-thumb-on); transform: translateX(calc(var(--_kjun-switch-width) - var(--_kjun-switch-height))); }
 /* Saving: a small ring turns inside the thumb while the switch ignores presses. */
-.kjun-switch-spinner {
-  box-sizing: border-box;
-  width: var(--_kjun-extension-switch-spinner-size);
-  height: var(--_kjun-extension-switch-spinner-size);
-  border-radius: 50%;
-  border: var(--_kjun-border-control-width) solid var(--_kjun-border);
-  border-top-color: var(--_kjun-text-secondary);
-  animation: kjun-spin var(--_kjun-motion-spin) linear infinite;
-}
-/* Without motion the ring holds still; the saving state is still announced. */
-@media (prefers-reduced-motion: reduce) { .kjun-switch-spinner { animation: none; } }
+/* The thumb is painted to sit on the brand track, so the brand ring keeps its contrast in both modes. */
+.kjun-switch-spinner { color: var(--_kjun-color-brand); }
 .kjun-choice[data-loading] { cursor: progress; }
 
 @media (pointer: coarse) {

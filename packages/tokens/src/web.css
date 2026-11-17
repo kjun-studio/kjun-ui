@@ -129,6 +129,16 @@
     transform: rotate(360deg);
   }
 }
+.kjun-spinner-glyph {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+@keyframes kjun-spinner-pulse {
+  50% {
+    opacity: var(--_kjun-state-opacity-spinner-pulse);
+  }
+}
 .kjun-form-group {
   min-width: 0;
   margin-bottom: var(--_kjun-extension-form-item-gap);
@@ -468,6 +478,10 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  /* A loading ring that stops turning reads as stuck, so it breathes in place instead. */
+  .kjun-spin.kjun-spinner-glyph {
+    animation: kjun-spinner-pulse var(--_kjun-motion-shimmer) ease-in-out infinite !important;
   }
   .kjun-scope .kjun-input,
   .kjun-scope .kjun-field { transition: none !important; }

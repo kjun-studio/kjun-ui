@@ -1,4 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { typeStyle } from "./typography";
 import { tokens,type ButtonSize } from "@kjun-ui/tokens";
 import {
@@ -10,7 +11,6 @@ type CSSProperties,
 type ReactNode,
 } from "react";
 import { KjunButton,KjunIcon,type KjunButtonProps } from "./button";
-import { KjunSpinner } from "./display";
 import { useOptionalKjunFeedback } from "./feedback-context";
 import { KjunTooltip, type KjunTooltipProps } from "./popover";
 import { useReducedMotion } from "./use-reduced-motion";
@@ -69,7 +69,7 @@ export function KjunIconToggle({
       }}
     >
       {loading ? (
-        navigation ? <KjunIcon name="loader-2" spin size={navigation.iconSize} /> : <KjunSpinner size="sm" />
+        <KjunSpinnerGlyph size={navigation?.iconSize ?? tokens.button.iconSizes[size]} />
       ) : (
         <KjunIcon
           name={active ? activeIcon : inactiveIcon || activeIcon}

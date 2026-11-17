@@ -210,6 +210,10 @@
   align-items: center;
   color: var(--_kjun-color-brand);
 }
+/* Large rings put their text below, the way the data state's loading block does. */
+.kjun-spinner[data-stacked] {
+  flex-direction: column;
+}
 .kjun-spinner > span {
   margin-left: var(--_kjun-geometry-dimension-value8);
   font-size: var(--_kjun-type-body-size);
@@ -217,6 +221,10 @@
   line-height: var(--_kjun-type-body-line);
   font-weight: var(--_kjun-type-body-weight);
   letter-spacing: var(--_kjun-type-body-tracking);
+}
+.kjun-spinner[data-stacked] > span {
+  margin-left: 0;
+  margin-top: var(--_kjun-geometry-dimension-value12);
 }
 .kjun-alert {
   display: flex;

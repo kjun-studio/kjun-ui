@@ -1,4 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { emptyGeometry } from "../../../shared/package-runtime/empty-geometry";
 import { typeStyle } from "./typography";
 import {
@@ -17,7 +18,6 @@ import {
 KjunAlert,
 KjunEmpty,
 KjunSkeleton,
-KjunSpinner,
 type KjunSkeletonProps,
 } from "./display";
 import { KText,content } from "./internal";
@@ -124,7 +124,7 @@ export function KjunDataState({
               backgroundColor: colors.surface,
             }}
           >
-            <KjunSpinner size="xs" />
+            <KjunSpinnerGlyph size={tokens.extensions.spinner.sizes.xs} stroke={tokens.extensions.spinner.strokeWidths.xs} color={colors.brand} />
             <KText style={{ ...typeStyle('caption'), color: colors.textTertiary, flexShrink: 1, minWidth: 0 }}>
               {refreshingText}
             </KText>
@@ -147,7 +147,7 @@ export function KjunDataState({
               </View>
             ) : (
               <View style={{ alignItems: "center", gap: tokens.dimension.value12 }}>
-                <KjunSpinner size="md" />
+                <KjunSpinnerGlyph size={tokens.extensions.spinner.sizes.md} stroke={tokens.extensions.spinner.strokeWidths.md} color={colors.brand} />
                 <KText style={{ ...typeStyle("body"), color: colors.textSecondary, textAlign: "center", maxWidth: "100%" }}>{loadingText}</KText>
               </View>
             ))}

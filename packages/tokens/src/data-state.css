@@ -240,7 +240,7 @@
 .kjun-error-fallback .kjun-empty-icon { color: var(--_kjun-color-danger); }
 .kjun-error-fallback .kjun-empty-actions { max-width: 100%; }
 
-.kjun-data-status > .kjun-spinner { flex-shrink: 0; }
+.kjun-data-status > .kjun-spinner-glyph, .kjun-data-loading > .kjun-spinner-glyph { flex-shrink: 0; color: var(--_kjun-color-brand); }
 .kjun-data-status > span:last-child { min-width: 0; overflow-wrap: anywhere; }
 .kjun-data-loading { display: flex; flex-direction: column; align-items: center; gap: var(--_kjun-geometry-dimension-value12); text-align: center; }
 .kjun-data-loading > p { margin: 0; max-width: 100%; overflow-wrap: anywhere; font-size: var(--_kjun-type-body-size); line-height: var(--_kjun-type-body-line); font-weight: var(--_kjun-type-body-weight); letter-spacing: var(--_kjun-type-body-tracking); color: var(--_kjun-color-text-secondary); }

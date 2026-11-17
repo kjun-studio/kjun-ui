@@ -1,10 +1,10 @@
 import { useKjunMessages } from "./runtime/messages";
+import { spinnerGlyph } from "./spinner-glyph";
 import { inject, mergeProps, onBeforeUnmount, onMounted, ref, watch, type AriaAttributes, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { typeStyle } from "../../../shared/package-runtime/typography";
 import { KjunButton, KjunIcon } from "./button";
-import { KjunSpinner } from "./display";
 import { useOptionalKjunFeedback } from "./feedback";
 import { trackScrollFade, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
 import { KjunTooltip, type KjunTooltipProps } from "./popover";
@@ -55,7 +55,7 @@ const KjunIconToggleComponent = defineComponent({
           disabled={props.disabled || props.loading} class={["kjun-icon-toggle", attrs.class]} data-size={props.size}
           style={[navigation ? css({ width: navigation.controlSize, height: navigation.controlSize }) : undefined, attrs.style as never]}>
           {props.loading
-            ? navigation ? <KjunIcon name="loader-2" spin size={navigation.iconSize} /> : <KjunSpinner size="sm" />
+            ? spinnerGlyph({ size: navigation?.iconSize ?? tokens.button.iconSizes[props.size] })
             : <KjunIcon name={props.active ? props.activeIcon : props.inactiveIcon || props.activeIcon} filled={props.active}
                 size={navigation?.iconSize ?? tokens.button.iconSizes[props.size]}
                 // Passed as a variable so the shared hover rule can darken the inactive icon. An app color

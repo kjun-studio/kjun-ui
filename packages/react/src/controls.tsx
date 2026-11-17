@@ -1,4 +1,5 @@
 import { typeStyle, selectionTypeStyle } from "./typography";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { tokens,type ButtonSize,type InputSize } from "@kjun-ui/tokens";
 import {
 createContext,
@@ -185,7 +186,7 @@ export function KjunSwitch({
           value ? " kjun-switch--on" : ""
         }`}
       >
-        <span className="kjun-switch-thumb">{loading && <span className="kjun-switch-spinner" aria-hidden="true" />}</span>
+        <span className="kjun-switch-thumb">{loading && <KjunSpinnerGlyph className="kjun-switch-spinner" size={tokens.extensions.switch.spinnerSize} />}</span>
       </span>
       {description ? (
         <span className="kjun-choice-text">

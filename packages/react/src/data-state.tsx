@@ -1,4 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { tokens,
 advanceQueryDisplay,
 initialQueryDisplay,
@@ -12,7 +13,6 @@ import {
 KjunAlert,
 KjunEmpty,
 KjunSkeleton,
-KjunSpinner,
 type KjunSkeletonProps,
 } from "./display";
 export function useQueryDisplay(props: QueryDisplayProps) {
@@ -99,7 +99,7 @@ export function KjunDataState({
       <div className="kjun-data-status-slot">
         {(refreshing || state.queryRefreshing) && (
           <div className="kjun-data-status" role="status">
-            <KjunSpinner size="xs" />
+            <KjunSpinnerGlyph size={tokens.extensions.spinner.sizes.xs} stroke={tokens.extensions.spinner.strokeWidths.xs} />
             <span>{refreshingText}</span>
           </div>
         )}
@@ -121,7 +121,7 @@ export function KjunDataState({
               </div>
             ) : (
               <div className="kjun-data-loading">
-                <KjunSpinner size="md" />
+                <KjunSpinnerGlyph size={tokens.extensions.spinner.sizes.md} stroke={tokens.extensions.spinner.strokeWidths.md} />
                 <p>{loadingText}</p>
               </div>
             ))}

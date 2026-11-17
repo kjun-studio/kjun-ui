@@ -1,4 +1,5 @@
 import { typeStyle } from "./typography";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { TopNavigationContext } from "./top-navigation-context";
 import { CardActionsContext } from "./card-actions-context";
 import { useActionPill, useActionSize } from "../../../shared/package-runtime/action-size";
@@ -127,7 +128,8 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
       prefixIcon || suffixIcon || (!hasContent && busy) ? iconSize : 0);
     const spinPrefix =
       busy && prefixIcon && (spinOnLoading ?? prefixIcon === "refresh");
-    const before = prefixIcon && (busy ? (spinPrefix ? prefixIcon : "loader-2") : prefixIcon);
+    const before = prefixIcon && !(busy && !spinPrefix) ? prefixIcon : undefined;
+    const loader = <KjunSpinnerGlyph size={iconSize} />;
     const overlayLoading = busy && !prefixIcon && !suffixIcon;
     // Icon glyphs carry their own side bearing, so the icon side takes a tighter inset.
     const paddingX = tokens.button.paddingX[size];
@@ -167,6 +169,7 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
           if (!disabled && !busy) onClick?.(e);
         }}
       >
+        {busy && prefixIcon && !spinPrefix && loader}
         {before && (
           <KjunIcon
             name={before}
@@ -176,17 +179,16 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
           />
         )}
         <span className="kjun-button-label" style={{ opacity: overlayLoading ? 0 : 1 }}>{children}</span>
-        {suffixIcon && (
+        {suffixIcon && (busy && !prefixIcon ? loader : (
           <KjunIcon
-            name={busy && !prefixIcon ? "loader-2" : suffixIcon}
+            name={suffixIcon}
             filled={!busy && suffixIconFilled}
-            spin={busy && !prefixIcon}
             style={{ opacity: busy && prefixIcon ? 0 : 1 }}
             size={iconSize}
           />
-        )}
+        ))}
         {overlayLoading && <span className="kjun-button-loader" aria-hidden="true">
-          <KjunIcon name="loader-2" spin size={iconSize} />
+          {loader}
         </span>}
       </button>
     );

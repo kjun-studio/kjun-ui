@@ -1,4 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
@@ -123,7 +124,7 @@ export function ToastView({
         }}
       >
         <View style={{ height: line, justifyContent: "center" }}>
-          <KjunIcon name={icon} size={spec.iconSize} color={colors[`${tone}Accent`]} spin={!!toast.loading} />
+          {toast.loading ? <KjunSpinnerGlyph size={spec.iconSize} color={colors[`${tone}Accent`]} /> : <KjunIcon name={icon} size={spec.iconSize} color={colors[`${tone}Accent`]} />}
         </View>
         <View style={compact ? { flexShrink: 1 } : { flex: 1, minWidth: 0 }}>
           {!!toast.title && (

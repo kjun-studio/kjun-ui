@@ -1,4 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { typeStyle } from "./typography";
 import { tokens,type ButtonSize } from "@kjun-ui/tokens";
 import { useContext,useEffect,useId,useRef,useState,type ReactNode } from "react";
@@ -7,7 +8,6 @@ import { sameEdges, scrollEdges, type ScrollEdges, type ScrollFadeDirection } fr
 import { Platform,ScrollView,View,type ColorValue,type StyleProp,type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunButton,KjunIcon,type KjunButtonProps } from "./button";
-import { KjunSpinner } from "./display";
 import { KText,content,useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
 import { useOptionalKjunFeedback } from "./feedback-context";
@@ -90,7 +90,7 @@ export function KjunIconToggle({
       {({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => (
       <View style={{ width: box, height: box, alignItems: "center", justifyContent: "center", borderRadius: tokens.extensions.iconToggle.radii[size], backgroundColor: !disabled && !loading && (pressed || hovered) ? colors.hover : "transparent" }}>
       {loading ? (
-        navigation ? <KjunIcon name="loader-2" spin size={navigation.iconSize} /> : <KjunSpinner size="sm" />
+        <KjunSpinnerGlyph size={navigation?.iconSize ?? tokens.button.iconSizes[size]} color={colors.text} />
       ) : (
         <KjunIcon
           name={active ? activeIcon : inactiveIcon || activeIcon}

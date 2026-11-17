@@ -909,11 +909,11 @@
   --_kjun-extension-spinner-sizes-md: 24px;
   --_kjun-extension-spinner-sizes-lg: 32px;
   --_kjun-extension-spinner-sizes-xl: 48px;
-  --_kjun-extension-spinner-stroke-widths-xs: 2px;
+  --_kjun-extension-spinner-stroke-widths-xs: 1.5px;
   --_kjun-extension-spinner-stroke-widths-sm: 2px;
   --_kjun-extension-spinner-stroke-widths-md: 3px;
   --_kjun-extension-spinner-stroke-widths-lg: 4px;
-  --_kjun-extension-spinner-stroke-widths-xl: 4px;
+  --_kjun-extension-spinner-stroke-widths-xl: 6px;
   --_kjun-extension-progress-heights-sm: 4px;
   --_kjun-extension-progress-heights-md: 6px;
   --_kjun-extension-progress-heights-lg: 12px;
@@ -1070,6 +1070,8 @@
   --_kjun-state-opacity-tint-control: 0.08;
   --_kjun-state-opacity-tint-hover: 0.12;
   --_kjun-state-opacity-tint-active: 0.16;
+  --_kjun-state-opacity-spinner-track: 0.16;
+  --_kjun-state-opacity-spinner-pulse: 0.4;
   --_kjun-state-opacity-hover-soft: 0.5;
   --_kjun-state-opacity-selected-within: 0.5;
   --_kjun-state-opacity-muted: 0.55;

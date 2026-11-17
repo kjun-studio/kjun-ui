@@ -1,4 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
+import { spinnerGlyph } from "./spinner-glyph";
+import { spinnerStacked } from "../../../shared/package-runtime/spinner-geometry";
 import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { skeletonLineBox, skeletonTableWidth, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
 import { ref, useId, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
@@ -118,15 +120,10 @@ export const KjunSpinner = defineComponent({
   setup(props) {
     const m = useKjunMessages();
     return () => {
-      const size = tokens.extensions.spinner.sizes[props.size];
-      // The stroke keeps a size-specific pixel weight instead of scaling with the 24-unit viewBox.
-      const stroke = (tokens.extensions.spinner.strokeWidths[props.size] * 24) / size;
       return (
-        <span role="status" aria-label={props.text || m.value.loading} class="kjun-spinner">
-          <svg class="kjun-spin" width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width={stroke} opacity=".25" />
-            <path d="M22 12A10 10 0 0 0 12 2" stroke="currentColor" stroke-width={stroke} />
-          </svg>
+        <span role="status" aria-label={props.text || m.value.loading} class="kjun-spinner" data-size={props.size}
+          data-stacked={(props.text && spinnerStacked(props.size)) || undefined}>
+          {spinnerGlyph({ size: tokens.extensions.spinner.sizes[props.size], stroke: tokens.extensions.spinner.strokeWidths[props.size] })}
           {props.text && <span>{props.text}</span>}
         </span>
       );

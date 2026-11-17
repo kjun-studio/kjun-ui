@@ -8,6 +8,8 @@ import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import { badgeGeometry, badgeToneRoles, type BadgeToneRoles } from "../../../shared/package-runtime/badge-tone";
 import { createContext,useContext,useEffect,useRef,useState,type ReactElement,type ReactNode } from "react";
 import { DataStateContentContext } from "./data-state-context";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
+import { spinnerStacked } from "../../../shared/package-runtime/spinner-geometry";
 import { emptyGeometry, emptyPaddingY, type EmptySize } from "../../../shared/package-runtime/empty-geometry";
 import {
 Animated,
@@ -244,70 +246,20 @@ export interface KjunSpinnerProps {
 }
 export function KjunSpinner({ size = "md", text }: KjunSpinnerProps) {
   const m = useKjunMessages();
-  const { colors } = useKjunStyles(),
-    reduced = useReducedMotion(),
-    rotation = useRef(new Animated.Value(0)).current;
-  useEffect(() => {
-    if (reduced) return;
-    const loop = Animated.loop(
-      Animated.timing(rotation, {
-        toValue: 1,
-        duration: tokens.motion.spin,
-        easing: Easing.linear,
-        useNativeDriver: Platform.OS !== 'web',
-      })
-    );
-    loop.start();
-    return () => {
-      loop.stop();
-      rotation.setValue(0);
-    };
-  }, [reduced, rotation]);
-  const dimension = tokens.extensions.spinner.sizes[size];
-  // The stroke keeps a size-specific pixel weight instead of scaling with the 24-unit viewBox.
-  const stroke = (tokens.extensions.spinner.strokeWidths[size] * 24) / dimension;
+  const { colors } = useKjunStyles();
+  const stacked = !!text && spinnerStacked(size);
+  // A live status like the Web role="status"; Android only announces with an explicit live region.
   return (
     <View
       accessible
-      accessibilityRole="progressbar"
+      role="status"
+      accessibilityLiveRegion="polite"
       accessibilityLabel={text || m.loading}
-      style={{ flexDirection: "row", alignItems: "center" }}
+      style={{ flexDirection: stacked ? "column" : "row", alignItems: "center" }}
     >
-      <Animated.View
-        style={{
-          transform: [
-            {
-              rotate: rotation.interpolate({
-                inputRange: [0, 1],
-                outputRange: ["0deg", "360deg"],
-              }),
-            },
-          ],
-        }}
-      >
-        <Svg
-          width={dimension}
-          height={dimension}
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <Circle
-            cx={12}
-            cy={12}
-            r={10}
-            stroke={colors.brand}
-            strokeWidth={stroke}
-            opacity={0.25}
-          />
-          <Path
-            d="M22 12A10 10 0 0 0 12 2"
-            stroke={colors.brand}
-            strokeWidth={stroke}
-          />
-        </Svg>
-      </Animated.View>
+      <KjunSpinnerGlyph size={tokens.extensions.spinner.sizes[size]} stroke={tokens.extensions.spinner.strokeWidths[size]} color={colors.brand} />
       {!!text && (
-        <KText style={{ marginLeft: tokens.dimension.value8, color: colors.textSecondary }}>
+        <KText style={stacked ? { marginTop: tokens.dimension.value12, color: colors.textSecondary } : { marginLeft: tokens.dimension.value8, color: colors.textSecondary }}>
           {text}
         </KText>
       )}

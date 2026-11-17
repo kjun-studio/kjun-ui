@@ -1,4 +1,5 @@
 import { typeStyle } from "./typography";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { Animated, Easing, Platform } from "react-native";
 import { useMotionValue } from "./motion";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
@@ -156,18 +157,7 @@ export interface KjunSwitchProps {
 // A small ring that turns inside the thumb while a switch saves (also a busy KjunListRow's switch).
 export function SwitchSpinner() {
   const { colors } = useKjunStyles();
-  const turn = useRef(new Animated.Value(0)).current;
-  const reduced = useReducedMotion();
-  useEffect(() => {
-    // Without motion the ring holds still; the saving state is still announced.
-    if (reduced) return;
-    const loop = Animated.loop(Animated.timing(turn, { toValue: 1, duration: tokens.motion.spin, easing: Easing.linear, useNativeDriver: Platform.OS !== "web" }));
-    loop.start();
-    return () => loop.stop();
-  }, [turn, reduced]);
-  const size = tokens.extensions.switch.spinnerSize;
-  return <Animated.View aria-hidden={true} style={{ width: size, height: size, borderRadius: size / 2, borderWidth: tokens.border.controlWidth,
-    borderColor: colors.border, borderTopColor: colors.textSecondary, transform: [{ rotate: turn.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "360deg"] }) }] }} />;
+  return <KjunSpinnerGlyph size={tokens.extensions.switch.spinnerSize} color={colors.brand} />;
 }
 export function KjunSwitch({
   value,

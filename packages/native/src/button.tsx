@@ -1,4 +1,5 @@
 import { FontText } from "./internal";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { typeStyle } from "./typography";
 import { TopNavigationContext } from "./top-navigation-context";
 import { BottomActionBarContext } from "./bottom-action-bar-context";
@@ -229,9 +230,8 @@ export function KjunButton(input: KjunButtonProps) {
       : variant === "warning"
       ? c.warning
       : "transparent";
-  const before = prefixIcon && (busy
-    ? (spinOnLoading ?? prefixIcon === "refresh") ? prefixIcon : "loader-2"
-    : prefixIcon);
+  const spinPrefix = busy && !!prefixIcon && (spinOnLoading ?? prefixIcon === "refresh");
+  const before = prefixIcon && !(busy && !spinPrefix) ? prefixIcon : undefined;
   const overlayLoading = busy && !prefixIcon && !suffixIcon;
   const paint = (pressed: boolean, hovered: boolean) => {
     const expanded = props.accessibilityState?.expanded;
@@ -306,6 +306,7 @@ export function KjunButton(input: KjunButtonProps) {
       {({ pressed, hovered }: any) => {
         const color = paint(pressed, hovered && Platform.OS === "web").ink;
         return <>
+          {busy && !!prefixIcon && !spinPrefix && <KjunSpinnerGlyph size={iconSize} color={color} />}
           {before && <KjunIcon name={before} filled={!busy && prefixIconFilled}
             size={iconSize} color={color} spin={busy} />}
           {hasContent && <FontText numberOfLines={navigation?.slot ? 1 : undefined} ellipsizeMode="tail" style={{ fontFamily,
@@ -314,14 +315,13 @@ export function KjunButton(input: KjunButtonProps) {
             ...(multiline || navigation ? { flexShrink: 1, minWidth: 0, textAlign: 'center' as const } : {}),
           }}>{children}</FontText>}
           {!!suffixIcon && <View style={{ opacity: busy && prefixIcon ? 0 : 1 }}>
-            <KjunIcon name={busy && !prefixIcon ? "loader-2" : suffixIcon}
-              filled={!busy && suffixIconFilled} spin={busy && !prefixIcon}
-              size={iconSize} color={color} />
+            {busy && !prefixIcon ? <KjunSpinnerGlyph size={iconSize} color={color} /> : <KjunIcon name={suffixIcon}
+              filled={!busy && suffixIconFilled} size={iconSize} color={color} />}
           </View>}
           {overlayLoading && <View pointerEvents="none" accessible={false} style={{
             position: "absolute", top: 0, bottom: 0, left: 0, right: 0,
             alignItems: "center", justifyContent: "center",
-          }}><KjunIcon name="loader-2" spin size={iconSize} color={color} /></View>}
+          }}><KjunSpinnerGlyph size={iconSize} color={color} /></View>}
         </>;
       }}
     </Pressable>

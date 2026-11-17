@@ -121,7 +121,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     await openFixture(page, platform, '?loading&dark', 'refresh-button');
     await configure(page, { tooltip: '' });
     await expect(button(page)).toBeDisabled();
-    await expect(icon(page)).toHaveCSS('stroke', 'rgb(212, 212, 212)');
+    // Without motion the refresh glyph gives way to the shared loading ring, painted on its arc in the disabled ink.
+    await expect(icon(page).locator('path')).toHaveCSS('stroke', 'rgb(212, 212, 212)');
     await expect(button(page)).toHaveAccessibleName('목록 새로고침');
     await configure(page, { loading: false });
     await expect(button(page)).toBeDisabled();

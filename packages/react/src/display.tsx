@@ -12,6 +12,8 @@ import { progressCircle, progressState } from "../../../shared/package-runtime/p
 import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
 import { typeStyle } from "./typography";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
+import { spinnerStacked } from "../../../shared/package-runtime/spinner-geometry";
 import {
 useId,
 useRef,
@@ -130,32 +132,9 @@ export interface KjunSpinnerProps {
 }
 export function KjunSpinner({ size = "md", text }: KjunSpinnerProps) {
   const m = useKjunMessages();
-  // The stroke keeps a size-specific pixel weight instead of scaling with the 24-unit viewBox.
-  const stroke = (tokens.extensions.spinner.strokeWidths[size] * 24) / tokens.extensions.spinner.sizes[size];
   return (
-    <span role="status" aria-label={text || m.loading} className="kjun-spinner">
-      <svg
-        className="kjun-spin"
-        width={tokens.extensions.spinner.sizes[size]}
-        height={tokens.extensions.spinner.sizes[size]}
-        viewBox="0 0 24 24"
-        fill="none"
-        aria-hidden="true"
-      >
-        <circle
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth={stroke}
-          opacity=".25"
-        />
-        <path
-          d="M22 12A10 10 0 0 0 12 2"
-          stroke="currentColor"
-          strokeWidth={stroke}
-        />
-      </svg>
+    <span role="status" aria-label={text || m.loading} className="kjun-spinner" data-size={size} data-stacked={(text && spinnerStacked(size)) || undefined}>
+      <KjunSpinnerGlyph size={tokens.extensions.spinner.sizes[size]} stroke={tokens.extensions.spinner.strokeWidths[size]} />
       {text && <span>{text}</span>}
     </span>
   );

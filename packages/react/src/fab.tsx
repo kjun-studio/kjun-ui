@@ -1,4 +1,5 @@
 import { fabOffset } from "../../../shared/package-runtime/bottom-bar";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { tokens } from "@kjun-ui/tokens";
 import { forwardRef, type ButtonHTMLAttributes, type CSSProperties, type MouseEvent } from "react";
 import { KjunIcon, useMinimumLoading } from "./button";
@@ -27,12 +28,13 @@ export interface KjunFabProps extends Omit<ButtonHTMLAttributes<HTMLButtonElemen
 export const KjunFab = forwardRef<HTMLButtonElement, KjunFabProps>(function KjunFab(
   { icon, label, ariaLabel, size = "md", loading = false, disabled = false, safeArea = true, avoidBottomBar = true, offsetBottom = 0, onClick, className = "", style, ...rest }, ref) {
   const busy = useMinimumLoading(loading), offset = fabOffset(offsetBottom);
+  const iconSize = size === "sm" ? tokens.extensions.fab.smallIconSize : tokens.extensions.fab.iconSize;
   return <button {...rest} ref={ref} type="button" className={"kjun-fab " + className} data-size={size} data-label={label ? "" : undefined}
     data-safe-area={safeArea ? undefined : "false"} data-bottom-bar={avoidBottomBar ? undefined : "false"}
     aria-label={ariaLabel || rest["aria-label"]} aria-busy={busy || undefined} disabled={disabled}
     onClick={event => { if (!busy) onClick?.(event); }}
     style={{ ...(offset ? { "--_kjun-fab-offset": offset + "px" } as CSSProperties : {}), ...style }}>
-    <KjunIcon name={busy ? "loader-2" : icon} spin={busy} size={size === "sm" ? tokens.extensions.fab.smallIconSize : tokens.extensions.fab.iconSize} />
+    {busy ? <KjunSpinnerGlyph size={iconSize} /> : <KjunIcon name={icon} size={iconSize} />}
     {label && <span className="kjun-fab-label">{label}</span>}
   </button>;
 });

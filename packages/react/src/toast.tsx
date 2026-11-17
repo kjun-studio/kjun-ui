@@ -1,7 +1,8 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { toastPresentation } from "../../../shared/package-runtime/toast-presentation";
 import { attachToastSwipe } from "../../../shared/package-runtime/toast-swipe";
-import { createFeedbackController,type ToastItem } from "@kjun-ui/tokens";
+import { createFeedbackController,tokens,type ToastItem } from "@kjun-ui/tokens";
 import { useEffect,useRef } from "react";
 import { KjunIcon } from "./button";
 export function ToastView({
@@ -55,7 +56,7 @@ export function ToastView({
         className="kjun-toast-icon"
         style={{ color: `var(--_kjun-color-${tone}-accent)` }}
       >
-        <KjunIcon name={icon} spin={!!toast.loading} />
+        {toast.loading ? <KjunSpinnerGlyph size={tokens.extensions.toast.iconSize} /> : <KjunIcon name={icon} />}
       </span>
       <div className="kjun-toast-content">
         {toast.title && <strong>{toast.title}</strong>}

@@ -60,8 +60,11 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect((await box(region)).height).toBe(height(132));
       await update(page, { empty: false, emptyIcon: '', emptyActionText: '', loading: true, resultKey: null, loadingText: 'Loading' });
       expect((await box(region)).height).toBe(height(56));
-      const text = region.getByText('Loading', { exact: true }), spinner = platform === 'native' ? region.getByRole('progressbar') : region.locator('svg').first().locator('..');
-      expect((await box(text)).y - ((await box(spinner)).y + 24)).toBe(12);
+      const text = region.getByText('Loading', { exact: true }), spinner = region.locator('svg').first();
+      // The loading ring is decorative (the block's status carries the text), so it is found by its drawing.
+      // It turns, so its bounding box grows mid-turn; its centre does not.
+      const ring = await box(spinner), ringBottom = ring.y + ring.height / 2 + tokens.extensions.spinner.sizes.md / 2;
+      expect(Math.round((await box(text)).y - ringBottom)).toBe(12);
       await expect(text).toHaveCSS('text-align', 'center');
       await update(page, { loading: false, resultKey: 'a' });
     }

@@ -1,4 +1,5 @@
 import { computed, h, inject, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { spinnerGlyph } from "./spinner-glyph";
 import { defineComponent } from "./runtime/component";
 import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { typeStyle } from "../../../shared/package-runtime/typography";
@@ -107,7 +108,8 @@ export const KjunButton = defineComponent({
       const contentHeight = Math.max(content ? tokens.button.typography[s].lineHeightPx : 0,
         prefixIcon || suffixIcon || (!content && loading) ? iconSize : 0);
       const spinPrefix = loading && prefixIcon && (props.spinOnLoading ?? prefixIcon === "refresh");
-      const before = prefixIcon && (loading ? (spinPrefix ? prefixIcon : "loader-2") : prefixIcon);
+      const before = prefixIcon && !(loading && !spinPrefix) ? prefixIcon : undefined;
+      const loader = () => spinnerGlyph({ size: iconSize });
       const overlayLoading = loading && !prefixIcon && !suffixIcon;
       // Icon glyphs carry their own side bearing, so the icon side takes a tighter inset.
       const paddingX = tokens.button.paddingX[s];
@@ -141,13 +143,14 @@ export const KjunButton = defineComponent({
             if (!props.disabled && !loading) emit("click", event);
           }}
         >
+          {loading && prefixIcon && !spinPrefix && loader()}
           {before && <KjunIcon name={before} filled={!loading && props.prefixIconFilled} spin={loading} size={iconSize} />}
           <span class="kjun-button-label" style={{ opacity: overlayLoading ? 0 : 1 }}>{children}</span>
-          {suffixIcon && (
-            <KjunIcon name={loading && !prefixIcon ? "loader-2" : suffixIcon} filled={!loading && props.suffixIconFilled}
-              spin={loading && !prefixIcon} style={{ opacity: loading && prefixIcon ? 0 : 1 }} size={iconSize} />
-          )}
-          {overlayLoading && <span class="kjun-button-loader" aria-hidden="true"><KjunIcon name="loader-2" spin size={iconSize} /></span>}
+          {suffixIcon && (loading && !prefixIcon ? loader() : (
+            <KjunIcon name={suffixIcon} filled={!loading && props.suffixIconFilled}
+              style={{ opacity: loading && prefixIcon ? 0 : 1 }} size={iconSize} />
+          ))}
+          {overlayLoading && <span class="kjun-button-loader" aria-hidden="true">{loader()}</span>}
         </button>
       );
     };
