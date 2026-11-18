@@ -48,6 +48,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(button.y).toBeGreaterThanOrEqual(text.y + text.height - 1);
     expect(button.y + button.height).toBeLessThanOrEqual(field.y + field.height);
     expect(button.x + button.width).toBeLessThanOrEqual(field.x + field.width);
+    // The count stays beside the submit button (footerGap 8), not adrift between the actions and the button.
+    const counter = (await count.boundingBox())!;
+    expect(button.x - (counter.x + counter.width)).toBeCloseTo(8, 0);
     await submit.click();
     await expect(page.getByTestId('sent')).toHaveText('회의 메모');
     await expect(area(page)).toHaveValue('');
