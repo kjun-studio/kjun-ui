@@ -90,6 +90,12 @@ for (const platform of ['react', 'vue3', 'native']) {
       if (web) expect(new URL(page.url()).hash).toBe('');
     });
 
+    test('a trail link keeps the text height on every platform', async ({ page }) => {
+      // Native reaches a 44px touch area with hitSlop, so its row lines up with the web packages' 20px line.
+      const box = (await page.getByTestId('ancestors').getByRole('link', { name: 'Notes' }).boundingBox())!;
+      expect(box.height).toBeLessThanOrEqual(21);
+    });
+
     test('a link under the pointer takes the brand colour and an underline', async ({ page }) => {
       const link = page.getByTestId('ancestors').getByRole('link', { name: 'Work' });
       // Native draws the label in a text node inside the link; the web link carries its own style.

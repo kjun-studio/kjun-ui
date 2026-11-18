@@ -171,16 +171,26 @@
   box-shadow: 0 0 0 var(--_kjun-extension-steps-halo) var(--_kjun-color-danger-bg);
 }
 
-/* Connector: drawn above a pressed or hovered step's fill (markers sit one layer higher, so the next step's connector never crosses them). From the previous marker's centre to this one's, coloured by this step (brand once it is reached). */
+/* Connector: drawn above a pressed or hovered step's fill. It runs between the previous marker and this one, coloured by this step
+   (brand once it is reached), and stops a 4px gap short of each marker, or of its halo on the current or failed step, so it never
+   crosses one. In a column too narrow for the gaps it shrinks to nothing. */
 .kjun-steps[data-orientation="horizontal"] .kjun-steps-item:not(:first-child)::before {
+  --_kjun-steps-line-from: calc(var(--_kjun-extension-steps-marker-large) / 2 + var(--_kjun-geometry-dimension-value4));
+  --_kjun-steps-line-to: calc(var(--_kjun-extension-steps-marker-large) / 2 + var(--_kjun-geometry-dimension-value4));
   content: "";
   position: absolute;
   z-index: 1;
   top: calc((var(--_kjun-extension-steps-marker-large) - var(--_kjun-extension-steps-connector)) / 2);
-  inset-inline-start: -50%;
-  width: 100%;
+  inset-inline-start: calc(-50% + var(--_kjun-steps-line-from));
+  width: max(0px, calc(100% - var(--_kjun-steps-line-from) - var(--_kjun-steps-line-to)));
   height: var(--_kjun-extension-steps-connector);
   background: var(--_kjun-steps-line);
+}
+.kjun-steps[data-orientation="horizontal"] .kjun-steps-item:is([data-status="current"], [data-status="error"]):not(:first-child)::before {
+  --_kjun-steps-line-to: calc(var(--_kjun-extension-steps-marker-large) / 2 + var(--_kjun-extension-steps-halo) + var(--_kjun-geometry-dimension-value4));
+}
+.kjun-steps[data-orientation="horizontal"] .kjun-steps-item:is([data-status="current"], [data-status="error"]) + .kjun-steps-item::before {
+  --_kjun-steps-line-from: calc(var(--_kjun-extension-steps-marker-large) / 2 + var(--_kjun-extension-steps-halo) + var(--_kjun-geometry-dimension-value4));
 }
 
 /* Label: two lines at most, whole words for Korean, a single long word breaks instead of overflowing. */

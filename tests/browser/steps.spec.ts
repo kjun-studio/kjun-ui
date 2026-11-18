@@ -32,17 +32,23 @@ for (const platform of ['react', 'vue3', 'native']) {
       await openFixture(page, platform, '', 'steps');
     });
 
-    test('the next connector never crosses a marker', async ({ page }) => {
-      test.skip(!web, 'Native lines are separate views stacked by order');
-      // Every marker centre must hit the marker itself, not the line that starts there.
-      const hits = await items(page, 'wizard').evaluateAll(list => list.map(li => {
-        // A pickable step shows its button copy; the static copy is display:none.
-        const marker = [...li.querySelectorAll('.kjun-steps-marker')].find(m => m.getBoundingClientRect().width > 0)!;
-        const box = marker.getBoundingClientRect();
-        const top = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
-        return !!top && marker.contains(top);
-      }));
-      expect(hits).toEqual([true, true, true, true, true]);
+    test('a connector stops 4px short of each marker, or of the halo on the current step', async ({ page }) => {
+      // Marker 24px, halo 6px, gap 4px: a line ends 16px from a marker's centre, 22px from the current one (step 3).
+      const expected = [[16, 16], [16, 22], [22, 16], [16, 16]];
+      const centres = web
+        ? await items(page, 'wizard').evaluateAll(list => list.map(li => { const r = li.getBoundingClientRect(); return r.x + r.width / 2; }))
+        : await Promise.all([0, 1, 2, 3, 4].map(async n => { const r = (await rows(page, 'wizard').nth(n).boundingBox())!; return r.x + r.width / 2; }));
+      for (const [k, [from, to]] of expected.entries()) {
+        const n = k + 1;
+        const bar = web
+          ? await items(page, 'wizard').nth(n).evaluate(li => {
+              const r = li.getBoundingClientRect(), s = getComputedStyle(li, '::before');
+              return { x: r.x + parseFloat(s.left), width: parseFloat(s.width) };
+            })
+          : (await section(page, 'wizard').getByTestId('steps-line-' + n).boundingBox())!;
+        expect(Math.abs(bar.x - (centres[n - 1] + from)), 'start ' + n).toBeLessThanOrEqual(1);
+        expect(Math.abs(bar.x + bar.width - (centres[n] - to)), 'end ' + n).toBeLessThanOrEqual(1);
+      }
     });
 
     test('marks each status', async ({ page }) => {
@@ -56,13 +62,10 @@ for (const platform of ['react', 'vue3', 'native']) {
         await expect(section(page, 'wizard').getByRole('list', { name: '주문 단계' })).toBeVisible();
         await expect(spoken(page, 'wizard', 2).getByText('3', { exact: true })).toBeVisible();
         await expect(spoken(page, 'wizard', 0).locator('svg')).toHaveCount(1);
-        // A line runs from the previous marker's centre to this one's, brand once this step is reached.
+        // A line runs between the previous marker and this one, brand once this step is reached.
         const line = (n: number) => section(page, 'wizard').getByTestId('steps-line-' + n);
         await expect(line(1)).toHaveCSS('background-color', await paint(page, 'brand'));
         await expect(line(3)).toHaveCSS('background-color', await paint(page, 'secondary'));
-        const [before, after, bar] = await Promise.all([rows(page, 'wizard').nth(0).boundingBox(), rows(page, 'wizard').nth(1).boundingBox(), line(1).boundingBox()]);
-        expect(Math.abs(bar!.x - (before!.x + before!.width / 2))).toBeLessThanOrEqual(1);
-        expect(Math.abs(bar!.x + bar!.width - (after!.x + after!.width / 2))).toBeLessThanOrEqual(1);
         await expect(spoken(page, 'wizard', 2).locator('svg')).toHaveCount(0);
         return;
       }

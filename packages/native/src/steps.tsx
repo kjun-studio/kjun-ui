@@ -56,6 +56,8 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
   const failed = stepsRootStatus(at, count, currentStatus) === "error";
   const titleLine = tokens.typography.label.lineHeightPx, bigMarker = geometry.markerLarge, smallMarker = geometry.markerSmall;
   const reached = (status: KjunStepStatus) => status !== "upcoming";
+  // How far a horizontal connector stops short of a marker's centre: half the marker, its halo when it has one, and a 4px gap.
+  const lineEnd = (status: KjunStepStatus) => bigMarker / 2 + (status === "current" || status === "error" ? geometry.halo : 0) + tokens.dimension.value4;
   const numeric = { fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"] as TextStyle["fontVariant"] };
 
   const marker = (status: KjunStepStatus, index: number) => {
@@ -112,7 +114,9 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
     const line = vertical
       ? i < count - 1 && { left: (bigMarker - geometry.connector) / 2, top: (titleLine + smallMarker) / 2, width: geometry.connector,
           bottom: -(geometry.rowGap + (titleLine - smallMarker) / 2), backgroundColor: reached(stepStatus(i + 1, at, currentStatus)) ? colors.brand : colors.secondary }
-      : i > 0 && { left: "-50%" as const, top: (bigMarker - geometry.connector) / 2, width: "100%" as const, height: geometry.connector,
+      // Previous centre to this centre, then cut back a 4px gap from each marker (from its halo on the current or failed step), like Web.
+      : i > 0 && { left: "-50%" as const, right: "50%" as const, top: (bigMarker - geometry.connector) / 2, height: geometry.connector,
+          marginLeft: lineEnd(stepStatus(i - 1, at, currentStatus)), marginRight: lineEnd(status),
           backgroundColor: reached(status) ? colors.brand : colors.secondary };
     const pad = vertical ? tokens.space.inline.xs : tokens.space.stack.sm, side = vertical ? tokens.space.inline.sm : tokens.space.inline.xs;
     const slop = Math.max(0, (tokens.native.minimumTouchTarget - (vertical ? titleLine + 2 * pad : 0)) / 2);

@@ -286,6 +286,7 @@ export function KjunBreadcrumb({
   if (!items.length) return null;
   const { shown, hidden, at } = collapseBreadcrumb(items, maxItems);
   const separator = <KjunIcon name="chevron-right" size={geometry.separatorSize} color={colors.textTertiary} />;
+  const linkSlop = Math.max(0, (tokens.native.minimumTouchTarget - tokens.typography.body.lineHeightPx) / 2);
   return (
     <View
       accessibilityLabel={ariaLabel}
@@ -318,8 +319,9 @@ export function KjunBreadcrumb({
             {position > 0 ? separator : null}
             {item.to
               ? renderLink?.(item, label()) || (
-                  <Pressable accessibilityRole="link" onPress={() => onNavigate?.(item)}
-                    style={{ minHeight: tokens.native.minimumTouchTarget, justifyContent: "center" }}>
+                  // The row keeps Web's text height; the touch area reaches 44px with hitSlop instead of growing the row.
+                  <Pressable accessibilityRole="link" onPress={() => onNavigate?.(item)} hitSlop={{ top: linkSlop, bottom: linkSlop }}
+                    style={{ justifyContent: "center" }}>
                     {({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => label(pressed || !!hovered)}
                   </Pressable>
                 )
