@@ -232,8 +232,12 @@ export const kjunPropValues = Object.freeze({
   KjunQuantityStepper: Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),
   }),
+  KjunRadio: Object.freeze({
+    size: Object.freeze(["sm","md","lg"] as const),
+  }),
   KjunRadioGroup: Object.freeze({
     direction: Object.freeze(["horizontal","vertical"] as const),
+    size: Object.freeze(["sm","md","lg"] as const),
   }),
   KjunRangeSlider: Object.freeze({
     orientation: Object.freeze(["horizontal","vertical"] as const),

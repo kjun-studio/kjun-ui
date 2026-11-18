@@ -4,11 +4,9 @@ import { Animated, Easing, Platform } from "react-native";
 import { useMotionValue } from "./motion";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import {
-createContext,
-useContext,
 useState,
 useEffect,
-useRef,
+useId,
 type ReactNode
 } from "react";
 import {
@@ -22,10 +20,9 @@ import { componentIcons } from "../../../shared/package-runtime/component-icons"
 import { IconFallbacks } from "../../../shared/package-runtime/icon-context";
 import { KText, content, finePointer, useReducedMotion } from "./internal";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { joinHints } from "../../../shared/package-runtime/aria-ids";
+import { joinHints, mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { useKjunField } from "./input";
 import { useKjunStyles } from "./provider";
-import { useRadioKeyboard } from "./choice-accessibility";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
 
 export type ChoiceValue = string | number | boolean | null;
@@ -47,9 +44,47 @@ export interface KjunCheckboxProps<T = ChoiceValue> {
   ariaLabel?: string;
   disabled?: boolean;
   size?: InputSize;
+  /** Supporting text under the label; screen readers hear it as the hint. */
+  description?: string;
   children?: ReactNode;
   onValueChange?: (value: boolean | T[]) => void;
   onChange?: (value: boolean | T[]) => void;
+}
+/** The label alone, or the label with supporting text under it, like Web's choice text. */
+export function choiceText(text: ReactNode, description: string | undefined, disabled: boolean, gap: number, descriptionId?: string) {
+  return <ChoiceText text={text} description={description} disabled={disabled} gap={gap} descriptionId={descriptionId} />;
+}
+/** The id Native Web points aria-describedby at; native platforms read the description as the hint. */
+export const useDescriptionId = () => "kjun-" + useId().replace(/:/g, "") + "-description";
+function ChoiceText({ text, description, disabled, gap, descriptionId }: { text: ReactNode; description?: string; disabled: boolean; gap: number; descriptionId?: string }) {
+  const { colors } = useKjunStyles();
+  const labelStyle = { ...typeStyle('label'), ...(disabled ? { color: colors.textDisabled } : null) };
+  if (!description) return text ? content(text, { marginLeft: gap, ...labelStyle }) : null;
+  return (
+    <View style={{ marginLeft: gap, flexShrink: 1, minWidth: 0 }}>
+      {!!text && content(text, labelStyle)}
+      <KText nativeID={descriptionId} style={{ ...typeStyle('caption'), marginTop: tokens.dimension.value4, color: disabled ? colors.textDisabled : colors.textSecondary }}>{description}</KText>
+    </View>
+  );
+}
+/** FormGroup wiring shared by the choice controls: Web gets the group's ids, every platform hears its hint and error. */
+export function fieldAccessibility(field: ReturnType<typeof useKjunField>, descriptionId: string | undefined, ...hints: (string | undefined)[]) {
+  return {
+    accessibilityHint: joinHints(field?.hint, field?.error, ...hints),
+    ...(Platform.OS === "web" ? {
+      "aria-describedby": mergeIds(field?.describedBy, descriptionId),
+      "aria-invalid": field?.error ? true : undefined,
+      "aria-required": field?.required || undefined,
+    } : {}),
+  };
+}
+/** Boundary of a choice box: disabled, press, hover, then invalid (only while unchosen), chosen and resting roles. */
+export function choiceBorder(colors: ReturnType<typeof useKjunStyles>["colors"], state: { disabled: boolean; pressed: boolean; hovered: boolean; invalid: boolean; chosen: boolean }) {
+  if (state.disabled) return colors.textDisabled;
+  if (state.pressed) return colors.brandActive;
+  if (state.hovered) return state.invalid && !state.chosen ? colors.danger : colors.brandHover;
+  if (state.invalid && !state.chosen) return colors.danger;
+  return state.chosen ? colors.brand : colors.borderStrong;
 }
 export function KjunCheckbox<T = ChoiceValue>({
   value,
@@ -59,20 +94,29 @@ export function KjunCheckbox<T = ChoiceValue>({
   ariaLabel,
   disabled = false,
   size = "md",
+  description,
   children,
   onValueChange,
   onChange,
 }: KjunCheckboxProps<T>) {
-  const { colors } = useKjunStyles(),
+  const { colors } = useKjunStyles(), field = useKjunField(),
     checked = Array.isArray(value) ? value.includes(val!) : value,
     filled = checked || indeterminate,
     dimension = tokens.extensions.checkbox.sizes[size];
+  const focus = useControlFocus(disabled), descriptionId = useDescriptionId();
+  const [hovered, setHovered] = useState(false);
+  useEffect(() => { if (disabled) setHovered(false); }, [disabled]);
   return (
     <Pressable
       accessibilityRole="checkbox"
       accessibilityState={{ checked: indeterminate ? "mixed" : checked, disabled }}
       accessibilityLabel={ariaLabel || label}
+      // Inside a FormGroup the box keeps its own label but takes the group's hint, error and required state.
+      {...fieldAccessibility(field, description ? descriptionId : undefined, description)}
+      {...focus.handlers}
       disabled={disabled}
+      onHoverIn={() => setHovered(true)}
+      onHoverOut={() => setHovered(false)}
       onPress={() => {
         const result = Array.isArray(value)
           ? checked
@@ -82,52 +126,53 @@ export function KjunCheckbox<T = ChoiceValue>({
         onValueChange?.(result);
         onChange?.(result);
       }}
-      style={({ pressed }) => ({
+      style={{
         // Content width like Web; a column parent would otherwise stretch the hit area and focus ring.
         alignSelf: "flex-start",
         flexDirection: "row",
         alignItems: "center",
         // Like Web's choice row on a mouse-like pointer; touch layouts keep the 44px target.
         minHeight: finePointer() ? tokens.extensions.choice.minimumHeight : tokens.native.minimumTouchTarget,
-        // One disabled rule, like Button and fields: nothing fades; only a press dims.
-        opacity: !disabled && pressed ? tokens.states.opacity.pressed : 1,
-      })}
+      }}
     >
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          width: dimension,
-          height: dimension,
-          borderRadius: tokens.extensions.checkbox.radii[size],
-          borderWidth: tokens.border.controlWidth,
-          // Same roles as Radio: a strong boundary while enabled; disabled strokes and fills take the disabled-text role.
-          borderColor: disabled ? colors.textDisabled : filled ? colors.brand : colors.borderStrong,
-          backgroundColor: filled ? (disabled ? colors.textDisabled : colors.brand) : colors.surface,
-        }}
-      >
-        {filled && (
-          // The mixed state's minus is not in every app's icon set.
-          <IconFallbacks icons={componentIcons}>
-            <KjunIcon
-              name={indeterminate ? "minus" : "check"}
-              size={tokens.extensions.checkbox.iconSizes[size]}
-              color={disabled ? colors.surface : colors.onBrand}
-            />
-          </IconFallbacks>
-        )}
-      </View>
-      {!!(children || label) &&
-        content(children || label, {
-          marginLeft: tokens.extensions.checkbox.labelGap,
-          ...typeStyle('label'),
-          ...(disabled ? { color: colors.textDisabled } : null),
-        })}
+      {({ pressed }) => {
+        // Like Web: hover and press deepen the boundary, and a checked box's fill with it; disabled takes the disabled-text role.
+        const border = choiceBorder(colors, { disabled, pressed, hovered, invalid: !!field?.error, chosen: filled });
+        return (
+          <>
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                width: dimension,
+                height: dimension,
+                borderRadius: tokens.extensions.checkbox.radii[size],
+                borderWidth: tokens.border.controlWidth,
+                borderColor: border,
+                backgroundColor: filled ? border : colors.surface,
+                ...focus.ring,
+              }}
+            >
+              {filled && (
+                // The mixed state's minus is not in every app's icon set.
+                <IconFallbacks icons={componentIcons}>
+                  <KjunIcon
+                    name={indeterminate ? "minus" : "check"}
+                    size={tokens.extensions.checkbox.iconSizes[size]}
+                    color={disabled ? colors.surface : colors.onBrand}
+                  />
+                </IconFallbacks>
+              )}
+            </View>
+            {choiceText(children || label, description, disabled, tokens.extensions.checkbox.labelGap, descriptionId)}
+          </>
+        );
+      }}
     </Pressable>
   );
 }
 // Web draws the choice focus ring on the control, not the whole label row; Native Web follows.
-function useControlFocus(disabled: boolean) {
+export function useControlFocus(disabled: boolean) {
   const { colors } = useKjunStyles();
   const [focused, setFocused] = useState(false);
   return {
@@ -179,7 +224,7 @@ export function KjunSwitch({
   const thumb = height - 2 * tokens.extensions.switch.padding;
   const offset = width - height;
   const motion = useMotionValue(value ? 1 : 0);
-  const focus = useControlFocus(disabled);
+  const focus = useControlFocus(disabled), descriptionId = useDescriptionId();
   const [hovered, setHovered] = useState(false);
   // Off is a quiet track with no boundary; hover deepens whichever colour the track has.
   const hover = hovered && !disabled && !loading;
@@ -202,12 +247,7 @@ export function KjunSwitch({
       accessibilityState={{ checked: value, disabled, busy: loading }}
       accessibilityLabel={ariaLabel || label || field?.label}
       // Like the web: the field's hint and error, the description, and "saving" while it saves.
-      accessibilityHint={joinHints(field?.hint, field?.error, description, loading ? m.saving : undefined)}
-      {...(Platform.OS === "web" ? {
-        "aria-describedby": field?.describedBy,
-        "aria-invalid": field?.error ? true : undefined,
-        "aria-required": field?.required || undefined,
-      } : {})}
+      {...fieldAccessibility(field, description ? descriptionId : undefined, description, loading ? m.saving : undefined)}
       disabled={disabled}
       onPress={() => {
         if (loading) return;
@@ -247,165 +287,7 @@ export function KjunSwitch({
           }}
         >{loading && <SwitchSpinner />}</Animated.View>
       </Animated.View>
-      {description ? (
-        <View style={{ marginLeft: tokens.extensions.switch.labelGap, flexShrink: 1, minWidth: 0 }}>
-          {!!(children || label) && content(children || label, { ...typeStyle('label'), ...(disabled ? { color: colors.textDisabled } : null) })}
-          <KText style={{ ...typeStyle('caption'), marginTop: tokens.dimension.value4, color: disabled ? colors.textDisabled : colors.textSecondary }}>{description}</KText>
-        </View>
-      ) : !!(children || label) &&
-        content(children || label, {
-          marginLeft: tokens.extensions.switch.labelGap,
-          ...typeStyle('label'),
-          ...(disabled ? { color: colors.textDisabled } : null),
-        })}
+      {choiceText(children || label, description, disabled, tokens.extensions.switch.labelGap, descriptionId)}
     </Pressable>
-  );
-}
-export const RadioContext = createContext<{
-  value: ChoiceValue;
-  change: (v: ChoiceValue) => void;
-} | null>(null);
-export interface KjunRadioProps {
-  value?: ChoiceValue;
-  val: ChoiceValue;
-  label?: string;
-  disabled?: boolean;
-  name?: string;
-  ariaLabel?: string;
-  children?: ReactNode;
-  onValueChange?: (value: ChoiceValue) => void;
-  onChange?: (value: ChoiceValue) => void;
-}
-export function KjunRadio({
-  value,
-  val,
-  label,
-  disabled = false,
-  ariaLabel,
-  children,
-  onValueChange,
-  onChange,
-}: KjunRadioProps) {
-  const group = useContext(RadioContext),
-    { colors } = useKjunStyles(),
-    selected = (group ? group.value : value) === val;
-  const geometry = tokens.extensions.radio;
-  const [hovered, setHovered] = useState(false);
-  useEffect(() => { if (disabled) setHovered(false); }, [disabled]);
-  return (
-    <Pressable
-      accessibilityRole="radio"
-      accessibilityLabel={ariaLabel || label}
-      accessibilityState={{ checked: selected, disabled }}
-      disabled={disabled}
-      onHoverIn={() => setHovered(true)}
-      onHoverOut={() => setHovered(false)}
-      onPress={() => {
-        if (group) group.change(val);
-        else {
-          onValueChange?.(val);
-          onChange?.(val);
-        }
-      }}
-      style={{
-        // Content width like Web; a column parent would otherwise stretch the hit area and focus ring.
-        alignSelf: "flex-start",
-        flexDirection: "row",
-        alignItems: "center",
-        // Like Web's choice row on a mouse-like pointer; touch layouts keep the 44px target.
-        minHeight: finePointer() ? tokens.extensions.choice.minimumHeight : tokens.native.minimumTouchTarget,
-      }}
-    >
-      {({ pressed }) => (
-        <>
-          <View
-            style={{
-              width: geometry.size,
-              height: geometry.size,
-              borderWidth: geometry.borderWidth,
-              borderRadius: tokens.radius.radius9999,
-              alignItems: "center",
-              justifyContent: "center",
-              // One disabled rule, like Button and fields: the ring and dot take the disabled-text role.
-              borderColor: disabled
-                ? colors.textDisabled
-                : pressed ? colors.brandActive
-                : hovered ? colors.brandHover
-                : selected ? colors.brand : colors.borderStrong,
-              backgroundColor: colors.surface,
-            }}
-          >
-            {selected && (
-              <View
-                style={{
-                  width: geometry.dot,
-                  height: geometry.dot,
-                  borderRadius: tokens.radius.radius9999,
-                  backgroundColor: disabled ? colors.textDisabled : colors.brand,
-                }}
-              />
-            )}
-          </View>
-          {!!(children || label) && content(children || label, {
-            marginLeft: geometry.labelGap,
-            ...typeStyle('label'),
-            ...(disabled ? { color: colors.textDisabled } : null),
-          })}
-        </>
-      )}
-    </Pressable>
-  );
-}
-export interface KjunRadioGroupProps {
-  value: ChoiceValue;
-  options?: ChoiceOption[];
-  direction?: "horizontal" | "vertical";
-  ariaLabel?: string;
-  children?: ReactNode;
-  onValueChange?: (value: ChoiceValue) => void;
-  onChange?: (value: ChoiceValue) => void;
-}
-export function KjunRadioGroup({
-  value,
-  options = [],
-  direction = "horizontal",
-  ariaLabel,
-  children,
-  onValueChange,
-  onChange,
-}: KjunRadioGroupProps) {
-  const root = useRef<View>(null);
-  useRadioKeyboard(root);
-  return (
-    <RadioContext.Provider
-      value={{
-        value,
-        change: (next) => {
-          onValueChange?.(next);
-          onChange?.(next);
-        },
-      }}
-    >
-      <View
-        ref={root}
-        accessibilityRole="radiogroup"
-        accessibilityLabel={ariaLabel}
-        style={{
-          flexDirection: direction === "vertical" ? "column" : "row",
-          flexWrap: direction === "vertical" ? "nowrap" : "wrap",
-          gap: direction === "vertical" ? tokens.dimension.value8 : tokens.dimension.value16,
-        }}
-      >
-        {children ||
-          options.map((option) => (
-            <KjunRadio
-              key={String(option.value)}
-              val={option.value}
-              label={option.label}
-              disabled={option.disabled}
-            />
-          ))}
-      </View>
-    </RadioContext.Provider>
   );
 }
