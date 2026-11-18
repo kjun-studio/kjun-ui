@@ -3361,7 +3361,7 @@
   {
     "name": "KjunTimePicker",
     "sources": {
-      "vue3": "packages/vue3/src/date-picker.tsx",
+      "vue3": "packages/vue3/src/time-picker.tsx",
       "react": "packages/react/src/time-picker.tsx",
       "native": "packages/native/src/time-picker.tsx"
     },

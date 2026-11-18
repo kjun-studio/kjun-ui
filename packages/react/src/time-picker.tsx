@@ -1,7 +1,7 @@
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
-import { periodLeads, timeSegments, type HourCycle } from "../../../shared/package-runtime/time-segments";
+import { createSegmentTyping, periodLeads, timeSegments, type HourCycle } from "../../../shared/package-runtime/time-segments";
 import { warnPicker } from "../../../shared/package-runtime/calendar";
-import { Fragment, useEffect, useId, useMemo, useRef } from "react";
+import { Fragment, useEffect, useId, useMemo, useRef, useState } from "react";
 import { createTimeDomain, tokens, type TimePrecision, type InputSize } from "@kjun-ui/tokens";
 import { CompoundControlContext } from "./compound-control";
 import { KjunSelect } from "./select";
@@ -16,17 +16,20 @@ export interface KjunTimePickerProps {
   readOnly?: boolean;
   /** Submits the value with a form through a hidden input. */
   name?: string;
+  /** The first segment's id, for an outside <label for>; defaults to the FormGroup's id. */
+  id?: string;
   /** Stretches the field to its container's width (default false: the field hugs the time). */
   block?: boolean;
   onValueChange?: (value: string | null) => void; onChangeCommit?: (value: string | null) => void;
 }
 export function KjunTimePicker({ value, precision = "minute", min, max, minuteStep = 1, secondStep = 1, disabled = false, error = false, clearable = true, size = "md", ariaLabel,
-  hourCycle = 24, readOnly = false, name, block = false, onValueChange, onChangeCommit }: KjunTimePickerProps) {
+  hourCycle = 24, readOnly = false, name, id, block = false, onValueChange, onChangeCommit }: KjunTimePickerProps) {
   const scope = useKjunMessageScope(), m = scope.messages;
   ariaLabel ??= m.time;
   const root = useRef<HTMLDivElement>(null);
   const field = useKjunField(), uid = useId();
-  const fieldId = field?.id || `kjun-time-${uid}`;
+  const fieldId = id || field?.id || `kjun-time-${uid}`;
+  const [typing] = useState(createSegmentTyping);
   const domain = useMemo(() => createTimeDomain({ precision, min, max, minuteStep, secondStep }), [precision, min, max, minuteStep, secondStep]);
   // Only a broken domain locks the field; a value off the step or bounds stays editable and snaps on the next choice.
   const accepted = domain.accepts(value);
@@ -36,7 +39,18 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
   const segments = timeSegments(domain, value, { precision, hourCycle, messages: m, periodFirst: periodLeads(scope.language) });
   return <div ref={root} className="kjun-time-picker" data-size={size} data-block={block || undefined} data-error={error || !!field?.error} data-disabled={blocked} data-readonly={readOnly || undefined}
     role="group" aria-label={ariaLabel} aria-labelledby={field?.labelId} aria-describedby={field?.describedBy}>
-    <CompoundControlContext.Provider value={size}><div className="kjun-time-segments">
+    <CompoundControlContext.Provider value={size}><div className="kjun-time-segments" onKeyDown={event => {
+      // Digits (and a/p on AM/PM) typed on a segment pick its value; a full segment moves focus to the next one.
+      if (blocked || readOnly || event.altKey || event.ctrlKey || event.metaKey) return;
+      const triggers = Array.from(root.current?.querySelectorAll<HTMLElement>(".kjun-time-segment .kjun-select-trigger") ?? []);
+      const index = triggers.indexOf(event.target as HTMLElement);
+      if (index < 0) return;
+      const typed = typing.key(segments[index], index, event.key);
+      if (!typed) return;
+      event.preventDefault();
+      if (typed.value !== null) change(segments[index].pick(typed.value));
+      if (typed.advance) triggers[index + 1]?.focus();
+    }}>
     {segments.map((segment, index) => {
       const segmentId = index === 0 ? fieldId : `${fieldId}-${index}`;
       const labelId = `${fieldId}-segment-${index}`;

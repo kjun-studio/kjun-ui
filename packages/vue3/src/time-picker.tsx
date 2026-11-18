@@ -1,5 +1,5 @@
 import { useKjunMessageScope } from "./runtime/messages";
-import { periodLeads, timeSegments, type HourCycle } from "../../../shared/package-runtime/time-segments";
+import { createSegmentTyping, periodLeads, timeSegments, type HourCycle } from "../../../shared/package-runtime/time-segments";
 import { warnPicker } from "../../../shared/package-runtime/calendar";
 import { computed, provide, ref, useId, watch, type ExtractPublicPropTypes, type PropType } from "vue";
 import { defineComponent } from "./runtime/component";
@@ -27,6 +27,8 @@ const kjunTimePickerProps = {
   readOnly: { type: Boolean, default: false },
   /** Submits the value with a form through a hidden input. */
   name: { type: String, default: undefined },
+  /** The first segment's id, for an outside <label for>; defaults to the FormGroup's id. */
+  id: { type: String, default: undefined },
   /** Stretches the field to its container's width (default false: the field hugs the time). */
   block: { type: Boolean, default: false },
 } as const;
@@ -61,18 +63,30 @@ export const KjunTimePicker = defineComponent({
       else if (!domain.value.accepts(props.modelValue)) warnPicker(`TimePicker: ${props.modelValue} is outside the step or bounds.`);
     }, { immediate: true });
     const blocked = computed(() => props.disabled || !domain.value.valid);
+    const typing = createSegmentTyping();
     const change = (next: string | null) => {
       if (!blocked.value && !props.readOnly && next !== props.modelValue) { emit("update:modelValue", next); emit("change", next); }
     };
     return () => {
-      const m = scope.value.messages, owner = field.value, fieldId = owner?.id || `kjun-time-${uid}`, label = props.ariaLabel ?? m.time;
+      const m = scope.value.messages, owner = field.value, fieldId = props.id || owner?.id || `kjun-time-${uid}`, label = props.ariaLabel ?? m.time;
       const value = props.modelValue;
       const segments = timeSegments(domain.value, value, { precision: props.precision, hourCycle: props.hourCycle, messages: m, periodFirst: periodLeads(scope.value.language) });
       return (
         <div ref={root} class="kjun-time-picker" data-size={props.size} data-block={props.block ? "true" : undefined} data-error={String(props.error || !!owner?.error)}
           data-disabled={String(blocked.value)} data-readonly={props.readOnly ? "true" : undefined}
           role="group" aria-label={label} aria-labelledby={owner?.labelId} aria-describedby={owner?.describedBy}>
-          <div class="kjun-time-segments">
+          <div class="kjun-time-segments" onKeydown={(event: KeyboardEvent) => {
+            // Digits (and a/p on AM/PM) typed on a segment pick its value; a full segment moves focus to the next one.
+            if (blocked.value || props.readOnly || event.altKey || event.ctrlKey || event.metaKey) return;
+            const triggers = Array.from(root.value?.querySelectorAll<HTMLElement>(".kjun-time-segment .kjun-select-trigger") ?? []);
+            const index = triggers.indexOf(event.target as HTMLElement);
+            if (index < 0) return;
+            const typed = typing.key(segments[index], index, event.key);
+            if (!typed) return;
+            event.preventDefault();
+            if (typed.value !== null) change(segments[index].pick(typed.value));
+            if (typed.advance) triggers[index + 1]?.focus();
+          }}>
             {segments.flatMap((segment, index) => {
               const segmentId = index === 0 ? fieldId : `${fieldId}-${index}`, labelId = `${fieldId}-segment-${index}`;
               // The AM/PM segment reads as a word, so it carries no ":" before or after it.

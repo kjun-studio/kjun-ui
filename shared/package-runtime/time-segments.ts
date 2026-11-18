@@ -53,3 +53,45 @@ export function timeSegments(domain: TimeDomain, value: string | null, { precisi
 
 /** Korean and other East Asian clocks put 오전/오후 before the hour; most others put AM/PM after it. */
 export const periodLeads = (language?: string) => !language || ["ko", "ja", "zh"].includes(language);
+
+/** Typing digits into a focused segment: a digit picks at once when no two-digit option starts with it; otherwise it waits for a
+ * second digit (and picks the single digit meanwhile when that is an option). A pair that is no option starts over from the new digit.
+ * `typed` is the waiting digit ("" for none); `value` the option to pick (null for none); `advance` moves focus to the next segment. */
+export function typeSegmentDigit(options: readonly number[], typed: string, digit: string): { typed: string; value: number | null; advance: boolean } {
+  if (!/^\d$/.test(digit)) return { typed: "", value: null, advance: false };
+  if (typed) {
+    const pair = Number(typed + digit);
+    if (options.includes(pair)) return { typed: "", value: pair, advance: true };
+  }
+  const d = Number(digit), single = options.includes(d) ? d : null;
+  const grows = options.some(option => option !== d && option >= d * 10 && option <= d * 10 + 9);
+  return grows ? { typed: digit, value: single, advance: false } : { typed: "", value: single, advance: single !== null };
+}
+
+/** A period segment answers the first letter of its labels (a/p, or the label's own first letter when the two differ). */
+export function typeSegmentPeriod(options: readonly { value: number; label: string }[], key: string): number | null {
+  const k = key.toLowerCase();
+  if (k.length !== 1) return null;
+  const firsts = options.map(option => option.label.trim().charAt(0).toLowerCase());
+  const own = firsts.length > 1 && firsts[0] === firsts[1] ? -1 : firsts.indexOf(k);
+  if (own >= 0) return options[own].value;
+  const latin = k === "a" ? 0 : k === "p" ? 1 : null;
+  return latin !== null && options.some(option => option.value === latin) ? latin : null;
+}
+
+/** Keeps the waiting digit of a TimePicker for a second, like a typeahead. */
+export function createSegmentTyping(timeout = 1000) {
+  let index = -1, typed = "", at = 0;
+  return {
+    key(segment: TimeSegmentModel, segmentIndex: number, key: string, now = Date.now()): { value: number | null; advance: boolean } | null {
+      if (segmentIndex !== index || now - at > timeout) typed = "";
+      index = segmentIndex; at = now;
+      if (segment.key === "period") { typed = ""; const value = typeSegmentPeriod(segment.options, key); return value === null ? null : { value, advance: true }; }
+      if (!/^\d$/.test(key)) return null;
+      const next = typeSegmentDigit(segment.options.map(option => option.value), typed, key);
+      typed = next.typed;
+      return { value: next.value, advance: next.advance };
+    },
+    reset() { index = -1; typed = ""; },
+  };
+}
