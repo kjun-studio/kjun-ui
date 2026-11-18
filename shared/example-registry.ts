@@ -60,7 +60,7 @@ assign("Button", [choice("comparison", "비교", ["기본", "크기", "변형", 
 assign("Tabs TabPane", [choice("variant", "표현", ["underline", "pills"]), choice("density", "밀도", ["comfortable", "compact"]), toggle("fullWidth", "전체 너비"), toggle("detail", "아이콘·배지")]);
 assign("ButtonGroup", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), disabled, toggle("fullWidth", "전체 너비"), toggle("iconOnly", "아이콘만")]);
 assign("MenuButton", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), choice("variant", "변형", ["secondary", "ghost", "primary", "danger", "danger-ghost", "success", "warning"], "secondary"), toggle("compact", "아이콘 전용"), choice("icon", "아이콘", ["없음", "plus", "arrows-sort"], "없음"), toggle("chevron", "chevron", true), disabled, loading, toggle("rich", "확장 구성"), menuDensity]);
-assign("Input", [choice("comparison", "비교", ["기본", "크기", "상태", "아이콘·단위"]), size, disabled, toggle("readOnly", "읽기 전용"), error]);
+assign("Input", [choice("comparison", "비교", ["기본", "크기", "상태", "아이콘·단위", "보기·글자 수"]), size, disabled, toggle("readOnly", "읽기 전용"), error]);
 controls.KjunCard = cardControls;
 assign("Popover", [toggle("noPadding", "기본 여백 제거")]);
 assign("ChartSkeleton", [choice("kind", "차트 종류", ["frame", "donut", "matrix"]), toggle("skeleton", "스켈레톤", true), field("loadingText", "로딩 문구", "차트를 불러오는 중")]);
@@ -129,7 +129,7 @@ const extras: Record<string, ExamplePreset[]> = {
   KjunCard: [...cardDesignPresets, preset("dividers", "구분선", { dividers:true })],
   KjunPopover: [preset("no-padding", "여백 직접 구성", { noPadding:true })],
   KjunKpiRow: [preset("equal", "세 지표 동등 표시", { mobileSummary:false }), { ...preset("summary", "모바일 요약", { mobileSummary:true }), narrow:true }],
-  KjunInput: [preset("sizes", "크기 비교", { comparison: "크기" }), preset("states", "상태 비교", { comparison: "상태" }), preset("affixes", "아이콘·단위 비교", { comparison: "아이콘·단위" }), { ...preset("narrow", "좁은 화면 · 375px"), narrow: true }],
+  KjunInput: [preset("sizes", "크기 비교", { comparison: "크기" }), preset("states", "상태 비교", { comparison: "상태" }), preset("affixes", "아이콘·단위 비교", { comparison: "아이콘·단위" }), preset("reveal-count", "보기·글자 수 비교", { comparison: "보기·글자 수" }), { ...preset("narrow", "좁은 화면 · 375px"), narrow: true }],
   KjunSelect: [preset("multiple", "복수 선택", { multiple: true }, { select: ["a", "c"] }), preset("long", "긴 옵션", { data: "long" }), preset("empty", "빈 옵션", { data: "empty" }), preset("error", "오류", { error: true })],
   KjunSearchInput: [preset("empty", "빈 결과", { response: "빈 결과" }), preset("slow", "느린 응답", { response: "느린 응답" }), preset("failure", "요청 실패", { response: "요청 실패" }), preset("long", "긴 결과", { response: "긴 결과" })],
   KjunFormGroup: [preset("required", "필수 입력", { required: true }), preset("long", "긴 라벨·도움말", { label: long, hint: long }), preset("error", "검증 오류", { errorMessage: "내용을 입력해 주세요." })],

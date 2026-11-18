@@ -1,7 +1,8 @@
 import { useKjunMessages } from "./runtime/messages";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { inputEdge, type InputVariant } from "../../../shared/package-runtime/input-variant";
-import { computed, inject, mergeProps, onBeforeUnmount, onMounted, onUpdated, provide, reactive, ref, useId,
+import { inputCount, inputReveal, inputShowsClear } from "../../../shared/package-runtime/input-field";
+import { computed, inject, mergeProps, onBeforeUnmount, onMounted, provide, reactive, ref, useId, watch,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { tokens, type InputSize, isComposingKey } from "@kjun-ui/tokens";
@@ -99,6 +100,12 @@ const kjunInputProps = {
   error: { type: Boolean, default: false },
   errorMessage: { type: String, default: "" },
   clearable: { type: Boolean, default: false },
+  /** With type="password", a 보기/숨기기 button at the end shows the typed password as text and hides it again. */
+  revealable: { type: Boolean, default: false },
+  /** Shows the character count at the end of the field, as "length/maxLength" when maxlength is set; a longer value reads as an error. */
+  showCount: { type: Boolean, default: false },
+  /** Character limit (UTF-16 units, like the attribute), as on KjunTextarea; with showCount the count reads "length/maxLength". */
+  maxLength: { type: Number, default: undefined },
   prefixIcon: { type: String, default: undefined },
   suffixIcon: { type: String, default: undefined },
   prefix: { type: String, default: undefined },
@@ -133,17 +140,19 @@ const KjunInputComponent = defineComponent({
       if (b !== widths.before) widths.before = b;
       if (a !== widths.after) widths.after = a;
     };
+    // One observer follows the affix elements as their content changes; it reconnects only when an affix comes or goes.
     let observer: ResizeObserver | undefined;
     const observe = () => {
       observer?.disconnect();
+      measure();
+      if (typeof ResizeObserver === "undefined") return;
       observer = new ResizeObserver(measure);
       if (before.value) observer.observe(before.value);
       if (after.value) observer.observe(after.value);
-      measure();
     };
-    onMounted(observe);
-    onUpdated(observe);
+    onMounted(() => watch([before, after], observe, { immediate: true, flush: "post" }));
     onBeforeUnmount(() => observer?.disconnect());
+    const revealed = ref(false);
     expose({ focus: () => input.value?.focus(), el: input });
     return () => {
       const spec = tokens.input[props.size], edge = inputEdge(props.variant, spec.padding);
@@ -151,8 +160,16 @@ const KjunInputComponent = defineComponent({
       const showError = !!props.errorMessage && !owner?.error;
       const invalid = !!(props.error || props.errorMessage || owner?.error);
       const ownErrorId = "kjun-input-error-" + uid;
-      const describedBy = mergeIds(attrs["aria-describedby"] as string | undefined, owner?.describedBy, showError ? ownErrorId : undefined);
+      // A plain maxlength attribute counts too, so existing templates keep working.
+      const limit = props.maxLength ?? (attrs.maxlength as number | string | undefined);
+      const maxLength = limit == null ? undefined : Number(limit);
+      const count = inputCount(props.modelValue, maxLength);
+      const countId = "kjun-input-count-" + uid, controlId = props.id || owner?.id;
+      const describedBy = mergeIds(attrs["aria-describedby"] as string | undefined, owner?.describedBy, showError ? ownErrorId : undefined, props.showCount ? countId : undefined);
       const prefix = slots.prefix?.() ?? props.prefix, suffix = slots.suffix?.() ?? props.suffix;
+      const reveal = inputReveal(attrs.type as string | undefined, props.revealable, revealed.value);
+      const showClear = inputShowsClear({ clearable: props.clearable, value: props.modelValue, disabled: props.disabled, readOnly: props.readOnly });
+      const invalidAll = invalid || count.over;
       return (
         <div style={{ minWidth: 0 }}>
           <div class="kjun-input-wrap" data-disabled={props.disabled || undefined}>
@@ -171,14 +188,16 @@ const KjunInputComponent = defineComponent({
                 onCompositionend: composition.onCompositionend,
               })}
               ref={input}
-              id={props.id || owner?.id}
+              id={controlId}
+              type={reveal.type}
+              maxlength={maxLength}
               value={props.modelValue ?? ""}
               disabled={props.disabled}
               readonly={props.readOnly}
               required={props.required ?? owner?.required}
               class={["kjun-input", attrs.class]}
               data-variant={props.variant === "plain" ? "plain" : undefined}
-              aria-invalid={invalid ? "true" : undefined}
+              aria-invalid={invalidAll ? "true" : undefined}
               aria-label={props.ariaLabel || (attrs["aria-label"] as string | undefined)}
               aria-labelledby={(attrs["aria-labelledby"] as string | undefined) || owner?.labelId}
               aria-describedby={describedBy}
@@ -192,10 +211,13 @@ const KjunInputComponent = defineComponent({
                 "--_kjun-placeholder-size": spec.placeholderSize / 16 + "rem",
               }), attrs.style as never]}
             />
-            {(suffix || props.suffixIcon || props.clearable) && (
+            {(suffix || props.suffixIcon || showClear || props.showCount || reveal.active) && (
               <span ref={after} class="kjun-input-affix" style={css({ right: edge.padding })}>
-                {props.clearable && !!props.modelValue && (
-                  <KjunButton variant="ghost" size="sm" ariaLabel={m.value.clearInput} disabled={props.disabled || props.readOnly}
+                {props.showCount && <span id={countId} class="kjun-input-count" data-over={count.over || undefined}>{count.text}</span>}
+                {/* Near the limit, what is left is announced as it changes; the count itself is read only on focus. */}
+                {props.showCount && <span class="kjun-sr-only" aria-live="polite">{count.remaining == null ? "" : m.value.charactersLeft(count.remaining)}</span>}
+                {showClear && (
+                  <KjunButton variant="ghost" size="sm" ariaLabel={m.value.clearInput}
                     style={css({ padding: 0, height: spec.clearSize, minHeight: spec.clearSize, width: spec.clearSize, borderRadius: "50%" })}
                     onClick={() => {
                       const el = input.value;
@@ -207,6 +229,20 @@ const KjunInputComponent = defineComponent({
                       el.focus();
                     }}>
                     {{ default: () => <KjunIcon name="x" size={spec.iconSize} /> }}
+                  </KjunButton>
+                )}
+                {reveal.active && (
+                  <KjunButton variant="ghost" size="sm" class="kjun-input-reveal" aria-controls={controlId} disabled={props.disabled}
+                    ariaLabel={revealed.value ? m.value.concealPasswordLabel : m.value.revealPasswordLabel}
+                    style={css({ height: spec.clearSize, minHeight: spec.clearSize, paddingInline: tokens.space.inline.sm })}
+                    onClick={() => { revealed.value = !revealed.value; }}>
+                    {{ default: () => (
+                      // Both words share one cell, so the button keeps the wider word's width as it toggles.
+                      <span class="kjun-input-reveal-label" aria-hidden="true">
+                        <span data-hidden={revealed.value || undefined}>{m.value.revealPassword}</span>
+                        <span data-hidden={!revealed.value || undefined}>{m.value.concealPassword}</span>
+                      </span>
+                    ) }}
                   </KjunButton>
                 )}
                 {suffix || (props.suffixIcon && <KjunIcon name={props.suffixIcon} size={spec.iconSize} />)}

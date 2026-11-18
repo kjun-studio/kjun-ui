@@ -268,6 +268,19 @@
   gap: var(--_kjun-extension-form-affix-item-gap);
   color: var(--_kjun-color-text-tertiary);
 }
+/* Input's count reads like Textarea's: caption figures that keep their width, danger past the limit. */
+.kjun-input-count {
+  font-size: var(--_kjun-type-caption-size); line-height: var(--_kjun-type-caption-line);
+  color: var(--_kjun-color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.kjun-input-count[data-over] { color: var(--_kjun-color-danger); font-weight: var(--_kjun-type-control-weight); }
+.kjun-input-wrap[data-disabled="true"] .kjun-input-count { color: var(--_kjun-color-text-disabled); }
+/* Both reveal words share one grid cell, so the button keeps the wider word's width as it toggles. */
+.kjun-input-reveal-label { display: inline-grid; }
+.kjun-input-reveal-label > * { grid-area: 1 / 1; text-align: center; white-space: nowrap; }
+.kjun-input-reveal-label > [data-hidden] { visibility: hidden; }
 .kjun-modal-overlay {
   position: fixed;
   inset: 0;

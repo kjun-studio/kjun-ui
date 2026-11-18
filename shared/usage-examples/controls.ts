@@ -1,5 +1,5 @@
 import { UsageBuilder, expr, literal, type UsageInput } from './builder';
-import { defaultOptions, viewOptions, buttonComparisons, inputComparisons, fieldOptions, formActionsComparisons } from '../../previews/catalog/example-tools';
+import { defaultOptions, viewOptions, buttonComparisons, inputComparisons, inputCaseProps, fieldOptions, formActionsComparisons } from '../../previews/catalog/example-tools';
 import { iconToggleExample } from './icon-toggle';
 
 export function generate(input: UsageInput) {
@@ -39,7 +39,7 @@ export function generate(input: UsageInput) {
       const fields = cases ? cases.map((item, index) => b.node('KjunFormGroup', {
         label: item.caption, error: item.props?.error ? '목록 이름을 입력해 주세요.' : '',
       }, b.node(name, { size: s.size, value: b.state('inputCase' + index, item.value || ''),
-        onValueChange: b.update('inputCase' + index), placeholder: '목록 이름', ...item.props,
+        onValueChange: b.update('inputCase' + index), placeholder: '목록 이름', ...inputCaseProps(item.props, b.native),
       }, '', item.suffix ? { suffix: b.text(item.suffix) } : {}))) : [b.node('KjunFormGroup', {
         label: '목록 이름', hint: '동료가 구분할 수 있는 이름을 입력하세요.', error: s.error ? '목록 이름을 입력해 주세요.' : '',
       }, b.node(name, { value: b.state('input', ''), onValueChange: b.update('input'), ...b.props('size', 'disabled', 'readOnly', 'error'), clearable: true, placeholder: '예: 장기 보유 자산' }))];

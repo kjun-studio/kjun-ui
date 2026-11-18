@@ -60,6 +60,11 @@ export const kjunMessagesKo = {
   holiday: "휴일",
   loadMore: "더 보기",
   clearInput: "입력 지우기",
+  /** The reveal button's visible text and its name, which says what it shows. */
+  revealPassword: "보기",
+  concealPassword: "숨기기",
+  revealPasswordLabel: "비밀번호 보기",
+  concealPasswordLabel: "비밀번호 숨기기",
   clearValue: (label: string) => label + " 지우기",
   // Date, time and numbers
   datePlaceholder: "날짜 선택",

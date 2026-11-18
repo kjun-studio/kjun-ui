@@ -2,6 +2,7 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { tokens,type InputSize } from "@kjun-ui/tokens";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { inputEdge, type InputVariant } from "../../../shared/package-runtime/input-variant";
+import { inputCount, inputReveal, inputShowsClear } from "../../../shared/package-runtime/input-field";
 import {
 createContext,
 forwardRef,
@@ -106,6 +107,10 @@ export interface KjunInputProps
   error?: boolean;
   errorMessage?: string;
   clearable?: boolean;
+  /** With type="password", a 보기/숨기기 button at the end shows the typed password as text and hides it again. */
+  revealable?: boolean;
+  /** Shows the character count at the end of the field, as "length/maxLength" when maxLength is set; a longer value reads as an error. */
+  showCount?: boolean;
   prefixIcon?: string;
   suffixIcon?: string;
   prefix?: ReactNode;
@@ -124,6 +129,8 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
       error = false,
       errorMessage = "",
       clearable = false,
+      revealable = false,
+      showCount = false,
       prefixIcon,
       suffixIcon,
       prefix,
@@ -142,6 +149,7 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
       readOnly,
       id,
       required,
+      type,
       ...props
     },
     ref
@@ -154,28 +162,36 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
     const before = useRef<HTMLSpanElement>(null);
     const after = useRef<HTMLSpanElement>(null);
     useImperativeHandle(ref, () => input.current!);
+    const [revealed, setRevealed] = useState(false);
+    const reveal = inputReveal(type, revealable, revealed);
+    const showClear = inputShowsClear({ clearable, value, disabled, readOnly });
+    const count = inputCount(value, props.maxLength);
+    const hasBefore = !!(prefix || prefixIcon);
+    const hasAfter = !!(suffix || suffixIcon || showClear || showCount || reveal.active);
     const [widths, setWidths] = useState({ before: 0, after: 0 });
+    // One observer per affix element: it follows the affix as its content changes, not every keystroke.
     useLayoutEffect(() => {
-      const measure = () =>
-        setWidths({
-          before: before.current?.getBoundingClientRect().width || 0,
-          after: after.current?.getBoundingClientRect().width || 0,
-        });
+      const measure = () => {
+        const next = { before: before.current?.getBoundingClientRect().width || 0, after: after.current?.getBoundingClientRect().width || 0 };
+        setWidths(current => current.before === next.before && current.after === next.after ? current : next);
+      };
       measure();
+      if (typeof ResizeObserver === "undefined") return;
       const observer = new ResizeObserver(measure);
       if (before.current) observer.observe(before.current);
       if (after.current) observer.observe(after.current);
       return () => observer.disconnect();
-    }, [prefix, suffix, prefixIcon, suffixIcon, clearable, value]);
+    }, [hasBefore, hasAfter]);
     const spec = tokens.input[size], edge = inputEdge(variant, spec.padding);
     const showError = !!errorMessage && !field?.error;
-    const invalid = !!(error || errorMessage || field?.error);
-    const ownErrorId = "kjun-input-error-" + uid;
-    const describedBy = mergeIds(props["aria-describedby"], field?.describedBy, showError ? ownErrorId : undefined);
+    const invalid = !!(error || errorMessage || field?.error || count.over);
+    const ownErrorId = "kjun-input-error-" + uid, countId = "kjun-input-count-" + uid;
+    const controlId = id || field?.id;
+    const describedBy = mergeIds(props["aria-describedby"], field?.describedBy, showError ? ownErrorId : undefined, showCount ? countId : undefined);
     return (
       <div style={{ minWidth: 0 }}>
         <div className="kjun-input-wrap" data-disabled={disabled || undefined}>
-          {(prefix || prefixIcon) && (
+          {hasBefore && (
             <span
               ref={before}
               className="kjun-input-affix"
@@ -187,7 +203,8 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
           <input
             {...props}
             ref={input}
-            id={id || field?.id}
+            id={controlId}
+            type={reveal.type}
             value={value}
             disabled={disabled}
             readOnly={readOnly}
@@ -232,19 +249,20 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
               onCompositionEnd?.(e);
             }}
           />
-          {(suffix || suffixIcon || clearable) && (
+          {hasAfter && (
             <span
               ref={after}
               className="kjun-input-affix"
               style={{ right: edge.padding }}
             >
-              {clearable && !!value && (
+              {showCount && <span id={countId} className="kjun-input-count" data-over={count.over || undefined}>{count.text}</span>}
+              {/* Near the limit, what is left is announced as it changes; the count itself is read only on focus. */}
+              {showCount && <span className="kjun-sr-only" aria-live="polite">{count.remaining == null ? "" : m.charactersLeft(count.remaining)}</span>}
+              {showClear && (
                 <KjunButton
                   variant="ghost"
                   size="sm"
-
                   ariaLabel={m.clearInput}
-                  disabled={disabled || readOnly}
                   style={{
                     padding: 0,
                     height: spec.clearSize,
@@ -266,6 +284,24 @@ export const KjunInput = forwardRef<HTMLInputElement, KjunInputProps>(
                     el.focus();
                   }}
                 ><KjunIcon name="x" size={spec.iconSize} /></KjunButton>
+              )}
+              {reveal.active && (
+                <KjunButton
+                  variant="ghost"
+                  size="sm"
+                  className="kjun-input-reveal"
+                  ariaLabel={revealed ? m.concealPasswordLabel : m.revealPasswordLabel}
+                  aria-controls={controlId}
+                  disabled={disabled}
+                  style={{ height: spec.clearSize, minHeight: spec.clearSize, paddingInline: tokens.space.inline.sm }}
+                  onClick={() => setRevealed(value => !value)}
+                >
+                  {/* Both words share one cell, so the button keeps the wider word's width as it toggles. */}
+                  <span className="kjun-input-reveal-label" aria-hidden="true">
+                    <span data-hidden={revealed || undefined}>{m.revealPassword}</span>
+                    <span data-hidden={!revealed || undefined}>{m.concealPassword}</span>
+                  </span>
+                </KjunButton>
               )}
               {suffix ||
                 (suffixIcon && (

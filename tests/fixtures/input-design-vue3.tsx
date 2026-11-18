@@ -9,8 +9,9 @@ document.body.style.background = colors.background;
 document.documentElement.style.colorScheme = palette === 'dark' ? 'dark' : 'light';
 const designOptions = [{ value: 'team', label: '팀에 공개' }, { value: 'private', label: '나만 보기' }, { value: 'blocked', label: '선택 불가', disabled: true }];
 const s = reactive({ config: { size: 'md', disabled: false, readOnly: false, error: false } as Record<string, any>,
-  value: '장기 보유 자산', changes: 0, selected: 'team' as string | null, quantity: 5, time: '09:30', note: '', sent: '' });
-Object.assign(window, { configureInputDesign: (next: object) => { s.config = { ...s.config, ...next }; } });
+  value: '장기 보유 자산', changes: 0, selected: 'team' as string | null, quantity: 5, time: '09:30', note: '', sent: '', searchLoading: false });
+Object.assign(window, { configureInputDesign: (next: object) => { s.config = { ...s.config, ...next }; },
+  configureInputExtras: (next: { searchLoading?: boolean }) => { Object.assign(s, next); } });
 // React components ignore config keys they do not declare; Vue would pass them on as attributes.
 const own = (component: any) => Object.fromEntries(Object.entries(s.config).filter(([key]) => key in component.props));
 const recordChange = (next: string) => { s.changes++; s.value = next; };
@@ -37,6 +38,9 @@ createApp(defineComponent(() => () => {
     <div data-testid="time"><K.KjunTimePicker {...own(K.KjunTimePicker)} modelValue={s.time} onUpdate:modelValue={(v: any) => { s.time = v; }} ariaLabel="알림 시각" /></div>
     <div data-testid="button"><K.KjunButton size={s.config.size}>저장</K.KjunButton></div>
     <div data-testid="skeleton"><K.KjunFormSkeleton fields={['목록 이름']} size={s.config.size} /></div>
+    <div data-testid="password"><K.KjunInput modelValue="kjun2026!" type="password" revealable size={s.config.size} disabled={s.config.disabled} ariaLabel="비밀번호" /></div>
+    <div data-testid="counted"><K.KjunInput {...text(K.KjunInput)} maxLength={10} showCount clearable ariaLabel="짧은 이름" /></div>
+    <div data-testid="search-plain"><K.KjunSearchInput modelValue="삼성" loading={s.searchLoading} size={s.config.size} ariaLabel="종목 검색" id="plain-search" /></div>
     <output data-testid="value">{s.value}</output>
     <output data-testid="changes">{s.changes}</output>
   </div></K.KjunProvider>;

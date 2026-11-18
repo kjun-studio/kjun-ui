@@ -64,6 +64,17 @@ export const inputComparisons: Record<string, { caption: string; props?: Record<
     { caption: "금액 단위", suffix: "원", value: "100,000" },
     { caption: "아이콘·지우기", props: { prefixIcon: "search", clearable: true }, value: "장기 보유 자산" },
   ],
+  "보기·글자 수": [
+    // Native marks a password with secureTextEntry instead of type; inputCaseProps swaps it per platform.
+    { caption: "비밀번호 보기", props: { type: "password", revealable: true, placeholder: "비밀번호" }, value: "kjun2026!" },
+    { caption: "글자 수", props: { maxLength: 20, showCount: true }, value: "장기 보유 자산" },
+  ],
+};
+/** A comparison case's props for one platform: Native has no input type, so a password is secureTextEntry. */
+export const inputCaseProps = (props: Record<string, any> = {}, native: boolean) => {
+  if (!native || props.type !== "password") return props;
+  const { type: _type, ...rest } = props;
+  return { ...rest, secureTextEntry: true };
 };
 export const defaultRows = [
   {

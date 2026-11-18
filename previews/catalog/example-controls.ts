@@ -2,6 +2,7 @@ import {
   buttonComparisons,
   formActionsComparisons,
   inputComparisons,
+  inputCaseProps,
   fieldOptions,
   rows,
   columns,
@@ -133,7 +134,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
       if (cases) return h("Box", { width: 360 }, h("FieldStack", {}, cases.map((item, index) => h("KjunFormGroup", {
         label: item.caption, error: item.props?.error ? "목록 이름을 입력해 주세요." : "",
       }, h(name, { size: settings.size, value: get("inputCase" + index, item.value || ""),
-        onValueChange: change("inputCase" + index), placeholder: "목록 이름", ...item.props,
+        onValueChange: change("inputCase" + index), placeholder: "목록 이름", ...inputCaseProps(item.props, platform === "native"),
       }, undefined, item.suffix ? { suffix: h("Text", {}, item.suffix) } : {})))));
       return h("Box", { width: 360 }, h("KjunFormGroup", { label: "목록 이름", hint: "동료가 구분할 수 있는 이름을 입력하세요.", error: error ? "목록 이름을 입력해 주세요." : "" },
         h(name, { value: get("input", ""), onValueChange: change("input"), size: settings.size, disabled,

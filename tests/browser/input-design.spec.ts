@@ -56,7 +56,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(await geometry(page)).toEqual(before);
     await configure(page, { error: false, readOnly: true });
     await expect(input).not.toBeEditable();
-    await expect(page.getByTestId('input').getByRole('button')).toBeDisabled();
+    // A read-only value cannot be removed, so the clear button leaves instead of sitting there disabled.
+    await expect(page.getByTestId('input').getByRole('button')).toHaveCount(0);
     await field(page, 'button').click();
     await input.hover();
     await expect(input).toHaveCSS('background-color', background);

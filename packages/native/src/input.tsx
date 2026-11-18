@@ -1,5 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { FieldClear } from "./field-clear";
+import { FieldClear, FieldReveal } from "./field-clear";
+import { inputCount, inputReveal, inputShowsClear } from "../../../shared/package-runtime/input-field";
 import { joinHints, mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { inputEdge, type InputVariant } from "../../../shared/package-runtime/input-variant";
 import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
@@ -140,6 +141,10 @@ export interface KjunInputProps
   errorMessage?: string;
   disabled?: boolean;
   clearable?: boolean;
+  /** With secureTextEntry, a 보기/숨기기 button at the end shows the typed password as text and hides it again. */
+  revealable?: boolean;
+  /** Shows the character count at the end of the field, as "length/maxLength" when maxLength is set; a longer value reads as an error. */
+  showCount?: boolean;
   prefixIcon?: string;
   suffixIcon?: string;
   prefix?: ReactNode;
@@ -158,6 +163,8 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
     errorMessage = "",
     disabled = false,
     clearable = false,
+    revealable = false,
+    showCount = false,
     prefixIcon,
     suffixIcon,
     prefix,
@@ -194,12 +201,16 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
   // A caller's description (NumberInput's reading aid) comes first, as on Web.
   const describedBy = mergeIds((props as { "aria-describedby"?: string })["aria-describedby"], field?.describedBy, showError ? ownErrorId : undefined);
   const spec = tokens.input[size], edge = inputEdge(variant, spec.padding);
-  const invalid = !!(error || errorMessage || field?.error);
+  const count = inputCount(value, props.maxLength);
+  const invalid = !!(error || errorMessage || field?.error || count.over);
   const canEdit = !disabled && !readOnly && editable;
+  const [revealed, setRevealed] = useState(false);
+  const reveal = inputReveal(props.secureTextEntry ? "password" : undefined, revealable, revealed);
   const surface = useFieldSurface(size, { disabled, readOnly: !!readOnly || !editable, invalid, open: props["aria-expanded"] === true, plain: variant === "plain" });
   // String affixes are text, which React Native only draws inside Text.
   const affixText = { ...inputTypeStyle(size), color: surface.icon };
-  const showClear = clearable && !!value;
+  const showClear = inputShowsClear({ clearable, value, disabled, readOnly: !canEdit });
+  const hasAfter = !!(showClear || suffix || suffixIcon || showCount || reveal.active);
   const [prefixWidth, setPrefixWidth] = useState(0);
   const [affixWidth, setAffixWidth] = useState(0);
   const suffixWidth =
@@ -218,6 +229,7 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
           }}
           nativeID={props.nativeID || field?.id}
           value={String(value)}
+          secureTextEntry={!!props.secureTextEntry && !(reveal.active && revealed)}
           editable={canEdit}
           readOnly={readOnly}
           accessibilityLabel={
@@ -226,7 +238,7 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
           accessibilityLabelledBy={
             field?.label && !field.labelHidden ? field.id + "-label" : undefined
           }
-          accessibilityHint={joinHints(props.accessibilityHint, field?.hint, errorMessage || field?.error)}
+          accessibilityHint={joinHints(props.accessibilityHint, field?.hint, errorMessage || field?.error, showCount ? count.text : undefined)}
           accessibilityState={{ disabled }}
           {...(Platform.OS === "web"
             ? {
@@ -262,7 +274,7 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
                   ? edge.padding + (prefixWidth || spec.iconSize) + spec.affixGap - edge.border
                   : edge.padding - edge.border,
               paddingRight:
-                suffixWidth || suffix
+                hasAfter
                   ? edge.padding + (affixWidth || suffixWidth) + spec.affixGap - edge.border
                   : edge.padding - edge.border,
             },
@@ -290,7 +302,7 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
             )}
           </View>
         )}
-        {!!(showClear || suffix || suffixIcon) && (
+        {hasAfter && (
           <View
             onLayout={(event) => setAffixWidth(event.nativeEvent.layout.width)}
             style={{
@@ -303,13 +315,19 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
               gap: tokens.extensions.form.affixItemGap,
             }}
           >
+            {showCount && <FontText aria-hidden={true} style={{ fontFamily, ...typeStyle("caption"), fontVariant: ["tabular-nums"],
+              color: disabled ? c.textDisabled : count.over ? c.danger : c.textTertiary, ...(count.over ? { fontWeight: typeStyle("control").fontWeight } : {}) }}>{count.text}</FontText>}
             {showClear && (
-              <FieldClear size={size} label={m.clearInput} disabled={!canEdit} onPress={() => {
+              <FieldClear size={size} label={m.clearInput} onPress={() => {
                 if (!canEdit) return;
                 onChangeText?.("");
                 onClear?.();
                 input.current?.focus();
               }} />
+            )}
+            {reveal.active && (
+              <FieldReveal size={size} disabled={disabled} revealed={revealed} show={m.revealPassword} hide={m.concealPassword}
+                label={revealed ? m.concealPasswordLabel : m.revealPasswordLabel} onPress={() => setRevealed(current => !current)} />
             )}
             {suffix ? content(suffix, affixText) : !!suffixIcon && (
               <KjunIcon

@@ -16,7 +16,9 @@ export function InputDesignCases({ K, Affix = 'span', native = false }: { K: any
   const [quantity, setQuantity] = useState(5);
   const [time, setTime] = useState('09:30');
   const [note, setNote] = useState(''), [sent, setSent] = useState('');
-  useLayoutEffect(() => { Object.assign(window, { configureInputDesign: (next: object) => setConfig(old => ({ ...old, ...next })) }); }, []);
+  const [extras, setExtras] = useState({ searchLoading: false });
+  useLayoutEffect(() => { Object.assign(window, { configureInputDesign: (next: object) => setConfig(old => ({ ...old, ...next })),
+    configureInputExtras: (next: object) => setExtras(old => ({ ...old, ...next })) }); }, []);
   const recordChange = (next: string) => { setChanges(count => count + 1); setValue(next); };
   const change = native ? { onChangeText: recordChange } : { onValueChange: recordChange };
   const text = { value, ...change, ...config };
@@ -42,6 +44,12 @@ export function InputDesignCases({ K, Affix = 'span', native = false }: { K: any
     <div data-testid="time"><K.KjunTimePicker {...config} value={time} onValueChange={setTime} ariaLabel="알림 시각" /></div>
     <div data-testid="button"><K.KjunButton size={config.size}>저장</K.KjunButton></div>
     <div data-testid="skeleton"><K.KjunFormSkeleton fields={['목록 이름']} size={config.size} /></div>
+    {/* Kept out of the shared config, so the controls above never receive these keys. */}
+    <div data-testid="password"><K.KjunInput value="kjun2026!" {...(native ? { onChangeText: () => {}, secureTextEntry: true } : { onValueChange: () => {}, type: 'password' })}
+      revealable size={config.size} disabled={config.disabled} ariaLabel="비밀번호" /></div>
+    <div data-testid="counted"><K.KjunInput {...text} maxLength={10} showCount clearable ariaLabel="짧은 이름" /></div>
+    <div data-testid="search-plain"><K.KjunSearchInput value="삼성" onValueChange={() => {}} loading={extras.searchLoading} size={config.size} ariaLabel="종목 검색"
+      {...(native ? { nativeID: 'plain-search' } : { id: 'plain-search' })} /></div>
     <output data-testid="value">{value}</output>
     <output data-testid="changes">{changes}</output>
   </div>;
