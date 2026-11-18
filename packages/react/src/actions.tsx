@@ -4,12 +4,16 @@ import { typeStyle } from "./typography";
 import { tokens,type ButtonSize } from "@kjun-ui/tokens";
 import {
 forwardRef,
+useCallback,
 useContext,
 useEffect,
 useImperativeHandle,
+useLayoutEffect,
 useRef,
 useState,
+type ButtonHTMLAttributes,
 type CSSProperties,
+type RefObject,
 type HTMLAttributes,
 type ReactNode,
 } from "react";
@@ -18,8 +22,12 @@ import { useOptionalKjunFeedback } from "./feedback-context";
 import { KjunTooltip, type KjunTooltipProps } from "./popover";
 import { useReducedMotion } from "./use-reduced-motion";
 import { TopNavigationContext } from "./top-navigation-context";
+import { browserCopy } from "../../../shared/package-runtime/clipboard";
+import { useCopyFeedback } from "../../../shared/package-runtime/use-copy-feedback";
+import { usePendingAction } from "../../../shared/package-runtime/use-pending-action";
 import { trackScrollFade, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
-export interface KjunIconToggleProps {
+export interface KjunIconToggleProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type" | "disabled" | "children" | "color"> {
   active?: boolean;
   activeIcon: string;
   inactiveIcon?: string;
@@ -30,12 +38,31 @@ export interface KjunIconToggleProps {
   size?: ButtonSize;
   disabled?: boolean;
   loading?: boolean;
-  ariaLabel: string;
-  /** Defaults to ariaLabel, like RefreshButton; an empty string disables the hint. */
+  /** Accessible name; aria-label or aria-labelledby may be used instead. */
+  ariaLabel?: string;
+  /** Defaults to the accessible label text, like RefreshButton; an empty string disables the hint. */
   tooltip?: string;
   tooltipPlacement?: KjunTooltipProps["placement"];
   tooltipDelay?: number;
   onToggle?: () => void;
+}
+/** The text an aria-labelledby reference names, read after the labels have mounted (the Vue form is runtime/icon-toggle-label.ts). */
+function useLabelledByText(button: RefObject<HTMLButtonElement | null>, label: string | undefined, labelledBy: string | undefined) {
+  const [text, setText] = useState("");
+  const warned = useRef(false);
+  const refresh = useCallback(() => {
+    const doc = button.current?.ownerDocument;
+    const labels = (labelledBy ?? "").trim().split(/\s+/).filter(Boolean)
+      .map(id => doc?.getElementById(id)).filter((node): node is HTMLElement => !!node);
+    setText(labels.length ? labels.map(node => node.textContent?.trim() ?? "").join(" ").trim() : label?.trim() ?? "");
+    if (process.env.NODE_ENV !== "production") {
+      const missing = !label?.trim() && !labelledBy?.trim();
+      if (missing && !warned.current) console.warn("[KJUN] IconToggle needs an accessible name: aria-label, ariaLabel, or aria-labelledby referencing label text.");
+      warned.current = missing;
+    }
+  }, [button, label, labelledBy]);
+  useLayoutEffect(refresh);
+  return { text, refresh };
 }
 export function KjunIconToggle({
   active = false,
@@ -53,22 +80,38 @@ export function KjunIconToggle({
   tooltipPlacement,
   tooltipDelay,
   onToggle,
+  className,
+  style,
+  onClick,
+  onFocus,
+  onPointerEnter,
+  ...rest
 }: KjunIconToggleProps) {
   const navigation = useContext(TopNavigationContext);
+  const button = useRef<HTMLButtonElement>(null);
+  const label = ariaLabel ?? rest["aria-label"], labelledBy = rest["aria-labelledby"];
+  const accessible = useLabelledByText(button, label, labelledBy);
   return (
-    <KjunTooltip content={disabled || loading ? "" : tooltip ?? ariaLabel} placement={tooltipPlacement} delay={tooltipDelay}>
+    <KjunTooltip content={disabled || loading ? "" : tooltip ?? (labelledBy ? accessible.text : label ?? "")} placement={tooltipPlacement} delay={tooltipDelay}>
     <button
+      {...rest}
+      ref={button}
       type="button"
-      aria-label={ariaLabel}
+      aria-label={label}
+      aria-labelledby={labelledBy}
       aria-pressed={active}
       aria-busy={loading || undefined}
       disabled={disabled || loading}
-      className="kjun-icon-toggle"
+      className={className ? `kjun-icon-toggle ${className}` : "kjun-icon-toggle"}
       data-size={size}
-      style={navigation ? { width: navigation.controlSize, height: navigation.controlSize } : undefined}
+      style={navigation ? { width: navigation.controlSize, height: navigation.controlSize, ...style } : style}
+      onFocus={(e) => { accessible.refresh(); onFocus?.(e); }}
+      onPointerEnter={(e) => { accessible.refresh(); onPointerEnter?.(e); }}
       onClick={(e) => {
         e.stopPropagation();
+        // Toggle first, then the app's click, in the same order as Vue's merged handlers.
         onToggle?.();
+        onClick?.(e);
       }}
     >
       {loading ? (
@@ -89,7 +132,8 @@ export function KjunIconToggle({
     </KjunTooltip>
   );
 }
-export interface KjunCopyButtonProps {
+export interface KjunCopyButtonProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type" | "value" | "disabled" | "children"> {
   value: string;
   ariaLabel?: string;
   text?: string;
@@ -100,24 +144,6 @@ export interface KjunCopyButtonProps {
   copyText?: (value: string) => void | Promise<void>;
   onCopied?: (value: string) => void;
   onCopyError?: (error: unknown) => void;
-}
-async function browserCopy(value: string) {
-  if (navigator.clipboard && window.isSecureContext) {
-    await navigator.clipboard.writeText(value);
-    return;
-  }
-  const previous = document.activeElement as HTMLElement | null,
-    ta = document.createElement("textarea");
-  ta.value = value;
-  ta.style.cssText = "position:fixed;left:-9999px;top:-9999px";
-  document.body.append(ta);
-  ta.select();
-  try {
-    if (!document.execCommand("copy")) throw Error("Clipboard copy failed");
-  } finally {
-    ta.remove();
-    previous?.focus();
-  }
 }
 export function KjunCopyButton({
   value,
@@ -130,58 +156,38 @@ export function KjunCopyButton({
   copyText = browserCopy,
   onCopied,
   onCopyError,
+  className,
+  style,
+  onClick,
+  ...rest
 }: KjunCopyButtonProps) {
   const m = useKjunMessages();
   successText ??= m.copied;
   const feedback = useOptionalKjunFeedback();
-  const [copied, setCopied] = useState(false),
-    [failed, setFailed] = useState(false),
-    busy = useRef(false),
-    timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined),
-    mounted = useRef(true);
-  useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-      clearTimeout(timer.current);
-    };
-  }, []);
+  const { copied, failed, copy } = useCopyFeedback(copyText, {
+    onSuccess: (copiedValue) => { feedback?.toast.success(successText); onCopied?.(copiedValue); },
+    onError: (error) => { feedback?.toast.error(m.copyFailed); onCopyError?.(error); },
+  });
   return (
     <>
       <button
+        {...rest}
         type="button"
         disabled={disabled}
-        aria-label={ariaLabel || text || m.copy}
-        className="kjun-copy-button"
+        aria-label={ariaLabel || rest["aria-label"] || text || m.copy}
+        className={className ? `kjun-copy-button ${className}` : "kjun-copy-button"}
         data-inline={inline}
         style={{
           ...typeStyle(size === "xs" ? "controlSmall" : "control"),
           minHeight: tokens.button.heights[size],
           paddingBlock: 0,
           paddingInline: { xs: tokens.dimension.value4, sm: tokens.dimension.value8, md: tokens.dimension.value12 }[size],
+          ...style,
         }}
-        onClick={async (event) => {
+        onClick={(event) => {
           event.stopPropagation();
-          if (copied || busy.current) return;
-          busy.current = true;
-          try {
-            await copyText(value);
-            if (mounted.current) {
-              setCopied(true);
-              setFailed(false);
-              feedback?.toast.success(successText);
-              onCopied?.(value);
-              timer.current = setTimeout(() => setCopied(false), 1500);
-            }
-          } catch (error) {
-            if (mounted.current) {
-              setFailed(true);
-              feedback?.toast.error(m.copyFailed);
-              onCopyError?.(error);
-            }
-          } finally {
-            busy.current = false;
-          }
+          onClick?.(event);
+          if (!event.defaultPrevented) void copy(value);
         }}
       >
         <KjunIcon
@@ -206,7 +212,8 @@ export interface KjunRefreshButtonProps
   tooltip?: string;
   tooltipPlacement?: KjunTooltipProps["placement"];
   tooltipDelay?: number;
-  onRefresh?: () => void;
+  /** A returned promise shows loading until it settles; loading stays the app's to set otherwise. */
+  onRefresh?: () => void | Promise<unknown>;
 }
 export function KjunRefreshButton({
   targetName = "",
@@ -220,25 +227,29 @@ export function KjunRefreshButton({
   tooltipPlacement,
   tooltipDelay,
   spinOnLoading = true,
+  loading = false,
   onRefresh,
   ...props
 }: KjunRefreshButtonProps) {
   const m = useKjunMessages();
   text ??= m.refresh;
   const reduced = useReducedMotion();
+  const { pending, run } = usePendingAction();
+  const busy = loading || pending;
   // Text mode speaks what it shows (WCAG 2.5.3); icon mode keeps the action name.
   const label = ariaLabel || [targetName, mode === "text" ? text : m.refresh].filter(Boolean).join(" ");
   const hint = tooltip ?? title ?? (mode === "icon" ? label : "");
   return (
-    <KjunTooltip content={props.disabled || props.loading ? "" : hint} placement={tooltipPlacement} delay={tooltipDelay}>
+    <KjunTooltip content={props.disabled || busy ? "" : hint} placement={tooltipPlacement} delay={tooltipDelay}>
     <KjunButton
       {...props}
       size={size}
       variant={variant}
+      loading={busy}
       prefixIcon="refresh"
       spinOnLoading={!reduced && spinOnLoading}
       ariaLabel={label}
-      onClick={onRefresh}
+      onClick={() => run(onRefresh)}
     >
       {mode === "text" ? text : undefined}
     </KjunButton>

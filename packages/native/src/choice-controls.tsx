@@ -34,6 +34,8 @@ export interface ChoiceOption<T = ChoiceValue> {
   label: string;
   disabled?: boolean;
   icon?: string;
+  /** ButtonGroup only: show the icon alone in a square segment; label becomes the accessible name and tooltip. */
+  iconOnly?: boolean;
   dot?: ColorValue;
 }
 export interface KjunCheckboxProps<T = ChoiceValue> {

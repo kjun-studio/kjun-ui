@@ -6,6 +6,7 @@ import {
   rows,
   columns,
   options,
+  viewOptions,
   priceFormat,
   searchLoader,
   type ExampleTools,
@@ -278,7 +279,15 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         error,
       }), error ? "사용 기간을 선택해 주세요." : "");
     case "KjunButtonGroup":
-      return h(name, {
+      return settings.iconOnly ? h(name, {
+        size: settings.size,
+        fullWidth: settings.fullWidth,
+        value: get("view", "line"),
+        options: viewOptions,
+        onValueChange: change("view"),
+        ariaLabel: "차트 형태",
+        disabled,
+      }) : h(name, {
         size: settings.size,
         fullWidth: settings.fullWidth,
         value: get("group", "a"),
@@ -408,7 +417,8 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         size: settings.size,
         loading,
         disabled,
-        onRefresh: () => message("갱신 요청"),
+        // A returned promise keeps the button loading until the list has reloaded.
+        onRefresh: () => new Promise(resolve => setTimeout(resolve, 1200)).then(() => message("갱신 완료")),
       });
     case "KjunExternalLink":
       return h(

@@ -14,6 +14,7 @@ Checkbox as AriaCheckbox,
 Switch as AriaSwitch,
 } from "react-aria-components";
 import { KjunIcon } from "./button";
+import { KjunTooltip } from "./popover";
 import { useKjunField } from "./input";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useSelectionIndicator } from "./use-selection-indicator";
@@ -26,6 +27,8 @@ export interface ChoiceOption<T = ChoiceValue> {
   label: string;
   disabled?: boolean;
   icon?: string;
+  /** ButtonGroup only: show the icon alone in a square segment; label becomes the accessible name and tooltip. */
+  iconOnly?: boolean;
   dot?: string;
 }
 export interface KjunCheckboxProps<T = ChoiceValue> {
@@ -327,7 +330,6 @@ export interface KjunButtonGroupProps {
   value: ChoiceValue;
   options: ChoiceOption[];
   size?: ButtonSize;
-  variant?: "primary" | "secondary" | "ghost";
   disabled?: boolean;
   fullWidth?: boolean;
   ariaLabel?: string;
@@ -361,36 +363,45 @@ export function KjunButtonGroup({
     >
       <span ref={indicator} className="kjun-button-group-indicator" aria-hidden="true" hidden
         style={{ borderRadius: tokens.buttonGroup.itemRadii[size] }} />
-      {options.map((option) => (
-        <button
-          key={String(option.value)}
-          type="button"
-          aria-pressed={value === option.value}
-          disabled={disabled || option.disabled}
-          style={{
-            flex: fullWidth ? 1 : undefined,
-            paddingInline: tokens.buttonGroup.itemPaddingX[size],
-            borderRadius: tokens.buttonGroup.itemRadii[size],
-            ...selectionTypeStyle(size, value === option.value),
-          }}
-          onClick={() => {
-            onValueChange?.(option.value);
-            onChange?.(option.value);
-          }}
-        >
-          {option.icon && <KjunIcon name={option.icon} size={tokens.extensions.selection.iconSize} />}
-          <span className="kjun-button-group-label">
-            <span aria-hidden="true" style={typeStyle(tokens.button.typography[size])}>{option.label}</span><span>{option.label}</span>
-          </span>
-        </button>
-      ))}
+      {options.map((option) => {
+        const iconOnly = !!(option.iconOnly && option.icon), blocked = disabled || option.disabled;
+        const segment = (
+          <button
+            key={String(option.value)}
+            type="button"
+            aria-pressed={value === option.value}
+            aria-label={iconOnly ? option.label : undefined}
+            disabled={blocked}
+            style={{
+              flex: fullWidth ? 1 : undefined,
+              // An icon-only segment is square: as wide as the segment is tall.
+              width: iconOnly && !fullWidth ? tokens.buttonGroup.heights[size] - 2 * tokens.buttonGroup.padding[size] : undefined,
+              paddingInline: iconOnly ? 0 : tokens.buttonGroup.itemPaddingX[size],
+              borderRadius: tokens.buttonGroup.itemRadii[size],
+              ...selectionTypeStyle(size, value === option.value),
+            }}
+            onClick={() => {
+              onValueChange?.(option.value);
+              onChange?.(option.value);
+            }}
+          >
+            {option.icon && <KjunIcon name={option.icon} size={tokens.button.iconSizes[size]} />}
+            {!iconOnly && <span className="kjun-button-group-label">
+              <span aria-hidden="true" style={typeStyle(tokens.button.typography[size])}>{option.label}</span><span>{option.label}</span>
+            </span>}
+          </button>
+        );
+        return iconOnly
+          ? <KjunTooltip key={String(option.value)} content={blocked ? "" : option.label}>{segment}</KjunTooltip>
+          : segment;
+      })}
     </div>
   );
 }
 export interface KjunFilterGroupProps
   extends Omit<
     KjunButtonGroupProps,
-    "value" | "onValueChange" | "onChange" | "fullWidth" | "variant"
+    "value" | "onValueChange" | "onChange" | "fullWidth"
   > {
   value: ChoiceValue | ChoiceValue[];
   multiple?: boolean;

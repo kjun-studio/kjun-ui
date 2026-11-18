@@ -56,7 +56,7 @@ assign("FormActions", [choice("comparison", "비교", ["기본", "크기", "변�
 assign("Modal", [choice("size", "크기", ["sm", "md", "lg", "xl", "full"], "md"), toggle("disabled", "확인 비활성"), toggle("loading", "확인 로딩")]);
 assign("Button", [choice("comparison", "비교", ["기본", "크기", "변형", "라벨·아이콘", "상태"]), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), choice("variant", "변형", ["primary", "secondary", "ghost", "danger", "danger-ghost", "success", "warning"]), disabled, loading, toggle("iconOnly", "아이콘 전용"), toggle("block", "전체 너비")]);
 assign("Tabs TabPane", [choice("variant", "표현", ["underline", "pills"]), choice("density", "밀도", ["comfortable", "compact"]), toggle("fullWidth", "전체 너비"), toggle("detail", "아이콘·배지")]);
-assign("ButtonGroup", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), disabled, toggle("fullWidth", "전체 너비")]);
+assign("ButtonGroup", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), disabled, toggle("fullWidth", "전체 너비"), toggle("iconOnly", "아이콘만")]);
 assign("MenuButton", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), choice("variant", "변형", ["secondary", "ghost", "primary", "danger", "danger-ghost", "success", "warning"], "secondary"), toggle("compact", "아이콘 전용"), disabled, loading, toggle("rich", "확장 구성"), menuDensity]);
 assign("Input", [choice("comparison", "비교", ["기본", "크기", "상태", "아이콘·단위"]), size, disabled, toggle("readOnly", "읽기 전용"), error]);
 controls.KjunCard = cardControls;

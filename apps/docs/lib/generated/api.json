@@ -2453,13 +2453,6 @@
         "description": ""
       },
       {
-        "name": "variant",
-        "type": "\"primary\" | \"secondary\" | \"ghost\"",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
         "name": "disabled",
         "type": "boolean",
         "required": false,
@@ -2510,13 +2503,6 @@
       {
         "name": "size",
         "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "variant",
-        "type": "\"primary\" | \"secondary\" | \"ghost\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -2575,13 +2561,6 @@
       {
         "name": "size",
         "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | undefined",
-        "required": false,
-        "default": "—",
-        "description": ""
-      },
-      {
-        "name": "variant",
-        "type": "\"secondary\" | \"primary\" | \"ghost\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -5240,6 +5219,62 @@
       {
         "name": "onCopyError",
         "type": "((error: unknown) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "name",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "autoFocus",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onChange",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ChangeEventHandler<HTMLButtonElement, Element> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onKeyDown",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").KeyboardEventHandler<HTMLButtonElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onClick",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").MouseEventHandler<HTMLButtonElement> | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -10880,17 +10915,17 @@
       },
       {
         "name": "ariaLabel",
-        "type": "string",
-        "required": true,
+        "type": "string | undefined",
+        "required": false,
         "default": "—",
-        "description": ""
+        "description": "Accessible name; aria-label or aria-labelledby may be used instead."
       },
       {
         "name": "tooltip",
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": "Defaults to ariaLabel, like RefreshButton; an empty string disables the hint."
+        "description": "Defaults to the accessible label text, like RefreshButton; an empty string disables the hint."
       },
       {
         "name": "tooltipPlacement",
@@ -10909,6 +10944,62 @@
       {
         "name": "onToggle",
         "type": "(() => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "name",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "autoFocus",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onChange",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ChangeEventHandler<HTMLButtonElement, Element> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onKeyDown",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").KeyboardEventHandler<HTMLButtonElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onClick",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").MouseEventHandler<HTMLButtonElement> | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -21173,14 +21264,51 @@
         "required": false,
         "default": "true",
         "description": ""
-      }
-    ],
-    "events": [
+      },
       {
-        "name": "refresh",
-        "source": "packages/vue3/src/actions.tsx"
+        "name": "shape",
+        "type": "\"default\" | \"circle\" | \"pill\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": ""
+      },
+      {
+        "name": "wrap",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "suffixIcon",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "prefixIconFilled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "suffixIconFilled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "onRefresh",
+        "type": "(() => void | Promise<unknown>)",
+        "required": false,
+        "default": "—",
+        "description": "The refresh handler (`@refresh` binds here). A returned promise shows loading until it settles."
       }
     ],
+    "events": [],
     "slots": [],
     "react": [
       {
@@ -21227,10 +21355,10 @@
       },
       {
         "name": "onRefresh",
-        "type": "(() => void) | undefined",
+        "type": "(() => void | Promise<unknown>) | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "A returned promise shows loading until it settles; loading stays the app's to set otherwise."
       },
       {
         "name": "size",
@@ -21425,10 +21553,10 @@
       },
       {
         "name": "onRefresh",
-        "type": "(() => void) | undefined",
+        "type": "(() => void | Promise<unknown>) | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "A returned promise shows loading until it settles; loading stays the app's to set otherwise."
       },
       {
         "name": "size",

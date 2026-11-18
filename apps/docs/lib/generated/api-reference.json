@@ -26779,7 +26779,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "선택할 수 있는 옵션 배열입니다.",
+            "summary": "선택할 수 있는 옵션 배열입니다. icon이 있는 옵션에 iconOnly를 켜면 높이와 같은 너비의 정사각형 칸에 아이콘만 그리고, label은 접근성 이름과 툴팁이 됩니다. 글자 칸과 한 그룹에 섞을 수 있습니다.",
             "source": "packages/vue3/src/controls.tsx"
           },
           {
@@ -26789,15 +26789,6 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
-            "source": "packages/vue3/src/controls.tsx"
-          },
-          {
-            "name": "variant",
-            "type": "\"primary\" | \"secondary\" | \"ghost\"",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
             "source": "packages/vue3/src/controls.tsx"
           },
           {
@@ -26863,7 +26854,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "선택할 수 있는 옵션 배열입니다.",
+            "summary": "선택할 수 있는 옵션 배열입니다. icon이 있는 옵션에 iconOnly를 켜면 높이와 같은 너비의 정사각형 칸에 아이콘만 그리고, label은 접근성 이름과 툴팁이 됩니다. 글자 칸과 한 그룹에 섞을 수 있습니다.",
             "source": "packages/react/src/controls.tsx"
           },
           {
@@ -26873,15 +26864,6 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
-            "source": "packages/react/src/controls.tsx"
-          },
-          {
-            "name": "variant",
-            "type": "\"primary\" | \"secondary\" | \"ghost\" | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
             "source": "packages/react/src/controls.tsx"
           },
           {
@@ -26952,7 +26934,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "선택할 수 있는 옵션 배열입니다.",
+            "summary": "선택할 수 있는 옵션 배열입니다. icon이 있는 옵션에 iconOnly를 켜면 높이와 같은 너비의 정사각형 칸에 아이콘만 그리고, label은 접근성 이름과 툴팁이 됩니다. 글자 칸과 한 그룹에 섞을 수 있습니다.",
             "source": "packages/native/src/selection-groups.tsx"
           },
           {
@@ -26962,15 +26944,6 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
-            "source": "packages/native/src/selection-groups.tsx"
-          },
-          {
-            "name": "variant",
-            "type": "\"secondary\" | \"primary\" | \"ghost\" | undefined",
-            "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "시각적 강조 방식을 선택합니다. 허용값은 타입을 따릅니다.",
             "source": "packages/native/src/selection-groups.tsx"
           },
           {
@@ -27209,6 +27182,78 @@
             "default": "—",
             "description": "",
             "summary": "복사 실행이 실패하면 오류를 전달합니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "name",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "폼 제출 또는 항목 식별에 사용하는 이름입니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "autoFocus",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "마운트 시 기본 요소에 포커스를 요청합니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소에 추가할 CSS 클래스입니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소 또는 연결할 필드의 식별자입니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "onChange",
+            "type": "ChangeEventHandler<HTMLButtonElement, Element> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "onKeyDown",
+            "type": "KeyboardEventHandler<HTMLButtonElement> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소의 키보드 이벤트를 전달합니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "onClick",
+            "type": "MouseEventHandler<HTMLButtonElement> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "버튼의 클릭 이벤트를 먼저 전달합니다. preventDefault하면 복사하지 않습니다.",
             "source": "packages/react/src/actions.tsx"
           }
         ],
@@ -28227,11 +28272,11 @@
           },
           {
             "name": "ariaLabel",
-            "type": "string",
-            "required": true,
+            "type": "string | undefined",
+            "required": false,
             "default": "—",
-            "description": "",
-            "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
+            "description": "Accessible name; aria-label or aria-labelledby may be used instead.",
+            "summary": "버튼의 접근성 이름입니다. 대신 일반 aria-label 또는 텍스트 요소를 참조하는 aria-labelledby를 전달할 수 있습니다. 이름이 없으면 개발 모드에서 경고합니다.",
             "source": "packages/react/src/actions.tsx"
           },
           {
@@ -28239,8 +28284,8 @@
             "type": "string | undefined",
             "required": false,
             "default": "—",
-            "description": "Defaults to ariaLabel, like RefreshButton; an empty string disables the hint.",
-            "summary": "메뉴 버튼의 도움말 문구입니다.",
+            "description": "Defaults to the accessible label text, like RefreshButton; an empty string disables the hint.",
+            "summary": "기본값은 접근성 라벨의 텍스트입니다. aria-labelledby는 참조 요소의 텍스트를 읽습니다. 별도 도움말을 지정하거나 빈 문자열로 툴팁을 끌 수 있습니다.",
             "source": "packages/react/src/actions.tsx"
           },
           {
@@ -28268,6 +28313,78 @@
             "default": "—",
             "description": "",
             "summary": "등록 상태 전환을 요청합니다. active 갱신은 소비자가 담당합니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "name",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "폼 제출 또는 항목 식별에 사용하는 이름입니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "autoFocus",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "마운트 시 기본 요소에 포커스를 요청합니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소에 추가할 CSS 클래스입니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소 또는 연결할 필드의 식별자입니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "onChange",
+            "type": "ChangeEventHandler<HTMLButtonElement, Element> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "onKeyDown",
+            "type": "KeyboardEventHandler<HTMLButtonElement> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소의 키보드 이벤트를 전달합니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "onClick",
+            "type": "MouseEventHandler<HTMLButtonElement> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "버튼의 클릭 이벤트를 onToggle 다음에 전달합니다.",
             "source": "packages/react/src/actions.tsx"
           }
         ],
@@ -30053,16 +30170,63 @@
             "description": "",
             "summary": "일반 모션 설정에서 새로고침 아이콘을 회전합니다. false이거나 모션 감소 설정이면 별도 로더를 표시합니다.",
             "source": "packages/vue3/src/actions.tsx"
-          }
-        ],
-        "events": [
+          },
           {
-            "name": "refresh",
-            "source": "packages/vue3/src/actions.tsx",
-            "type": "이벤트",
-            "summary": "refresh 이벤트를 통지합니다."
+            "name": "shape",
+            "type": "\"default\" | \"circle\" | \"pill\"",
+            "required": false,
+            "default": "\"default\"",
+            "description": "",
+            "summary": "\"circle\"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
+            "source": "packages/vue3/src/actions.tsx"
+          },
+          {
+            "name": "wrap",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "Button의 wrap과 같습니다. 텍스트 모드의 긴 문구를 줄바꿈합니다.",
+            "source": "packages/vue3/src/actions.tsx"
+          },
+          {
+            "name": "suffixIcon",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "내용 뒤에 표시할 아이콘입니다.",
+            "source": "packages/vue3/src/actions.tsx"
+          },
+          {
+            "name": "prefixIconFilled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "앞 아이콘에 채움 형태를 사용합니다.",
+            "source": "packages/vue3/src/actions.tsx"
+          },
+          {
+            "name": "suffixIconFilled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "뒤 아이콘에 채움 형태를 사용합니다.",
+            "source": "packages/vue3/src/actions.tsx"
+          },
+          {
+            "name": "onRefresh",
+            "type": "(() => void | Promise<unknown>)",
+            "required": false,
+            "default": "—",
+            "description": "The refresh handler (`@refresh` binds here). A returned promise shows loading until it settles.",
+            "summary": "@refresh로 연결하는 새로고침 핸들러입니다. Promise를 반환하면 끝날 때까지 loading으로 표시하고, 반환하지 않으면 loading은 앱이 정합니다. 실패한 Promise는 표시를 멈춘 뒤 그대로 다시 던집니다.",
+            "source": "packages/vue3/src/actions.tsx"
           }
         ],
+        "events": [],
         "slots": [],
         "ownership": [],
         "types": []
@@ -30125,11 +30289,11 @@
           },
           {
             "name": "onRefresh",
-            "type": "(() => void) | undefined",
+            "type": "(() => void | Promise<unknown>) | undefined",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "새로고침 행동을 통지합니다. 실제 재조회는 소비자가 수행합니다.",
+            "description": "A returned promise shows loading until it settles; loading stays the app's to set otherwise.",
+            "summary": "새로고침을 요청합니다. Promise를 반환하면 끝날 때까지 loading으로 표시하고, 반환하지 않으면 loading은 앱이 정합니다. 실패한 Promise는 표시를 멈춘 뒤 그대로 다시 던집니다.",
             "source": "packages/react/src/actions.tsx"
           },
           {
@@ -30244,7 +30408,7 @@
             "name": "loading",
             "type": "boolean | undefined",
             "required": false,
-            "default": "—",
+            "default": "false",
             "description": "",
             "summary": "진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
             "source": "packages/react/src/actions.tsx"
@@ -30385,11 +30549,11 @@
           },
           {
             "name": "onRefresh",
-            "type": "(() => void) | undefined",
+            "type": "(() => void | Promise<unknown>) | undefined",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "새로고침 행동을 통지합니다. 실제 재조회는 소비자가 수행합니다.",
+            "description": "A returned promise shows loading until it settles; loading stays the app's to set otherwise.",
+            "summary": "새로고침을 요청합니다. Promise를 반환하면 끝날 때까지 loading으로 표시하고, 반환하지 않으면 loading은 앱이 정합니다. 실패한 Promise는 표시를 멈춘 뒤 그대로 다시 던집니다.",
             "source": "packages/native/src/actions.tsx"
           },
           {
@@ -30450,7 +30614,7 @@
             "name": "loading",
             "type": "boolean | undefined",
             "required": false,
-            "default": "—",
+            "default": "false",
             "description": "",
             "summary": "진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
             "source": "packages/native/src/actions.tsx"

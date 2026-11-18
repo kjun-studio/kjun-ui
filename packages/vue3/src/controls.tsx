@@ -8,6 +8,7 @@ import { selectionTypeStyle, typeStyle } from "../../../shared/package-runtime/t
 import { selectionIndicator } from "../../../shared/package-runtime/selection-indicator";
 import { groupKeydown } from "../../../shared/package-runtime/group-keyboard";
 import { KjunIcon } from "./button";
+import { KjunTooltip } from "./popover";
 import { useKjunField, useKjunId } from "./input";
 import { useFocusVisible } from "./runtime/focus-visible";
 import { css } from "./runtime/style";
@@ -15,7 +16,15 @@ import { provideFallbackIcons } from "./runtime/icons";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
 
 export type ChoiceValue = string | number | boolean | null;
-export interface ChoiceOption<T = ChoiceValue> { value: T; label: string; disabled?: boolean; icon?: string; dot?: string }
+export interface ChoiceOption<T = ChoiceValue> {
+  value: T;
+  label: string;
+  disabled?: boolean;
+  icon?: string;
+  /** ButtonGroup only: show the icon alone in a square segment; label becomes the accessible name and tooltip. */
+  iconOnly?: boolean;
+  dot?: string;
+}
 const choiceClass = (disabled: boolean) => "kjun-choice" + (disabled ? " kjun-choice--disabled" : "");
 const choiceLabel = (label: string | undefined, slot: (() => unknown) | undefined) => {
   const content = slot ? slot() : label;
@@ -216,7 +225,6 @@ const kjunButtonGroupProps = {
   modelValue: { type: [String, Number, Boolean, null] as PropType<ChoiceValue>, default: null },
   options: { type: Array as PropType<ChoiceOption[]>, required: true },
   size: { type: String as PropType<ButtonSize>, default: "md" },
-  variant: { type: String as PropType<"primary" | "secondary" | "ghost">, default: undefined },
   disabled: { type: Boolean, default: false },
   fullWidth: { type: Boolean, default: false },
   ariaLabel: { type: String, default: undefined },
@@ -236,16 +244,20 @@ export const KjunButtonGroup = defineComponent({
           <span ref={indicator} class="kjun-button-group-indicator" aria-hidden="true" hidden style={css({ borderRadius: metrics.itemRadii[size] })} />
           {props.options.map(option => {
             const active = props.modelValue === option.value;
-            return (
-              <button key={String(option.value)} type="button" aria-pressed={active} disabled={props.disabled || option.disabled}
-                style={css({ flex: props.fullWidth ? 1 : undefined, paddingInline: metrics.itemPaddingX[size], borderRadius: metrics.itemRadii[size], ...selectionTypeStyle(size, active) })}
+            const iconOnly = !!(option.iconOnly && option.icon), blocked = props.disabled || option.disabled;
+            const segment = (
+              <button key={String(option.value)} type="button" aria-pressed={active} aria-label={iconOnly ? option.label : undefined} disabled={blocked}
+                // An icon-only segment is square: as wide as the segment is tall.
+                style={css({ flex: props.fullWidth ? 1 : undefined, width: iconOnly && !props.fullWidth ? metrics.heights[size] - 2 * metrics.padding[size] : undefined,
+                  paddingInline: iconOnly ? 0 : metrics.itemPaddingX[size], borderRadius: metrics.itemRadii[size], ...selectionTypeStyle(size, active) })}
                 onClick={() => { emit("update:modelValue", option.value); emit("change", option.value); }}>
-                {option.icon && <KjunIcon name={option.icon} size={tokens.extensions.selection.iconSize} />}
-                <span class="kjun-button-group-label">
+                {option.icon && <KjunIcon name={option.icon} size={tokens.button.iconSizes[size]} />}
+                {!iconOnly && <span class="kjun-button-group-label">
                   <span aria-hidden="true" style={css(typeStyle(tokens.button.typography[size]))}>{option.label}</span><span>{option.label}</span>
-                </span>
+                </span>}
               </button>
             );
+            return iconOnly ? <KjunTooltip key={String(option.value)} content={blocked ? "" : option.label}>{segment}</KjunTooltip> : segment;
           })}
         </div>
       );

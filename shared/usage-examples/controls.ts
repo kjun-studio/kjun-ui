@@ -1,5 +1,5 @@
 import { UsageBuilder, expr, literal, type UsageInput } from './builder';
-import { defaultOptions, buttonComparisons, inputComparisons, fieldOptions, formActionsComparisons } from '../../previews/catalog/example-tools';
+import { defaultOptions, viewOptions, buttonComparisons, inputComparisons, fieldOptions, formActionsComparisons } from '../../previews/catalog/example-tools';
 import { iconToggleExample } from './icon-toggle';
 
 export function generate(input: UsageInput) {
@@ -84,6 +84,9 @@ export function generate(input: UsageInput) {
     case 'KjunDateRangePicker':
       content = b.node(name, { value: b.state('range', { start: '2026-09-08', end: '2026-09-16' }), onValueChange: b.update('range'), min: '2026-09-01', max: '2026-10-31', ariaLabel: '사용 기간', ...b.props('size', 'disabled', 'error') }); break;
     case 'KjunButtonGroup': case 'KjunFilterGroup': {
+      if (name === 'KjunButtonGroup' && s.iconOnly) {
+        content = b.node(name, { value: b.state('view', 'line'), onValueChange: b.update('view'), options: b.data('options', viewOptions), disabled: s.disabled, ariaLabel: '차트 형태', ...b.props('size', 'fullWidth') }); break;
+      }
       const key = name === 'KjunButtonGroup' ? 'group' : 'filters';
       content = b.node(name, { value: b.state(key, key === 'group' ? 'a' : ['a']), onValueChange: b.update(key), options: options(), multiple: key === 'filters', disabled: s.disabled, ariaLabel: '과일 보기', ...(key === 'group' ? b.props('size', 'fullWidth') : {}) }); break;
     }
@@ -101,7 +104,9 @@ export function generate(input: UsageInput) {
         copyText: b.declare('copyText', 'async function copyText(value) {\n  // 프로젝트의 클립보드 연결 지점입니다.\n  console.log("복사 요청:", value);\n}'),
         onCopied: b.handler('copied', '', b.result('"복사 완료"')) }); break;
     case 'KjunRefreshButton':
-      content = b.node(name, { targetName: '목록', ...b.props('mode', 'size', 'disabled', 'loading'), onRefresh: b.handler('refresh', '', b.result('"갱신 요청"')) }); break;
+      // A returned promise keeps the button loading until the list has reloaded.
+      content = b.node(name, { targetName: '목록', ...b.props('mode', 'size', 'disabled', 'loading'),
+        onRefresh: b.handler('refresh', '', 'await new Promise(resolve => setTimeout(resolve, 1200)); // 목록을 다시 불러오는 지점입니다.\n' + b.result('"갱신 완료"'), true) }); break;
     case 'KjunExternalLink':
       content = b.node(name, { href: 'https://example.com', label: '외부 페이지', openUrl: b.declare('openUrl', 'function openUrl(url) {\n  // 프로젝트의 브라우저 또는 Linking 연결 지점입니다.\n  console.log("링크 열기:", url);\n}') }, b.text('외부 페이지')); break;
     case 'KjunProgress':

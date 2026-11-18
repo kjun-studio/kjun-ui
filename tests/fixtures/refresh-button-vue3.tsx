@@ -10,6 +10,10 @@ createApp(defineComponent(() => () => <K.KjunProvider>
   <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'flex-start' }}>
     {box('icon', <K.KjunRefreshButton {...config} targetName="목록" onRefresh={() => events.value++} />)}
     {box('text', <K.KjunRefreshButton {...config} mode="text" targetName="목록" onRefresh={() => events.value++} />)}
+    {box('async', <K.KjunRefreshButton {...config} targetName="비동기" onRefresh={() => {
+      events.value++;
+      return new Promise<void>(resolve => { (window as any).finishRefresh = resolve; });
+    }} />)}
     {box('reference', <K.KjunButton {...config} prefixIcon="refresh">새로고침</K.KjunButton>)}
     <button data-testid="outside">바깥 버튼</button>
     <output data-testid="events">{events.value}</output>

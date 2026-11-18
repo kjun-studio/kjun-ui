@@ -143,4 +143,24 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.getByTestId('events')).toHaveText('3');
     await captureReview(page, { path: `artifacts/refresh-${platform}-dark.png` });
   });
+
+  test(`${platform}: a promise from onRefresh shows loading until it settles`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await openFixture(page, platform, '', 'refresh-button');
+    const refresh = button(page, 'async');
+    await expect(refresh).toBeEnabled();
+    await refresh.click();
+    await expect(page.getByTestId('events')).toHaveText('1');
+    await expect(refresh).toHaveAttribute('aria-busy', 'true');
+    await expect(refresh).toBeDisabled();
+    await refresh.click({ force: true });
+    await expect(page.getByTestId('events')).toHaveText('1');
+    await page.evaluate(() => (window as any).finishRefresh());
+    await expect(refresh).not.toHaveAttribute('aria-busy', 'true');
+    await expect(refresh).toBeEnabled();
+    // A plain handler result leaves loading to the app.
+    await button(page).click();
+    await expect(page.getByTestId('events')).toHaveText('2');
+    await expect(button(page)).not.toHaveAttribute('aria-busy', 'true');
+  });
 }

@@ -100,7 +100,6 @@
       "modelValue",
       "options",
       "size",
-      "variant",
       "disabled",
       "fullWidth",
       "ariaLabel"
@@ -109,7 +108,6 @@
       "value",
       "options",
       "size",
-      "variant",
       "disabled",
       "fullWidth",
       "ariaLabel",
@@ -120,7 +118,6 @@
       "value",
       "options",
       "size",
-      "variant",
       "disabled",
       "fullWidth",
       "ariaLabel",
@@ -149,7 +146,15 @@
       "disabled",
       "copyText",
       "onCopied",
-      "onCopyError"
+      "onCopyError",
+      "name",
+      "autoFocus",
+      "className",
+      "id",
+      "style",
+      "onChange",
+      "onKeyDown",
+      "onClick"
     ],
     "native": [
       "value",
@@ -364,7 +369,15 @@
       "tooltip",
       "tooltipPlacement",
       "tooltipDelay",
-      "onToggle"
+      "onToggle",
+      "name",
+      "autoFocus",
+      "className",
+      "id",
+      "style",
+      "onChange",
+      "onKeyDown",
+      "onClick"
     ],
     "native": [
       "active",
@@ -458,7 +471,13 @@
       "tooltip",
       "tooltipPlacement",
       "tooltipDelay",
-      "spinOnLoading"
+      "spinOnLoading",
+      "shape",
+      "wrap",
+      "suffixIcon",
+      "prefixIconFilled",
+      "suffixIconFilled",
+      "onRefresh"
     ],
     "react": [
       "targetName",

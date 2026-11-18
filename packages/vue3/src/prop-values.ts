@@ -37,7 +37,6 @@ export const kjunPropValues = Object.freeze({
   }),
   KjunButtonGroup: Object.freeze({
     size: Object.freeze(["xs","sm","md","lg","xl"] as const),
-    variant: Object.freeze(["ghost","primary","secondary"] as const),
   }),
   KjunCard: Object.freeze({
     bodyPadding: Object.freeze(["none","sm","md","lg"] as const),
@@ -242,6 +241,7 @@ export const kjunPropValues = Object.freeze({
   }),
   KjunRefreshButton: Object.freeze({
     mode: Object.freeze(["icon","text"] as const),
+    shape: Object.freeze(["circle","default","pill"] as const),
     size: Object.freeze(["xs","sm","md","lg","xl"] as const),
     tooltipPlacement: Object.freeze(["bottom","left","right","top"] as const),
     variant: Object.freeze(["danger","danger-ghost","ghost","link","primary","secondary","success","warning"] as const),

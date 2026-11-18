@@ -9,6 +9,7 @@ useWindowDimensions
 } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIcon } from "./button";
+import { KjunTooltip } from "./popover";
 import { ChoiceOption,ChoiceValue } from "./choice-controls";
 import { KText, finePointer } from "./internal";
 import { useKjunStyles } from "./provider";
@@ -17,7 +18,6 @@ export interface KjunButtonGroupProps {
   value: ChoiceValue;
   options: ChoiceOption[];
   size?: ButtonSize;
-  variant?: "primary" | "secondary" | "ghost";
   disabled?: boolean;
   fullWidth?: boolean;
   ariaLabel?: string;
@@ -82,12 +82,14 @@ export function KjunButtonGroup({
           // 44pt touch target above and below it, like KjunButton.
           const itemHeight = tokens.buttonGroup.heights[size] - 2 * padding,
             hit = Math.max(0, (tokens.native.minimumTouchTarget - itemHeight) / 2);
-          return (
+          const iconOnly = !!(option.iconOnly && option.icon);
+          const track = (node: View | null) => { if (node) itemRefs.current.set(option.value, node); else itemRefs.current.delete(option.value); };
+          const segment = (
             <Pressable
               key={String(option.value)}
               hitSlop={{ top: hit, bottom: hit }}
-              ref={node => { if (node) itemRefs.current.set(option.value, node); else itemRefs.current.delete(option.value); }}
-              onLayout={event => motion.measure(option.value, event)}
+              ref={iconOnly ? undefined : track}
+              onLayout={iconOnly ? undefined : event => motion.measure(option.value, event)}
               accessibilityRole="button"
               accessibilityLabel={option.label}
               accessibilityState={{ selected: active, disabled: !!blocked }}
@@ -96,15 +98,19 @@ export function KjunButtonGroup({
                 onValueChange?.(option.value);
                 onChange?.(option.value);
               }}
+              // The tooltip wrapper stretches an icon-only segment across a full-width cell.
+              {...(iconOnly ? { block: fullWidth } as object : {})}
               style={({ pressed }) => ({
                 zIndex: 1,
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
                 gap: tokens.dimension.value6,
-                flex: fullWidth ? 1 : undefined,
+                flex: fullWidth && !iconOnly ? 1 : undefined,
                 height: itemHeight,
-                paddingHorizontal: tokens.buttonGroup.itemPaddingX[size],
+                // An icon-only segment is square: as wide as the segment is tall.
+                width: iconOnly && !fullWidth ? itemHeight : undefined,
+                paddingHorizontal: iconOnly ? 0 : tokens.buttonGroup.itemPaddingX[size],
                 borderRadius: itemRadius,
                 backgroundColor: active && !motion.layout
                   ? colors.surface
@@ -116,14 +122,21 @@ export function KjunButtonGroup({
               {!!option.icon && (
                 <KjunIcon
                   name={option.icon}
-                  size={tokens.extensions.selection.iconSize}
+                  size={tokens.button.iconSizes[size]}
                   color={blocked ? colors.textDisabled : active ? colors.text : colors.textSecondary}
                 />
               )}
-              <ButtonGroupLabel label={option.label} active={active} reduced={motion.reduced}
-                size={size} disabled={!!blocked} />
+              {!iconOnly && <ButtonGroupLabel label={option.label} active={active} reduced={motion.reduced}
+                size={size} disabled={!!blocked} />}
             </Pressable>
           );
+          // The tooltip wraps its trigger in a View, so the outer cell carries the layout the indicator follows.
+          return iconOnly ? (
+            <View key={String(option.value)} ref={track} onLayout={event => motion.measure(option.value, event)}
+              style={{ zIndex: 1, flex: fullWidth ? 1 : undefined }}>
+              <KjunTooltip content={blocked ? "" : option.label}>{segment}</KjunTooltip>
+            </View>
+          ) : segment;
         })}
       </View>
     </ScrollView>
@@ -132,7 +145,7 @@ export function KjunButtonGroup({
 export interface KjunFilterGroupProps
   extends Omit<
     KjunButtonGroupProps,
-    "value" | "onValueChange" | "onChange" | "fullWidth" | "variant"
+    "value" | "onValueChange" | "onChange" | "fullWidth"
   > {
   value: ChoiceValue | ChoiceValue[];
   multiple?: boolean;

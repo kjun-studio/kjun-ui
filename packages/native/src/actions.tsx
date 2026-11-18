@@ -5,7 +5,7 @@ import { tokens,type ButtonSize } from "@kjun-ui/tokens";
 import { useContext,useEffect,useId,useRef,useState,type ReactNode } from "react";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import { sameEdges, scrollEdges, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
-import { Platform,ScrollView,View,type ColorValue,type StyleProp,type ViewStyle } from "react-native";
+import { AccessibilityInfo,Platform,ScrollView,View,type ColorValue,type StyleProp,type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunButton,KjunIcon,type KjunButtonProps } from "./button";
 import { KText,content,useReducedMotion } from "./internal";
@@ -13,6 +13,8 @@ import { useKjunStyles } from "./provider";
 import { useOptionalKjunFeedback } from "./feedback-context";
 import { KjunTooltip, type KjunTooltipProps } from "./popover";
 import { TopNavigationContext } from "./top-navigation-context";
+import { useCopyFeedback } from "../../../shared/package-runtime/use-copy-feedback";
+import { usePendingAction } from "../../../shared/package-runtime/use-pending-action";
 export interface KjunIconToggleProps {
   active?: boolean;
   activeIcon: string;
@@ -139,18 +141,20 @@ export function KjunCopyButton({
   successText ??= m.copied;
   const feedback = useOptionalKjunFeedback(),
     { colors } = useKjunStyles(),
-    [copied, setCopied] = useState(false),
-    [failed, setFailed] = useState(false),
-    busy = useRef(false),
-    timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined),
-    mounted = useRef(true);
-  useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-      clearTimeout(timer.current);
-    };
-  }, []);
+    [said, setSaid] = useState("");
+  // Without a feedback provider the result is announced: devices speak it directly, the web through a
+  // status region that fills on change. A hint would not be read when it changes.
+  const say = (message: string) => {
+    if (feedback) return;
+    if (Platform.OS === "web") setSaid(message);
+    else AccessibilityInfo.announceForAccessibility(message);
+  };
+  const { copied, copy } = useCopyFeedback(copyText, {
+    onSuccess: (copiedValue) => { feedback?.toast.success(successText); say(successText); onCopied?.(copiedValue); },
+    onError: (error) => { feedback?.toast.error(m.copyFailed); say(m.copyFailed); onCopyError?.(error); },
+  });
+  // Clear the region when the success state ends, so the next copy is announced again.
+  useEffect(() => { if (!copied) setSaid(""); }, [copied]);
   // Painted like Web: the button height for the size, no vertical padding; hitSlop reaches the 44pt touch target.
   const height = tokens.button.heights[size],
     paddingX = { xs: tokens.dimension.value4, sm: tokens.dimension.value8, md: tokens.dimension.value12 }[size],
@@ -163,31 +167,7 @@ export function KjunCopyButton({
         hitSlop={{ top: hitY, bottom: hitY, left: hitX, right: hitX }}
         accessibilityRole="button"
         accessibilityLabel={ariaLabel || text || m.copy}
-        accessibilityHint={
-          feedback ? undefined : copied ? successText : failed ? m.copyFailed : undefined
-        }
-        onPress={async () => {
-          if (copied || busy.current) return;
-          busy.current = true;
-          try {
-            await copyText(value);
-            if (mounted.current) {
-              setCopied(true);
-              setFailed(false);
-              feedback?.toast.success(successText);
-              onCopied?.(value);
-              timer.current = setTimeout(() => setCopied(false), 1500);
-            }
-          } catch (error) {
-            if (mounted.current) {
-              setFailed(true);
-              feedback?.toast.error(m.copyFailed);
-              onCopyError?.(error);
-            }
-          } finally {
-            busy.current = false;
-          }
-        }}
+        onPress={() => void copy(value)}
         style={({ pressed }) => ({
           alignSelf: "flex-start",
           minHeight: height,
@@ -217,6 +197,7 @@ export function KjunCopyButton({
           </KText>
         )}
       </Pressable>
+      {Platform.OS === "web" ? <View role="status" pointerEvents="none" style={{ position: "absolute", opacity: 0 }}><KText>{said}</KText></View> : null}
     </View>
   );
 }
@@ -229,7 +210,8 @@ export interface KjunRefreshButtonProps
   tooltip?: string;
   tooltipPlacement?: KjunTooltipProps["placement"];
   tooltipDelay?: number;
-  onRefresh?: () => void;
+  /** A returned promise shows loading until it settles; loading stays the app's to set otherwise. */
+  onRefresh?: () => void | Promise<unknown>;
 }
 export function KjunRefreshButton({
   targetName = "",
@@ -242,25 +224,29 @@ export function KjunRefreshButton({
   tooltipPlacement,
   tooltipDelay,
   spinOnLoading = true,
+  loading = false,
   onRefresh,
   ...props
 }: KjunRefreshButtonProps) {
   const m = useKjunMessages();
   text ??= m.refresh;
   const reduced = useReducedMotion();
+  const { pending, run } = usePendingAction();
+  const busy = loading || pending;
   // Text mode speaks what it shows (WCAG 2.5.3); icon mode keeps the action name.
   const label = ariaLabel || [targetName, mode === "text" ? text : m.refresh].filter(Boolean).join(" ");
   const hint = tooltip ?? (mode === "icon" ? label : "");
   const button = (
-    <KjunTooltip content={props.disabled || props.loading ? "" : hint} placement={tooltipPlacement} delay={tooltipDelay}>
+    <KjunTooltip content={props.disabled || busy ? "" : hint} placement={tooltipPlacement} delay={tooltipDelay}>
     <KjunButton
       {...props}
       size={size}
       variant={variant}
+      loading={busy}
       prefixIcon="refresh"
       spinOnLoading={!reduced && spinOnLoading}
       ariaLabel={label}
-      onPress={onRefresh}
+      onPress={() => run(onRefresh)}
     >
       {mode === "text" ? text : undefined}
     </KjunButton>

@@ -159,6 +159,12 @@ export const defaultOptions = [
   { value: "b", label: "배", disabled: true },
   { value: "c", label: "체리" },
 ];
+/** ButtonGroup's icon-only view switcher: each label becomes the segment's accessible name and tooltip. */
+export const viewOptions = [
+  { value: "line", label: "선 차트", icon: "chart-line", iconOnly: true },
+  { value: "bar", label: "막대 차트", icon: "chart-bar", iconOnly: true },
+  { value: "table", label: "표", icon: "table", iconOnly: true },
+];
 export const fieldOptions = (name: string, data?: unknown) => {
   const labels = name === "KjunSelect" ? ["나만 보기", "전체 공개", "팀에 공개"] : ["한빛테크", "그린에너지", "오로라모빌리티"];
   return data === "empty" ? [] : defaultOptions.map((option, index) => ({ ...option,

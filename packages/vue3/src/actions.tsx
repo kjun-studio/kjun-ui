@@ -12,6 +12,9 @@ import { kjunTopNavigationKey } from "./runtime/keys";
 import { useReducedMotion } from "./runtime/presence";
 import { css } from "./runtime/style";
 import { useIconToggleLabel } from "./runtime/icon-toggle-label";
+import { useCopyFeedback } from "./runtime/copy-feedback";
+import { usePendingAction } from "./runtime/pending-action";
+import { browserCopy } from "../../../shared/package-runtime/clipboard";
 
 type Placement = KjunTooltipProps["placement"];
 const kjunIconToggleProps = {
@@ -74,23 +77,6 @@ export const KjunIconToggle = KjunIconToggleComponent as typeof KjunIconToggleCo
   new(): InstanceType<typeof KjunIconToggleComponent> & { $props: KjunIconToggleProps };
 };
 
-async function browserCopy(value: string) {
-  if (navigator.clipboard && window.isSecureContext) {
-    await navigator.clipboard.writeText(value);
-    return;
-  }
-  const previous = document.activeElement as HTMLElement | null, ta = document.createElement("textarea");
-  ta.value = value;
-  ta.style.cssText = "position:fixed;left:-9999px;top:-9999px";
-  document.body.append(ta);
-  ta.select();
-  try {
-    if (!document.execCommand("copy")) throw Error("Clipboard copy failed");
-  } finally {
-    ta.remove();
-    previous?.focus();
-  }
-}
 const kjunCopyButtonProps = {
   value: { type: String, required: true },
   ariaLabel: { type: String, default: undefined },
@@ -111,33 +97,13 @@ export const KjunCopyButton = defineComponent({
   setup(props, { attrs, emit }) {
     const m = useKjunMessages();
     const feedback = useOptionalKjunFeedback();
-    const copied = ref(false), failed = ref(false);
-    let busy = false, mounted = true, timer: ReturnType<typeof setTimeout> | undefined;
-    onBeforeUnmount(() => { mounted = false; clearTimeout(timer); });
-    const copy = async (event: MouseEvent) => {
-      event.stopPropagation();
-      if (copied.value || busy) return;
-      busy = true;
-      try {
-        await props.copyText(props.value);
-        if (mounted) {
-          copied.value = true; failed.value = false;
-          feedback?.toast.success((props.successText ?? m.value.copied));
-          emit("copied", props.value);
-          timer = setTimeout(() => { copied.value = false; }, 1500);
-        }
-      } catch (error) {
-        if (mounted) {
-          failed.value = true;
-          feedback?.toast.error(m.value.copyFailed);
-          emit("copy-error", error);
-        }
-      } finally {
-        busy = false;
-      }
-    };
+    const successText = () => props.successText ?? m.value.copied;
+    const { copied, failed, copy } = useCopyFeedback(() => props.copyText, {
+      onSuccess: (value) => { feedback?.toast.success(successText()); emit("copied", value); },
+      onError: (error) => { feedback?.toast.error(m.value.copyFailed); emit("copy-error", error); },
+    });
     return () => <>
-      <button {...mergeProps(attrs, { class: "kjun-copy-button", onClick: (event: MouseEvent) => { if (!event.defaultPrevented) void copy(event); } })}
+      <button {...mergeProps(attrs, { class: "kjun-copy-button", onClick: (event: MouseEvent) => { event.stopPropagation(); if (!event.defaultPrevented) void copy(props.value); } })}
         type="button" disabled={props.disabled} aria-label={props.ariaLabel || attrs["aria-label"] as string || props.text || m.value.copy}
         data-inline={String(props.inline)}
         style={[css({
@@ -172,24 +138,33 @@ const kjunRefreshButtonProps = {
   tooltipPlacement: { type: String as PropType<Placement>, default: undefined },
   tooltipDelay: { type: Number, default: undefined },
   spinOnLoading: { type: Boolean, default: true },
+  shape: { type: String as PropType<"default" | "circle" | "pill">, default: "default" },
+  wrap: { type: Boolean, default: false },
+  suffixIcon: { type: String, default: undefined },
+  prefixIconFilled: { type: Boolean, default: false },
+  suffixIconFilled: { type: Boolean, default: false },
+  /** The refresh handler (`@refresh` binds here). A returned promise shows loading until it settles. */
+  onRefresh: { type: Function as PropType<() => void | Promise<unknown>>, default: undefined },
 } as const;
 export type KjunRefreshButtonProps = ExtractPublicPropTypes<typeof kjunRefreshButtonProps>;
-/** Event: refresh. */
+/** Event: refresh, bound through the onRefresh prop so a returned promise can drive loading. */
 export const KjunRefreshButton = defineComponent({
   name: "KjunRefreshButton",
   props: kjunRefreshButtonProps,
-  emits: { refresh: () => true },
-  setup(props, { emit }) {
+  setup(props) {
     const m = useKjunMessages();
     const reduced = useReducedMotion();
+    const { pending, run } = usePendingAction();
     return () => {
       // Text mode speaks what it shows (WCAG 2.5.3); icon mode keeps the action name.
       const label = props.ariaLabel || [props.targetName, props.mode === "text" ? (props.text ?? m.value.refresh) : m.value.refresh].filter(Boolean).join(" ");
       const hint = props.tooltip ?? props.title ?? (props.mode === "icon" ? label : "");
+      const busy = props.loading || pending.value;
       return (
-        <KjunTooltip content={props.disabled || props.loading ? "" : hint} placement={props.tooltipPlacement} delay={props.tooltipDelay}>
-          <KjunButton size={props.size} variant={props.variant} disabled={props.disabled} loading={props.loading} block={props.block}
-            prefixIcon="refresh" spinOnLoading={!reduced.value && props.spinOnLoading} ariaLabel={label} onClick={() => emit("refresh")}>
+        <KjunTooltip content={props.disabled || busy ? "" : hint} placement={props.tooltipPlacement} delay={props.tooltipDelay}>
+          <KjunButton size={props.size} variant={props.variant} disabled={props.disabled} loading={busy} block={props.block}
+            shape={props.shape} wrap={props.wrap} suffixIcon={props.suffixIcon} prefixIconFilled={props.prefixIconFilled} suffixIconFilled={props.suffixIconFilled}
+            prefixIcon="refresh" spinOnLoading={!reduced.value && props.spinOnLoading} ariaLabel={label} onClick={() => run(props.onRefresh)}>
             {props.mode === "text" ? (props.text ?? m.value.refresh) : undefined}
           </KjunButton>
         </KjunTooltip>

@@ -122,6 +122,23 @@ set("IconToggle", {
   ariaLabel: "버튼의 접근성 이름입니다. 대신 일반 aria-label 또는 텍스트 요소를 참조하는 aria-labelledby를 전달할 수 있습니다. 이름이 없으면 개발 모드에서 경고합니다.",
   tooltip: "기본값은 접근성 라벨의 텍스트입니다. aria-labelledby는 참조 요소의 텍스트를 읽습니다. 별도 도움말을 지정하거나 빈 문자열로 툴팁을 끌 수 있습니다.",
 }, "vue3");
+set("IconToggle", {
+  ariaLabel: "버튼의 접근성 이름입니다. 대신 일반 aria-label 또는 텍스트 요소를 참조하는 aria-labelledby를 전달할 수 있습니다. 이름이 없으면 개발 모드에서 경고합니다.",
+  tooltip: "기본값은 접근성 라벨의 텍스트입니다. aria-labelledby는 참조 요소의 텍스트를 읽습니다. 별도 도움말을 지정하거나 빈 문자열로 툴팁을 끌 수 있습니다.",
+  onClick: "버튼의 클릭 이벤트를 onToggle 다음에 전달합니다.",
+}, "react");
+set("CopyButton", {
+  onClick: "버튼의 클릭 이벤트를 먼저 전달합니다. preventDefault하면 복사하지 않습니다.",
+}, "react");
+set("RefreshButton", {
+  onRefresh: "새로고침을 요청합니다. Promise를 반환하면 끝날 때까지 loading으로 표시하고, 반환하지 않으면 loading은 앱이 정합니다. 실패한 Promise는 표시를 멈춘 뒤 그대로 다시 던집니다.",
+});
+set("RefreshButton", {
+  onRefresh: "@refresh로 연결하는 새로고침 핸들러입니다. Promise를 반환하면 끝날 때까지 loading으로 표시하고, 반환하지 않으면 loading은 앱이 정합니다. 실패한 Promise는 표시를 멈춘 뒤 그대로 다시 던집니다.",
+}, "vue3");
+set("ButtonGroup", {
+  options: "선택할 수 있는 옵션 배열입니다. icon이 있는 옵션에 iconOnly를 켜면 높이와 같은 너비의 정사각형 칸에 아이콘만 그리고, label은 접근성 이름과 툴팁이 됩니다. 글자 칸과 한 그룹에 섞을 수 있습니다.",
+});
 set("ButtonGroup RadioGroup", {
   value: "현재 선택한 옵션의 값입니다. 변경 결과를 소비자 상태에 반영합니다.",
 });

@@ -19,8 +19,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     const success = page.getByRole('button', { name: '복사 성공' });
     await success.click();
     await expect(success).toContainText('복사 완료');
+    // Without a provider the result is announced through a status region (Native Web too; devices speak it).
+    await expect(page.getByRole('status').filter({ hasText: '복사 완료' })).toHaveCount(1);
 
     await page.getByRole('button', { name: '복사 실패' }).click();
+    await expect(page.getByRole('status').filter({ hasText: '복사 실패' })).toHaveCount(1);
     await expect(toasts(page)).toHaveCount(0);
   });
 }
