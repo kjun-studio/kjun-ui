@@ -144,6 +144,13 @@ const stepsSummaries = {
   id: "루트 목록의 ID입니다.",
   testID: "테스트에서 루트 View를 찾는 ID입니다.",
 };
+const listSectionBadge = slot("섹션 제목 바로 뒤에 붙이는 짧은 표시입니다(개수·새 항목).", "ReactNode", "KjunBadge count처럼 표시용 콘텐츠를 넣습니다. 제목 뒤 6px(ListRow 배지와 같은 간격)에 두고 제목 첫 줄 가운데에 맞추며, 제목 줄보다 큰 배지도 제목 높이를 늘리지 않습니다. 긴 제목은 배지 앞에서 줄바꿈합니다. 목록 이름은 제목과 배지 글자를 함께 읽고(\"최근 거래 12\"), 제목(heading) 자체는 제목 글자만 읽습니다. title이 없으면 그리지 않습니다.");
+const listRoots = (name, platform) => ({
+  id: { type: "string", summary: (name === "KjunListGroup" ? "루트 div" : "루트 section") + "의 id입니다." },
+  className: { type: "string", summary: (name === "KjunListGroup" ? "루트(kjun-list-group)" : "루트(kjun-list-section)") + "에 더할 클래스입니다. 간격·모서리는 " + (name === "KjunListGroup" ? "variant" : "radius·density·KjunListGroup") + "로 정하세요." },
+  style: { summary: (platform === "native" ? "루트 View에 더할 스타일입니다." : "루트에 더할 인라인 스타일입니다.") + " 바깥 여백이나 폭 제한에 쓰세요." },
+  testID: { type: "string", summary: "테스트에서 루트 View를 찾는 ID입니다." },
+});
 const carouselSlides = slot("슬라이드 목록입니다. 직접 자식 하나가 슬라이드 하나입니다.", "ReactNode", "슬라이드 안의 버튼·입력도 Tab으로 이동할 수 있습니다. 안의 입력에서는 화살표 키를 가로채지 않습니다.");
 const childProps = {
   prefix: slot("숫자 앞에 붙는 단위 장식입니다.", "제공 데이터 없음", "화면 장식으로만 쓰이며 읽기 문구와 범위 문구에는 붙지 않습니다. 글자만 필요하면 prefix prop을 쓰세요."),
@@ -343,6 +350,8 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (key.startsWith("on")) entry = callback(name, key, platform);
     else if (name === "KjunTopNavigation" && topNavigationSlots[key]) entry = topNavigationSlots[key];
     else if (name === "KjunListRow" && key === "children") entry = listRowContent;
+    else if (name === "KjunListSection" && key === "badge") entry = listSectionBadge;
+    else if ((name === "KjunListSection" || name === "KjunListGroup") && ["id", "className", "style", "testID"].includes(key)) entry = { ...listRoots(name, platform)[key] };
     else if (name === "KjunListRow" && key === "selected") entry = detail("하나를 고르는 목록의 선택지입니다.", { "표시": "true면 행 끝에 강조색 체크를 그립니다. open 섹션에서는 고르지 않은 행에 빈 원을, 고른 행에 채운 체크와 selectedBg 면을 그리고, multiple 섹션에서는 행마다 체크칸을 그립니다. 누를 수 있는 행에 selected(true·false)를 주면 모든 플랫폼에서 radio로 읽히고 고른 행이 checked입니다. 고른 값은 앱이 관리합니다." });
     else if (name === "KjunListRow" && (key === "titleLines" || key === "descriptionLines")) entry = { summary: (key === "titleLines" ? "제목" : "설명") + "을 이 줄 수까지만 보이고 넘치면 말줄임표로 줄입니다. 생략하면 모두 줄바꿈합니다." };
     else if (name === "KjunListRow" && key === "checked") entry = detail("행 전체를 스위치로 만듭니다.", { "동작": platform === "vue3" ? "v-model:checked로 연결합니다. 행 어디를 눌러도 update:checked로 반대 값을 알리고, 행 끝 스위치는 장식입니다. 행이 switch 역할과 checked 상태를 가집니다." : "행 어디를 눌러도 onCheckedChange로 반대 값을 알리고, 행 끝 스위치는 장식입니다. 행이 switch 역할과 checked 상태를 가집니다." });
@@ -391,10 +400,10 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper", "KjunNumberInput"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : name === "KjunAvatarGroup" ? { click: "onClick" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunSteps" ? { "step-select": "onStepSelect" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange", "update:expanded": "onExpandedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange", "update:order": "onOrderChange", reorder: "onReorder" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
     if (name === "KjunEventCalendar") Object.assign(events, eventCalendarEvents);
-    const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions", "expanded"], KjunListSection: ["actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"], KjunNumberInput: ["prefix", "suffix"] }[name] || [];
+    const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions", "expanded"], KjunListSection: ["badge", "actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"], KjunNumberInput: ["prefix", "suffix"] }[name] || [];
     for (const key of slotNames) {
       if (name === "KjunColorPicker") { slots[key] = colorTriggerSlot; continue; }
-      const definition = name === "KjunSplitPane" ? splitPaneSlots[key] : name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunCarousel" ? carouselSlides : name === "KjunListRow" && key === "default" ? listRowContent : childProps[key === "default" ? "children" : key];
+      const definition = name === "KjunSplitPane" ? splitPaneSlots[key] : name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunCarousel" ? carouselSlides : name === "KjunListRow" && key === "default" ? listRowContent : name === "KjunListSection" && key === "badge" ? listSectionBadge : childProps[key === "default" ? "children" : key];
       slots[key] = { ...definition, details: definition.details.map(row => row.label === "슬롯 데이터" ? { ...row, text: "제공 데이터 없음" } : row) };
     }
   }

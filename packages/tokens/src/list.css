@@ -12,6 +12,11 @@
 }
 .kjun-list-heading > div:first-child{flex:1;min-width:0;word-break:keep-all;overflow-wrap:anywhere}
 .kjun-list-heading :is(h2,h3,h4){margin:0;font-size:var(--_kjun-type-card-title-size);line-height:var(--_kjun-type-card-title-line);font-weight:var(--_kjun-type-card-title-weight);letter-spacing:var(--_kjun-type-card-title-tracking)}
+/* A section badge (a count) follows the title and centers on its first line, like a row's badge; a long title wraps before it. */
+.kjun-list-heading-title{display:flex;align-items:flex-start;gap:var(--_kjun-extension-list-badge-gap);min-width:0}
+.kjun-list-heading-title > :is(h2,h3,h4){min-width:0}
+/* The box is one title line tall, so a badge taller than a small label line centers on it without growing the heading. */
+.kjun-list-heading-badge{flex:none;display:flex;align-items:center;height:var(--_kjun-list-title-line)}
 .kjun-list-heading p{margin:var(--_kjun-extension-list-description-gap) 0 0;font-size:var(--_kjun-type-caption-size);line-height:var(--_kjun-type-caption-line);font-weight:var(--_kjun-type-caption-weight);letter-spacing:var(--_kjun-type-caption-tracking);color:var(--_kjun-color-text-secondary)}
 /* A heading keeps the card's 16px inset above and beside it but only 8px under it, so it reads with its rows (the first
    title then sits 24px under it, against 32px between rows). */
@@ -242,6 +247,8 @@
 
 .kjun-list-footer{padding:var(--_kjun-extension-list-footer-gap) var(--_kjun-extension-list-padding) var(--_kjun-extension-list-padding);font-size:var(--_kjun-type-caption-size);line-height:var(--_kjun-type-caption-line);font-weight:var(--_kjun-type-caption-weight);letter-spacing:var(--_kjun-type-caption-tracking);color:var(--_kjun-color-text-tertiary);word-break:keep-all;overflow-wrap:anywhere}
 .kjun-list-section[data-outside] > .kjun-list-footer{padding-bottom:0}
+/* The reorder note and the footer stack 8px apart, like Native: only the last of them keeps the bottom inset. */
+.kjun-list-footer:has(+ .kjun-list-footer){padding-bottom:0}
 
 /* KjunListGroup sets the spacing between its sections: rounded cards apart, or flush sections close together. */
 .kjun-list-group{display:flex;flex-direction:column;gap:var(--_kjun-extension-list-group-gap);min-width:0}

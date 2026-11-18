@@ -13058,6 +13058,27 @@
     ],
     "react": [
       {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "id, class and style of the root."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "variant",
         "type": "import(\"/workspace/shared/package-runtime/list-row\").ListGroupVariant | undefined",
         "required": false,
@@ -13073,6 +13094,20 @@
       }
     ],
     "native": [
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": "Style of the root View (outer spacing, width); testID finds it in tests."
+      },
+      {
+        "name": "testID",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
       {
         "name": "variant",
         "type": "import(\"/workspace/shared/package-runtime/list-row\").ListGroupVariant | undefined",
@@ -13927,6 +13962,11 @@
         "source": "packages/vue3/src/list.tsx"
       },
       {
+        "name": "badge",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      },
+      {
         "name": "actions",
         "data": [],
         "source": "packages/vue3/src/list.tsx"
@@ -13979,6 +14019,34 @@
       {
         "name": "ariaLabel",
         "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "badge",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "A short mark after the title, such as a KjunBadge with the row count; centered on the title's first line and read with the title as the list's name."
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "id, class and style of the root section."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -14161,6 +14229,27 @@
         "description": ""
       },
       {
+        "name": "badge",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Like Web: a short mark after the title, such as a KjunBadge with the row count; centered on the title's first line and read with the title as the list's name."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": "Style of the root View (outer spacing, width); testID finds it in tests."
+      },
+      {
+        "name": "testID",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
         "name": "surface",
         "type": "boolean | undefined",
         "required": false,
@@ -14298,7 +14387,7 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": "Why moving is off, shown under the rows."
+        "description": "Why moving is off, shown under the rows and read with the move buttons."
       }
     ]
   },

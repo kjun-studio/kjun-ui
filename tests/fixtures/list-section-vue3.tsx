@@ -30,4 +30,11 @@ createApp(defineComponent(() => () => <K.KjunProvider>
     <K.KjunListSection radius="lg" title="정렬" selectionMode={mode.value}>{{ ...(loading.value ? { loading: () => <K.KjunListSkeleton variant="row" rows={1} /> } : {}), default: () => [<K.KjunListRow title="이름순" selected onClick={noop} />, <K.KjunListRow title="날짜순" selected={false} onClick={noop} />] }}</K.KjunListSection>
     <K.KjunListSection radius="lg" title="동기화" description="다른 기기와 맞춥니다">{{ actions: () => <button type="button" style={{ height: '48px', padding: '0 12px' }}>설정</button>, default: () => [<K.KjunListRow title="동기화 기록" onClick={noop} />] }}</K.KjunListSection>
   </div>
+  <div style={{ padding: '16px', width: '360px', background: '#F4F4F4', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <K.KjunListGroup id="tx-group" class="app-tx-group" style={{ marginTop: '4px' }}>{{ default: () => [
+      <K.KjunListSection id="tx-label" class="app-tx-label" style={{ marginTop: '4px' }} title="최근 거래">{{ badge: () => <K.KjunBadge count={12} />, actions: () => <K.KjunButton variant="ghost" size="sm" onClick={noop}>모두</K.KjunButton>, default: () => [<K.KjunListRow title="스타벅스 강남">{{ trailing: () => '-5,600원' }}</K.KjunListRow>] }}</K.KjunListSection>,
+      <K.KjunListSection title="예약 거래" description="이번 달 예약한 이체">{{ badge: () => <K.KjunBadge count={3} />, default: () => [<K.KjunListRow title="관리비">{{ trailing: () => '-180,000원' }}</K.KjunListRow>] }}</K.KjunListSection>,
+    ] }}</K.KjunListGroup>
+    <K.KjunListSection title="관심 종목" reorderable order={['a', 'b']} reorderDisabled reorderDisabledText="가격순으로 정렬하는 동안은 옮길 수 없습니다.">{{ default: () => [<K.KjunListRow title="종목 가" value="a" />, <K.KjunListRow title="종목 나" value="b" />], footer: () => '순서는 이 기기에만 저장됩니다.' }}</K.KjunListSection>
+  </div>
 </K.KjunProvider>)).mount('#root');

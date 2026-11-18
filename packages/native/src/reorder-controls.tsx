@@ -14,6 +14,8 @@ export interface ReorderScope {
   /** Like Web: the rows on screen when they are only part of the order. */
   shown?: ReadonlySet<ListChoiceValue>;
   disabled: boolean;
+  /** Like Web: why moving is off, read with the move buttons (its id on Native Web, the text as a hint on devices). */
+  note?: { id: string; text: string };
   move: (value: ListChoiceValue, step: -1 | 1, name: string) => void;
 }
 export const ReorderContext = createContext<ReorderScope | null>(null);
@@ -23,17 +25,19 @@ export function ReorderControls({ value, name }: { value: ListChoiceValue; name:
   const reorder = useContext(ReorderContext), m = useKjunMessages();
   const place = reorder ? reorderPlaceAmong(reorder.order, value, reorder.shown) : null;
   if (!reorder || !place) return null;
+  const note = reorder.disabled ? reorder.note : undefined;
+  const described = !note ? {} : Platform.OS === "web" ? { "aria-describedby": note.id } : { accessibilityHint: note.text };
   const button = (direction: "up" | "down") => (
     <KjunButton variant="ghost" size="sm" prefixIcon={direction === "up" ? "chevron-up" : "chevron-down"}
-      ariaLabel={direction === "up" ? m.moveUp(name) : m.moveDown(name)}
+      ariaLabel={direction === "up" ? m.moveUp(name) : m.moveDown(name)} {...described}
       disabled={reorder.disabled || !place[direction]} onPress={() => reorder.move(value, direction === "up" ? -1 : 1, name)} />
   );
   return <View style={{ flexDirection: "row", alignItems: "center", flexShrink: 0, gap: tokens.extensions.list.actionsGap }}>{button("up")}{button("down")}</View>;
 }
 
 /** The section's side: reports moves and announces them (a live region on Native Web, the screen reader on devices). */
-export function useReorder({ reorderable, order, shown, disabled, onOrderChange, onReorder }: {
-  reorderable: boolean; order?: readonly ListChoiceValue[]; shown?: ReadonlySet<ListChoiceValue>; disabled: boolean;
+export function useReorder({ reorderable, order, shown, disabled, note, onOrderChange, onReorder }: {
+  reorderable: boolean; order?: readonly ListChoiceValue[]; shown?: ReadonlySet<ListChoiceValue>; disabled: boolean; note?: { id: string; text: string };
   onOrderChange?: (order: ListChoiceValue[]) => void; onReorder?: (move: KjunListReorderMove) => void;
 }) {
   const m = useKjunMessages();
@@ -54,12 +58,12 @@ export function useReorder({ reorderable, order, shown, disabled, onOrderChange,
   useEffect(() => { moves.confirm(order); }, [order]);
   useEffect(() => { if (!reorderable || disabled) moves.expect(null); }, [reorderable, disabled]);
   const context = useMemo<ReorderScope | null>(() => reorderable ? {
-    order, shown, disabled,
+    order, shown, disabled, note,
     move: (value, step, name) => {
       const result = moves.step(value, step, name);
       if (result) latest.current.onReorder?.(result);
     },
-  } : null, [reorderable, order, shown, disabled]);
+  } : null, [reorderable, order, shown, disabled, note?.id, note?.text]);
   // Native Web has no announce call, so the move is spoken from a polite live region that takes no room.
   const status = reorderable && Platform.OS === "web"
     ? <View role="status" pointerEvents="none" style={{ position: "absolute", opacity: 0 }}><KText>{said}</KText></View> : null;

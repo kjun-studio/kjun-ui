@@ -124,6 +124,10 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
 }
 export interface KjunListSectionProps {
   title?: string; description?: string; actions?: ReactNode; children?: ReactNode; ariaLabel?: string;
+  /** A short mark after the title, such as a KjunBadge with the row count; centered on the title's first line and read with the title as the list's name. */
+  badge?: ReactNode;
+  /** id, class and style of the root section. */
+  id?: string; className?: string; style?: CSSProperties;
   /** Paints the surface background (default true); false lets the page background show through. */
   surface?: boolean;
   /** Draws dividers between rows (default true; false in a details section). An open section draws none; giving it true warns in development. */
@@ -167,7 +171,7 @@ export interface KjunListSectionProps {
   reorderDisabledText?: string;
 }
 const ListGroupContext = createContext<ListGroupVariant | null>(null);
-export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider: dividerProp, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant, reorderable = false, order, onOrderChange, onReorder, reorderControls = "buttons", reorderDisabled = false, reorderDisabledText }: KjunListSectionProps) {
+export function KjunListSection({ title, description, badge, id: rootId, className, style, actions, children, ariaLabel, surface = true, divider: dividerProp, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant, reorderable = false, order, onOrderChange, onReorder, reorderControls = "buttons", reorderDisabled = false, reorderDisabledText }: KjunListSectionProps) {
   // A rounded section is a card of rows only: its title, actions and footer stay on the page, above and below it.
   const { open, details, corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), variant, title, description, titleVariant });
   const divider = dividerProp ?? !details;
@@ -179,7 +183,7 @@ export function KjunListSection({ title, description, actions, children, ariaLab
   useEffect(() => actionsBox ? observeListHeadingActions(actionsBox) : undefined, [actionsBox]);
   const note = reorderable && reorderDisabled && reorderDisabledText ? id + "-reorder" : undefined;
   const reorder = useReorder({ reorderable, order, disabled: reorderDisabled, controls: reorderControls, noteId: note, list, onOrderChange, onReorder });
-  const hasFooter = hasContent(footer), describedBy = [description && id + "-description", hasFooter && id + "-footer"].filter(Boolean).join(" ") || undefined;
+  const hasBadge = !!title && hasContent(badge), hasFooter = hasContent(footer), describedBy = [description && id + "-description", hasFooter && id + "-footer"].filter(Boolean).join(" ") || undefined;
   const rounded = corner === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${corner})` };
   const compact = density === "compact" && !details ? "compact" : undefined, look = open ? "open" : details ? "details" : undefined;
   // Memoized, so a section drawing again for its own state (its measured heading actions) does not redraw every row.
@@ -189,10 +193,10 @@ export function KjunListSection({ title, description, actions, children, ariaLab
   // Loading content announces itself (a skeleton's loadingText is a status), so the wrapper only places it.
   const rows = hasContent(loading) ? <div className="kjun-list-loading">{loading}</div>
     : hasContent(children)
-    ? <ul ref={setList} className="kjun-list" role={choice ? "radiogroup" : undefined} aria-label={ariaLabel || undefined} aria-labelledby={ariaLabel || !title ? undefined : id} aria-describedby={describedBy} data-divider={divider ? undefined : "false"} data-density={compact} data-variant={look}><ListSelectionContext.Provider value={selection}><ReorderContext.Provider value={reorder.context}>{children}</ReorderContext.Provider></ListSelectionContext.Provider></ul>
+    ? <ul ref={setList} className="kjun-list" role={choice ? "radiogroup" : undefined} aria-label={ariaLabel || undefined} aria-labelledby={ariaLabel || !title ? undefined : hasBadge ? id + " " + id + "-badge" : id} aria-describedby={describedBy} data-divider={divider ? undefined : "false"} data-density={compact} data-variant={look}><ListSelectionContext.Provider value={selection}><ReorderContext.Provider value={reorder.context}>{children}</ReorderContext.Provider></ListSelectionContext.Provider></ul>
     : hasContent(empty) ? <div className="kjun-list-empty" data-density={compact}>{empty}</div> : null;
-  return <ListShapeContext.Provider value={shape}><section className="kjun-list-section" data-surface={surface ? undefined : "false"} data-outside={outside || undefined} data-variant={look}>
-    {(title || description || hasContent(actions)) && <div className="kjun-list-heading" data-bare={bare ? "" : undefined}><div>{title && <Heading id={id}>{title}</Heading>}{description && <p id={id + "-description"}>{description}</p>}</div>{hasContent(actions) && <div ref={setActionsBox} className="kjun-list-heading-actions">{actions}</div>}</div>}
+  return <ListShapeContext.Provider value={shape}><section id={rootId} className={"kjun-list-section" + (className ? " " + className : "")} style={style} data-surface={surface ? undefined : "false"} data-outside={outside || undefined} data-variant={look}>
+    {(title || description || hasContent(actions)) && <div className="kjun-list-heading" data-bare={bare ? "" : undefined}><div>{hasBadge ? <div className="kjun-list-heading-title"><Heading id={id}>{title}</Heading><span id={id + "-badge"} className="kjun-list-heading-badge">{badge}</span></div> : title && <Heading id={id}>{title}</Heading>}{description && <p id={id + "-description"}>{description}</p>}</div>{hasContent(actions) && <div ref={setActionsBox} className="kjun-list-heading-actions">{actions}</div>}</div>}
     {outside ? <div className="kjun-list-panel" data-surface={surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
     {note && <div id={note} className="kjun-list-footer">{reorderDisabledText}</div>}
     {hasFooter && <div id={id + "-footer"} className="kjun-list-footer">{footer}</div>}
@@ -201,13 +205,15 @@ export function KjunListSection({ title, description, actions, children, ariaLab
   </section></ListShapeContext.Provider>;
 }
 export interface KjunListGroupProps {
+  /** id, class and style of the root. */
+  id?: string; className?: string; style?: CSSProperties;
   /** "inset" (default) rounds every section and keeps them 24px apart; "flush" keeps square sections 8px apart; "open" puts every section's rows on the page with no card or dividers, 20px apart. */
   variant?: ListGroupVariant;
   children: ReactNode;
 }
 /** Stacks KjunListSections with one spacing and corner rule, so sections never set radius or gaps one by one. */
-export function KjunListGroup({ variant = "inset", children }: KjunListGroupProps) {
-  return <ListGroupContext.Provider value={variant}><div className="kjun-list-group" data-variant={variant}>{children}</div></ListGroupContext.Provider>;
+export function KjunListGroup({ variant = "inset", children, id, className, style }: KjunListGroupProps) {
+  return <ListGroupContext.Provider value={variant}><div id={id} className={"kjun-list-group" + (className ? " " + className : "")} style={style} data-variant={variant}>{children}</div></ListGroupContext.Provider>;
 }
 export interface KjunListItemProps { children: ReactNode }
 /** Non-row content inside a KjunListSection (a theme switcher, a note) on the rows' inset and dividers. */

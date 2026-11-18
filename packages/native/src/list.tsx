@@ -10,7 +10,7 @@ import { ListShapeContext } from "./list-context";
 import { ReorderContext, ReorderControls, useReorder, type KjunListReorderMove } from "./reorder-controls";
 import { reorderPlace } from "../../../shared/package-runtime/reorder";
 import { SwitchSpinner } from "./choice-controls";
-import { View, Platform, type ColorValue, type GestureResponderEvent, type TextStyle } from "react-native";
+import { View, Platform, type ColorValue, type GestureResponderEvent, type StyleProp, type TextStyle, type ViewStyle } from "react-native";
 import { listLeadingGeometry, listRowBleed, listSharedColumn, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 import { AccessiblePressable as Pressable, type FocusRingRadius } from "./a11y";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
@@ -238,6 +238,10 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
 }
 export interface KjunListSectionProps {
   title?: string; description?: string; actions?: ReactNode; children?: ReactNode; ariaLabel?: string;
+  /** Like Web: a short mark after the title, such as a KjunBadge with the row count; centered on the title's first line and read with the title as the list's name. */
+  badge?: ReactNode;
+  /** Style of the root View (outer spacing, width); testID finds it in tests. */
+  style?: StyleProp<ViewStyle>; testID?: string;
   /** Paints the surface background (default true); false lets the page background show through. */
   surface?: boolean;
   /** Draws dividers between rows (default true; false in a details section). An open section draws none; giving it true warns in development. */
@@ -277,7 +281,7 @@ export interface KjunListSectionProps {
   reorderControls?: "buttons" | "handle" | "both";
   /** Turns the move buttons off, such as while the list is sorted by a rule. */
   reorderDisabled?: boolean;
-  /** Why moving is off, shown under the rows. */
+  /** Why moving is off, shown under the rows and read with the move buttons. */
   reorderDisabledText?: string;
 }
 /** Elements inside fragments, opened up, with keys made unique by their fragment's key. */
@@ -304,16 +308,19 @@ function actionsHeight(actions: ReactNode, line: number) {
   }, line);
 }
 const ListGroupContext = createContext<ListGroupVariant | null>(null);
-export function KjunListSection({ title, description, actions, children, ariaLabel, surface = true, divider: dividerProp, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant, reorderable = false, order, onOrderChange, onReorder, reorderDisabled = false, reorderDisabledText }: KjunListSectionProps) {
+export function KjunListSection({ title, description, badge, style, testID, actions, children, ariaLabel, surface = true, divider: dividerProp, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant, reorderable = false, order, onOrderChange, onReorder, reorderDisabled = false, reorderDisabledText }: KjunListSectionProps) {
   const { colors } = useKjunStyles();
-  const reorder = useReorder({ reorderable, order, disabled: reorderDisabled, onOrderChange, onReorder });
+  const id = "kjun-" + useId().replace(/[^\w-]/g, ""), noteText = reorderable && reorderDisabled && reorderDisabledText ? reorderDisabledText : undefined;
+  // Like Web: the badge sits beside the heading text, outside it, and its text joins the list's name.
+  const hasBadge = !!title && hasContent(badge), badgeText = hasBadge ? nodeText(badge) : undefined;
+  const reorder = useReorder({ reorderable, order, disabled: reorderDisabled, note: noteText ? { id: id + "-reorder", text: noteText } : undefined, onOrderChange, onReorder });
   // Like Web: a rounded section is a card of rows only; its title, actions and footer stay on the page around it.
   const { open, details, corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), variant, title, description, titleVariant });
   const divider = dividerProp ?? !details;
   useEffect(() => warnListSectionProps({ open, divider: dividerProp, details, compact: density === "compact" }), [open, dividerProp, details, density]);
   useEffect(() => warnListSelection({ mode: selectionMode, value, handled: !!onValueChange }), [selectionMode, Array.isArray(value), value === undefined, !!onValueChange]);
   const radiusValue = corner === "none" ? undefined : tokens.card.radii[corner];
-  const choice = selectionMode === "single", [group, setGroup] = useState<View | null>(null), id = "kjun-" + useId().replace(/[^\w-]/g, "");
+  const choice = selectionMode === "single", [group, setGroup] = useState<View | null>(null);
   const hasFooter = hasContent(footer), describedBy = [description && id + "-description", hasFooter && id + "-footer"].filter(Boolean).join(" ") || undefined;
   // Like Web: heading actions center on the title's first line; a taller button grows the heading only by what it
   // reaches past that line, so it never covers the rows (or, outside a card, the space above the title).
@@ -344,38 +351,43 @@ export function KjunListSection({ title, description, actions, children, ariaLab
   // Loading content announces itself (a skeleton's loadingText is a status), so the wrapper only places it.
   const rows = hasContent(loading) ? <View>{content(loading)}</View>
     : items.length
-    ? <View ref={setGroup} role={choice ? "radiogroup" : "list"} accessibilityLabel={ariaLabel || title} style={details ? { paddingVertical: list.details.listPaddingY } : undefined}
+    ? <View ref={setGroup} role={choice ? "radiogroup" : "list"} accessibilityLabel={ariaLabel || [title, badgeText].filter(Boolean).join(", ") || undefined} style={details ? { paddingVertical: list.details.listPaddingY } : undefined}
         {...(Platform.OS === "web" && describedBy ? { "aria-describedby": describedBy } : {})}>
       <ReorderContext.Provider value={reorder.context}>{items.map((row, i) => <ListRowContext.Provider key={row.key ?? i} value={contexts[i]}>{row}</ListRowContext.Provider>)}</ReorderContext.Provider>
     </View>
     : hasContent(empty) ? <View style={{ minHeight: compact ? list.compactMinimumHeight : list.minimumHeight, justifyContent: "center", paddingHorizontal: list.padding }}><ListEmptyContext.Provider value={density}>{content(empty)}</ListEmptyContext.Provider></View> : null;
+  const heading = <KText {...wordProps} accessibilityRole="header" {...(Platform.OS === "web" ? { "aria-level": headingLevel } : {})} style={{ flexShrink: 1, ...(bare ? { ...typeStyle('controlSmall'), color: colors.textSecondary } : typeStyle('cardTitle')), ...words }}>{title}</KText>;
   const tint = useContext(CardTintContext);
   const card = { backgroundColor: surface ? colors.surface : "transparent", ...(radiusValue === undefined ? {} : { borderRadius: radiusValue, overflow: "hidden" as const }) };
   // A section on the plain surface drops a tinted card's badge fill, so its badges keep their own tone.
-  return <CardTintContext.Provider value={surface ? false : tint}><ListShapeContext.Provider value={shape}><View style={{ minWidth: 0, ...(outside ? {} : card) }}>
+  return <CardTintContext.Provider value={surface ? false : tint}><ListShapeContext.Provider value={shape}><View testID={testID} style={[{ minWidth: 0, ...(outside ? {} : card) }, style]}>
     {!!(title || description || hasContent(actions)) && <View style={{ flexDirection: "row", alignItems: "flex-start", gap: list.gap, padding: list.padding,
       // A title without a description is a small group header that sits close to its rows; outside a card it starts at the top.
       // Like Web: 8px under a heading (4px under a small group header), so it reads with its rows.
       paddingBottom: bare ? list.bareHeadingPaddingBottom : list.headingPaddingBottom, ...(outside ? { paddingTop: overflow, paddingBottom: list.outsideLabelGap } : {}) }}>
-      <View style={{ flex: 1 }}>{!!title && <KText {...wordProps} accessibilityRole="header" {...(Platform.OS === "web" ? { "aria-level": headingLevel } : {})} style={{ ...(bare ? { ...typeStyle('controlSmall'), color: colors.textSecondary } : typeStyle('cardTitle')), ...words }}>{title}</KText>}{!!description && <KText {...wordProps} nativeID={id + "-description"} style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'), ...words }}>{description}</KText>}</View>
+      <View style={{ flex: 1 }}>{!!title && (hasBadge
+        ? <View style={{ flexDirection: "row", alignItems: "flex-start", gap: list.badgeGap, minWidth: 0 }}>{heading}<View style={{ flexShrink: 0, height: titleLine, flexDirection: "row", alignItems: "center" }}>{content(badge)}</View></View>
+        : heading)}{!!description && <KText {...wordProps} nativeID={id + "-description"} style={{ marginTop: list.descriptionGap, color: colors.textSecondary, ...typeStyle('caption'), ...words }}>{description}</KText>}</View>
       {hasContent(actions) && <View style={{ flexShrink: 0, height: titleLine, marginBottom: overflow, justifyContent: "center", marginEnd: ghostInset(actions) }}>
         <View onLayout={event => setActionHeight(event.nativeEvent.layout.height)} style={{ flexDirection: "row", alignItems: "center", gap: list.actionsGap }}>{content(actions)}</View>
       </View>}
     </View>}
     {outside ? <View style={card}>{rows}</View> : rows}
-    {reorderable && reorderDisabled && !!reorderDisabledText && <View style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside || hasFooter ? 0 : list.padding }}><KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{reorderDisabledText}</KText></View>}
+    {!!noteText && <View nativeID={id + "-reorder"} style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside || hasFooter ? 0 : list.padding }}><KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{noteText}</KText></View>}
     {reorder.status}
     {hasFooter && <View nativeID={id + "-footer"} style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside ? 0 : list.padding }}>{typeof footer === "string" ? <KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{String(footer)}</KText> : content(footer, { ...typeStyle("caption"), color: colors.textTertiary })}</View>}
   </View></ListShapeContext.Provider></CardTintContext.Provider>;
 }
 export interface KjunListGroupProps {
+  /** Style of the root View (outer spacing, width); testID finds it in tests. */
+  style?: StyleProp<ViewStyle>; testID?: string;
   /** "inset" (default) rounds every section and keeps them 24px apart; "flush" keeps square sections 8px apart; "open" puts every section's rows on the page with no card or dividers, 20px apart. */
   variant?: ListGroupVariant;
   children: ReactNode;
 }
 /** Like Web: stacks KjunListSections with one spacing and corner rule. */
-export function KjunListGroup({ variant = "inset", children }: KjunListGroupProps) {
-  return <ListGroupContext.Provider value={variant}><View style={{ minWidth: 0, gap: variant === "flush" ? list.flushGroupGap : variant === "open" ? list.open.groupGap : list.groupGap }}>{content(children)}</View></ListGroupContext.Provider>;
+export function KjunListGroup({ variant = "inset", children, style, testID }: KjunListGroupProps) {
+  return <ListGroupContext.Provider value={variant}><View testID={testID} style={[{ minWidth: 0, gap: variant === "flush" ? list.flushGroupGap : variant === "open" ? list.open.groupGap : list.groupGap }, style]}>{content(children)}</View></ListGroupContext.Provider>;
 }
 export interface KjunListItemProps { children: ReactNode }
 /** Non-row content inside a KjunListSection (a theme switcher, a note) on the rows' inset and dividers. */

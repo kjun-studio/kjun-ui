@@ -205,7 +205,7 @@ const kjunListSectionProps = {
 export type KjunListSectionProps = ExtractPublicPropTypes<typeof kjunListSectionProps>;
 // A ref, so a group whose variant changes updates its sections' corners too.
 const kjunListGroupKey = Symbol("kjunListGroup");
-/** Slots: default (KjunListRow items), actions, loading (in place of the rows while they load), empty (in place of no rows), footer. Events: update:modelValue, update:order (the next order when a row moves), reorder (the move in detail). */
+/** Slots: default (KjunListRow items), badge (after the title, centered on its first line, such as a KjunBadge count; read with the title as the list's name), actions, loading (in place of the rows while they load), empty (in place of no rows), footer. Events: update:modelValue, update:order (the next order when a row moves), reorder (the move in detail). id, class and style fall through to the root section. */
 export const KjunListSection = defineComponent({
   name: "KjunListSection",
   props: kjunListSectionProps,
@@ -216,6 +216,7 @@ export const KjunListSection = defineComponent({
   },
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
+    badge?: () => VNodeChild;
     actions?: () => VNodeChild;
     loading?: () => VNodeChild;
     empty?: () => VNodeChild;
@@ -236,7 +237,7 @@ export const KjunListSection = defineComponent({
     provide(kjunListShapeKey, computed(() => ({ open: shape.value.open, details: shape.value.details, compact: props.density === "compact" && !shape.value.details })));
     watchEffect(onCleanup => { if (actionsBox.value) onCleanup(observeListHeadingActions(actionsBox.value)); }, { flush: "post" });
     return () => {
-      const actions = slots.actions?.(), children = slots.default?.(), loading = slots.loading?.(), empty = slots.empty?.(), footer = slots.footer?.();
+      const actions = slots.actions?.(), badge = props.title ? slots.badge?.() : undefined, hasBadge = hasContent(badge), children = slots.default?.(), loading = slots.loading?.(), empty = slots.empty?.(), footer = slots.footer?.();
       // Like React: a rounded section is a card of rows only; its title, actions and footer stay on the page around it.
       const { open, details, corner, bare, outside } = shape.value, look = open ? "open" : details ? "details" : undefined;
       const rounded = corner === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${corner})` };
@@ -246,12 +247,12 @@ export const KjunListSection = defineComponent({
       // Loading content announces itself (a skeleton's loadingText is a status), so the wrapper only places it.
       const rows = hasContent(loading) ? <div class="kjun-list-loading">{loading}</div>
         : hasContent(children)
-        ? <ul ref={list} class="kjun-list" role={choice.value ? "radiogroup" : undefined} aria-label={props.ariaLabel || undefined} aria-labelledby={props.ariaLabel || !props.title ? undefined : id} aria-describedby={describedBy} data-divider={props.divider ?? !details ? undefined : "false"} data-density={compact} data-variant={look}>{children}</ul>
+        ? <ul ref={list} class="kjun-list" role={choice.value ? "radiogroup" : undefined} aria-label={props.ariaLabel || undefined} aria-labelledby={props.ariaLabel || !props.title ? undefined : hasBadge ? id + " " + id + "-badge" : id} aria-describedby={describedBy} data-divider={props.divider ?? !details ? undefined : "false"} data-density={compact} data-variant={look}>{children}</ul>
         : hasContent(empty) ? <div class="kjun-list-empty" data-density={compact}>{empty}</div> : null;
       return (
         <section class="kjun-list-section" data-surface={props.surface ? undefined : "false"} data-outside={outside || undefined} data-variant={look}>
           {(props.title || props.description || hasContent(actions)) && (
-            <div class="kjun-list-heading" data-bare={bare ? "" : undefined}><div>{props.title && <Heading id={id}>{props.title}</Heading>}{props.description && <p id={id + "-description"}>{props.description}</p>}</div>{hasContent(actions) && <div ref={actionsBox} class="kjun-list-heading-actions">{actions}</div>}</div>
+            <div class="kjun-list-heading" data-bare={bare ? "" : undefined}><div>{hasBadge ? <div class="kjun-list-heading-title"><Heading id={id}>{props.title}</Heading><span id={id + "-badge"} class="kjun-list-heading-badge">{badge}</span></div> : props.title && <Heading id={id}>{props.title}</Heading>}{props.description && <p id={id + "-description"}>{props.description}</p>}</div>{hasContent(actions) && <div ref={actionsBox} class="kjun-list-heading-actions">{actions}</div>}</div>
           )}
           {outside ? <div class="kjun-list-panel" data-surface={props.surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
           {note() && <div id={note()} class="kjun-list-footer">{props.reorderDisabledText}</div>}
@@ -269,7 +270,7 @@ const kjunListGroupProps = {
   variant: { type: String as PropType<ListGroupVariant>, default: "inset" },
 } as const;
 export type KjunListGroupProps = ExtractPublicPropTypes<typeof kjunListGroupProps>;
-/** Stacks KjunListSections with one spacing and corner rule. Slot: default (KjunListSection items). */
+/** Stacks KjunListSections with one spacing and corner rule. Slot: default (KjunListSection items). id, class and style fall through to the root. */
 export const KjunListGroup = defineComponent({
   name: "KjunListGroup",
   props: kjunListGroupProps,

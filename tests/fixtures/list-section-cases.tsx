@@ -58,3 +58,23 @@ export function ListSectionSelectionCases({ K, native = false }: { K: any; nativ
     </K.KjunListSection>}
   </div>;
 }
+
+// Third review (0.22.0): a count badge after the title, id/class/style (Native style/testID) on the section and group,
+// and a reorder note stacked on the footer of a section without a card.
+export function ListSectionBadgeCases({ K, native = false }: { K: any; native?: boolean }) {
+  const press = { [native ? 'onPress' : 'onClick']: () => {} };
+  const root = (id: string) => native ? { testID: id, style: { marginTop: 4 } } : { id, className: 'app-' + id, style: { marginTop: 4 } };
+  return <div style={{ padding: 16, width: 360, background: '#F4F4F4', display: 'flex', flexDirection: 'column', gap: 24 }}>
+    <K.KjunListGroup {...root('tx-group')}>
+      <K.KjunListSection {...root('tx-label')} title="최근 거래" badge={<K.KjunBadge count={12} />} actions={<K.KjunButton variant="ghost" size="sm" {...press}>모두</K.KjunButton>}>
+        <K.KjunListRow title="스타벅스 강남" trailing="-5,600원" />
+      </K.KjunListSection>
+      <K.KjunListSection title="예약 거래" description="이번 달 예약한 이체" badge={<K.KjunBadge count={3} />}>
+        <K.KjunListRow title="관리비" trailing="-180,000원" />
+      </K.KjunListSection>
+    </K.KjunListGroup>
+    <K.KjunListSection title="관심 종목" reorderable order={['a', 'b']} reorderDisabled reorderDisabledText="가격순으로 정렬하는 동안은 옮길 수 없습니다." footer="순서는 이 기기에만 저장됩니다.">
+      <K.KjunListRow title="종목 가" value="a" /><K.KjunListRow title="종목 나" value="b" />
+    </K.KjunListSection>
+  </div>;
+}

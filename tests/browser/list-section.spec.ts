@@ -149,3 +149,41 @@ test('native: rows in sibling fragments keep unique keys', async ({ page }) => {
   await expect(page.getByText('묶음 3', { exact: true })).toBeVisible();
   expect(errors.filter(text => text.includes('same key'))).toEqual([]);
 });
+
+for (const platform of ['react', 'vue3', 'native']) {
+  const web = platform !== 'native';
+  test(`${platform}: a section badge sits on the title line and names the list, roots take id/class/style, and the reorder note stacks on the footer`, async ({ page }) => {
+    await openFixture(page, platform, '', 'list-section');
+    // The badge follows the title by the row badge gap and centers on its line, for the small label and the 16px title.
+    for (const [title, count] of [['최근 거래', '12'], ['예약 거래', '3']]) {
+      // Native draws the count as text inside the badge View, so the badge is its parent.
+      const t = await box(page.getByText(title, { exact: true })), count_ = page.getByText(count, { exact: true }), b = await box(web ? count_ : count_.locator('xpath=..'));
+      expect(Math.round(b.x - (t.x + t.width))).toBe(6);
+      expect(Math.abs((b.y + b.height / 2) - (t.y + t.height / 2))).toBeLessThanOrEqual(1);
+    }
+    // The list is named by its title and the badge, so the count is heard with it.
+    await expect(page.getByRole('list', { name: web ? '최근 거래 12' : '최근 거래, 12', exact: true })).toBeVisible();
+    // The heading itself stays the title alone.
+    await expect(page.getByRole('heading', { name: '최근 거래', exact: true })).toBeVisible();
+    // id, class and style reach the roots (Native: testID and style).
+    for (const id of ['tx-group', 'tx-label']) {
+      const root = web ? page.locator('#' + id) : page.getByTestId(id);
+      await expect(root).toHaveCSS('margin-top', '4px');
+      if (web) await expect(root).toHaveClass(new RegExp('app-' + id));
+    }
+    if (web) await expect(page.locator('#tx-label')).toHaveClass(/kjun-list-section/);
+    // Without a card, the reorder note and the footer are 8px apart, like Native, and the move buttons are described by the note.
+    // Line boxes: on the web the caption element without its padding, on Native the text element.
+    const line = async (text: string) => {
+      const el = page.getByText(text, { exact: true });
+      const r = await box(el);
+      if (!web) return { top: r.y, bottom: r.y + r.height };
+      const [top, bottom] = await el.evaluate(e => { const c = getComputedStyle(e); return [parseFloat(c.paddingTop), parseFloat(c.paddingBottom)]; });
+      return { top: r.y + top, bottom: r.y + r.height - bottom };
+    };
+    const note = await line('가격순으로 정렬하는 동안은 옮길 수 없습니다.'), footer = await line('순서는 이 기기에만 저장됩니다.');
+    const gap = Math.round(footer.top - note.bottom);
+    expect(gap).toBe(8);
+    await expect(page.getByRole('button', { name: /종목 가/ }).first()).toHaveAccessibleDescription('가격순으로 정렬하는 동안은 옮길 수 없습니다.');
+  });
+}

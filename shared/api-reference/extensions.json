@@ -118,6 +118,7 @@
     "react": [
       "title",
       "description",
+      "badge",
       "actions",
       "children",
       "ariaLabel",
@@ -140,11 +141,15 @@
       "reorderDisabled",
       "reorderDisabledText",
       "onOrderChange",
-      "onReorder"
+      "onReorder",
+      "id",
+      "className",
+      "style"
     ],
     "native": [
       "title",
       "description",
+      "badge",
       "actions",
       "children",
       "ariaLabel",
@@ -167,7 +172,9 @@
       "reorderDisabled",
       "reorderDisabledText",
       "onOrderChange",
-      "onReorder"
+      "onReorder",
+      "testID",
+      "style"
     ]
   },
   "KjunListItem": {
@@ -1095,11 +1102,16 @@
     ],
     "react": [
       "variant",
-      "children"
+      "children",
+      "id",
+      "className",
+      "style"
     ],
     "native": [
       "variant",
-      "children"
+      "children",
+      "testID",
+      "style"
     ]
   },
   "KjunEventCalendar": {

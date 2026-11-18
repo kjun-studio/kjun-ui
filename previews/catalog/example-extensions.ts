@@ -29,6 +29,10 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       return h("KjunListGroup", { variant: settings.variant }, [
         h("KjunListSection", { title: "계정" }, [h("KjunListRow", { title: "프로필", chevron: true, ...action(() => set("message", "프로필 열기")) }, undefined, { trailing: "김하늘" })]),
         h("KjunListSection", { title: "알림" }, [h("KjunListRow", { title: "푸시 알림", checked: get("push", true), onCheckedChange: change("push") })], { footer: "푸시 알림은 이 기기에서만 적용됩니다." }),
+        h("KjunListSection", { title: "연결된 기기" }, [
+          h("KjunListRow", { title: "이 휴대폰", icon: "device-mobile" }, undefined, { trailing: "방금 전" }),
+          h("KjunListRow", { title: "사무실 노트북", icon: "device-laptop" }, undefined, { trailing: "어제" }),
+        ], { badge: h("KjunBadge", { count: 2 }) }),
       ]);
     case "KjunListItem":
       return h("KjunListSection", { title: "화면" }, [

@@ -46,6 +46,11 @@ export function generate(input: UsageInput) {
       content = b.node('KjunListGroup', { variant: s.variant === 'inset' ? undefined : s.variant }, [
         b.node('KjunListSection', { title: '계정' }, b.node('KjunListRow', { title: '프로필', chevron: true, [action]: notify('openProfile', '프로필 열기') }, '', { trailing: b.text('김하늘') })),
         b.node('KjunListSection', { title: '알림' }, b.node('KjunListRow', { title: '푸시 알림', checked: b.state('push', true), onCheckedChange: b.update('push') }), { footer: b.text('푸시 알림은 이 기기에서만 적용됩니다.') }),
+        // A count after the title: it centers on the title line and is heard with the title as the list's name.
+        b.node('KjunListSection', { title: '연결된 기기' }, [
+          b.node('KjunListRow', { title: '이 휴대폰', icon: 'device-mobile' }, '', { trailing: b.text('방금 전') }),
+          b.node('KjunListRow', { title: '사무실 노트북', icon: 'device-laptop' }, '', { trailing: b.text('어제') }),
+        ].join('\n'), { badge: b.node('KjunBadge', { count: 2 }) }),
       ].join('\n')); break;
     case 'KjunListItem':
       content = b.node('KjunListSection', { title: '화면' }, [
