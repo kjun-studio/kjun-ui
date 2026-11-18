@@ -79,7 +79,9 @@ set("DropdownSubmenu", {
 set("MenuButton", {
   size: { default: "md", summary: "Button과 같은 높이·모서리·아이콘 크기를 사용합니다. 기본 md는 40px이며 좁은 도구 모음에는 sm을 명시하세요." },
   variant: { default: "secondary", summary: "세 플랫폼 모두 secondary가 기본입니다. 열린 동안 해당 변형의 active 색상 역할을 유지합니다." },
-  compact: "true이면 정사각형 dots-vertical 버튼을 표시합니다. label은 화면에서 숨기고 접근성 이름으로 유지합니다.",
+  compact: "true이면 정사각형 아이콘 버튼(기본 dots-vertical)을 표시합니다. label은 화면에서 숨기고 접근성 이름으로 유지합니다.",
+  icon: "트리거 아이콘 이름입니다. label이 보이면 라벨 앞에, compact이거나 label이 없으면 dots-vertical 대신 표시합니다.",
+  chevron: { default: "true", summary: "보이는 label 뒤에 열림 방향 chevron을 표시합니다. 아이콘만으로 메뉴임이 드러나는 도구 모음에서는 false로 끕니다. 열린 상태는 채움 색으로 계속 표시합니다." },
   loading: "라벨과 너비를 유지하며 아이콘 위치에 스피너를 표시합니다. 최소 400ms 동안 메뉴 열기를 막고, 열려 있던 메뉴는 닫습니다. disabled가 별도로 true인 경우에만 흐리게 표시합니다.",
 });
 set("Radio Checkbox", {
@@ -491,7 +493,8 @@ set("Textarea", { submitting: { default: "false", summary: "보내는 중입니�
 set("Fab", {
   icon: { summary:"아이콘 이름입니다. 크기는 md 24, sm 20으로 고정됩니다." },
   label: { summary:"아이콘 옆에 보이는 글자입니다. 넘기면 같은 높이의 캡슐(확장형)이 되고, 화면 너비를 넘으면 말줄임합니다." },
-  ariaLabel: { summary:"버튼 이름입니다. label이 없으면 반드시 넘기고, label이 있으면 생략할 수 있습니다." },
+  collapsed: { default:"false", summary:"label이 있는 FAB을 원형으로 접습니다. 스크롤 중 콘텐츠를 덜 가릴 때 씁니다. 라벨 폭·간격이 줄어드는 전환을 쓰고(동작 줄이기 설정이면 즉시), 접힌 동안에도 label이 버튼 이름입니다. label이 없으면 효과가 없습니다." },
+  ariaLabel: { summary:"버튼 이름입니다. label이 없으면 반드시 넘기고(개발 모드에서 빠지면 경고), label이 있으면 생략할 수 있습니다." },
   size: { type:'"sm" | "md"', default:'"md"', summary:"md는 56, sm은 48입니다. 두 크기 모두 label·loading과 모든 상태를 씁니다." },
   loading: { default:"false", summary:"아이콘을 스피너로 바꾸고 누름을 막습니다. 색은 흐려지지 않고, 최소 표시 시간 동안 유지합니다." },
   disabled: { default:"false", summary:"누를 수 없게 합니다. 아래 콘텐츠가 비치지 않도록 불투명한 채로 흐려집니다." },
@@ -501,6 +504,11 @@ set("Fab", {
 });
 set("Fab", { onClick: { summary:"버튼을 누를 때 호출합니다. Vue는 click 이벤트입니다." } }, "react");
 set("Fab", { onPress: { summary:"버튼을 누를 때 호출합니다." } }, "native");
+set("ExternalLink", {
+  label: "아이콘 링크(mode=\"icon\")의 이름이며 기본값은 \"외부 링크\"입니다. 텍스트 링크는 보이는 글자가 이름이므로 label은 children이 없을 때 보이는 글자로만 씁니다.",
+});
+set("ExternalLink", { onClick: { summary:"링크를 열 때 호출합니다(분석 기록 등). 클릭은 부모로 전달되지 않습니다. 다른 a 속성(id·className·data-*)은 링크에 전달하며 href·target·rel은 KJUN이 정합니다." } }, "react");
+set("ExternalLink", { onPress: { summary:"링크를 누를 때 openUrl보다 먼저 호출합니다(분석 기록 등)." } }, "native");
 set("Card", {
   pressable: { default: "false", summary: "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고)." },
   disabled: { default: "false", summary: "pressable 카드의 누름을 막고 흐리게 표시합니다. pressable이 아니면 의미가 없습니다." },

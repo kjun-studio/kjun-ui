@@ -141,14 +141,20 @@
       "href",
       "mode",
       "label",
-      "children"
+      "children",
+      "onClick",
+      "className",
+      "id",
+      "style",
+      "onKeyDown"
     ],
     "native": [
       "href",
       "mode",
       "label",
       "children",
-      "openUrl"
+      "openUrl",
+      "onPress"
     ]
   },
   "KjunPagination": {

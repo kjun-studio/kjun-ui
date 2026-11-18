@@ -98,7 +98,7 @@ export function generate(input: UsageInput) {
       ].join('\n')); break;
     case 'KjunIconToggle': return iconToggleExample(input);
     case 'KjunFab':
-      content = b.node(name, { icon: 'plus', ...(s.label ? { label: s.label } : { ariaLabel: '일정 추가' }), ...(s.size === 'sm' ? { size: 'sm' } : {}), ...b.props('loading', 'disabled'), [b.native ? 'onPress' : 'onClick']: b.handler('add', '', b.result('"일정 추가"')) }); break;
+      content = b.node(name, { icon: 'plus', ...(s.label ? { label: s.label } : { ariaLabel: '일정 추가' }), ...(s.size === 'sm' ? { size: 'sm' } : {}), ...(s.label && s.collapsed ? { collapsed: true } : {}), ...b.props('loading', 'disabled'), [b.native ? 'onPress' : 'onClick']: b.handler('add', '', b.result('"일정 추가"')) }); break;
     case 'KjunCopyButton':
       content = b.node(name, { value: 'KJUN UI', text: '복사', disabled: s.disabled,
         copyText: b.declare('copyText', 'async function copyText(value) {\n  // 프로젝트의 클립보드 연결 지점입니다.\n  console.log("복사 요청:", value);\n}'),
@@ -108,7 +108,7 @@ export function generate(input: UsageInput) {
       content = b.node(name, { targetName: '목록', ...b.props('mode', 'size', 'disabled', 'loading'),
         onRefresh: b.handler('refresh', '', 'await new Promise(resolve => setTimeout(resolve, 1200)); // 목록을 다시 불러오는 지점입니다.\n' + b.result('"갱신 완료"'), true) }); break;
     case 'KjunExternalLink':
-      content = b.node(name, { href: 'https://example.com', label: '외부 페이지', openUrl: b.declare('openUrl', 'function openUrl(url) {\n  // 프로젝트의 브라우저 또는 Linking 연결 지점입니다.\n  console.log("링크 열기:", url);\n}') }, b.text('외부 페이지')); break;
+      content = b.node(name, { href: 'https://example.com', openUrl: b.declare('openUrl', 'function openUrl(url) {\n  // 프로젝트의 브라우저 또는 Linking 연결 지점입니다.\n  console.log("링크 열기:", url);\n}') }, b.text('외부 페이지')); break;
     case 'KjunProgress':
       content = b.group([b.node(name, { value: b.state('progress', 42), showLabel: true, label: '완료율', ...(s.marker ? { marker: 60, markerLabel: '오늘 기준 60%', subLabel: '오늘 기준 60%' } : {}) }), b.button('진행', b.handler('advance', '', b.set('progress', `(${b.read('progress')} + 10) % 101`)))]); break;
     default: throw Error('기본 사용 코드 생성기 누락: ' + name);

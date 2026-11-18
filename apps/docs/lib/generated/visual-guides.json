@@ -12564,7 +12564,7 @@
           }
         ],
         "sizeDefault": "md",
-        "note": "일반 레이블·compact·loading·disabled 상태를 구분합니다. 툴팁과 메뉴는 같은 호출 영역의 색상·서체를 사용합니다."
+        "note": "일반 레이블·아이콘·compact·loading·disabled 상태를 구분합니다. 열린 동안 chevron이 위를 향하고 채움 색이 active로 바뀌며, chevron을 끈 경우에는 채움 색으로만 표시합니다. 툴팁과 메뉴는 같은 호출 영역의 색상·서체를 사용합니다."
       },
       "react": {
         "figures": [
@@ -12684,7 +12684,7 @@
           }
         ],
         "sizeDefault": "md",
-        "note": "일반 레이블·compact·loading·disabled 상태를 구분합니다. 툴팁과 메뉴는 같은 호출 영역의 색상·서체를 사용합니다."
+        "note": "일반 레이블·아이콘·compact·loading·disabled 상태를 구분합니다. 열린 동안 chevron이 위를 향하고 채움 색이 active로 바뀌며, chevron을 끈 경우에는 채움 색으로만 표시합니다. 툴팁과 메뉴는 같은 호출 영역의 색상·서체를 사용합니다."
       },
       "native": {
         "figures": [
@@ -12804,7 +12804,7 @@
           }
         ],
         "sizeDefault": "md",
-        "note": "일반 레이블·compact·loading·disabled 상태를 구분합니다. 툴팁과 메뉴는 같은 호출 영역의 색상·서체를 사용합니다."
+        "note": "일반 레이블·아이콘·compact·loading·disabled 상태를 구분합니다. 열린 동안 chevron이 위를 향하고 채움 색이 active로 바뀌며, chevron을 끈 경우에는 채움 색으로만 표시합니다. 툴팁과 메뉴는 같은 호출 영역의 색상·서체를 사용합니다."
       }
     }
   },

@@ -38,7 +38,7 @@ const size = choice("size", "크기", ["sm", "md", "lg"], "md");
 const controls: Record<string, ExampleControl[]> = {};
 const assign = (names: string, list: ExampleControl[]) => names.split(" ").forEach(name => { controls["Kjun" + name] = [...list]; });
 assign("Checkbox Switch Radio RadioGroup Combobox ButtonGroup FilterGroup CopyButton RefreshButton", [disabled]);
-assign("Fab", [choice("size", "크기", ["sm", "md"], "md"), field("label", "라벨", ""), loading, disabled]);
+assign("Fab", [choice("size", "크기", ["sm", "md"], "md"), field("label", "라벨", ""), toggle("collapsed", "접기(라벨이 있을 때)"), loading, disabled]);
 assign("IconToggle MenuButton RefreshButton", [disabled, loading]);
 assign("IconToggle", [choice("usage", "사용 예제", ["기본", "즐겨찾기", "관심"]), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), disabled, loading]);
 assign("RefreshButton", [choice("mode", "표현", ["icon", "text"], "icon"), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "sm"), disabled, loading]);
@@ -57,7 +57,7 @@ assign("Modal", [choice("size", "크기", ["sm", "md", "lg", "xl", "full"], "md"
 assign("Button", [choice("comparison", "비교", ["기본", "크기", "변형", "라벨·아이콘", "상태"]), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), choice("variant", "변형", ["primary", "secondary", "ghost", "danger", "danger-ghost", "success", "warning"]), disabled, loading, toggle("iconOnly", "아이콘 전용"), toggle("block", "전체 너비")]);
 assign("Tabs TabPane", [choice("variant", "표현", ["underline", "pills"]), choice("density", "밀도", ["comfortable", "compact"]), toggle("fullWidth", "전체 너비"), toggle("detail", "아이콘·배지")]);
 assign("ButtonGroup", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), disabled, toggle("fullWidth", "전체 너비"), toggle("iconOnly", "아이콘만")]);
-assign("MenuButton", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), choice("variant", "변형", ["secondary", "ghost", "primary", "danger", "danger-ghost", "success", "warning"], "secondary"), toggle("compact", "아이콘 전용"), disabled, loading, toggle("rich", "확장 구성"), menuDensity]);
+assign("MenuButton", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), choice("variant", "변형", ["secondary", "ghost", "primary", "danger", "danger-ghost", "success", "warning"], "secondary"), toggle("compact", "아이콘 전용"), choice("icon", "아이콘", ["없음", "plus", "arrows-sort"], "없음"), toggle("chevron", "chevron", true), disabled, loading, toggle("rich", "확장 구성"), menuDensity]);
 assign("Input", [choice("comparison", "비교", ["기본", "크기", "상태", "아이콘·단위"]), size, disabled, toggle("readOnly", "읽기 전용"), error]);
 controls.KjunCard = cardControls;
 assign("Popover", [toggle("noPadding", "기본 여백 제거")]);
@@ -115,7 +115,7 @@ const extras: Record<string, ExamplePreset[]> = {
     { ...preset("long", "긴 문구 · 288px", { exampleWidth: "288", cancelText: "Cancel", confirmText: "Save changes and continue to next step" }), narrow: true },
   ],
   KjunIconToggle: [preset("favorite", "즐겨찾기", { usage: "즐겨찾기" }), preset("interest", "관심", { usage: "관심" })],
-  KjunMenuButton: [preset("compact", "아이콘 전용", { compact: true }), preset("loading", "로딩", { loading: true }), preset("ghost", "낮은 강조", { variant: "ghost" })],
+  KjunMenuButton: [preset("compact", "아이콘 전용", { compact: true }), preset("loading", "로딩", { loading: true }), preset("ghost", "낮은 강조", { variant: "ghost" }), preset("icon", "앞 아이콘", { icon: "plus" }), preset("no-chevron", "chevron 없는 도구 모음", { icon: "arrows-sort", chevron: false })],
   KjunRefreshButton: [preset("text", "아이콘과 라벨", { mode: "text" }), preset("text-loading", "라벨을 유지하는 로딩", { mode: "text", loading: true }), preset("toolbar", "일반 버튼과 함께 · md", { mode: "text", size: "md" })],
   KjunButton: [
     preset("sizes", "크기 비교", { comparison: "크기" }),

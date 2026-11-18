@@ -34,7 +34,7 @@ export function generate(input: UsageInput) {
     }
     case 'KjunDropdown': case 'KjunDropdownItem': case 'KjunDropdownDivider': case 'KjunDropdownSection': case 'KjunDropdownSubmenu':
       content = b.node('KjunDropdown', { disabled: s.disabled, ...(s.density === 'compact' ? { density: 'compact' } : {}) }, menu(), { trigger: b.button('메뉴 열기') }); break;
-    case 'KjunMenuButton': content = b.node(name, { label: '작업 메뉴', ...b.props('size', 'variant', 'compact', 'disabled', 'loading'), ...(s.density === 'compact' ? { density: 'compact' } : {}) }, menu()); break;
+    case 'KjunMenuButton': content = b.node(name, { label: '작업 메뉴', ...b.props('size', 'variant', 'compact', 'disabled', 'loading'), ...(s.icon && s.icon !== '없음' ? { icon: s.icon } : {}), ...(s.chevron === false ? { chevron: false } : {}), ...(s.density === 'compact' ? { density: 'compact' } : {}) }, menu()); break;
     case 'KjunAccordion': case 'KjunAccordionItem':
       content = b.node('KjunAccordion', b.props('tone', 'multiple'), [b.node('KjunAccordionItem', { title: '첫 항목', disabled: !!s.itemDisabled }, b.text('첫 내용')), b.node('KjunAccordionItem', { title: '둘째 항목' }, b.text('둘째 내용'))].join('\n')); break;
     case 'KjunModal': case 'KjunDrawer': {

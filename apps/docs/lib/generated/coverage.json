@@ -1135,7 +1135,7 @@
       "title": "ExternalLink",
       "docs": "/components/external-link",
       "category": "navigation",
-      "differences": "웹은 안전한 HTTP(S) 링크를 열고 Native는 주입한 openUrl을 사용합니다. Native 연동 없이 실제 기기 URL 열림을 보장하지 않습니다.",
+      "differences": "웹은 안전한 HTTP(S) 링크를 열고 Native는 주입한 openUrl을 사용합니다. Native 연동 없이 실제 기기 URL 열림을 보장하지 않습니다. 주소가 안전하지 않으면 링크 대신 일반 글자로 표시하고, 아이콘은 이름을 읽을 수 있는 글자로 남깁니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

@@ -415,8 +415,8 @@
   "KjunExternalLink": {
     "slug": "external-link",
     "description": "외부 문서나 서비스를 여는 링크를 표시합니다.",
-    "interaction": "href로 외부 주소를 제공하고 mode로 아이콘·텍스트 표현을 선택합니다. 이동 처리와 표시 문구를 구분하세요.",
-    "differences": "웹은 안전한 HTTP(S) 링크를 열고 Native는 주입한 openUrl을 사용합니다. Native 연동 없이 실제 기기 URL 열림을 보장하지 않습니다.",
+    "interaction": "href로 외부 주소를 제공하고 mode로 아이콘·텍스트 표현을 선택합니다. 텍스트 링크는 보이는 글자에 새 창 안내를 더해 이름을 만들고, 아이콘 링크는 label(기본 \"외부 링크\")을 이름으로 씁니다. 열 때 onClick(Vue click, Native onPress)을 호출합니다.",
+    "differences": "웹은 안전한 HTTP(S) 링크를 열고 Native는 주입한 openUrl을 사용합니다. Native 연동 없이 실제 기기 URL 열림을 보장하지 않습니다. 주소가 안전하지 않으면 링크 대신 일반 글자로 표시하고, 아이콘은 이름을 읽을 수 있는 글자로 남깁니다.",
     "states": "외부 주소와 레이블을 표시합니다. 텍스트 모드는 레이블 뒤에 새 창 아이콘을 붙이고, 웹에서 포인터를 올리면 밑줄을 표시합니다. 웹은 링크를, Native는 프로젝트의 openUrl 콜백을 사용합니다."
   },
   "KjunFilterGroup": {
@@ -443,7 +443,7 @@
   "KjunFab": {
     "slug": "fab",
     "description": "화면 오른쪽 아래에 떠 있는 주요 행동 버튼입니다. 일정 추가처럼 화면에서 가장 자주 쓰는 행동 하나에 씁니다. 원형이 기본이고, label을 넘기면 글자가 붙는 캡슐이 됩니다.",
-    "interaction": "누르면 onClick(Vue click, Native onPress)을 호출합니다. 아이콘만 있으면 ariaLabel로 행동을 알리고, 아이콘만으로 뜻이 통하지 않으면 label을 씁니다. 한 화면에 하나만 둡니다. loading 중에는 아이콘이 스피너로 바뀌고 누름을 막습니다.",
+    "interaction": "누르면 onClick(Vue click, Native onPress)을 호출합니다. 아이콘만 있으면 ariaLabel로 행동을 알리고, 아이콘만으로 뜻이 통하지 않으면 label을 씁니다. 한 화면에 하나만 둡니다. 라벨 FAB은 collapsed로 원형으로 접을 수 있어, 스크롤하는 동안 콘텐츠를 덜 가립니다. loading 중에는 아이콘이 스피너로 바뀌고 누름을 막습니다.",
     "differences": "웹은 화면(viewport)에 고정되고, Native는 부모 기준으로 놓이므로 화면 최상위 View에 둡니다. KjunBottomNavigation·KjunBottomActionBar가 있으면 그 높이만큼 자동으로 위에 놓입니다. Native에서 FAB의 부모가 탭바 위에서 끝나면 avoidBottomBar를 끕니다. 직접 만든 하단 바는 offsetBottom에 높이를 넘깁니다.",
     "states": "크기는 md 56(아이콘 24)과 sm 48(아이콘 20)이며, 두 크기 모두 원형·확장형·loading과 모든 상태를 씁니다. 끝 쪽·아래 여백은 16이고, 아래에는 하단 안전 영역과 하단 바 높이 중 큰 값과 offsetBottom을 더합니다. hover는 마우스에서만 나타나고, 누르면 색이 진해지며 살짝 줄어듭니다. 비활성은 아래 콘텐츠가 비치지 않도록 불투명하게 흐려지고, 로딩은 흐려지지 않습니다."
   },
@@ -457,9 +457,9 @@
   "KjunMenuButton": {
     "slug": "menu-button",
     "description": "버튼과 메뉴를 연결하며 compact 표현을 지원합니다.",
-    "interaction": "라벨 버튼에 Dropdown 메뉴를 연결합니다. compact일 때도 ariaLabel이나 tooltip으로 행동 목적을 제공하세요.",
+    "interaction": "라벨 버튼에 Dropdown 메뉴를 연결합니다. icon으로 라벨 앞 아이콘(compact이면 dots-vertical 대신)을 바꾸고, 도구 모음에서는 chevron={false}로 chevron을 뺄 수 있습니다. compact일 때도 ariaLabel이나 tooltip으로 행동 목적을 제공하세요.",
     "differences": "Vue default 슬롯과 React·Native children에 메뉴 항목을 넣습니다. Native 팝업은 Modal 기반이며 웹 도움말 배치와 기기 동작은 별도입니다.",
-    "states": "일반 레이블·compact·loading·disabled 상태를 구분합니다. 툴팁과 메뉴는 같은 호출 영역의 색상·서체를 사용합니다."
+    "states": "일반 레이블·아이콘·compact·loading·disabled 상태를 구분합니다. 열린 동안 chevron이 위를 향하고 채움 색이 active로 바뀌며, chevron을 끈 경우에는 채움 색으로만 표시합니다. 툴팁과 메뉴는 같은 호출 영역의 색상·서체를 사용합니다."
   },
   "KjunRefreshButton": {
     "slug": "refresh-button",

@@ -8713,10 +8713,15 @@
         "type": "string",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The icon link's name (default \"External link\"); a text link shows it when the default slot is empty."
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "click",
+        "source": "packages/vue3/src/actions.tsx"
+      }
+    ],
     "slots": [
       {
         "name": "default",
@@ -8744,11 +8749,46 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The icon link's name (default \"External link\"); a text link shows it when it has no children."
       },
       {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onClick",
+        "type": "((event: import(\"/workspace/node_modules/@types/react/index\").MouseEvent<HTMLAnchorElement>) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called when the link is opened (e.g. for analytics); the click does not reach the parent."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onKeyDown",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").KeyboardEventHandler<HTMLAnchorElement> | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -8774,7 +8814,7 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The icon link's name (default \"External link\"); a text link shows it when it has no children."
       },
       {
         "name": "children",
@@ -8789,6 +8829,13 @@
         "required": true,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "onPress",
+        "type": "((event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called when the link is pressed, before openUrl (e.g. for analytics)."
       }
     ]
   },
@@ -8807,6 +8854,13 @@
         "required": false,
         "default": "—",
         "description": "Visible text beside the icon; the circle becomes a capsule of the same height."
+      },
+      {
+        "name": "collapsed",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Folds a labelled FAB back into its circle (e.g. while the page scrolls); the label stays its name."
       },
       {
         "name": "ariaLabel",
@@ -8879,6 +8933,13 @@
         "required": false,
         "default": "—",
         "description": "Visible text beside the icon; the circle becomes a capsule of the same height."
+      },
+      {
+        "name": "collapsed",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Folds a labelled FAB back into its circle (e.g. while the page scrolls); the label stays its name."
       },
       {
         "name": "ariaLabel",
@@ -8979,6 +9040,13 @@
         "required": false,
         "default": "—",
         "description": "Visible text beside the icon; the circle becomes a capsule of the same height."
+      },
+      {
+        "name": "collapsed",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Folds a labelled FAB back into its circle (e.g. while the screen scrolls); the label stays its name."
       },
       {
         "name": "ariaLabel",
@@ -17158,6 +17226,20 @@
         "description": "Show a square dots-vertical button; label remains its accessible name."
       },
       {
+        "name": "icon",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Icon before the label, or in place of dots-vertical when compact or unlabelled."
+      },
+      {
+        "name": "chevron",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Show the chevron after a visible label (default true); false where the icon already says it opens a menu."
+      },
+      {
         "name": "loading",
         "type": "boolean",
         "required": false,
@@ -17242,6 +17324,20 @@
         "required": false,
         "default": "—",
         "description": "Show a square dots-vertical button; label remains its accessible name."
+      },
+      {
+        "name": "icon",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Icon before the label, or in place of dots-vertical when compact or unlabelled."
+      },
+      {
+        "name": "chevron",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Show the chevron after a visible label (default true); false where the icon already says it opens a menu."
       },
       {
         "name": "loading",
@@ -17377,6 +17473,20 @@
         "required": false,
         "default": "—",
         "description": "Show a square dots-vertical button; label remains its accessible name."
+      },
+      {
+        "name": "icon",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Icon before the label, or in place of dots-vertical when compact or unlabelled."
+      },
+      {
+        "name": "chevron",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Show the chevron after a visible label (default true); false where the icon already says it opens a menu."
       },
       {
         "name": "loading",

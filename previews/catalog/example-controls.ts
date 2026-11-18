@@ -329,7 +329,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         trigger: button("메뉴 열기", () => {}),
       });
     case "KjunMenuButton":
-      return h(name, { label: "작업 메뉴", size: settings.size, variant: settings.variant, compact: settings.compact, density: settings.density, disabled, loading }, menuItems());
+      return h(name, { label: "작업 메뉴", size: settings.size, variant: settings.variant, compact: settings.compact, ...(settings.icon && settings.icon !== "없음" ? { icon: settings.icon } : {}), ...(settings.chevron === false ? { chevron: false } : {}), density: settings.density, disabled, loading }, menuItems());
     case "KjunAccordion":
     case "KjunAccordionItem":
       return h("KjunAccordion", { tone: settings.tone, multiple: settings.multiple, divider: !!settings.divider, separated: !!settings.separated }, [
@@ -385,7 +385,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
       });
     case "KjunFab":
       // A sized frame keeps the FAB, which is fixed (web) or absolute (Native), inside the example.
-      return h("Box", { width: 280, height: 160 }, h(name, { icon: "plus", ariaLabel: settings.label ? undefined : "일정 추가", label: settings.label || undefined, size: settings.size, loading, disabled, ...action(() => set("count", get("count", 0) + 1)) }));
+      return h("Box", { width: 280, height: 160 }, h(name, { icon: "plus", ariaLabel: settings.label ? undefined : "일정 추가", label: settings.label || undefined, collapsed: !!settings.collapsed, size: settings.size, loading, disabled, ...action(() => set("count", get("count", 0) + 1)) }));
     case "KjunIconToggle": {
       const kind = settings.usage === "즐겨찾기" ? "favorite" : settings.usage === "관심" ? "interest" : null;
       const label = kind === "favorite" ? "즐겨찾기" : "관심";
@@ -425,7 +425,6 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         name,
         {
           href: "https://example.com",
-          label: "외부 페이지",
           openUrl: () => message("프로젝트 링크 열기 콜백"),
         },
         "외부 페이지"
