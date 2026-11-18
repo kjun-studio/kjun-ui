@@ -259,6 +259,7 @@ export const kjunPropValues = Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),
   }),
   KjunSelect: Object.freeze({
+    multipleDisplay: Object.freeze(["count","labels"] as const),
     size: Object.freeze(["sm","md","lg"] as const),
   }),
   KjunSideNavigation: Object.freeze({

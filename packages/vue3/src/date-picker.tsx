@@ -1,4 +1,5 @@
 import { useKjunMessageScope } from "./runtime/messages";
+import { selectClearMarkStyle, selectClearStyle } from "../../../shared/package-runtime/select-trigger";
 import { dateLabel, formatRange, normalizeRange, pickRange, rangeSpoken, rangeSubmitted, type DateRange } from "../../../shared/package-runtime/calendar";
 import { CalendarView, calendarOptionProps, type DateRangePreset } from "./calendar";
 import { FloatingPanel } from "./floating-panel";
@@ -60,9 +61,9 @@ function useDateField(props: Readonly<DateFieldOptions & { placeholder?: string 
             <KjunIcon name="calendar" size={spec.iconSize} style={{ flexShrink: 0, color: props.disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />
           </button>
           {clear && (
-            <KjunButton size="sm" variant="ghost" ariaLabel={state.clearLabel} class="kjun-select-clear"
-              style={css({ padding: 0, right: spec.padding + spec.iconSize + spec.affixGap, width: spec.clearSize, height: spec.clearSize, minHeight: spec.clearSize, borderRadius: "50%" })}
-              onClick={() => { state.onClear(); trigger.value?.focus(); }}><KjunIcon name="x" size={spec.iconSize} /></KjunButton>
+            <KjunButton size="sm" variant="ghost" shape="circle" ariaLabel={state.clearLabel} class="kjun-select-clear"
+              style={css(selectClearStyle(spec))}
+              onClick={() => { state.onClear(); trigger.value?.focus(); }}><span class="kjun-select-clear-mark" style={css(selectClearMarkStyle(spec))}><KjunIcon name="x" size={spec.clearMarkIconSize} /></span></KjunButton>
           )}
           {props.name && <input type="hidden" name={props.name} value={state.submitted} />}
         </div>

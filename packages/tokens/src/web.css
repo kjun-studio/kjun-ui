@@ -221,7 +221,7 @@
   font-size: var(--_kjun-placeholder-size);
   opacity: 1;
 }
-.kjun-input:hover:not(:disabled):not(:focus):not([readonly]):not([aria-expanded="true"]):not([aria-invalid="true"]):not([data-variant="plain"]) {
+.kjun-input:hover:not(:disabled):not(:focus):not([readonly]):not([aria-readonly="true"]):not([aria-expanded="true"]):not([aria-invalid="true"]):not([data-variant="plain"]) {
   background: var(--_kjun-color-hover);
 }
 .kjun-input:focus,
@@ -235,7 +235,8 @@
 .kjun-input[aria-invalid="true"][aria-expanded="true"] {
   border-color: var(--_kjun-color-danger);
 }
-.kjun-input[readonly] { color: var(--_kjun-color-text-secondary); }
+/* A read-only value keeps the text color so it never reads as a placeholder; the missing hover and indicator mark it. */
+.kjun-input:is([readonly], [aria-readonly="true"]) { color: var(--_kjun-color-text); }
 /* The ring covers the control border so keyboard focus reads as one outline. */
 .kjun-input:focus-visible:not(:disabled) {
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);

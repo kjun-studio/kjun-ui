@@ -8,15 +8,19 @@ const options = Array.from({ length: query.has('empty') ? 0 : query.has('short')
   value: String(index + 1),
   label: `항목 ${String(index + 1).padStart(2, '0')}${query.has('long') ? ' · 알림 수신 범위와 팀 공유 설정을 함께 확인하는 긴 선택 항목' : ''}`,
 }));
+// ?grouped puts the options in three titled groups of eight; ?value=1,3 starts with that selection.
+const grouped = query.has('grouped') ? [0, 1, 2].map(group => ({ label: `그룹 ${group + 1}`, options: options.slice(group * 8, group * 8 + 8) })) : options;
+const initial = query.get('value')?.split(',') ?? null;
 applyDemoColors('default');
 
 function SelectScrollCase() {
   const multiple = query.has('multiple');
-  const [value, setValue] = useState<string | number | (string | number)[] | null>(multiple ? [] : null);
+  const [value, setValue] = useState<string | number | (string | number)[] | null>(multiple ? initial ?? [] : initial?.[0] ?? null);
   return <KjunProvider>
     <div style={{ position: 'absolute', left: 16, top: query.has('low') ? innerHeight / 2 - 20 : 24, width: 'min(280px, calc(100vw - 32px))' }}>
       {query.has('combobox') ? <KjunCombobox ariaLabel="검색 선택" value={typeof value === 'string' ? value : null}
-        options={options} onValueChange={setValue} /> : <KjunSelect ariaLabel="검사 선택" value={value} options={options}
+        options={options} onValueChange={setValue} /> : <KjunSelect ariaLabel="검사 선택" value={value} options={grouped}
+        multipleDisplay={query.has('labels') ? 'labels' : 'count'} readOnly={query.has('readonly')} clearable={query.has('clear')}
         multiple={multiple} searchable={query.has('search')} optionPageSize={query.has('paged') ? 8 : 0}
         loading={query.has('loading')} menuHeader={query.has('search') ? <div data-testid="menu-header">항목 선택 안내</div> : undefined}
         onValueChange={setValue} />}

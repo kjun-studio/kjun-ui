@@ -68,7 +68,7 @@
   border-color: var(--_kjun-danger);
   background: var(--_kjun-input-bg);
 }
-.kjun-field[readonly] { color: var(--_kjun-text-secondary); }
+.kjun-field[readonly] { color: var(--_kjun-text-primary); }
 /* The ring covers the control border so keyboard focus reads as one outline. */
 .kjun-field:focus-visible:not(:disabled) {
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-focus-ring);

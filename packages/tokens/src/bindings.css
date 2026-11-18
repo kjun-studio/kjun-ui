@@ -1230,6 +1230,8 @@
   --_kjun-geometry-input-sm-icon-size: 16px;
   --_kjun-geometry-input-sm-line-height: 1.5rem;
   --_kjun-geometry-input-sm-clear-size: 24px;
+  --_kjun-geometry-input-sm-clear-mark-size: 16px;
+  --_kjun-geometry-input-sm-clear-mark-icon-size: 10px;
   --_kjun-geometry-input-sm-textarea-padding-y: 8px;
   --_kjun-geometry-input-sm-affix-gap: 8px;
   --_kjun-geometry-input-md-height: 40px;
@@ -1240,6 +1242,8 @@
   --_kjun-geometry-input-md-icon-size: 16px;
   --_kjun-geometry-input-md-line-height: 1.5rem;
   --_kjun-geometry-input-md-clear-size: 28px;
+  --_kjun-geometry-input-md-clear-mark-size: 18px;
+  --_kjun-geometry-input-md-clear-mark-icon-size: 12px;
   --_kjun-geometry-input-md-textarea-padding-y: 12px;
   --_kjun-geometry-input-md-affix-gap: 8px;
   --_kjun-geometry-input-lg-height: 48px;
@@ -1250,6 +1254,8 @@
   --_kjun-geometry-input-lg-icon-size: 18px;
   --_kjun-geometry-input-lg-line-height: 1.5rem;
   --_kjun-geometry-input-lg-clear-size: 32px;
+  --_kjun-geometry-input-lg-clear-mark-size: 20px;
+  --_kjun-geometry-input-lg-clear-mark-icon-size: 14px;
   --_kjun-geometry-input-lg-textarea-padding-y: 16px;
   --_kjun-geometry-input-lg-affix-gap: 8px;
   --_kjun-geometry-modal-widths-sm: 400px;

@@ -23400,7 +23400,7 @@
         "type": "SelectOption[]",
         "required": false,
         "default": "[]",
-        "description": ""
+        "description": "Options, or groups `{ label, options }` that put a title over their options."
       },
       {
         "name": "placeholder",
@@ -23515,6 +23515,13 @@
         "description": ""
       },
       {
+        "name": "multipleDisplay",
+        "type": "SelectMultipleDisplay",
+        "required": false,
+        "default": "\"count\"",
+        "description": "With multiple: \"count\" shows \"N selected\" for two or more, \"labels\" names them and counts the ones that do not fit."
+      },
+      {
         "name": "error",
         "type": "boolean",
         "required": false,
@@ -23570,7 +23577,8 @@
       {
         "name": "selected",
         "data": [
-          "option"
+          "option",
+          "value"
         ],
         "source": "packages/vue3/src/select-control.tsx"
       },
@@ -23593,7 +23601,7 @@
         "type": "T[] | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Options, or groups `{ label, options }` that put a title over their options."
       },
       {
         "name": "placeholder",
@@ -23708,6 +23716,13 @@
         "description": ""
       },
       {
+        "name": "multipleDisplay",
+        "type": "import(\"/workspace/shared/package-runtime/options\").SelectMultipleDisplay | undefined",
+        "required": false,
+        "default": "—",
+        "description": "With multiple: \"count\" shows \"N selected\" for two or more, \"labels\" names them and counts the ones that do not fit."
+      },
+      {
         "name": "error",
         "type": "boolean | undefined",
         "required": false,
@@ -23730,10 +23745,10 @@
       },
       {
         "name": "renderSelected",
-        "type": "((option: T | undefined) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((option: T | undefined, value: import(\"/workspace/shared/package-runtime/options\").OptionValue | import(\"/workspace/shared/package-runtime/options\").OptionValue[] | null) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "`value` lets a value whose option has not loaded yet still show something."
       },
       {
         "name": "onValueChange",
@@ -23805,7 +23820,7 @@
         "type": "T[] | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Options, or groups `{ label, options }` that put a title over their options."
       },
       {
         "name": "placeholder",
@@ -23827,6 +23842,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Trigger nativeID; defaults to the FormGroup's id."
+      },
+      {
+        "name": "ariaDescribedBy",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Extra description ids, merged with the FormGroup's hint and error (Native Web)."
       },
       {
         "name": "valueKey",
@@ -23906,6 +23935,13 @@
         "description": ""
       },
       {
+        "name": "multipleDisplay",
+        "type": "import(\"/workspace/shared/package-runtime/options\").SelectMultipleDisplay | undefined",
+        "required": false,
+        "default": "—",
+        "description": "With multiple: \"count\" shows \"N selected\" for two or more, \"labels\" names them and counts the ones that do not fit."
+      },
+      {
         "name": "error",
         "type": "boolean | undefined",
         "required": false,
@@ -23928,10 +23964,10 @@
       },
       {
         "name": "renderSelected",
-        "type": "((option: T | undefined) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((option: T | undefined, value: import(\"/workspace/shared/package-runtime/options\").OptionValue | import(\"/workspace/shared/package-runtime/options\").OptionValue[] | null) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "`value` lets a value whose option has not loaded yet still show something."
       },
       {
         "name": "onValueChange",

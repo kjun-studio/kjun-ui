@@ -189,6 +189,11 @@ export const fieldOptions = (name: string, data?: unknown) => {
     label: labels[index] + (data === "long" ? " · 긴 옵션 이름과 설명을 함께 표시합니다" : ""),
   }));
 };
+/** Select options in two titled groups, for the grouped example. */
+export const groupedFieldOptions = (data?: unknown) => {
+  const [mine, everyone, team] = fieldOptions("KjunSelect", data);
+  return data === "empty" ? [] : [{ label: "개인", options: [mine] }, { label: "공유", options: [everyone, team] }];
+};
 export const priceFormat = (value: number) =>
   value == null || !Number.isFinite(Number(value)) ? "—" : new Intl.NumberFormat("ko-KR").format(Number(value)) + "원";
 export const metricFormat = (value: unknown, format: string) => {

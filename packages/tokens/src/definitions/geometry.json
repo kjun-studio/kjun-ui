@@ -105,6 +105,8 @@
       "iconSize": 16,
       "lineHeight": { "$ref": "typography.input.lineHeightPx" },
       "clearSize": 24,
+      "clearMarkSize": 16,
+      "clearMarkIconSize": 10,
       "textareaPaddingY": { "$ref": "dimension.value8" },
       "affixGap": { "$ref": "dimension.value8" }
     },
@@ -117,6 +119,8 @@
       "iconSize": 16,
       "lineHeight": { "$ref": "typography.input.lineHeightPx" },
       "clearSize": 28,
+      "clearMarkSize": 18,
+      "clearMarkIconSize": 12,
       "textareaPaddingY": { "$ref": "dimension.value12" },
       "affixGap": { "$ref": "dimension.value8" }
     },
@@ -129,6 +133,8 @@
       "iconSize": 18,
       "lineHeight": { "$ref": "typography.input.lineHeightPx" },
       "clearSize": 32,
+      "clearMarkSize": 20,
+      "clearMarkIconSize": 14,
       "textareaPaddingY": { "$ref": "dimension.value16" },
       "affixGap": { "$ref": "dimension.value8" }
     }

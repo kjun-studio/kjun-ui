@@ -29,6 +29,8 @@ export function fieldTarget(action: () => void, disabled: boolean) {
  * While open the field shows the opened fill, like an open Select trigger, so only the panel input draws a focus border.
  */
 export const PanelSearchTriggerContext = createContext(false);
+/** Inside an open select list the search keeps only its fill when focused: the open trigger already shows the ring. */
+export const QuietFocusContext = createContext(false);
 
 /** Shared field state, independent of each control's value and keyboard model. */
 export function useFieldSurface(size: InputSize, { disabled = false, readOnly = false, invalid = false, open = false, plain = false } = {}) {
@@ -36,11 +38,13 @@ export function useFieldSurface(size: InputSize, { disabled = false, readOnly = 
   const reduced = useReducedMotion();
   const [focused, setFocused] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const quiet = useContext(QuietFocusContext);
   const spec = tokens.input[size];
   const opensPanelInput = useContext(PanelSearchTriggerContext);
   const active = !disabled && (focused || (open && !opensPanelInput));
+  const ring = active && !quiet;
   const hover = !disabled && !readOnly && !invalid && !active && (hovered || (open && opensPanelInput));
-  const border = useMotionValue(Platform.OS === "web" ? 0 : invalid ? 2 : active ? 1 : 0, tokens.motion.control);
+  const border = useMotionValue(Platform.OS === "web" ? 0 : invalid ? 2 : ring ? 1 : 0, tokens.motion.control);
   const background = useMotionValue(Platform.OS === "web" || !hover ? 0 : 1, tokens.motion.control);
   const animateBorder = Platform.OS !== "web" && typeof colors.danger === "string" && typeof colors.inputBorderFocus === "string";
   const animateBackground = Platform.OS !== "web" && typeof colors.inputBg === "string" && typeof colors.hover === "string";
@@ -48,10 +52,10 @@ export function useFieldSurface(size: InputSize, { disabled = false, readOnly = 
     height: spec.height,
     borderWidth: tokens.border.controlWidth,
     borderRadius: spec.radius,
-    borderColor: animateBorder ? border.interpolate({ inputRange: [0, 1, 2], outputRange: ["transparent", colors.inputBorderFocus as string, colors.danger as string] }) : invalid ? colors.danger : active ? colors.inputBorderFocus : "transparent",
+    borderColor: animateBorder ? border.interpolate({ inputRange: [0, 1, 2], outputRange: ["transparent", colors.inputBorderFocus as string, colors.danger as string] }) : invalid ? colors.danger : ring ? colors.inputBorderFocus : "transparent",
     backgroundColor: animateBackground ? background.interpolate({ inputRange: [0, 1], outputRange: [colors.inputBg as string, colors.hover as string] }) : hover ? colors.hover : colors.inputBg,
     ...(Platform.OS === "web" ? {
-      outlineStyle: focused && !disabled ? 'solid' : 'none',
+      outlineStyle: focused && !disabled && !quiet ? 'solid' : 'none',
       outlineWidth: tokens.states.focus.width,
       outlineOffset: invalid ? tokens.states.focus.offset : tokens.states.focus.insetOffset,
       outlineColor: colors.focusRing,
@@ -65,7 +69,7 @@ export function useFieldSurface(size: InputSize, { disabled = false, readOnly = 
     Platform.OS === "web" ? { outlineOffset: tokens.states.focus.offset } : {});
   return {
     spec, style, setFocused, active, hovered,
-    ink: disabled ? colors.textDisabled : readOnly ? colors.textSecondary : colors.text,
+    ink: disabled ? colors.textDisabled : colors.text,
     icon: disabled ? colors.textDisabled : colors.textTertiary,
     hit: Math.max(0, (tokens.native.minimumTouchTarget - spec.height) / 2),
     hover: { onHoverIn: () => setHovered(true), onHoverOut: () => setHovered(false) },

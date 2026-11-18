@@ -340,7 +340,11 @@ export function FloatingPanel({
           {header != null && (
             <View
               onLayout={({ nativeEvent: { layout } }) => setHeaderHeight(layout.height)}
-              style={{
+              // A field list's header (Select search) sits in the list's own inset; a popover header keeps its title spacing.
+              style={field ? {
+                paddingTop: tokens.extensions.menu.padding,
+                paddingHorizontal: tokens.extensions.menu.padding,
+              } : {
                 paddingTop: tokens.extensions.popover.padding,
                 paddingHorizontal: tokens.extensions.popover.padding,
                 paddingBottom: tokens.extensions.popover.headerPaddingBottom,

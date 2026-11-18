@@ -1,5 +1,5 @@
 import { UsageBuilder, expr, literal, type UsageInput } from './builder';
-import { defaultOptions, viewOptions, buttonComparisons, inputComparisons, inputCaseProps, fieldOptions, formActionsComparisons, formActionsFill } from '../../previews/catalog/example-tools';
+import { defaultOptions, viewOptions, buttonComparisons, inputComparisons, inputCaseProps, fieldOptions, groupedFieldOptions, formActionsComparisons, formActionsFill } from '../../previews/catalog/example-tools';
 import { iconToggleExample } from './icon-toggle';
 
 export function generate(input: UsageInput) {
@@ -10,7 +10,7 @@ export function generate(input: UsageInput) {
     ...b.props('size', 'disabled', 'readOnly'), disabled: s.childDisabled ?? s.disabled ?? false,
     error: !!s.error || !!s.errorMessage, clearable: true, placeholder: '내용을 입력하세요',
   });
-  const options = () => b.data('options', ['KjunSelect', 'KjunCombobox'].includes(name) ? fieldOptions(name, s.data) : s.data === 'empty' ? [] : defaultOptions.map(option => s.data === 'long' ? { ...option, label: option.label + ' · 긴 옵션 이름과 설명을 함께 표시합니다' } : option));
+  const options = () => b.data('options', name === 'KjunSelect' && s.grouped ? groupedFieldOptions(s.data) : ['KjunSelect', 'KjunCombobox'].includes(name) ? fieldOptions(name, s.data) : s.data === 'empty' ? [] : defaultOptions.map(option => s.data === 'long' ? { ...option, label: option.label + ' · 긴 옵션 이름과 설명을 함께 표시합니다' } : option));
   let content: string;
   switch (name) {
     case 'KjunButton': {
@@ -87,7 +87,7 @@ export function generate(input: UsageInput) {
     case 'KjunSelect':
       content = b.node(name, { value: b.state('select', s.multiple ? [] : null), onValueChange: b.update('select'),
         open: b.state('selectOpen', false), onOpenChange: b.update('selectOpen'), options: options(), ariaLabel: '공개 범위',
-        ...b.props('multiple', 'size', 'searchable', 'clearable', 'disabled', 'loading', 'error') }); break;
+        ...b.props('multiple', 'size', 'searchable', 'clearable', 'disabled', 'readOnly', 'loading', 'error'), ...(s.multiple && s.multipleDisplay === 'labels' ? { multipleDisplay: 'labels' } : {}) }); break;
     case 'KjunCombobox':
       content = b.node(name, { value: b.state('combo', null), onValueChange: b.update('combo'), options: options(), ariaLabel: '자산 선택', clearable: true, ...b.props('size', 'disabled', 'loading', 'error') }); break;
     case 'KjunDatePicker':

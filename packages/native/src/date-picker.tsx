@@ -72,7 +72,7 @@ function DateField({ size = "md", clearable, placeholder, ariaLabel, error, disa
         </FieldPressable>
         {clear && (
           <View style={{ position: "absolute", right: spec.padding + spec.iconSize + spec.affixGap, top: 0, bottom: 0, justifyContent: "center" }}>
-            <FieldClear size={size} label={clearLabel} onPress={onClear} />
+            <FieldClear mark size={size} label={clearLabel} onPress={onClear} />
           </View>
         )}
       </View>

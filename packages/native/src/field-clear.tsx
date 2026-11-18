@@ -7,8 +7,10 @@ import { FontText } from "./internal";
 import { typeStyle } from "./typography";
 
 /** The visual clear affordance is smaller than its 44px activation target. */
-export function FieldClear({ size, disabled, label, onPress }: {
+export function FieldClear({ size, disabled, label, onPress, mark = false }: {
   size: InputSize; disabled?: boolean; label: string; onPress: () => void;
+  /** Select-like triggers: a small filled circle, set apart from the open indicator beside it. */
+  mark?: boolean;
 }) {
   const { colors } = useKjunStyles();
   const spec = tokens.input[size];
@@ -17,7 +19,11 @@ export function FieldClear({ size, disabled, label, onPress }: {
     onPress={event => { event.stopPropagation(); if (!disabled) onPress(); }}
     style={{ width: tokens.native.minimumTouchTarget, height: tokens.native.minimumTouchTarget,
       alignSelf: "center", alignItems: "center", justifyContent: "center", borderRadius: spec.clearSize / 2 }}>
-    {({ pressed, hovered }: any) => <View pointerEvents="none" style={{ width: spec.clearSize, height: spec.clearSize,
+    {({ pressed, hovered }: any) => mark ? <View pointerEvents="none" style={{ width: spec.clearMarkSize, height: spec.clearMarkSize,
+      borderRadius: tokens.radius.radius9999, alignItems: "center", justifyContent: "center",
+      backgroundColor: !disabled && (pressed || hovered) ? colors.textTertiary : colors.border }}>
+      <KjunIcon name="x" size={spec.clearMarkIconSize} color={colors.surface} />
+    </View> : <View pointerEvents="none" style={{ width: spec.clearSize, height: spec.clearSize,
       borderRadius: spec.clearSize / 2, alignItems: "center", justifyContent: "center",
       backgroundColor: disabled ? "transparent" : pressed ? colors.active : hovered ? colors.hover : "transparent" }}>
       <KjunIcon name="x" size={spec.iconSize} color={disabled ? colors.textDisabled : colors.textSecondary} />

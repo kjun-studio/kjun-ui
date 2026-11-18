@@ -548,6 +548,7 @@
       "optionPageSize",
       "clearable",
       "multiple",
+      "multipleDisplay",
       "error",
       "filterFn",
       "searchKeys",
@@ -572,6 +573,7 @@
       "optionPageSize",
       "clearable",
       "multiple",
+      "multipleDisplay",
       "error",
       "menuHeader",
       "renderOption",
@@ -604,6 +606,7 @@
       "optionPageSize",
       "clearable",
       "multiple",
+      "multipleDisplay",
       "error",
       "menuHeader",
       "renderOption",
@@ -615,7 +618,9 @@
       "onClear",
       "filterFn",
       "searchKeys",
-      "readOnly"
+      "readOnly",
+      "id",
+      "ariaDescribedBy"
     ]
   },
   "KjunSwitch": {

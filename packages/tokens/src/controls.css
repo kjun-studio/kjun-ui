@@ -540,12 +540,31 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* A read-only select shows its value; it does not open, so it keeps the default cursor. */
+.kjun-select-trigger[aria-readonly="true"] { cursor: default; }
+/* multipleDisplay="labels": the names share one line, and the ones that do not fit are counted after it. */
+.kjun-select-trigger > .kjun-select-values { display: flex; gap: var(--_kjun-geometry-dimension-value6); }
+.kjun-select-values-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kjun-select-values-more { flex-shrink: 0; color: var(--_kjun-color-text-tertiary); font-variant-numeric: tabular-nums; }
 .kjun-select-clear {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   padding: 0 !important;
 }
+/* The clear action reads as a small filled circle, set apart from the open indicator beside it. */
+.kjun-select-clear-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--_kjun-geometry-radius-radius9999);
+  background: var(--_kjun-color-border);
+  color: var(--_kjun-color-surface);
+  transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
+}
+.kjun-select-shell .kjun-button.kjun-select-clear:is(:hover, :active):not(:disabled) { background: transparent; }
+.kjun-select-shell .kjun-select-clear:is(:hover, :active):not(:disabled) .kjun-select-clear-mark { background: var(--_kjun-color-text-tertiary); }
+@media (prefers-reduced-motion: reduce) { .kjun-select-clear-mark { transition: none; } }
 .kjun-placeholder {
   color: var(--_kjun-color-input-placeholder);
 }
@@ -559,6 +578,8 @@
   padding: var(--_kjun-geometry-dimension-value8);
   border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
 }
+/* Focus always lands in the search when the list opens, and the open trigger already carries the ring, so the search shows only its fill. */
+.kjun-select-search .kjun-input:is(:focus, :focus-visible):not(:disabled) { border-color: transparent; outline: none; }
 .kjun-listbox {
   /* Options measure their offset from the list, so keyboard focus scrolls within it. */
   position: relative;

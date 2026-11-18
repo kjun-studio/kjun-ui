@@ -1,4 +1,5 @@
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
+import { selectClearMarkStyle, selectClearStyle } from "../../../shared/package-runtime/select-trigger";
 import { formatDateValue } from "../../../shared/package-runtime/messages";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { dateLabel, formatRange, normalizeRange, pickRange, rangeSpoken, rangeSubmitted, type DateRange } from "../../../shared/package-runtime/calendar";
@@ -54,9 +55,9 @@ function DateField({ size = "md", clearable, placeholder, ariaLabel, error, disa
           <KjunIcon name="calendar" size={spec.iconSize} style={{ flexShrink: 0, color: disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />
         </button>
         {clear && (
-          <KjunButton size="sm" variant="ghost" ariaLabel={clearLabel} className="kjun-select-clear"
-            style={{ padding: 0, right: spec.padding + spec.iconSize + spec.affixGap, width: spec.clearSize, height: spec.clearSize, minHeight: spec.clearSize, borderRadius: "50%" }}
-            onClick={() => { onClear(); trigger.current?.focus(); }}><KjunIcon name="x" size={spec.iconSize} /></KjunButton>
+          <KjunButton size="sm" variant="ghost" shape="circle" ariaLabel={clearLabel} className="kjun-select-clear"
+            style={selectClearStyle(spec)}
+            onClick={() => { onClear(); trigger.current?.focus(); }}><span className="kjun-select-clear-mark" style={selectClearMarkStyle(spec)}><KjunIcon name="x" size={spec.clearMarkIconSize} /></span></KjunButton>
         )}
         {name && <input type="hidden" name={name} value={submitted} />}
       </div>

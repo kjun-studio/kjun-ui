@@ -1,13 +1,14 @@
 import { useKjunMessages } from "./runtime/messages";
 import { createTypeahead } from "../../../shared/package-runtime/typeahead";
-import { computed, inject, mergeProps, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
+import { computed, inject, mergeProps, nextTick, onBeforeUnmount, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { defineComponent } from "./runtime/component";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { isFocusVisible } from "../../../shared/package-runtime/focus-visible";
 import { centerSelectedOption } from "../../../shared/package-runtime/center-option";
-import { optionDisabled, optionLabel, selectOptions, type OptionValue, type SelectOption } from "../../../shared/package-runtime/options";
+import { optionDisabled, optionLabel, selectOptions, type OptionValue, type SelectItem, type SelectMultipleDisplay, type SelectOption } from "../../../shared/package-runtime/options";
+import { measureHiddenLabels, selectClearMarkStyle, selectClearStyle } from "../../../shared/package-runtime/select-trigger";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunSpinner } from "./display";
 import { FloatingPanel, focusReturnProp, readFocusReturn } from "./floating-panel";
@@ -24,6 +25,7 @@ const kjunSelectProps = {
   /** Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only. */
   returnFocus: focusReturnProp,
   modelValue: { type: [String, Number, Array, null] as PropType<SelectValue>, default: null },
+  /** Options, or groups `{ label, options }` that put a title over their options. */
   options: { type: Array as PropType<SelectOption[]>, default: () => [] },
   placeholder: { type: String, default: undefined },
   ariaLabel: { type: String, default: undefined },
@@ -44,6 +46,8 @@ const kjunSelectProps = {
   optionPageSize: { type: Number, default: 0 },
   clearable: { type: Boolean, default: false },
   multiple: { type: Boolean, default: false },
+  /** With multiple: "count" shows "N selected" for two or more, "labels" names them and counts the ones that do not fit. */
+  multipleDisplay: { type: String as PropType<SelectMultipleDisplay>, default: "count" },
   error: { type: Boolean, default: false },
   /** Replaces the default ranked label/searchKeys match; results keep the original order. */
   filterFn: { type: Function as PropType<(option: SelectOption, query: string) => boolean>, default: undefined },
@@ -53,7 +57,7 @@ const kjunSelectProps = {
 export type KjunSelectProps = ExtractPublicPropTypes<typeof kjunSelectProps>;
 /**
  * v-model (a value, or an array with `multiple`), optional v-model:open.
- * Slots: option({ option, selected }), selected({ option }), menuHeader. Events: change, search, clear.
+ * Slots: option({ option, selected }), selected({ option, value }), menuHeader. Events: change, search, clear.
  */
 export const KjunSelect = defineComponent({
   name: "KjunSelect",
@@ -65,7 +69,8 @@ export const KjunSelect = defineComponent({
   },
   slots: Object as SlotsType<{
     option?: (scope: { option: SelectOption; selected: boolean }) => VNodeChild;
-    selected?: (scope: { option: SelectOption | undefined }) => VNodeChild;
+    /** `value` lets a value whose option has not loaded yet still show something. */
+    selected?: (scope: { option: SelectOption | undefined; value: SelectValue }) => VNodeChild;
     menuHeader?: () => VNodeChild;
   }>,
   setup(props, { attrs, slots, emit, expose }) {
@@ -86,7 +91,20 @@ export const KjunSelect = defineComponent({
     const change = (value: SelectValue) => { emit("update:modelValue", value); emit("change", value); };
     const model = computed(() => selectOptions({ options: props.options, value: props.modelValue, labelKey: props.labelKey, valueKey: props.valueKey,
       query: state.query.value, pageSize: props.optionPageSize, limit: state.limit.value, loading: props.loading, multiple: props.multiple,
-      filterFn: props.filterFn, searchKeys: props.searchKeys, selectedCount: m.value.selectedCount }));
+      filterFn: props.filterFn, searchKeys: props.searchKeys, selectedCount: m.value.selectedCount, multipleDisplay: props.multipleDisplay }));
+    const listed = computed(() => props.multiple && props.multipleDisplay === "labels" && model.value.labels.length > 1);
+    // Count the labels that do not fit; the count's own width can hide one more, so it re-measures on resize.
+    const valuesText = ref<HTMLElement | null>(null), hidden = ref(0);
+    const measure = () => { hidden.value = measureHiddenLabels(valuesText.value); };
+    let observer: ResizeObserver | undefined;
+    watch([valuesText, () => listed.value && model.value.labels.join("\n")], ([element]) => {
+      observer?.disconnect();
+      observer = undefined;
+      measure();
+      if (element && typeof ResizeObserver !== "undefined") { observer = new ResizeObserver(measure); observer.observe(element); }
+    }, { flush: "post" });
+    onBeforeUnmount(() => observer?.disconnect());
+    const searchInput = () => menu.value?.querySelector<HTMLInputElement>(".kjun-select-search input");
     const optionElements = () => [...(menu.value?.querySelectorAll<HTMLElement>('[role="option"]:not([aria-disabled="true"])') ?? [])];
     const focusOption = (element: HTMLElement | undefined) => {
       if (!element) return;
@@ -115,10 +133,18 @@ export const KjunSelect = defineComponent({
       const list = optionElements(), current = list.indexOf(document.activeElement as HTMLElement);
       const go = (index: number) => { event.preventDefault(); focusOption(list[index]); };
       if (event.key === "ArrowDown") go(current < 0 ? 0 : Math.min(list.length - 1, current + 1));
+      else if (event.key === "ArrowUp" && current === 0 && props.searchable) { event.preventDefault(); searchInput()?.focus({ preventScroll: true }); }
       else if (event.key === "ArrowUp") go(current < 0 ? list.length - 1 : Math.max(0, current - 1));
       else if (event.key === "Home" || event.key === "PageUp") go(0);
       else if (event.key === "End" || event.key === "PageDown") go(list.length - 1);
       else if (event.key === "Enter" || event.key === " ") { if (current >= 0) { event.preventDefault(); list[current].click(); } }
+      // A searchable list hands typing back to its search: Arrow Up on the first option, or a printable key.
+      else if (props.searchable && event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+        event.preventDefault();
+        const query = state.query.value + event.key;
+        state.search(query); emit("search", query);
+        searchInput()?.focus({ preventScroll: true });
+      }
       else if (!event.ctrlKey && !event.metaKey && !event.altKey) {
         const match = typeahead(event.key, list.map(option => option.textContent || ""), current);
         if (match >= 0) go(match);
@@ -129,9 +155,33 @@ export const KjunSelect = defineComponent({
       // Layout belongs to the shell; native attributes and listeners belong to its button.
       const { class: shellClass, style: shellStyle, ...controlAttrs } = attrs;
       const spec = tokens.input[props.size], owner = field.value;
-      const { selected, matching, visible, selectedOption, label, nextValue } = model.value;
+      const { selected, matching, visible, sections, grouped, selectedOption, label, labels, hasValue, nextValue } = model.value;
       const open = state.open.value;
-      const shown = slots.selected?.({ option: selectedOption }) as VNode[] | undefined;
+      const shown = slots.selected?.({ option: selectedOption, value: props.modelValue }) as VNode[] | undefined;
+      const custom = !!shown?.length, showClear = props.clearable && !props.readOnly && !props.disabled && hasValue;
+      const renderOption = ({ option, key }: SelectItem<SelectOption>) => {
+        const isSelected = selected(option), disabled = optionDisabled(option), isFocused = focused.value === String(key);
+        const content: VNodeChild = slots.option?.({ option, selected: isSelected });
+        return (
+          <div key={key} data-key={String(key)} class="kjun-option" role="option" aria-selected={isSelected}
+            aria-disabled={disabled ? "true" : undefined} tabindex={disabled ? undefined : isFocused ? 0 : -1}
+            data-focused={isFocused || undefined} data-focus-visible={(isFocused && focusVisible.value) || undefined}
+            onFocus={(event: FocusEvent) => { focused.value = String(key); focusVisible.value = isFocusVisible(); void event; }}
+            onPointermove={(event: PointerEvent) => {
+              if (disabled || document.activeElement === event.currentTarget) return;
+              focused.value = String(key); focusVisible.value = false;
+              (event.currentTarget as HTMLElement).focus({ preventScroll: true });
+            }}
+            onClick={() => {
+              if (disabled) return;
+              change(nextValue(option));
+              if (!props.multiple) state.changeOpen(false);
+            }}>
+            {(Array.isArray(content) ? content.length : content) ? content : <span>{optionLabel(option, props.labelKey)}</span>}
+            {isSelected && !segment && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
+          </div>
+        );
+      };
       return (
         <>
           <div class={["kjun-select-shell", shellClass]} style={shellStyle as never}>
@@ -146,19 +196,22 @@ export const KjunSelect = defineComponent({
               style={css({ height: spec.height, borderRadius: spec.radius, ...inputTypeStyle(props.size),
                 // Time segments take their padding from compound-controls.css, which also aligns the first value.
                 ...(segment ? {} : { paddingInline: spec.padding - tokens.border.controlWidth }) })}>
-              <span class={!label ? "kjun-placeholder" : undefined}
-                style={css({ flex: 1, paddingRight: props.clearable && !props.readOnly && label ? spec.clearSize + spec.affixGap : undefined })}>
-                {shown?.length ? shown : label || (props.placeholder ?? m.value.select)}
+              <span class={!custom && !label ? "kjun-placeholder" : listed.value && !custom ? "kjun-select-values" : undefined}
+                style={css({ flex: 1, paddingRight: showClear ? spec.clearSize + spec.affixGap : undefined })}>
+                {custom ? shown : listed.value ? [
+                  <span ref={valuesText} class="kjun-select-values-text">{labels.map((text, index) => <span key={index}>{index ? ", " : ""}{text}</span>)}</span>,
+                  hidden.value > 0 && <span class="kjun-select-values-more" aria-hidden="true">+{hidden.value}</span>,
+                ] : label || (props.placeholder ?? m.value.select)}
               </span>
-              {/* Time segments read as one value, so they carry no indicator of their own. */}
-              {!segment && <KjunIcon name="chevron-down" class="kjun-select-indicator" data-open={expanded.value || undefined} size={spec.iconSize}
+              {/* Time segments read as one value, and a read-only value does not open, so neither carries an indicator. */}
+              {!segment && !props.readOnly && <KjunIcon name="chevron-down" class="kjun-select-indicator" data-open={expanded.value || undefined} size={spec.iconSize}
                 style={{ flexShrink: 0, color: props.disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />}
             </button>
-            {props.clearable && !props.readOnly && !!label && (
-              <KjunButton size="sm" variant="ghost" ariaLabel={m.value.clearSelection} disabled={props.disabled} class="kjun-select-clear"
-                style={css({ padding: 0, right: spec.padding + spec.iconSize + spec.affixGap, width: spec.clearSize, height: spec.clearSize, minHeight: spec.clearSize, borderRadius: "50%" })}
+            {showClear && (
+              <KjunButton size="sm" variant="ghost" shape="circle" ariaLabel={m.value.clearSelection} disabled={props.disabled} class="kjun-select-clear"
+                style={css(selectClearStyle(spec))}
                 onClick={() => { change(props.multiple ? [] : null); emit("clear"); trigger.value?.focus(); }}>
-                <KjunIcon name="x" size={spec.iconSize} />
+                <span class="kjun-select-clear-mark" style={css(selectClearMarkStyle(spec))}><KjunIcon name="x" size={spec.clearMarkIconSize} /></span>
               </KjunButton>
             )}
           </div>
@@ -189,29 +242,12 @@ export const KjunSelect = defineComponent({
                 {props.loading && <div class="kjun-select-empty"><KjunSpinner size="sm" text={m.value.searching} /></div>}
                 <div key={state.session.value} id={id} class="kjun-listbox" aria-label={props.ariaLabel || (props.placeholder ?? m.value.select)} role="listbox"
                   aria-orientation="vertical" aria-multiselectable={props.multiple ? "true" : undefined} tabindex={-1} onKeydown={listKeydown}>
-                  {visible.map(({ option, key }) => {
-                    const isSelected = selected(option), disabled = optionDisabled(option), isFocused = focused.value === String(key);
-                    const content: VNodeChild = slots.option?.({ option, selected: isSelected });
-                    return (
-                      <div key={key} data-key={String(key)} class="kjun-option" role="option" aria-selected={isSelected}
-                        aria-disabled={disabled ? "true" : undefined} tabindex={disabled ? undefined : isFocused ? 0 : -1}
-                        data-focused={isFocused || undefined} data-focus-visible={(isFocused && focusVisible.value) || undefined}
-                        onFocus={(event: FocusEvent) => { focused.value = String(key); focusVisible.value = isFocusVisible(); void event; }}
-                        onPointermove={(event: PointerEvent) => {
-                          if (disabled || document.activeElement === event.currentTarget) return;
-                          focused.value = String(key); focusVisible.value = false;
-                          (event.currentTarget as HTMLElement).focus({ preventScroll: true });
-                        }}
-                        onClick={() => {
-                          if (disabled) return;
-                          change(nextValue(option));
-                          if (!props.multiple) state.changeOpen(false);
-                        }}>
-                        {(Array.isArray(content) ? content.length : content) ? content : <span>{optionLabel(option, props.labelKey)}</span>}
-                        {isSelected && !segment && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
-                      </div>
-                    );
-                  })}
+                  {grouped ? sections.map(section => section.label === undefined ? section.items.map(renderOption) : (
+                    <div key={section.key} role="group" class="kjun-select-group" aria-labelledby={`${id}-${section.key}`}>
+                      <div id={`${id}-${section.key}`} class="kjun-menu-section-title" role="presentation">{section.label}</div>
+                      {section.items.map(renderOption)}
+                    </div>
+                  )) : visible.map(renderOption)}
                 </div>
                 {!props.loading && !matching.length && <div class="kjun-select-empty">{m.value.noResults}</div>}
                 {!props.loading && visible.length < matching.length && (

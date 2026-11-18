@@ -6953,6 +6953,41 @@
             "description": "기존 예제 프리셋으로 상태 전이를 확인합니다."
           },
           {
+            "id": "labels",
+            "label": "선택 이름 표시",
+            "settings": {
+              "multiple": true,
+              "multipleDisplay": "labels"
+            },
+            "values": {
+              "select": [
+                "a",
+                "c"
+              ]
+            },
+            "description": "기존 예제 프리셋으로 상태 전이를 확인합니다."
+          },
+          {
+            "id": "grouped",
+            "label": "옵션 그룹",
+            "settings": {
+              "grouped": true
+            },
+            "values": {},
+            "description": "기존 예제 프리셋으로 상태 전이를 확인합니다."
+          },
+          {
+            "id": "readonly",
+            "label": "읽기 전용",
+            "settings": {
+              "readOnly": true
+            },
+            "values": {
+              "select": "c"
+            },
+            "description": "기존 예제 프리셋으로 상태 전이를 확인합니다."
+          },
+          {
             "id": "long",
             "label": "긴 옵션",
             "settings": {
@@ -7095,6 +7130,41 @@
             "description": "기존 예제 프리셋으로 상태 전이를 확인합니다."
           },
           {
+            "id": "labels",
+            "label": "선택 이름 표시",
+            "settings": {
+              "multiple": true,
+              "multipleDisplay": "labels"
+            },
+            "values": {
+              "select": [
+                "a",
+                "c"
+              ]
+            },
+            "description": "기존 예제 프리셋으로 상태 전이를 확인합니다."
+          },
+          {
+            "id": "grouped",
+            "label": "옵션 그룹",
+            "settings": {
+              "grouped": true
+            },
+            "values": {},
+            "description": "기존 예제 프리셋으로 상태 전이를 확인합니다."
+          },
+          {
+            "id": "readonly",
+            "label": "읽기 전용",
+            "settings": {
+              "readOnly": true
+            },
+            "values": {
+              "select": "c"
+            },
+            "description": "기존 예제 프리셋으로 상태 전이를 확인합니다."
+          },
+          {
             "id": "long",
             "label": "긴 옵션",
             "settings": {
@@ -7233,6 +7303,41 @@
                 "a",
                 "c"
               ]
+            },
+            "description": "기존 예제 프리셋으로 상태 전이를 확인합니다."
+          },
+          {
+            "id": "labels",
+            "label": "선택 이름 표시",
+            "settings": {
+              "multiple": true,
+              "multipleDisplay": "labels"
+            },
+            "values": {
+              "select": [
+                "a",
+                "c"
+              ]
+            },
+            "description": "기존 예제 프리셋으로 상태 전이를 확인합니다."
+          },
+          {
+            "id": "grouped",
+            "label": "옵션 그룹",
+            "settings": {
+              "grouped": true
+            },
+            "values": {},
+            "description": "기존 예제 프리셋으로 상태 전이를 확인합니다."
+          },
+          {
+            "id": "readonly",
+            "label": "읽기 전용",
+            "settings": {
+              "readOnly": true
+            },
+            "values": {
+              "select": "c"
             },
             "description": "기존 예제 프리셋으로 상태 전이를 확인합니다."
           },

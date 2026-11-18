@@ -77,7 +77,7 @@ controls.KjunKpiRow.push(toggle("mobileSummary", "모바일 요약", true));
 controls.KjunSignedValue.push(toggle("stale", "오래된 값"));
 assign("PriceCell", [toggle("stale", "오래된 값")]);
 assign("MarketSimpleList MarketTable MarketCards MarketListPanel", [loading, error]);
-assign("Select", [size, toggle("multiple", "복수 선택"), toggle("searchable", "검색", true), toggle("clearable", "지우기", true), disabled, loading, error]);
+assign("Select", [size, toggle("multiple", "복수 선택"), { ...choice("multipleDisplay", "복수 표시", ["count", "labels"]), when: { multiple: [true] } }, toggle("grouped", "옵션 그룹"), toggle("searchable", "검색", true), toggle("clearable", "지우기", true), disabled, toggle("readOnly", "읽기 전용"), loading, error]);
 assign("SearchInput", [size, number("minChars", "최소 글자 수", 1, 10), number("debounce", "검색 대기 시간(ms)", 0, 2000), toggle("clearable", "지우기", true), disabled, toggle("error", "필드 오류"), choice("response", "검색 응답", ["정상", "빈 결과", "느린 응답", "요청 실패", "긴 결과"])]);
 assign("FormGroup", [field("label", "라벨", "내용"), field("hint", "도움말", "도움말을 입력에 연결합니다."), toggle("required", "필수 입력", true), field("errorMessage", "오류 메시지", ""), toggle("labelEnd", "라벨 끝 글자 수"), toggle("childDisabled", "입력 필드 비활성")]);
 assign("Table", [toggle("sortable", "정렬 허용", true), toggle("selectable", "행 선택", true), toggle("expandable", "행 확장", true), toggle("searchable", "검색", true), choice("responsive", "모바일 표현", ["card", "list", "compact", "none"]), loading, error]);
@@ -132,7 +132,7 @@ const extras: Record<string, ExamplePreset[]> = {
   KjunPopover: [preset("no-padding", "여백 직접 구성", { noPadding:true })],
   KjunKpiRow: [preset("equal", "세 지표 동등 표시", { mobileSummary:false }), { ...preset("summary", "모바일 요약", { mobileSummary:true }), narrow:true }],
   KjunInput: [preset("sizes", "크기 비교", { comparison: "크기" }), preset("states", "상태 비교", { comparison: "상태" }), preset("affixes", "아이콘·단위 비교", { comparison: "아이콘·단위" }), preset("reveal-count", "보기·글자 수 비교", { comparison: "보기·글자 수" }), { ...preset("narrow", "좁은 화면 · 375px"), narrow: true }],
-  KjunSelect: [preset("multiple", "복수 선택", { multiple: true }, { select: ["a", "c"] }), preset("long", "긴 옵션", { data: "long" }), preset("empty", "빈 옵션", { data: "empty" }), preset("error", "오류", { error: true })],
+  KjunSelect: [preset("multiple", "복수 선택", { multiple: true }, { select: ["a", "c"] }), preset("labels", "선택 이름 표시", { multiple: true, multipleDisplay: "labels" }, { select: ["a", "c"] }), preset("grouped", "옵션 그룹", { grouped: true }), preset("readonly", "읽기 전용", { readOnly: true }, { select: "c" }), preset("long", "긴 옵션", { data: "long" }), preset("empty", "빈 옵션", { data: "empty" }), preset("error", "오류", { error: true })],
   KjunSearchInput: [preset("empty", "빈 결과", { response: "빈 결과" }), preset("slow", "느린 응답", { response: "느린 응답" }), preset("failure", "요청 실패", { response: "요청 실패" }), preset("long", "긴 결과", { response: "긴 결과" })],
   KjunFormGroup: [preset("required", "필수 입력", { required: true }), preset("long", "긴 라벨·도움말", { label: long, hint: long }), preset("error", "검증 오류", { errorMessage: "내용을 입력해 주세요." }), preset("label-end", "라벨 끝 글자 수", { labelEnd: true })],
   KjunTable: [...tableDesignPresets, preset("selection", "선택·확장", {}, { selected: [], expanded: ["a"] }), preset("long", "긴 셀", { data: "long" }), preset("empty", "빈 데이터", { data: "empty" }), preset("error", "오류", { error: true }), { ...preset("narrow", "좁은 화면"), narrow: true }],
