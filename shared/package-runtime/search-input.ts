@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { searchLoadDelay } from "./input-field";
 
 export interface SearchInputModelProps<T> {
   value: string;
@@ -20,8 +21,12 @@ export function useSearchInputModel<T>({
     // A failed request is its own state so the panel never reads it as an empty result.
     [failed, setFailed] = useState(false),
     version = useRef(0),
-    notify = useRef(onSearchError);
+    notify = useRef(onSearchError),
+    // A new loadOptions function on every parent render must not refetch; the latest one answers the next query.
+    load = useRef(loadOptions);
   notify.current = onSearchError;
+  load.current = loadOptions;
+  const remote = !!loadOptions;
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const notifyValue = useRef(onValueChange);
   notifyValue.current = onValueChange;
@@ -38,7 +43,7 @@ export function useSearchInputModel<T>({
     const current = ++version.current,
       abort = new AbortController();
     setFailed(false);
-    if (!loadOptions || !open || disabled || query.length < minChars) {
+    if (!remote || !open || disabled || query.length < minChars) {
       setOptions([]);
       setLoading(false);
       return;
@@ -47,7 +52,7 @@ export function useSearchInputModel<T>({
     setOptions([]);
     const timer = setTimeout(async () => {
       try {
-        const result = await loadOptions(query, { signal: abort.signal });
+        const result = await load.current!(query, { signal: abort.signal });
         if (current === version.current && !abort.signal.aborted)
           setOptions(result);
       } catch (error) {
@@ -60,13 +65,13 @@ export function useSearchInputModel<T>({
         if (current === version.current && !abort.signal.aborted)
           setLoading(false);
       }
-    }, 300);
+    }, searchLoadDelay);
     return () => {
       abort.abort();
       clearTimeout(timer);
       ++version.current;
     };
-  }, [query, loadOptions, minChars, open, disabled]);
+  }, [query, remote, minChars, open, disabled]);
   const update = (v: string) => {
     setQuery(v);
     clearTimeout(timer.current);

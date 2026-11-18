@@ -4533,6 +4533,14 @@
             }
           },
           {
+            "id": "loading",
+            "label": "로딩",
+            "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
+            "settings": {
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"loading\":true}}}"
+            }
+          },
+          {
             "id": "error",
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
@@ -4651,6 +4659,14 @@
             }
           },
           {
+            "id": "loading",
+            "label": "로딩",
+            "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
+            "settings": {
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"loading\":true}}}"
+            }
+          },
+          {
             "id": "error",
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
@@ -4766,6 +4782,14 @@
             "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
             "settings": {
               "visual": "{\"KjunSearchInput\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
+            "id": "loading",
+            "label": "로딩",
+            "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
+            "settings": {
+              "visual": "{\"KjunSearchInput\":{\"props\":{\"loading\":true}}}"
             }
           },
           {

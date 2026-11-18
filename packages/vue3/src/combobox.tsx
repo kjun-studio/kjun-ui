@@ -1,5 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
-import { computed, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
+import { computed, mergeProps, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import type { InputSize } from "@kjun-ui/tokens";
 import { optionDisabled, optionKey, optionLabel, type OptionValue, type SelectOption } from "../../../shared/package-runtime/options";
@@ -12,6 +12,8 @@ import { useComboboxModel } from "./runtime/selection";
 /** The shared input + listbox of Combobox and SearchInput (React's SearchField). */
 export const SearchField = defineComponent({
   name: "KjunSearchField",
+  // The field renders the input and its popup side by side, so the owner's attributes go to the input.
+  inheritAttrs: false,
   props: {
     value: { type: String, required: true },
     size: { type: String as PropType<InputSize>, required: true },
@@ -37,12 +39,13 @@ export const SearchField = defineComponent({
     onEnter: { type: Function as PropType<() => void>, default: undefined },
     returnFocus: { type: Function as PropType<() => HTMLElement | null | undefined>, default: undefined },
   },
-  setup(props) {
+  setup(props, { attrs, expose }) {
     const m = useKjunMessages();
     const composition = useCompositionGuard();
     let clearing = false;
     const field = ref<{ el: HTMLInputElement | null } | null>(null);
     const input = () => field.value?.el ?? null;
+    expose({ focus: () => input()?.focus(), get el() { return input(); } });
     const highlighted = ref(-1), id = useKjunId("kjun-");
     const focusGuard = usePopupFocusGuard(input);
     const active = computed(() => !props.disabled && !props.loading && highlighted.value >= 0 && highlighted.value < props.options.length
@@ -86,7 +89,7 @@ export const SearchField = defineComponent({
         <>
           <KjunInput ref={field} error={props.error} modelValue={props.value} size={props.size}
             ariaLabel={props.ariaLabel || props.placeholder} disabled={props.disabled} clearable={props.clearable} prefixIcon="search"
-            {...{
+            {...mergeProps(attrs, {
               placeholder: props.placeholder, role: "combobox", "aria-autocomplete": "list", "aria-expanded": String(shown),
               "aria-controls": props.open ? id : undefined,
               "aria-activedescendant": props.open && active.value >= 0 ? id + "-" + active.value : undefined,
@@ -102,7 +105,7 @@ export const SearchField = defineComponent({
               onCompositionstart: composition.onCompositionstart,
               onCompositionend: composition.onCompositionend,
               onKeydown: keydown,
-            }} />
+            })} />
           <FloatingPanel field nonModal open={shown} onOpenChange={props.onOpenChange} trigger={input} placement="bottom-start" matchTriggerWidth panelClass="kjun-select-panel">
             <div id={id} role="listbox" aria-label={props.ariaLabel || props.placeholder} onMousedown={(event: MouseEvent) => event.preventDefault()}>
               {props.loading ? <div class="kjun-select-empty"><KjunSpinner size="sm" text={m.value.searching} /></div>

@@ -5,12 +5,14 @@ import { type InputSize } from "@kjun-ui/tokens";
 import {
 useEffect,
 useId,
+useImperativeHandle,
 useRef,
 useState,
-type ReactNode
+type ReactNode,
+type Ref
 } from "react";
 import { KjunSpinner } from "./display";
-import { KjunInput } from "./input";
+import { KjunInput, type KjunInputProps } from "./input";
 import { useCompositionGuard } from "./composition";
 import { FloatingPanel } from "./layers";
 import { resolveFocusReturn, type FocusReturn } from "./floating-panel";
@@ -114,7 +116,13 @@ export interface SearchFieldProps<T extends SelectOption> {
   onClear?: () => void;
   onEnter?: () => void;
   returnFocus?: () => HTMLElement | null;
+  /** SearchInput's own input attributes (id, name, className, autoFocus, focus handlers) and its ref. */
+  inputProps?: SearchFieldInputProps;
+  inputRef?: Ref<HTMLInputElement>;
 }
+/** Input attributes a search field passes through; the field owns value, typing, keys and the popup wiring. */
+export type SearchFieldInputProps = Omit<KjunInputProps, "value" | "size" | "placeholder" | "ariaLabel" | "disabled" | "error" | "clearable"
+  | "prefixIcon" | "role" | "onValueChange" | "onClear" | "onEnter" | "onChange" | "onKeyDown" | "onClick" | "onCompositionStart" | "onCompositionEnd">;
 export function SearchField<T extends SelectOption>({
   value,
   size,
@@ -138,6 +146,8 @@ export function SearchField<T extends SelectOption>({
   onClear,
   onEnter,
   returnFocus,
+  inputProps,
+  inputRef,
 }: SearchFieldProps<T>) {
   const m = useKjunMessages();
   const composition = useCompositionGuard();
@@ -145,6 +155,7 @@ export function SearchField<T extends SelectOption>({
   const ref = useRef<HTMLInputElement>(null),
     [highlighted, setActive] = useState(-1),
     id = "kjun-" + useId();
+  useImperativeHandle(inputRef, () => ref.current!);
   const focusGuard = usePopupFocusGuard(ref);
   const active = !disabled && !loading && highlighted >= 0 &&
     highlighted < options.length && !optionDisabled(options[highlighted])
@@ -176,6 +187,7 @@ export function SearchField<T extends SelectOption>({
   return (
     <>
       <KjunInput
+        {...inputProps}
         error={error}
         ref={ref}
         value={value}
@@ -203,8 +215,9 @@ export function SearchField<T extends SelectOption>({
           queueMicrotask(() => { clearing.current = false; });
         }}
         onClick={() => { focusGuard.clear(); onOpenChange(true); }}
-        onFocus={() => { if (!clearing.current && focusGuard.canOpen()) onOpenChange(true); }}
+        onFocus={(event) => { inputProps?.onFocus?.(event); if (!clearing.current && focusGuard.canOpen()) onOpenChange(true); }}
         onBlur={(event) => {
+          inputProps?.onBlur?.(event);
           focusGuard.clear();
           // Moving to the input's Clear button must not discard its draft before clicking.
           if (!event.currentTarget.closest(".kjun-input-wrap")?.contains(event.relatedTarget))

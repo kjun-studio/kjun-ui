@@ -505,6 +505,19 @@ set("Radio", { name: "웹 폼 제출 이름입니다. Native에는 폼이 없어
 for (const platform of ["vue3", "react"]) set("Textarea", {
   submitOn: { type: '"mod-enter" | "enter"', default: '"mod-enter"', summary: "보내기 키입니다. mod-enter는 Ctrl/⌘+Enter, enter는 Enter로 보내고 Shift+Enter로 줄을 바꿉니다. 한글처럼 조합 중인 Enter로는 보내지 않습니다. submit을 받으면 보내기 버튼이 없어도 동작합니다." },
 }, platform);
+set("Textarea", {
+  submitOn: { type: '"mod-enter" | "enter"', default: '"mod-enter"', summary: "보내기 키입니다. Native Web에서는 웹과 같이 mod-enter는 Ctrl/⌘+Enter, enter는 Enter로 보내고 Shift+Enter로 줄을 바꿉니다. 기기 키보드는 보조 키를 알려 주지 않으므로 enter일 때만 return 키로 보냅니다. onSubmit이 있으면 보내기 버튼이 없어도 동작합니다." },
+  readOnly: "읽기 전용입니다. 이전 이름 readonly도 받지만 KjunInput과 같은 readOnly를 쓰세요.",
+}, "native");
+set("Input", {
+  revealable: { default: "false", summary: "비밀번호 필드 끝에 ‘보기’ 글자 버튼을 둡니다. 누르면 입력값을 글자로 보이고 ‘숨기기’로 바뀝니다. 두 낱말 중 넓은 폭을 유지해 입력 칸 폭이 흔들리지 않습니다. 버튼 이름은 KjunProvider 문구(revealPasswordLabel·concealPasswordLabel)를 따릅니다. 웹은 type=\"password\", Native는 secureTextEntry일 때만 나타납니다." },
+  showCount: { default: "false", summary: "필드 끝에 글자 수를 표시합니다. maxLength가 있으면 \"길이/최대\"로 쓰고, 넘치면 위험 색과 오류 상태로 표시합니다. Textarea와 같은 규칙이며 화면 낭독기에는 필드 설명으로 연결하고 한도에 가까우면 남은 글자 수를 알립니다." },
+  clearable: "값이 있을 때 지우기 버튼을 표시합니다. 숫자 0도 값으로 봅니다. 비활성·읽기 전용이면 나타나지 않습니다.",
+});
+set("Input", { maxLength: "입력할 수 있는 최대 글자 수(UTF-16 단위)입니다. Textarea와 같은 이름이며 maxlength 속성으로도 줄 수 있습니다. showCount와 함께 쓰면 \"길이/최대\"로 표시합니다." }, "vue3");
+set("SearchInput", {
+  loading: { default: "false", summary: "일반 입력 모드에서 결과를 표·목록처럼 다른 곳에 보여줄 때 조회 중임을 표시합니다. 검색 아이콘 자리에 같은 크기의 스피너를 그려 글자 시작 위치가 움직이지 않고, 입력에 aria-busy를 둡니다. 자동 완성 모드는 패널 안에서 따로 표시합니다." },
+});
 set("Textarea", { submitting: { default: "false", summary: "보내는 중입니다. 보내기 버튼이 돌고, 끝날 때까지 다시 보내지 않습니다. 웹은 필드에 aria-busy를 둡니다." } });
 set("Fab", {
   icon: { summary:"아이콘 이름입니다. 크기는 md 24, sm 20으로 고정됩니다." },

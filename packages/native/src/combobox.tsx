@@ -2,10 +2,11 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { usePopupFocusGuard } from "../../../shared/package-runtime/use-layer";
 import { useComboboxModel } from "../../../shared/package-runtime/combobox";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
-import { useId,useRef,type ReactNode } from "react";
+import { useId,useRef,type ReactNode,type Ref } from "react";
 import { Platform, View } from "react-native";
 import { KjunSpinner } from "./display";
-import { KjunInput,FieldContext } from "./input";
+import { KjunInput,FieldContext,type KjunInputProps } from "./input";
+import type { KjunTextInputHandle } from "./handles";
 import { KText } from "./internal";
 import { FloatingPanel } from "./layers";
 import { useKjunStyles } from "./provider";
@@ -105,7 +106,13 @@ export interface SearchFieldProps<T extends SelectOption> {
   onSelect: (o: T) => void;
   onClear?: () => void;
   onEnter?: () => void;
+  /** SearchInput's own input props (nativeID, testID, autoFocus, focus handlers) and its ref, for the field on the page. */
+  inputProps?: SearchFieldInputProps;
+  inputRef?: Ref<KjunTextInputHandle>;
 }
+/** Input props a search field passes through; the field owns value, typing and the popup wiring. */
+export type SearchFieldInputProps = Omit<KjunInputProps, "value" | "size" | "placeholder" | "ariaLabel" | "disabled" | "error" | "clearable"
+  | "prefixIcon" | "onChangeText" | "onClear" | "onSubmitEditing" | "onPressIn">;
 export function SearchField<T extends SelectOption>({
   value,
   size,
@@ -128,6 +135,8 @@ export function SearchField<T extends SelectOption>({
   onSelect,
   onClear,
   onEnter,
+  inputProps: own,
+  inputRef,
 }: SearchFieldProps<T>) {
   const m = useKjunMessages();
   const searchId = "kjun-popup-search-" + useId().replace(/:/g, "");
@@ -153,11 +162,14 @@ export function SearchField<T extends SelectOption>({
       queueMicrotask(() => { clearing.current = false; });
     },
     onSubmitEditing: onEnter,
+    ...(own?.enterKeyHint ? { enterKeyHint: own.enterKeyHint } : {}),
   };
   return (
     <>
       <View ref={ref} collapsable={false}>
-        <KjunInput {...inputProps} {...(Platform.OS === 'web' ? { onClick: openFromPress } : { onPressIn: openFromPress })} aria-expanded={open && !disabled} onBlur={focusGuard.clear} onFocus={() => { if (!clearing.current && focusGuard.canOpen()) onOpenChange(true); }} />
+        <KjunInput {...own} ref={inputRef} {...inputProps} {...(Platform.OS === 'web' ? { onClick: openFromPress } : { onPressIn: openFromPress })} aria-expanded={open && !disabled}
+          onBlur={(event) => { own?.onBlur?.(event); focusGuard.clear(); }}
+          onFocus={(event) => { own?.onFocus?.(event); if (!clearing.current && focusGuard.canOpen()) onOpenChange(true); }} />
       </View>
       <FloatingPanel
         field

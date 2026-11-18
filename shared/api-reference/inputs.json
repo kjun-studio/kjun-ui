@@ -305,7 +305,10 @@
       "disabled",
       "readOnly",
       "required",
-      "variant"
+      "variant",
+      "revealable",
+      "showCount",
+      "maxLength"
     ],
     "react": [
       "size",
@@ -337,7 +340,9 @@
       "placeholder",
       "readOnly",
       "required",
-      "variant"
+      "variant",
+      "revealable",
+      "showCount"
     ],
     "native": [
       "value",
@@ -361,7 +366,9 @@
       "onChangeText",
       "placeholder",
       "readOnly",
-      "variant"
+      "variant",
+      "revealable",
+      "showCount"
     ]
   },
   "KjunRadio": {
@@ -455,7 +462,8 @@
       "labelField",
       "minChars",
       "emptyText",
-      "errorText"
+      "errorText",
+      "loading"
     ],
     "react": [
       "value",
@@ -477,7 +485,15 @@
       "onSelect",
       "onSearchError",
       "onEnter",
-      "onClear"
+      "onClear",
+      "loading",
+      "name",
+      "autoFocus",
+      "className",
+      "id",
+      "style",
+      "readOnly",
+      "required"
     ],
     "native": [
       "value",
@@ -499,7 +515,12 @@
       "onSelect",
       "onSearchError",
       "onEnter",
-      "onClear"
+      "onClear",
+      "loading",
+      "style",
+      "autoFocus",
+      "readOnly",
+      "containerStyle"
     ]
   },
   "KjunSelect": {
@@ -709,7 +730,8 @@
       "children",
       "id",
       "submitting",
-      "variant"
+      "variant",
+      "submitOn"
     ]
   }
 }

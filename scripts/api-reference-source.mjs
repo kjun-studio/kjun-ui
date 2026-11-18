@@ -64,6 +64,8 @@ export function reactContracts(platform) {
     if (ts.isFunctionDeclaration(node) || ts.isFunctionExpression(node) || ts.isArrowFunction(node))
       return node;
     if (ts.isVariableDeclaration(node)) return implementation(node.initializer);
+    // A generic component keeps its type parameters through forwardRef(...) as <T>(props) => ReactElement.
+    if (ts.isAsExpression(node) || ts.isParenthesizedExpression(node)) return implementation(node.expression);
     if (ts.isCallExpression(node)) return node.arguments.map(implementation).find(Boolean);
     if (ts.isIdentifier(node))
       return implementation(resolveSymbol(checker.getSymbolAtLocation(node))?.valueDeclaration);

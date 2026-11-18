@@ -1,4 +1,5 @@
 import { computed, onBeforeUnmount, ref, watch } from "vue";
+import { searchLoadDelay } from "../../../../shared/package-runtime/input-field";
 import { optionLabel, optionValue, type OptionValue, type SelectOption } from "../../../../shared/package-runtime/options";
 
 // Vue forms of shared/package-runtime/{select,combobox,search-input}.ts.
@@ -69,7 +70,8 @@ export function useSearchInputModel<T>(props: () => SearchInputModelProps<T>, op
   watch(() => [props().disabled, props().debounce, !!props().loadOptions], () => clearTimeout(timer), { flush: "sync" });
   let abort: AbortController | undefined, request: ReturnType<typeof setTimeout> | undefined;
   const cancel = () => { abort?.abort(); clearTimeout(request); version++; };
-  watch(() => [query.value, props().loadOptions, props().minChars, open(), props().disabled] as const, () => {
+  // A new loadOptions function on every parent render must not refetch; the latest one answers the next query.
+  watch(() => [query.value, !!props().loadOptions, props().minChars, open(), props().disabled] as const, () => {
     cancel();
     const current = ++version, controller = new AbortController();
     abort = controller;
@@ -79,14 +81,14 @@ export function useSearchInputModel<T>(props: () => SearchInputModelProps<T>, op
     loading.value = true; options.value = [];
     request = setTimeout(async () => {
       try {
-        const result = await loadOptions(query.value, { signal: controller.signal });
+        const result = await (props().loadOptions ?? loadOptions)(query.value, { signal: controller.signal });
         if (current === version && !controller.signal.aborted) options.value = result;
       } catch (error) {
         if (current === version && !controller.signal.aborted) { options.value = []; failed.value = true; events.error(error); }
       } finally {
         if (current === version && !controller.signal.aborted) loading.value = false;
       }
-    }, 300);
+    }, searchLoadDelay);
   }, { immediate: true });
   onBeforeUnmount(() => { cancel(); clearTimeout(timer); });
   return {
