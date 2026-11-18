@@ -739,8 +739,6 @@
       "packages/tokens/src/steps.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
-      "packages/vue3/src/input.tsx",
-      "packages/react/src/input.tsx",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
       "packages/native/src/calendar-day.tsx",

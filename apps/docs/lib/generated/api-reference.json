@@ -17660,6 +17660,15 @@
             "description": "",
             "summary": "취소 버튼의 강조 스타일입니다.",
             "source": "packages/vue3/src/modal.tsx"
+          },
+          {
+            "name": "fill",
+            "type": "boolean | \"primary\"",
+            "required": false,
+            "default": "false",
+            "description": "The buttons fill the row: true gives each the same width, \"primary\" makes the confirm button twice as wide as cancel.\nStacked rows are full width either way.",
+            "summary": "버튼이 줄 폭을 나눠 채웁니다. true는 두 버튼을 같은 폭으로, \"primary\"는 확인 버튼을 취소 버튼의 두 배 폭으로 둡니다. 두 버튼이 한 줄에 들어가지 않아 세로로 쌓이면 어느 쪽이든 각 버튼이 줄 전체를 채웁니다.",
+            "source": "packages/vue3/src/modal.tsx"
           }
         ],
         "events": [
@@ -17782,6 +17791,15 @@
             "source": "packages/react/src/modal.tsx"
           },
           {
+            "name": "fill",
+            "type": "boolean | \"primary\" | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The buttons fill the row: true gives each the same width, \"primary\" makes the confirm button twice as wide as cancel.\nStacked rows are full width either way.",
+            "summary": "버튼이 줄 폭을 나눠 채웁니다. true는 두 버튼을 같은 폭으로, \"primary\"는 확인 버튼을 취소 버튼의 두 배 폭으로 둡니다. 두 버튼이 한 줄에 들어가지 않아 세로로 쌓이면 어느 쪽이든 각 버튼이 줄 전체를 채웁니다.",
+            "source": "packages/react/src/modal.tsx"
+          },
+          {
             "name": "onCancel",
             "type": "(() => void) | undefined",
             "required": false,
@@ -17898,6 +17916,15 @@
             "source": "packages/native/src/modal.tsx"
           },
           {
+            "name": "fill",
+            "type": "boolean | \"primary\" | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The buttons fill the row: true gives each the same width, \"primary\" makes the confirm button twice as wide as cancel.\nStacked rows are full width either way.",
+            "summary": "버튼이 줄 폭을 나눠 채웁니다. true는 두 버튼을 같은 폭으로, \"primary\"는 확인 버튼을 취소 버튼의 두 배 폭으로 둡니다. 두 버튼이 한 줄에 들어가지 않아 세로로 쌓이면 어느 쪽이든 각 버튼이 줄 전체를 채웁니다.",
+            "source": "packages/native/src/modal.tsx"
+          },
+          {
             "name": "onCancel",
             "type": "(() => void) | undefined",
             "required": false,
@@ -17970,6 +17997,10 @@
             "summary": "필수 표시와 자식 필드 맥락을 제공합니다.",
             "details": [
               {
+                "label": "필수 표시",
+                "text": "라벨 뒤의 *는 그림으로만 그리고 화면 낭독기에서는 숨깁니다. 필수 여부는 입력의 required 상태로 전달됩니다."
+              },
+              {
                 "label": "입력 연결",
                 "text": "Input·Textarea는 이 상태를 상속합니다. React·Vue 3는 기본 required, Native Web은 aria-required로 필수 입력 의미를 전달합니다. React·Vue 2 입력에 명시한 required 값은 FormGroup보다 우선합니다."
               },
@@ -17998,6 +18029,10 @@
             "description": "",
             "summary": "오류 메시지입니다. 표시하는 동안 hint 자리를 대신합니다.",
             "details": [
+              {
+                "label": "입력 자체 오류",
+                "text": "NumberInput의 범위 오류처럼 입력이 스스로 만드는 메시지도 이 자리에 표시합니다. error를 주면 error가 우선합니다."
+              },
               {
                 "label": "적용 조건",
                 "text": "비어 있지 않은 문자열이면 오류 설명을 표시합니다. boolean 오류 여부가 아닌 메시지를 전달하세요."
@@ -18052,6 +18087,24 @@
               {
                 "label": "사용 계약",
                 "text": "KjunInput·KjunSelect·KjunTextarea 등은 provide/inject로 필드 맥락을 받습니다. 입력의 v-model은 자식에 연결합니다."
+              }
+            ],
+            "example": "/components/form-group#preview"
+          },
+          {
+            "name": "labelEnd",
+            "data": [],
+            "source": "packages/vue3/src/input.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "라벨 줄 끝에 둘 보조 내용입니다. 글자 수나 \"전액\" 같은 작은 동작에 씁니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "제공 데이터 없음"
+              },
+              {
+                "label": "사용 계약",
+                "text": "라벨과 같은 줄 오른쪽 끝에 caption 크기로 둡니다. 오류가 생겨도 자리가 바뀌지 않습니다. 버튼을 넣으면 그 버튼에 이름을 주세요."
               }
             ],
             "example": "/components/form-group#preview"
@@ -18110,6 +18163,10 @@
             "summary": "필수 표시와 자식 필드 맥락을 제공합니다.",
             "details": [
               {
+                "label": "필수 표시",
+                "text": "라벨 뒤의 *는 그림으로만 그리고 화면 낭독기에서는 숨깁니다. 필수 여부는 입력의 required 상태로 전달됩니다."
+              },
+              {
                 "label": "입력 연결",
                 "text": "Input·Textarea는 이 상태를 상속합니다. React·Vue 3는 기본 required, Native Web은 aria-required로 필수 입력 의미를 전달합니다. React·Vue 2 입력에 명시한 required 값은 FormGroup보다 우선합니다."
               },
@@ -18138,6 +18195,10 @@
             "description": "",
             "summary": "오류 메시지입니다. 표시하는 동안 hint 자리를 대신합니다.",
             "details": [
+              {
+                "label": "입력 자체 오류",
+                "text": "NumberInput의 범위 오류처럼 입력이 스스로 만드는 메시지도 이 자리에 표시합니다. error를 주면 error가 우선합니다."
+              },
               {
                 "label": "적용 조건",
                 "text": "비어 있지 않은 문자열이면 오류 설명을 표시합니다. boolean 오류 여부가 아닌 메시지를 전달하세요."
@@ -18174,6 +18235,26 @@
             "description": "Hides the label visually while it still names the field.",
             "summary": "라벨을 화면에서만 숨깁니다. 라벨은 계속 입력의 이름이 됩니다.",
             "source": "packages/react/src/input.tsx"
+          },
+          {
+            "name": "labelEnd",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Content at the end of the label row: a character count, or a small action such as \"전액\". Stays put when an error shows.",
+            "summary": "라벨 줄 끝에 둘 보조 내용입니다. 글자 수나 \"전액\" 같은 작은 동작에 씁니다.",
+            "details": [
+              {
+                "label": "배치",
+                "text": "라벨과 같은 줄 오른쪽 끝에 caption 크기로 둡니다. 오류가 생겨도 자리가 바뀌지 않고 라벨과 입력 사이 간격도 그대로입니다."
+              },
+              {
+                "label": "책임",
+                "text": "글자 수 계산이나 동작은 앱이 정합니다. 버튼을 넣으면 그 버튼에 이름을 주세요."
+              }
+            ],
+            "source": "packages/react/src/input.tsx",
+            "example": "/components/form-group#preview"
           },
           {
             "name": "className",
@@ -18260,6 +18341,10 @@
             "summary": "필수 표시와 자식 필드 맥락을 제공합니다.",
             "details": [
               {
+                "label": "필수 표시",
+                "text": "라벨 뒤의 *는 그림으로만 그리고 화면 낭독기에서는 숨깁니다. 필수 여부는 입력의 required 상태로 전달됩니다."
+              },
+              {
                 "label": "입력 연결",
                 "text": "Input·Textarea는 이 상태를 상속합니다. React·Vue 3는 기본 required, Native Web은 aria-required로 필수 입력 의미를 전달합니다. React·Vue 2 입력에 명시한 required 값은 FormGroup보다 우선합니다."
               },
@@ -18288,6 +18373,10 @@
             "description": "",
             "summary": "오류 메시지입니다. 표시하는 동안 hint 자리를 대신합니다.",
             "details": [
+              {
+                "label": "입력 자체 오류",
+                "text": "NumberInput의 범위 오류처럼 입력이 스스로 만드는 메시지도 이 자리에 표시합니다. error를 주면 error가 우선합니다."
+              },
               {
                 "label": "적용 조건",
                 "text": "비어 있지 않은 문자열이면 오류 설명을 표시합니다. boolean 오류 여부가 아닌 메시지를 전달하세요."
@@ -18326,6 +18415,26 @@
             "source": "packages/native/src/input.tsx"
           },
           {
+            "name": "labelEnd",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Content at the end of the label row: a character count, or a small action such as \"전액\". Stays put when an error shows.",
+            "summary": "라벨 줄 끝에 둘 보조 내용입니다. 글자 수나 \"전액\" 같은 작은 동작에 씁니다.",
+            "details": [
+              {
+                "label": "배치",
+                "text": "라벨과 같은 줄 오른쪽 끝에 caption 크기로 둡니다. 오류가 생겨도 자리가 바뀌지 않고 라벨과 입력 사이 간격도 그대로입니다."
+              },
+              {
+                "label": "책임",
+                "text": "글자 수 계산이나 동작은 앱이 정합니다. 버튼을 넣으면 그 버튼에 이름을 주세요."
+              }
+            ],
+            "source": "packages/native/src/input.tsx",
+            "example": "/components/form-group#preview"
+          },
+          {
             "name": "children",
             "type": "ReactNode",
             "required": true,
@@ -18350,9 +18459,16 @@
             "type": "StyleProp<ViewStyle>",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
-            "source": "packages/native/src/input.tsx"
+            "description": "The group keeps a bottom gap (form itemGap) even when it is the last child; Stack, Inline and FormLayout remove it, or pass\n{ marginBottom: 0 } here.",
+            "summary": "그룹 바깥 View의 스타일입니다.",
+            "details": [
+              {
+                "label": "아래 간격",
+                "text": "그룹은 마지막 자식이어도 아래에 form itemGap 간격을 둡니다(Native는 마지막 자식을 알 수 없습니다). KjunStack·KjunInline·KjunFormLayout 안에서는 이 간격을 지우고, 그 밖에서 마지막 그룹이면 { marginBottom: 0 }을 주세요."
+              }
+            ],
+            "source": "packages/native/src/input.tsx",
+            "example": "/components/form-group#preview"
           }
         ],
         "events": [],
@@ -46652,7 +46768,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "확정된 숫자 값입니다. 편집 중 문자열과 구분하며 지정한 precision과 범위를 만족해야 합니다.",
+            "summary": "확정된 숫자 값입니다. 편집 중 문자열과 구분하며 소수 자릿수는 precision 이하여야 합니다. 범위 밖 값(재고가 줄어든 장바구니 수량)은 오류로 표시하되 버튼·입력은 그대로 쓸 수 있고, 누르거나 확정하면 범위 안으로 맞춥니다.",
             "details": [
               {
                 "label": "상태 책임",
@@ -46708,7 +46824,7 @@
             "required": false,
             "default": "1",
             "description": "",
-            "summary": "버튼과 방향키의 증감 단위입니다. 직접 입력은 배수로 강제하지 않습니다.",
+            "summary": "버튼과 방향키의 증감 단위입니다. 버튼을 길게 누르면 0.4초 뒤부터 0.1초마다 반복하고 범위 끝에서 멈춥니다. 직접 입력은 배수로 강제하지 않습니다.",
             "details": [
               {
                 "label": "범위",
@@ -46790,6 +46906,15 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
+            "source": "packages/vue3/src/quantity-stepper.tsx"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Submits the value with a surrounding form under this name (a hidden input); not sent while disabled.",
+            "summary": "폼 제출용 숨은 input의 이름입니다. 확정된 value를 제출하고, 비활성이면 제출하지 않습니다.",
             "source": "packages/vue3/src/quantity-stepper.tsx"
           }
         ],
@@ -46885,7 +47010,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "확정된 숫자 값입니다. 편집 중 문자열과 구분하며 지정한 precision과 범위를 만족해야 합니다.",
+            "summary": "확정된 숫자 값입니다. 편집 중 문자열과 구분하며 소수 자릿수는 precision 이하여야 합니다. 범위 밖 값(재고가 줄어든 장바구니 수량)은 오류로 표시하되 버튼·입력은 그대로 쓸 수 있고, 누르거나 확정하면 범위 안으로 맞춥니다.",
             "details": [
               {
                 "label": "상태 책임",
@@ -46941,7 +47066,7 @@
             "required": false,
             "default": "1",
             "description": "",
-            "summary": "버튼과 방향키의 증감 단위입니다. 직접 입력은 배수로 강제하지 않습니다.",
+            "summary": "버튼과 방향키의 증감 단위입니다. 버튼을 길게 누르면 0.4초 뒤부터 0.1초마다 반복하고 범위 끝에서 멈춥니다. 직접 입력은 배수로 강제하지 않습니다.",
             "details": [
               {
                 "label": "범위",
@@ -47023,6 +47148,15 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨이 부족한 경우 사용할 접근성 이름입니다. ListRow에서는 누르는 행·링크 행의 이름이 되며, 금액처럼 화면 낭독기가 함께 읽어야 할 값을 넣습니다.",
+            "source": "packages/react/src/quantity-stepper.tsx"
+          },
+          {
+            "name": "name",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Submits the value with a surrounding form under this name (a hidden input); not sent while disabled.",
+            "summary": "폼 제출용 숨은 input의 이름입니다. 확정된 value를 제출하고, 비활성이면 제출하지 않습니다.",
             "source": "packages/react/src/quantity-stepper.tsx"
           },
           {
@@ -47126,7 +47260,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "확정된 숫자 값입니다. 편집 중 문자열과 구분하며 지정한 precision과 범위를 만족해야 합니다.",
+            "summary": "확정된 숫자 값입니다. 편집 중 문자열과 구분하며 소수 자릿수는 precision 이하여야 합니다. 범위 밖 값(재고가 줄어든 장바구니 수량)은 오류로 표시하되 버튼·입력은 그대로 쓸 수 있고, 누르거나 확정하면 범위 안으로 맞춥니다.",
             "details": [
               {
                 "label": "상태 책임",
@@ -47182,7 +47316,7 @@
             "required": false,
             "default": "1",
             "description": "",
-            "summary": "버튼과 방향키의 증감 단위입니다. 직접 입력은 배수로 강제하지 않습니다.",
+            "summary": "버튼과 방향키의 증감 단위입니다. 버튼을 길게 누르면 0.4초 뒤부터 0.1초마다 반복하고 범위 끝에서 멈춥니다. 직접 입력은 배수로 강제하지 않습니다.",
             "details": [
               {
                 "label": "범위",
@@ -47426,6 +47560,10 @@
               {
                 "label": "동작",
                 "text": "편집 중에는 그대로 두고, 확정(blur·Enter)할 때 벗어나 있으면 오류 상태와 내장 문구(\"1,000원 이상 입력해 주세요\")를 보입니다. 앱이 value나 min·max를 바꿀 때도 바로 확인합니다. 값을 고치지 않으므로 거부는 앱이 정합니다. 편집 중 값이 범위로 돌아오면 오류를 바로 지웁니다. 오류 prop이나 FormGroup 오류가 있으면 그쪽이 우선합니다."
+              },
+              {
+                "label": "FormGroup 안",
+                "text": "내장 문구는 FormGroup의 오류 자리에 표시되고, 그동안 도움말을 대신합니다."
               }
             ],
             "source": "packages/vue3/src/number-input.tsx",
@@ -47544,6 +47682,15 @@
             "default": "—",
             "description": "",
             "summary": "값이 비었을 때 보이는 안내 문구입니다. 값을 대신하지 않습니다.",
+            "source": "packages/vue3/src/number-input.tsx"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Submits the normalized value (\"1250000\", fraction padded) with a surrounding form under this name; not sent while disabled.",
+            "summary": "폼 제출용 숨은 input의 이름입니다. 쉼표 없이 소수 자릿수를 채운 값(\"1250000\", \"12.50\")을 제출하고, 비활성이면 제출하지 않습니다.",
             "source": "packages/vue3/src/number-input.tsx"
           }
         ],
@@ -47761,6 +47908,15 @@
             "source": "packages/react/src/number-input.tsx"
           },
           {
+            "name": "name",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Submits the normalized value (\"1250000\", fraction padded) with a surrounding form under this name; not sent while disabled.",
+            "summary": "폼 제출용 숨은 input의 이름입니다. 쉼표 없이 소수 자릿수를 채운 값(\"1250000\", \"12.50\")을 제출하고, 비활성이면 제출하지 않습니다.",
+            "source": "packages/react/src/number-input.tsx"
+          },
+          {
             "name": "onValueChange",
             "type": "((value: string) => void) | undefined",
             "required": false,
@@ -47881,6 +48037,10 @@
               {
                 "label": "동작",
                 "text": "편집 중에는 그대로 두고, 확정(blur·Enter)할 때 벗어나 있으면 오류 상태와 내장 문구(\"1,000원 이상 입력해 주세요\")를 보입니다. 앱이 value나 min·max를 바꿀 때도 바로 확인합니다. 값을 고치지 않으므로 거부는 앱이 정합니다. 편집 중 값이 범위로 돌아오면 오류를 바로 지웁니다. 오류 prop이나 FormGroup 오류가 있으면 그쪽이 우선합니다."
+              },
+              {
+                "label": "FormGroup 안",
+                "text": "내장 문구는 FormGroup의 오류 자리에 표시되고, 그동안 도움말을 대신합니다."
               }
             ],
             "source": "packages/react/src/number-input.tsx",
@@ -48140,6 +48300,10 @@
               {
                 "label": "동작",
                 "text": "편집 중에는 그대로 두고, 확정(blur·Enter)할 때 벗어나 있으면 오류 상태와 내장 문구(\"1,000원 이상 입력해 주세요\")를 보입니다. 앱이 value나 min·max를 바꿀 때도 바로 확인합니다. 값을 고치지 않으므로 거부는 앱이 정합니다. 편집 중 값이 범위로 돌아오면 오류를 바로 지웁니다. 오류 prop이나 FormGroup 오류가 있으면 그쪽이 우선합니다."
+              },
+              {
+                "label": "FormGroup 안",
+                "text": "내장 문구는 FormGroup의 오류 자리에 표시되고, 그동안 도움말을 대신합니다."
               }
             ],
             "source": "packages/native/src/number-input.tsx",
