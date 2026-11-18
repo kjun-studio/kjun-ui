@@ -53,6 +53,8 @@ const kjunSideNavigationProps = {
   /** While collapsed, pressing a parent or a rail group: "widen" emits update:collapsed false with it open;
    * "flyout" shows its rows in a panel beside the icon and keeps the column narrow. */
   collapsedParent: { type: String as PropType<SideNavigationCollapsedParent>, default: "widen" },
+  /** While collapsed, a hairline the icon's width between groups, on top of the gap that separates them. Off: the gap alone. */
+  railDividers: { type: Boolean, default: false },
   /** "compact": 32 tall rows and 30 tall children under a mouse, and counts as quiet numbers, for long lists (documentation,
    * settings). A touch pointer keeps the touch heights. */
   density: { type: String as PropType<"default" | "compact">, default: "default" },
@@ -189,7 +191,7 @@ export const KjunSideNavigation = defineComponent({
       // A panel beside a collapsed icon, holding what the icon stands for. It is non-modal: Tab leaves it, an outside press
       // closes it, and → opens it from the keyboard.
       const flyoutPanel = (key: string, title: string, trigger: () => VNodeChild, content: () => VNodeChild) =>
-        <KjunPopover open={flyout.value === key} onUpdate:open={(next: boolean) => { flyout.value = next ? key : null; }} modal={false} placement="right" focusOnOpen>
+        <KjunPopover open={flyout.value === key} onUpdate:open={(next: boolean) => { flyout.value = next ? key : null; }} modal={false} placement="right-start" focusOnOpen>
           {{ trigger, header: () => title, default: content }}
         </KjunPopover>;
       const openOnArrow = (key: string) => (event: KeyboardEvent) => { if (sideNavigationOpensFlyout(event)) { event.preventDefault(); flyout.value = key; } };
@@ -360,7 +362,7 @@ export const KjunSideNavigation = defineComponent({
         </button> }}
       </KjunTooltip> : null;
       const railOfGroups = collapsed && props.rail === "groups";
-      return <nav ref={nav} class="kjun-side-navigation" data-collapsed={collapsed ? "" : undefined} data-rail={railOfGroups ? "groups" : undefined} data-rail-labels={labelled ? "" : undefined}
+      return <nav ref={nav} class="kjun-side-navigation" data-collapsed={collapsed ? "" : undefined} data-rail={railOfGroups ? "groups" : undefined} data-rail-dividers={collapsed && props.railDividers ? "" : undefined} data-rail-labels={labelled ? "" : undefined}
         data-density={props.density === "compact" ? "compact" : undefined} data-chrome={hasTop || hasBottom || props.collapseToggle ? "" : undefined} data-expanding={expanding.value ? "" : undefined}
         aria-label={props.ariaLabel ?? m.value.mainNavigation}>
         {hasTop ? <div class="kjun-side-navigation-header">{top}</div> : null}

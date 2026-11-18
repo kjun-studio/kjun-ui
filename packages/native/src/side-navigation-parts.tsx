@@ -140,17 +140,20 @@ export function sideNavigationRows(ctx: SideRowsContext) {
   const actionsWidth = (count: number) => count * (geometry.actionSize + geometry.actionGap);
   const actionButtons = (key: string, actions: readonly SideNavigationAction[], place?: ViewStyle) => <View style={{ position: "absolute", top: 0, bottom: 0,
     end: geometry.paddingX - (geometry.actionSize - geometry.actionIconSize) / 2, flexDirection: "row", alignItems: "center", gap: geometry.actionGap, ...place }}>
-    {actions.map(action => <KjunTooltip key={action.key} content={action.label}>
+    {/* The tooltip's wrapper sits at the top of a row (alignSelf flex-start), so each button is centred in its own View. */}
+    {actions.map(action => <View key={action.key} style={{ alignSelf: "center" }}><KjunTooltip content={action.label}>
       <Pressable focusRingInset hitSlop={slop(geometry.actionSize)} accessibilityRole="button" accessibilityLabel={action.label} onPress={(event: GestureResponderEvent) => ctx.onAction?.(key, action.key, event)}
         style={(state: PressState) => ({ width: geometry.actionSize, height: geometry.actionSize, alignItems: "center", justifyContent: "center", borderRadius: geometry.actionRadius,
           backgroundColor: fill(base, undefined, false, state) })}>
         {(state: PressState) => <KjunIcon name={action.icon} size={geometry.actionIconSize} color={ink(state.pressed)} />}
       </Pressable>
-    </KjunTooltip>)}
+    </KjunTooltip></View>)}
   </View>;
-  // A panel beside a collapsed icon, holding what the icon stands for. It leaves the rest of the screen usable.
+  // A panel beside a collapsed icon, holding what the icon stands for. It leaves the rest of the screen usable. It opens
+  // level with the icon's top, and its title starts where its rows' names start.
   const flyoutPanel = (key: string, title: string, trigger: ReactElement, body: ReactNode) => <KjunPopover open={ctx.flyout === key} onOpenChange={next => ctx.setFlyout(next ? key : null)}
-    modal={false} placement="right" header={title} focusOnOpen trigger={trigger}><View style={{ gap: geometry.itemGap }}>{body}</View></KjunPopover>;
+    modal={false} placement="right-start" ariaLabel={title} header={<KText style={{ ...typeStyle("control"), color: colors.text, paddingStart: geometry.paddingX }}>{title}</KText>}
+    focusOnOpen trigger={trigger}><View style={{ gap: geometry.itemGap }}>{body}</View></KjunPopover>;
   const disabledOpacity = (disabled?: boolean) => disabled ? tokens.states.opacity.disabled : 1;
 
   const link = (mode: Mode, item: SideNavigationDestination, depth: Depth, end: number) => {

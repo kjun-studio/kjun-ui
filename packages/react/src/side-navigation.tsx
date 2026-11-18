@@ -66,6 +66,8 @@ export interface KjunSideNavigationProps {
   /** While collapsed, pressing a parent or a rail group: "widen" asks for the full width with it open (onCollapsedChange);
    * "flyout" shows its rows in a panel beside the icon and keeps the column narrow. */
   collapsedParent?: SideNavigationCollapsedParent;
+  /** While collapsed, a hairline the icon's width between groups, on top of the gap that separates them. Off: the gap alone. */
+  railDividers?: boolean;
   /** "compact": 32 tall rows and 30 tall children under a mouse, and counts as quiet numbers, for long lists (documentation,
    * settings). A touch pointer keeps the touch heights. */
   density?: "default" | "compact";
@@ -93,7 +95,7 @@ const actionCount = (count: number) => ({ ["--_kjun-side-navigation-action-count
 /** A vertical menu for the side of a wide screen: links aligned to the start, the current one filled, groups with titles and up to two levels of children. */
 export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onReselect, expanded, onExpandedChange, collapsed = false, onCollapsedChange,
   collapsibleGroups = false, expandedGroups, onExpandedGroupsChange, groupCounts = false, showAll, onShowAllChange, rail = "items", railLabels = false,
-  collapsedParent = "widen", density = "default", headingLevel = 2, header, footer, collapseToggle = false, onAction, linkAs, scrollToCurrent = true }: KjunSideNavigationProps) {
+  collapsedParent = "widen", railDividers = false, density = "default", headingLevel = 2, header, footer, collapseToggle = false, onAction, linkAs, scrollToCurrent = true }: KjunSideNavigationProps) {
   const m = useKjunMessages(), id = "kjun-side-" + useId().replace(/[^\w-]/g, ""), geometry = tokens.extensions.sideNavigation;
   const nav = useRef<HTMLElement>(null);
   useEffect(() => checkSideNavigation(items), [items]);
@@ -171,7 +173,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   // A panel beside a collapsed icon, holding what the icon stands for. It is non-modal: Tab leaves it, an outside press
   // closes it, and → opens it from the keyboard.
   const flyoutPanel = (key: string, title: string, trigger: ReactElement, content: ReactNode) =>
-    <KjunPopover open={flyout === key} onOpenChange={next => setFlyout(next ? key : null)} modal={false} placement="right" header={title} focusOnOpen trigger={trigger}>{content}</KjunPopover>;
+    <KjunPopover open={flyout === key} onOpenChange={next => setFlyout(next ? key : null)} modal={false} placement="right-start" header={title} focusOnOpen trigger={trigger}>{content}</KjunPopover>;
   const openOnArrow = (key: string) => (event: KeyboardEvent) => { if (sideNavigationOpensFlyout(event)) { event.preventDefault(); setFlyout(key); } };
 
   const link = (mode: Mode, item: SideNavigationDestination, depth: 0 | 1 | 2) => {
@@ -336,7 +338,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   </KjunTooltip>;
   const hasTop = top != null && top !== false, hasBottom = bottom != null && bottom !== false;
   const railOfGroups = collapsed && rail === "groups";
-  return <nav ref={nav} className="kjun-side-navigation" data-collapsed={collapsed ? "" : undefined} data-rail={railOfGroups ? "groups" : undefined} data-rail-labels={labelled ? "" : undefined}
+  return <nav ref={nav} className="kjun-side-navigation" data-collapsed={collapsed ? "" : undefined} data-rail={railOfGroups ? "groups" : undefined} data-rail-dividers={collapsed && railDividers ? "" : undefined} data-rail-labels={labelled ? "" : undefined}
     data-density={density === "compact" ? "compact" : undefined} data-chrome={hasTop || hasBottom || collapseToggle ? "" : undefined} data-expanding={expanding ? "" : undefined}
     aria-label={ariaLabel ?? m.mainNavigation}>
     {hasTop && <div className="kjun-side-navigation-header">{top}</div>}

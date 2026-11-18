@@ -59,9 +59,9 @@ test("the current item is a fill and a weight, never an accent stripe", async ()
   const current = rules.find(rule => rule.trim().startsWith(".kjun-side-navigation-item[aria-current]{"));
   assert.match(current, /background:var\(--_kjun-color-selected-bg\)/);
   assert.match(current, /font-weight:var\(--_kjun-extension-side-navigation-selected-weight\)/);
-  // The only pseudo-element is the collapsed menu's group boundary: a horizontal hairline in the divider colour on a group,
-  // never a mark on an item.
-  const boundary = (rule) => /^\s*\.kjun-side-navigation\[data-collapsed\] > \.kjun-side-navigation-list > \.kjun-side-navigation-section[^{]*::before\s*\{/.test(rule) && !rule.split("{")[0].includes("-item");
+  // The only pseudo-element is the collapsed menu's group boundary (railDividers): a horizontal hairline in the divider
+  // colour on a group, never a mark on an item.
+  const boundary = (rule) => /^\s*\.kjun-side-navigation\[data-collapsed\]\[data-rail-dividers\] > \.kjun-side-navigation-list > \.kjun-side-navigation-section[^{]*::before\s*\{/.test(rule) && !rule.split("{")[0].includes("-item");
   const lines = rules.filter(boundary);
   assert.equal(lines.length, 1);
   assert.match(lines[0], /height:var\(--_kjun-border-default-width\);background:var\(--_kjun-color-divider\)/);
@@ -290,4 +290,26 @@ test("arrow keys and flyouts share one web module; the layout closes its drawer 
   const css = await read("packages/tokens/src/side-navigation.css");
   assert.match(css, /\.kjun-side-navigation-layout-nav\{position:sticky;top:var\(--_kjun-side-navigation-layout-top,0vh\)/);
   assert.match(css, /\.kjun-side-navigation-empty\{/);
+});
+
+test("a side placement lines up the top edges with -start and the bottom edges with -end, and centres otherwise", async () => {
+  const tokens = moduleUrl(`export const tokens = { extensions: { floating: { anchorGap: 4, viewportInset: 8 }, tooltip: { arrowSize: 6 } } };`);
+  const floating = await import(moduleUrl((await transpile("shared/package-runtime/floating-position.ts")).replace('"@kjun-ui/tokens"', JSON.stringify(tokens))));
+  globalThis.window = { innerWidth: 1000, innerHeight: 800 };
+  const trigger = { top: 300, bottom: 340, left: 20, right: 64, width: 44, height: 40 }, panel = { width: 240, height: 140 };
+  assert.equal(floating.computeFloatingPosition(trigger, panel, { placement: "right-start" }).top, 300);
+  assert.equal(floating.computeFloatingPosition(trigger, panel, { placement: "right-end" }).top, 200);
+  assert.equal(floating.computeFloatingPosition(trigger, panel, { placement: "right" }).top, 250);
+  assert.equal(floating.computeFloatingPosition(trigger, panel, { placement: "right-start" }).left, 68);
+  delete globalThis.window;
+});
+
+test("every platform's flyout opens level with its icon, and the collapsed rail draws dividers only with railDividers", async () => {
+  for (const platform of ["react", "vue3", "native"]) {
+    const source = await read(`packages/${platform}/src/side-navigation.tsx`) + (platform === "native" ? await read("packages/native/src/side-navigation-parts.tsx") : "");
+    assert.ok(source.includes('placement="right-start"'), platform);
+    assert.ok(source.includes("railDividers"), platform);
+  }
+  const css = await read("packages/tokens/src/side-navigation.css");
+  assert.match(css, /\.kjun-popover-dialog:has\(\.kjun-side-navigation-flyout\) > \.kjun-popover-header\{padding-inline-start:/);
 });

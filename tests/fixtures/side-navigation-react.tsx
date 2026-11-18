@@ -18,7 +18,7 @@ function Page() {
       <KjunSideNavigation ariaLabel="작업 공간" items={items as any} value={value} collapsed={collapsed}
         onCollapsedChange={next => { setCollapsed(next); add('wide'); }}
         {...(sideCase.controlled ? { expanded, onExpandedChange: (next: string[]) => { setExpanded(next); add('open:' + next.join(',')); } } : {})}
-        rail={sideCase.rail} railLabels={sideCase.labels} density={sideCase.density} {...(sideCase.groups ? { collapsibleGroups: true, onExpandedGroupsChange: (next: string[]) => add('groups:' + next.join(',')) } : {})}
+        rail={sideCase.rail} railLabels={sideCase.labels} railDividers={sideCase.dividers} density={sideCase.density} {...(sideCase.groups ? { collapsibleGroups: true, onExpandedGroupsChange: (next: string[]) => add('groups:' + next.join(',')) } : {})}
         groupCounts={sideCase.counts} collapsedParent={sideCase.flyout ? 'flyout' : 'widen'} linkAs={sideCase.link ? RouterLink : undefined}
         onAction={(key, action) => add('act:' + key + ':' + action)}
         {...(sideCase.chrome ? { collapseToggle: true, header: (narrow: boolean) => <div data-testid="header">{narrow ? 'K' : 'KJ Studio'}</div>, footer: <div data-testid="footer">KJ</div> } : {})}

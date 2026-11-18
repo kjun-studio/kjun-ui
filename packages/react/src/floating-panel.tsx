@@ -12,7 +12,16 @@ export type Placement =   | "top"
   | "bottom-start"
   | "bottom-end"
   | "top-start"
-  | "top-end";
+  | "top-end"
+  | "left-start"
+  | "left-end"
+  | "right-start"
+  | "right-end";
+// react-aria names the cross alignment of a side placement by edge: right-start is "right top".
+const ariaPlacement = (placement: Placement) => {
+  const [side, align] = placement.split("-");
+  return (side === "left" || side === "right") && align ? side + " " + (align === "start" ? "top" : "bottom") : placement.replace("-", " ");
+};
 export function FloatingPanel({
   open,
   onOpenChange,
@@ -95,7 +104,7 @@ export function FloatingPanel({
       triggerRef={triggerRef}
       shouldCloseOnInteractOutside={inside ? (element: Element) => !inside.current?.contains(element) : undefined}
       UNSTABLE_portalContainer={container}
-      placement={placement.replace("-", " ") as "bottom start"}
+      placement={ariaPlacement(placement) as "bottom start"}
       shouldFlip={flip}
       // The positioning engine writes max-height directly; pass its numeric cap too.
       maxHeight={typeof maxHeight === "number" ? maxHeight : maxHeight == null ? field ? tokens.extensions.menu.listMaxHeight : tokens.extensions.floating.maxHeight : undefined}

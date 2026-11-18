@@ -35,7 +35,7 @@ export interface KjunPopoverProps {
   focusOnOpen?: boolean;
   ariaLabel?: string;
   /** A side, or a side with an aligned edge: "bottom-start" lines the panel up with the trigger's start edge. */
-  placement?: "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end";
+  placement?: "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "left-start" | "left-end" | "right-start" | "right-end";
   /** Fixed header above the body; only the body scrolls and maxHeight covers both. A function receives close. */
   header?: ReactNode | ((close: () => void) => ReactNode);
   /** Fixed footer below the body (actions such as FormActions); only the body scrolls and fades above it. A function receives close. */

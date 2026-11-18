@@ -90,7 +90,11 @@ export type Placement =
   | "bottom-start"
   | "bottom-end"
   | "top-start"
-  | "top-end";
+  | "top-end"
+  | "left-start"
+  | "left-end"
+  | "right-start"
+  | "right-end";
 export function FloatingPanel({
   open,
   onOpenChange,
@@ -234,10 +238,11 @@ export function FloatingPanel({
         ? anchor.x + (anchor.width - width) / 2
         : anchor.x,
     top = above ? anchor.y - height - gap : anchor.y + anchor.height + gap;
-  if (placement === "left" || placement === "right") {
-    left =
-      placement === "left" ? anchor.x - width - gap : anchor.x + anchor.width + gap;
-    top = anchor.y + (anchor.height - height) / 2;
+  // A side placement centres on the trigger; -start lines up the top edges and -end the bottom edges, like Web.
+  const [sideOf, alignOf] = placement.split("-") as [string, string | undefined], beside = sideOf === "left" || sideOf === "right";
+  if (beside) {
+    left = sideOf === "left" ? anchor.x - width - gap : anchor.x + anchor.width + gap;
+    top = alignOf === "start" ? anchor.y : alignOf === "end" ? anchor.y + anchor.height - height : anchor.y + (anchor.height - height) / 2;
   }
   left = Math.max(tokens.extensions.floating.viewportInset, Math.min(window.width - width - tokens.extensions.floating.viewportInset, left));
   top = Math.max(edgeTop, Math.min(window.height - height - edgeBottom, top));
@@ -247,7 +252,7 @@ export function FloatingPanel({
     if (!motion.present) return null;
     // Like Web, an arrow on the trigger side points at the trigger's center, kept clear of the corners.
     const arrow = tokens.extensions.tooltip.arrowSize, corner = tokens.radius.radius6,
-      side = placement === "left" ? "right" : placement === "right" ? "left" : above ? "bottom" : "top",
+      side = sideOf === "left" ? "right" : sideOf === "right" ? "left" : above ? "bottom" : "top",
       along = side === "top" || side === "bottom"
         ? Math.max(corner, Math.min(width - corner - arrow, anchor.x + anchor.width / 2 - left - arrow / 2))
         : Math.max(corner, Math.min(height - corner - arrow, anchor.y + anchor.height / 2 - top - arrow / 2));
@@ -325,8 +330,8 @@ export function FloatingPanel({
           accessibilityLabel={ariaLabel}
           style={{
             opacity: anchored && sized ? motion.opacity : 0,
-            transform: tooltip ? undefined : [{ translateX: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [placement === "left" ? tokens.motionDistance.popup : placement === "right" ? -tokens.motionDistance.popup : 0, 0] }) },
-              { translateY: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [placement === "left" || placement === "right" ? 0 : above ? tokens.motionDistance.popup : -tokens.motionDistance.popup, 0] }) }],
+            transform: tooltip ? undefined : [{ translateX: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [sideOf === "left" ? tokens.motionDistance.popup : sideOf === "right" ? -tokens.motionDistance.popup : 0, 0] }) },
+              { translateY: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [beside ? 0 : above ? tokens.motionDistance.popup : -tokens.motionDistance.popup, 0] }) }],
             position: "absolute",
             top,
             left,

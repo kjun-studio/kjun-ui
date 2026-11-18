@@ -147,7 +147,7 @@ for (const platform of ['react', 'vue3']) {
   });
 
   test(`${platform}: SideNavigation collapsed shows icons only, names them in tooltips and widens to open a parent`, async ({ page }) => {
-    await openFixture(page, platform, '?collapsed=1&value=checkout', 'side-navigation');
+    await openFixture(page, platform, '?collapsed=1&dividers=1&value=checkout', 'side-navigation');
     const nav = page.getByRole('navigation', { name: '작업 공간' }), side = (await page.getByTestId('side').boundingBox())!;
     await expect(nav).toHaveAttribute('data-collapsed', '');
     // The row is the box around its icon (12 + 20 + 12 by 40), not the column's width, so the fill wraps the icon.
@@ -166,7 +166,7 @@ for (const platform of ['react', 'vue3']) {
     await expect(tasks).toHaveAccessibleName(/12/);
     const badge = (await mark.boundingBox())!;
     expect(badge.x + badge.width).toBeLessThanOrEqual(side.x + side.width);
-    // With the titles hidden, each later group starts under a hairline the icon's width, centred in the gap.
+    // With the titles hidden and railDividers, each later group starts under a hairline the icon's width, centred in the gap.
     const lines = await nav.locator('.kjun-side-navigation-list').evaluate(el => [...el.children].map(group => { const line = getComputedStyle(group, '::before');
       return line.content === 'none' ? null : [line.width, line.height, line.insetInlineStart]; }));
     expect(lines).toEqual([null, ['20px', '1px', '12px'], ['20px', '1px', '12px'], ['20px', '1px', '12px']]);

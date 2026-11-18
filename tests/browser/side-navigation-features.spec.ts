@@ -56,6 +56,22 @@ for (const platform of ['react', 'vue3']) {
     await expect(page.getByRole('dialog', { name: '즐겨찾기' }).locator('.kjun-side-navigation-empty')).toHaveText('즐겨찾기한 문서가 없습니다');
   });
 
+  test(`${platform}: SideNavigation collapsed groups are apart by the gap alone unless railDividers, and a flyout opens level with its icon`, async ({ page }) => {
+    await openFixture(page, platform, '?collapsed=1', 'side-navigation');
+    const nav = page.getByRole('navigation', { name: '작업 공간' });
+    const lines = () => nav.locator('.kjun-side-navigation-list').evaluate(el => [...el.children].map(group => getComputedStyle(group, '::before').content));
+    expect(await lines()).toEqual(['none', 'none', 'none', 'none']);
+    await openFixture(page, platform, '?collapsed=1&flyout=1', 'side-navigation');
+    const parent = page.getByRole('navigation', { name: '작업 공간' }).getByRole('button', { name: /^프로젝트/ });
+    await parent.click();
+    const panel = page.getByRole('dialog', { name: '프로젝트' });
+    await expect(panel).toBeVisible();
+    // Top edges line up, and the title starts where the rows' names start.
+    expect(Math.abs((await panel.boundingBox())!.y - (await parent.boundingBox())!.y)).toBeLessThanOrEqual(1);
+    const title = await panel.locator('.kjun-popover-header').evaluate(el => { const range = document.createRange(); range.selectNodeContents(el); return range.getBoundingClientRect().x; });
+    expect(Math.round(title)).toBe(Math.round((await panel.locator('.kjun-side-navigation-label').first().boundingBox())!.x));
+  });
+
   test(`${platform}: SideNavigation collapsedParent="flyout" shows a collapsed parent's children beside it and keeps the column narrow`, async ({ page }) => {
     await openFixture(page, platform, '?collapsed=1&flyout=1&value=checkout', 'side-navigation');
     const nav = page.getByRole('navigation', { name: '작업 공간' }), log = page.getByTestId('log');
@@ -206,8 +222,10 @@ test('native: SideNavigation flyout, group counts, actions and the collapse togg
   await openFixture(page, 'native', '?collapsed=1&flyout=1&value=checkout', 'side-navigation');
   const nav = page.getByRole('navigation', { name: '작업 공간' });
   await nav.getByRole('button', { name: /^프로젝트/ }).click();
-  const panel = page.getByRole('dialog');
+  const panel = page.getByRole('dialog', { name: '프로젝트' });
   await expect(panel.getByRole('link', { name: '결제 화면 개선' })).toBeVisible();
+  // The panel opens level with the icon (right-start).
+  expect(Math.abs((await panel.boundingBox())!.y - (await nav.getByRole('button', { name: /^프로젝트/ }).boundingBox())!.y)).toBeLessThanOrEqual(1);
   await panel.getByRole('link', { name: /브랜드 웹사이트/ }).click();
   await expect(page.getByTestId('log')).toHaveText('go:brand');
   await expect(page.getByRole('dialog')).toHaveCount(0);
@@ -216,6 +234,9 @@ test('native: SideNavigation flyout, group counts, actions and the collapse togg
   const menu = page.getByRole('navigation', { name: '작업 공간' });
   await expect(menu.getByRole('button', { name: '관리', exact: true })).toContainText('2');
   await menu.getByRole('button', { name: /^문서/ }).click();
+  // A row's action buttons sit in the middle of the row, as on Web.
+  const archive = (await menu.getByRole('link', { name: /보관함/ }).boundingBox())!, add = (await menu.getByRole('button', { name: '새 문서' }).boundingBox())!;
+  expect(Math.abs(add.y + add.height / 2 - (archive.y + archive.height / 2))).toBeLessThanOrEqual(1);
   await menu.getByRole('button', { name: '새 문서' }).click();
   await expect(page.getByTestId('log')).toHaveText('groups:문서 act:archive:new');
   await expect(page.getByTestId('header')).toHaveText('KJ Studio');

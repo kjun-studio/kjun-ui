@@ -43,7 +43,9 @@ export const sideCase = { collapsed: query.has('collapsed'), controlled: query.h
   density: (query.has('compact') ? 'compact' : 'default') as 'default' | 'compact',
   /** counts=1 groupCounts; flyout=1 collapsedParent="flyout"; chrome=1 a header, a footer and the collapse toggle;
    * link=1 renders links with a stand-in router link; short=1 gives the column a fixed height that scrolls. */
-  counts: query.has('counts'), flyout: query.has('flyout'), chrome: query.has('chrome'), link: query.has('link'), short: query.has('short') };
+  counts: query.has('counts'), flyout: query.has('flyout'), chrome: query.has('chrome'), link: query.has('link'), short: query.has('short'),
+  /** dividers=1 railDividers. */
+  dividers: query.has('dividers') };
 export const sideWidth = (collapsed: boolean) => collapsed ? sideCase.labels ? 88 : 64 : 240;
 /** The aside around the menu: a fixed, scrolling height for short=1 and chrome=1. */
 export const sideColumn = (collapsed: boolean) => ({ width: sideWidth(collapsed) + 'px', ...(sideCase.short || sideCase.chrome ? { height: '260px', overflowY: 'auto' as const } : {}),

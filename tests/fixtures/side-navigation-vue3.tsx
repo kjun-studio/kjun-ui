@@ -18,7 +18,7 @@ const Page = defineComponent({ setup() {
       <K.KjunSideNavigation ariaLabel="작업 공간" items={items.value} value={value.value} collapsed={collapsed.value}
         {...{ 'onUpdate:collapsed': (next: boolean) => { collapsed.value = next; add('wide'); } }}
         {...(sideCase.controlled ? { expanded: expanded.value, 'onUpdate:expanded': (next: string[]) => { expanded.value = next; add('open:' + next.join(',')); } } : {})}
-        rail={sideCase.rail} railLabels={sideCase.labels} density={sideCase.density} {...(sideCase.groups ? { collapsibleGroups: true, 'onUpdate:expandedGroups': (next: string[]) => add('groups:' + next.join(',')) } : {})}
+        rail={sideCase.rail} railLabels={sideCase.labels} railDividers={sideCase.dividers} density={sideCase.density} {...(sideCase.groups ? { collapsibleGroups: true, 'onUpdate:expandedGroups': (next: string[]) => add('groups:' + next.join(',')) } : {})}
         groupCounts={sideCase.counts} collapsedParent={sideCase.flyout ? 'flyout' : 'widen'} collapseToggle={sideCase.chrome}
         {...(sideCase.link ? { linkAs: RouterLink, linkProp: 'to' } : {})}
         onAction={(key: string, action: string) => add('act:' + key + ':' + action)}

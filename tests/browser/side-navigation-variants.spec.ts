@@ -7,7 +7,7 @@ const fillOf = (el: Locator) => el.evaluate(node => getComputedStyle(node).backg
 
 for (const platform of ['react', 'vue3']) {
   test(`${platform}: SideNavigation railLabels stands each icon in an indicator above its name`, async ({ page }) => {
-    await openFixture(page, platform, '?collapsed=1&labels=1&value=checkout', 'side-navigation');
+    await openFixture(page, platform, '?collapsed=1&labels=1&dividers=1&value=checkout', 'side-navigation');
     const nav = page.getByRole('navigation', { name: '작업 공간' }), side = (await page.getByTestId('side').boundingBox())!;
     await expect(nav).toHaveAttribute('data-rail-labels', '');
     // A row is 72 wide and 64 tall: 6 + a 32 indicator + 4 + a 16 line of caption type + 6.

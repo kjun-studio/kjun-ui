@@ -34,7 +34,7 @@ const kjunPopoverProps = {
   focusOnOpen: { type: Boolean, default: false },
   ariaLabel: { type: String, default: undefined },
   /** A side, or a side with an aligned edge: "bottom-start" lines the panel up with the trigger's start edge. */
-  placement: { type: String as PropType<"top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end">, default: "bottom" },
+  placement: { type: String as PropType<"top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "left-start" | "left-end" | "right-start" | "right-end">, default: "bottom" },
   /** Where focus goes when the Popover closes. Defaults to the trigger, also when the target is gone. */
   returnFocus: { type: [Object, Function] as PropType<HTMLElement | Ref<HTMLElement | null> | (() => HTMLElement | null)>, default: undefined },
   /** false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus. */

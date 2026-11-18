@@ -53,7 +53,7 @@ function bindPopoverTrigger(node: ReactNode, props: HTMLAttributes<HTMLElement>)
   }
   return cloneElement(node, props);
 }
-export type PopoverPlacement = "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end";
+export type PopoverPlacement = "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "left-start" | "left-end" | "right-start" | "right-end";
 export function KjunPopover({
   noPadding = false,
   open: controlled,

@@ -471,6 +471,7 @@ set("FormGroup", { labelHidden: { default:"false", summary:"라벨을 화면에�
 set("Select", { id: { summary:"트리거 버튼 id입니다. 바깥 <label for>가 이름을 붙일 수 있고, 생략하면 FormGroup의 id를 씁니다. id나 FormGroup이 있으면 placeholder를 이름으로 쓰지 않습니다." }, ariaDescribedBy: { summary:"추가 설명 요소 id입니다. FormGroup의 안내·오류와 중복 없이 합칩니다. Vue는 ariaDescribedby입니다." }, ariaDescribedby: { summary:"추가 설명 요소 id입니다. FormGroup의 안내·오류와 중복 없이 합칩니다." } });
 set("Popover", { modal: { default:"true", summary:"false이면 페이지를 막지 않고, 열릴 때 초점을 가져가지 않습니다(focusOnOpen이면 가져감). 마지막 항목에서 Tab은 닫고 트리거 다음으로, 첫 항목에서 Shift+Tab은 트리거로 갑니다. 바깥을 누르거나 초점이 밖으로 나가면 닫히며 초점을 되돌리지 않고, Escape는 트리거로 돌아갑니다." } });
 set("Popover", { header: { summary:"고정 머리글입니다. 본문만 스크롤하며 maxHeight는 머리글을 포함한 높이입니다. 웹에서는 ariaLabel이 없으면 대화상자 이름이 되고, Native는 ariaLabel을 지정해야 합니다. Vue는 header 슬롯을 씁니다." } });
+set("Popover", { placement: { default:'"bottom"', summary:"트리거 기준 위치입니다. top·bottom·left·right는 트리거 가운데에 맞추고, -start·-end는 가장자리를 맞춥니다(위·아래는 시작·끝 가장자리, left·right의 -start는 위끝, -end는 아래끝). 공간이 부족하면 반대쪽으로 뒤집습니다." } });
 set("Popover", { width: { default:"md", summary:"패널 너비 단계입니다. sm 192px·md 240px·lg 320px이며, matchTriggerWidth를 켜면 트리거 너비를 따릅니다." } });
 set("Popover", { returnFocus: { summary:"닫힌 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받습니다. 대상이 없거나 문서에서 사라졌으면 트리거로 돌아갑니다." } });
 set("Card", { dividers: { default:"false", summary:"헤더·본문·푸터 사이 구분선을 표시합니다. 구분선이 없으면 제목 묶음과 본문 사이는 padding보다 한 단계 좁게(sm 8·md 12·lg 16px), 본문과 푸터 사이는 padding만큼 띄웁니다." } });
@@ -701,6 +702,7 @@ set("SideNavigation", {
   expandedGroups: { summary: "열린 묶음 목록입니다. 묶음의 key, 없으면 제목으로 구분합니다. 생략하면 컴포넌트가 스스로 기억하고, 주면 앱이 관리합니다(Vue v-model:expandedGroups). 열린 상태를 저장하거나 메뉴 검색 중 모든 묶음을 열 때 씁니다." },
   rail: { default: '"items"', summary: "collapsed일 때 아이콘을 세우는 단위입니다. items는 최상위 항목마다, groups는 묶음마다 아이콘 하나를 세웁니다(묶음의 icon, 없으면 제목의 첫 글자). groups에서 묶음을 누르면 그 묶음을 연 채로 넓혀 달라고 요청하고, 웹에서는 넓어진 뒤 묶음 제목을 화면 안으로 스크롤합니다. 묶음 밖 항목은 그대로 한 줄씩 남습니다." },
   railLabels: { default: "false", summary: "collapsed일 때 아이콘 아래에 짧은 이름을 한 줄로 보여 줍니다. 항목은 72px 폭이 되고(열 폭은 72px + 앱의 좌우 여백), 현재 목적지·마우스 올림·누름은 아이콘을 감싸는 56×32px 면으로 표시합니다. 이름이 보이므로 툴팁은 띄우지 않고, 배지는 숫자 그대로 아이콘 모서리에 놓입니다. 이름 칸은 72px(한글 약 4자)이므로 긴 이름에는 목적지·부모의 shortLabel, 묶음의 shortTitle을 주세요. 전체 이름은 접근 가능한 이름과 툴팁으로 남고, 넘치면 말줄임합니다." },
+  railDividers: { default: "false", summary: "collapsed일 때 묶음 사이 간격(16px) 가운데에 아이콘 폭(railLabels이면 56px)의 1px 구분선을 더합니다. 끄면 간격만으로 묶음을 나눕니다." },
   density: { default: '"default"', summary: "compact이면 마우스 포인터에서 항목을 32px, 하위 항목을 30px로 줄이고, 항목 끝의 숫자 배지를 3차 글자색 숫자로 낮춥니다(점 배지는 그대로). 문서·설정처럼 항목이 많은 목록에 씁니다. 터치 포인터와 Native 기기에서는 터치 높이(48·44px)를 유지합니다." },
 });
 set("SideNavigation", {

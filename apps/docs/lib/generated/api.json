@@ -20076,7 +20076,7 @@
       },
       {
         "name": "placement",
-        "type": "\"top\" | \"bottom\" | \"left\" | \"right\" | \"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\"",
+        "type": "\"top\" | \"bottom\" | \"left\" | \"right\" | \"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | \"left-start\" | \"left-end\" | \"right-start\" | \"right-end\"",
         "required": false,
         "default": "\"bottom\"",
         "description": "A side, or a side with an aligned edge: \"bottom-start\" lines the panel up with the trigger's start edge."
@@ -20333,7 +20333,7 @@
       },
       {
         "name": "placement",
-        "type": "\"top\" | \"bottom\" | \"left\" | \"right\" | \"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
+        "type": "\"top\" | \"bottom\" | \"left\" | \"right\" | \"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | \"left-start\" | \"left-end\" | \"right-start\" | \"right-end\" | undefined",
         "required": false,
         "default": "—",
         "description": "A side, or a side with an aligned edge: \"bottom-start\" lines the panel up with the trigger's start edge."
@@ -24431,6 +24431,13 @@
         "description": "While collapsed, pressing a parent or a rail group: \"widen\" emits update:collapsed false with it open;\n\"flyout\" shows its rows in a panel beside the icon and keeps the column narrow."
       },
       {
+        "name": "railDividers",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "While collapsed, a hairline the icon's width between groups, on top of the gap that separates them. Off: the gap alone."
+      },
+      {
         "name": "density",
         "type": "\"default\" | \"compact\"",
         "required": false,
@@ -24647,6 +24654,13 @@
         "description": "While collapsed, pressing a parent or a rail group: \"widen\" asks for the full width with it open (onCollapsedChange);\n\"flyout\" shows its rows in a panel beside the icon and keeps the column narrow."
       },
       {
+        "name": "railDividers",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "While collapsed, a hairline the icon's width between groups, on top of the gap that separates them. Off: the gap alone."
+      },
+      {
         "name": "density",
         "type": "\"default\" | \"compact\" | undefined",
         "required": false,
@@ -24829,6 +24843,13 @@
         "required": false,
         "default": "—",
         "description": "While collapsed, pressing a parent or a rail group: \"widen\" asks for the full width with it open (onCollapsedChange);\n\"flyout\" shows its rows in a panel beside the icon and keeps the column narrow."
+      },
+      {
+        "name": "railDividers",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "While collapsed, a hairline the icon's width between groups, on top of the gap that separates them. Off: the gap alone."
       },
       {
         "name": "density",

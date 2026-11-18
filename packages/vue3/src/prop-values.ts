@@ -217,7 +217,7 @@ export const kjunPropValues = Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),
   }),
   KjunPopover: Object.freeze({
-    placement: Object.freeze(["bottom","bottom-end","bottom-start","left","right","top","top-end","top-start"] as const),
+    placement: Object.freeze(["bottom","bottom-end","bottom-start","left","left-end","left-start","right","right-end","right-start","top","top-end","top-start"] as const),
     width: Object.freeze(["sm","md","lg"] as const),
   }),
   KjunPressable: Object.freeze({

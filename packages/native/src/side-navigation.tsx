@@ -70,6 +70,8 @@ export interface KjunSideNavigationProps {
   /** While collapsed, pressing a parent or a rail group: "widen" asks for the full width with it open (onCollapsedChange);
    * "flyout" shows its rows in a panel beside the icon and keeps the column narrow. */
   collapsedParent?: SideNavigationCollapsedParent;
+  /** While collapsed, a hairline the icon's width between groups, on top of the gap that separates them. Off: the gap alone. */
+  railDividers?: boolean;
   /** "compact": 32 tall rows and 30 tall children on Native Web, and counts as quiet numbers, for long lists. A device keeps
    * the touch heights. */
   density?: "default" | "compact";
@@ -94,7 +96,7 @@ export interface KjunSideNavigationProps {
  */
 export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onReselect, expanded, onExpandedChange, collapsed = false, onCollapsedChange,
   collapsibleGroups = false, expandedGroups, onExpandedGroupsChange, groupCounts = false, showAll, onShowAllChange, rail = "items", railLabels = false,
-  collapsedParent = "widen", density = "default", headingLevel = 2, header, footer, collapseToggle = false, onAction }: KjunSideNavigationProps) {
+  collapsedParent = "widen", railDividers = false, density = "default", headingLevel = 2, header, footer, collapseToggle = false, onAction }: KjunSideNavigationProps) {
   const m = useKjunMessages(), styles = useKjunStyles(), { colors } = styles, geometry = tokens.extensions.sideNavigation;
   useEffect(() => checkSideNavigation(items), [items]);
   const { sections, open, update, openGroups, updateGroups, allShown, updateShowAll } = useSideNavigationState(items, value,
@@ -173,8 +175,8 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
     const marginTop = !index ? 0 : collapsed || !titled ? geometry.titlePaddingTop : toggled ? geometry.groupGap : 0;
     return <View key={titled ? "group:" + titled.key : "loose:" + (entry.items[0]?.key ?? index)} role={titled ? "group" : undefined} accessibilityLabel={entry.title}
       style={{ gap: geometry.itemGap, marginTop }}>
-      {/* Icons only, the titles are hidden: a hairline the icon's width in the middle of the gap marks the boundary. */}
-      {!!index && collapsed && <View pointerEvents="none" style={{ position: "absolute", top: -(geometry.titlePaddingTop + tokens.border.defaultWidth) / 2,
+      {/* Icons only, the titles are hidden and the gap marks the boundary; railDividers adds a hairline the icon's width in it. */}
+      {!!index && collapsed && railDividers && <View pointerEvents="none" style={{ position: "absolute", top: -(geometry.titlePaddingTop + tokens.border.defaultWidth) / 2,
         start: labelled ? (geometry.railItemWidth - geometry.railIndicatorWidth) / 2 : geometry.paddingX,
         width: labelled ? geometry.railIndicatorWidth : geometry.iconSize, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
       {titled && toggled ? groupToggle(titled, rows) : <>

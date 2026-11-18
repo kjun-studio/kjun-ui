@@ -2,7 +2,7 @@ import { tokens } from "@kjun-ui/tokens";
 
 // Viewport (position: fixed) placement for popups, the role react-aria's positioning plays in React.
 export type Side = "top" | "bottom" | "left" | "right";
-export type Placement = Side | "bottom-start" | "bottom-end" | "top-start" | "top-end";
+export type Placement = Side | "bottom-start" | "bottom-end" | "top-start" | "top-end" | "left-start" | "left-end" | "right-start" | "right-end";
 type Box = { top: number; left: number; right: number; bottom: number; width: number; height: number };
 const opposite: Record<Side, Side> = { top: "bottom", bottom: "top", left: "right", right: "left" };
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), Math.max(min, max));
@@ -41,7 +41,9 @@ export function computeFloatingPosition(trigger: Box, floating: { width: number;
     arrow.left = clamp(trigger.left + trigger.width / 2 - left, arrowSize, floating.width - arrowSize);
   } else {
     left = side === "left" ? trigger.left - gap - floating.width : trigger.right + gap;
-    top = clamp(trigger.top + trigger.height / 2 - floating.height / 2, margin, vh - floating.height - margin);
+    // A side placement centres on the trigger; -start lines up the top edges and -end the bottom edges.
+    const start = align === "start" ? trigger.top : align === "end" ? trigger.bottom - floating.height : trigger.top + trigger.height / 2 - floating.height / 2;
+    top = clamp(start, margin, vh - floating.height - margin);
     arrow.top = clamp(trigger.top + trigger.height / 2 - top, arrowSize, floating.height - arrowSize);
   }
   return { top, left, side, maxHeight: cap === Infinity ? undefined : cap, arrow };
