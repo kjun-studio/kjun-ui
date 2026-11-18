@@ -6,6 +6,7 @@ import { KjunIcon } from "./button";
 import { KText, content } from "./internal";
 import { typeStyle } from "./typography";
 import { useKjunStyles } from "./provider";
+import { avatarType } from "../../../shared/package-runtime/avatar-type";
 export interface KjunImageProps { src?: string; source?: ImageSourcePropType; alt: string; decorative?: boolean; aspectRatio?: number; fit?: "cover" | "contain"; fallback?: ReactNode; onLoad?: () => void; onError?: () => void }
 /** Internal: KjunAvatar paints its app color behind the image and fallback. */
 const ImageBackgroundContext = createContext<ColorValue | undefined>(undefined);
@@ -26,6 +27,6 @@ export function KjunAvatar({ src, source, name = "", alt, decorative = false, si
   const { colors } = useKjunStyles(), initial = Array.from(name.trim())[0];
   return <View style={{ width: tokens.extensions.avatar[size], height: tokens.extensions.avatar[size], borderRadius: shape === "circle" ? tokens.radius.radius9999 : tokens.radius.radius8, overflow: "hidden", flexShrink: 0 }}><ImageBackgroundContext.Provider value={color}><KjunImage src={src} source={source} alt={alt || name || m.user} decorative={decorative} fallback={fallback ?? (initial
     // Like Web: initials scale with the avatar, use control weight and the secondary text role, and capitalize Latin letters.
-    ? <KText style={{ ...typeStyle(size === "xs" ? "controlSmall" : size === "sm" ? "control" : size === "lg" ? "sectionTitle" : size === "xl" ? "pageTitle" : "input"), fontWeight: typeStyle("control").fontWeight, color: textColor ?? colors.textSecondary }}>{initial.toLocaleUpperCase()}</KText>
-    : <KjunIcon name="user" size={tokens.extensions.avatar.fallbackIconSizes[size]} color={textColor} />)} onLoad={onLoad} onError={onError} /></ImageBackgroundContext.Provider></View>;
+    ? <KText style={{ ...typeStyle(avatarType[size]), fontWeight: typeStyle("control").fontWeight, color: textColor ?? colors.textSecondary }}>{initial.toLocaleUpperCase()}</KText>
+    : <KjunIcon name="user" size={tokens.extensions.avatar.fallbackIconSizes[size]} color={textColor ?? colors.textSecondary} />)} onLoad={onLoad} onError={onError} /></ImageBackgroundContext.Provider></View>;
 }

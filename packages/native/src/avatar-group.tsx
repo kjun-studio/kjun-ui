@@ -1,4 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { avatarCompactType, avatarType } from "../../../shared/package-runtime/avatar-type";
 import { avatarGroupModel } from "../../../shared/package-runtime/avatar-group";
 import { View, type ColorValue, type GestureResponderEvent, type StyleProp, type ViewStyle } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
@@ -34,7 +35,6 @@ export interface KjunAvatarGroupProps {
 }
 
 // Like Web: the chip's number uses the avatar's initial type, one step smaller for three characters ("+99").
-const chipType = { xs: ["controlSmall", "controlSmall"], sm: ["control", "controlSmall"], md: ["input", "control"], lg: ["sectionTitle", "input"], xl: ["pageTitle", "sectionTitle"] } as const;
 
 /**
  * Overlapping avatars with a "+N" chip, read as one name. Native has no shadow spread, so each circle sits in a wrapper
@@ -59,7 +59,7 @@ export function KjunAvatarGroup({ items, max, total, size = "md", shape = "circl
     <View key={key} {...hidden} style={slot(index, visible + 1 - index)}><KjunAvatar {...item} size={size} shape={shape} decorative /></View>);
   const chip = overflowText ? <View key="overflow" {...hidden} style={slot(visible, 0)}>
     <View style={{ width: side, height: side, borderRadius: radius, backgroundColor: colors.secondary, alignItems: "center", justifyContent: "center", paddingStart: circle && visible > 0 ? overlap : 0 }}>
-      <KText numberOfLines={1} style={{ ...typeStyle(chipType[size][overflowText.length > 2 ? 1 : 0]), fontWeight: typeStyle("control").fontWeight,
+      <KText numberOfLines={1} style={{ ...typeStyle((overflowText.length > 2 ? avatarCompactType : avatarType)[size]), fontWeight: typeStyle("control").fontWeight,
         fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"], color: colors.textSecondary }}>{overflowText}</KText>
     </View>
   </View> : null;
