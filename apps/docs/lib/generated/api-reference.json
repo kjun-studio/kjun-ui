@@ -41581,7 +41581,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "채움이 min 대신 이 값에서 시작합니다. −50~50 같은 양방향 값에 쓰며, 기준점에 눈금 점을 함께 그립니다. min과 max 사이일 때만 적용됩니다.",
+            "summary": "채움이 min 대신 이 값에서 시작합니다. −50~50 같은 양방향 값에 쓰며, 기준점에 세로 눈금을 함께 그립니다. min과 max 사이일 때만 적용됩니다.",
             "source": "packages/vue3/src/range-input.tsx"
           }
         ],
@@ -41845,8 +41845,8 @@
             "type": "number",
             "required": false,
             "default": "—",
-            "description": "The fill grows from this value instead of min, for two-way values such as -50…50; a dot marks it. Single slider only.",
-            "summary": "채움이 min 대신 이 값에서 시작합니다. −50~50 같은 양방향 값에 쓰며, 기준점에 눈금 점을 함께 그립니다. min과 max 사이일 때만 적용됩니다.",
+            "description": "The fill grows from this value instead of min, for two-way values such as -50…50; a tick marks it. Single slider only.",
+            "summary": "채움이 min 대신 이 값에서 시작합니다. −50~50 같은 양방향 값에 쓰며, 기준점에 세로 눈금을 함께 그립니다. min과 max 사이일 때만 적용됩니다.",
             "source": "packages/react/src/range-input.tsx"
           },
           {
@@ -42151,8 +42151,8 @@
             "type": "number",
             "required": false,
             "default": "—",
-            "description": "The fill grows from this value instead of min, for two-way values such as -50…50; a dot marks it. Single slider only.",
-            "summary": "채움이 min 대신 이 값에서 시작합니다. −50~50 같은 양방향 값에 쓰며, 기준점에 눈금 점을 함께 그립니다. min과 max 사이일 때만 적용됩니다.",
+            "description": "The fill grows from this value instead of min, for two-way values such as -50…50; a tick marks it. Single slider only.",
+            "summary": "채움이 min 대신 이 값에서 시작합니다. −50~50 같은 양방향 값에 쓰며, 기준점에 세로 눈금을 함께 그립니다. min과 max 사이일 때만 적용됩니다.",
             "source": "packages/native/src/range-input.tsx"
           },
           {

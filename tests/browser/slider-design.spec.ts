@@ -359,7 +359,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.getByTestId('range').getByText('$80', { exact: true })).toBeVisible();
   });
 
-  test(`${platform}: fillOrigin fills from the origin to the thumb on either side`, async ({ page }) => {
+  test(`${platform}: fillOrigin fills from the origin to the thumb on either side, with a tick at the origin`, async ({ page }) => {
     await openFixture(page, platform, '', 'slider-design');
     for (const value of [20, -30]) {
       await configure(page, { min: -50, max: 50, value, fillOrigin: 0 });
@@ -367,6 +367,17 @@ for (const platform of ['react', 'vue3', 'native']) {
       const a = await appearance(page, platform), center = a.thumbs[0].x + a.thumbs[0].width / 2, origin = a.track.x + a.track.width / 2;
       expect(a.fill.x).toBeCloseTo(Math.min(origin, center), 0);
       expect(a.fill.x + a.fill.width).toBeCloseTo(Math.max(origin, center), 0);
+      // The origin is a 2×12 tick across the band (extensions.slider.originTick), centred on it, and the fill end there is square.
+      const tick = await page.getByTestId('single').evaluate((wrapper, platform) => {
+        const root = wrapper.firstElementChild!, slider = root.querySelector('input[type=range], [role=slider]')!;
+        const track = platform === 'native' ? slider.parentElement! : root.querySelector('.kjun-slider-track')!;
+        const el = platform === 'native' ? track.children[2] : track.querySelector('.kjun-slider-mark[data-origin]')!;
+        const fill = platform === 'native' ? track.children[1] : track.querySelector('.kjun-slider-fill')!;
+        const r = el.getBoundingClientRect();
+        return { x: r.x + r.width / 2, width: r.width, height: r.height, radius: getComputedStyle(fill).borderTopLeftRadius };
+      }, platform);
+      expect(tick).toMatchObject({ width: 2, height: 12, radius: '0px' });
+      expect(tick.x).toBeCloseTo(origin, 0);
     }
   });
 

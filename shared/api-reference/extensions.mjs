@@ -3,7 +3,7 @@ import { detail, event, slot, fields } from "./helpers.mjs";
 import { eventCalendarProp, eventCalendarEvents, eventCalendarTypes } from "./event-calendar.mjs";
 const sliderSummaries = {
   valueLabel: { type: '"off" | "drag" | "always"', default: '"off"', ...{ summary: "손잡이 위 말풍선에 값을 보여 줄 때를 정합니다.", details: [{ label: "값", text: "drag는 끄는 동안과 키보드 포커스 중에만, always는 늘 보여 줍니다. 세로 슬라이더는 손잡이 오른쪽에 둡니다. formatValue를 따르고, 손잡이가 이미 값을 읽어 주므로 보조기기에는 숨깁니다." }] } },
-  fillOrigin: { type: "number", summary: "채움이 min 대신 이 값에서 시작합니다. −50~50 같은 양방향 값에 쓰며, 기준점에 눈금 점을 함께 그립니다. min과 max 사이일 때만 적용됩니다." },
+  fillOrigin: { type: "number", summary: "채움이 min 대신 이 값에서 시작합니다. −50~50 같은 양방향 값에 쓰며, 기준점에 세로 눈금을 함께 그립니다. min과 max 사이일 때만 적용됩니다." },
   minStepsBetweenThumbs: { type: "number", default: "0", summary: "두 손잡이가 유지할 최소 step 수입니다. 끌기·키보드·트랙 누름 모두 이 간격 앞에서 멈춥니다. 0이면 두 손잡이가 같은 값에 겹칠 수 있습니다." },
   name: { type: "string", summary: "폼 제출 이름입니다. 숨은 input으로 값을 보내며, RangeSlider는 같은 이름으로 시작·끝 두 값을 보냅니다." },
   id: { type: "string", summary: "루트 그룹의 id입니다." },

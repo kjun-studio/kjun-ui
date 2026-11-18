@@ -60,16 +60,17 @@ test('a slider session picks the overlapping thumb by the first move, clamps aga
   assert.deepEqual(emitted.at(-1), [50, 100]);
 });
 
-test('slider fillOrigin fills between the origin and the thumb and marks the origin with a dot', () => {
+test('slider fillOrigin fills between the origin and the thumb and marks the origin with a tick', () => {
   assert.deepEqual(view.sliderFillBox([0.7], {}, 0.5), { lead: 50, trail: 30 });
   assert.deepEqual(view.sliderFillBox([0.2], {}, 0.5), { lead: 20, trail: 50 });
   assert.deepEqual(view.sliderFillBox([0.2], { rtl: true }, 0.5), { lead: 50, trail: 20 });
   assert.equal(view.sliderOriginFraction(0, -50, 50), 0.5);
   assert.equal(view.sliderOriginFraction(-50, -50, 50), undefined, 'an origin at min is the plain fill');
   const marks = view.sliderMarks(undefined, -50, 50, 1, [20], {}, 0);
-  assert.deepEqual(marks.map(mark => [mark.value, mark.dot, mark.active]), [[0, true, false]]);
+  assert.deepEqual(marks.map(mark => [mark.value, mark.dot, mark.active, mark.origin]), [[0, true, false, true]]);
   const listed = view.sliderMarks([{ value: -25 }, { value: 10 }, { value: 0, label: '0' }], -50, 50, 1, [20], {}, 0);
-  assert.deepEqual(listed.map(mark => [mark.value, mark.active]), [[-25, false], [10, true], [0, false]], 'no duplicate origin; dots light only on the fill');
+  assert.deepEqual(listed.map(mark => [mark.value, mark.active, mark.origin]), [[-25, false, false], [10, true, false], [0, false, true]], 'no duplicate origin; the listed origin becomes the tick; dots light only on the fill');
+  assert.ok(view.sliderMarks([{ value: 0 }], 0, 100, 1, [40]).every(mark => !mark.origin), 'no origin without fillOrigin');
   assert.deepEqual(view.sliderMarks(undefined, -50, 50, 1, [20, 30], {}, 0), [], 'ranges ignore fillOrigin');
 });
 

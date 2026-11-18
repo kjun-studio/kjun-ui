@@ -46,7 +46,7 @@ let warnedMarks = false;
  */
 export function sliderMarks(marks: SliderMarks | undefined, min: number, max: number, step: number, values: readonly number[], layout: SliderLayout = {}, fillOrigin?: number) {
   if (!(max > min)) return [];
-  // A fill origin inside the rail always gets a dot, so the start of a two-way fill reads.
+  // A fill origin inside the rail always gets a tick (origin: true) across the band, so the start of a two-way fill reads.
   const origin = fillOrigin !== undefined && values.length === 1 && fillOrigin > min && fillOrigin < max ? fillOrigin : undefined;
   if (!marks && origin === undefined) return [];
   const steps = Math.round((max - min) / step);
@@ -72,6 +72,8 @@ export function sliderMarks(marks: SliderMarks | undefined, min: number, max: nu
     // On the fill the dot turns light: a single slider fills from min, a range between its thumbs.
     active: from === min && values.length === 1 ? mark.value < to : mark.value > from && mark.value < to,
     dot: mark.value !== min && mark.value !== max,
+    /** The fill origin: drawn as a tick across the band instead of a dot. */
+    origin: mark.value === origin,
     // Which rail end an end label aligns to: the visual left or right (vertical labels sit beside the rail and need none).
     edge: layout.vertical || (mark.value !== min && mark.value !== max) ? undefined
       : (mark.value === min) !== !!layout.rtl ? "start" as const : "end" as const,

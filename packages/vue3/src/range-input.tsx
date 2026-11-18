@@ -50,7 +50,7 @@ function defineRangeInput(name: string, range: boolean) {
         /** The fewest steps the two thumbs keep between them; 0 (default) lets them meet. */
         minStepsBetweenThumbs: { type: Number, default: 0 },
       } : {
-        /** The fill grows from this value instead of min, for two-way values such as -50…50; a dot marks it. */
+        /** The fill grows from this value instead of min, for two-way values such as -50…50; a tick marks it. */
         fillOrigin: { type: Number, default: undefined },
       }),
     },
@@ -125,8 +125,8 @@ function defineRangeInput(name: string, range: boolean) {
             <div ref={track} class="kjun-slider-track" style={{ position: "relative", touchAction: "none" }}
               onPointerdown={pointerDown} onPointermove={pointerMove} onPointerup={pointerUp} onPointercancel={pointerUp}>
               <div class="kjun-slider-rail" />
-              <div class="kjun-slider-fill" style={{ [axis[0]]: fill.lead === null ? edgeOffset : fill.lead + "%", [axis[1]]: fill.trail === null ? edgeOffset : fill.trail + "%" }} />
-              {dots.filter(dot => dot.dot).map(dot => <span key={dot.value} class="kjun-slider-mark" data-active={dot.active || undefined} style={{ [axis[0]]: dot.position * 100 + "%" }} />)}
+              <div class="kjun-slider-fill" data-origin={dots.some(dot => dot.origin) || undefined} style={{ [axis[0]]: fill.lead === null ? edgeOffset : fill.lead + "%", [axis[1]]: fill.trail === null ? edgeOffset : fill.trail + "%" }} />
+              {dots.filter(dot => dot.dot).map(dot => <span key={dot.value} class="kjun-slider-mark" data-active={dot.active || undefined} data-origin={dot.origin || undefined} style={{ [axis[0]]: dot.position * 100 + "%" }} />)}
               {values.map((value, index) => (
                 <div key={index} class="kjun-slider-thumb"
                   style={{ position: "absolute", ...at(fractions[index]), transform: "translate(-50%, -50%)" }}

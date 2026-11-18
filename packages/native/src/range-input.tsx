@@ -36,7 +36,7 @@ export interface KjunSliderProps {
   length?: number;
   /** Like Web: the value in a bubble on the thumb, "drag" while dragging or keyboard-focused, "always", or "off" (default). */
   valueLabel?: SliderValueLabel;
-  /** The fill grows from this value instead of min, for two-way values such as -50…50; a dot marks it. Single slider only. */
+  /** The fill grows from this value instead of min, for two-way values such as -50…50; a tick marks it. Single slider only. */
   fillOrigin?: number;
   style?: StyleProp<ViewStyle>;
   testID?: string;
@@ -218,18 +218,23 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
             style={{
               position: "absolute",
               ...(vertical ? { left: (targetSize - geometry.track) / 2, width: geometry.track } : { top: (targetSize - geometry.track) / 2, height: geometry.track }),
-              borderRadius: tokens.radius.radius9999,
+              // Like Web: square at the fill origin, where the origin tick sits.
+              borderRadius: origin === undefined ? tokens.radius.radius9999 : 0,
               ...fill,
               // One disabled rule, like Button and fields: no fading; the fill takes the disabled-text role.
               backgroundColor: blocked ? colors.textDisabled : colors.brand,
             }}
           />
-          {dots.filter((dot) => dot.dot).map((dot) => (
-            <View key={dot.value} pointerEvents="none" style={{ position: "absolute", ...along(dot.fraction),
-              ...(vertical ? { left: (targetSize - slider.markSize) / 2, marginTop: -slider.markSize / 2 } : { top: (targetSize - slider.markSize) / 2, marginStart: -slider.markSize / 2 }),
-              width: slider.markSize, height: slider.markSize, borderRadius: tokens.radius.radius9999,
-              backgroundColor: dot.active ? colors.switchThumb : colors.textTertiary }} />
-          ))}
+          {dots.filter((dot) => dot.dot).map((dot) => {
+            // The fill origin is a tick across the band, like Web; other marks are dots.
+            const [across, along_] = dot.origin ? [slider.originTick.length, slider.originTick.width] : [slider.markSize, slider.markSize];
+            return <View key={dot.value} pointerEvents="none" style={{ position: "absolute", ...along(dot.fraction),
+              ...(vertical
+                ? { left: (targetSize - across) / 2, marginTop: -along_ / 2, width: across, height: along_ }
+                : { top: (targetSize - across) / 2, marginStart: -along_ / 2, width: along_, height: across }),
+              borderRadius: tokens.radius.radius9999,
+              backgroundColor: dot.active && !dot.origin ? colors.switchThumb : colors.textTertiary }} />;
+          })}
           {values.map((number, index) => (
             <Pressable
               key={index}

@@ -273,6 +273,7 @@
       "haloSize": 8,
       "pressedThumb": 22,
       "markSize": 4,
+      "originTick": { "width": { "$ref": "dimension.value2" }, "length": { "$ref": "dimension.value12" } },
       "markLabelGap": { "$ref": "dimension.value2" },
       "valueLabelGap": { "$ref": "dimension.value8" },
       "verticalLength": 160,

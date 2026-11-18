@@ -28,7 +28,7 @@ export interface KjunSliderProps {
   length?: number;
   /** The value in a bubble on the thumb: "drag" while dragging or keyboard-focused, "always", or "off" (default). Follows formatValue. */
   valueLabel?: SliderValueLabel;
-  /** The fill grows from this value instead of min, for two-way values such as -50…50; a dot marks it. Single slider only. */
+  /** The fill grows from this value instead of min, for two-way values such as -50…50; a tick marks it. Single slider only. */
   fillOrigin?: number;
   /** Submitted with a form through a hidden input; a range submits two values under the name. */
   name?: string;
@@ -146,8 +146,8 @@ function RangeInput(props: KjunRangeSliderProps | KjunSliderProps) {
     <SliderTrack ref={track} className="kjun-slider-track">{() => <>
       <div className="kjun-slider-rail" />
       {/* A single slider fills from the rail's own end, half a thumb past the track; a range fills between its thumbs. */}
-      <div className="kjun-slider-fill" style={{ [lead]: fill.lead === null ? edge : fill.lead + "%", [trail]: fill.trail === null ? edge : fill.trail + "%" }} />
-      {dots.filter((dot) => dot.dot).map((dot) => <span key={dot.value} className="kjun-slider-mark" data-active={dot.active || undefined} style={{ [lead]: dot.position * 100 + "%" }} />)}
+      <div className="kjun-slider-fill" data-origin={dots.some((dot) => dot.origin) || undefined} style={{ [lead]: fill.lead === null ? edge : fill.lead + "%", [trail]: fill.trail === null ? edge : fill.trail + "%" }} />
+      {dots.filter((dot) => dot.dot).map((dot) => <span key={dot.value} className="kjun-slider-mark" data-active={dot.active || undefined} data-origin={dot.origin || undefined} style={{ [lead]: dot.position * 100 + "%" }} />)}
       {list.map((_, i) => <RangeThumb key={i} index={i} format={format} front={front === i} dragging={ownDrag === i} bubble={valueLabel !== "off"} inputs={inputs.current}
         name={name} label={list.length === 2 ? thumbLabels[i] : undefined} />)}
     </>}</SliderTrack>

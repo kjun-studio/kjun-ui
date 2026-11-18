@@ -155,6 +155,13 @@ button.kjun-avatar-group:disabled{cursor:not-allowed;opacity:var(--_kjun-state-o
   margin-inline-start:calc(var(--_kjun-extension-slider-mark-size) / -2); border-radius:50%; background:var(--_kjun-color-text-tertiary); pointer-events:none;
 }
 .kjun-slider-mark[data-active] { background:var(--_kjun-color-switch-thumb); }
+/* fillOrigin: a tick across the band instead of a dot, drawn over the fill; the fill's origin end is square. */
+.kjun-slider-mark[data-origin] {
+  width:var(--_kjun-extension-slider-origin-tick-width); height:var(--_kjun-extension-slider-origin-tick-length);
+  top:calc(50% - var(--_kjun-extension-slider-origin-tick-length) / 2); margin-inline-start:calc(var(--_kjun-extension-slider-origin-tick-width) / -2);
+  border-radius:var(--_kjun-geometry-radius-radius9999); background:var(--_kjun-color-text-tertiary);
+}
+.kjun-slider-fill[data-origin] { border-radius:0; }
 .kjun-slider-marks {
   position:relative; margin-inline:calc(var(--_kjun-slider-thumb) / 2); height:var(--_kjun-type-caption-line);
   margin-top:calc(var(--_kjun-extension-slider-mark-label-gap) - (var(--_kjun-geometry-native-minimum-touch-target) - var(--_kjun-slider-band)) / 2);
@@ -183,6 +190,10 @@ button.kjun-avatar-group:disabled{cursor:not-allowed;opacity:var(--_kjun-state-o
 .kjun-slider[data-orientation=vertical] .kjun-slider-rail { top:calc(var(--_kjun-slider-thumb) / -2); bottom:calc(var(--_kjun-slider-thumb) / -2); }
 .kjun-slider[data-orientation=vertical] .kjun-slider-thumb { left:50%; }
 .kjun-slider[data-orientation=vertical] .kjun-slider-mark { left:calc(50% - var(--_kjun-extension-slider-mark-size) / 2); margin:calc(var(--_kjun-extension-slider-mark-size) / -2) 0 0; }
+.kjun-slider[data-orientation=vertical] .kjun-slider-mark[data-origin] {
+  width:var(--_kjun-extension-slider-origin-tick-length); height:var(--_kjun-extension-slider-origin-tick-width);
+  left:calc(50% - var(--_kjun-extension-slider-origin-tick-length) / 2); margin:calc(var(--_kjun-extension-slider-origin-tick-width) / -2) 0 0;
+}
 .kjun-slider[data-orientation=vertical] .kjun-slider-marks {
   justify-self:start; align-self:end; height:var(--_kjun-slider-length); margin:0 0 calc(var(--_kjun-slider-thumb) / 2);
 }

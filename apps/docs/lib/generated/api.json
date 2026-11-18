@@ -24941,7 +24941,7 @@
         "type": "number | undefined",
         "required": false,
         "default": "—",
-        "description": "The fill grows from this value instead of min, for two-way values such as -50…50; a dot marks it. Single slider only."
+        "description": "The fill grows from this value instead of min, for two-way values such as -50…50; a tick marks it. Single slider only."
       },
       {
         "name": "name",
@@ -25090,7 +25090,7 @@
         "type": "number | undefined",
         "required": false,
         "default": "—",
-        "description": "The fill grows from this value instead of min, for two-way values such as -50…50; a dot marks it. Single slider only."
+        "description": "The fill grows from this value instead of min, for two-way values such as -50…50; a tick marks it. Single slider only."
       },
       {
         "name": "style",
