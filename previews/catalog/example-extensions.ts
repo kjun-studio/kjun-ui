@@ -112,8 +112,9 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
     case "KjunCarousel": {
       const cards = [["이번 주 추천", "새로 나온 템플릿을 확인하세요"], ["팀 공간", "동료와 문서를 함께 정리합니다"], ["알림 정리", "중요한 소식만 받아 보세요"], ["보관함", "지난 작업을 다시 찾습니다"]].map(([title, subtitle], i) =>
         h("KjunCard", { title, subtitle, surface: "muted" }, undefined, { media: h("KjunImage", { src: sampleImage(i), alt: "", decorative: true, aspectRatio: 2 }) }));
-      return h("Stack", {}, [h(name, { ...(settings.title ? { title: "추천 콘텐츠" } : { ariaLabel: "추천 콘텐츠" }), slideSize: settings.slideSize, gap: settings.gap, indicators: settings.indicators === "none" ? false : settings.indicators, controls: settings.controls, snapAlign: settings.snapAlign, bleed: settings.bleed, indicatorPlacement: settings.indicatorPlacement, ...(platform === "native" ? {} : { mouseDrag: settings.mouseDrag }),
-        index: get("slide", 0), onIndexChange: change("slide") }, settings.slideSize === "auto" ? cards.map(card => h("Box", { width: 240 }, card)) : cards),
+      return h("Stack", {}, [h(name, { ...(settings.title ? { title: "추천 콘텐츠" } : { ariaLabel: "추천 콘텐츠" }), slideSize: settings.slideSize, ...(settings.minSlideWidth ? { minSlideWidth: 180 } : {}), gap: settings.gap, indicators: settings.indicators === "none" ? false : settings.indicators, controls: settings.controls, snapAlign: settings.snapAlign, bleed: settings.bleed, indicatorPlacement: settings.indicatorPlacement, ...(platform === "native" ? {} : { mouseDrag: settings.mouseDrag }),
+        index: get("slide", 0), onIndexChange: change("slide") }, settings.slideSize === "auto" && !settings.minSlideWidth ? cards.map(card => h("Box", { width: 240 }, card)) : cards,
+        settings.action ? { action: h("KjunButton", { variant: "ghost", size: "sm", ...action(() => set("message", "전체 보기")) }, "전체 보기") } : undefined),
         h("Text", {}, `현재 슬라이드: ${get("slide", 0) + 1}`)]);
     }
     case "KjunSteps": {
@@ -127,7 +128,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         onStepSelect: (index: number) => set("message", items[index].label + " 단계 선택") })]);
     }
     case "KjunImage":
-      return h("Stack", {}, [h(name, { src: settings.imageState === "실패" ? "data:image/png;base64,invalid" : settings.imageState === "로딩" && !get("imageReady", false) ? undefined : sampleImage(get("imageVersion", 0)), alt: "산과 하늘을 표현한 프로젝트 표지", decorative: settings.decorative, aspectRatio: settings.aspectRatio, fit: settings.fit, onLoad: () => set("message", "이미지 로드 완료"), onError: () => set("message", "이미지 로드 실패") }, undefined, { fallback: settings.imageState === "로딩" && !get("imageReady", false) ? "이미지 주소를 준비합니다" : "이미지를 불러올 수 없습니다" }), settings.imageState === "로딩" && !get("imageReady", false) ? button("로컬 이미지 준비 · 2초", async () => { await new Promise(resolve => setTimeout(resolve, 2000)); set("imageReady", true); }) : null, button("이미지 주소 변경", () => set("imageVersion", get("imageVersion", 0) + 1))]);
+      return h("Stack", {}, [h(name, { src: settings.imageState === "실패" ? "data:image/png;base64,invalid" : settings.imageState === "로딩" && !get("imageReady", false) ? undefined : sampleImage(get("imageVersion", 0)), alt: "산과 하늘을 표현한 프로젝트 표지", decorative: settings.decorative, aspectRatio: settings.autoRatio ? "auto" : settings.aspectRatio, fit: settings.fit, shape: settings.shape, onLoad: () => set("message", "이미지 로드 완료"), onError: () => set("message", "이미지 로드 실패") }, undefined, { fallback: settings.imageState === "로딩" && !get("imageReady", false) ? "이미지 주소를 준비합니다" : "이미지를 불러올 수 없습니다" }), settings.imageState === "로딩" && !get("imageReady", false) ? button("로컬 이미지 준비 · 2초", async () => { await new Promise(resolve => setTimeout(resolve, 2000)); set("imageReady", true); }) : null, button("이미지 주소 변경", () => set("imageVersion", get("imageVersion", 0) + 1))]);
     case "KjunAvatar":
       return h(name, { name: "김하늘", src: settings.imageState === "사진" ? sampleImage(0) : settings.imageState === "실패" ? "data:image/png;base64,invalid" : undefined, size: settings.size, shape: settings.shape, decorative: settings.decorative });
     case "KjunAvatarGroup": {

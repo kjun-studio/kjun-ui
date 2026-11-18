@@ -82,6 +82,11 @@
   flex: 0 0 auto;
   scroll-snap-stop: normal;
 }
+/* minSlideWidth: the scroller counts how many slides fit and the row is shared between them. */
+.kjun-carousel[data-min-slide-width] .kjun-carousel-slide {
+  flex: 0 0 calc((100% - (var(--_kjun-carousel-per-view, 1) - 1) * var(--_kjun-carousel-gap)) / var(--_kjun-carousel-per-view, 1));
+  scroll-snap-stop: normal;
+}
 .kjun-carousel-header {
   display: flex;
   align-items: center;
@@ -94,45 +99,59 @@
   margin: 0;
   color: var(--_kjun-color-text);
 }
+/* action ("전체 보기") sits before the buttons at the end of the title row; on touch screens it stays alone. */
+.kjun-carousel-header-end {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--_kjun-extension-carousel-header-controls-gap);
+  margin-inline-start: auto;
+}
 .kjun-carousel-header-controls {
   display: none;
   flex: none;
   gap: var(--_kjun-extension-carousel-header-controls-gap);
 }
-/* Side buttons float over the slide edges: a surface circle lifted by the floating elevation. */
-.kjun-carousel-frame > .kjun-carousel-control.kjun-button {
+/* Without a title the buttons share a pill at the bottom end of the slides: [‹ 2 / 3 ›]. Photo banners (full, peek)
+   use the scrim of the overlay position; card rails (auto, minSlideWidth) use a lifted surface. */
+.kjun-carousel-controls {
   position: absolute;
-  top: 50%;
+  bottom: var(--_kjun-extension-carousel-control-inset);
+  inset-inline-end: calc(var(--_kjun-carousel-bleed) + var(--_kjun-extension-carousel-control-inset));
   display: none;
+  align-items: center;
+  border-radius: var(--_kjun-geometry-radius-radius9999);
+  background: var(--_kjun-color-overlay);
+  color: var(--_kjun-color-inverse);
+}
+.kjun-carousel-controls[data-tone="surface"] {
   background: var(--_kjun-color-surface);
   color: var(--_kjun-color-text);
   box-shadow: 0 0 0 var(--_kjun-border-default-width) var(--_kjun-color-border), var(--_kjun-carousel-elevation);
-  transform: translateY(-50%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--_kjun-motion-control) var(--_kjun-ease-out), background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
-.kjun-carousel-frame > .kjun-carousel-control.kjun-button:hover:not(:disabled) {
-  background: var(--_kjun-color-hover);
+.kjun-carousel-controls > .kjun-carousel-control.kjun-button {
+  background: transparent;
+  color: inherit;
 }
-.kjun-carousel-frame > .kjun-carousel-control.kjun-button:active:not(:disabled) {
-  transform: translateY(-50%) scale(0.98);
+.kjun-carousel-controls > .kjun-carousel-control.kjun-button:hover:not(:disabled) {
+  background: color-mix(in srgb, currentColor 16%, transparent);
 }
-.kjun-carousel-control[data-direction="previous"] {
-  inset-inline-start: calc(var(--_kjun-carousel-bleed) + var(--_kjun-extension-carousel-control-inset));
-}
-.kjun-carousel-control[data-direction="next"] {
-  inset-inline-end: calc(var(--_kjun-carousel-bleed) + var(--_kjun-extension-carousel-control-inset));
+.kjun-carousel-controls-count {
+  color: inherit;
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  font-weight: var(--_kjun-type-caption-weight);
+  font-variant-numeric: tabular-nums;
 }
 /* Touch screens swipe; buttons are for pointers that can hover. */
 @media (hover: hover) and (pointer: fine) {
   .kjun-carousel-header-controls,
-  .kjun-carousel-frame > .kjun-carousel-control.kjun-button {
+  .kjun-carousel-controls {
     display: flex;
   }
-  .kjun-carousel-frame:is(:hover, :focus-within) > .kjun-carousel-control.kjun-button {
-    opacity: 1;
-    pointer-events: auto;
+  /* The pill shows the position itself, so the separate count steps aside. */
+  .kjun-carousel[data-controls="corner"] .kjun-carousel-count {
+    display: none;
   }
 }
 .kjun-carousel-indicators {
@@ -169,8 +188,7 @@
   border-radius: var(--_kjun-geometry-radius-radius9999);
 }
 @media (prefers-reduced-motion: reduce) {
-  .kjun-carousel-indicator::before,
-  .kjun-carousel-frame > .kjun-carousel-control.kjun-button {
+  .kjun-carousel-indicator::before {
     transition: none;
   }
 }

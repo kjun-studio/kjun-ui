@@ -1,9 +1,9 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { carouselTarget, clampSlide, indicatorMode, reachableOffsets, settleSlide, slideStops, stopDots, warnUnnamedCarousel,
+import { carouselTarget, clampSlide, indicatorMode, perViewWidth, reachableOffsets, settleSlide, slideStops, slidesPerView, stopDots, warnUnnamedCarousel,
   type CarouselBleed, type CarouselGap, type CarouselIndicatorPlacement, type CarouselIndicators, type CarouselSlideSize, type CarouselSnapAlign } from "../../../shared/package-runtime/carousel";
 import { tokens } from "@kjun-ui/tokens";
 import { Children, isValidElement, useEffect, useRef, useState, type ReactNode } from "react";
-import { Platform, ScrollView, View, type AccessibilityActionEvent, type LayoutChangeEvent, type NativeScrollEvent, type NativeSyntheticEvent,
+import { AccessibilityInfo, Platform, ScrollView, View, type AccessibilityActionEvent, type LayoutChangeEvent, type NativeScrollEvent, type NativeSyntheticEvent,
   type StyleProp, type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KText, useReducedMotion } from "./internal";
@@ -15,10 +15,17 @@ export interface KjunCarouselProps {
   ariaLabel?: string;
   /** A section title above the slides; it also names the region. */
   title?: string;
+  /** An action at the end of the title row, e.g. a "전체 보기" link button. */
+  action?: ReactNode;
   /** Each direct child is one slide. */
   children?: ReactNode;
   /** full: as wide as the carousel; peek: the next slide shows at the edge; auto: each slide keeps its own width. */
   slideSize?: CarouselSlideSize;
+  /**
+   * Each slide at least this many points wide: as many as fit share the row (never fewer than one), so no slide is cut at
+   * the edge. Takes the place of slideSize.
+   */
+  minSlideWidth?: number;
   gap?: CarouselGap;
   /** Controlled current slide; pair with onIndexChange. */
   index?: number;
@@ -45,7 +52,7 @@ const bleeds: Record<CarouselBleed, number> = { none: 0, sm: tokens.space.inset.
 const actions = [{ name: "increment" }, { name: "decrement" }];
 
 /** A row of slides moved by swipe or dots. It never moves on its own. */
-export function KjunCarousel({ ariaLabel, title, children, slideSize = "full", gap = "md", index, defaultIndex = 0, onIndexChange,
+export function KjunCarousel({ ariaLabel, title, action, children, slideSize = "full", minSlideWidth, gap = "md", index, defaultIndex = 0, onIndexChange,
   indicators = true, snapAlign = "start", bleed = "none", indicatorPlacement = "below", style }: KjunCarouselProps) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles();
@@ -66,7 +73,9 @@ export function KjunCarousel({ ariaLabel, title, children, slideSize = "full", g
   // The scroller spans the bleed; its padding keeps the first slide on the content edge, and a centred peek pads for both neighbours.
   const padding = edge + (center && slideSize === "peek" ? geometry.peek + space : 0);
   const content = Math.max(0, frame - 2 * padding);
-  const slideWidth = slideSize === "full" || (center && slideSize === "peek") ? content
+  const perView = minSlideWidth && minSlideWidth > 0 ? slidesPerView(content, minSlideWidth, space) : undefined;
+  const slideWidth = perView ? perViewWidth(content, perView, space)
+    : slideSize === "full" || (center && slideSize === "peek") ? content
     : slideSize === "peek" ? Math.max(0, content - geometry.peek - space) : undefined;
   // A removed slide fires no layout event, so the measurements are trimmed to the slides that remain.
   const ready = measured.length >= count && count > 0;
@@ -74,7 +83,11 @@ export function KjunCarousel({ ariaLabel, title, children, slideSize = "full", g
   const max = Math.max(0, contentWidth - frame);
   const offsets = ready ? reachableOffsets(measured.slice(0, count).map(({ x, width }) =>
     center ? x + width / 2 - frame / 2 : x - measured[0].x), max) : [];
-  const dots = stopDots(ready ? slideStops(offsets) : undefined, count, current);
+  const stops = ready ? slideStops(offsets) : undefined;
+  const dots = stopDots(stops, count, current);
+  // Announce the position after the carousel moved, not on load. A device reads the adjustable value on its own.
+  const [moved, setMoved] = useState(false);
+  const fromAdjust = useRef(false);
 
   const scrollTo = (target: number, animated: boolean) => scroller.current?.scrollTo({ x: offsets[target] ?? 0, animated: animated && !reduced });
   const change = (next: number) => {
@@ -82,6 +95,9 @@ export function KjunCarousel({ ariaLabel, title, children, slideSize = "full", g
     settled.current = next;
     if (index === undefined) setOwn(next);
     onIndexChange?.(next);
+    if (Platform.OS === "web") setMoved(true);
+    else if (!fromAdjust.current) AccessibilityInfo.announceForAccessibility(m.slideOf(next + 1, count));
+    fromAdjust.current = false;
   };
   const go = (target: number) => { scrollTo(target, true); change(target); };
   const settle = () => change(settleSlide(offsets, position.current, max, settled.current));
@@ -110,8 +126,11 @@ export function KjunCarousel({ ariaLabel, title, children, slideSize = "full", g
       return Array.from({ length: Math.max(count, previous.length) }, (_, k) => k === i ? { x, width } : previous[k] ?? { x: 0, width: 0 });
     });
   };
-  const adjust = (event: AccessibilityActionEvent) =>
-    go(carouselTarget(event.nativeEvent.actionName === "increment" ? "next" : "previous", current, count));
+  // Steps by stop like the web buttons, so slides that share the end of a card rail are one step.
+  const adjust = (event: AccessibilityActionEvent) => {
+    fromAdjust.current = true;
+    go(carouselTarget(event.nativeEvent.actionName === "increment" ? "next" : "previous", current, count, stops));
+  };
 
   const overlay = indicatorPlacement === "overlay";
   const ink = overlay ? colors.inverse : colors.text;
@@ -139,24 +158,33 @@ export function KjunCarousel({ ariaLabel, title, children, slideSize = "full", g
     </View>
   ) : null;
 
+  const web = Platform.OS === "web";
   return (
-    <View style={[{ minWidth: 0, maxWidth: edge ? undefined : "100%", marginHorizontal: -edge }, style]}
+    // On the web the region is named like the web packages; a device has no region role, so the adjustable control carries the name.
+    <View {...(web ? { role: "region" as const, "aria-roledescription": m.carousel, "aria-label": ariaLabel ?? title } : {})}
+      style={[{ minWidth: 0, maxWidth: edge ? undefined : "100%", marginHorizontal: -edge }, style]}
       onLayout={event => setFrame(event.nativeEvent.layout.width)}>
-      {title ? <KText accessibilityRole="header" style={[typeStyle("sectionTitle"),
-        { color: colors.text, marginBottom: geometry.headerGap, paddingHorizontal: edge }]}>{title}</KText> : null}
+      {title || action ? (
+        <View style={{ flexDirection: "row", alignItems: "center", gap: geometry.headerGap, marginBottom: geometry.headerGap, paddingHorizontal: edge }}>
+          {title ? <KText accessibilityRole="header" style={[typeStyle("sectionTitle"), { color: colors.text, flexShrink: 1 }]}>{title}</KText> : null}
+          {action ? <View style={{ marginLeft: "auto", flexShrink: 0 }}>{action}</View> : null}
+        </View>
+      ) : null}
       <View>
         <ScrollView ref={scroller} horizontal showsHorizontalScrollIndicator={false} decelerationRate="fast"
-          snapToOffsets={ready ? offsets : undefined} disableIntervalMomentum={slideSize !== "auto"}
+          snapToOffsets={ready ? offsets : undefined} disableIntervalMomentum={!perView && slideSize !== "auto"}
           onScroll={scroll} scrollEventThrottle={16} onMomentumScrollEnd={settle}
           onContentSizeChange={setContentWidth} contentContainerStyle={{ gap: space, paddingHorizontal: padding }}>
           {slides.map((slide, i) => (
             <View key={isValidElement(slide) && slide.key != null ? slide.key : i} onLayout={measure(i)}
+              {...(web ? { role: "group" as const, "aria-roledescription": m.slide, "aria-label": m.slideOf(i + 1, count) } : {})}
               style={slideWidth === undefined ? undefined : { width: slideWidth }}>{slide}</View>
           ))}
         </ScrollView>
         {overlay ? marker : null}
       </View>
       {overlay ? null : marker}
+      {web ? <View aria-live="polite" style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}><KText>{moved ? m.slideOf(current + 1, count) : ""}</KText></View> : null}
     </View>
   );
 }

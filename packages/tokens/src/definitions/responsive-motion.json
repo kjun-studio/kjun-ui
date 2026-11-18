@@ -1,5 +1,5 @@
 {
-  "breakpoints": { "compact": 640, "medium": 768, "wide": 1024, "actionContent": 448, "narrow": 400 },
+  "breakpoints": { "compact": 640, "medium": 768, "wide": 1024, "actionContent": 448, "narrow": 400, "imageFallbackText": 120 },
   "responsive": {
     "modal": { "$ref": "breakpoints.compact" },
     "drawer": { "$ref": "breakpoints.compact" },
@@ -16,6 +16,7 @@
     "formColumns": { "$ref": "breakpoints.medium" },
     "table": { "$ref": "table.mobileBreakpoint" },
     "bottomAction": { "$ref": "breakpoints.actionContent" },
+    "imageFallbackText": { "$ref": "breakpoints.imageFallbackText" },
     "empty": { "$ref": "breakpoints.compact" },
     "stackCompact": { "$ref": "breakpoints.compact" },
     "stackMedium": { "$ref": "breakpoints.medium" },

@@ -129,8 +129,10 @@ export function generate(input: UsageInput) {
       const cards = [['이번 주 추천', '새로 나온 템플릿을 확인하세요'], ['팀 공간', '동료와 문서를 함께 정리합니다'], ['알림 정리', '중요한 소식만 받아 보세요'], ['보관함', '지난 작업을 다시 찾습니다']].map(([title, subtitle], i) =>
         b.node('KjunCard', { title, subtitle, border: true, media: b.node('KjunImage', { src: expr(`images[${i % 2}]`), decorative: true, aspectRatio: 2 }) }));
       b.data('images', [sampleImage(0), sampleImage(1)]);
-      const slides = s.slideSize === 'auto' ? cards.map(card => b.node(b.native ? 'View' : 'div', { style: { width: 240 } }, card)) : cards;
-      content = b.group([b.node(name, { ...(s.title ? { title: '추천 콘텐츠' } : { ariaLabel: '추천 콘텐츠' }), ...b.props('slideSize', 'gap', 'controls', 'snapAlign', 'bleed', 'indicatorPlacement', ...(b.native ? [] : ['mouseDrag'])), ...(s.indicators === 'dots' ? {} : { indicators: s.indicators === 'none' ? false : s.indicators }), index: b.state('slide', 0), onIndexChange: b.update('slide') }, slides.join('\n')),
+      const slides = s.slideSize === 'auto' && !s.minSlideWidth ? cards.map(card => b.node(b.native ? 'View' : 'div', { style: { width: 240 } }, card)) : cards;
+      // minSlideWidth fits as many slides as stay at least that wide; action sits at the end of the title row.
+      content = b.group([b.node(name, { ...(s.title ? { title: '추천 콘텐츠' } : { ariaLabel: '추천 콘텐츠' }), ...b.props('slideSize', 'gap', 'controls', 'snapAlign', 'bleed', 'indicatorPlacement', ...(b.native ? [] : ['mouseDrag'])), ...(s.minSlideWidth ? { minSlideWidth: 180 } : {}), ...(s.indicators === 'dots' ? {} : { indicators: s.indicators === 'none' ? false : s.indicators }), index: b.state('slide', 0), onIndexChange: b.update('slide') }, slides.join('\n'),
+        s.action ? { action: b.node('KjunButton', { variant: 'ghost', size: 'sm', [action]: notify('viewAll', '전체 보기') }, b.text('전체 보기')) } : {}),
         b.text(expr('"현재 슬라이드: " + (state.slide + 1)'))]); break;
     }
     case 'KjunSteps': {
@@ -147,7 +149,7 @@ export function generate(input: UsageInput) {
       b.data('images', [sampleImage(0), sampleImage(1)]);
       const waiting = s.imageState === '로딩' ? '!state.imageReady' : 'false';
       const image = b.node(name, { src: s.imageState === '실패' ? 'data:image/png;base64,invalid' : expr(`${waiting} ? undefined : images[state.imageVersion % images.length]`),
-        alt: '산과 하늘을 표현한 프로젝트 표지', ...b.props('decorative', 'aspectRatio', 'fit'),
+        alt: '산과 하늘을 표현한 프로젝트 표지', ...b.props('decorative', 'fit', 'shape'), ...(s.autoRatio ? { aspectRatio: 'auto' } : b.props('aspectRatio')),
         onLoad: notify('loaded', '이미지 로드 완료'), onError: notify('failed', '이미지 로드 실패'),
       }, '', { fallback: b.text(expr(`${waiting} ? "이미지 주소를 준비합니다" : "이미지를 불러올 수 없습니다"`)) });
       content = b.group([image, ...(s.imageState === '로딩' ? [b.button('로컬 이미지 준비 · 2초', b.handler('prepareImage', '', 'await new Promise(resolve => setTimeout(resolve, 2000));\n' + b.set('imageReady', 'true'), true))] : []), b.button('이미지 주소 변경', b.handler('changeImage', '', b.set('imageVersion', b.read('imageVersion') + ' + 1')))]); break;

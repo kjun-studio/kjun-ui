@@ -1,5 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { carouselKey, carouselTarget, clampSlide, indicatorMode, stepFocus, stopDots, warnCarouselSetup, type CarouselBleed,
+import { carouselKey, carouselTarget, clampSlide, indicatorMode, stepFocus, stepTarget, stopDots, warnCarouselSetup, type CarouselBleed,
   type CarouselGap, type CarouselIndicatorPlacement, type CarouselIndicators, type CarouselSlideSize, type CarouselSnapAlign, type CarouselTitleTag } from "../../../shared/package-runtime/carousel";
 import { createCarouselScroller, type CarouselScroller } from "../../../shared/package-runtime/carousel-scroll";
 import { Children, isValidElement, useEffect, useId, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
@@ -13,10 +13,17 @@ export interface KjunCarouselProps {
   title?: string;
   /** The title's heading level (default h2). */
   titleAs?: CarouselTitleTag;
+  /** An action at the end of the title row, before the previous and next buttons, e.g. a "전체 보기" link button. */
+  action?: ReactNode;
   /** Each direct child is one slide. */
   children?: ReactNode;
   /** full: as wide as the carousel; peek: the next slide shows at the edge; auto: each slide keeps its own width. */
   slideSize?: CarouselSlideSize;
+  /**
+   * Each slide at least this many pixels wide: as many as fit share the row (never fewer than one), so no slide is cut at
+   * the edge. Takes the place of slideSize.
+   */
+  minSlideWidth?: number;
   gap?: CarouselGap;
   /** Controlled current slide; pair with onIndexChange. */
   index?: number;
@@ -43,7 +50,7 @@ export interface KjunCarouselProps {
 }
 
 /** A row of slides moved by swipe, drag, keyboard, buttons or dots. It never moves on its own. */
-export function KjunCarousel({ ariaLabel, title, titleAs: Title = "h2", children, slideSize = "full", gap = "md", index, defaultIndex = 0,
+export function KjunCarousel({ ariaLabel, title, titleAs: Title = "h2", action, children, slideSize = "full", minSlideWidth, gap = "md", index, defaultIndex = 0,
   onIndexChange, indicators = true, controls = true, mouseDrag = true, snapAlign = "start", bleed = "none", indicatorPlacement = "below", className, style, id }: KjunCarouselProps) {
   const m = useKjunMessages();
   const reduced = useReducedMotion();
@@ -72,16 +79,17 @@ export function KjunCarousel({ ariaLabel, title, titleAs: Title = "h2", children
   const go = (target: number) => { scroller.current?.scrollTo(target, !reduced); change(target); };
   // At an end a side button disappears and a header button turns off; focus stays in the carousel instead of dropping to the page.
   const step = (target: number) => {
-    const next = stepFocus(target, count, !!title);
+    // Both button sets keep both buttons and turn the one at an end off, so focus moves to the other.
+    const next = stepFocus(stops, target, count, true);
     go(target);
     // After the render that enables the other header button.
     if (next) requestAnimationFrame(() => (next === "viewport" ? viewport.current
-      : root.current?.querySelector<HTMLElement>(`.kjun-carousel-header-controls [data-direction="${next}"]`))?.focus({ preventScroll: true }));
+      : root.current?.querySelector<HTMLElement>(`.kjun-carousel-control[data-direction="${next}"]`))?.focus({ preventScroll: true }));
   };
 
   // The scroller lives as long as the viewport and reads the latest render through this ref.
-  const latest = useRef({ change, go, current, mouseDrag, snapAlign });
-  latest.current = { change, go, current, mouseDrag, snapAlign };
+  const latest = useRef({ change, go, current, mouseDrag, snapAlign, minSlideWidth });
+  latest.current = { change, go, current, mouseDrag, snapAlign, minSlideWidth };
   useEffect(() => {
     const instance = createCarouselScroller(viewport.current!, {
       onSettle: next => latest.current.change(next),
@@ -90,6 +98,7 @@ export function KjunCarousel({ ariaLabel, title, titleAs: Title = "h2", children
       current: () => latest.current.current,
       mouseDrag: () => latest.current.mouseDrag,
       align: () => latest.current.snapAlign,
+      minSlideWidth: () => latest.current.minSlideWidth,
     });
     scroller.current = instance;
     return () => { instance.destroy(); scroller.current = undefined; };
@@ -110,14 +119,16 @@ export function KjunCarousel({ ariaLabel, title, titleAs: Title = "h2", children
     const move = event.target === event.currentTarget ? carouselKey(event.key) : undefined;
     if (!move) return;
     event.preventDefault();
-    go(carouselTarget(move, current, count));
+    go(carouselTarget(move, current, count, stops));
   };
 
+  // Buttons step by stop: slides that share the end of a card rail are one step, and an end with nowhere to go turns the button off.
+  const targets = { previous: stepTarget(stops, current, count, "previous"), next: stepTarget(stops, current, count, "next") };
   const button = (direction: "previous" | "next") => {
-    const target = direction === "previous" ? current - 1 : current + 1;
-    return <KjunButton key={direction} className="kjun-carousel-control" data-direction={direction} variant="secondary" shape="circle" size="sm"
+    const target = targets[direction];
+    return <KjunButton key={direction} className="kjun-carousel-control" data-direction={direction} variant={title ? "secondary" : "ghost"} shape="circle" size="sm"
       prefixIcon={direction === "previous" ? "chevron-left" : "chevron-right"} ariaLabel={direction === "previous" ? m.previousSlide : m.nextSlide}
-      disabled={target < 0 || target >= count} onClick={() => step(target)} />;
+      disabled={target === undefined} onClick={() => target !== undefined && step(target)} />;
   };
   const buttons = controls && count > 1;
   const marker = count < 2 ? null : marks === "dots" ? (
@@ -132,13 +143,16 @@ export function KjunCarousel({ ariaLabel, title, titleAs: Title = "h2", children
   return (
     <section ref={root} id={id} className={className ? `kjun-carousel ${className}` : "kjun-carousel"} style={style}
       aria-roledescription={m.carousel} aria-label={ariaLabel} aria-labelledby={ariaLabel || !title ? undefined : titleId}
-      data-size={slideSize} data-gap={gap} data-controls={buttons ? (title ? "header" : "sides") : undefined}
+      data-size={slideSize} data-min-slide-width={minSlideWidth && minSlideWidth > 0 ? "" : undefined} data-gap={gap} data-controls={buttons ? (title ? "header" : "corner") : undefined}
       data-mouse-drag={mouseDrag && count > 1 ? "" : undefined} data-align={snapAlign} data-bleed={bleed === "none" ? undefined : bleed}
       data-placement={indicatorPlacement}>
-      {title && (
+      {(title || action) && (
         <div className="kjun-carousel-header">
-          <Title id={titleId} className="kjun-carousel-title kjun-type-section-title">{title}</Title>
-          {buttons && <div className="kjun-carousel-header-controls">{button("previous")}{button("next")}</div>}
+          {title && <Title id={titleId} className="kjun-carousel-title kjun-type-section-title">{title}</Title>}
+          <div className="kjun-carousel-header-end">
+            {action}
+            {buttons && title && <div className="kjun-carousel-header-controls">{button("previous")}{button("next")}</div>}
+          </div>
         </div>
       )}
       <div className="kjun-carousel-frame">
@@ -148,7 +162,15 @@ export function KjunCarousel({ ariaLabel, title, titleAs: Title = "h2", children
               aria-roledescription={m.slide} aria-label={m.slideOf(i + 1, count)} data-current={i === current ? "" : undefined}>{slide}</div>
           ))}
         </div>
-        {buttons && !title && <>{current > 0 && button("previous")}{current < count - 1 && button("next")}</>}
+        {buttons && !title && (
+          // Without a title the buttons share one pill at the bottom end of the slides, with the position between them
+          // when no dots show it; the text is for the eye, the live region speaks the position.
+          <div className="kjun-carousel-controls" data-tone={slideSize === "auto" || minSlideWidth ? "surface" : "scrim"}>
+            {button("previous")}
+            {marks !== "dots" && <span className="kjun-carousel-controls-count" aria-hidden="true">{current + 1} / {count}</span>}
+            {button("next")}
+          </div>
+        )}
         {indicatorPlacement === "overlay" && marker}
       </div>
       {indicatorPlacement === "below" && marker}

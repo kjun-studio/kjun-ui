@@ -1,6 +1,8 @@
 import { useState } from 'react';
 // KjunCarousel cases for React and Native (Vue 3 mirrors this in carousel-vue3.tsx).
 export const carouselSlides = ['Alpha', 'Bravo', 'Charlie', 'Delta'];
+// A 4:1 image for KjunImage aspectRatio="auto".
+export const imageSource = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="100"><rect width="400" height="100" fill="#678B82"/></svg>');
 export function CarouselCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const [changes, setChanges] = useState<number[]>([]);
   const [index, setIndex] = useState(0);
@@ -36,6 +38,14 @@ export function CarouselCases({ K, native = false, providerProps = {} }: { K: an
     <div data-testid="overlay"><K.KjunCarousel ariaLabel="Overlay" indicators="count" indicatorPlacement="overlay">{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
     <div data-testid="overlay-dots"><K.KjunCarousel ariaLabel="Overlay dots" indicatorPlacement="overlay">{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
     <div data-testid="single"><K.KjunCarousel ariaLabel="Single">{slide('Only')}</K.KjunCarousel></div>
+    <div data-testid="perview"><K.KjunCarousel ariaLabel="Per view" minSlideWidth={150}>{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
+    <div data-testid="actioned"><K.KjunCarousel title="새 소식" action={<K.KjunButton variant="ghost" size="sm" {...press(() => undefined)}>전체 보기</K.KjunButton>}>{carouselSlides.map(label => slide(label))}</K.KjunCarousel></div>
+    {/* KjunImage shares this fixture: a rounded thumbnail, a natural-ratio image and a failed natural-ratio image. */}
+    <div data-testid="images" style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+      <div style={{ width: 80 }}><K.KjunImage src={imageSource} alt="Rounded" shape="rounded" /></div>
+      <div style={{ width: 160 }}><K.KjunImage src={imageSource} alt="Natural" aspectRatio="auto" /></div>
+      <div style={{ width: 80 }}><K.KjunImage src="data:image/png;base64,invalid" alt="Broken" aspectRatio="auto" /></div>
+    </div>
     {!native && <div data-testid="form"><K.KjunCarousel ariaLabel="Form">
       <div style={{ height: 120 }}><input aria-label="Name" defaultValue="Kim" /></div>
       {slide('After')}

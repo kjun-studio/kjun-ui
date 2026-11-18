@@ -19,6 +19,7 @@ function vueProps(name, props) {
     else if (key === "onOpenChange") mapped["onUpdate:open"] = value;
     else if (key === "onMonthChange") mapped["onUpdate:month"] = value;
     else if (key === "onWeekChange") mapped["onUpdate:week"] = value;
+    else if (key === "onIndexChange") mapped["onUpdate:index"] = value;
     else if (key === "onChangeCommit") mapped.onChange = value;
     else if (key === "onSizeChange") mapped["onUpdate:size"] = value;
     else if (key === "onSelectionChange") mapped["onUpdate:selected"] = value;

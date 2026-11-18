@@ -74,9 +74,33 @@ test('slideStops numbers the distinct places the slides can stop', async () => {
 
 test('stepFocus keeps focus in the carousel when a button reaches an end', async () => {
   const { stepFocus } = await import('../shared/package-runtime/carousel.ts');
-  assert.equal(stepFocus(3, 4, false), 'viewport');
-  assert.equal(stepFocus(0, 4, false), 'viewport');
-  assert.equal(stepFocus(3, 4, true), 'previous');
-  assert.equal(stepFocus(0, 4, true), 'next');
-  assert.equal(stepFocus(2, 4, true), undefined);
+  assert.equal(stepFocus(undefined, 3, 4, false), 'viewport');
+  assert.equal(stepFocus(undefined, 0, 4, false), 'viewport');
+  assert.equal(stepFocus(undefined, 3, 4, true), 'previous');
+  assert.equal(stepFocus(undefined, 0, 4, true), 'next');
+  assert.equal(stepFocus(undefined, 2, 4, true), undefined);
+  // Slides 1–3 share the end of a card rail: reaching slide 1 is reaching the end.
+  assert.equal(stepFocus([0, 1, 1, 1], 1, 4, true), 'previous');
+});
+
+test('stepTarget moves to the neighbouring stop, passing slides that share one', async () => {
+  const { stepTarget } = await import('../shared/package-runtime/carousel.ts');
+  const stops = [0, 1, 1, 1];
+  assert.equal(stepTarget(stops, 0, 4, 'next'), 1);
+  assert.equal(stepTarget(stops, 1, 4, 'next'), undefined);
+  assert.equal(stepTarget(stops, 3, 4, 'next'), undefined);
+  assert.equal(stepTarget(stops, 3, 4, 'previous'), 0);
+  assert.equal(stepTarget(undefined, 2, 4, 'next'), 3);
+  assert.equal(carouselTarget('next', 1, 4, stops), 1);
+  assert.equal(carouselTarget('previous', 2, 4, stops), 0);
+});
+
+test('slidesPerView fits as many slides as keep the minimum width, and perViewWidth shares the row', async () => {
+  const { slidesPerView, perViewWidth } = await import('../shared/package-runtime/carousel.ts');
+  assert.equal(slidesPerView(720, 200, 12), 3);
+  assert.equal(slidesPerView(400, 200, 12), 1);
+  assert.equal(slidesPerView(412, 200, 12), 2);
+  assert.equal(slidesPerView(100, 200, 12), 1);
+  assert.equal(slidesPerView(0, 200, 12), 1);
+  assert.equal(perViewWidth(720, 3, 12), 232);
 });

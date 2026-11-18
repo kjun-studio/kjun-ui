@@ -1,5 +1,5 @@
 // Shared by the React and Vue 3 KjunCarousel: the browser scroller behind the slides, its settling, layout and mouse dragging.
-import { dragTarget, reachableOffsets, settleSlide, slideStops, type CarouselSnapAlign } from "./carousel";
+import { dragTarget, reachableOffsets, settleSlide, slideStops, slidesPerView, type CarouselSnapAlign } from "./carousel";
 
 export interface CarouselScrollerOptions {
   /** The scroll position came to rest on this slide. */
@@ -11,6 +11,8 @@ export interface CarouselScrollerOptions {
   current: () => number;
   mouseDrag: () => boolean;
   align: () => CarouselSnapAlign;
+  /** Each slide at least this wide; as many as fit share the row. undefined leaves widths to slideSize. */
+  minSlideWidth: () => number | undefined;
 }
 export interface CarouselScroller {
   scrollTo: (target: number, smooth: boolean) => void;
@@ -50,13 +52,30 @@ export function createCarouselScroller(el: HTMLElement, options: CarouselScrolle
   // Browsers without scrollend settle shortly after the last scroll event.
   const scroll = () => { clearTimeout(timer); timer = setTimeout(settle, 120); };
 
+  // minSlideWidth: the number of slides across goes to CSS, which shares the row between them.
+  let perView = "";
+  const layout = () => {
+    const min = options.minSlideWidth();
+    let next = "";
+    if (min && min > 0) {
+      const style = getComputedStyle(el);
+      const inner = el.clientWidth - (parseFloat(style.paddingLeft) || 0) - (parseFloat(style.paddingRight) || 0);
+      next = String(slidesPerView(inner, min, parseFloat(style.columnGap) || 0));
+    }
+    if (next === perView) return false;
+    perView = next;
+    if (next) el.style.setProperty("--_kjun-carousel-per-view", next); else el.style.removeProperty("--_kjun-carousel-per-view");
+    return true;
+  };
   const reportStops = () => {
     const stops = slideStops(offsets()), key = stops.join();
     if (key !== lastStops) { lastStops = key; options.onStops(stops); }
   };
   // A carousel drawn while hidden measures every slide at 0; once it has a size, it returns to the current slide.
   const resized = new ResizeObserver(() => {
-    if (drag || el.clientWidth === width) return;
+    if (drag) return;
+    const relaid = layout();
+    if (el.clientWidth === width && !relaid) return;
     width = el.clientWidth;
     el.scrollTo({ left: offsets()[options.current()] ?? 0, behavior: "auto" });
     reportStops();
@@ -113,8 +132,14 @@ export function createCarouselScroller(el: HTMLElement, options: CarouselScrolle
   };
   const dragStart = (event: DragEvent) => { if (options.mouseDrag()) event.preventDefault(); };
 
+  // Removed slides stop being watched, so the observer does not hold them until the carousel goes.
+  let watched = new Set<Element>();
   const refresh = () => {
-    for (const slide of slides()) seen.observe(slide);
+    const now = new Set<Element>(slides());
+    for (const slide of watched) if (!now.has(slide)) seen.unobserve(slide);
+    for (const slide of now) if (!watched.has(slide)) seen.observe(slide);
+    watched = now;
+    if (layout()) el.scrollTo({ left: offsets()[options.current()] ?? 0, behavior: "auto" });
     reportStops();
   };
   el.addEventListener("scroll", scroll, { passive: true });
@@ -138,6 +163,7 @@ export function createCarouselScroller(el: HTMLElement, options: CarouselScrolle
       clearTimeout(timer);
       resized.disconnect();
       seen.disconnect();
+      watched.clear();
       el.removeEventListener("scroll", scroll);
       el.removeEventListener("scrollend", settle);
       el.removeEventListener("pointerdown", down);

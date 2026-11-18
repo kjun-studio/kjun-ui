@@ -153,6 +153,7 @@ export const kjunPropValues = Object.freeze({
   }),
   KjunImage: Object.freeze({
     fit: Object.freeze(["contain","cover"] as const),
+    shape: Object.freeze(["circle","rounded","square"] as const),
   }),
   KjunInline: Object.freeze({
     as: Object.freeze(["article","aside","div","fieldset","footer","form","header","main","nav","ol","section","ul"] as const),

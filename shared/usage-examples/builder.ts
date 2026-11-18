@@ -107,7 +107,7 @@ export class UsageBuilder {
     const attributes: string[] = [];
     if (this.vue) {
       // v-model pairs a state value with the update handler that writes it back.
-      for (const [valueKey, eventKey, model] of [['value', 'onValueChange', 'v-model'], ['open', 'onOpenChange', 'v-model:open'], ['month', 'onMonthChange', 'v-model:month'], ['week', 'onWeekChange', 'v-model:week']] as const) {
+      for (const [valueKey, eventKey, model] of [['value', 'onValueChange', 'v-model'], ['open', 'onOpenChange', 'v-model:open'], ['month', 'onMonthChange', 'v-model:month'], ['week', 'onWeekChange', 'v-model:week'], ['index', 'onIndexChange', 'v-model:index']] as const) {
         const value = props[valueKey], handler = props[eventKey];
         if (value instanceof Expression && handler instanceof Handler && handler.code === `${value.code} = $event` && (valueKey !== 'value' || vueModelComponents.has(name))) {
           attributes.push(`${model}="${attribute(vueCode(value.code))}"`);
@@ -122,7 +122,7 @@ export class UsageBuilder {
         if (key === 'value' && vueModelComponents.has(name)) key = 'modelValue';
         if (value instanceof Handler) {
           const events: Record<string, string> = { onValueChange: vueModelComponents.has(name) ? 'update:model-value' : 'update:value', onOpenChange: 'update:open', onChangeCommit: 'change', onSizeChange: 'update:size',
-            onSelectionChange: 'update:selected', onExpandedRowsChange: 'update:expanded-rows', onExpandedGroupsChange: 'update:expanded-groups', onRecentColorsChange: 'update:recent-colors', onSortChange: 'update:sort', onPageSizeChange: 'update:page-size', onExpandedChange: 'update:expanded', onCollapsedChange: 'update:collapsed' };
+            onSelectionChange: 'update:selected', onExpandedRowsChange: 'update:expanded-rows', onExpandedGroupsChange: 'update:expanded-groups', onRecentColorsChange: 'update:recent-colors', onSortChange: 'update:sort', onPageSizeChange: 'update:page-size', onExpandedChange: 'update:expanded', onCollapsedChange: 'update:collapsed', onIndexChange: 'update:index' };
           if (name === 'KjunPagination') events.onPageChange = 'update:page';
           attributes.push(`@${events[key] || kebab(key.slice(2)).slice(1)}="${attribute(vueCode(value.code))}"`);
         } else if (typeof value === 'string' && !/[\n\r]/.test(value)) attributes.push(`${kebab(key)}="${attribute(value)}"`);

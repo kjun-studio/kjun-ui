@@ -99,7 +99,8 @@
     "image": {
       "fallbackIconSize": {
         "$ref": "iconSizes.feature"
-      }
+      },
+      "roundedRadius": { "$ref": "radius.radius12" }
     },
     "avatar": {
       "fallbackIconSizes": {

@@ -229,7 +229,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/calendar.css",
-      "packages/tokens/src/carousel.css",
       "packages/tokens/src/color-picker.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",

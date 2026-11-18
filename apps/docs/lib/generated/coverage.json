@@ -1476,7 +1476,7 @@
       "title": "Image",
       "docs": "/components/image",
       "category": "data-display",
-      "differences": "웹은 lazy 로딩을 지원합니다. Native는 source로 로컬 이미지 리소스를 받을 수 있습니다.",
+      "differences": "웹은 lazy 로딩을 지원합니다. Native는 lazy를 받기만 하고, source로 로컬 이미지 리소스를 받을 수 있습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

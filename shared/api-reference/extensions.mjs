@@ -80,10 +80,18 @@ const carouselSummaries = {
   titleAs: "title의 제목 수준입니다(h2~h6, 기본값 h2). 화면의 문서 구조에 맞춥니다. Native에는 없습니다.",
   indicators: "슬라이드 아래 표시입니다. true 또는 \"dots\"는 표시 점, \"count\"는 \"3 / 24\" 같은 숫자 표시(슬라이드가 많을 때), false는 없음입니다. 기본값 true이며 슬라이드가 하나면 그리지 않습니다. Native 스크린리더에는 하나의 조절 컨트롤로 보여, 위·아래로 쓸어 슬라이드를 옮깁니다.",
   mouseDrag: "마우스로 슬라이드를 끌어 넘깁니다. 기본값 true이며 화면 폭의 1/5보다 길게 끌면 한 장 넘어가고, 짧으면 제자리로 돌아갑니다. 입력창 안에서 시작한 드래그는 글자 선택으로 남습니다. 마우스 휠로는 넘어가지 않습니다. Native에는 없습니다.",
-  controls: "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 씁니다. title이 없으면 슬라이드 양쪽에 떠 있는 원 버튼으로, 캐러셀에 마우스를 올리거나 키보드 포커스가 있을 때만 보이고 갈 슬라이드가 있는 쪽만 그립니다. 버튼·표시 점·mouseDrag를 모두 끄면 마우스로 넘길 수 없어 개발 모드에서 경고합니다. Native는 버튼 없이 넘깁니다.",
+  controls: "이전·다음 버튼을 그립니다. 기본값 true이며 웹에서 마우스처럼 올려 둘 수 있는 포인터일 때만 씁니다. title이 없으면 두 버튼이 슬라이드 아래 끝 8px 안쪽의 둥근 띠 하나에 모이고, 점이 없으면(indicators=\"count\" 또는 false) 그 사이에 \"2 / 4\" 위치를 보여 줍니다. 사진 배너(full·peek)는 반투명 바탕(overlay 색)에 흰 글자, 카드 줄(auto·minSlideWidth)은 표면색 바탕에 테두리와 그림자입니다. 처음·끝에서는 그쪽 버튼이 꺼지고 초점은 다른 버튼으로 갑니다. 버튼과 화살표 키는 실제로 멈추는 위치 단위로 움직여, 카드 줄 끝처럼 여러 장이 한 위치에 멈추면 그 장들을 한 번에 건너뜁니다. 버튼·표시 점·mouseDrag를 모두 끄면 마우스로 넘길 수 없어 개발 모드에서 경고합니다. Native는 버튼 없이 넘깁니다.",
   className: "루트 section에 더할 클래스입니다. 크기·간격은 slideSize·gap으로 정하세요.",
   style: "루트에 더할 스타일입니다. 바깥 여백이나 폭 제한에 사용하세요.",
   id: "루트 section의 ID입니다.",
+  minSlideWidth: "슬라이드의 최소 폭(px)입니다. 정하면 이 폭 이상을 지키는 만큼 여러 장을 한 줄에 나눠 놓아 끝에 잘린 카드가 남지 않고, 폭이 바뀌면 장 수를 다시 셉니다(예: 180이면 720px에서 3장, 400px에서 2장). 한 장보다 적어지지는 않습니다. 정하면 slideSize 대신 씁니다.",
+  action: "제목 줄 끝, 이전·다음 버튼 앞에 놓는 행동입니다(예: ghost sm KjunButton \"전체 보기\"). 터치 화면에서는 버튼이 숨으므로 이 행동만 남습니다. Vue는 action 슬롯입니다.",
+};
+const imageSummaries = {
+  shape: "이미지 모서리입니다. square(기본)는 각지게, rounded는 12px 둥글게, circle은 원으로 자릅니다. 목록 썸네일이나 갤러리에서 감싸는 요소 없이 모서리를 둥글게 할 때 씁니다.",
+  aspectRatio: "이미지 영역의 가로/세로 비율입니다. 양수가 아니면 1로 표시합니다. \"auto\"면 불러온 이미지의 원래 비율로 높이가 정해지고, 불러오기 전에는 높이가 0이며 주소가 없거나 실패하면 정사각형 대체 표현을 그립니다.",
+  lazy: "웹 이미지의 브라우저 지연 로딩을 사용합니다. Native는 같은 코드를 위해 받기만 하고, 그려질 때 불러옵니다.",
+  fallback: "주소가 없거나 불러오지 못했을 때 대신 그릴 내용입니다. 비우면 사진 아이콘입니다. 글자를 주면 사진 아이콘 아래 12px 캡션으로 좌우 12px 안쪽에 가운데 정렬하고, 이미지 폭이 120px보다 좁으면 아이콘만 남깁니다(이름은 alt로 읽음). 요소를 주면 그대로 가운데에 그립니다.",
 };
 // React Chip passes the attributes it does not use to its root span, like Vue.
 const chipRoot = {
@@ -155,6 +163,7 @@ const listRoots = (name, platform) => ({
   style: { summary: (platform === "native" ? "루트 View에 더할 스타일입니다." : "루트에 더할 인라인 스타일입니다.") + " 바깥 여백이나 폭 제한에 쓰세요." },
   testID: { type: "string", summary: "테스트에서 루트 View를 찾는 ID입니다." },
 });
+const carouselAction = slot("제목 줄 끝, 이전·다음 버튼 앞에 놓는 행동입니다(예: \"전체 보기\" 버튼).", "ReactNode", "터치 화면에서는 이전·다음 버튼이 숨으므로 이 행동만 남습니다.");
 const carouselSlides = slot("슬라이드 목록입니다. 직접 자식 하나가 슬라이드 하나입니다.", "ReactNode", "슬라이드 안의 버튼·입력도 Tab으로 이동할 수 있습니다. 안의 입력에서는 화살표 키를 가로채지 않습니다.");
 const childProps = {
   prefix: slot("숫자 앞에 붙는 단위 장식입니다.", "제공 데이터 없음", "화면 장식으로만 쓰이며 읽기 문구와 범위 문구에는 붙지 않습니다. 글자만 필요하면 prefix prop을 쓰세요."),
@@ -346,6 +355,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (name === "KjunColorPicker" && colorPickerSummaries[key]) entry = { summary: colorPickerSummaries[key] };
     else if (name === "KjunNumberInput" && numberInputSummaries(platform)[key]) entry = { ...numberInputSummaries(platform)[key] };
     else if (name === "KjunSteps" && !key.startsWith("on") && stepsSummaries[key]) entry = { summary: stepsSummaries[key] };
+    else if (name === "KjunImage" && imageSummaries[key]) entry = { summary: imageSummaries[key] };
     else if (name === "KjunCarousel" && carouselSummaries[key]) entry = { summary: carouselSummaries[key] };
     else if (name === "KjunCarousel" && key === "children") entry = carouselSlides;
     else if (name.endsWith("Slider") && key === "marks") entry = { type: "boolean | { value: number; label?: string }[]", ...detail("트랙 위 눈금입니다.", { "값": "true면 step마다 4px 점을 찍습니다(24개 이하일 때, 넘으면 개발 콘솔에 한 번 경고). 배열이면 그 값마다 점을 찍고 label이 있는 점은 트랙 아래(세로는 오른쪽)에 12px 라벨을 둡니다. 최솟값·최댓값은 트랙 끝이라 점 없이 라벨만 두고, 라벨은 트랙 끝에 맞춥니다. 라벨을 누르면 가까운 손잡이가 그 값으로 이동하고 확정됩니다.", "표시": "채움 구간 위의 점은 손잡이 색, 나머지는 3차 글자색입니다. 눈금은 장식이며 값과 조작은 그대로입니다." }) };
@@ -411,10 +421,10 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit", "update:collapsed": "onCollapsedChange" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper", "KjunNumberInput"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : name === "KjunAvatarGroup" ? { click: "onClick" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunSteps" ? { "step-select": "onStepSelect" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange", "update:expanded": "onExpandedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange", "update:order": "onOrderChange", reorder: "onReorder" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
     if (name === "KjunEventCalendar") Object.assign(events, eventCalendarEvents);
-    const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions", "expanded"], KjunListSection: ["badge", "actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"], KjunNumberInput: ["prefix", "suffix"] }[name] || [];
+    const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions", "expanded"], KjunListSection: ["badge", "actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default", "action"], KjunNumberInput: ["prefix", "suffix"] }[name] || [];
     for (const key of slotNames) {
       if (name === "KjunColorPicker") { slots[key] = colorTriggerSlot; continue; }
-      const definition = name === "KjunSplitPane" ? splitPaneSlots[key] : name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunCarousel" ? carouselSlides : name === "KjunListRow" && key === "default" ? listRowContent : name === "KjunListSection" && key === "badge" ? listSectionBadge : childProps[key === "default" ? "children" : key];
+      const definition = name === "KjunSplitPane" ? splitPaneSlots[key] : name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunCarousel" ? (key === "action" ? carouselAction : carouselSlides) : name === "KjunListRow" && key === "default" ? listRowContent : name === "KjunListSection" && key === "badge" ? listSectionBadge : childProps[key === "default" ? "children" : key];
       slots[key] = { ...definition, details: definition.details.map(row => row.label === "슬롯 데이터" ? { ...row, text: "제공 데이터 없음" } : row) };
     }
   }

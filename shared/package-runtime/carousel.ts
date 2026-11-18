@@ -51,10 +51,39 @@ export function stopDots(stops: readonly number[] | undefined, count: number, cu
   return dots;
 }
 
+/** The stop each slide sits at; before the slides are measured, every slide is its own stop. */
+function stopsFor(stops: readonly number[] | undefined, count: number): readonly number[] {
+  return stops && stops.length === count ? stops : Array.from({ length: count }, (_, i) => i);
+}
+
+/**
+ * Where previous or next leads: the first slide of the neighbouring stop, so slides that share the end of a card rail
+ * are passed over in one step instead of moving nothing. undefined when there is no stop that way.
+ */
+export function stepTarget(stops: readonly number[] | undefined, current: number, count: number, direction: "previous" | "next"): number | undefined {
+  const marks = stopsFor(stops, count), here = marks[current];
+  if (here === undefined) return undefined;
+  const wanted = direction === "next" ? here + 1 : here - 1;
+  const target = marks.indexOf(wanted);
+  return target < 0 ? undefined : target;
+}
+
 /** Where focus goes after a button moves to an end: the scroller for side buttons, which vanish, or the other header button. */
-export function stepFocus(target: number, count: number, header: boolean): "viewport" | "previous" | "next" | undefined {
-  if (target !== 0 && target !== count - 1) return undefined;
-  return header ? (target === 0 ? "next" : "previous") : "viewport";
+export function stepFocus(stops: readonly number[] | undefined, target: number, count: number, header: boolean): "viewport" | "previous" | "next" | undefined {
+  const atStart = stepTarget(stops, target, count, "previous") === undefined, atEnd = stepTarget(stops, target, count, "next") === undefined;
+  if (!atStart && !atEnd) return undefined;
+  return header ? (atStart ? "next" : "previous") : "viewport";
+}
+
+/** How many slides fit side by side when each must be at least `min` wide (never fewer than one). */
+export function slidesPerView(width: number, min: number, gap: number): number {
+  if (!(width > 0) || !(min > 0)) return 1;
+  return Math.max(1, Math.floor((width + gap) / (min + gap)));
+}
+
+/** The slide width that puts `perView` slides across `width` with `gap` between them. */
+export function perViewWidth(width: number, perView: number, gap: number): number {
+  return Math.max(0, (width - (perView - 1) * gap) / perView);
 }
 
 /** Slide starts as scroll positions the scroller can actually reach; starts past the end stop at the end. */
@@ -73,8 +102,10 @@ export function carouselKey(key: string): CarouselMove | undefined {
   return key === "ArrowLeft" ? "previous" : key === "ArrowRight" ? "next" : key === "Home" ? "first" : key === "End" ? "last" : undefined;
 }
 
-export function carouselTarget(move: CarouselMove, index: number, count: number): number {
-  return clampSlide(move === "previous" ? index - 1 : move === "next" ? index + 1 : move === "first" ? 0 : count - 1, count);
+/** Arrow keys step by stop like the buttons; Home and End go to either end. */
+export function carouselTarget(move: CarouselMove, index: number, count: number, stops?: readonly number[]): number {
+  if (move === "previous" || move === "next") return stepTarget(stops, index, count, move) ?? clampSlide(index, count);
+  return clampSlide(move === "first" ? 0 : count - 1, count);
 }
 
 function developmentMode() {

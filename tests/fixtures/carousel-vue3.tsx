@@ -1,7 +1,7 @@
 import { createApp, defineComponent, ref } from 'vue';
 import * as K from '@kjun-ui/vue3';
 import { applyDemoColors } from '../../shared/demo-colors';
-import { carouselSlides } from './carousel-cases';
+import { carouselSlides, imageSource } from './carousel-cases';
 applyDemoColors('default');
 // Same sections and DOM as carousel-cases.tsx (React/Native).
 const slide = (label: string, width?: number) => <div key={label} style={{ height: '120px', width: width ? `${width}px` : undefined, background: 'var(--kjun-secondary)' }}>{label}</div>;
@@ -31,6 +31,13 @@ const App = defineComponent(() => {
     <div data-testid="overlay"><K.KjunCarousel ariaLabel="Overlay" indicators="count" indicatorPlacement="overlay">{{ default: () => carouselSlides.map(label => slide(label)) }}</K.KjunCarousel></div>
     <div data-testid="overlay-dots"><K.KjunCarousel ariaLabel="Overlay dots" indicatorPlacement="overlay">{{ default: () => carouselSlides.map(label => slide(label)) }}</K.KjunCarousel></div>
     <div data-testid="single"><K.KjunCarousel ariaLabel="Single">{{ default: () => slide('Only') }}</K.KjunCarousel></div>
+    <div data-testid="perview"><K.KjunCarousel ariaLabel="Per view" minSlideWidth={150}>{{ default: () => carouselSlides.map(label => slide(label)) }}</K.KjunCarousel></div>
+    <div data-testid="actioned"><K.KjunCarousel title="새 소식">{{ default: () => carouselSlides.map(label => slide(label)), action: () => <K.KjunButton variant="ghost" size="sm">전체 보기</K.KjunButton> }}</K.KjunCarousel></div>
+    <div data-testid="images" style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+      <div style={{ width: '80px' }}><K.KjunImage src={imageSource} alt="Rounded" shape="rounded" /></div>
+      <div style={{ width: '160px' }}><K.KjunImage src={imageSource} alt="Natural" aspectRatio="auto" /></div>
+      <div style={{ width: '80px' }}><K.KjunImage src="data:image/png;base64,invalid" alt="Broken" aspectRatio="auto" /></div>
+    </div>
     <div data-testid="form"><K.KjunCarousel ariaLabel="Form">{{ default: () => [
       <div style={{ height: '120px' }}><input aria-label="Name" value="Kim" /></div>, slide('After')] }}</K.KjunCarousel></div>
     <div data-testid="notes"><K.KjunCarousel ariaLabel="Notes" slideSize="auto">{{ default: () => notes.value.map(label =>

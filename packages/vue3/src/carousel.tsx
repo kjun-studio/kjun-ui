@@ -2,7 +2,7 @@ import { useKjunMessages } from "./runtime/messages";
 import { Comment, Fragment, Text, computed, onBeforeUnmount, onMounted, onUpdated, ref, watch,
   type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
-import { carouselKey, carouselTarget, clampSlide, indicatorMode, stepFocus, stopDots, warnCarouselSetup, type CarouselBleed,
+import { carouselKey, carouselTarget, clampSlide, indicatorMode, stepFocus, stepTarget, stopDots, warnCarouselSetup, type CarouselBleed,
   type CarouselGap, type CarouselIndicatorPlacement, type CarouselIndicators, type CarouselSlideSize, type CarouselSnapAlign, type CarouselTitleTag } from "../../../shared/package-runtime/carousel";
 import { createCarouselScroller, type CarouselScroller } from "../../../shared/package-runtime/carousel-scroll";
 import { KjunButton } from "./button";
@@ -24,6 +24,11 @@ const kjunCarouselProps = {
   titleAs: { type: String as PropType<CarouselTitleTag>, default: "h2" },
   /** full: as wide as the carousel; peek: the next slide shows at the edge; auto: each slide keeps its own width. */
   slideSize: { type: String as PropType<CarouselSlideSize>, default: "full" },
+  /**
+   * Each slide at least this many pixels wide: as many as fit share the row (never fewer than one), so no slide is cut at
+   * the edge. Takes the place of slideSize.
+   */
+  minSlideWidth: { type: Number, default: undefined },
   gap: { type: String as PropType<CarouselGap>, default: "md" },
   /** v-model:index. Without it the carousel keeps its own current slide, starting at defaultIndex. */
   index: { type: Number, default: undefined },
@@ -45,12 +50,15 @@ const kjunCarouselProps = {
   indicatorPlacement: { type: String as PropType<CarouselIndicatorPlacement>, default: "below" },
 } as const;
 export type KjunCarouselProps = ExtractPublicPropTypes<typeof kjunCarouselProps>;
-/** A row of slides moved by swipe, drag, keyboard, buttons or dots. It never moves on its own. Each default-slot child is one slide. */
+/**
+ * A row of slides moved by swipe, drag, keyboard, buttons or dots. It never moves on its own. Each default-slot child is one slide.
+ * Slot: action (at the end of the title row, before the previous and next buttons, e.g. a "전체 보기" link button).
+ */
 export const KjunCarousel = defineComponent({
   name: "KjunCarousel",
   props: kjunCarouselProps,
   emits: { "update:index": (_index: number) => true },
-  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
+  slots: Object as SlotsType<{ default?: () => VNodeChild; action?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
     const reduced = useReducedMotion();
@@ -80,11 +88,12 @@ export const KjunCarousel = defineComponent({
     const go = (target: number) => { scroller?.scrollTo(target, !reduced.value); change(target); };
     // At an end a side button disappears and a header button turns off; focus stays in the carousel instead of dropping to the page.
     const step = (target: number) => {
-      const next = stepFocus(target, count.value, !!props.title);
+      // Both button sets keep both buttons and turn the one at an end off, so focus moves to the other.
+      const next = stepFocus(stops.value, target, count.value, true);
       go(target);
       // After the render that enables the other header button.
       if (next) requestAnimationFrame(() => (next === "viewport" ? viewport.value
-        : root.value?.querySelector<HTMLElement>(`.kjun-carousel-header-controls [data-direction="${next}"]`))?.focus({ preventScroll: true }));
+        : root.value?.querySelector<HTMLElement>(`.kjun-carousel-control[data-direction="${next}"]`))?.focus({ preventScroll: true }));
     };
 
     // Follow a controlled index, and keep a removed slide from leaving the view past the end.
@@ -103,6 +112,7 @@ export const KjunCarousel = defineComponent({
         current: () => current.value,
         mouseDrag: () => props.mouseDrag,
         align: () => props.snapAlign,
+        minSlideWidth: () => props.minSlideWidth,
       });
       settled = current.value;
       if (current.value) scroller.scrollTo(current.value, false);
@@ -114,19 +124,22 @@ export const KjunCarousel = defineComponent({
       const move = event.target === event.currentTarget ? carouselKey(event.key) : undefined;
       if (!move) return;
       event.preventDefault();
-      go(carouselTarget(move, current.value, count.value));
+      go(carouselTarget(move, current.value, count.value, stops.value));
     };
 
     return () => {
       const slides = slideNodes(slots.default?.() as VNode[] | undefined);
       const total = rendered = slides.length;
       const index = clampSlide(props.index ?? own.value, total);
+      // Buttons step by stop: slides that share the end of a card rail are one step, and an end with nowhere to go turns the button off.
+      const targets = { previous: stepTarget(stops.value, index, total, "previous"), next: stepTarget(stops.value, index, total, "next") };
       const button = (direction: "previous" | "next") => {
-        const target = direction === "previous" ? index - 1 : index + 1;
-        return <KjunButton key={direction} class="kjun-carousel-control" data-direction={direction} variant="secondary" shape="circle" size="sm"
+        const target = targets[direction];
+        return <KjunButton key={direction} class="kjun-carousel-control" data-direction={direction} variant={props.title ? "secondary" : "ghost"} shape="circle" size="sm"
           prefixIcon={direction === "previous" ? "chevron-left" : "chevron-right"} ariaLabel={direction === "previous" ? m.value.previousSlide : m.value.nextSlide}
-          disabled={target < 0 || target >= total} onClick={() => step(target)} />;
+          disabled={target === undefined} onClick={() => target !== undefined && step(target)} />;
       };
+      const action = slots.action?.();
       const buttons = props.controls && total > 1;
       const Title = props.titleAs;
       const marker = total < 2 ? null : marks.value === "dots" ? (
@@ -140,13 +153,16 @@ export const KjunCarousel = defineComponent({
       return (
         <section ref={root} class="kjun-carousel" aria-roledescription={m.value.carousel} aria-label={props.ariaLabel}
           aria-labelledby={props.ariaLabel || !props.title ? undefined : titleId}
-          data-size={props.slideSize} data-gap={props.gap} data-controls={buttons ? (props.title ? "header" : "sides") : undefined}
+          data-size={props.slideSize} data-min-slide-width={props.minSlideWidth && props.minSlideWidth > 0 ? "" : undefined} data-gap={props.gap} data-controls={buttons ? (props.title ? "header" : "corner") : undefined}
           data-mouse-drag={props.mouseDrag && total > 1 ? "" : undefined} data-align={props.snapAlign}
           data-bleed={props.bleed === "none" ? undefined : props.bleed} data-placement={props.indicatorPlacement}>
-          {props.title && (
+          {(props.title || action) && (
             <div class="kjun-carousel-header">
-              <Title id={titleId} class="kjun-carousel-title kjun-type-section-title">{props.title}</Title>
-              {buttons && <div class="kjun-carousel-header-controls">{button("previous")}{button("next")}</div>}
+              {props.title && <Title id={titleId} class="kjun-carousel-title kjun-type-section-title">{props.title}</Title>}
+              <div class="kjun-carousel-header-end">
+                {action}
+                {buttons && props.title && <div class="kjun-carousel-header-controls">{button("previous")}{button("next")}</div>}
+              </div>
             </div>
           )}
           <div class="kjun-carousel-frame">
@@ -156,7 +172,15 @@ export const KjunCarousel = defineComponent({
                   aria-label={m.value.slideOf(i + 1, total)} data-current={i === index ? "" : undefined}>{slide}</div>
               ))}
             </div>
-            {buttons && !props.title && <>{index > 0 && button("previous")}{index < total - 1 && button("next")}</>}
+            {buttons && !props.title && (
+              // Without a title the buttons share one pill at the bottom end of the slides, with the position between them
+              // when no dots show it; the text is for the eye, the live region speaks the position.
+              <div class="kjun-carousel-controls" data-tone={props.slideSize === "auto" || props.minSlideWidth ? "surface" : "scrim"}>
+                {button("previous")}
+                {marks.value !== "dots" && <span class="kjun-carousel-controls-count" aria-hidden="true">{index + 1} / {total}</span>}
+                {button("next")}
+              </div>
+            )}
             {props.indicatorPlacement === "overlay" && marker}
           </div>
           {props.indicatorPlacement === "below" && marker}

@@ -317,6 +317,7 @@
       "decorative",
       "aspectRatio",
       "fit",
+      "shape",
       "lazy"
     ],
     "react": [
@@ -325,6 +326,7 @@
       "decorative",
       "aspectRatio",
       "fit",
+      "shape",
       "fallback",
       "lazy",
       "onLoad",
@@ -337,7 +339,9 @@
       "decorative",
       "aspectRatio",
       "fit",
+      "shape",
       "fallback",
+      "lazy",
       "onLoad",
       "onError"
     ]
@@ -484,6 +488,7 @@
       "title",
       "titleAs",
       "slideSize",
+      "minSlideWidth",
       "gap",
       "snapAlign",
       "bleed",
@@ -498,7 +503,9 @@
       "ariaLabel",
       "title",
       "titleAs",
+      "action",
       "slideSize",
+      "minSlideWidth",
       "gap",
       "snapAlign",
       "bleed",
@@ -517,7 +524,9 @@
     "native": [
       "ariaLabel",
       "title",
+      "action",
       "slideSize",
+      "minSlideWidth",
       "gap",
       "snapAlign",
       "bleed",

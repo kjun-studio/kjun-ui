@@ -133,6 +133,38 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(dotsBox!.y + dotsBox!.height).toBeLessThanOrEqual(dotsSlide!.y + dotsSlide!.height);
     });
 
+    test('minSlideWidth shares the row between as many slides as stay that wide', async ({ page }) => {
+      const { width } = await scroller(page, 'perview');
+      const perView = Math.floor((width + 12) / (150 + 12));
+      expect(perView).toBeGreaterThan(1);
+      const share = (width - (perView - 1) * 12) / perView;
+      for (const label of ['Alpha', 'Bravo']) {
+        const box = await slideBox(page, 'perview', label);
+        expect(Math.abs(box.width - share)).toBeLessThanOrEqual(1);
+        expect(box.width).toBeGreaterThanOrEqual(150);
+      }
+    });
+
+    test('action sits at the end of the title row', async ({ page }) => {
+      const title = await section(page, 'actioned').getByText('새 소식', { exact: true }).boundingBox();
+      const action = await section(page, 'actioned').getByRole('button', { name: '전체 보기' }).boundingBox();
+      expect(action!.x).toBeGreaterThan(title!.x + title!.width);
+      expect(Math.abs((action!.y + action!.height / 2) - (title!.y + title!.height / 2))).toBeLessThanOrEqual(4);
+      if (web) {
+        const controls = await section(page, 'actioned').locator('.kjun-carousel-header-controls').boundingBox();
+        expect(action!.x + action!.width).toBeLessThanOrEqual(controls!.x);
+      }
+    });
+
+    // KjunImage shares this fixture.
+    test('an image can be rounded, take its own ratio, and stay square when a natural-ratio image fails', async ({ page }) => {
+      const images = section(page, 'images').locator(':scope > div > :first-child');
+      await expect(images.nth(0)).toHaveCSS('border-top-left-radius', '12px');
+      await expect.poll(async () => Math.round((await images.nth(1).boundingBox())!.height)).toBe(40);
+      await expect.poll(async () => Math.round((await images.nth(2).boundingBox())!.height)).toBe(80);
+      if (web) await expect(images.nth(1)).toHaveAttribute('data-state', 'loaded');
+    });
+
     if (web) {
       test('slides out of view are inert, so Tab does not jump back to them', async ({ page }) => {
         const form = section(page, 'form');
@@ -211,22 +243,34 @@ for (const platform of ['react', 'vue3', 'native']) {
         await expect.poll(async () => (await scroller(page, 'banner')).left).toBe(box.width + 12);
       });
 
-      test('side buttons float only toward a slide that exists and keep focus at the end', async ({ page }) => {
+      test('without a title the buttons share a pill at the bottom end, turn off at the ends and keep focus', async ({ page }) => {
         const region = page.getByRole('region', { name: 'Banner' });
-        const previous = region.getByRole('button', { name: '이전 슬라이드' }), next = region.getByRole('button', { name: '다음 슬라이드' });
-        await expect(previous).toHaveCount(0);
-        await expect(next).toHaveCSS('opacity', '0');
-        await region.locator('.kjun-carousel-frame').hover();
-        await expect(next).toHaveCSS('opacity', '1');
-        expect(await next.evaluate(el => getComputedStyle(el).boxShadow)).not.toBe('none');
+        const pill = region.locator('.kjun-carousel-controls');
+        const previous = pill.getByRole('button', { name: '이전 슬라이드' }), next = pill.getByRole('button', { name: '다음 슬라이드' });
+        await expect(previous).toBeDisabled();
+        await expect(next).toBeVisible();
+        // Bottom end of the slides, 8px in.
+        const frame = (await region.locator('.kjun-carousel-frame').boundingBox())!, box = (await pill.boundingBox())!;
+        expect(Math.round(frame.x + frame.width - (box.x + box.width))).toBe(8);
+        expect(Math.round(frame.y + frame.height - (box.y + box.height))).toBe(8);
         await next.click();
         await expect(page.getByTestId('changes')).toHaveText('[1]');
-        await expect(previous).toBeVisible();
+        await expect(previous).toBeEnabled();
         await next.click();
         await next.click();
         await expect(page.getByTestId('changes')).toHaveText('[1,2,3]');
-        await expect(next).toHaveCount(0);
-        await expect(region.locator('.kjun-carousel-viewport')).toBeFocused();
+        await expect(next).toBeDisabled();
+        await expect(previous).toBeFocused();
+      });
+
+      test('the pill carries the position when no dots show it, and the separate count steps aside', async ({ page }) => {
+        const region = page.getByRole('region', { name: 'Counted' });
+        await expect(region.locator('.kjun-carousel-controls-count')).toHaveText('1 / 4');
+        await expect(region.locator('.kjun-carousel-count')).toBeHidden();
+        await expect(page.getByRole('region', { name: 'Banner' }).locator('.kjun-carousel-controls-count')).toHaveCount(0);
+        // A card rail uses the lifted surface pill; a full banner the scrim.
+        await expect(page.getByRole('region', { name: 'Rail' }).locator('.kjun-carousel-controls')).toHaveAttribute('data-tone', 'surface');
+        await expect(region.locator('.kjun-carousel-controls')).toHaveAttribute('data-tone', 'scrim');
       });
 
       test('a title names the region and holds the buttons, which stay and turn off at the ends', async ({ page }) => {
@@ -235,9 +279,19 @@ for (const platform of ['react', 'vue3', 'native']) {
         const header = region.locator('.kjun-carousel-header');
         await expect(header.getByRole('button', { name: '이전 슬라이드' })).toBeDisabled();
         await expect(header.getByRole('button', { name: '다음 슬라이드' })).toHaveCSS('opacity', '1');
-        await expect(region.locator('.kjun-carousel-frame > .kjun-carousel-control')).toHaveCount(0);
+        await expect(region.locator('.kjun-carousel-controls')).toHaveCount(0);
         await header.getByRole('button', { name: '다음 슬라이드' }).click();
         await expect(header.getByRole('button', { name: '이전 슬라이드' })).toBeEnabled();
+      });
+
+      test('buttons step by stop, so slides that share the end of a card rail are one step', async ({ page }) => {
+        const header = page.getByRole('region', { name: '추천 상품' }).locator('.kjun-carousel-header');
+        const next = header.getByRole('button', { name: '다음 슬라이드' });
+        // Four 200px slides in 600px stop at 0, 212 and the end (236), where the last two slides share a stop.
+        await next.click();
+        await next.click();
+        await expect(next).toBeDisabled();
+        await expect.poll(async () => { const s = await scroller(page, 'titled'); return s.content - s.width - s.left; }).toBeLessThanOrEqual(1);
       });
 
       test('dots are 20px wide targets and the focus ring follows the card radius', async ({ page }) => {
