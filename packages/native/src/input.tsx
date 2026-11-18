@@ -108,24 +108,15 @@ export function KjunFormGroup({
             {shownHint}
           </FontText>
         )}
+        {/* Text only, like Input's errorMessage: the danger colour and the field border carry the state. */}
         {!!error && (
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: tokens.extensions.form.messageGap,
-              marginTop: tokens.extensions.form.messageGap,
-            }}
+          <FontText
+            nativeID={fieldId + "-error"}
+            accessibilityRole="alert"
+            style={{ fontFamily, ...typeStyle('caption'), marginTop: tokens.extensions.form.messageGap, color: c.danger }}
           >
-            <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} color={c.danger} />
-            <FontText
-              nativeID={fieldId + "-error"}
-              accessibilityRole="alert"
-              style={{ fontFamily, ...typeStyle('caption'), flexShrink: 1, color: c.danger }}
-            >
-              {error}
-            </FontText>
-          </View>
+            {error}
+          </FontText>
         )}
       </View>
     </FieldContext.Provider>

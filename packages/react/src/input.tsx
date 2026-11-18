@@ -86,8 +86,8 @@ export function KjunFormGroup({
           </p>
         )}
         {error && (
+          // Text only, like Input's errorMessage: the danger colour and the field border carry the state.
           <p id={errorId} className="kjun-form-error" role="alert">
-            <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} />
             {error}
           </p>
         )}

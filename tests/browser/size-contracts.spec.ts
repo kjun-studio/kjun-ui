@@ -38,8 +38,10 @@ for (const platform of ['react', 'vue3', 'native']) {
     for (const size of ['sm', 'md', 'lg'] as const) await dimensions(page.getByTestId('progress-' + size), undefined, e.progress.heights[size]);
     await page.getByRole('button', { name: '진행 변경', exact: true }).click();
     await expect(page.getByTestId('events')).toHaveText('75/false/a');
-    for (const [id, size] of [['image', e.image.fallbackIconSize], ['avatar-fallback', e.avatar.fallbackIconSize], ['form-error', e.form.messageIconSize]] as const)
+    for (const [id, size] of [['image', e.image.fallbackIconSize], ['avatar-fallback', e.avatar.fallbackIconSize]] as const)
       await expect(page.getByTestId(id).locator('svg').first()).toHaveCSS('width', px(size));
+    // A form error is text only; the danger colour and the field border carry the state.
+    await expect(page.getByTestId('form-error').locator('svg')).toHaveCount(0);
     const chip = page.getByTestId('chip');
     await expect(chip.locator('svg').first()).toHaveCSS('width', px(e.chip.iconSizes.md));
     await expect(chip.locator('svg').last()).toHaveCSS('width', px(e.chip.removeIconSizes.md));

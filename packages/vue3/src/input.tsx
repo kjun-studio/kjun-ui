@@ -80,8 +80,8 @@ export const KjunFormGroup = defineComponent({
           {slots.default?.()}
           {props.hint && !props.error && <p id={id + "-hint"} class="kjun-form-hint">{props.hint}</p>}
           {props.error && (
+            // Text only, like Input's errorMessage: the danger colour and the field border carry the state.
             <p id={id + "-error"} class="kjun-form-error" role="alert">
-              <KjunIcon name="alert-circle" size={tokens.extensions.form.messageIconSize} />
               {props.error}
             </p>
           )}
