@@ -32,8 +32,9 @@ const MenuViewContext = createContext<MenuView>({ view: "", open: () => {}, back
 const MenuLevelContext = createContext("");
 const useShown = () => useContext(MenuViewContext).view === useContext(MenuLevelContext);
 // The check and icon columns each appear once any item in the open menu uses them, so every label shares one start line.
-interface LeadingSlots { check: boolean; icon: boolean }
-const MenuIconSlotContext = createContext<LeadingSlots>({ check: false, icon: false });
+// They share one column unless a row uses both, as on Web.
+interface LeadingSlots { check: boolean; icon: boolean; both: boolean }
+const MenuIconSlotContext = createContext<LeadingSlots>({ check: false, icon: false, both: false });
 type LeadingProps = { icon?: string; selected?: boolean | null; checked?: boolean | null; id?: string; label?: string; value?: string; children?: ReactNode };
 function hasLeading(node: ReactNode, slot: (props: LeadingProps, choice: boolean) => boolean, choice = false): boolean {
   return Children.toArray(node).some(child => isValidElement<LeadingProps>(child) &&
@@ -41,6 +42,7 @@ function hasLeading(node: ReactNode, slot: (props: LeadingProps, choice: boolean
       : child.type === KjunDropdownSection ? hasLeading(child.props.children, slot, child.props.value !== undefined)
       : (child.type === KjunDropdownItem || child.type === KjunDropdownSubmenu) && slot(child.props, choice && child.type === KjunDropdownItem)));
 }
+const hasCheck = (p: LeadingProps, choice: boolean) => p.selected != null || p.checked != null || (choice && p.value !== undefined);
 // A section with `value` makes its items with a `value` one single choice.
 interface Choice { value: string | null; onValueChange?: (value: string) => void }
 const ChoiceContext = createContext<Choice | null>(null);
@@ -196,7 +198,7 @@ export function KjunDropdown({
       >
         <MenuViewContext.Provider value={menuView}>
           {/* Leading columns are reserved for the level on show, as on Web; a submenu's back row always uses the icon column. */}
-          <MenuIconSlotContext.Provider value={{ check: hasLeading(shownChildren, (p, choice) => p.selected != null || p.checked != null || (choice && p.value !== undefined)), icon: !!view || hasLeading(shownChildren, p => !!p.icon) }}>
+          <MenuIconSlotContext.Provider value={{ check: hasLeading(shownChildren, hasCheck), icon: !!view || hasLeading(shownChildren, p => !!p.icon), both: hasLeading(shownChildren, (p, choice) => hasCheck(p, choice) && !!p.icon) }}>
             {/* Native Web reads the rows as a menu, like the web packages. */}
             <View nativeID={menuId} {...(webMenu as object)}>{children}</View>
           </MenuIconSlotContext.Provider>
@@ -265,14 +267,15 @@ function MenuRow({ variant = "default", icon, disabled = false, check = null, de
         paddingHorizontal: menu.compact ? geometry.compactOptionPaddingX : geometry.optionPaddingX,
         minHeight: menu.compact ? geometry.compactOptionHeight : Math.max(geometry.itemHeight, tokens.native.minimumTouchTarget),
         borderRadius: geometry.optionRadius,
-        backgroundColor: check && accessibilityRole === "radio" ? colors.selectedBg : !disabled && (pressed || hovered)
+        // A chosen row is marked by its check alone, like a toggle; the fill stays for the current row.
+        backgroundColor: !disabled && (pressed || hovered)
           ? danger ? dangerTint ?? colors.dangerBg : colors.hover : undefined,
       })}
     >
       {check != null ? <View style={{ opacity: check ? 1 : 0 }} accessible={false}><KjunIcon name="check" size={geometry.iconSize} color={disabled ? colors.textDisabled : colors.brand} /></View>
-        : reserve.check && <View style={{ width: geometry.iconSize }} accessible={false} />}
+        : reserve.both && <View style={{ width: geometry.iconSize }} accessible={false} />}
       {icon ? <KjunIcon name={icon} size={geometry.iconSize} color={iconColor} />
-        : reserve.icon && <View style={{ width: geometry.iconSize }} accessible={false} />}
+        : (reserve.both || (check == null && (reserve.check || reserve.icon))) && <View style={{ width: geometry.iconSize }} accessible={false} />}
       <View style={{ flexGrow: 1, flexShrink: 1 }}>
         {content(children, { color, fontSize: geometry.optionFontSize, lineHeight: geometry.optionLineHeight, ...(back ? { fontWeight: typeStyle("control").fontWeight } : {}) })}
         {!!description && <KText style={{ ...typeStyle("caption"), marginTop: geometry.descriptionGap, color: disabled ? colors.textDisabled : colors.textSecondary }}>{description}</KText>}

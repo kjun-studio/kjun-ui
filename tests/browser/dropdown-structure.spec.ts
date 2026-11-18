@@ -31,9 +31,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     // The single choice and the toggle draw their check in the leading column, before the label.
     const check = (await toggle.locator('svg').first().boundingBox())!, label = (await toggle.getByText('숨긴 항목 보기').boundingBox())!;
     expect(check.x).toBeLessThan(label.x);
-    // The check column comes first and the icon column after it, even on rows that use only one of them.
+    // No row uses both a check and an icon, so they share one leading column.
     const icon = (await row(page, '공유').locator('svg').first().boundingBox())!;
-    expect(icon.x).toBeGreaterThan(check.x + check.width);
+    expect(Math.round(icon.x)).toBe(Math.round(check.x));
+    // A row with neither keeps that column empty, so every label starts on one line.
+    expect(Math.round((await row(page, '알림 받기').getByText('알림 받기').boundingBox())!.x)).toBe(Math.round(label.x));
     expect(Math.round((await row(page, '공유').getByText('공유').boundingBox())!.x)).toBe(Math.round(label.x));
     await toggle.click();
     await expect(menu(page, platform)).toBeHidden();
@@ -190,7 +192,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(row(page, '공유')).toBeFocused();
     // Escape inside a submenu steps back one level instead of closing.
     await page.keyboard.press('ArrowRight');
-    await expect(row(page, '링크 복사')).toBeVisible();
+    await expect(page.getByRole('menuitem', { name: '뒤로, 공유', exact: true })).toBeFocused();
     await page.keyboard.press('Escape');
     await expect(row(page, '공유')).toBeFocused();
     await page.keyboard.press('Escape');

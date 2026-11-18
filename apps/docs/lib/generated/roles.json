@@ -1534,7 +1534,6 @@
       "packages/tokens/src/side-navigation.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
-      "packages/native/src/dropdown.tsx",
       "packages/native/src/list.tsx",
       "packages/native/src/select-options.tsx",
       "packages/native/src/side-navigation-parts.tsx",

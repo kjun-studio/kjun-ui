@@ -30,7 +30,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       // One cue for the current row on the web: its fill, without a ring on top.
       await expect(first).toHaveCSS('outline-style', 'none');
     }
-    await expect(first).toHaveCSS('background-color', 'rgb(224, 237, 255)');
+    // A chosen row shows its check alone; the fill belongs to the current row (the web's focus cue, Native keeps its ring).
+    await expect(first).toHaveCSS('background-color', platform === 'native' ? 'rgba(0, 0, 0, 0)' : 'rgb(228, 228, 231)');
     if (trigger === 'menu-button') await captureReview(page, {
       path: `artifacts/dropdown-design-${platform}-light.png`, clip: { x: 0, y: 0, width: 600, height: 320 },
     });
@@ -40,7 +41,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await button.press('Enter');
     await expect(first).toBeFocused();
     await first.hover();
-    await expect(first).toHaveCSS('background-color', 'rgb(224, 237, 255)');
+    await expect(first).toHaveCSS('background-color', 'rgb(228, 228, 231)');
     await item(page, '비활성 항목').hover({ force: true });
     await expect(item(page, '비활성 항목')).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
     await expect(page.getByTestId('events')).toHaveText('1');
@@ -49,7 +50,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.getByTestId('events')).toHaveText('2');
     await button.press('Enter');
     await expect(first).toBeFocused();
-    await expect(second).toHaveCSS('background-color', 'rgb(224, 237, 255)');
+    await expect(second).toHaveAttribute('aria-checked', 'true');
+    await expect(second).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
     await expect(panel(page, platform)).toHaveCSS('width', '160px');
     await page.keyboard.press('Escape');
     await expect(panel(page, platform)).toBeHidden();
@@ -67,7 +69,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     const wide = (await panel(page, platform).boundingBox())!;
     expect(wide.width).toBeGreaterThan(240);
     await expect(panel(page, platform)).toHaveCSS('background-color', 'rgb(24, 24, 27)');
-    await expect(item(page, longMenuLabel)).toHaveCSS('background-color', 'rgb(33, 58, 97)');
+    // The chosen row has no fill of its own; on the web the focused row takes the dark hover role.
+    await expect(item(page, longMenuLabel)).toHaveCSS('background-color', platform === 'native' ? 'rgba(0, 0, 0, 0)' : 'rgb(63, 63, 70)');
     await captureReview(page, { path: `artifacts/dropdown-design-${platform}-dark.png` });
     await page.keyboard.press('Escape');
     await page.setViewportSize({ width: 320, height: 640 });
