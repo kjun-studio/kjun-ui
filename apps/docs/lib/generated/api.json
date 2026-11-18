@@ -24815,7 +24815,14 @@
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "The column shrinks to the rail of icons. Pass the same value to the menu."
+        "description": "v-model:collapsed: the column shrinks to the rail of icons. Pass the same value to the menu. update:collapsed comes\nfrom railBreakpoint."
+      },
+      {
+        "name": "railBreakpoint",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Below this viewport width the column asks to shrink to the rail (update:collapsed true), and above it to widen\nagain; between crossings the menu's own toggle stands. Default 0, off."
       },
       {
         "name": "railLabels",
@@ -24839,6 +24846,13 @@
         "description": "The column stays in view as the page scrolls (default), the viewport's height, scrolling on its own. false lets it\nscroll away with the page."
       },
       {
+        "name": "stickyOffset",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "How far below the viewport's top the sticky column stays, such as the height of a fixed top bar; the column is\nthat much shorter than the viewport. Default 0."
+      },
+      {
         "name": "breakpoint",
         "type": "number",
         "required": false,
@@ -24850,7 +24864,7 @@
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "v-model:navOpen: the drawer of a narrow screen. Open it from the app's own menu button, and close it on the menu's navigate."
+        "description": "v-model:navOpen: the drawer of a narrow screen. Open it from the app's own menu button, and close it with the nav\nslot's closeDrawer. Widening past the breakpoint closes it (update:navOpen false)."
       },
       {
         "name": "drawerLabel",
@@ -24864,6 +24878,10 @@
       {
         "name": "update:navOpen",
         "source": "packages/vue3/src/side-navigation-layout.tsx"
+      },
+      {
+        "name": "update:collapsed",
+        "source": "packages/vue3/src/side-navigation-layout.tsx"
       }
     ],
     "slots": [
@@ -24871,7 +24889,8 @@
         "name": "nav",
         "data": [
           "collapsed",
-          "drawer"
+          "drawer",
+          "closeDrawer"
         ],
         "source": "packages/vue3/src/side-navigation-layout.tsx"
       },
@@ -24887,7 +24906,7 @@
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((state: import(\"/workspace/packages/react/src/side-navigation-layout\").SideNavigationLayoutState) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
         "required": true,
         "default": "—",
-        "description": "The menu, usually a KjunSideNavigation. A function receives where it is drawn, so it can pass collapsed on and show\nthe full menu in the drawer."
+        "description": "The menu, usually a KjunSideNavigation. A function receives where it is drawn, so it can pass collapsed on, show\nthe full menu in the drawer and close the drawer after navigating."
       },
       {
         "name": "children",
@@ -24902,6 +24921,20 @@
         "required": false,
         "default": "—",
         "description": "The column shrinks to the rail of icons. Pass the same value to the menu."
+      },
+      {
+        "name": "onCollapsedChange",
+        "type": "((collapsed: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "railBreakpoint asks to collapse or widen the column as the viewport crosses it."
+      },
+      {
+        "name": "railBreakpoint",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Below this viewport width the column asks to shrink to the rail (onCollapsedChange(true)), and above it to widen\nagain; between crossings the menu's own toggle stands. Default 0, off."
       },
       {
         "name": "railLabels",
@@ -24925,6 +24958,13 @@
         "description": "The column stays in view as the page scrolls (default), the viewport's height, scrolling on its own. false lets it\nscroll away with the page."
       },
       {
+        "name": "stickyOffset",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "How far below the viewport's top the sticky column stays, such as the height of a fixed top bar; the column is\nthat much shorter than the viewport. Default 0."
+      },
+      {
         "name": "breakpoint",
         "type": "number | undefined",
         "required": false,
@@ -24936,7 +24976,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "The drawer of a narrow screen. Open it from the app's own menu button, and close it in the menu's onNavigate."
+        "description": "The drawer of a narrow screen. Open it from the app's own menu button, and close it with the nav state's\ncloseDrawer. Widening past the breakpoint closes it (onNavOpenChange(false))."
       },
       {
         "name": "onNavOpenChange",
@@ -24966,7 +25006,7 @@
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((state: import(\"/workspace/packages/native/src/side-navigation-layout\").SideNavigationLayoutState) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
         "required": true,
         "default": "—",
-        "description": "The menu, usually a KjunSideNavigation. A function receives where it is drawn, so it can pass collapsed on and show\nthe full menu in the drawer."
+        "description": "The menu, usually a KjunSideNavigation. A function receives where it is drawn, so it can pass collapsed on, show\nthe full menu in the drawer and close the drawer after navigating."
       },
       {
         "name": "children",
@@ -24981,6 +25021,20 @@
         "required": false,
         "default": "—",
         "description": "The column shrinks to the rail of icons. Pass the same value to the menu."
+      },
+      {
+        "name": "onCollapsedChange",
+        "type": "((collapsed: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "railBreakpoint asks to collapse or widen the column as the window crosses it."
+      },
+      {
+        "name": "railBreakpoint",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Below this window width the column asks to shrink to the rail (onCollapsedChange(true)), and above it to widen\nagain; between crossings the menu's own toggle stands. Default 0, off."
       },
       {
         "name": "railLabels",
@@ -25008,7 +25062,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": "The drawer of a narrow screen. Open it from the app's own menu button, and close it in the menu's onNavigate."
+        "description": "The drawer of a narrow screen. Open it from the app's own menu button, and close it with the nav state's\ncloseDrawer. Widening past the breakpoint closes it (onNavOpenChange(false))."
       },
       {
         "name": "onNavOpenChange",

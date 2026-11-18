@@ -32,6 +32,8 @@ if (query.has('limit')) (sideItems[2] as any).limit = 1;
 if (query.has('shortlabels')) { (sideItems[2] as any).items[1].shortLabel = '보관함'; (sideItems[2] as any).shortTitle = '문서함'; }
 // disabledparent=1 disables the "프로젝트" parent.
 if (query.has('disabledparent')) (sideItems[2] as any).items[0].disabled = true;
+// empty=1 adds a group "즐겨찾기" with no rows and its empty line.
+if (query.has('empty')) sideItems.push({ title: '즐겨찾기', icon: 'star', items: [], empty: '즐겨찾기한 문서가 없습니다' } as any);
 export const sideStart = query.get('value') || 'home';
 /** collapsed=1 starts with icons only; controlled=1 passes expanded; late=1 hands the items over after the first render;
  * groups=1 turns on collapsibleGroups; rail=groups shows one icon per group while collapsed; labels=1 turns on railLabels;

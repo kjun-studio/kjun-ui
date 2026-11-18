@@ -24,6 +24,8 @@ export interface SideNavigationDestination { key: string; label: string; href: s
 /** The fields every destination type shares; Native's destination has an optional href. */
 type Destination = { key: string; label: string; icon?: string; badge?: NavigationBadge; badgeTone?: SideNavigationBadgeTone; disabled?: boolean; shortLabel?: string;
   target?: string; actions?: SideNavigationAction[] };
+/** What any platform's destination holds, for helpers generic over Web's and Native's. */
+export type SideNavigationAnyDestination = Destination;
 /** A parent under a parent: the second and last level. It opens its destinations in place, one step further in. */
 export interface SideNavigationSubParent<D extends Destination = SideNavigationDestination> { key: string; label: string; disabled?: boolean; children: D[] }
 /** A parent that opens its destinations under it. Its children may hold one more level of parents. It is a toggle and
@@ -49,11 +51,14 @@ export interface SideNavigationGroup<D extends Destination = SideNavigationDesti
    * current page always shows. */
   limit?: number;
   /** One button at the end of the title, such as "New project". */
-  action?: SideNavigationAction }
+  action?: SideNavigationAction;
+  /** A quiet line shown in place of the rows while the group has none, such as "No projects yet", so an empty group does
+   * not read as a closed one. */
+  empty?: string }
 export type SideNavigationEntry<D extends Destination = SideNavigationDestination> = SideNavigationItem<D> | SideNavigationGroup<D>;
 export interface SideNavigationSection<D extends Destination = SideNavigationDestination> { title?: string; items: SideNavigationItem<D>[];
   /** Set on a titled section: the group's key (its title when the group has none) and its options. */
-  key?: string; icon?: string; shortTitle?: string; collapsible?: boolean; defaultOpen?: boolean; limit?: number; action?: SideNavigationAction }
+  key?: string; icon?: string; shortTitle?: string; collapsible?: boolean; defaultOpen?: boolean; limit?: number; action?: SideNavigationAction; empty?: string }
 /** A titled section, as a rail of groups or a toggle reads it. */
 export type SideNavigationTitledSection<D extends Destination = SideNavigationDestination> = SideNavigationSection<D> & { key: string; title: string };
 /** What a collapsed menu shows one icon for: each top-level item, or each group (loose items keep their own row). */
@@ -80,8 +85,8 @@ export function sideNavigationSections<D extends Destination>(entries: readonly 
   for (const entry of entries) {
     if (isSideGroup(entry)) {
       loose = null;
-      const { title, items, icon, shortTitle, collapsible, defaultOpen, limit, action } = entry;
-      sections.push({ title, items, key: sideGroupKey(entry), icon, shortTitle, collapsible, defaultOpen, limit, action });
+      const { title, items, icon, shortTitle, collapsible, defaultOpen, limit, action, empty } = entry;
+      sections.push({ title, items, key: sideGroupKey(entry), icon, shortTitle, collapsible, defaultOpen, limit, action, empty });
     } else { if (!loose) sections.push({ items: (loose = []) }); loose.push(entry); }
   }
   return sections;
@@ -195,6 +200,9 @@ export function sideSectionRows<D extends Destination>(section: SideNavigationSe
   return { items, hidden: all.length - items.length, expandable: true, expanded: false };
 }
 
+/** The line a titled group shows in place of its rows: its empty text while it has none, else nothing. */
+export const sideSectionEmpty = (section: { items: readonly unknown[]; empty?: string }) => section.items.length ? undefined : section.empty || undefined;
+
 /** A link that leaves this tab (target="_blank" and the like). The browser opens it; the app is not asked to route. */
 export const sideNavigationOpensElsewhere = (destination: { target?: string }) => !!destination.target && destination.target !== "_self";
 
@@ -277,3 +285,11 @@ export function checkSideNavigation<D extends Destination>(entries: readonly Sid
 }
 /** A parent or group pressed while collapsed asks to widen; without a handler the press would do nothing visible. */
 export const warnNoWiden = () => warnSideNavigation("a parent or group was pressed while collapsed, but nothing handles onCollapsedChange (Vue: v-model:collapsed). Handle it, or use collapsedParent=\"flyout\".");
+
+/** KjunSideNavigationLayout's railBreakpoint: the collapsed value to ask for when the viewport moves across it, else null.
+ * previous is null before the first reading, where only a viewport already below it asks (for the rail). Between
+ * crossings the person's own toggle stands. */
+export function sideNavigationRailRequest(previous: boolean | null, below: boolean, collapsed: boolean): boolean | null {
+  if (previous === below || (previous === null && !below)) return null;
+  return below === collapsed ? null : below;
+}

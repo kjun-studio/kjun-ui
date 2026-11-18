@@ -9,13 +9,14 @@ applyDemoColors('default');
 function Page() {
   const [value, setValue] = useState('home'), [collapsed, setCollapsed] = useState(layoutCase.collapsed), [navOpen, setNavOpen] = useState(false);
   return <KjunSideNavigationLayout collapsed={collapsed} railLabels={layoutCase.labels} width={layoutCase.width} breakpoint={layoutCase.breakpoint}
-    navOpen={navOpen} onNavOpenChange={setNavOpen}
-    nav={({ collapsed: narrow }) => <KjunSideNavigation ariaLabel="작업 공간" items={layoutItems as any} value={value} collapsed={narrow} railLabels={layoutCase.labels}
-      onCollapsedChange={setCollapsed} onNavigate={key => { setValue(key); setNavOpen(false); }} />}>
+    railBreakpoint={layoutCase.railBreakpoint} onCollapsedChange={setCollapsed} navOpen={navOpen} onNavOpenChange={setNavOpen}
+    nav={({ collapsed: narrow, closeDrawer }) => <KjunSideNavigation ariaLabel="작업 공간" items={layoutItems as any} value={value} collapsed={narrow} railLabels={layoutCase.labels}
+      onCollapsedChange={setCollapsed} onNavigate={key => { setValue(key); closeDrawer(); }} />}>
     <View>
       <Pressable testID="open" onPress={() => setNavOpen(true)}><Text>메뉴 열기</Text></Pressable>
       <Pressable testID="toggle" onPress={() => setCollapsed(next => !next)}><Text>접기 전환</Text></Pressable>
       <Text testID="value">{value}</Text>
+      <Text testID="nav-open">{String(navOpen)}</Text>
     </View>
   </KjunSideNavigationLayout>;
 }

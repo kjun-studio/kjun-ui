@@ -79,6 +79,8 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
           { key: "archive", label: "보관함", href: "#archive", icon: "box", actions: settings.actions ? [{ key: "new", icon: "plus", label: "새 문서" }, { key: "more", icon: "dots", label: "더 보기" }] : undefined },
         ] },
         { key: "help", label: "도움말", href: "https://example.com/help", icon: "help-circle", target: "_blank" },
+        // empty: a group people fill, shown with its empty line while it has no rows.
+        ...(settings.empty ? [{ title: "즐겨찾기", icon: "star", items: [], empty: "즐겨찾기한 문서가 없습니다" }] : []),
         { title: "관리", icon: "adjustments", items: [{ key: "settings", label: "설정", href: "#settings", icon: "settings", disabled }] },
       ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); } }, undefined,
         settings.chrome ? { header: h("Text", {}, "KJ Studio"), footer: h("Text", {}, "계정") } : undefined)),
@@ -92,7 +94,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         { key: "home", label: "홈", href: "#home", icon: "home" },
         { key: "activity", label: "활동", href: "#activity", icon: "list", badge: 3, badgeTone: "neutral" },
         { title: "문서", icon: "file-text", items: [{ key: "projects", label: "프로젝트", href: "#projects", icon: "folder" }, { key: "archive", label: "보관함", href: "#archive", icon: "box" }] },
-      ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); set("navOpen", false); } });
+      ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); state.closeDrawer(); } });
       return h("Box", { width: 640 }, h(name, { collapsed, railLabels: settings.railLabels, width: settings.width, breakpoint: narrow ? 100000 : 0, ...(platform === "native" ? {} : { sticky: false }),
         navOpen: get("navOpen", false), onNavOpenChange: change("navOpen") }, h("Stack", {}, [
         narrow ? button("메뉴 열기", () => set("navOpen", true)) : null,

@@ -2,13 +2,15 @@ import { componentIcons } from "../../../shared/package-runtime/component-icons"
 import { IconFallbacks } from "../../../shared/package-runtime/icon-context";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { navigationBadge } from "../../../shared/package-runtime/navigation-badge";
-import { checkSideNavigation, isPlainNavigationClick, isSideParent, isTitledSection, sideFlyoutKey, sideGroupState, sideItemsHoldCurrent, sideNavigationArrow, sideNavigationGroupRail,
-  sideNavigationIdPart, sideNavigationInitial, sideNavigationInitialGroups, sideNavigationLinkLabel, sideNavigationOpensElsewhere, sideNavigationSections, sideNavigationShownLabel,
-  sideNavigationShownTitle, sideNavigationToggleName, sideNavigationWithCurrentGroups, sideNavigationWithCurrentParents, sideParentState, sideRailGroupState, sideSectionRows,
+import { checkSideNavigation, isPlainNavigationClick, isSideParent, isTitledSection, sideFlyoutKey, sideGroupState, sideItemsHoldCurrent, sideNavigationGroupRail,
+  sideNavigationIdPart, sideNavigationInitial, sideNavigationLinkLabel, sideNavigationOpensElsewhere, sideNavigationShownLabel,
+  sideNavigationShownTitle, sideNavigationToggleName, sideParentState, sideRailGroupState, sideSectionEmpty, sideSectionRows,
   sideSectionToggles, toggleSideParent, warnNoWiden, type SideNavigationAction, type SideNavigationBadgeTone, type SideNavigationCollapsedParent, type SideNavigationDestination,
   type SideNavigationEntry, type SideNavigationHeadingLevel, type SideNavigationItem, type SideNavigationParent, type SideNavigationRail, type SideNavigationSection,
   type SideNavigationSubParent, type SideNavigationTitledSection } from "../../../shared/package-runtime/side-navigation";
+import { closeSideNavigationFlyout, sideNavigationArrowKey, sideNavigationOpensFlyout, type SideNavigationArrowOwner } from "../../../shared/package-runtime/side-navigation-keys";
 import { scrollSideNavigationRow, sideNavigationCurrentRow } from "../../../shared/package-runtime/side-navigation-scroll";
+import { useSideNavigationState } from "../../../shared/package-runtime/use-side-navigation-state";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ElementType, type KeyboardEvent, type MouseEvent, type ReactElement, type ReactNode } from "react";
 import { KjunIcon } from "./button";
@@ -87,13 +89,6 @@ export interface KjunSideNavigationProps {
 type Mode = { collapsed: boolean; labelled: boolean; flyout?: boolean };
 const FLYOUT: Mode = { collapsed: false, labelled: false, flyout: true };
 const actionCount = (count: number) => ({ ["--_kjun-side-navigation-action-count" as string]: count }) as CSSProperties;
-/** The first row a panel holds that can take focus. */
-const firstRow = (panel: string) => document.getElementById(panel)?.querySelector<HTMLElement>(".kjun-side-navigation-item:not([aria-disabled=true])") ?? null;
-/** The parent button or group title whose panel holds a row. */
-const ownerOf = (node: HTMLElement) => {
-  const panel = node.parentElement?.closest<HTMLElement>("[data-side-panel]");
-  return panel ? document.querySelector<HTMLElement>(`[aria-controls="${panel.id}"]`) : null;
-};
 
 /** A vertical menu for the side of a wide screen: links aligned to the start, the current one filled, groups with titles and up to two levels of children. */
 export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onReselect, expanded, onExpandedChange, collapsed = false, onCollapsedChange,
@@ -101,32 +96,9 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   collapsedParent = "widen", density = "default", headingLevel = 2, header, footer, collapseToggle = false, onAction, linkAs, scrollToCurrent = true }: KjunSideNavigationProps) {
   const m = useKjunMessages(), id = "kjun-side-" + useId().replace(/[^\w-]/g, ""), geometry = tokens.extensions.sideNavigation;
   const nav = useRef<HTMLElement>(null);
-  const sections = useMemo(() => sideNavigationSections(items), [items]);
   useEffect(() => checkSideNavigation(items), [items]);
-  const [own, setOwn] = useState(() => [...sideNavigationWithCurrentParents([], items, value)]);
-  const open = expanded ?? own;
-  const update = (next: string[]) => { if (expanded === undefined) setOwn(next); onExpandedChange?.(next); };
-  const [ownGroups, setOwnGroups] = useState(() => sideNavigationInitialGroups(items, value));
-  const openGroups = expandedGroups ?? ownGroups;
-  const updateGroups = (next: string[]) => { if (expandedGroups === undefined) setOwnGroups(next); onExpandedGroupsChange?.(next); };
-  const [ownShowAll, setOwnShowAll] = useState<string[]>([]);
-  const allShown = showAll ?? ownShowAll;
-  const updateShowAll = (next: string[]) => { if (showAll === undefined) setOwnShowAll(next); onShowAllChange?.(next); };
-  const toggles = sections.some(section => sideSectionToggles(section, collapsibleGroups));
-  // Moving to a page under a closed parent opens it, also when the items arrive after the value; parents the person
-  // opened stay as they are. The first render already starts open, so only later changes are applied and reported.
-  // Groups do the same while any can be closed.
-  const latest = useRef({ open, update, openGroups, updateGroups, toggles }); latest.current = { open, update, openGroups, updateGroups, toggles };
-  const holders = useMemo(() => JSON.stringify([sideNavigationWithCurrentParents([], items, value), sideNavigationWithCurrentGroups([], items, value)]), [items, value]);
-  const mounted = useRef(false);
-  useEffect(() => {
-    if (!mounted.current) { mounted.current = true; return; }
-    const next = sideNavigationWithCurrentParents(latest.current.open, items, value);
-    if (next !== latest.current.open) latest.current.update([...next]);
-    if (!latest.current.toggles) return;
-    const groups = sideNavigationWithCurrentGroups(latest.current.openGroups, items, value);
-    if (groups !== latest.current.openGroups) latest.current.updateGroups([...groups]);
-  }, [value, holders]);
+  const { sections, open, update, openGroups, updateGroups, allShown, updateShowAll } = useSideNavigationState(items, value,
+    { expanded, onExpandedChange, expandedGroups, onExpandedGroupsChange, showAll, onShowAllChange, collapsibleGroups });
   // The current row comes into the menu's own column: at once the first time it is there (on mount, or when the items
   // that hold it arrive), and after a parent or group has opened when the page changes.
   const present = useMemo(() => sections.some(section => sideItemsHoldCurrent(section.items, value)), [sections, value]);
@@ -173,16 +145,10 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   const labelled = collapsed && railLabels, base: Mode = { collapsed, labelled };
   const Heading = ("h" + headingLevel) as "h2";
 
-  // ← and → in an open menu: "in" opens a closed parent or group, or moves to its first row; "out" closes an open one, or
-  // moves from a row to the parent or group title it sits under. Tab still walks every row.
-  const arrows = (event: KeyboardEvent<HTMLElement>, own?: { shown: boolean; set: (open: boolean) => void; panel: string }) => {
-    const direction = sideNavigationArrow(event.key, getComputedStyle(event.currentTarget).direction === "rtl");
-    if (!direction) return;
-    const go = (node: HTMLElement | null) => { if (node) { event.preventDefault(); node.focus(); } };
-    if (own && direction === "in") { if (own.shown) go(firstRow(own.panel)); else { event.preventDefault(); own.set(true); } return; }
-    if (own && own.shown) { event.preventDefault(); own.set(false); return; }
-    if (direction === "out") go(ownerOf(event.currentTarget));
-  };
+  // ← and → in an open menu or a flyout (Tab still walks every row); "out" from a flyout's outer row closes the flyout.
+  const flyoutTrigger = (key: string) => id + "-fly-" + sideNavigationIdPart(key);
+  const leaveFlyout = () => { if (flyout) closeSideNavigationFlyout(() => setFlyout(null), flyoutTrigger(flyout)); };
+  const arrows = (mode: Mode, event: KeyboardEvent<HTMLElement>, own?: SideNavigationArrowOwner) => sideNavigationArrowKey(event, own, mode.flyout ? leaveFlyout : undefined);
   const badge = (text: string, dot: boolean, tone?: SideNavigationBadgeTone | null) =>
     <span className="kjun-navigation-badge" data-dot={dot || undefined} data-tone={tone === "neutral" ? "neutral" : undefined} aria-hidden="true">{text}</span>;
   const opens = <span className="kjun-side-navigation-opens" aria-hidden="true"><KjunIcon name="chevron-right" size={geometry.opensMarkerSize} /></span>;
@@ -206,7 +172,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   // closes it, and → opens it from the keyboard.
   const flyoutPanel = (key: string, title: string, trigger: ReactElement, content: ReactNode) =>
     <KjunPopover open={flyout === key} onOpenChange={next => setFlyout(next ? key : null)} modal={false} placement="right" header={title} focusOnOpen trigger={trigger}>{content}</KjunPopover>;
-  const openOnArrow = (key: string) => (event: KeyboardEvent) => { if (event.key === "ArrowRight") { event.preventDefault(); setFlyout(key); } };
+  const openOnArrow = (key: string) => (event: KeyboardEvent) => { if (sideNavigationOpensFlyout(event)) { event.preventDefault(); setFlyout(key); } };
 
   const link = (mode: Mode, item: SideNavigationDestination, depth: 0 | 1 | 2) => {
     const selected = item.key === value, mark = navigationBadge(item.badge), elsewhere = sideNavigationOpensElsewhere(item), shown = sideNavigationShownLabel(item, mode.labelled);
@@ -216,7 +182,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
       href={item.disabled ? undefined : item.href} role={item.disabled ? "link" : undefined} tabIndex={item.disabled ? -1 : undefined}
       target={item.disabled ? undefined : item.target} rel={elsewhere ? "noopener noreferrer" : undefined}
       aria-label={sideNavigationLinkLabel(item, m, mode.labelled)} aria-disabled={item.disabled || undefined} aria-current={selected ? "page" : undefined}
-      onKeyDown={mode.collapsed ? undefined : (event: KeyboardEvent<HTMLElement>) => arrows(event)}
+      onKeyDown={mode.collapsed ? undefined : (event: KeyboardEvent<HTMLElement>) => arrows(mode, event)}
       onClick={(event: MouseEvent<HTMLAnchorElement>) => {
         if (item.disabled) { event.preventDefault(); return; }
         if (elsewhere || !isPlainNavigationClick(event)) return;
@@ -248,7 +214,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
       <button ref={focusNext.current === item.key ? focusOnMount : undefined} type="button" className="kjun-side-navigation-item" data-child="" aria-expanded={shown} aria-controls={panel}
         aria-disabled={item.disabled || undefined} tabIndex={item.disabled ? -1 : undefined} aria-label={dot ? sideNavigationToggleName(item.label, dot, m) : undefined}
         data-current-within={within ? "" : undefined} onClick={item.disabled ? undefined : () => setParent(item.key, !shown)}
-        onKeyDown={item.disabled ? undefined : event => arrows(event, { shown, panel, set: next => setParent(item.key, next) })}>
+        onKeyDown={item.disabled ? undefined : event => arrows(mode, event, { shown, panel, set: next => setParent(item.key, next) })}>
         <span className="kjun-side-navigation-label">{item.label}</span>
         {dot && badge("", true, tone)}
         <KjunIcon name="chevron-down" className="kjun-side-navigation-chevron" size={geometry.chevronSize} />
@@ -260,13 +226,14 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   const parent = (mode: Mode, item: SideNavigationParent) => {
     const flies = mode.collapsed && flyoutMode && !item.disabled, panel = id + "-parent-" + sideNavigationIdPart(item.key), shown = sideNavigationShownLabel(item, mode.labelled);
     const state = sideParentState(item, { open, collapsed: mode.collapsed, value });
-    const button = <button ref={focusNext.current === item.key ? focusOnMount : undefined} type="button" className="kjun-side-navigation-item" aria-expanded={flies ? undefined : state.shown}
+    const button = <button ref={focusNext.current === item.key ? focusOnMount : undefined} id={flies ? flyoutTrigger(sideFlyoutKey("parent", item.key)) : undefined} type="button"
+      className="kjun-side-navigation-item" aria-expanded={flies ? undefined : state.shown}
       aria-controls={flies ? undefined : panel}
       // aria-disabled instead of disabled: the row keeps its tooltip and its name while it cannot open.
       aria-disabled={item.disabled || undefined} tabIndex={item.disabled ? -1 : undefined}
       aria-label={state.dot || shown !== item.label ? sideNavigationToggleName(item.label, state.dot, m) : undefined}
       onKeyDown={item.disabled ? undefined : flies ? openOnArrow(sideFlyoutKey("parent", item.key)) : mode.collapsed ? undefined
-        : event => arrows(event, { shown: state.shown, panel, set: next => setParent(item.key, next) })}
+        : event => arrows(mode, event, { shown: state.shown, panel, set: next => setParent(item.key, next) })}
       onClick={flies || item.disabled ? undefined : () => mode.collapsed ? reveal(item.key) : setParent(item.key, !state.shown)}
       // A hidden set of children is stood for by its parent, so the place in the menu is never lost.
       data-current-within={state.within ? "" : undefined}>
@@ -283,9 +250,13 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
     </li>;
   };
   const row = (mode: Mode, item: SideNavigationItem) => isSideParent(item) ? parent(mode, item) : destination(mode, item);
+  // An empty group's line in place of its rows: quiet text where a child row's name starts, never a link.
+  const emptyRow = (text: string) => <li key=":empty" className="kjun-side-navigation-row"><p className="kjun-side-navigation-empty">{text}</p></li>;
   // A group's rows under its limit, and the row that shows the rest or folds them again. Icons only, every row shows.
   const groupRows = (mode: Mode, section: SideNavigationSection) => {
     if (mode.collapsed) return section.items.map(item => row(mode, item));
+    const none = sideSectionEmpty(section);
+    if (none) return [emptyRow(none)];
     const { items: visible, hidden, expandable, expanded: all } = sideSectionRows(section, { value, showAll: allShown });
     if (!expandable) return visible.map(item => row(mode, item));
     const key = section.key!, iconic = section.items.some(item => item.icon);
@@ -294,7 +265,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
       updateShowAll(toggleSideParent(allShown, key));
     };
     return [...visible.map(item => row(mode, item)), <li key=":more" className="kjun-side-navigation-row">
-      <button type="button" className="kjun-side-navigation-item kjun-side-navigation-more" aria-expanded={all} onClick={toggle} onKeyDown={event => arrows(event)}>
+      <button type="button" className="kjun-side-navigation-item kjun-side-navigation-more" aria-expanded={all} onClick={toggle} onKeyDown={event => arrows(mode, event)}>
         {iconic && glyph(mode, all ? "chevron-up" : "dots", "", false)}
         <span className="kjun-side-navigation-label">{all ? m.showFewerItems : m.showMoreItems(hidden)}</span>
       </button>
@@ -318,7 +289,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
       {heading(section, <Heading className="kjun-side-navigation-title-heading">
         <button type="button" id={titleId(section.key)} className="kjun-side-navigation-title" data-toggle="" aria-expanded={shown} aria-controls={panel}
           aria-label={dot ? sideNavigationToggleName(section.title, dot, m) : undefined} data-current-within={within ? "" : undefined}
-          onClick={() => set(!shown)} onKeyDown={event => arrows(event, { shown, panel, set })}>
+          onClick={() => set(!shown)} onKeyDown={event => arrows(base, event, { shown, panel, set })}>
           <span className="kjun-side-navigation-label">{section.title}</span>
           {dot ? badge("", true, tone) : groupCounts ? <span className="kjun-side-navigation-count" aria-hidden="true">{count}</span> : null}
           <KjunIcon name="chevron-down" className="kjun-side-navigation-chevron" size={geometry.groupChevronSize} />
@@ -343,13 +314,13 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   // beside it (flyout).
   const railGroup = (group: SideNavigationTitledSection) => {
     const { within, dot, tone } = sideRailGroupState(group, value), shown = sideNavigationShownTitle(group, labelled), key = sideFlyoutKey("group", group.key);
-    const button = <button type="button" className="kjun-side-navigation-item" aria-label={dot || shown !== group.title ? sideNavigationToggleName(group.title, dot, m) : undefined}
+    const button = <button type="button" id={flyoutMode ? flyoutTrigger(key) : undefined} className="kjun-side-navigation-item" aria-label={dot || shown !== group.title ? sideNavigationToggleName(group.title, dot, m) : undefined}
       data-current-within={within ? "" : undefined} onKeyDown={flyoutMode ? openOnArrow(key) : undefined} onClick={flyoutMode ? undefined : () => revealGroup(group.key)}>
       {glyph(base, group.icon, group.title, false, <>{dot && badge("", true, tone)}{opens}</>)}
       <span className={labelClass(base)}>{shown}</span>
     </button>;
     return <li key={key} className="kjun-side-navigation-row">
-      {flyoutMode ? flyoutPanel(key, group.title, named(base, group.title, shown, button), <ul className="kjun-side-navigation-flyout">{group.items.map(item => row(FLYOUT, item))}</ul>)
+      {flyoutMode ? flyoutPanel(key, group.title, named(base, group.title, shown, button), <ul className="kjun-side-navigation-flyout">{sideSectionEmpty(group) ? emptyRow(group.empty!) : group.items.map(item => row(FLYOUT, item))}</ul>)
         : named(base, group.title, shown, button)}
     </li>;
   };

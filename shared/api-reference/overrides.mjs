@@ -722,19 +722,22 @@ for (const platform of ["react", "native"]) set("SideNavigation", {
 }, platform);
 
 set("SideNavigationLayout", {
-  nav: { summary: "열(좁은 화면에서는 서랍)에 놓을 메뉴입니다. 보통 KjunSideNavigation입니다. { collapsed, drawer }를 받는 함수로 주면 서랍 안에서 펼친 메뉴를 그릴 수 있습니다(Vue nav 슬롯)." },
+  nav: { summary: "열(좁은 화면에서는 서랍)에 놓을 메뉴입니다. 보통 KjunSideNavigation입니다. { collapsed, drawer, closeDrawer }를 받는 함수로 주면 서랍 안에서 펼친 메뉴를 그리고, 메뉴의 onNavigate에서 closeDrawer()로 서랍을 닫을 수 있습니다(Vue nav 슬롯). 열에서는 closeDrawer가 아무 일도 하지 않습니다." },
+  railBreakpoint: { default: "0", summary: "화면 폭이 이 값(px)보다 좁아지면 열을 아이콘 열로 줄여 달라고(onCollapsedChange(true), Vue update:collapsed), 다시 넓어지면 펼쳐 달라고 요청합니다. 처음 그릴 때 이미 좁으면 줄여 달라고 요청합니다. 값을 넘나들 때만 요청하므로 그 사이에는 메뉴의 접기 버튼이 정한 상태가 유지됩니다. breakpoint보다 큰 값을 주세요. 0이면 쓰지 않습니다." },
   collapsed: { default: "false", summary: "열을 아이콘 열로 줄입니다(68px, railLabels이면 80px). 메뉴에도 같은 값을 넘기세요. 폭은 collapse 모션(200ms)으로 바뀝니다." },
   railLabels: { default: "false", summary: "메뉴가 접힌 상태에서 아이콘 아래 이름을 보여 줄 때(KjunSideNavigation railLabels) 켜면 접힌 열이 80px이 됩니다." },
   width: { default: '"md"', summary: "열린 열의 폭입니다. sm 224px, md 256px, lg 288px입니다. 열 안쪽에 좌우·위아래 12px 여백을 둡니다." },
   breakpoint: { default: "768", summary: "화면 폭이 이 값(px)보다 좁으면 열을 없애고 메뉴를 시작 쪽 서랍에서 엽니다. 0이면 늘 열을 둡니다. 기본값은 tokens.responsive.sideNavigationLayout입니다." },
-  navOpen: { default: "false", summary: "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 닫으세요(Vue v-model:navOpen)." },
+  navOpen: { default: "false", summary: "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 nav의 closeDrawer()로 닫으세요(Vue v-model:navOpen). 서랍이 열린 채 화면이 breakpoint보다 넓어지면 서랍을 닫아 달라고(false) 요청하므로, 다시 좁아져도 서랍이 저절로 열리지 않습니다." },
   drawerLabel: { summary: "서랍의 접근 가능한 이름입니다. 생략하면 메뉴의 기본 이름(주요 탐색)입니다." },
 });
 for (const platform of ["react", "vue3"]) set("SideNavigationLayout", {
   sticky: { default: "true", summary: "열을 화면 높이로 고정해 페이지와 따로 스크롤합니다. false면 열이 페이지와 함께 스크롤됩니다." },
+  stickyOffset: { default: "0", summary: "고정된 열을 화면 위에서 이만큼(px) 내려 둡니다. 위에 고정된 상단 바가 있으면 그 높이를 주세요. 열의 높이는 화면 높이에서 이 값을 뺀 만큼이라 아래가 잘리지 않습니다." },
 }, platform);
 for (const platform of ["react", "native"]) set("SideNavigationLayout", {
-  onNavOpenChange: "서랍을 닫으려 할 때(바깥 누름, Esc, 닫기 버튼) false로 호출합니다. 받은 값을 navOpen에 반영하세요.",
+  onNavOpenChange: "서랍을 닫으려 할 때(바깥 누름, Esc, 닫기 버튼, nav의 closeDrawer, 서랍이 열린 채 화면이 breakpoint보다 넓어질 때) false로 호출합니다. 받은 값을 navOpen에 반영하세요.",
+  onCollapsedChange: "railBreakpoint를 넘나들 때 줄일지(true) 펼칠지(false)를 알립니다. 받은 값을 collapsed와 메뉴의 collapsed에 함께 반영하세요.",
   children: "메뉴 옆에 놓을 페이지 내용입니다.",
 }, platform);
 set("SideNavigationLayout", { style: "레이아웃 바깥 View의 스타일입니다. 레이아웃은 받은 자리를 채우므로 높이·배경은 앱이 정합니다." }, "native");

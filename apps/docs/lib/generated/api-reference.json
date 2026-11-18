@@ -37861,8 +37861,17 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "The column shrinks to the rail of icons. Pass the same value to the menu.",
+            "description": "v-model:collapsed: the column shrinks to the rail of icons. Pass the same value to the menu. update:collapsed comes\nfrom railBreakpoint.",
             "summary": "열을 아이콘 열로 줄입니다(68px, railLabels이면 80px). 메뉴에도 같은 값을 넘기세요. 폭은 collapse 모션(200ms)으로 바뀝니다.",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "railBreakpoint",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Below this viewport width the column asks to shrink to the rail (update:collapsed true), and above it to widen\nagain; between crossings the menu's own toggle stands. Default 0, off.",
+            "summary": "화면 폭이 이 값(px)보다 좁아지면 열을 아이콘 열로 줄여 달라고(onCollapsedChange(true), Vue update:collapsed), 다시 넓어지면 펼쳐 달라고 요청합니다. 처음 그릴 때 이미 좁으면 줄여 달라고 요청합니다. 값을 넘나들 때만 요청하므로 그 사이에는 메뉴의 접기 버튼이 정한 상태가 유지됩니다. breakpoint보다 큰 값을 주세요. 0이면 쓰지 않습니다.",
             "source": "packages/vue3/src/side-navigation-layout.tsx"
           },
           {
@@ -37893,6 +37902,15 @@
             "source": "packages/vue3/src/side-navigation-layout.tsx"
           },
           {
+            "name": "stickyOffset",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "How far below the viewport's top the sticky column stays, such as the height of a fixed top bar; the column is\nthat much shorter than the viewport. Default 0.",
+            "summary": "고정된 열을 화면 위에서 이만큼(px) 내려 둡니다. 위에 고정된 상단 바가 있으면 그 높이를 주세요. 열의 높이는 화면 높이에서 이 값을 뺀 만큼이라 아래가 잘리지 않습니다.",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
+          },
+          {
             "name": "breakpoint",
             "type": "number",
             "required": false,
@@ -37906,8 +37924,8 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "v-model:navOpen: the drawer of a narrow screen. Open it from the app's own menu button, and close it on the menu's navigate.",
-            "summary": "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 닫으세요(Vue v-model:navOpen).",
+            "description": "v-model:navOpen: the drawer of a narrow screen. Open it from the app's own menu button, and close it with the nav\nslot's closeDrawer. Widening past the breakpoint closes it (update:navOpen false).",
+            "summary": "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 nav의 closeDrawer()로 닫으세요(Vue v-model:navOpen). 서랍이 열린 채 화면이 breakpoint보다 넓어지면 서랍을 닫아 달라고(false) 요청하므로, 다시 좁아져도 서랍이 저절로 열리지 않습니다.",
             "source": "packages/vue3/src/side-navigation-layout.tsx"
           },
           {
@@ -37926,6 +37944,12 @@
             "source": "packages/vue3/src/side-navigation-layout.tsx",
             "type": "이벤트",
             "summary": "update:navOpen 이벤트를 통지합니다."
+          },
+          {
+            "name": "update:collapsed",
+            "source": "packages/vue3/src/side-navigation-layout.tsx",
+            "type": "이벤트",
+            "summary": "update:collapsed 이벤트를 통지합니다."
           }
         ],
         "slots": [
@@ -37933,10 +37957,11 @@
             "name": "nav",
             "data": [
               "collapsed",
-              "drawer"
+              "drawer",
+              "closeDrawer"
             ],
             "source": "packages/vue3/src/side-navigation-layout.tsx",
-            "type": "{ collapsed, drawer }",
+            "type": "{ collapsed, drawer, closeDrawer }",
             "summary": "nav 영역의 기본 내용을 교체합니다."
           },
           {
@@ -37957,8 +37982,8 @@
             "type": "ReactNode | ((state: SideNavigationLayoutState) => ReactNode)",
             "required": true,
             "default": "—",
-            "description": "The menu, usually a KjunSideNavigation. A function receives where it is drawn, so it can pass collapsed on and show\nthe full menu in the drawer.",
-            "summary": "열(좁은 화면에서는 서랍)에 놓을 메뉴입니다. 보통 KjunSideNavigation입니다. { collapsed, drawer }를 받는 함수로 주면 서랍 안에서 펼친 메뉴를 그릴 수 있습니다(Vue nav 슬롯).",
+            "description": "The menu, usually a KjunSideNavigation. A function receives where it is drawn, so it can pass collapsed on, show\nthe full menu in the drawer and close the drawer after navigating.",
+            "summary": "열(좁은 화면에서는 서랍)에 놓을 메뉴입니다. 보통 KjunSideNavigation입니다. { collapsed, drawer, closeDrawer }를 받는 함수로 주면 서랍 안에서 펼친 메뉴를 그리고, 메뉴의 onNavigate에서 closeDrawer()로 서랍을 닫을 수 있습니다(Vue nav 슬롯). 열에서는 closeDrawer가 아무 일도 하지 않습니다.",
             "source": "packages/react/src/side-navigation-layout.tsx"
           },
           {
@@ -37977,6 +38002,24 @@
             "default": "false",
             "description": "The column shrinks to the rail of icons. Pass the same value to the menu.",
             "summary": "열을 아이콘 열로 줄입니다(68px, railLabels이면 80px). 메뉴에도 같은 값을 넘기세요. 폭은 collapse 모션(200ms)으로 바뀝니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "onCollapsedChange",
+            "type": "((collapsed: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "railBreakpoint asks to collapse or widen the column as the viewport crosses it.",
+            "summary": "railBreakpoint를 넘나들 때 줄일지(true) 펼칠지(false)를 알립니다. 받은 값을 collapsed와 메뉴의 collapsed에 함께 반영하세요.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "railBreakpoint",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Below this viewport width the column asks to shrink to the rail (onCollapsedChange(true)), and above it to widen\nagain; between crossings the menu's own toggle stands. Default 0, off.",
+            "summary": "화면 폭이 이 값(px)보다 좁아지면 열을 아이콘 열로 줄여 달라고(onCollapsedChange(true), Vue update:collapsed), 다시 넓어지면 펼쳐 달라고 요청합니다. 처음 그릴 때 이미 좁으면 줄여 달라고 요청합니다. 값을 넘나들 때만 요청하므로 그 사이에는 메뉴의 접기 버튼이 정한 상태가 유지됩니다. breakpoint보다 큰 값을 주세요. 0이면 쓰지 않습니다.",
             "source": "packages/react/src/side-navigation-layout.tsx"
           },
           {
@@ -38007,6 +38050,15 @@
             "source": "packages/react/src/side-navigation-layout.tsx"
           },
           {
+            "name": "stickyOffset",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "How far below the viewport's top the sticky column stays, such as the height of a fixed top bar; the column is\nthat much shorter than the viewport. Default 0.",
+            "summary": "고정된 열을 화면 위에서 이만큼(px) 내려 둡니다. 위에 고정된 상단 바가 있으면 그 높이를 주세요. 열의 높이는 화면 높이에서 이 값을 뺀 만큼이라 아래가 잘리지 않습니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
             "name": "breakpoint",
             "type": "number | undefined",
             "required": false,
@@ -38020,8 +38072,8 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
-            "description": "The drawer of a narrow screen. Open it from the app's own menu button, and close it in the menu's onNavigate.",
-            "summary": "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 닫으세요(Vue v-model:navOpen).",
+            "description": "The drawer of a narrow screen. Open it from the app's own menu button, and close it with the nav state's\ncloseDrawer. Widening past the breakpoint closes it (onNavOpenChange(false)).",
+            "summary": "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 nav의 closeDrawer()로 닫으세요(Vue v-model:navOpen). 서랍이 열린 채 화면이 breakpoint보다 넓어지면 서랍을 닫아 달라고(false) 요청하므로, 다시 좁아져도 서랍이 저절로 열리지 않습니다.",
             "source": "packages/react/src/side-navigation-layout.tsx"
           },
           {
@@ -38030,7 +38082,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "서랍을 닫으려 할 때(바깥 누름, Esc, 닫기 버튼) false로 호출합니다. 받은 값을 navOpen에 반영하세요.",
+            "summary": "서랍을 닫으려 할 때(바깥 누름, Esc, 닫기 버튼, nav의 closeDrawer, 서랍이 열린 채 화면이 breakpoint보다 넓어질 때) false로 호출합니다. 받은 값을 navOpen에 반영하세요.",
             "source": "packages/react/src/side-navigation-layout.tsx"
           },
           {
@@ -38064,8 +38116,8 @@
             "type": "ReactNode | ((state: SideNavigationLayoutState) => ReactNode)",
             "required": true,
             "default": "—",
-            "description": "The menu, usually a KjunSideNavigation. A function receives where it is drawn, so it can pass collapsed on and show\nthe full menu in the drawer.",
-            "summary": "열(좁은 화면에서는 서랍)에 놓을 메뉴입니다. 보통 KjunSideNavigation입니다. { collapsed, drawer }를 받는 함수로 주면 서랍 안에서 펼친 메뉴를 그릴 수 있습니다(Vue nav 슬롯).",
+            "description": "The menu, usually a KjunSideNavigation. A function receives where it is drawn, so it can pass collapsed on, show\nthe full menu in the drawer and close the drawer after navigating.",
+            "summary": "열(좁은 화면에서는 서랍)에 놓을 메뉴입니다. 보통 KjunSideNavigation입니다. { collapsed, drawer, closeDrawer }를 받는 함수로 주면 서랍 안에서 펼친 메뉴를 그리고, 메뉴의 onNavigate에서 closeDrawer()로 서랍을 닫을 수 있습니다(Vue nav 슬롯). 열에서는 closeDrawer가 아무 일도 하지 않습니다.",
             "source": "packages/native/src/side-navigation-layout.tsx"
           },
           {
@@ -38084,6 +38136,24 @@
             "default": "false",
             "description": "The column shrinks to the rail of icons. Pass the same value to the menu.",
             "summary": "열을 아이콘 열로 줄입니다(68px, railLabels이면 80px). 메뉴에도 같은 값을 넘기세요. 폭은 collapse 모션(200ms)으로 바뀝니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "onCollapsedChange",
+            "type": "((collapsed: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "railBreakpoint asks to collapse or widen the column as the window crosses it.",
+            "summary": "railBreakpoint를 넘나들 때 줄일지(true) 펼칠지(false)를 알립니다. 받은 값을 collapsed와 메뉴의 collapsed에 함께 반영하세요.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "railBreakpoint",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Below this window width the column asks to shrink to the rail (onCollapsedChange(true)), and above it to widen\nagain; between crossings the menu's own toggle stands. Default 0, off.",
+            "summary": "화면 폭이 이 값(px)보다 좁아지면 열을 아이콘 열로 줄여 달라고(onCollapsedChange(true), Vue update:collapsed), 다시 넓어지면 펼쳐 달라고 요청합니다. 처음 그릴 때 이미 좁으면 줄여 달라고 요청합니다. 값을 넘나들 때만 요청하므로 그 사이에는 메뉴의 접기 버튼이 정한 상태가 유지됩니다. breakpoint보다 큰 값을 주세요. 0이면 쓰지 않습니다.",
             "source": "packages/native/src/side-navigation-layout.tsx"
           },
           {
@@ -38118,8 +38188,8 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
-            "description": "The drawer of a narrow screen. Open it from the app's own menu button, and close it in the menu's onNavigate.",
-            "summary": "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 닫으세요(Vue v-model:navOpen).",
+            "description": "The drawer of a narrow screen. Open it from the app's own menu button, and close it with the nav state's\ncloseDrawer. Widening past the breakpoint closes it (onNavOpenChange(false)).",
+            "summary": "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 nav의 closeDrawer()로 닫으세요(Vue v-model:navOpen). 서랍이 열린 채 화면이 breakpoint보다 넓어지면 서랍을 닫아 달라고(false) 요청하므로, 다시 좁아져도 서랍이 저절로 열리지 않습니다.",
             "source": "packages/native/src/side-navigation-layout.tsx"
           },
           {
@@ -38128,7 +38198,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "서랍을 닫으려 할 때(바깥 누름, Esc, 닫기 버튼) false로 호출합니다. 받은 값을 navOpen에 반영하세요.",
+            "summary": "서랍을 닫으려 할 때(바깥 누름, Esc, 닫기 버튼, nav의 closeDrawer, 서랍이 열린 채 화면이 breakpoint보다 넓어질 때) false로 호출합니다. 받은 값을 navOpen에 반영하세요.",
             "source": "packages/native/src/side-navigation-layout.tsx"
           },
           {

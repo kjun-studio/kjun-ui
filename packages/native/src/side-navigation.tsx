@@ -1,12 +1,13 @@
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
 import { IconFallbacks } from "../../../shared/package-runtime/icon-context";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { checkSideNavigation, isTitledSection, sideFlyoutKey, sideGroupState, sideNavigationGroupRail, sideNavigationInitialGroups, sideNavigationSections, sideNavigationShownTitle,
-  sideNavigationToggleName, sideNavigationWithCurrentGroups, sideNavigationWithCurrentParents, sideRailGroupState, sideSectionToggles, toggleSideParent, warnNoWiden,
+import { checkSideNavigation, isTitledSection, sideFlyoutKey, sideGroupState, sideNavigationGroupRail, sideNavigationShownTitle,
+  sideNavigationToggleName, sideRailGroupState, sideSectionEmpty, sideSectionToggles, toggleSideParent, warnNoWiden,
   type SideNavigationCollapsedParent, type SideNavigationHeadingLevel, type SideNavigationRail, type SideNavigationSection, type SideNavigationTitledSection,
   type SideNavigationEntry as Entry, type SideNavigationGroup as Group } from "../../../shared/package-runtime/side-navigation";
+import { useSideNavigationState } from "../../../shared/package-runtime/use-side-navigation-state";
 import { tokens } from "@kjun-ui/tokens";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Animated, Platform, View, type GestureResponderEvent, type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIcon } from "./button";
@@ -95,32 +96,9 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   collapsibleGroups = false, expandedGroups, onExpandedGroupsChange, groupCounts = false, showAll, onShowAllChange, rail = "items", railLabels = false,
   collapsedParent = "widen", density = "default", headingLevel = 2, header, footer, collapseToggle = false, onAction }: KjunSideNavigationProps) {
   const m = useKjunMessages(), styles = useKjunStyles(), { colors } = styles, geometry = tokens.extensions.sideNavigation;
-  const sections = useMemo(() => sideNavigationSections(items), [items]);
   useEffect(() => checkSideNavigation(items), [items]);
-  const [own, setOwn] = useState(() => [...sideNavigationWithCurrentParents([], items, value)]);
-  const open = expanded ?? own;
-  const update = (next: string[]) => { if (expanded === undefined) setOwn(next); onExpandedChange?.(next); };
-  const [ownGroups, setOwnGroups] = useState(() => sideNavigationInitialGroups(items, value));
-  const openGroups = expandedGroups ?? ownGroups;
-  const updateGroups = (next: string[]) => { if (expandedGroups === undefined) setOwnGroups(next); onExpandedGroupsChange?.(next); };
-  const [ownShowAll, setOwnShowAll] = useState<string[]>([]);
-  const allShown = showAll ?? ownShowAll;
-  const updateShowAll = (next: string[]) => { if (showAll === undefined) setOwnShowAll(next); onShowAllChange?.(next); };
-  const toggles = sections.some(section => sideSectionToggles(section, collapsibleGroups));
-  // Moving to a page under a closed parent opens it, also when the items arrive after the value; parents the person
-  // opened stay as they are. The first render already starts open, so only later changes are applied and reported.
-  // Groups do the same while any can be closed.
-  const latest = useRef({ open, update, openGroups, updateGroups, toggles }); latest.current = { open, update, openGroups, updateGroups, toggles };
-  const holders = useMemo(() => JSON.stringify([sideNavigationWithCurrentParents([], items, value), sideNavigationWithCurrentGroups([], items, value)]), [items, value]);
-  const mounted = useRef(false);
-  useEffect(() => {
-    if (!mounted.current) { mounted.current = true; return; }
-    const next = sideNavigationWithCurrentParents(latest.current.open, items, value);
-    if (next !== latest.current.open) latest.current.update([...next]);
-    if (!latest.current.toggles) return;
-    const groups = sideNavigationWithCurrentGroups(latest.current.openGroups, items, value);
-    if (groups !== latest.current.openGroups) latest.current.updateGroups([...groups]);
-  }, [value, holders]);
+  const { sections, open, update, openGroups, updateGroups, allShown, updateShowAll } = useSideNavigationState(items, value,
+    { expanded, onExpandedChange, expandedGroups, onExpandedGroupsChange, showAll, onShowAllChange, collapsibleGroups });
   // Widening: names, titles and trailing marks wait for the column and fade in; a flyout closes with the rail it belongs to.
   const reduced = useReducedMotion(), fadeIn = useRef(new Animated.Value(1)).current, wasCollapsed = useRef(collapsed);
   const [flyout, setFlyout] = useState<string | null>(null);
@@ -183,6 +161,10 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
       {action && r.actionButtons(section.key, [action], { top: undefined, bottom: bottom - (geometry.actionSize - typeStyle("caption").lineHeight) / 2, height: geometry.actionSize })}
     </Animated.View>;
   };
+  // Icons only, a group's title stays a heading for assistive technology (Web's kjun-sr-only) but takes no room.
+  const hiddenTitle = (section: Titled) => <View style={{ position: "absolute", top: 0, start: 0, end: 0, opacity: 0 }} pointerEvents="none">
+    <KText {...heading} numberOfLines={1}>{section.title}</KText>
+  </View>;
   const section = (entry: SideNavigationSection<SideNavigationDestination>, index: number) => {
     const rows = r.groupRows(base, entry);
     const titled = isTitledSection(entry) ? entry : undefined, toggled = !!titled && !collapsed && sideSectionToggles(titled, collapsibleGroups);
@@ -196,7 +178,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
         start: labelled ? (geometry.railItemWidth - geometry.railIndicatorWidth) / 2 : geometry.paddingX,
         width: labelled ? geometry.railIndicatorWidth : geometry.iconSize, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
       {titled && toggled ? groupToggle(titled, rows) : <>
-        {titled && !collapsed && staticTitle(titled, index)}
+        {titled && (collapsed ? hiddenTitle(titled) : staticTitle(titled, index))}
         {rows}
       </>}
     </View>;
@@ -215,7 +197,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
       </>; }}
     </Pressable>;
     return <View key={key}>
-      {flyoutMode ? r.flyoutPanel(key, group.title, r.named(base, group.title, shown, button), group.items.map(item => r.row(FLYOUT, item)))
+      {flyoutMode ? r.flyoutPanel(key, group.title, r.named(base, group.title, shown, button), sideSectionEmpty(group) ? r.emptyRow(group.empty!, true) : group.items.map(item => r.row(FLYOUT, item)))
         : r.named(base, group.title, shown, button)}
     </View>;
   };

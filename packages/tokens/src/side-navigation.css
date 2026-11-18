@@ -135,15 +135,20 @@
 /* A group's limit: the row after its first rows says how many more there are, in tertiary ink so it never reads as a page. */
 .kjun-side-navigation-item.kjun-side-navigation-more{color:var(--_kjun-color-text-tertiary)}
 .kjun-side-navigation-item.kjun-side-navigation-more > .kjun-side-navigation-glyph{color:inherit}
+/* An empty group (empty): a quiet caption line where a child row's name starts, a child row tall, so the group reads as
+   open and empty rather than closed. Long text wraps. In a flyout it starts at the edge like the flyout's rows. */
+.kjun-side-navigation-empty{display:flex;align-items:center;min-width:0;min-height:var(--_kjun-extension-side-navigation-child-height);margin:0;padding-inline:calc(var(--_kjun-extension-side-navigation-padding-x) + var(--_kjun-extension-side-navigation-icon-size) + var(--_kjun-extension-side-navigation-gap)) var(--_kjun-extension-side-navigation-padding-x);color:var(--_kjun-color-text-tertiary);font-size:var(--_kjun-type-caption-size);line-height:var(--_kjun-type-caption-line);overflow-wrap:anywhere}
+.kjun-side-navigation-flyout .kjun-side-navigation-empty{padding-inline-start:var(--_kjun-extension-side-navigation-padding-x)}
 /* KjunSideNavigationLayout: a column for the menu beside the page. Open it takes one of three widths; collapsed it takes
    the rail (its rows plus the column's padding). The column changes width with the collapse motion and the menu fades its
-   names in after it. By default the column stays in view (sticky, the viewport's height) and scrolls on its own. */
+   names in after it. By default the column stays in view (sticky, the viewport's height less stickyOffset, which the layout
+   sets as --_kjun-side-navigation-layout-top) and scrolls on its own. */
 .kjun-side-navigation-layout{--_kjun-side-navigation-layout-open:var(--_kjun-extension-side-navigation-width-md);--_kjun-side-navigation-layout-padding-x:var(--_kjun-extension-side-navigation-column-padding-x);--_kjun-side-navigation-layout-column:var(--_kjun-side-navigation-layout-open);display:grid;grid-template-columns:var(--_kjun-side-navigation-layout-column) minmax(0,1fr);min-width:0;transition:grid-template-columns var(--_kjun-motion-collapse) var(--_kjun-ease-out)}
 .kjun-side-navigation-layout[data-width=sm]{--_kjun-side-navigation-layout-open:var(--_kjun-extension-side-navigation-width-sm)}
 .kjun-side-navigation-layout[data-width=lg]{--_kjun-side-navigation-layout-open:var(--_kjun-extension-side-navigation-width-lg)}
 .kjun-side-navigation-layout[data-collapsed]{--_kjun-side-navigation-layout-column:calc(var(--_kjun-extension-side-navigation-padding-x) * 2 + var(--_kjun-extension-side-navigation-icon-size) + var(--_kjun-side-navigation-layout-padding-x) * 2)}
 .kjun-side-navigation-layout[data-collapsed][data-rail-labels]{--_kjun-side-navigation-layout-padding-x:var(--_kjun-extension-side-navigation-rail-column-padding-x);--_kjun-side-navigation-layout-column:calc(var(--_kjun-extension-side-navigation-rail-item-width) + var(--_kjun-side-navigation-layout-padding-x) * 2)}
-.kjun-side-navigation-layout-nav{position:sticky;top:0;align-self:start;display:flex;flex-direction:column;height:100vh;height:100dvh;min-width:0;padding:var(--_kjun-extension-side-navigation-column-padding-y) var(--_kjun-side-navigation-layout-padding-x);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
+.kjun-side-navigation-layout-nav{position:sticky;top:var(--_kjun-side-navigation-layout-top,0vh);align-self:start;display:flex;flex-direction:column;height:calc(100vh - var(--_kjun-side-navigation-layout-top,0vh));height:calc(100dvh - var(--_kjun-side-navigation-layout-top,0vh));min-width:0;padding:var(--_kjun-extension-side-navigation-column-padding-y) var(--_kjun-side-navigation-layout-padding-x);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
 .kjun-side-navigation-layout[data-sticky=false] > .kjun-side-navigation-layout-nav{position:static;height:auto;overflow-y:visible}
 .kjun-side-navigation-layout-nav > .kjun-side-navigation{flex:1 1 auto}
 .kjun-side-navigation-layout-main{min-width:0}
@@ -152,5 +157,5 @@
 /* Widening: the app grows the column; names, titles and trailing marks wait for it and then fade in, so they are never
    cut off by a column still on its way. Narrowing hides them at once. */
 @keyframes kjun-side-navigation-reveal{from{opacity:0}}
-.kjun-side-navigation[data-expanding] :is(.kjun-side-navigation-label,.kjun-side-navigation-heading,.kjun-side-navigation-chevron,.kjun-side-navigation-trailing,.kjun-side-navigation-item > .kjun-navigation-badge,.kjun-side-navigation-header,.kjun-side-navigation-footer-content){animation:kjun-side-navigation-reveal var(--_kjun-motion-control) var(--_kjun-ease-out) var(--_kjun-motion-control) both}
+.kjun-side-navigation[data-expanding] :is(.kjun-side-navigation-label,.kjun-side-navigation-empty,.kjun-side-navigation-heading,.kjun-side-navigation-chevron,.kjun-side-navigation-trailing,.kjun-side-navigation-item > .kjun-navigation-badge,.kjun-side-navigation-header,.kjun-side-navigation-footer-content){animation:kjun-side-navigation-reveal var(--_kjun-motion-control) var(--_kjun-ease-out) var(--_kjun-motion-control) both}
 @media (prefers-reduced-motion: reduce){.kjun-side-navigation-item,.kjun-side-navigation-title,.kjun-side-navigation-chevron,.kjun-side-navigation-glyph,.kjun-side-navigation-toggle,.kjun-side-navigation-action,.kjun-side-navigation-layout{transition:none}.kjun-side-navigation[data-expanding] *{animation:none}}

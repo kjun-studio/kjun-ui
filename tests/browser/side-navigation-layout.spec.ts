@@ -54,6 +54,45 @@ for (const platform of ['react', 'vue3']) {
     await page.setViewportSize({ width: 1000, height: 800 });
     await expect(column(page)).toHaveCount(1);
   });
+
+  test(`${platform}: SideNavigationLayout closes an open drawer when the column comes back, so narrowing again does not reopen it`, async ({ page }) => {
+    await page.setViewportSize({ width: 600, height: 800 });
+    await openFixture(page, platform, '', 'side-navigation-layout');
+    await page.getByTestId('open').click();
+    await expect(page.getByRole('dialog', { name: '주요 탐색' })).toBeVisible();
+    await page.setViewportSize({ width: 1000, height: 800 });
+    await expect(page.getByTestId('nav-open')).toHaveText('false');
+    await page.setViewportSize({ width: 600, height: 800 });
+    await expect(column(page)).toHaveCount(0);
+    await expect(page.getByRole('dialog', { name: '주요 탐색' })).toHaveCount(0);
+  });
+
+  test(`${platform}: SideNavigationLayout railBreakpoint asks for the rail below it and the column above it; the toggle stands in between`, async ({ page }) => {
+    await page.setViewportSize({ width: 1200, height: 800 });
+    await openFixture(page, platform, '?rail=1', 'side-navigation-layout');
+    await expect.poll(() => width(page)).toBe(256);
+    await page.setViewportSize({ width: 900, height: 800 });
+    await expect.poll(() => width(page)).toBe(68);
+    // Widening by hand inside the band stays until the width crosses again.
+    await page.getByTestId('toggle').click();
+    await expect.poll(() => width(page)).toBe(256);
+    await page.setViewportSize({ width: 950, height: 800 });
+    await expect.poll(() => width(page)).toBe(256);
+    await page.setViewportSize({ width: 1200, height: 800 });
+    await page.setViewportSize({ width: 900, height: 800 });
+    await expect.poll(() => width(page)).toBe(68);
+    // A first render already below asks for the rail.
+    await openFixture(page, platform, '?rail=1', 'side-navigation-layout');
+    await expect.poll(() => width(page)).toBe(68);
+  });
+
+  test(`${platform}: SideNavigationLayout stickyOffset keeps the column below a top bar and that much shorter`, async ({ page }) => {
+    await page.setViewportSize({ width: 1200, height: 600 });
+    await openFixture(page, platform, '?offset=1', 'side-navigation-layout');
+    expect(Math.round((await column(page).boundingBox())!.height)).toBe(544);
+    await page.mouse.wheel(0, 800);
+    await expect.poll(async () => Math.round((await column(page).boundingBox())!.y)).toBe(56);
+  });
 }
 
 test('native: SideNavigationLayout puts the menu beside the page and narrows it when collapsed (Native Web)', async ({ page }) => {
@@ -65,4 +104,19 @@ test('native: SideNavigationLayout puts the menu beside the page and narrows it 
   await expect.poll(columnWidth).toBe(256);
   await page.getByTestId('toggle').click();
   await expect.poll(columnWidth).toBe(68);
+});
+
+test('native: SideNavigationLayout railBreakpoint narrows the column below it and the drawer closes when the column comes back (Native Web)', async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 800 });
+  await openFixture(page, 'native', '?rail=1', 'side-navigation-layout');
+  const nav = page.getByRole('navigation', { name: '작업 공간' });
+  const columnWidth = () => nav.evaluate(el => Math.round(el.parentElement!.getBoundingClientRect().width));
+  await expect.poll(columnWidth).toBe(68);
+  await page.setViewportSize({ width: 1200, height: 800 });
+  await expect.poll(columnWidth).toBe(256);
+  await page.setViewportSize({ width: 600, height: 800 });
+  await page.getByTestId('open').click();
+  await expect(page.getByTestId('nav-open')).toHaveText('true');
+  await page.setViewportSize({ width: 1200, height: 800 });
+  await expect(page.getByTestId('nav-open')).toHaveText('false');
 });

@@ -2,7 +2,7 @@ import type { useKjunMessages } from "../../../shared/package-runtime/messages-c
 import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { navigationBadge, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
 import { isPlainNavigationClick, isSideParent, sideFlyoutKey, sideNavigationInitial, sideNavigationLinkName, sideNavigationOpensElsewhere, sideNavigationShownLabel,
-  sideNavigationToggleName, sideParentState, sideSectionRows, toggleSideParent, type SideNavigationAction, type SideNavigationBadgeTone, type SideNavigationDestination as WebDestination,
+  sideNavigationToggleName, sideParentState, sideSectionEmpty, sideSectionRows, toggleSideParent, type SideNavigationAction, type SideNavigationBadgeTone, type SideNavigationDestination as WebDestination,
   type SideNavigationItem as Item, type SideNavigationParent as Parent, type SideNavigationSection, type SideNavigationSubParent as SubParent } from "../../../shared/package-runtime/side-navigation";
 import { tokens } from "@kjun-ui/tokens";
 import type { ReactElement, ReactNode } from "react";
@@ -233,8 +233,16 @@ export function sideNavigationRows(ctx: SideRowsContext) {
   };
   const row = (mode: Mode, item: SideNavigationItem) => isSideParent(item) ? parent(mode, item) : destination(mode, item);
   // A group's rows under its limit, and the row that shows the rest or folds them again. Icons only, every row shows.
+  // An empty group's line in place of its rows: quiet caption text where a child row's name starts (at the edge in a
+  // flyout), a child row tall, never a link. Long text wraps.
+  const emptyRow = (text: string, edge = false) => <View key=":empty" style={{ minHeight: childHeight, justifyContent: "center", paddingEnd: geometry.paddingX,
+    paddingStart: geometry.paddingX + (edge ? 0 : geometry.iconSize + geometry.gap) }}>
+    <Animated.View style={{ opacity: fadeIn }}><KText style={{ ...typeStyle("caption"), color: colors.textTertiary }}>{text}</KText></Animated.View>
+  </View>;
   const groupRows = (mode: Mode, section: SideNavigationSection<SideNavigationDestination>) => {
     if (mode.collapsed) return section.items.map(item => row(mode, item));
+    const none = sideSectionEmpty(section);
+    if (none) return [emptyRow(none)];
     const { items: visible, hidden, expandable, expanded: all } = sideSectionRows(section, { value, showAll: ctx.allShown });
     const rows = visible.map(item => row(mode, item));
     if (!expandable) return rows;
@@ -249,5 +257,5 @@ export function sideNavigationRows(ctx: SideRowsContext) {
     </Pressable>];
   };
   return { base, railWidth, itemHeight, groupHeight, slop, box, fill, ink, nameInk, weight, label, glyph, rowFill, endMark, quiet, corner, opens, named, chevron,
-    actionsWidth, actionButtons, flyoutPanel, row, groupRows };
+    actionsWidth, actionButtons, flyoutPanel, row, groupRows, emptyRow };
 }

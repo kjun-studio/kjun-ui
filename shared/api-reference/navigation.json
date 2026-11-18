@@ -98,9 +98,11 @@
   "KjunSideNavigationLayout": {
     "vue3": [
       "collapsed",
+      "railBreakpoint",
       "railLabels",
       "width",
       "sticky",
+      "stickyOffset",
       "breakpoint",
       "navOpen",
       "drawerLabel"
@@ -109,9 +111,12 @@
       "nav",
       "children",
       "collapsed",
+      "onCollapsedChange",
+      "railBreakpoint",
       "railLabels",
       "width",
       "sticky",
+      "stickyOffset",
       "breakpoint",
       "navOpen",
       "onNavOpenChange",
@@ -122,6 +127,8 @@
       "nav",
       "children",
       "collapsed",
+      "onCollapsedChange",
+      "railBreakpoint",
       "railLabels",
       "width",
       "breakpoint",

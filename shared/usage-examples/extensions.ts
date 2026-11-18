@@ -97,6 +97,7 @@ export function generate(input: UsageInput) {
           { title: '문서', icon: 'file-text', ...(s.limit ? { limit: 1 } : {}), items: [{ key: 'projects', label: '프로젝트', icon: 'folder', children: [{ key: 'brand', label: '브랜드 웹사이트', href: '#brand', badge: true }, { key: 'checkout', label: '결제 화면 개선', href: '#checkout' },
             ...(s.nested ? [{ key: 'design', label: '디자인', children: [{ key: 'tokens', label: '토큰', href: '#tokens' }, { key: 'icons', label: '아이콘', href: '#icons' }] }] : [])] }, { key: 'archive', label: '보관함', href: '#archive', icon: 'box', ...(s.actions ? { actions: [{ key: 'new', icon: 'plus', label: '새 문서' }, { key: 'more', icon: 'dots', label: '더 보기' }] } : {}) }] },
           { key: 'help', label: '도움말', href: 'https://example.com/help', icon: 'help-circle', target: '_blank' },
+          ...(s.empty ? [{ title: '즐겨찾기', icon: 'star', items: [], empty: '즐겨찾기한 문서가 없습니다' }] : []),
           { title: '관리', icon: 'adjustments', items: [{ key: 'settings', label: '설정', href: '#settings', icon: 'settings', ...(s.disabled ? { disabled: true } : {}) }] }]),
         // Modified clicks and target links never reach onNavigate, so a plain click is the app's to route.
         onNavigate: b.handler('navigate', 'key, event', (b.native ? '' : 'event.preventDefault();\n') + b.set('destination', 'key')),

@@ -41,6 +41,21 @@ for (const platform of ['react', 'vue3']) {
     await expect(count).toHaveText('2');
   });
 
+  test(`${platform}: SideNavigation an empty group shows its empty line where a child row's name starts, in the menu and in a flyout`, async ({ page }) => {
+    await openFixture(page, platform, '?empty=1', 'side-navigation');
+    const nav = page.getByRole('navigation', { name: '작업 공간' });
+    const line = nav.locator('.kjun-side-navigation-empty');
+    await expect(line).toHaveText('즐겨찾기한 문서가 없습니다');
+    const home = (await nav.getByRole('link', { name: '홈' }).boundingBox())!, box = (await line.boundingBox())!;
+    const start = await line.evaluate(el => parseFloat(getComputedStyle(el).paddingInlineStart));
+    expect(Math.round(box.x + start - home.x)).toBe(44);
+    expect(Math.round(box.height)).toBe(36);
+    await expect(nav.getByRole('group', { name: '즐겨찾기' }).getByRole('link')).toHaveCount(0);
+    await openFixture(page, platform, '?collapsed=1&flyout=1&rail=groups&empty=1', 'side-navigation');
+    await page.getByRole('navigation', { name: '작업 공간' }).getByRole('button', { name: '즐겨찾기' }).click();
+    await expect(page.getByRole('dialog', { name: '즐겨찾기' }).locator('.kjun-side-navigation-empty')).toHaveText('즐겨찾기한 문서가 없습니다');
+  });
+
   test(`${platform}: SideNavigation collapsedParent="flyout" shows a collapsed parent's children beside it and keeps the column narrow`, async ({ page }) => {
     await openFixture(page, platform, '?collapsed=1&flyout=1&value=checkout', 'side-navigation');
     const nav = page.getByRole('navigation', { name: '작업 공간' }), log = page.getByTestId('log');
@@ -67,6 +82,15 @@ for (const platform of ['react', 'vue3']) {
     await page.keyboard.press('Escape');
     await expect(page.getByRole('dialog', { name: '프로젝트' })).toBeHidden();
     await expect(log).toHaveText('go:brand');
+    // ← from a row with nothing above it in the panel closes the panel and puts focus back on the icon.
+    await parent.focus();
+    await page.keyboard.press('ArrowRight');
+    const again = page.getByRole('dialog', { name: '프로젝트' });
+    await expect(again).toBeVisible();
+    await again.getByRole('link', { name: '결제 화면 개선' }).focus();
+    await page.keyboard.press('ArrowLeft');
+    await expect(again).toBeHidden();
+    await expect(parent).toBeFocused();
 
     // A rail of groups opens the group's rows the same way.
     await openFixture(page, platform, '?collapsed=1&flyout=1&rail=groups', 'side-navigation');

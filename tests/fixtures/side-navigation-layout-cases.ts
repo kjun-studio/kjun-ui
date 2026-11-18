@@ -6,6 +6,7 @@ export const layoutItems = [
 ];
 const query = new URLSearchParams(location.search);
 /** collapsed=1 starts narrow; labels=1 railLabels; width=sm|lg; static=1 sticky={false}; drawer=1 a breakpoint above any viewport;
- * wide=1 breakpoint 0 (always a column). Otherwise the default breakpoint (768). */
+ * wide=1 breakpoint 0 (always a column). Otherwise the default breakpoint (768). rail=1 railBreakpoint 1000; offset=1 stickyOffset 56. */
 export const layoutCase = { collapsed: query.has('collapsed'), labels: query.has('labels'), width: (query.get('width') || 'md') as 'sm' | 'md' | 'lg',
-  sticky: !query.has('static'), breakpoint: query.has('drawer') ? 100000 : query.has('wide') ? 0 : undefined };
+  sticky: !query.has('static'), breakpoint: query.has('drawer') ? 100000 : query.has('wide') ? 0 : undefined,
+  railBreakpoint: query.has('rail') ? 1000 : 0, stickyOffset: query.has('offset') ? 56 : 0 };

@@ -76,7 +76,10 @@ test("every platform takes its menu rules from the shared runtime", async () => 
   // Markup and geometry are covered by the browser specs; this only guards against a platform keeping its own copy of the rules.
   for (const platform of ["react", "vue3", "native"]) {
     // Native splits its row builders into side-navigation-parts.tsx.
-    const component = await read(`packages/${platform}/src/side-navigation.tsx`) + (platform === "native" ? await read("packages/native/src/side-navigation-parts.tsx") : "");
+    // React and Native keep the menu's lists in the shared useSideNavigationState; Vue 3 keeps its own form of it.
+    const component = await read(`packages/${platform}/src/side-navigation.tsx`) + (platform === "native" ? await read("packages/native/src/side-navigation-parts.tsx") : "")
+      + (platform === "vue3" ? "" : await read("shared/package-runtime/use-side-navigation-state.ts"));
+    if (platform !== "vue3") assert.ok(component.includes("useSideNavigationState("), platform + " useSideNavigationState(");
     for (const part of ["sideNavigationSections(", "sideNavigationWithCurrentParents(", "sideNavigationInitialGroups(", "toggleSideParent(", "sideParentState(", "sideGroupState(",
       "sideRailGroupState(", "sideSectionToggles(", "sideNavigationOpensElsewhere(", "isPlainNavigationClick(", "checkSideNavigation("])
       assert.ok(component.includes(part), platform + " " + part);
@@ -251,4 +254,40 @@ test("the side navigation's styles live in their own file, loaded after extensio
   const sources = JSON.parse(await read("shared/web-style-sources.json"));
   assert.equal(sources.indexOf("side-navigation.css"), sources.indexOf("extensions.css") + 1);
   assert.doesNotMatch(await read("packages/tokens/src/extensions.css"), /\.kjun-side-navigation/);
+});
+
+test("an empty group shows its empty line in place of rows, and only while it has none", () => {
+  const sections = runtime.sideNavigationSections([{ title: "프로젝트", items: [], empty: "아직 프로젝트가 없습니다" }, { title: "채널", items: [link("general")], empty: "없음" }, { title: "보관", items: [] }]);
+  assert.equal(sections[0].empty, "아직 프로젝트가 없습니다");
+  assert.deepEqual(sections.map(runtime.sideSectionEmpty), ["아직 프로젝트가 없습니다", undefined, undefined]);
+});
+
+test("railBreakpoint asks for the rail below it and the full column above it, only when the width crosses it", () => {
+  const ask = runtime.sideNavigationRailRequest;
+  // The first reading: below asks for the rail, above leaves the app's value alone.
+  assert.equal(ask(null, true, false), true);
+  assert.equal(ask(null, false, true), null);
+  assert.equal(ask(null, true, true), null);
+  // Crossing asks once, and not when the column already is that way.
+  assert.equal(ask(false, true, false), true);
+  assert.equal(ask(true, false, true), false);
+  assert.equal(ask(true, false, false), null);
+  // No crossing: the person's own toggle stands.
+  assert.equal(ask(true, true, false), null);
+  assert.equal(ask(false, false, true), null);
+});
+
+test("arrow keys and flyouts share one web module; the layout closes its drawer when the column comes back", async () => {
+  for (const platform of ["react", "vue3"]) {
+    const component = await read(`packages/${platform}/src/side-navigation.tsx`);
+    for (const part of ["sideNavigationArrowKey(", "sideNavigationOpensFlyout(", "closeSideNavigationFlyout("]) assert.ok(component.includes(part), platform + " " + part);
+    assert.ok(!component.includes('event.key === "ArrowRight"'), platform + " reads the arrow through sideNavigationArrow, so right to left swaps it");
+  }
+  for (const platform of ["react", "vue3", "native"]) {
+    const layout = await read(`packages/${platform}/src/side-navigation-layout.tsx`);
+    for (const part of ["sideNavigationRailRequest(", "closeDrawer", "railBreakpoint"]) assert.ok(layout.includes(part), platform + " " + part);
+  }
+  const css = await read("packages/tokens/src/side-navigation.css");
+  assert.match(css, /\.kjun-side-navigation-layout-nav\{position:sticky;top:var\(--_kjun-side-navigation-layout-top,0vh\)/);
+  assert.match(css, /\.kjun-side-navigation-empty\{/);
 });
