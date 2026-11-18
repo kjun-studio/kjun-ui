@@ -51,12 +51,12 @@ const ModalCase = defineComponent(() => {
 });
 const ComboboxCase = defineComponent(() => {
   const dynamic = location.search.includes('dynamic');
-  const config = reactive({ value: (dynamic ? null : 'a') as string | null, label: 'Alpha', blocked: false, removed: false });
+  const config = reactive({ value: (dynamic ? null : 'a') as string | null, label: 'Alpha', blocked: false, removed: false, loading: false });
   const query = ref('');
   Object.assign(window, { configureReview: (next: Partial<typeof config>) => Object.assign(config, next) });
   return () => <>
-    <K.KjunCombobox ariaLabel="목록 검색" modelValue={config.value}
-      options={config.removed ? [] : [{ value: 'a', label: config.label, disabled: config.blocked }, { value: 'b', label: 'Beta' }]}
+    <K.KjunCombobox ariaLabel="목록 검색" modelValue={config.value} searchKeys={['code']} loading={config.loading}
+      options={config.removed ? [] : [{ value: 'a', label: config.label, code: 'SUB', disabled: config.blocked }, { value: 'b', label: 'Beta', code: 'BTA' }]}
       onSearch={(next: string) => { query.value = next; }}
       onUpdate:modelValue={(value: any) => { config.value = value as string | null; }} />
     <output data-testid="query">{query.value}</output>

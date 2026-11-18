@@ -1,6 +1,7 @@
 import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { searchLoadDelay } from "../../../../shared/package-runtime/input-field";
 import { optionLabel, optionValue, type OptionValue, type SelectOption } from "../../../../shared/package-runtime/options";
+import { comboboxOptions } from "../../../../shared/package-runtime/combobox-options";
 
 // Vue forms of shared/package-runtime/{select,combobox,search-input}.ts.
 
@@ -28,14 +29,15 @@ export function useSelectState(controlled: () => boolean | undefined, disabled: 
 
 export function useComboboxModel<T extends SelectOption>(props: () => {
   value: OptionValue | null; options: T[]; labelKey: string; valueKey: string; disabled: boolean;
-  filterFn?: (option: T, query: string) => boolean;
+  filterFn?: (option: T, query: string) => boolean; searchKeys?: readonly string[];
 }, events: { change: (value: OptionValue | null) => void; search: (value: string) => void; clear: () => void }) {
   const selectedLabel = computed(() => {
     const { options, value, valueKey, labelKey } = props();
     const selected = options.find(option => optionValue(option, valueKey) === value);
     return selected !== undefined ? optionLabel(selected, labelKey) : "";
   });
-  const query = ref(selectedLabel.value), open = ref(false);
+  // Opening shows every option; only text typed since then filters the list.
+  const query = ref(selectedLabel.value), typed = ref(false), open = ref(false);
   // Recreated option objects do not replace an in-progress search draft.
   // Separate sources compare by value: a new options array with the same selected label keeps the draft.
   watch([() => props().value, selectedLabel], () => { query.value = selectedLabel.value; });
@@ -44,13 +46,13 @@ export function useComboboxModel<T extends SelectOption>(props: () => {
     open,
     displayValue: computed(() => open.value && !props().disabled ? query.value : selectedLabel.value),
     options: computed(() => {
-      const { options, filterFn, labelKey } = props();
-      return options.filter(option => filterFn ? filterFn(option, query.value)
-        : optionLabel(option, labelKey).toLocaleLowerCase().includes(query.value.toLocaleLowerCase()));
+      const { options, filterFn, labelKey, searchKeys } = props();
+      return comboboxOptions({ options, query: query.value, typed: typed.value, labelKey, filterFn, searchKeys });
     }),
-    changeOpen(next: boolean) { if (next && !open.value) query.value = selectedLabel.value; open.value = next; },
-    search(next: string, openOnInput: boolean) { query.value = next; if (openOnInput) open.value = true; events.search(next); },
-    select(option: T) { events.change(optionValue(option, props().valueKey)); query.value = optionLabel(option, props().labelKey); open.value = false; },
+    isSelected: (option: T) => { const { value, valueKey } = props(); return value !== null && optionValue(option, valueKey) === value; },
+    changeOpen(next: boolean) { if (next && !open.value) { query.value = selectedLabel.value; typed.value = false; } open.value = next; },
+    search(next: string, openOnInput: boolean) { query.value = next; typed.value = true; if (openOnInput) open.value = true; events.search(next); },
+    select(option: T) { events.change(optionValue(option, props().valueKey)); query.value = optionLabel(option, props().labelKey); typed.value = false; open.value = false; },
     clear() { events.change(null); events.clear(); },
   };
 }

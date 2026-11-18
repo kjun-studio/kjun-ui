@@ -6,6 +6,7 @@ import { useId,useRef,type ReactNode,type Ref } from "react";
 import { Platform, View } from "react-native";
 import { KjunSpinner } from "./display";
 import { KjunInput,FieldContext,type KjunInputProps } from "./input";
+import { PanelSearchTriggerContext } from "./field-surface";
 import type { KjunTextInputHandle } from "./handles";
 import { KText } from "./internal";
 import { FloatingPanel } from "./layers";
@@ -25,13 +26,18 @@ export interface KjunComboboxProps<T extends SelectOption = SelectOption> {
   ariaLabel?: string;
   labelKey?: string;
   valueKey?: string;
+  /** Replaces the default ranked label/searchKeys match; results keep the original order. */
   filterFn?: (option: T, query: string) => boolean;
+  /** Option fields searched besides the label; matches rank after label matches. */
+  searchKeys?: string[];
   size?: InputSize;
   disabled?: boolean;
   error?: boolean;
   clearable?: boolean;
   emptyText?: string;
-  renderOption?: (option: T) => ReactNode;
+  /** Candidates are being fetched: the list shows a searching row and options cannot be chosen. */
+  loading?: boolean;
+  renderOption?: (option: T, selected: boolean) => ReactNode;
   onValueChange?: (v: OptionValue | null) => void;
   onChange?: (v: OptionValue | null) => void;
   onSearch?: (v: string) => void;
@@ -45,11 +51,13 @@ export function KjunCombobox<T extends SelectOption = SelectOption>({
   labelKey = "label",
   valueKey = "value",
   filterFn,
+  searchKeys,
   size = "md",
   disabled = false,
   error = false,
   clearable = false,
   emptyText,
+  loading = false,
   renderOption,
   onValueChange,
   onChange,
@@ -59,7 +67,7 @@ export function KjunCombobox<T extends SelectOption = SelectOption>({
   const m = useKjunMessages();
   placeholder ??= m.searchOrSelect;
   emptyText ??= m.noResults;
-  const model = useComboboxModel({ value, options, labelKey, valueKey, disabled, filterFn,
+  const model = useComboboxModel({ value, options, labelKey, valueKey, disabled, filterFn, searchKeys,
     onValueChange, onChange, onSearch, onClear });
   return (
     <SearchField
@@ -76,6 +84,8 @@ export function KjunCombobox<T extends SelectOption = SelectOption>({
       labelKey={labelKey}
       itemKey={valueKey}
       emptyText={emptyText}
+      loading={loading}
+      isSelected={model.isSelected}
       renderOption={renderOption}
       onValueChange={(v) => model.search(v, false)}
       onSelect={model.select}
@@ -101,7 +111,9 @@ export interface SearchFieldProps<T extends SelectOption> {
   /** A failed request; shown instead of the empty text so the two never look alike. */
   failed?: boolean;
   errorText?: string;
-  renderOption?: (o: T) => ReactNode;
+  /** The field's chosen option: checked in the list. */
+  isSelected?: (o: T) => boolean;
+  renderOption?: (o: T, selected: boolean) => ReactNode;
   onValueChange: (v: string) => void;
   onSelect: (o: T) => void;
   onClear?: () => void;
@@ -130,6 +142,7 @@ export function SearchField<T extends SelectOption>({
   loading,
   failed = false,
   errorText = "",
+  isSelected,
   renderOption,
   onValueChange,
   onSelect,
@@ -167,9 +180,11 @@ export function SearchField<T extends SelectOption>({
   return (
     <>
       <View ref={ref} collapsable={false}>
+        <PanelSearchTriggerContext.Provider value>
         <KjunInput {...own} ref={inputRef} {...inputProps} {...(Platform.OS === 'web' ? { onClick: openFromPress } : { onPressIn: openFromPress })} aria-expanded={open && !disabled}
           onBlur={(event) => { own?.onBlur?.(event); focusGuard.clear(); }}
           onFocus={(event) => { own?.onFocus?.(event); if (!clearing.current && focusGuard.canOpen()) onOpenChange(true); }} />
+        </PanelSearchTriggerContext.Provider>
       </View>
       <FloatingPanel
         field
@@ -207,20 +222,23 @@ export function SearchField<T extends SelectOption>({
             {errorText}
           </KText>
         ) : options.length ? (
-          options.map((o, i) => (
-            <OptionRow
-              key={optionKey(o, itemKey, i)}
-              selected={false}
-              disabled={optionDisabled(o)}
-              label={optionLabel(o, labelKey)}
-              onPress={() => {
-                onSelect(o);
-                onOpenChange(false);
-              }}
-            >
-              {renderOption?.(o)}
-            </OptionRow>
-          ))
+          options.map((o, i) => {
+            const selected = isSelected?.(o) ?? false;
+            return (
+              <OptionRow
+                key={optionKey(o, itemKey, i)}
+                selected={selected}
+                disabled={optionDisabled(o)}
+                label={optionLabel(o, labelKey)}
+                onPress={() => {
+                  onSelect(o);
+                  onOpenChange(false);
+                }}
+              >
+                {renderOption?.(o, selected)}
+              </OptionRow>
+            );
+          })
         ) : (
           <KText
             style={{

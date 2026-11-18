@@ -1,9 +1,10 @@
 import { useKjunMessages } from "./runtime/messages";
-import { computed, mergeProps, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
+import { computed, mergeProps, nextTick, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
-import type { InputSize } from "@kjun-ui/tokens";
+import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { optionDisabled, optionKey, optionLabel, type OptionValue, type SelectOption } from "../../../shared/package-runtime/options";
 import { KjunSpinner } from "./display";
+import { KjunIcon } from "./button";
 import { FloatingPanel, focusReturnProp, readFocusReturn } from "./floating-panel";
 import { KjunInput, useCompositionGuard, useKjunId } from "./input";
 import { usePopupFocusGuard } from "./runtime/layers";
@@ -31,7 +32,9 @@ export const SearchField = defineComponent({
     /** A failed request; shown instead of the empty text so the two never look alike. */
     failed: { type: Boolean, default: false },
     errorText: { type: String, default: "" },
-    renderOption: { type: Function as PropType<(scope: { option: SelectOption }) => VNodeChild>, default: undefined },
+    /** The field's chosen option: checked in the list and highlighted when the list opens. */
+    isSelected: { type: Function as PropType<(option: SelectOption) => boolean>, default: undefined },
+    renderOption: { type: Function as PropType<(scope: { option: SelectOption; selected: boolean }) => VNodeChild>, default: undefined },
     onOpenChange: { type: Function as PropType<(open: boolean) => void>, required: true },
     onValueChange: { type: Function as PropType<(value: string) => void>, required: true },
     onSelect: { type: Function as PropType<(option: SelectOption) => void>, required: true },
@@ -51,6 +54,14 @@ export const SearchField = defineComponent({
     const active = computed(() => !props.disabled && !props.loading && highlighted.value >= 0 && highlighted.value < props.options.length
       && !optionDisabled(props.options[highlighted.value]) ? highlighted.value : -1);
     watch(() => [props.value, props.options.length], () => { highlighted.value = -1; });
+    // Opening starts from the chosen option, after the reset above.
+    watch(() => props.open, open => {
+      if (!open || !props.isSelected) return;
+      const index = props.options.findIndex(option => props.isSelected!(option) && !optionDisabled(option));
+      if (index < 0) return;
+      highlighted.value = index;
+      void nextTick(() => requestAnimationFrame(() => document.getElementById(id + "-" + index)?.scrollIntoView({ block: "nearest" })));
+    });
     const leaveField = (event: FocusEvent) => {
       const target = event.target;
       if (target instanceof Node && !input()?.closest(".kjun-input-wrap")?.contains(target) && !document.getElementById(id)?.contains(target))
@@ -111,13 +122,15 @@ export const SearchField = defineComponent({
               {props.loading ? <div class="kjun-select-empty"><KjunSpinner size="sm" text={m.value.searching} /></div>
                 : props.failed ? <div class="kjun-select-empty" role="alert">{props.errorText}</div>
                 : props.options.length ? props.options.map((option, i) => {
-                    const custom = props.renderOption?.({ option }) as VNode[] | undefined;
+                    const selected = props.isSelected?.(option) ?? false;
+                    const custom = props.renderOption?.({ option, selected }) as VNode[] | undefined;
                     return (
                       <div key={optionKey(option, props.itemKey, i)} id={id + "-" + i} role="option" aria-selected={active.value === i}
                         aria-disabled={optionDisabled(option) ? "true" : undefined} class="kjun-option" data-focused={active.value === i || undefined}
                         onMousemove={() => { if (!optionDisabled(option)) highlighted.value = i; }}
                         onClick={() => { if (!optionDisabled(option)) select(option); }}>
-                        {custom?.length ? custom : optionLabel(option, props.labelKey)}
+                        {custom?.length ? custom : <span>{optionLabel(option, props.labelKey)}</span>}
+                        {selected && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
                       </div>
                     );
                   })
@@ -137,26 +150,31 @@ const kjunComboboxProps = {
   ariaLabel: { type: String, default: undefined },
   labelKey: { type: String, default: "label" },
   valueKey: { type: String, default: "value" },
+  /** Replaces the default ranked label/searchKeys match; results keep the original order. */
   filterFn: { type: Function as PropType<(option: SelectOption, query: string) => boolean>, default: undefined },
+  /** Option fields searched besides the label; matches rank after label matches. */
+  searchKeys: { type: Array as PropType<string[]>, default: () => [] },
   size: { type: String as PropType<InputSize>, default: "md" },
   disabled: { type: Boolean, default: false },
   error: { type: Boolean, default: false },
   clearable: { type: Boolean, default: false },
   emptyText: { type: String, default: undefined },
+  /** Candidates are being fetched: the list shows a searching row and options cannot be chosen. */
+  loading: { type: Boolean, default: false },
   /** Where focus goes after choosing an option or Escape. Closing while typing keeps focus in the input. Web only. */
   returnFocus: focusReturnProp,
 } as const;
 export type KjunComboboxProps = ExtractPublicPropTypes<typeof kjunComboboxProps>;
-/** v-model; slot option({ option }); events change, search, clear. */
+/** v-model; slot option({ option, selected }); events change, search, clear. */
 export const KjunCombobox = defineComponent({
   name: "KjunCombobox",
   props: kjunComboboxProps,
   emits: { "update:modelValue": (_value: OptionValue | null) => true, change: (_value: OptionValue | null) => true, search: (_query: string) => true, clear: () => true },
-  slots: Object as SlotsType<{ option?: (scope: { option: SelectOption }) => VNodeChild }>,
+  slots: Object as SlotsType<{ option?: (scope: { option: SelectOption; selected: boolean }) => VNodeChild }>,
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
     const model = useComboboxModel(() => ({ value: props.modelValue, options: props.options, labelKey: props.labelKey, valueKey: props.valueKey,
-      disabled: props.disabled, filterFn: props.filterFn }), {
+      disabled: props.disabled, filterFn: props.filterFn, searchKeys: props.searchKeys }), {
       change: value => { emit("update:modelValue", value); emit("change", value); },
       search: value => emit("search", value),
       clear: () => emit("clear"),
@@ -164,7 +182,7 @@ export const KjunCombobox = defineComponent({
     return () => (
       <SearchField error={props.error} value={model.displayValue.value} size={props.size} placeholder={(props.placeholder ?? m.value.searchOrSelect)} ariaLabel={props.ariaLabel}
         disabled={props.disabled} clearable={props.clearable} open={model.open.value} onOpenChange={model.changeOpen} options={model.options.value}
-        labelKey={props.labelKey} itemKey={props.valueKey} emptyText={(props.emptyText ?? m.value.noResults)} renderOption={slots.option}
+        labelKey={props.labelKey} itemKey={props.valueKey} emptyText={(props.emptyText ?? m.value.noResults)} loading={props.loading} isSelected={model.isSelected} renderOption={slots.option}
         onValueChange={value => model.search(value, true)} onSelect={model.select} onClear={model.clear}
         returnFocus={props.returnFocus === undefined ? undefined : () => readFocusReturn(props.returnFocus)} />
     );

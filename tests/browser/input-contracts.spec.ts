@@ -126,6 +126,35 @@ for (const platform of ["react", "vue3", "native"]) test(`${platform} Combobox k
   await expect(input).toHaveValue("");
 });
 
+for (const platform of ["react", "vue3", "native"]) test(`${platform} Combobox reopens with every option, marks the chosen one and ranks typed matches`, async ({ page }) => {
+  await scenarioFixture(page, platform, "combobox");
+  const native = platform === "native";
+  const field = page.getByRole(native ? "textbox" : "combobox").first();
+  await field.click();
+  const input = native ? page.getByRole("dialog").getByRole("textbox") : field;
+  const option = (name: string) => page.getByRole(native ? "radio" : "option", { name, exact: true });
+  // A chosen value does not filter the reopened list (r1 C1); it is checked (C2).
+  await expect(page.getByRole(native ? "radio" : "option")).toHaveCount(2);
+  if (native) await expect(option("Alpha")).toHaveAttribute("aria-checked", "true");
+  else {
+    await expect(option("Alpha").locator("svg")).toHaveCount(1);
+    await expect(option("Beta").locator("svg")).toHaveCount(0);
+    await expect(option("Alpha")).toHaveAttribute("aria-selected", "true");
+  }
+  // Label prefix ranks before a searchKeys match, whatever the option order (C3, F1).
+  await input.fill("b");
+  await expect(page.getByRole(native ? "radio" : "option")).toHaveText(native ? ["Beta", "Alpha"] : ["Beta", "Alpha"]);
+  await input.fill("su");
+  await expect(page.getByRole(native ? "radio" : "option")).toHaveText(["Alpha"]);
+  await input.fill(" et ");
+  await expect(page.getByRole(native ? "radio" : "option")).toHaveText(["Beta"]);
+  // loading replaces the list with the searching row (F2).
+  await configureScenario(page, { loading: true });
+  await expect(page.getByRole(native ? "radio" : "option")).toHaveCount(0);
+  await expect(page.getByText("검색 중")).toBeVisible();
+  if (!native) { await input.press("ArrowDown"); await input.press("Enter"); await expect(page.getByTestId("selected")).toHaveText("a"); }
+});
+
 for (const platform of ["react", "vue3"]) test(`${platform === "react" ? "React" : platform} Combobox revalidates disabled and removed highlighted options`, async ({ page }) => {
   await scenarioFixture(page, platform, "dynamic");
   const input = page.getByRole("combobox");

@@ -89,7 +89,7 @@ export function generate(input: UsageInput) {
         open: b.state('selectOpen', false), onOpenChange: b.update('selectOpen'), options: options(), ariaLabel: '공개 범위',
         ...b.props('multiple', 'size', 'searchable', 'clearable', 'disabled', 'loading', 'error') }); break;
     case 'KjunCombobox':
-      content = b.node(name, { value: b.state('combo', null), onValueChange: b.update('combo'), options: options(), ariaLabel: '자산 선택', clearable: true, ...b.props('size', 'disabled', 'error') }); break;
+      content = b.node(name, { value: b.state('combo', null), onValueChange: b.update('combo'), options: options(), ariaLabel: '자산 선택', clearable: true, ...b.props('size', 'disabled', 'loading', 'error') }); break;
     case 'KjunDatePicker':
       content = b.node(name, { value: b.state('date', '2026-09-12'), onValueChange: b.update('date'), min: '2026-09-01', max: '2026-09-30', ariaLabel: '시작일', ...b.props('size', 'disabled', 'error') }); break;
     case 'KjunDateRangePicker':

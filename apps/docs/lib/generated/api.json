@@ -5099,7 +5099,14 @@
         "type": "((option: SelectOption, query: string) => boolean)",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Replaces the default ranked label/searchKeys match; results keep the original order."
+      },
+      {
+        "name": "searchKeys",
+        "type": "string[]",
+        "required": false,
+        "default": "[]",
+        "description": "Option fields searched besides the label; matches rank after label matches."
       },
       {
         "name": "size",
@@ -5137,6 +5144,13 @@
         "description": ""
       },
       {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Candidates are being fetched: the list shows a searching row and options cannot be chosen."
+      },
+      {
         "name": "returnFocus",
         "type": "FocusReturn",
         "required": false,
@@ -5166,7 +5180,8 @@
       {
         "name": "option",
         "data": [
-          "option"
+          "option",
+          "selected"
         ],
         "source": "packages/vue3/src/combobox.tsx"
       }
@@ -5219,7 +5234,14 @@
         "type": "((option: T, query: string) => boolean) | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Replaces the default ranked label/searchKeys match; results keep the original order."
+      },
+      {
+        "name": "searchKeys",
+        "type": "string[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Option fields searched besides the label; matches rank after label matches."
       },
       {
         "name": "size",
@@ -5257,8 +5279,15 @@
         "description": ""
       },
       {
+        "name": "loading",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Candidates are being fetched: the list shows a searching row and options cannot be chosen."
+      },
+      {
         "name": "renderOption",
-        "type": "((option: T) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((option: T, selected: boolean) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -5347,7 +5376,14 @@
         "type": "((option: T, query: string) => boolean) | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Replaces the default ranked label/searchKeys match; results keep the original order."
+      },
+      {
+        "name": "searchKeys",
+        "type": "string[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Option fields searched besides the label; matches rank after label matches."
       },
       {
         "name": "size",
@@ -5385,8 +5421,15 @@
         "description": ""
       },
       {
+        "name": "loading",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Candidates are being fetched: the list shows a searching row and options cannot be chosen."
+      },
+      {
         "name": "renderOption",
-        "type": "((option: T) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((option: T, selected: boolean) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""

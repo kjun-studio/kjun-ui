@@ -250,6 +250,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         ariaLabel: "자산 선택",
         clearable: true,
         size: settings.size,
+        loading,
         error,
         disabled,
       }), error ? "목록에 있는 자산을 선택해 주세요." : "");

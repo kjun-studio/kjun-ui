@@ -214,7 +214,7 @@
     "description": "입력한 조건에 맞는 옵션을 검색하고 선택합니다.",
     "interaction": "검색어 초안과 확정한 옵션 값을 구분합니다. 검색 통지는 후보 요청·자유 입력 처리에 활용하고 선택값은 value에 반영합니다.",
     "differences": "Vue v-model·change·search와 React·Native의 해당 콜백을 연결합니다. Native에서는 팝업 내부 입력으로 검색을 이어갑니다.",
-    "states": "입력 내용에 맞는 옵션과 빈 결과를 표시합니다. clearable·disabled·error를 구분하며 비활성 옵션은 선택할 수 없습니다."
+    "states": "목록을 열면 모든 옵션과 현재 선택 체크를 보여 주고, 입력한 뒤부터 label 접두·포함·searchKeys 순으로 거릅니다. loading이면 검색 중 행을, 결과가 없으면 빈 결과 문구를 표시합니다. clearable·disabled·error를 구분하며 비활성 옵션은 선택할 수 없습니다."
   },
   "KjunDatePicker": {
     "slug": "date-picker",

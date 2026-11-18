@@ -5155,6 +5155,14 @@
             }
           },
           {
+            "id": "loading",
+            "label": "로딩",
+            "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
+            "settings": {
+              "visual": "{\"KjunCombobox\":{\"props\":{\"loading\":true}}}"
+            }
+          },
+          {
             "id": "error",
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
@@ -5198,7 +5206,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "입력 내용에 맞는 옵션과 빈 결과를 표시합니다. clearable·disabled·error를 구분하며 비활성 옵션은 선택할 수 없습니다."
+        "note": "목록을 열면 모든 옵션과 현재 선택 체크를 보여 주고, 입력한 뒤부터 label 접두·포함·searchKeys 순으로 거릅니다. loading이면 검색 중 행을, 결과가 없으면 빈 결과 문구를 표시합니다. clearable·disabled·error를 구분하며 비활성 옵션은 선택할 수 없습니다."
       },
       "react": {
         "figures": [
@@ -5251,6 +5259,14 @@
             }
           },
           {
+            "id": "loading",
+            "label": "로딩",
+            "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
+            "settings": {
+              "visual": "{\"KjunCombobox\":{\"props\":{\"loading\":true}}}"
+            }
+          },
+          {
             "id": "error",
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
@@ -5294,7 +5310,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "입력 내용에 맞는 옵션과 빈 결과를 표시합니다. clearable·disabled·error를 구분하며 비활성 옵션은 선택할 수 없습니다."
+        "note": "목록을 열면 모든 옵션과 현재 선택 체크를 보여 주고, 입력한 뒤부터 label 접두·포함·searchKeys 순으로 거릅니다. loading이면 검색 중 행을, 결과가 없으면 빈 결과 문구를 표시합니다. clearable·disabled·error를 구분하며 비활성 옵션은 선택할 수 없습니다."
       },
       "native": {
         "figures": [
@@ -5347,6 +5363,14 @@
             }
           },
           {
+            "id": "loading",
+            "label": "로딩",
+            "description": "공개 loading 속성으로 진행 중 상태를 표시합니다.",
+            "settings": {
+              "visual": "{\"KjunCombobox\":{\"props\":{\"loading\":true}}}"
+            }
+          },
+          {
             "id": "error",
             "label": "오류",
             "description": "공개 error 속성이 담당하는 오류 상태입니다.",
@@ -5390,7 +5414,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "입력 내용에 맞는 옵션과 빈 결과를 표시합니다. clearable·disabled·error를 구분하며 비활성 옵션은 선택할 수 없습니다."
+        "note": "목록을 열면 모든 옵션과 현재 선택 체크를 보여 주고, 입력한 뒤부터 label 접두·포함·searchKeys 순으로 거릅니다. loading이면 검색 중 행을, 결과가 없으면 빈 결과 문구를 표시합니다. clearable·disabled·error를 구분하며 비활성 옵션은 선택할 수 없습니다."
       }
     }
   },

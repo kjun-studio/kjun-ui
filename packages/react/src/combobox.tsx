@@ -1,7 +1,7 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { usePopupFocusGuard } from "../../../shared/package-runtime/use-layer";
 import { useComboboxModel } from "../../../shared/package-runtime/combobox";
-import { type InputSize } from "@kjun-ui/tokens";
+import { tokens, type InputSize } from "@kjun-ui/tokens";
 import {
 useEffect,
 useId,
@@ -12,6 +12,7 @@ type ReactNode,
 type Ref
 } from "react";
 import { KjunSpinner } from "./display";
+import { KjunIcon } from "./button";
 import { KjunInput, type KjunInputProps } from "./input";
 import { useCompositionGuard } from "./composition";
 import { FloatingPanel } from "./layers";
@@ -30,13 +31,18 @@ export interface KjunComboboxProps<T extends SelectOption = SelectOption> {
   ariaLabel?: string;
   labelKey?: string;
   valueKey?: string;
+  /** Replaces the default ranked label/searchKeys match; results keep the original order. */
   filterFn?: (option: T, query: string) => boolean;
+  /** Option fields searched besides the label; matches rank after label matches. */
+  searchKeys?: string[];
   size?: InputSize;
   disabled?: boolean;
   error?: boolean;
   clearable?: boolean;
   emptyText?: string;
-  renderOption?: (option: T) => ReactNode;
+  /** Candidates are being fetched: the list shows a searching row and options cannot be chosen. */
+  loading?: boolean;
+  renderOption?: (option: T, selected: boolean) => ReactNode;
   onValueChange?: (v: OptionValue | null) => void;
   onChange?: (v: OptionValue | null) => void;
   onSearch?: (v: string) => void;
@@ -52,11 +58,13 @@ export function KjunCombobox<T extends SelectOption = SelectOption>({
   labelKey = "label",
   valueKey = "value",
   filterFn,
+  searchKeys,
   size = "md",
   disabled = false,
   error = false,
   clearable = false,
   emptyText,
+  loading = false,
   renderOption,
   onValueChange,
   onChange,
@@ -67,7 +75,7 @@ export function KjunCombobox<T extends SelectOption = SelectOption>({
   const m = useKjunMessages();
   placeholder ??= m.searchOrSelect;
   emptyText ??= m.noResults;
-  const model = useComboboxModel({ value, options, labelKey, valueKey, disabled, filterFn,
+  const model = useComboboxModel({ value, options, labelKey, valueKey, disabled, filterFn, searchKeys,
     onValueChange, onChange, onSearch, onClear });
   return (
     <SearchField
@@ -84,6 +92,8 @@ export function KjunCombobox<T extends SelectOption = SelectOption>({
       labelKey={labelKey}
       itemKey={valueKey}
       emptyText={emptyText}
+      loading={loading}
+      isSelected={model.isSelected}
       renderOption={renderOption}
       onValueChange={(v) => model.search(v, true)}
       onSelect={model.select}
@@ -110,7 +120,9 @@ export interface SearchFieldProps<T extends SelectOption> {
   /** A failed request; shown instead of the empty text so the two never look alike. */
   failed?: boolean;
   errorText?: string;
-  renderOption?: (o: T) => ReactNode;
+  /** The field's chosen option: checked in the list and highlighted when the list opens. */
+  isSelected?: (o: T) => boolean;
+  renderOption?: (o: T, selected: boolean) => ReactNode;
   onValueChange: (v: string) => void;
   onSelect: (o: T) => void;
   onClear?: () => void;
@@ -140,6 +152,7 @@ export function SearchField<T extends SelectOption>({
   loading,
   failed = false,
   errorText = "",
+  isSelected,
   renderOption,
   onValueChange,
   onSelect,
@@ -161,6 +174,16 @@ export function SearchField<T extends SelectOption>({
     highlighted < options.length && !optionDisabled(options[highlighted])
       ? highlighted : -1;
   useEffect(() => setActive(-1), [value, options.length]);
+  // Opening starts from the chosen option, after the reset above in the same commit.
+  useEffect(() => {
+    if (!open || !isSelected) return;
+    const index = options.findIndex(o => isSelected(o) && !optionDisabled(o));
+    if (index < 0) return;
+    setActive(index);
+    const frame = requestAnimationFrame(() => document.getElementById(id + "-" + index)?.scrollIntoView({ block: "nearest" }));
+    return () => cancelAnimationFrame(frame);
+    // Only the open transition moves the highlight; typing keeps its own.
+  }, [open]);
   useEffect(() => {
     if (!open) return;
     const leaveField = (event: FocusEvent) => {
@@ -299,7 +322,8 @@ export function SearchField<T extends SelectOption>({
                   if (!optionDisabled(o)) select(o);
                 }}
               >
-                {renderOption?.(o) || optionLabel(o, labelKey)}
+                {renderOption?.(o, isSelected?.(o) ?? false) || <span>{optionLabel(o, labelKey)}</span>}
+                {isSelected?.(o) && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
               </div>
             ))
           ) : (

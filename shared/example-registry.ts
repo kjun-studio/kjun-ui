@@ -42,7 +42,8 @@ assign("Fab", [choice("size", "크기", ["sm", "md"], "md"), field("label", "라
 assign("IconToggle MenuButton RefreshButton", [disabled, loading]);
 assign("IconToggle", [choice("usage", "사용 예제", ["기본", "즐겨찾기", "관심"]), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), disabled, loading]);
 assign("RefreshButton", [choice("mode", "표현", ["icon", "text"], "icon"), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "sm"), disabled, loading]);
-assign("Textarea DatePicker Combobox", [size, disabled, error]);
+assign("Textarea DatePicker", [size, disabled, error]);
+assign("Combobox", [size, disabled, loading, error]);
 assign("DatePicker DateRangePicker", [size, disabled, error, toggle("clearable", "지우기")]);
 assign("Switch", [size, disabled, loading, toggle("description", "설명")]);
 assign("Checkbox Radio", [size, disabled, toggle("description", "설명"), error]);

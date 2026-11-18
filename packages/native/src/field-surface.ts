@@ -1,4 +1,4 @@
-import { createElement, forwardRef, useState } from "react";
+import { createContext, createElement, forwardRef, useContext, useState } from "react";
 import { Animated, Platform, TextInput, type TextInputProps, type ViewStyle } from "react-native";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { useReducedMotion, useResolveFont } from "./internal";
@@ -24,6 +24,12 @@ export function fieldTarget(action: () => void, disabled: boolean) {
   return Platform.OS === "web" ? { onClick: activate } : { onTouchEnd: activate };
 }
 
+/**
+ * A field whose open panel holds its own focused search input (Combobox, SearchInput).
+ * While open the field shows the opened fill, like an open Select trigger, so only the panel input draws a focus border.
+ */
+export const PanelSearchTriggerContext = createContext(false);
+
 /** Shared field state, independent of each control's value and keyboard model. */
 export function useFieldSurface(size: InputSize, { disabled = false, readOnly = false, invalid = false, open = false, plain = false } = {}) {
   const { colors } = useKjunStyles();
@@ -31,8 +37,9 @@ export function useFieldSurface(size: InputSize, { disabled = false, readOnly = 
   const [focused, setFocused] = useState(false);
   const [hovered, setHovered] = useState(false);
   const spec = tokens.input[size];
-  const active = !disabled && (focused || open);
-  const hover = !disabled && !readOnly && !invalid && !active && hovered;
+  const opensPanelInput = useContext(PanelSearchTriggerContext);
+  const active = !disabled && (focused || (open && !opensPanelInput));
+  const hover = !disabled && !readOnly && !invalid && !active && (hovered || (open && opensPanelInput));
   const border = useMotionValue(Platform.OS === "web" ? 0 : invalid ? 2 : active ? 1 : 0, tokens.motion.control);
   const background = useMotionValue(Platform.OS === "web" || !hover ? 0 : 1, tokens.motion.control);
   const animateBorder = Platform.OS !== "web" && typeof colors.danger === "string" && typeof colors.inputBorderFocus === "string";
