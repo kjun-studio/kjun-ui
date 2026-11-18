@@ -72,6 +72,7 @@
     },
     "financial": {
       "affixGap": { "$ref": "dimension.value4" },
+      "unitGap": { "$ref": "dimension.value2" },
       "badgeGap": { "$ref": "dimension.value6" },
       "statusGap": { "$ref": "dimension.value6" },
       "pillPaddingX": { "$ref": "dimension.value8" },

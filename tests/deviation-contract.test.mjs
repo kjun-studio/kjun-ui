@@ -15,6 +15,8 @@ test('every platform Deviation reads the shared steps instead of its own numbers
     const source = await readFile(file, 'utf8');
     const deviation = source.slice(source.indexOf('KjunDeviation'), source.indexOf('KjunDeviation') + 4000);
     assert.doesNotMatch(deviation, /abs\s*[<>]=?\s*(?:0\.1|0\.5|1)\b|0\.(?:08|14|22)\b/, file);
-    assert.match(deviation, /deviationLevel\(/, file);
+    assert.match(deviation, /deviationText\(/, file);
   }
+  const shared = await readFile('shared/package-runtime/signed-number.ts', 'utf8');
+  assert.match(shared, /deviationLevel\(/);
 });

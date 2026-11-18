@@ -14,16 +14,8 @@ export function signedText<T>(value: T) {
   return parts ? <><span class="kjun-number-sign">{parts[0]}</span>{parts[1]}</> : value;
 }
 
-export const finiteNumber = (value: unknown): number | null =>
-  value == null || typeof value === "boolean" || (typeof value === "string" && !value.trim()) ||
-  !["number", "string"].includes(typeof value) || !Number.isFinite(Number(value))
-    ? null
-    : Number(value) || 0;
-export const format = (value: number, decimals = 0) =>
-  new Intl.NumberFormat(undefined, {
-    minimumFractionDigits: Math.max(0, Math.min(20, decimals)),
-    maximumFractionDigits: Math.max(0, Math.min(20, decimals)),
-  }).format(value);
+export { finiteNumber, format } from "../../../shared/package-runtime/signed-number";
+import { format, signedValueText } from "../../../shared/package-runtime/signed-number";
 
 /** The displayed number while a value counts up; strings pass through. */
 export function useCountUp(value: () => number | string, animated: () => boolean, fromPrevious: () => boolean): Readonly<Ref<number | string>> {
@@ -111,14 +103,13 @@ export const KjunSignedValue = defineComponent({
   props: kjunSignedValueProps,
   setup(props) {
     return () => {
-      const n = finiteNumber(props.value);
-      const role = props.loading || n === null ? "text-secondary" : props.stale ? "text-tertiary" : n > 0 ? "price-up" : n < 0 ? "price-down" : "price-neutral";
-      const display = n === null ? "—" : props.formatter ? props.formatter(n)
-        : props.prefix + (props.showSign && n > 0 ? "+" : "") + format(n, props.decimals) +
-          (props.format === "percent" ? "%" : "") + props.suffix;
+      const { text: display, direction, missing } = signedValueText(props.value, { decimals: props.decimals, percent: props.format === "percent",
+        prefix: props.prefix, suffix: props.suffix, showSign: props.showSign, formatter: props.formatter });
+      const role = props.loading || missing ? "text-secondary" : props.stale ? "text-tertiary"
+        : direction > 0 ? "price-up" : direction < 0 ? "price-down" : "price-neutral";
       return (
         <span class="kjun-signed-value" ref={domainRef(role.startsWith("price-"))} data-tone={props.tone} aria-busy={props.loading}
-          style={{ color: `var(--_kjun-color-${role})`, background: props.tone === "pill" && !props.stale && n !== null ? `var(--_kjun-color-${role}-bg)` : undefined }}>
+          style={{ color: `var(--_kjun-color-${role})`, background: props.tone === "pill" && !props.stale && !missing ? `var(--_kjun-color-${role}-bg)` : undefined }}>
           {props.loading ? <KjunSkeleton type="line" width={tokens.extensions.financial.signedSkeletonWidth} /> : signedText(display)}
         </span>
       );

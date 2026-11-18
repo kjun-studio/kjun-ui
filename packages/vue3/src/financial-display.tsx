@@ -2,12 +2,13 @@ import { sparklineDash, sparklineGeometry, sparklineTone, type SparkPoint } from
 import { useKjunMessages } from "./runtime/messages";
 import { type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
-import { deviationLevel, tokens } from "@kjun-ui/tokens";
+import { tokens } from "@kjun-ui/tokens";
+import { deviationText } from "../../../shared/package-runtime/signed-number";
 import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
 import { KjunIcon } from "./button";
 import { KjunBadge, type DisplaySize } from "./display";
 import { useKjunId } from "./input";
-import { finiteNumber, format, signedText } from "./number-display";
+import { signedText } from "./number-display";
 import { KjunTooltip } from "./popover";
 import { domainRef } from "./runtime/refs";
 import { css } from "./runtime/style";
@@ -29,16 +30,16 @@ export const KjunDeviation = defineComponent({
   setup(props) {
     const m = useKjunMessages();
     return () => {
-      const n = finiteNumber(props.value);
-      if (n === null) return <span style={{ color: "var(--_kjun-color-text-disabled)" }}>-</span>;
-      const abs = Math.abs(n), signal = abs >= props.signalThreshold, level = deviationLevel(n), neutral = level === "neutral";
-      const role = neutral ? "text-secondary" : n > 0 ? "price-up" : "price-down";
-      const label = props.formatter ? props.formatter(n) : (n > 0 ? "+" : "") + format(n, props.decimals) + "%";
+      const shown = deviationText(props.value, props.decimals, props.formatter);
+      if (shown === null) return <span class="kjun-deviation" data-variant={props.variant === "badge" ? undefined : props.variant} data-missing=""
+        style={{ color: "var(--_kjun-color-text-disabled)" }}>—</span>;
+      const { label, direction, level, abs } = shown, signal = abs >= props.signalThreshold, neutral = level === "neutral";
+      const role = neutral ? "text-secondary" : direction > 0 ? "price-up" : "price-down";
       // In the badge variant every value shares the badge box and the icon slot, so a column of
       // deviations keeps its digits aligned; values below the signal threshold drop only the fill and icon.
       if (props.variant === "badge") return (
         <span class="kjun-deviation-badge">
-          <KjunBadge variant={neutral ? "secondary" : n > 0 ? "price-up" : "price-down"} size="sm" style={signal ? undefined : { background: "transparent" }}>{label}</KjunBadge>
+          <KjunBadge variant={neutral ? "secondary" : direction > 0 ? "price-up" : "price-down"} size="sm" style={signal ? undefined : { background: "transparent" }}>{signedText(label)}</KjunBadge>
           {!signal ? <span class="kjun-deviation-signal-slot" aria-hidden="true" /> : (
             <KjunTooltip content={m.value.deviationWarning(props.signalThreshold)}>
               <span tabindex={0} role="img" aria-label={m.value.arbitrage} class="kjun-deviation-signal">

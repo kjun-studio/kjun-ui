@@ -15,10 +15,10 @@
 }
 /* The side is explicit: a lone unit (the delta percent) is both first and last child and would take both gaps. */
 .kjun-number-affix[data-side="prefix"] {
-  margin-right: var(--_kjun-extension-financial-affix-gap);
+  margin-right: var(--_kjun-extension-financial-unit-gap);
 }
 .kjun-number-affix[data-side="suffix"] {
-  margin-left: var(--_kjun-extension-financial-affix-gap);
+  margin-left: var(--_kjun-extension-financial-unit-gap);
 }
 .kjun-signed-value[data-tone="pill"] {
   display: inline-block;

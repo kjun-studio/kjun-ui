@@ -1,6 +1,7 @@
 import { sparklineDash, sparklineGeometry, sparklineTone, type SparkPoint } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { deviationLevel, tokens } from "@kjun-ui/tokens";
+import { tokens } from "@kjun-ui/tokens";
+import { deviationText } from "../../../shared/package-runtime/signed-number";
 import { typeStyle } from "./typography";
 import { useId,type ReactNode } from "react";
 import {
@@ -23,7 +24,7 @@ import { AccessiblePressable } from "./a11y";
 import { KjunTooltip } from "./popover";
 import { KjunBadge,type DisplaySize } from "./display";
 import { KText,content,domainColor } from "./internal";
-import { finiteNumber,format,signedText } from "./number-display";
+import { signedText } from "./number-display";
 import { useKjunStyles } from "./provider";
 import { ProgressMarker } from "./progress";
 import { progressMarker } from "../../../shared/package-runtime/progress-marker";
@@ -45,21 +46,17 @@ export function KjunDeviation({
   formatter,
 }: KjunDeviationProps) {
   const m = useKjunMessages();
-  const { colors, domainColors, numericFontFamily, fontFamily } =
-      useKjunStyles(),
-    n = finiteNumber(value);
-  if (n === null)
-    return <KText style={{ color: colors.textDisabled }}>-</KText>;
-  const abs = Math.abs(n),
+  const { colors, domainColors, numericFontFamily, fontFamily } = useKjunStyles(),
+    shown = deviationText(value, decimals, formatter);
+  if (shown === null)
+    return <KText style={{ ...typeStyle("body"), color: colors.textDisabled, fontFamily: numericFontFamily || fontFamily,
+      paddingHorizontal: variant === "pill" ? tokens.extensions.financial.pillPaddingX : 0 }}>—</KText>;
+  const { label, direction, level, abs } = shown,
     signal = abs >= signalThreshold,
-    level = deviationLevel(n),
     neutral = level === "neutral",
     color = neutral
       ? colors.textSecondary
-      : domainColor(domainColors, n > 0 ? "priceUp" : "priceDown"),
-    label = formatter
-      ? formatter(n)
-      : (n > 0 ? "+" : "") + format(n, decimals) + "%";
+      : domainColor(domainColors, direction > 0 ? "priceUp" : "priceDown");
   // Like Web: in the badge variant every value shares the badge box and the icon slot, so a column keeps
   // its digits aligned; values below the signal threshold drop only the fill and icon.
   if (variant === "badge")
@@ -72,10 +69,10 @@ export function KjunDeviation({
           gap: tokens.extensions.financial.badgeGap,
         }}
       >
-        <KjunBadge variant={neutral ? "secondary" : n > 0 ? "price-up" : "price-down"} size="sm"
+        <KjunBadge variant={neutral ? "secondary" : direction > 0 ? "price-up" : "price-down"} size="sm"
           style={signal ? undefined : { backgroundColor: "transparent" }}>
           <KText style={{ ...typeStyle('controlSmall'), color, flexShrink: 1, minWidth: 0,
-            fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"] }}>{label}</KText>
+            fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"] }}>{signedText(label)}</KText>
         </KjunBadge>
         {!signal && <View style={{ width: tokens.extensions.financial.warningIconSize, flexShrink: 0 }} />}
         {signal && (<>

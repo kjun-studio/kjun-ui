@@ -4,6 +4,7 @@ import { typeStyle } from "./typography";
 import { useNumberMotion } from "../../../shared/package-runtime/use-number-motion";
 import { createContext,useContext,useEffect,useRef,useState,type ReactNode } from "react";
 import {
+StyleSheet,
 Text,
 View,
 type StyleProp,
@@ -12,6 +13,7 @@ type TextStyle
 import { KjunSkeleton } from "./display";
 import { KText,content,domainColor,useReducedMotion, FontText } from "./internal";
 import { useKjunStyles } from "./provider";
+import { KpiNumberLine } from "./kpi-number-line";
 import { splitNumberSign } from "../../../shared/package-runtime/number-sign";
 /** A leading sign drawn tight to its digits (see splitNumberSign), nested in the value's Text; other content passes through. */
 export function signedText(value: ReactNode): ReactNode {
@@ -19,19 +21,8 @@ export function signedText(value: ReactNode): ReactNode {
   return parts ? <><FontText style={{ fontVariant: ["proportional-nums"] }}>{parts[0]}</FontText>{parts[1]}</> : value;
 }
 
-export const finiteNumber = (value: unknown): number | null =>
-  value == null ||
-  typeof value === "boolean" ||
-  (typeof value === "string" && !value.trim()) ||
-  !["number", "string"].includes(typeof value) ||
-  !Number.isFinite(Number(value))
-    ? null
-    : Number(value) || 0;
-export const format = (value: number, decimals = 0) =>
-  new Intl.NumberFormat(undefined, {
-    minimumFractionDigits: Math.max(0, Math.min(20, decimals)),
-    maximumFractionDigits: Math.max(0, Math.min(20, decimals)),
-  }).format(value);
+export { finiteNumber, format } from "../../../shared/package-runtime/signed-number";
+import { format, signedValueText } from "../../../shared/package-runtime/signed-number";
 export function useCountUp(
   value: number | string,
   animated: boolean,
@@ -65,25 +56,13 @@ export function KjunAnimatedNumber({
 }: KjunAnimatedNumberProps) {
   const n = useCountUp(value, animated, fromPrevious),
     { numericFontFamily, fontFamily } = useKjunStyles();
-  return (
-    <KText
-      style={[
-        {
-          fontFamily: numericFontFamily || fontFamily,
-          fontVariant: ["tabular-nums"],
-        },
-        style,
-      ]}
-    >
-      {!!prefix && <FontText style={typeStyle("caption")}>{prefix} </FontText>}
-      {typeof n === "string"
-        ? n
-        : formatter
-        ? formatter(n)
-        : format(n, decimals)}
-      {!!suffix && <FontText style={typeStyle("caption")}> {suffix}</FontText>}
-    </KText>
-  );
+  const text = typeof n === "string" ? n : formatter ? formatter(n) : format(n, decimals);
+  const numeric = StyleSheet.flatten([{ fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"] as TextStyle["fontVariant"] }, style]);
+  // Like Web: a unit takes its number's size and sits a unit gap away; each part is its own Text so it can take the gap.
+  if (prefix || suffix)
+    return <KpiNumberLine prefix={prefix} suffix={suffix} prefixGap={tokens.extensions.financial.unitGap}
+      suffixGap={tokens.extensions.financial.unitGap} style={numeric} unitStyle={{}}>{text}</KpiNumberLine>;
+  return <KText style={numeric}>{text}</KText>;
 }
 /** The status slot after a price; nothing when the app gives no status. Text statuses get the system text. */
 export function PriceStatus({ status }: { status?: ReactNode }) {
@@ -152,25 +131,14 @@ export function KjunSignedValue({
   const { colors, domainColors, numericFontFamily, fontFamily } =
       useKjunStyles(),
     quoteType = useContext(MarketQuoteTypeContext),
-    n = finiteNumber(value),
-    role =
-      n === null || n === 0 ? "priceNeutral" : n > 0 ? "priceUp" : "priceDown",
+    { text: display, direction, missing } = signedValueText(value, { decimals, percent: kind === "percent", prefix, suffix, showSign, formatter }),
+    role = direction > 0 ? "priceUp" : direction < 0 ? "priceDown" : "priceNeutral",
     color =
-      loading || n === null
+      loading || missing
         ? colors.textSecondary
         : stale
         ? colors.textTertiary
         : domainColor(domainColors, role);
-  const display =
-    n === null
-      ? "—"
-      : formatter
-      ? formatter(n)
-      : prefix +
-        (showSign && n > 0 ? "+" : "") +
-        format(n, decimals) +
-        (kind === "percent" ? "%" : "") +
-        suffix;
   return (
     <View
       accessibilityState={{ busy: loading }}
@@ -183,7 +151,7 @@ export function KjunSignedValue({
         paddingHorizontal: tone === "pill" ? tokens.extensions.financial.pillPaddingX : 0,
         borderRadius: tokens.extensions.financial.pillRadius,
         backgroundColor:
-          tone === "pill" && !stale && !loading && n !== null
+          tone === "pill" && !stale && !loading && !missing
             ? domainColor(domainColors, role + "Bg")
             : undefined,
       }}

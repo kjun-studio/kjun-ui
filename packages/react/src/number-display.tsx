@@ -16,19 +16,8 @@ export function signedText(value: ReactNode): ReactNode {
   return parts ? <><span className="kjun-number-sign">{parts[0]}</span>{parts[1]}</> : value;
 }
 
-export const finiteNumber = (value: unknown): number | null =>
-  value == null ||
-  typeof value === "boolean" ||
-  (typeof value === "string" && !value.trim()) ||
-  !["number", "string"].includes(typeof value) ||
-  !Number.isFinite(Number(value))
-    ? null
-    : Number(value) || 0;
-export const format = (value: number, decimals = 0) =>
-  new Intl.NumberFormat(undefined, {
-    minimumFractionDigits: Math.max(0, Math.min(20, decimals)),
-    maximumFractionDigits: Math.max(0, Math.min(20, decimals)),
-  }).format(value);
+export { finiteNumber, format } from "../../../shared/package-runtime/signed-number";
+import { format, signedValueText } from "../../../shared/package-runtime/signed-number";
 export function useCountUp(
   value: number | string,
   animated: boolean,
@@ -55,11 +44,11 @@ export function KjunAnimatedNumber({
   animated = true,
   fromPrevious = false,
   formatter,
-  className = "",
+  className,
 }: KjunAnimatedNumberProps) {
   const n = useCountUp(value, animated, fromPrevious);
   return (
-    <span className={"kjun-animated-number " + className}>
+    <span className={"kjun-animated-number" + (className ? " " + className : "")}>
       {prefix && <span className="kjun-number-affix" data-side="prefix">{prefix}</span>}
       <span>
         {typeof n === "string"
@@ -138,27 +127,9 @@ export function KjunSignedValue({
   stale = false,
   formatter,
 }: KjunSignedValueProps) {
-  const n = finiteNumber(value),
-    role =
-      loading || n === null
-        ? "text-secondary"
-        : stale
-        ? "text-tertiary"
-        : n > 0
-        ? "price-up"
-        : n < 0
-        ? "price-down"
-        : "price-neutral";
-  const display =
-    n === null
-      ? "—"
-      : formatter
-      ? formatter(n)
-      : prefix +
-        (showSign && n > 0 ? "+" : "") +
-        format(n, decimals) +
-        (kind === "percent" ? "%" : "") +
-        suffix;
+  const { text: display, direction, missing } = signedValueText(value, { decimals, percent: kind === "percent", prefix, suffix, showSign, formatter }),
+    role = loading || missing ? "text-secondary" : stale ? "text-tertiary"
+      : direction > 0 ? "price-up" : direction < 0 ? "price-down" : "price-neutral";
   return (
     <span
       className="kjun-signed-value"
@@ -168,7 +139,7 @@ export function KjunSignedValue({
       style={{
         color: `var(--_kjun-color-${role})`,
         background:
-          tone === "pill" && !stale && n !== null
+          tone === "pill" && !stale && !missing
             ? `var(--_kjun-color-${role}-bg)`
             : undefined,
       }}

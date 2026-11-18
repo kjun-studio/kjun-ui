@@ -44,7 +44,9 @@
 }
 .kjun-scope :is(.kjun-kpi-row__badge,.kjun-kpi-hero__sec-label) { white-space:normal; overflow-wrap:anywhere; }
 
-.kjun-scope :is(.kjun-kpi-hero__sec-affix,.kjun-number-affix,.kjun-animated-number__affix) { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); }
+/* KPI units are set smaller than their figures; elsewhere a unit takes its number's size ("1,234,567원"). */
+.kjun-scope :is(.kjun-kpi-hero__sec-affix,.kjun-animated-number__affix),
+.kjun-scope :is(.kjun-kpi-hero,.kjun-kpi-row) .kjun-number-affix { font-size:var(--_kjun-type-caption-size); line-height:var(--_kjun-type-caption-line); }
 
 .kjun-scope :is(.kjun-kpi-hero,.kjun-kpi-row) { min-width:0; overflow-wrap:anywhere; }
 .kjun-scope :is(.kjun-kpi-hero__value,.kjun-kpi-hero__sec-value,.kjun-kpi-row__value) { min-width:0; overflow-wrap:anywhere; }
