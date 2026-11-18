@@ -13,7 +13,7 @@ const tracking = [
 ];
 const long = ['배송지 입력 및 확인', 'Supercalifragilistic', '결제', '완료'].map(label => ({ label }));
 const App = defineComponent(() => {
-  const selected = ref<number | null>(null), verticalSelected = ref<number | null>(null), bareSelected = ref<number | null>(null), width = ref(900);
+  const selected = ref<number | null>(null), verticalSelected = ref<number | null>(null), bareSelected = ref<number | null>(null), skipped = ref<number | null>(null), width = ref(900);
   const block = { width: '900px' };
   return () => <K.KjunProvider>{{ default: () => <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', padding: '16px' }}>
     <div data-testid="wizard" style={block}><K.KjunSteps items={wizard} current={2} ariaLabel="주문 단계" /></div>
@@ -37,6 +37,8 @@ const App = defineComponent(() => {
       <div data-testid="select" style={{ marginTop: '32px' }}><K.KjunSteps items={wizard} current={3} ariaLabel="이동 가능한 단계" onStepSelect={(i: number) => { selected.value = i; }} /></div>
     </div>
     <output data-testid="selected">{selected.value === null ? '' : selected.value}</output>
+    <div data-testid="skip" style={block}><K.KjunSteps items={wizard} current={2} selectable="all" onStepSelect={(i: number) => { skipped.value = i; }} /></div>
+    <output data-testid="skipped">{skipped.value === null ? '' : skipped.value}</output>
   </div> }}</K.KjunProvider>;
 });
 createApp(App).mount('#root');

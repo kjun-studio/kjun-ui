@@ -1,9 +1,10 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { clampCurrent, stepStatus, stepsRootStatus, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout } from "../../../shared/package-runtime/steps";
+import { developmentMode } from "../../../shared/package-runtime/development";
+import { clampCurrent, stepDetail, stepSelectable, stepSpoken, stepStatus, stepsHead, stepsRootStatus, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout, type KjunStepsSelectable } from "../../../shared/package-runtime/steps";
 import { useEffect, type CSSProperties } from "react";
 import { KjunIcon } from "./button";
 
-export type { KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLayout };
+export type { KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLayout, KjunStepsSelectable };
 
 export interface KjunStepsProps {
   /** The steps in order. Two or more. */
@@ -17,21 +18,19 @@ export interface KjunStepsProps {
   layout?: KjunStepsLayout;
   /** Names the list; defaults to the "진행 단계" message. */
   ariaLabel?: string;
-  /** Makes each completed step a button in the wide horizontal layout and in the vertical one. */
+  /** Makes steps buttons in the wide horizontal layout and in the vertical one: completed ones, or with selectable="all" every step but the current one. */
   onStepSelect?: (index: number) => void;
+  /** "complete" (default) lets onStepSelect go back only; "all" also lets it skip ahead to a later step. */
+  selectable?: KjunStepsSelectable;
   className?: string;
   style?: CSSProperties;
   id?: string;
   [data: `data-${string}`]: string | undefined;
 }
 
-function developmentMode() {
-  try { return !!process.env.NODE_ENV && process.env.NODE_ENV !== "production"; } catch { return false; }
-}
-
 /** Progress through an ordered flow: a wizard, a checkout, a delivery trail. */
 export function KjunSteps({ items, current, currentStatus = "active", orientation = "horizontal", layout = "auto", ariaLabel,
-  onStepSelect, className, style, id, ...rest }: KjunStepsProps) {
+  onStepSelect, selectable = "complete", className, style, id, ...rest }: KjunStepsProps) {
   const m = useKjunMessages();
   const count = items.length;
   useEffect(() => {
@@ -39,27 +38,22 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
   }, [count]);
   const at = clampCurrent(current, count);
   const vertical = orientation === "vertical";
-  const statusText: Record<KjunStepStatus, string> = { complete: m.stepComplete, current: m.stepCurrent, error: m.stepError, upcoming: m.stepUpcoming };
-  // The compact header names the current step, or the last one once everything is complete.
-  const shown = Math.min(at, count - 1), headItem = items[shown], next = at < count ? items[at + 1] : undefined;
-  const total = m.stepCount(shown + 1, count), lead = String(shown + 1);
+  const head = stepsHead(m, items, at);
 
   return (
     <div {...rest} id={id} className={"kjun-steps" + (className ? " " + className : "")} style={style}
       data-orientation={orientation} data-layout={layout} data-count={count} data-status={stepsRootStatus(at, count, currentStatus)}>
-      {!vertical && headItem && (
+      {!vertical && head.item && (
         <div className="kjun-steps-head" aria-hidden="true">
-          <span className="kjun-steps-head-title" aria-hidden="true">{headItem.label}</span>
-          <span className="kjun-steps-head-count" aria-hidden="true">{total.startsWith(lead) ? <><b>{lead}</b>{total.slice(lead.length)}</> : total}</span>
-          {next && <span className="kjun-steps-head-next" aria-hidden="true">{m.stepNext} · {next.label}</span>}
+          <span className="kjun-steps-head-title" aria-hidden="true">{head.item.label}</span>
+          <span className="kjun-steps-head-count" aria-hidden="true">{head.lead && <b>{head.lead}</b>}{head.rest}</span>
+          {head.next && <span className="kjun-steps-head-next" aria-hidden="true">{m.stepNext} · {head.next.label}</span>}
         </div>
       )}
       <ol className="kjun-steps-list" aria-label={ariaLabel ?? m.steps}>
         {items.map((item, i) => {
           const status = stepStatus(i, at, currentStatus);
-          const detail = vertical ? [item.meta, item.description].filter(Boolean).join(" · ") : "";
-          // One phrase names the step for a screen reader: the button carries it as its name, the static copy as hidden text.
-          const spoken = m.stepPosition(i + 1) + ", " + item.label + ", " + statusText[status] + (detail ? ", " + detail : "");
+          const detail = stepDetail(item, vertical), spoken = stepSpoken(m, i, item, status, detail);
           const body = (
             <>
               {/* steps.css sizes the icon from extensions.steps.markerIcon. */}
@@ -80,7 +74,7 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
           return (
             <li key={item.key ?? i} className="kjun-steps-item" data-status={status} aria-current={status === "current" || status === "error" ? "step" : undefined}>
               <span className="kjun-steps-static">{body}<span className="kjun-sr-only">{spoken}</span></span>
-              {onStepSelect && status === "complete" && (
+              {onStepSelect && stepSelectable(status, selectable) && (
                 <button type="button" className="kjun-steps-hit" aria-label={spoken} onClick={() => onStepSelect(i)}>{body}</button>
               )}
             </li>

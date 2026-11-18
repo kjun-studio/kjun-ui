@@ -51,6 +51,7 @@ assign("Checkbox Radio", [size, disabled, toggle("description", "설명"), error
 assign("RadioGroup", [size, disabled, error]);
 assign("Textarea", [size, disabled, error, toggle("readOnly", "읽기 전용"), toggle("showCount", "글자 수"), toggle("composer", "작성기형"), choice("maxRows", "최대 행", ["6", "3", "10"]), toggle("plain", "배경 없음")]);
 assign("Progress", [toggle("marker", "기준 눈금")]);
+assign("Breadcrumb", [toggle("long", "긴 경로 접기")]);
 const menuDensity = choice("density", "밀도", ["comfortable", "compact"]);
 assign("Dropdown", [disabled, toggle("rich", "확장 구성"), menuDensity]);
 assign("DropdownSection DropdownSubmenu", [toggle("rich", "확장 구성", true), menuDensity]);

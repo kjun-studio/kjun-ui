@@ -309,6 +309,7 @@ export const kjunPropValues = Object.freeze({
     currentStatus: Object.freeze(["active","error"] as const),
     layout: Object.freeze(["auto","compact","full"] as const),
     orientation: Object.freeze(["horizontal","vertical"] as const),
+    selectable: Object.freeze(["all","complete"] as const),
   }),
   KjunSwitch: Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),

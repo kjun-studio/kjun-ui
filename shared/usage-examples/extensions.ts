@@ -138,7 +138,7 @@ export function generate(input: UsageInput) {
       const items = vertical
         ? [{ label: '주문 접수', meta: '11월 17일 09:12', description: '주문이 접수되었습니다' }, { label: '상품 준비', meta: '11월 17일 10:40', description: '판매자가 상품을 포장하고 있습니다' }, { label: '배송 시작', meta: '11월 17일 14:05', description: '서울 강서 허브에서 출발했습니다' }, { label: '배송 중', meta: '도착 예정 11월 18일', description: '기사님이 배송 중입니다' }, { label: '배송 완료' }]
         : ['약관 동의', '배송지', '결제', '주문 확인', '완료'].map(label => ({ label }));
-      content = b.group([b.node(name, { ariaLabel: vertical ? '배송 진행' : '주문 진행', items: b.data('steps', items), current: s.current ?? 2, ...b.props('currentStatus', 'orientation', 'layout'),
+      content = b.group([b.node(name, { ariaLabel: vertical ? '배송 진행' : '주문 진행', items: b.data('steps', items), current: s.current ?? 2, ...b.props('currentStatus', 'orientation', 'layout', 'selectable'),
         onStepSelect: b.handler('selectStep', 'index', b.result('steps[index].label + " 단계 선택"')) })]); break;
     }
     case 'KjunEventCalendar': content = eventCalendar(b, s); break;

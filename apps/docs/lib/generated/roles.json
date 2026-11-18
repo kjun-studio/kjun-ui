@@ -44,6 +44,7 @@
       "packages/native/src/list.tsx",
       "packages/native/src/market-cards.tsx",
       "packages/native/src/market-table.tsx",
+      "packages/native/src/navigation.tsx",
       "packages/native/src/progress.tsx",
       "packages/native/src/range-input.tsx",
       "packages/native/src/select-options.tsx",

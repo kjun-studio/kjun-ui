@@ -225,6 +225,8 @@ set("Accordion", {
 });
 set("AccordionItem", { ariaLabel: "헤더의 접근성 이름입니다. header에 글자가 아닌 내용을 넣을 때 주세요. 생략하면 보이는 헤더를 읽습니다." });
 set("Breadcrumb", { items: { type: "{ label: string; to?: string; icon?: string; current?: boolean }[]", summary: "경로 단계입니다. to가 있으면 링크입니다. 현재 페이지는 기본으로 to가 없는 마지막 단계이며, current로 직접 정할 수 있습니다(링크인 현재 단계도 aria-current로 알립니다). 빈 배열이면 아무것도 그리지 않습니다." }, maxItems: "긴 경로를 접습니다. 첫 단계와 마지막 maxItems - 1개 단계만 보이고, 사이 단계는 \"…\" 버튼의 메뉴로 엽니다. 2 이상일 때 적용합니다." });
+set("Breadcrumb", { onNavigate: "to가 있는 단계를 고르면 그 단계로 호출합니다. 경로의 링크는 href를 그대로 두고 클릭 이벤트를 함께 넘기므로, 앱 라우터로 옮길 때 event.preventDefault()를 부르세요. \"…\" 메뉴로 접힌 단계는 이벤트 없이 호출하고 href로 이동하지 않으므로, 라우터를 쓰는 앱도 접힌 단계로 옮길 수 있습니다." });
+set("Breadcrumb", { onNavigate: "to가 있는 단계(\"…\" 메뉴로 접힌 단계 포함)를 누르면 그 단계로 호출합니다. 실제 화면 전환은 앱이 합니다. renderLink는 보이는 단계에만 쓰이므로 접힌 단계로 옮기려면 onNavigate가 필요합니다." }, "native");
 set("ScrollFade", { ariaLabel: "스크롤 영역의 이름입니다. 주면 웹은 초점을 받는 영역(region)이 되어 안에 초점 받을 요소가 없어도 키보드로 스크롤할 수 있습니다." });
 set("ScrollFade", { fadeColor: { type: "ColorValue", default: "colors.surface", summary: "가장자리가 흐려지며 섞일 색입니다. 스크롤 영역 뒤의 바탕색을 주세요." } }, "native");
 set("Badge", {

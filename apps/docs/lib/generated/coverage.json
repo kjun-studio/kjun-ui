@@ -329,7 +329,7 @@
       "title": "Breadcrumb",
       "docs": "/components/breadcrumb",
       "category": "navigation",
-      "differences": "Vue는 link 슬롯, React·Native는 renderLink로 라우터 링크를 주입합니다. Native는 onNavigate도 제공합니다.",
+      "differences": "Vue는 link 슬롯, React·Native는 renderLink로 라우터 링크를 주입합니다. 세 플랫폼 모두 onNavigate(Vue는 navigate 이벤트)로 이동을 알립니다. 웹은 링크의 href를 그대로 두고 클릭 이벤트를 함께 넘기므로 라우터로 옮길 때 event.preventDefault()를 부르세요. \"…\" 메뉴로 접힌 단계는 renderLink·link 슬롯을 거치지 않으므로, onNavigate를 주면 이벤트 없이 호출하고 href로 이동하지 않습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

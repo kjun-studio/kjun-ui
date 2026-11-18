@@ -26939,7 +26939,14 @@
             "source": "packages/vue3/src/navigation.tsx"
           }
         ],
-        "events": [],
+        "events": [
+          {
+            "name": "navigate",
+            "source": "packages/vue3/src/navigation.tsx",
+            "type": "이벤트",
+            "summary": "navigate 이벤트를 통지합니다."
+          }
+        ],
         "slots": [
           {
             "name": "link",
@@ -26973,6 +26980,15 @@
             "default": "—",
             "description": "",
             "summary": "이동 항목을 프로젝트의 링크 요소로 렌더링합니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "onNavigate",
+            "type": "((item: BreadcrumbItem, event?: MouseEvent<HTMLAnchorElement>) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A step with `to` was chosen. Trail links keep their href and pass the click: call event.preventDefault() to route in the app.\nSteps folded into the \"…\" menu call it without an event and no longer follow their href, so a router reaches them too.",
+            "summary": "to가 있는 단계를 고르면 그 단계로 호출합니다. 경로의 링크는 href를 그대로 두고 클릭 이벤트를 함께 넘기므로, 앱 라우터로 옮길 때 event.preventDefault()를 부르세요. \"…\" 메뉴로 접힌 단계는 이벤트 없이 호출하고 href로 이동하지 않으므로, 라우터를 쓰는 앱도 접힌 단계로 옮길 수 있습니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -27025,7 +27041,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "이동할 항목을 전달합니다. 실제 경로 전환은 소비자가 처리합니다.",
+            "summary": "to가 있는 단계(\"…\" 메뉴로 접힌 단계 포함)를 누르면 그 단계로 호출합니다. 실제 화면 전환은 앱이 합니다. renderLink는 보이는 단계에만 쓰이므로 접힌 단계로 옮기려면 onNavigate가 필요합니다.",
             "source": "packages/native/src/navigation.tsx"
           },
           {
@@ -38391,6 +38407,15 @@
             "description": "Names the list; defaults to the \"진행 단계\" message.",
             "summary": "목록의 접근성 이름입니다. 생략하면 Provider 언어의 ‘진행 단계’를 씁니다. 단계는 ‘1단계, 약관 동의, 완료’처럼 읽고 현재·오류 단계에 aria-current=\"step\"을 답니다.",
             "source": "packages/vue3/src/steps.tsx"
+          },
+          {
+            "name": "selectable",
+            "type": "KjunStepsSelectable",
+            "required": false,
+            "default": "\"complete\"",
+            "description": "\"complete\" (default) lets step-select go back only; \"all\" also lets it skip ahead to a later step.",
+            "summary": "onStepSelect가 버튼으로 만드는 단계입니다. complete(기본)는 완료된 단계만 눌러 되돌아가게 하고, all은 현재 단계를 뺀 모든 단계(아직 가지 않은 단계 포함)를 눌러 앞으로 건너뛸 수도 있게 합니다. 축약형에서는 버튼을 만들지 않습니다.",
+            "source": "packages/vue3/src/steps.tsx"
           }
         ],
         "events": [
@@ -38398,11 +38423,11 @@
             "name": "step-select",
             "source": "packages/vue3/src/steps.tsx",
             "type": "이벤트",
-            "summary": "완료된 단계를 골랐음을 알립니다.",
+            "summary": "단계를 골랐음을 알립니다.",
             "details": [
               {
                 "label": "발생 시점",
-                "text": "넓은 가로 배치나 세로 배치에서 완료된 단계(버튼)를 누르거나 Enter·Space를 누를 때. 현재·오류·예정 단계와 축약형에서는 발생하지 않습니다"
+                "text": "넓은 가로 배치나 세로 배치에서 버튼인 단계를 누르거나 Enter·Space를 누를 때. 기본은 완료된 단계만 버튼이고 selectable=\"all\"이면 예정 단계도 버튼입니다. 현재·오류 단계와 축약형에서는 발생하지 않습니다"
               },
               {
                 "label": "전달값",
@@ -38422,7 +38447,7 @@
         ],
         "slots": [],
         "ownership": [
-          "단계 목록 items와 현재 단계 번호 current(0부터)를 앱이 관리합니다. current가 items 개수와 같으면 모든 단계가 완료입니다. 범위를 벗어난 값은 0~개수로 자르고 소수는 내림합니다. 결제 실패나 배송 실패처럼 현재 단계가 막혔을 때는 currentStatus=\"error\"를 줍니다. 단계 사이 이동과 다음·이전 버튼은 이 컴포넌트가 아니라 페이지(KjunBottomActionBar·KjunFormActions)의 몫입니다. onStepSelect(Vue는 step-select 이벤트)를 주면 완료된 단계만 버튼이 되어 눌렀을 때 그 단계 번호를 알립니다. 현재·오류·예정 단계는 누를 수 없고, 어느 단계로 돌아갈지는 앱이 정합니다. 축약형에서는 단계를 선택할 수 없으므로 이전 단계로 가는 일은 페이지의 뒤로 가기 버튼에 맡기세요.",
+          "단계 목록 items와 현재 단계 번호 current(0부터)를 앱이 관리합니다. current가 items 개수와 같으면 모든 단계가 완료입니다. 범위를 벗어난 값은 0~개수로 자르고 소수는 내림합니다. 결제 실패나 배송 실패처럼 현재 단계가 막혔을 때는 currentStatus=\"error\"를 줍니다. 단계 사이 이동과 다음·이전 버튼은 이 컴포넌트가 아니라 페이지(KjunBottomActionBar·KjunFormActions)의 몫입니다. onStepSelect(Vue는 step-select 이벤트)를 주면 완료된 단계만 버튼이 되어 눌렀을 때 그 단계 번호를 알립니다. 순서를 건너뛰어도 되는 흐름이면 selectable=\"all\"로 예정 단계도 버튼으로 만듭니다. 현재·오류 단계는 누를 수 없고, 어느 단계로 옮길지는 앱이 정합니다. 축약형에서는 단계를 선택할 수 없으므로 이전 단계로 가는 일은 페이지의 뒤로 가기 버튼에 맡기세요.",
           "세 플랫폼의 prop 이름·기본값·축약 기준이 같습니다. 웹은 CSS 컨테이너 쿼리로 컴포넌트 자신의 폭을 보고 JS 측정 없이 형태를 고르므로 서버 렌더링 HTML도 처음부터 맞게 보입니다. Native는 onLayout으로 받은 폭을 쓰고, 폭을 받기 전 첫 프레임은 자리만 차지한 채 투명합니다. Native 결과는 React Native Web 미리보기이며 기기 검증이 아닙니다. 목록은 웹에서 ol·li와 aria-current=\"step\"으로, Native에서는 목록 역할로 알립니다. 웹은 줄임으로 잘린 라벨의 전체를 title로 보여 줍니다. 폭이 정해진 부모 안에 두세요. 내용에 맞춰 줄어드는 부모 안에서는 폭이 0으로 측정되어 축약형으로 바뀝니다."
         ],
         "types": []
@@ -38488,12 +38513,12 @@
             "type": "((index: number) => void) | undefined",
             "required": false,
             "default": "—",
-            "description": "Makes each completed step a button in the wide horizontal layout and in the vertical one.",
-            "summary": "완료된 단계를 골랐음을 알립니다.",
+            "description": "Makes steps buttons in the wide horizontal layout and in the vertical one: completed ones, or with selectable=\"all\" every step but the current one.",
+            "summary": "단계를 골랐음을 알립니다.",
             "details": [
               {
                 "label": "발생 시점",
-                "text": "넓은 가로 배치나 세로 배치에서 완료된 단계(버튼)를 누르거나 Enter·Space를 누를 때. 현재·오류·예정 단계와 축약형에서는 발생하지 않습니다"
+                "text": "넓은 가로 배치나 세로 배치에서 버튼인 단계를 누르거나 Enter·Space를 누를 때. 기본은 완료된 단계만 버튼이고 selectable=\"all\"이면 예정 단계도 버튼입니다. 현재·오류 단계와 축약형에서는 발생하지 않습니다"
               },
               {
                 "label": "전달값",
@@ -38510,6 +38535,15 @@
             ],
             "source": "packages/react/src/steps.tsx",
             "example": "/components/steps#preview"
+          },
+          {
+            "name": "selectable",
+            "type": "KjunStepsSelectable | undefined",
+            "required": false,
+            "default": "\"complete\"",
+            "description": "\"complete\" (default) lets onStepSelect go back only; \"all\" also lets it skip ahead to a later step.",
+            "summary": "onStepSelect가 버튼으로 만드는 단계입니다. complete(기본)는 완료된 단계만 눌러 되돌아가게 하고, all은 현재 단계를 뺀 모든 단계(아직 가지 않은 단계 포함)를 눌러 앞으로 건너뛸 수도 있게 합니다. 축약형에서는 버튼을 만들지 않습니다.",
+            "source": "packages/react/src/steps.tsx"
           },
           {
             "name": "className",
@@ -38542,7 +38576,7 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "단계 목록 items와 현재 단계 번호 current(0부터)를 앱이 관리합니다. current가 items 개수와 같으면 모든 단계가 완료입니다. 범위를 벗어난 값은 0~개수로 자르고 소수는 내림합니다. 결제 실패나 배송 실패처럼 현재 단계가 막혔을 때는 currentStatus=\"error\"를 줍니다. 단계 사이 이동과 다음·이전 버튼은 이 컴포넌트가 아니라 페이지(KjunBottomActionBar·KjunFormActions)의 몫입니다. onStepSelect(Vue는 step-select 이벤트)를 주면 완료된 단계만 버튼이 되어 눌렀을 때 그 단계 번호를 알립니다. 현재·오류·예정 단계는 누를 수 없고, 어느 단계로 돌아갈지는 앱이 정합니다. 축약형에서는 단계를 선택할 수 없으므로 이전 단계로 가는 일은 페이지의 뒤로 가기 버튼에 맡기세요.",
+          "단계 목록 items와 현재 단계 번호 current(0부터)를 앱이 관리합니다. current가 items 개수와 같으면 모든 단계가 완료입니다. 범위를 벗어난 값은 0~개수로 자르고 소수는 내림합니다. 결제 실패나 배송 실패처럼 현재 단계가 막혔을 때는 currentStatus=\"error\"를 줍니다. 단계 사이 이동과 다음·이전 버튼은 이 컴포넌트가 아니라 페이지(KjunBottomActionBar·KjunFormActions)의 몫입니다. onStepSelect(Vue는 step-select 이벤트)를 주면 완료된 단계만 버튼이 되어 눌렀을 때 그 단계 번호를 알립니다. 순서를 건너뛰어도 되는 흐름이면 selectable=\"all\"로 예정 단계도 버튼으로 만듭니다. 현재·오류 단계는 누를 수 없고, 어느 단계로 옮길지는 앱이 정합니다. 축약형에서는 단계를 선택할 수 없으므로 이전 단계로 가는 일은 페이지의 뒤로 가기 버튼에 맡기세요.",
           "세 플랫폼의 prop 이름·기본값·축약 기준이 같습니다. 웹은 CSS 컨테이너 쿼리로 컴포넌트 자신의 폭을 보고 JS 측정 없이 형태를 고르므로 서버 렌더링 HTML도 처음부터 맞게 보입니다. Native는 onLayout으로 받은 폭을 쓰고, 폭을 받기 전 첫 프레임은 자리만 차지한 채 투명합니다. Native 결과는 React Native Web 미리보기이며 기기 검증이 아닙니다. 목록은 웹에서 ol·li와 aria-current=\"step\"으로, Native에서는 목록 역할로 알립니다. 웹은 줄임으로 잘린 라벨의 전체를 title로 보여 줍니다. 폭이 정해진 부모 안에 두세요. 내용에 맞춰 줄어드는 부모 안에서는 폭이 0으로 측정되어 축약형으로 바뀝니다."
         ],
         "types": []
@@ -38608,12 +38642,12 @@
             "type": "((index: number) => void) | undefined",
             "required": false,
             "default": "—",
-            "description": "Makes each completed step a button in the wide horizontal layout and in the vertical one.",
-            "summary": "완료된 단계를 골랐음을 알립니다.",
+            "description": "Makes steps buttons in the wide horizontal layout and in the vertical one: completed ones, or with selectable=\"all\" every step but the current one.",
+            "summary": "단계를 골랐음을 알립니다.",
             "details": [
               {
                 "label": "발생 시점",
-                "text": "넓은 가로 배치나 세로 배치에서 완료된 단계(버튼)를 누르거나 Enter·Space를 누를 때. 현재·오류·예정 단계와 축약형에서는 발생하지 않습니다"
+                "text": "넓은 가로 배치나 세로 배치에서 버튼인 단계를 누르거나 Enter·Space를 누를 때. 기본은 완료된 단계만 버튼이고 selectable=\"all\"이면 예정 단계도 버튼입니다. 현재·오류 단계와 축약형에서는 발생하지 않습니다"
               },
               {
                 "label": "전달값",
@@ -38630,6 +38664,15 @@
             ],
             "source": "packages/native/src/steps.tsx",
             "example": "/components/steps#preview"
+          },
+          {
+            "name": "selectable",
+            "type": "KjunStepsSelectable | undefined",
+            "required": false,
+            "default": "\"complete\"",
+            "description": "\"complete\" (default) lets onStepSelect go back only; \"all\" also lets it skip ahead to a later step.",
+            "summary": "onStepSelect가 버튼으로 만드는 단계입니다. complete(기본)는 완료된 단계만 눌러 되돌아가게 하고, all은 현재 단계를 뺀 모든 단계(아직 가지 않은 단계 포함)를 눌러 앞으로 건너뛸 수도 있게 합니다. 축약형에서는 버튼을 만들지 않습니다.",
+            "source": "packages/native/src/steps.tsx"
           },
           {
             "name": "style",
@@ -38653,7 +38696,7 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "단계 목록 items와 현재 단계 번호 current(0부터)를 앱이 관리합니다. current가 items 개수와 같으면 모든 단계가 완료입니다. 범위를 벗어난 값은 0~개수로 자르고 소수는 내림합니다. 결제 실패나 배송 실패처럼 현재 단계가 막혔을 때는 currentStatus=\"error\"를 줍니다. 단계 사이 이동과 다음·이전 버튼은 이 컴포넌트가 아니라 페이지(KjunBottomActionBar·KjunFormActions)의 몫입니다. onStepSelect(Vue는 step-select 이벤트)를 주면 완료된 단계만 버튼이 되어 눌렀을 때 그 단계 번호를 알립니다. 현재·오류·예정 단계는 누를 수 없고, 어느 단계로 돌아갈지는 앱이 정합니다. 축약형에서는 단계를 선택할 수 없으므로 이전 단계로 가는 일은 페이지의 뒤로 가기 버튼에 맡기세요.",
+          "단계 목록 items와 현재 단계 번호 current(0부터)를 앱이 관리합니다. current가 items 개수와 같으면 모든 단계가 완료입니다. 범위를 벗어난 값은 0~개수로 자르고 소수는 내림합니다. 결제 실패나 배송 실패처럼 현재 단계가 막혔을 때는 currentStatus=\"error\"를 줍니다. 단계 사이 이동과 다음·이전 버튼은 이 컴포넌트가 아니라 페이지(KjunBottomActionBar·KjunFormActions)의 몫입니다. onStepSelect(Vue는 step-select 이벤트)를 주면 완료된 단계만 버튼이 되어 눌렀을 때 그 단계 번호를 알립니다. 순서를 건너뛰어도 되는 흐름이면 selectable=\"all\"로 예정 단계도 버튼으로 만듭니다. 현재·오류 단계는 누를 수 없고, 어느 단계로 옮길지는 앱이 정합니다. 축약형에서는 단계를 선택할 수 없으므로 이전 단계로 가는 일은 페이지의 뒤로 가기 버튼에 맡기세요.",
           "세 플랫폼의 prop 이름·기본값·축약 기준이 같습니다. 웹은 CSS 컨테이너 쿼리로 컴포넌트 자신의 폭을 보고 JS 측정 없이 형태를 고르므로 서버 렌더링 HTML도 처음부터 맞게 보입니다. Native는 onLayout으로 받은 폭을 쓰고, 폭을 받기 전 첫 프레임은 자리만 차지한 채 투명합니다. Native 결과는 React Native Web 미리보기이며 기기 검증이 아닙니다. 목록은 웹에서 ol·li와 aria-current=\"step\"으로, Native에서는 목록 역할로 알립니다. 웹은 줄임으로 잘린 라벨의 전체를 title로 보여 줍니다. 폭이 정해진 부모 안에 두세요. 내용에 맞춰 줄어드는 부모 안에서는 폭이 0으로 측정되어 축약형으로 바뀝니다."
         ],
         "types": []

@@ -396,13 +396,13 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         ),
       ]);
     case "KjunBreadcrumb":
+      // A long trail folds the steps between the first and the last two into the "…" menu.
       return h(name, {
-        items: [
-          { label: "홈", to: "#home", href: "#home" },
-          { label: "목록", to: "#list", href: "#list" },
-          { label: "현재 위치" },
-        ],
-        onNavigate: () => message("탐색"),
+        items: settings.long
+          ? [{ label: "홈", to: "#home" }, { label: "프로젝트", to: "#projects" }, { label: "디자인 시스템", to: "#system" }, { label: "컴포넌트", to: "#components" }, { label: "현재 위치" }]
+          : [{ label: "홈", to: "#home" }, { label: "목록", to: "#list" }, { label: "현재 위치" }],
+        maxItems: settings.long ? 3 : undefined,
+        onNavigate: (item: { label: string }) => message(item.label + "(으)로 탐색"),
       });
     case "KjunPagination":
       return h(name, {

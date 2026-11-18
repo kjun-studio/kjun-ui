@@ -74,6 +74,34 @@ for (const platform of ['react', 'vue3', 'native']) {
       } else await expect(page.getByRole('menuitem', { name: 'Docs' })).toHaveAttribute('href', '#docs');
     });
 
+    test('onNavigate routes trail links and the folded steps on every platform', async ({ page }) => {
+      const trail = page.getByTestId('routed'), log = page.getByTestId('routed-log');
+      const web = platform !== 'native';
+      await trail.getByRole('link', { name: 'Home' }).click();
+      // Web passes the click so a router can keep the browser from following the href; Native has no event to pass.
+      await expect(log).toHaveText(JSON.stringify([web ? 'Home+event' : 'Home']));
+      if (web) expect(new URL(page.url()).hash).toBe('');
+      await trail.getByRole('button', { name: '숨긴 경로 보기' }).click();
+      const folded = page.getByRole('menuitem', { name: '2026' });
+      // A folded step drops its href once someone routes, so choosing it never reloads the page.
+      if (web) await expect(folded).not.toHaveAttribute('href', /.+/);
+      await folded.click();
+      await expect(log).toHaveText(JSON.stringify([web ? 'Home+event' : 'Home', '2026']));
+      if (web) expect(new URL(page.url()).hash).toBe('');
+    });
+
+    test('a link under the pointer takes the brand colour and an underline', async ({ page }) => {
+      const link = page.getByTestId('ancestors').getByRole('link', { name: 'Work' });
+      // Native draws the label in a text node inside the link; the web link carries its own style.
+      const text = platform === 'native' ? link.getByText('Work', { exact: true }) : link;
+      const style = () => text.evaluate(el => { const s = getComputedStyle(el); return { color: s.color, line: s.textDecorationLine }; });
+      const rest = await style();
+      expect(rest.line).toBe('none');
+      await link.hover();
+      await expect.poll(async () => (await style()).line).toBe('underline');
+      expect((await style()).color).not.toBe(rest.color);
+    });
+
     test('a horizontal ScrollFade fades its far edge and a named one takes keyboard focus', async ({ page }) => {
       const region = page.getByRole('region', { name: 'Chips' });
       await expect(region).toBeVisible();

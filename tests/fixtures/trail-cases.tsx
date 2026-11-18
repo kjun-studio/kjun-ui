@@ -4,11 +4,16 @@ export const trailRows = Array.from({ length: 12 }, (_, i) => `Row ${i + 1}`);
 export function TrailCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
   const [visited, setVisited] = useState<string[]>([]);
   const nav = native ? { onNavigate: (item: { label: string }) => setVisited(old => [...old, item.label]) } : {};
+  // r1: onNavigate on every platform; a router prevents the link's own navigation, folded steps arrive without an event.
+  const [routed, setRouted] = useState<string[]>([]);
+  const route = (item: { label: string }, event?: { preventDefault(): void }) => { event?.preventDefault(); setRouted(old => [...old, item.label + (event ? '+event' : '')]); };
   return <K.KjunProvider {...providerProps}><div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16, width: 600 }}>
     <div data-testid="ancestors"><K.KjunBreadcrumb ariaLabel="Ancestors" items={[{ label: 'Notes', to: '#notes' }, { label: 'Work', to: '#work' }]} {...nav} /></div>
     <div data-testid="current"><K.KjunBreadcrumb ariaLabel="Current" items={[{ label: 'Notes', to: '#notes' }, { label: 'Minutes' }]} {...nav} /></div>
     <div data-testid="long"><K.KjunBreadcrumb ariaLabel="Long" maxItems={3} items={[{ label: 'Home', to: '#home' }, { label: 'Docs', to: '#docs' }, { label: '2026', to: '#year' }, { label: 'November', to: '#month' }, { label: 'Report' }]} {...nav} /></div>
     <output data-testid="visited">{JSON.stringify(visited)}</output>
+    <div data-testid="routed"><K.KjunBreadcrumb ariaLabel="Routed" maxItems={3} items={[{ label: 'Home', to: '#home' }, { label: 'Docs', to: '#docs' }, { label: '2026', to: '#year' }, { label: 'November', to: '#month' }, { label: 'Report' }]} onNavigate={route} /></div>
+    <output data-testid="routed-log">{JSON.stringify(routed)}</output>
     <div data-testid="horizontal"><K.KjunScrollFade ariaLabel="Chips" style={{ width: 200 }}>
       <div style={{ display: 'flex', width: 600 }}>{trailRows.slice(0, 6).map(row => <span key={row} style={{ width: 100, flex: 'none' }}>{row}</span>)}</div>
     </K.KjunScrollFade></div>

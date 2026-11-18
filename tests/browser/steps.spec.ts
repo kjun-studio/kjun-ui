@@ -202,6 +202,17 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(rows(page, 'select').nth(3).getByRole('button')).toHaveCount(0);
     });
 
+    test('selectable="all" lets a later step be picked too, never the current one', async ({ page }) => {
+      const buttons = section(page, 'skip').getByRole('button');
+      await expect(buttons).toHaveCount(4);
+      await expect(buttons.nth(2)).toHaveAccessibleName('4단계, 결제, 예정');
+      await expect(rows(page, 'skip').nth(2).getByRole('button')).toHaveCount(0);
+      await buttons.nth(3).click();
+      await expect(page.getByTestId('skipped')).toHaveText('4');
+      await buttons.nth(0).click();
+      await expect(page.getByTestId('skipped')).toHaveText('0');
+    });
+
     test('compact has no step buttons', async ({ page }) => {
       const buttons = section(page, 'select').getByRole('button');
       await section(page, 'narrow').getByRole('button').click();

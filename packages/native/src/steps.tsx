@@ -1,5 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { clampCurrent, stepStatus, stepsLayout, stepsRootStatus, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout } from "../../../shared/package-runtime/steps";
+import { developmentMode } from "../../../shared/package-runtime/development";
+import { clampCurrent, stepDetail, stepSelectable, stepSpoken, stepStatus, stepsHead, stepsLayout, stepsRootStatus, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout, type KjunStepsSelectable } from "../../../shared/package-runtime/steps";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useState } from "react";
 import { Platform, View, type LayoutChangeEvent, type StyleProp, type TextStyle, type ViewStyle } from "react-native";
@@ -9,7 +10,7 @@ import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
 
-export type { KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLayout };
+export type { KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLayout, KjunStepsSelectable };
 
 export interface KjunStepsProps {
   /** The steps in order. Two or more. */
@@ -23,14 +24,12 @@ export interface KjunStepsProps {
   layout?: KjunStepsLayout;
   /** Names the list; defaults to the "진행 단계" message. */
   ariaLabel?: string;
-  /** Makes each completed step a button in the wide horizontal layout and in the vertical one. */
+  /** Makes steps buttons in the wide horizontal layout and in the vertical one: completed ones, or with selectable="all" every step but the current one. */
   onStepSelect?: (index: number) => void;
+  /** "complete" (default) lets onStepSelect go back only; "all" also lets it skip ahead to a later step. */
+  selectable?: KjunStepsSelectable;
   style?: StyleProp<ViewStyle>;
   testID?: string;
-}
-
-function developmentMode() {
-  try { return !!process.env.NODE_ENV && process.env.NODE_ENV !== "production"; } catch { return false; }
 }
 
 /** A long single word breaks inside its column instead of running past it (React Native Web only; devices wrap on their own). */
@@ -38,7 +37,7 @@ const breakWords = (Platform.OS === "web" ? { wordBreak: "keep-all", overflowWra
 
 /** Progress through an ordered flow: a wizard, a checkout, a delivery trail. */
 export function KjunSteps({ items, current, currentStatus = "active", orientation = "horizontal", layout = "auto", ariaLabel,
-  onStepSelect, style, testID }: KjunStepsProps) {
+  onStepSelect, selectable: selectableSteps = "complete", style, testID }: KjunStepsProps) {
   const m = useKjunMessages();
   const { colors, numericFontFamily, fontFamily } = useKjunStyles();
   const geometry = tokens.extensions.steps;
@@ -53,9 +52,7 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
   const measuring = !vertical && layout === "auto";
   const waiting = measuring && width === undefined;
   const compact = !vertical && (layout === "compact" || (measuring && stepsLayout(width ?? 0, count) === "compact"));
-  const statusText: Record<KjunStepStatus, string> = { complete: m.stepComplete, current: m.stepCurrent, error: m.stepError, upcoming: m.stepUpcoming };
-  const shown = Math.min(at, count - 1), headItem = items[shown], next = at < count ? items[at + 1] : undefined;
-  const total = m.stepCount(shown + 1, count), lead = String(shown + 1);
+  const head = stepsHead(m, items, at), headItem = head.item, next = head.next;
   const failed = stepsRootStatus(at, count, currentStatus) === "error";
   const titleLine = tokens.typography.label.lineHeightPx, bigMarker = geometry.markerLarge, smallMarker = geometry.markerSmall;
   const reached = (status: KjunStepStatus) => status !== "upcoming";
@@ -107,10 +104,9 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
 
   const list = items.map((item, i) => {
     const status = stepStatus(i, at, currentStatus);
-    const detail = vertical ? [item.meta, item.description].filter(Boolean).join(" · ") : "";
-    const spoken = m.stepPosition(i + 1) + ", " + item.label + ", " + statusText[status] + (detail ? ", " + detail : "");
+    const detail = stepDetail(item, vertical), spoken = stepSpoken(m, i, item, status, detail);
     const body = vertical ? verticalBody(item, status, i, detail) : horizontalBody(item, status, i);
-    const selectable = !!onStepSelect && status === "complete" && !compact;
+    const selectable = !!onStepSelect && stepSelectable(status, selectableSteps) && !compact;
     const marked = status === "current" || status === "error";
     // The line from the previous marker's centre to this one's, coloured by this step; in a column it belongs to the step above.
     const line = vertical
@@ -146,9 +142,7 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
           style={{ flexDirection: "row", alignItems: "baseline", marginBottom: geometry.labelGap }}>
           <KText numberOfLines={1} style={[typeStyle("labelStrong"), { flex: 1, minWidth: 0, color: failed ? colors.danger : colors.text }]}>{headItem.label}</KText>
           <KText style={[typeStyle("caption"), numeric, { marginLeft: geometry.columnGap, color: colors.textTertiary }]}>
-            {total.startsWith(lead)
-              ? <><KText style={[typeStyle("captionStrong"), numeric, { color: colors.brand }]}>{lead}</KText>{total.slice(lead.length)}</>
-              : total}
+            {head.lead ? <KText style={[typeStyle("captionStrong"), numeric, { color: colors.brand }]}>{head.lead}</KText> : null}{head.rest}
           </KText>
         </View>
       ) : null}

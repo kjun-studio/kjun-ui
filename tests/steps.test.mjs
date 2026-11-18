@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { clampCurrent, stepStatus, stepsRootStatus, stepsLayout, STEPS_MIN_COLUMN } from '../shared/package-runtime/steps.ts';
+import { clampCurrent, stepStatus, stepsRootStatus, stepsLayout, stepSelectable, stepDetail, stepSpoken, stepsHead, STEPS_MIN_COLUMN } from '../shared/package-runtime/steps.ts';
 import { kjunMessagesKo as ko } from '../shared/package-runtime/messages/ko.ts';
 import { kjunMessagesEn as en } from '../shared/package-runtime/messages/en.ts';
 
@@ -97,4 +97,33 @@ test('vertical connector runs from under this dot to the top of the next dot', (
   const line = 'var(--_kjun-steps-title-line)', dot = 'var(--_kjun-extension-steps-marker-small)', gap = 'var(--_kjun-extension-steps-row-gap)';
   assert.equal(decl('top'), `calc((${line} + ${dot}) / 2)`);
   assert.equal(decl('bottom'), `calc(-1 * (${gap} + (${line} - ${dot}) / 2))`);
+});
+
+test('selectable picks which steps onStepSelect makes buttons', () => {
+  const statuses = ['complete', 'current', 'error', 'upcoming'];
+  assert.deepEqual(statuses.map(s => stepSelectable(s)), [true, false, false, false]);
+  assert.deepEqual(statuses.map(s => stepSelectable(s, 'complete')), [true, false, false, false]);
+  assert.deepEqual(statuses.map(s => stepSelectable(s, 'all')), [true, false, false, true]);
+});
+test('stepSpoken names position, label, status and the vertical detail', () => {
+  const item = { label: '배송 시작', meta: '14:05', description: '허브 출발' };
+  assert.equal(stepDetail(item, false), '');
+  assert.equal(stepDetail(item, true), '14:05 · 허브 출발');
+  assert.equal(stepSpoken(ko, 2, item, 'complete', stepDetail(item, true)), '3단계, 배송 시작, 완료, 14:05 · 허브 출발');
+  assert.equal(stepSpoken(en, 0, { label: 'Cart' }, 'upcoming', ''), 'Step 1, Cart, ' + en.stepUpcoming);
+});
+test('stepsHead names the current step, the next one and splits n / N', () => {
+  const items = ['a', 'b', 'c'].map(label => ({ label }));
+  assert.deepEqual(stepsHead(ko, items, 1), { item: items[1], next: items[2], lead: '2', rest: ' / 3' });
+  // Everything complete: the heading stays on the last step and there is no next one.
+  assert.deepEqual(stepsHead(ko, items, 3), { item: items[2], next: undefined, lead: '3', rest: ' / 3' });
+  // A locale whose count does not start with the position keeps the text whole.
+  assert.deepEqual(stepsHead({ ...ko, stepCount: (i, n) => `${n}개 중 ${i}` }, items, 0), { item: items[0], next: items[1], lead: '', rest: '3개 중 1' });
+});
+test('every platform takes the steps phrases and dev check from the shared runtime', () => {
+  for (const platform of ['react', 'vue3', 'native']) {
+    const source = readFileSync(new URL(`../packages/${platform}/src/steps.tsx`, import.meta.url), 'utf8');
+    assert.doesNotMatch(source, /function developmentMode/, platform);
+    assert.match(source, /stepSpoken\(/, platform); assert.match(source, /stepsHead\(/, platform); assert.match(source, /stepSelectable\(/, platform);
+  }
 });

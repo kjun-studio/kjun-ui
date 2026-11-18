@@ -141,6 +141,7 @@ const stepsSummaries = {
   currentStatus: "현재 단계의 상태입니다. active(기본)는 진행 중이고, error는 결제 실패·배송 실패처럼 막힌 상태로 danger 색과 느낌표로 그립니다. 모든 단계가 완료이면 무시합니다.",
   orientation: "배치 방향입니다. horizontal(기본)은 24px 번호 원과 아래 라벨, vertical은 12px 점과 오른쪽 제목·meta·description이며 마커 모양도 이것으로 정해집니다.",
   layout: "가로 전용입니다. auto(기본)는 컨테이너 폭이 단계 수×80px보다 좁거나 단계가 11개 이상이면 축약형(현재 라벨 · n / N · 다음)으로 바꾸고, full·compact는 어느 폭에서든 그 형태로 고정합니다. 세로에서는 무시합니다. 축약형에서는 단계를 선택할 수 없습니다.",
+  selectable: "onStepSelect가 버튼으로 만드는 단계입니다. complete(기본)는 완료된 단계만 눌러 되돌아가게 하고, all은 현재 단계를 뺀 모든 단계(아직 가지 않은 단계 포함)를 눌러 앞으로 건너뛸 수도 있게 합니다. 축약형에서는 버튼을 만들지 않습니다.",
   ariaLabel: "목록의 접근성 이름입니다. 생략하면 Provider 언어의 ‘진행 단계’를 씁니다. 단계는 ‘1단계, 약관 동의, 완료’처럼 읽고 현재·오류 단계에 aria-current=\"step\"을 답니다.",
   className: "루트 목록에 더할 클래스입니다. 크기와 색은 앱 팔레트와 부모 폭으로 정하세요.",
   style: "루트에 더할 스타일입니다. 바깥 여백이나 폭 제한에 사용하세요.",
@@ -306,7 +307,7 @@ const callback = (name, key, platform) => {
   if (key === "onExpandedChange") return event("펼침 행의 다음 펼침 값을 알립니다.", "비활성 행을 제외하고 행 머리를 누를 때", "boolean: 반대로 바뀐 값", "반환값을 사용하지 않습니다.", "소비자가 expanded를 갱신합니다. 갱신하지 않으면 행은 그대로 있습니다.");
   if (key === "onCheckedChange") return event("스위치 행의 다음 켜짐 값을 알립니다.", "비활성 행을 제외하고 행 어디든 누를 때", "boolean: 반대로 바뀐 값", "반환값을 사용하지 않습니다.", "소비자가 checked를 갱신합니다. 갱신하지 않으면 스위치 표시는 그대로입니다.");
   if (key === "onIndexChange") return event("현재 슬라이드가 바뀌었음을 알립니다.", "스크롤이 멈춘 위치, 화살표 키, 이전·다음 버튼, 표시 점으로 다른 슬라이드에 도착할 때", "새 슬라이드 번호(0부터)", "반환값을 사용하지 않습니다.", "제어할 때는 소비자가 index를 갱신합니다. 갱신하지 않으면 표시 점은 index를 따르고 스크롤 위치는 사용자가 놓은 자리에 둡니다.");
-  if (key === "onStepSelect") return event("완료된 단계를 골랐음을 알립니다.", "넓은 가로 배치나 세로 배치에서 완료된 단계(버튼)를 누르거나 Enter·Space를 누를 때. 현재·오류·예정 단계와 축약형에서는 발생하지 않습니다", "누른 단계의 번호(0부터)", "반환값을 사용하지 않습니다.", "앱이 어느 화면으로 돌아갈지 정하고 current를 갱신합니다. 이 컴포넌트는 current를 바꾸지 않습니다.");
+  if (key === "onStepSelect") return event("단계를 골랐음을 알립니다.", "넓은 가로 배치나 세로 배치에서 버튼인 단계를 누르거나 Enter·Space를 누를 때. 기본은 완료된 단계만 버튼이고 selectable=\"all\"이면 예정 단계도 버튼입니다. 현재·오류 단계와 축약형에서는 발생하지 않습니다", "누른 단계의 번호(0부터)", "반환값을 사용하지 않습니다.", "앱이 어느 화면으로 돌아갈지 정하고 current를 갱신합니다. 이 컴포넌트는 current를 바꾸지 않습니다.");
   throw Error("Missing extension callback: " + name + "." + key);
 };
 const avatarGroupProps = platform => ({

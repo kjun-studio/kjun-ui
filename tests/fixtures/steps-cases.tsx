@@ -13,6 +13,7 @@ export function StepsCases({ K, native = false, providerProps = {} }: { K: any; 
   const [selected, setSelected] = useState<number | null>(null);
   const [verticalSelected, setVerticalSelected] = useState<number | null>(null);
   const [bareSelected, setBareSelected] = useState<number | null>(null);
+  const [skipped, setSkipped] = useState<number | null>(null);
   const [width, setWidth] = useState(900);
   const press = (action: () => void) => ({ [native ? 'onPress' : 'onClick']: action });
   const block = { width: 900 };
@@ -38,5 +39,7 @@ export function StepsCases({ K, native = false, providerProps = {} }: { K: any; 
       <div data-testid="select" style={{ marginTop: 32 }}><K.KjunSteps items={wizard} current={3} ariaLabel="이동 가능한 단계" onStepSelect={(i: number) => setSelected(i)} /></div>
     </div>
     <output data-testid="selected">{selected === null ? '' : selected}</output>
+    <div data-testid="skip" style={block}><K.KjunSteps items={wizard} current={2} selectable="all" onStepSelect={(i: number) => setSkipped(i)} /></div>
+    <output data-testid="skipped">{skipped === null ? '' : skipped}</output>
   </div></K.KjunProvider>;
 }

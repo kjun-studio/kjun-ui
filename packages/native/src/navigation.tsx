@@ -295,11 +295,13 @@ export function KjunBreadcrumb({
     >
       {shown.map(({ item, index }, position) => {
         const current = breadcrumbCurrent(item, index, items.length);
-        const label = (
+        // A link under the pointer or the finger takes the brand colour and an underline, like Web's hover.
+        const label = (active = false) => (
           <View style={{ flexDirection: "row", alignItems: "center", gap: geometry.iconGap, maxWidth: geometry.labelMaxWidth }}
             {...(Platform.OS === "web" && current ? { "aria-current": "page" } : {})}>
-            {!!item.icon && <KjunIcon name={item.icon} size={geometry.iconSize} color={colors.textSecondary} />}
-            <KText numberOfLines={1} style={{ flexShrink: 1, color: current ? colors.text : colors.textSecondary,
+            {!!item.icon && <KjunIcon name={item.icon} size={geometry.iconSize} color={active ? colors.brand : colors.textSecondary} />}
+            <KText numberOfLines={1} style={{ flexShrink: 1, color: active ? colors.brand : current ? colors.text : colors.textSecondary,
+              textDecorationLine: active ? "underline" : "none",
               fontWeight: current ? typeStyle('label').fontWeight : typeStyle('body').fontWeight }}>{item.label}</KText>
           </View>
         );
@@ -315,13 +317,13 @@ export function KjunBreadcrumb({
             ) : null}
             {position > 0 ? separator : null}
             {item.to
-              ? renderLink?.(item, label) || (
+              ? renderLink?.(item, label()) || (
                   <Pressable accessibilityRole="link" onPress={() => onNavigate?.(item)}
                     style={{ minHeight: tokens.native.minimumTouchTarget, justifyContent: "center" }}>
-                    {label}
+                    {({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => label(pressed || !!hovered)}
                   </Pressable>
                 )
-              : label}
+              : label()}
           </Fragment>
         );
       })}

@@ -63,7 +63,9 @@ export function generate(input: UsageInput) {
           footer: b.node('KjunFormActions', { showCancel: false, confirmText: '실행', onConfirm: notify('run', '팝오버 실행') }),
         }); break;
     case 'KjunBreadcrumb':
-      content = b.node(name, { items: b.data('items', [{ label: '홈', href: '#home', to: '#home' }, { label: '목록', href: '#list', to: '#list' }, { label: '현재 위치' }]), onNavigate: notify('navigate', '탐색') }); break;
+      content = b.node(name, { items: b.data('items', s.long
+        ? [{ label: '홈', to: '#home' }, { label: '프로젝트', to: '#projects' }, { label: '디자인 시스템', to: '#system' }, { label: '컴포넌트', to: '#components' }, { label: '현재 위치' }]
+        : [{ label: '홈', to: '#home' }, { label: '목록', to: '#list' }, { label: '현재 위치' }]), ...(s.long ? { maxItems: 3 } : {}), onNavigate: notify('navigate', '탐색') }); break;
     case 'KjunPagination':
       content = b.node(name, { currentPage: b.state('page', 1), onPageChange: b.update('page'), pageSize: b.state('pageSize', 20), onPageSizeChange: b.update('pageSize'), totalPages: 10, totalRows: 195, showInfo: true, showSizeSelector: true }); break;
     case 'KjunText':

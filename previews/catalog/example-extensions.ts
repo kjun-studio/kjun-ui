@@ -123,7 +123,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       const trail = [["주문 접수", "11월 17일 09:12", "주문이 접수되었습니다"], ["상품 준비", "11월 17일 10:40", "판매자가 상품을 포장하고 있습니다"], ["배송 시작", "11월 17일 14:05", "서울 강서 허브에서 출발했습니다"], ["배송 중", "도착 예정 11월 18일", "기사님이 배송 중입니다"], ["배송 완료"]]
         .map(([label, meta, description]) => ({ label, meta, description }));
       const items = vertical ? trail : wizard;
-      return h("Stack", {}, [h(name, { items, current: settings.current, currentStatus: settings.currentStatus, orientation: settings.orientation, layout: settings.layout, ariaLabel: vertical ? "배송 진행" : "주문 진행",
+      return h("Stack", {}, [h(name, { items, current: settings.current, currentStatus: settings.currentStatus, orientation: settings.orientation, layout: settings.layout, selectable: settings.selectable, ariaLabel: vertical ? "배송 진행" : "주문 진행",
         onStepSelect: (index: number) => set("message", items[index].label + " 단계 선택") })]);
     }
     case "KjunImage":

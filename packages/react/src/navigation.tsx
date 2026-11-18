@@ -18,6 +18,7 @@ useId,
 useRef,
 useState,
 type CSSProperties,
+type MouseEvent,
 type ReactElement,
 type ReactNode,
 } from "react";
@@ -209,6 +210,9 @@ export type { BreadcrumbItem };
 export interface KjunBreadcrumbProps {
   items: BreadcrumbItem[];
   renderLink?: (item: BreadcrumbItem, children: ReactNode) => ReactNode;
+  /** A step with `to` was chosen. Trail links keep their href and pass the click: call event.preventDefault() to route in the app.
+   * Steps folded into the "…" menu call it without an event and no longer follow their href, so a router reaches them too. */
+  onNavigate?: (item: BreadcrumbItem, event?: MouseEvent<HTMLAnchorElement>) => void;
   ariaLabel?: string;
   /** Folds a long trail: the first step and the last maxItems - 1 stay, and the steps between open from a "…" menu. */
   maxItems?: number;
@@ -216,6 +220,7 @@ export interface KjunBreadcrumbProps {
 export function KjunBreadcrumb({
   items,
   renderLink,
+  onNavigate,
   ariaLabel,
   maxItems,
 }: KjunBreadcrumbProps) {
@@ -228,14 +233,14 @@ export function KjunBreadcrumb({
     const current = breadcrumbCurrent(item, index, items.length);
     const label = <>{item.icon && <KjunIcon name={item.icon} size={tokens.extensions.breadcrumb.iconSize} />}<span className="kjun-breadcrumb-label">{item.label}</span></>;
     // A last item with `to` is a link too: apps that title the page elsewhere end the trail at its parent.
-    const link = item.to ? renderLink?.(item, label) || <a href={item.to} aria-current={current ? "page" : undefined}>{label}</a> : null;
+    const link = item.to ? renderLink?.(item, label) || <a href={item.to} aria-current={current ? "page" : undefined} onClick={onNavigate && (event => onNavigate(item, event))}>{label}</a> : null;
     return (
       <Fragment key={index}>
         {position === at && (
           <li className="kjun-breadcrumb-item">
             {separator}
             <KjunDropdown trigger={<KjunButton size="xs" variant="ghost" prefixIcon="dots" ariaLabel={m.showPath} />}>
-              {hidden.map(({ item: folded, index: key }) => <KjunDropdownItem key={key} href={folded.to} icon={folded.icon}>{folded.label}</KjunDropdownItem>)}
+              {hidden.map(({ item: folded, index: key }) => <KjunDropdownItem key={key} href={onNavigate ? undefined : folded.to} icon={folded.icon} onClick={onNavigate && (() => onNavigate(folded))}>{folded.label}</KjunDropdownItem>)}
             </KjunDropdown>
           </li>
         )}

@@ -1,5 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
-import { Fragment, inject, onBeforeUnmount, onMounted, provide, ref, shallowRef, watch,
+import { Fragment, getCurrentInstance, inject, onBeforeUnmount, onMounted, provide, ref, shallowRef, watch,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type VNode, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
@@ -162,14 +162,19 @@ const kjunBreadcrumbProps = {
   maxItems: { type: Number, default: undefined },
 } as const;
 export type KjunBreadcrumbProps = ExtractPublicPropTypes<typeof kjunBreadcrumbProps>;
-/** Slot link({ item, label }) renders a router link; without it, links are plain anchors. A last item with `to` is a link too. */
+/** Slot link({ item, label }) renders a router link; without it, links are plain anchors. A last item with `to` is a link too.
+ * navigate(item, event?): trail links keep their href and pass the click (call event.preventDefault() to route in the app);
+ * with a listener, steps folded into the "…" menu emit it without an event and no longer follow their href. */
 export const KjunBreadcrumb = defineComponent({
   name: "KjunBreadcrumb",
   props: kjunBreadcrumbProps,
+  emits: { navigate: (_item: BreadcrumbItem, _event?: MouseEvent) => true },
   slots: Object as SlotsType<{ link?: (scope: { item: BreadcrumbItem; label: VNode }) => VNodeChild }>,
-  setup(props, { slots }) {
+  setup(props, { slots, emit }) {
     const m = useKjunMessages();
+    const instance = getCurrentInstance();
     return () => {
+      const navigates = !!instance?.vnode.props?.onNavigate;
       if (!props.items.length) return null;
       const { shown, hidden, at } = collapseBreadcrumb(props.items, props.maxItems);
       const separator = () => <KjunIcon name="chevron-right" size={tokens.extensions.breadcrumb.separatorSize} />;
@@ -187,14 +192,14 @@ export const KjunBreadcrumb = defineComponent({
                       {separator()}
                       <KjunDropdown>{{
                         trigger: () => <KjunButton size="xs" variant="ghost" prefixIcon="dots" ariaLabel={m.value.showPath} />,
-                        default: () => hidden.map(({ item: folded, index: key }) => <KjunDropdownItem key={key} href={folded.to} icon={folded.icon}>{folded.label}</KjunDropdownItem>),
+                        default: () => hidden.map(({ item: folded, index: key }) => <KjunDropdownItem key={key} href={navigates ? undefined : folded.to} icon={folded.icon} onClick={navigates ? () => emit("navigate", folded) : undefined}>{folded.label}</KjunDropdownItem>),
                       }}</KjunDropdown>
                     </li>
                   )}
                   <li class="kjun-breadcrumb-item">
                     {position > 0 && separator()}
                     {item.to
-                      ? hasContent(link as VNode[] | undefined) ? link : <a href={item.to} aria-current={current ? "page" : undefined}>{label}</a>
+                      ? hasContent(link as VNode[] | undefined) ? link : <a href={item.to} aria-current={current ? "page" : undefined} onClick={(event: MouseEvent) => emit("navigate", item, event)}>{label}</a>
                       : <span aria-current={current ? "page" : undefined}>{label}</span>}
                   </li>
                 </Fragment>

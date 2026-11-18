@@ -43,7 +43,7 @@ export type { KjunListGroupProps, KjunListItemProps, KjunListRowProps, KjunListS
 export type { KjunIconToggleProps, KjunCopyButtonProps, KjunRefreshButtonProps, KjunExternalLinkProps } from "./actions";
 export { safeExternalUrl } from "./actions";
 export type { KjunCarouselProps } from "./carousel";
-export type { KjunStepsProps, KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLayout } from "./steps";
+export type { KjunStepsProps, KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLayout, KjunStepsSelectable } from "./steps";
 export type { KjunColorPickerProps, KjunColorSwatch } from "./color-picker";
 export type { KjunFileUploadProps, KjunUploadFile, KjunUploadStatus, KjunRejectedFile, KjunRejectReason } from "./file-upload";
 export type { KjunSplitPaneProps } from "./split-pane";
