@@ -12,6 +12,7 @@ import { drawerFrame, keyboardEvents, keyboardOverlap } from "../../../shared/pa
 import { sheetDragDismisses, sheetDragOffset } from "../../../shared/package-runtime/sheet-drag";
 import { useNativePresence, motionEmphasized, nativeDriver } from "./motion";
 import { KjunButton, KjunIcon } from "./button";
+import { KjunFormActions } from "./modal";
 import { KText,content } from "./internal";
 import { ScopedNativeModal } from "./overlay-host";
 import { useKjunSafeArea, useKjunStyles } from "./provider";
@@ -66,8 +67,8 @@ function useKeyboardOverlap(enabled: boolean, rootHeight: number) {
   }, [enabled, rootHeight]);
   return overlap;
 }
-// Like the web footer: buttons gather at the end; a phone's bottom sheet shares the width between them, and a single
-// wrapper (the app's own action layout) keeps the full row.
+// Like the web footer: buttons gather at the end; a phone's bottom sheet shares the width between them (form actions too,
+// unless the app chose fill="primary"), and a single wrapper (the app's own action layout) keeps the full row.
 function footerItems(footer: ReactNode, share: boolean) {
   // A fragment's children are the row's items.
   const items = Children.toArray(footer).flatMap(item => isValidElement<{ children?: ReactNode }>(item) && item.type === Fragment ? Children.toArray(item.props.children) : [item]);
@@ -75,7 +76,9 @@ function footerItems(footer: ReactNode, share: boolean) {
   if (!share && !own) return items.map(item => content(item));
   // A shared button fills its share, as on the web.
   return items.map((item, index) => <View key={index} style={{ flexGrow: 1, flexShrink: 1, flexBasis: own ? "100%" : 0, minWidth: 0 }}>
-    {isValidElement<{ block?: boolean }>(item) && item.type === KjunButton ? cloneElement(item, { block: true }) : content(item)}
+    {isValidElement<{ block?: boolean }>(item) && item.type === KjunButton ? cloneElement(item, { block: true })
+      : share && isValidElement<{ fill?: boolean | "primary" }>(item) && item.type === KjunFormActions && item.props.fill !== "primary" ? cloneElement(item, { fill: true })
+      : content(item)}
   </View>);
 }
 export function KjunDrawer({
@@ -165,8 +168,10 @@ export function KjunDrawer({
   const scroller: ScrollViewProps = {
     keyboardShouldPersistTaps: "handled",
     style: sideways ? { flex: 1 } : { flexGrow: 0, flexShrink: 1 },
+    // No dividers, as on the web: the header's and the body's own padding space them, so the body drops its top padding
+    // under a title and its bottom padding above a footer.
     contentContainerStyle: noPadding ? { padding: 0 } : { padding: geometry.bodyPadding,
-      ...(!titled && closable ? { paddingTop: geometry.bareBodyPaddingTop } : {}) },
+      ...(titled ? { paddingTop: 0 } : closable ? { paddingTop: geometry.bareBodyPaddingTop } : {}) },
     ...(hasContent(children) ? { children: content(children) } : {}),
   };
   return (
@@ -250,8 +255,6 @@ export function KjunDrawer({
                 paddingTop: grab ? geometry.handleSpace : geometry.paddingY,
                 paddingBottom: titled ? geometry.paddingY : 0,
                 paddingHorizontal: geometry.paddingX,
-                borderBottomWidth: titled ? tokens.border.defaultWidth : 0,
-                borderBottomColor: colors.border,
               }}
             >
               {titled && (
@@ -284,10 +287,9 @@ export function KjunDrawer({
                 flexWrap: "wrap",
                 justifyContent: "flex-end",
                 gap: geometry.footerGap,
-                paddingVertical: geometry.paddingY,
+                paddingTop: noPadding ? geometry.paddingY : 0,
+                paddingBottom: geometry.paddingY,
                 paddingHorizontal: geometry.paddingX,
-                borderTopWidth: tokens.border.defaultWidth,
-                borderTopColor: colors.border,
               }}
             >
               {footerItems(footer, compact && position === "bottom")}

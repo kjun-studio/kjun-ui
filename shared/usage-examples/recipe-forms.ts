@@ -50,7 +50,7 @@ export function forms(b: RecipeBuilder): string | undefined {
       const open = b.state('open', false);
       return b.stack([
         b.button('하단 패널 열기', b.handler('openPanel', '', b.set('open', 'true'))),
-        b.node('KjunDrawer', { open, onOpenChange: b.update('open'), position: 'bottom', title: '알림 설정' },
+        b.node('KjunDrawer', { open, onOpenChange: b.update('open'), position: 'bottom', handle: true, title: '알림 설정' },
           b.node('KjunSwitch', { value: b.state('notify', true), onValueChange: b.update('notify'), label: '활동 알림 받기' }),
           { footer: b.button('설정 완료', b.handler('closePanel', '', b.set('open', 'false'))) }),
       ]);

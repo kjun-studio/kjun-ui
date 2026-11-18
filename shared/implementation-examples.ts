@@ -8,7 +8,7 @@ export const implementationExamples: Record<string, { description: string; value
   GuideGenericLists: { description: '행 이동과 공유 버튼은 독립된 행동으로 연결하고, 알림·선택 값은 소비자 상태에서 관리합니다.' },
   GuideAppScreen: { description: '상단·본문·하단을 형제로 배치하고 본문만 스크롤합니다. 키보드와 안전 영역은 모의 값이며 실제 앱에서는 기기 정보를 연결합니다.' },
   GuideInputSettings: { description: '시각·수량·범위를 각각 상태에 연결하고 Chip의 삭제 요청으로 목록을 갱신합니다. 수량은 확정된 숫자 값을 사용합니다.' },
-  GuideBottomSheet: { description: 'Drawer의 하단 배치와 열림 상태를 연결합니다. 내부 선택값은 패널을 닫아도 유지하며 스냅·드래그 동작을 추가하지 않습니다.' },
+  GuideBottomSheet: { description: 'Drawer의 하단 배치와 열림 상태를 연결합니다. handle을 켜 손잡이나 제목 줄을 끌어내려 닫게 하고, 내부 선택값은 패널을 닫아도 유지합니다. 반쯤 열린 높이(스냅)는 두지 않습니다.' },
   GuideThumbnail: { description: '목록의 leading 영역에서 이미지 바깥 폭과 비율을 정합니다. 의미를 전달하는 이미지에는 대체 텍스트를 제공합니다.' },
   GuideSegmentedSelection: { description: 'ButtonGroup의 선택 요청을 하나의 기간 값에 연결합니다. 콘텐츠 패널 전환이나 복수 선택과 구분합니다.' },
   GuideTransferForm: { description: '금액 입력에 읽기 문구와 잔액 안내를 붙이고, 빠른 금액 버튼은 앱이 Button으로 옆에 구성해 값을 더합니다. 송금 요청은 보내지 않는 로컬 예제입니다.' },

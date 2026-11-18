@@ -36,7 +36,7 @@ export function renderRecipeExample(name: string, tools: ExampleTools): any {
       ]));
     }
     case "GuideBottomSheet":
-      return h("Stack", {}, [button("하단 패널 열기", () => set("open", true)), h("KjunDrawer", { open: get("open", false), onOpenChange: change("open"), position: "bottom", title: "알림 설정" }, h("Stack", {}, [h("Text", {}, "기존 Drawer의 하단 배치입니다. 드래그·스냅 제스처는 제공하지 않습니다."), h("KjunSwitch", { value: get("notify", true), onValueChange: change("notify"), label: "활동 알림 받기" })]), { footer: h("KjunButton", { ...action(() => set("open", false)) }, "설정 완료") })]);
+      return h("Stack", {}, [button("하단 패널 열기", () => set("open", true)), h("KjunDrawer", { open: get("open", false), onOpenChange: change("open"), position: "bottom", handle: true, title: "알림 설정" }, h("Stack", {}, [h("Text", {}, "손잡이나 제목 줄을 끌어내려 닫을 수 있습니다."), h("KjunSwitch", { value: get("notify", true), onValueChange: change("notify"), label: "활동 알림 받기" })]), { footer: h("KjunButton", { ...action(() => set("open", false)) }, "설정 완료") })]);
     case "GuideThumbnail":
       return h("KjunListSection", { title: "프로젝트 자료" }, [h("KjunListRow", { title: settings.content === "긴 콘텐츠" ? "프로젝트에서 함께 검토하는 이미지와 설명 자료" : "프로젝트 표지", description: "Image를 목록 앞 영역에 배치한 Thumbnail 레시피입니다." }, undefined, { leading: h("Box", { width: 72 }, h("KjunImage", { src: sampleImage(0), alt: "산과 하늘 표지", aspectRatio: 4 / 3 })) })]);
     case "GuideSegmentedSelection":

@@ -685,7 +685,6 @@
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/color-picker-parts.tsx",
       "packages/native/src/combobox.tsx",
-      "packages/native/src/drawer.tsx",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/field-clear.tsx",
       "packages/native/src/financial-display.tsx",

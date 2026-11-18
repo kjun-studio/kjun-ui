@@ -447,9 +447,12 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--_kjun-extension-drawer-padding-y) var(--_kjun-extension-drawer-padding-x);
-  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
   flex-shrink: 0;
 }
+/* No dividers: spacing alone separates the header, body and footer. The header's bottom padding is the gap to the body,
+   and the body's bottom padding the gap to the footer. */
+.kjun-drawer-header:not([data-bare]) + .kjun-drawer-body:not([data-no-padding]) { padding-top: 0; }
+.kjun-drawer-body:not([data-no-padding]) + .kjun-drawer-footer { padding-top: 0; }
 /* Like the Modal title: long titles wrap and stay clear of the close button. */
 .kjun-drawer-title {
   flex: 1;
@@ -461,7 +464,6 @@
 .kjun-drawer-header[data-bare] {
   justify-content: flex-end;
   padding-bottom: 0;
-  border-bottom: 0;
 }
 .kjun-drawer-header[data-bare] + .kjun-drawer-body:not([data-no-padding]) {
   padding-top: var(--_kjun-extension-drawer-bare-body-padding-top);
@@ -522,7 +524,6 @@
   gap: var(--_kjun-extension-drawer-footer-gap);
   flex-shrink: 0;
   padding: var(--_kjun-extension-drawer-padding-y) var(--_kjun-extension-drawer-padding-x);
-  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
 }
 /* A single wrapper (the app's own action layout) keeps the full row. */
 .kjun-drawer-footer > :only-child:not(.kjun-button) { flex: 1; min-width: 0; }
@@ -538,6 +539,8 @@
     max-width: calc(100% - var(--_kjun-extension-drawer-sheet-gap));
   }
   .kjun-drawer-overlay[data-position="bottom"] .kjun-drawer-footer > .kjun-button { flex: 1; }
+  /* Form actions share the width the same way unless the app chose fill="primary". */
+  .kjun-drawer-overlay[data-position="bottom"] .kjun-drawer-footer > .kjun-form-actions:not([data-fill="primary"], [data-stacked]) > .kjun-button { flex: 1 1 0; min-width: 0; }
 }
 /* Wider screens: top and bottom sheets stop at a readable width, centered. */
 @media (width > token(responsive.drawer)) {
