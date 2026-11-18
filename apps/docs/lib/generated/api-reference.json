@@ -31754,6 +31754,30 @@
             "source": "packages/vue3/src/list.tsx"
           },
           {
+            "name": "current",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "The item open now, such as the message shown beside its list or the settings page in view: the row takes the\nselected fill and its link or button aria-current (\"page\" on a link). Not for switch or choice rows.",
+            "summary": "지금 열린 항목을 표시합니다(목록 옆에 열린 메시지, 보고 있는 설정 화면).",
+            "details": [
+              {
+                "label": "표시",
+                "text": "행을 selectedBg 면으로 칠합니다. hover·눌림 면은 그 위에 그대로 보이고 chevron과 높이는 바뀌지 않습니다."
+              },
+              {
+                "label": "접근성",
+                "text": "링크 행은 aria-current=\"page\", 다른 행은 aria-current=\"true\"를 가집니다."
+              },
+              {
+                "label": "주의",
+                "text": "스위치(checked)·선택(selected) 행은 자기 상태가 있으므로 current를 무시하고 개발 모드에서 경고합니다. 고르는 목록은 selected나 섹션의 selectionMode를 쓰세요."
+              }
+            ],
+            "source": "packages/vue3/src/list.tsx",
+            "example": "/components/list-row#preview"
+          },
+          {
             "name": "selected",
             "type": "boolean",
             "required": false,
@@ -32316,6 +32340,30 @@
             "source": "packages/react/src/list.tsx"
           },
           {
+            "name": "current",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The item open now, such as the message shown beside its list or the settings page in view: the row takes the\nselected fill and its link or button aria-current (\"page\" on a link). Not for switch or choice rows.",
+            "summary": "지금 열린 항목을 표시합니다(목록 옆에 열린 메시지, 보고 있는 설정 화면).",
+            "details": [
+              {
+                "label": "표시",
+                "text": "행을 selectedBg 면으로 칠합니다. hover·눌림 면은 그 위에 그대로 보이고 chevron과 높이는 바뀌지 않습니다."
+              },
+              {
+                "label": "접근성",
+                "text": "링크 행은 aria-current=\"page\", 다른 행은 aria-current=\"true\"를 가집니다."
+              },
+              {
+                "label": "주의",
+                "text": "스위치(checked)·선택(selected) 행은 자기 상태가 있으므로 current를 무시하고 개발 모드에서 경고합니다. 고르는 목록은 selected나 섹션의 selectionMode를 쓰세요."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-row#preview"
+          },
+          {
             "name": "selected",
             "type": "boolean | undefined",
             "required": false,
@@ -32570,7 +32618,7 @@
             "type": "ReactNode",
             "required": false,
             "default": "—",
-            "description": "Content after the title, centered on its first line, such as a KjunBadge (\"New\", a count); a string or number is heard with the title.",
+            "description": "Content after the title, centered on its first line, such as a KjunBadge (\"New\", a count); its text (or a badge's label or count) is heard with the title.",
             "summary": "제목 바로 뒤에 붙이는 짧은 표시입니다(새 기능·베타·개수).",
             "details": [
               {
@@ -32749,6 +32797,24 @@
             "source": "packages/native/src/list.tsx"
           },
           {
+            "name": "target",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Where a Native Web link row opens, e.g. \"_blank\" for a new tab; a new tab gets rel=\"noopener noreferrer\" unless rel is given.",
+            "summary": "Native Web 링크 행이 열리는 곳입니다(예: \"_blank\"는 새 탭). 새 탭에는 rel을 주지 않아도 noopener noreferrer가 붙습니다. 기기에서는 쓰지 않습니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "rel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The Native Web link's rel; by default \"noopener noreferrer\" for target=\"_blank\".",
+            "summary": "Native Web 링크의 rel입니다. 생략하면 target=\"_blank\"일 때 noopener noreferrer를 씁니다. 기기에서는 쓰지 않습니다.",
+            "source": "packages/native/src/list.tsx"
+          },
+          {
             "name": "disabled",
             "type": "boolean | undefined",
             "required": false,
@@ -32783,6 +32849,30 @@
             "description": "Ends the row with a decorative chevron that marks it as navigation.",
             "summary": "행 끝에 이동을 뜻하는 chevron-right 아이콘을 장식으로 둡니다. 화면 낭독기에는 읽히지 않으며 trailing과 함께 쓰면 맨 끝에 옵니다.",
             "source": "packages/native/src/list.tsx"
+          },
+          {
+            "name": "current",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The item open now, such as the message shown beside its list or the settings page in view: the row takes the\nselected fill and reads as selected (aria-current on Native Web, \"page\" on a link). Not for switch or choice rows.",
+            "summary": "지금 열린 항목을 표시합니다(목록 옆에 열린 메시지, 보고 있는 설정 화면).",
+            "details": [
+              {
+                "label": "표시",
+                "text": "행을 selectedBg 면으로 칠합니다. hover·눌림 면은 그 위에 그대로 보이고 chevron과 높이는 바뀌지 않습니다."
+              },
+              {
+                "label": "접근성",
+                "text": "Native Web에서는 aria-current(링크 행은 page, 다른 행은 true)를, 기기에서는 selected 상태를 줍니다."
+              },
+              {
+                "label": "주의",
+                "text": "스위치(checked)·선택(selected) 행은 자기 상태가 있으므로 current를 무시하고 개발 모드에서 경고합니다. 고르는 목록은 selected나 섹션의 selectionMode를 쓰세요."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-row#preview"
           },
           {
             "name": "selected",

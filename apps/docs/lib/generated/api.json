@@ -13219,6 +13219,13 @@
         "description": "Ends the row with a decorative chevron that marks it as navigation."
       },
       {
+        "name": "current",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The item open now, such as the message shown beside its list or the settings page in view: the row takes the\nselected fill and its link or button aria-current (\"page\" on a link). Not for switch or choice rows."
+      },
+      {
         "name": "selected",
         "type": "boolean",
         "required": false,
@@ -13452,6 +13459,13 @@
         "description": "Ends the row with a decorative chevron that marks it as navigation."
       },
       {
+        "name": "current",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The item open now, such as the message shown beside its list or the settings page in view: the row takes the\nselected fill and its link or button aria-current (\"page\" on a link). Not for switch or choice rows."
+      },
+      {
         "name": "selected",
         "type": "boolean | undefined",
         "required": false,
@@ -13563,7 +13577,7 @@
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": "Content after the title, centered on its first line, such as a KjunBadge (\"New\", a count); a string or number is heard with the title."
+        "description": "Content after the title, centered on its first line, such as a KjunBadge (\"New\", a count); its text (or a badge's label or count) is heard with the title."
       },
       {
         "name": "icon",
@@ -13629,6 +13643,20 @@
         "description": "Web link address (Native Web only); on a device pass onPress and navigate with the app's router."
       },
       {
+        "name": "target",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Where a Native Web link row opens, e.g. \"_blank\" for a new tab; a new tab gets rel=\"noopener noreferrer\" unless rel is given."
+      },
+      {
+        "name": "rel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The Native Web link's rel; by default \"noopener noreferrer\" for target=\"_blank\"."
+      },
+      {
         "name": "disabled",
         "type": "boolean | undefined",
         "required": false,
@@ -13655,6 +13683,13 @@
         "required": false,
         "default": "—",
         "description": "Ends the row with a decorative chevron that marks it as navigation."
+      },
+      {
+        "name": "current",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The item open now, such as the message shown beside its list or the settings page in view: the row takes the\nselected fill and reads as selected (aria-current on Native Web, \"page\" on a link). Not for switch or choice rows."
       },
       {
         "name": "selected",

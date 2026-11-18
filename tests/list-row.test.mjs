@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { linkRel, listRowChoice, listRowEnd, listRowKind, listRowMetrics, listSectionShape, warnListRowProps, warnListSectionProps, warnListSelection } from '../shared/package-runtime/list-row.ts';
+import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowKind, listRowMetrics, listSectionShape, warnListRowProps, warnListSectionProps, warnListSelection } from '../shared/package-runtime/list-row.ts';
 import { listLeadingGeometry, listRowBleed } from '../shared/package-runtime/list-leading.ts';
+import { nodeText } from '../shared/package-runtime/node-text.ts';
 
 test('a switch row wins, a row given selected is a radio, then link, button and static', () => {
   assert.equal(listRowKind({ checked: false, href: '/x', pressable: true }), 'switch');
@@ -154,4 +155,25 @@ test('a link row opened in a new tab drops the opener and referrer unless the ap
   assert.equal(linkRel(undefined), undefined);
   assert.equal(linkRel('_self'), undefined);
   assert.equal(linkRel(undefined, 'nofollow'), 'nofollow');
+});
+
+test('a current row marks its link as the page and other rows as true; switch and choice rows keep their own state', () => {
+  assert.equal(listRowCurrent('link', true), 'page');
+  assert.equal(listRowCurrent('button', true), 'true');
+  assert.equal(listRowCurrent('static', true), 'true');
+  for (const kind of ['switch', 'radio', 'checkbox']) assert.equal(listRowCurrent(kind, true), undefined);
+  assert.equal(listRowCurrent('link', false), undefined);
+});
+
+test('a Native row reads the text of element badges and values, a badge by its label or count', () => {
+  const el = (props) => ({ $$typeof: Symbol.for('react.element'), type: () => null, props });
+  assert.equal(nodeText('3개월 전'), '3개월 전');
+  assert.equal(nodeText(12), '12');
+  assert.equal(nodeText(el({ children: 'New' })), 'New');
+  assert.equal(nodeText(el({ children: [el({ children: '29,000' }), '원'] })), '29,000 원');
+  assert.equal(nodeText(el({ label: '읽지 않은 알림 3개', count: 3 })), '읽지 않은 알림 3개');
+  assert.equal(nodeText(el({ count: 120 })), '99+');
+  assert.equal(nodeText(el({ count: 0 })), undefined);
+  assert.equal(nodeText(el({ name: 'check' })), undefined);
+  assert.equal(nodeText(null), undefined);
 });

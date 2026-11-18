@@ -33,7 +33,7 @@ export function generate(input: UsageInput) {
       const iconBackground = s.iconBackground ? b.native ? expr('appColors.secondary') : 'var(--kjun-secondary)' : undefined;
       const devices = b.node('KjunText', { tone: 'secondary' }, '이 휴대폰 · 방금 전, 사무실 노트북 · 어제');
       content = b.node('KjunListSection', { title: '설정', description: '계정과 알림을 관리합니다.' }, [
-        b.node('KjunListRow', { title: s.long ? '모든 기기에서 사용할 프로필과 계정 표시 이름' : '프로필 설정', description: '이름과 사진을 변경합니다.', leadingSize: leadingSize ?? 'sm', disabled: s.disabled, [action]: notify('openProfile', '프로필 설정 열기') }, '', {
+        b.node('KjunListRow', { title: s.long ? '모든 기기에서 사용할 프로필과 계정 표시 이름' : '프로필 설정', description: '이름과 사진을 변경합니다.', leadingSize: leadingSize ?? 'sm', current: s.current || undefined, disabled: s.disabled, [action]: notify('openProfile', '프로필 설정 열기') }, '', {
           leading: b.node('KjunAvatar', { name: '김하늘', size: leadingSize ?? 'sm' }), actions: b.button('공유', notify('share', '프로필 공유'), { variant: 'ghost', size: 'sm' }),
         }),
         b.node('KjunListRow', { title: '알림 받기', description: '중요한 변경 사항을 알려드립니다.', icon: 'bell', leadingSize, iconColor, iconBackground, disabled: s.disabled }, '', { actions: b.node('KjunSwitch', { value: b.state('notifications', true), onValueChange: b.update('notifications'), ariaLabel: '알림 받기', disabled: s.disabled }) }),

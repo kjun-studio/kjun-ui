@@ -29,6 +29,15 @@ export function listRowEnd({ kind, selected, mode, open, busy = false }: { kind:
   return selected ? "check" as const : null;
 }
 
+/**
+ * The aria-current a row's own control takes when it is the item open now (a message open beside its list, the settings
+ * page shown): "page" on a link row, "true" on any other row. A switch or choice row has its own state, so it takes none.
+ */
+export function listRowCurrent(kind: ListRowKind, current?: boolean) {
+  if (!current || kind === "switch" || kind === "radio" || kind === "checkbox") return undefined;
+  return kind === "link" ? "page" as const : "true" as const;
+}
+
 export type ListTypeRole = "label" | "input" | "caption" | "body";
 /**
  * A row's metrics for its section's variant and density, the numbers Web's row variables hold, for Native rows and
@@ -78,13 +87,14 @@ const warnOnce = (key: string, when: unknown, message: string, component = "List
  * no onPress) has nowhere to go, since only the web follows href; `looseChoice` is a choice row outside a section with a
  * selection mode, so it cannot join one radio group.
  */
-export function warnListRowProps({ checked, selected, href, chevron, deviceLink, looseChoice, expanded, pressableDetails }: { checked?: boolean; selected?: boolean; href?: string; chevron?: boolean; deviceLink?: boolean; looseChoice?: boolean; expanded?: boolean; pressableDetails?: boolean }) {
+export function warnListRowProps({ checked, selected, href, chevron, deviceLink, looseChoice, expanded, pressableDetails, current }: { checked?: boolean; selected?: boolean; href?: string; chevron?: boolean; deviceLink?: boolean; looseChoice?: boolean; expanded?: boolean; pressableDetails?: boolean; current?: boolean }) {
   if (!developmentMode()) return;
   warnOnce("details-press", pressableDetails, "a details section's rows are 32 tall, below the touch minimum, and read as information; put pressable rows in a default section.");
   warnOnce("device-link", deviceLink, "href only navigates on the web; on a device pass onPress and navigate with the app's router.");
   warnOnce("switch", checked !== undefined && (href || selected !== undefined || chevron), "a switch row (checked) ignores href, selected and chevron; give each row one role.");
   warnOnce("choice-link", checked === undefined && selected !== undefined && href, "a choice row (selected) is a button and ignores href; navigate in the press handler instead.");
   warnOnce("expand", expanded !== undefined && (checked !== undefined || selected !== undefined || !!href || chevron), "an expandable row (expanded) opens its own content and ignores href, checked, selected and chevron; give each row one role.");
+  warnOnce("current", current && (checked !== undefined || selected !== undefined), "current marks the item open now and has no effect on a switch or choice row (checked, selected); a choice shows its own state.");
   warnOnce("loose-choice", looseChoice, "a choice row (selected) is outside a section with selectionMode; set selectionMode on its KjunListSection so the rows read as one group.");
 }
 

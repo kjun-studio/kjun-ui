@@ -68,6 +68,9 @@
   --_kjun-list-minimum-height:var(--_kjun-extension-list-minimum-height);--_kjun-list-gap:var(--_kjun-extension-list-gap);
   /* The least a leading square or a switch keeps to the row's top and bottom edge when it reaches into the padding. */
   --_kjun-list-bleed-limit:calc(var(--_kjun-extension-list-minimum-inset) - var(--_kjun-list-padding-y));
+  /* How far a leading square taller than the title and first description line (lg) moves that band down, so the band,
+     the square and the row's end all center on one line. Zero for any square up to the band. */
+  --_kjun-list-lift:max(0px,calc((var(--_kjun-list-leading-height) - var(--_kjun-list-band)) / 2));
   display:flex;align-items:center;gap:var(--_kjun-list-gap);position:relative;min-width:0;
   transition:background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
@@ -124,10 +127,11 @@
    keeps its icon, value, check, switch and chevron beside the title. */
 .kjun-list-main:has(.kjun-list-description) > .kjun-list-leading{align-self:flex-start;min-height:max(var(--_kjun-list-leading-height,0px),var(--_kjun-list-band))}
 .kjun-list-main:has(.kjun-list-description) > :is(.kjun-list-trailing,.kjun-list-check,.kjun-list-chevron,.kjun-list-busy,.kjun-list-mark,.kjun-switch){align-self:flex-start}
-.kjun-list-main:has(.kjun-list-description) > .kjun-list-trailing{display:flex;align-items:center;justify-content:flex-end;min-height:var(--_kjun-list-band)}
-.kjun-list-main:has(.kjun-list-description) > :is(.kjun-list-check,.kjun-list-chevron,.kjun-list-busy){margin-top:calc((var(--_kjun-list-band) - var(--_kjun-extension-list-end-icon-size)) / 2)}
-.kjun-list-main:has(.kjun-list-description) > .kjun-list-mark{margin-top:calc((var(--_kjun-list-band) - var(--_kjun-extension-list-mark-size)) / 2)}
-.kjun-list-main:has(.kjun-list-description) > .kjun-switch{margin-top:calc((var(--_kjun-list-band) - var(--_kjun-extension-switch-heights-md)) / 2)}
+.kjun-list-main:has(.kjun-list-description) > .kjun-list-trailing{display:flex;align-items:center;justify-content:flex-end;min-height:var(--_kjun-list-band);margin-top:var(--_kjun-list-lift)}
+.kjun-list-row[data-leading-size] > .kjun-list-main:has(.kjun-list-description) > .kjun-list-body{align-self:flex-start;margin-top:var(--_kjun-list-lift)}
+.kjun-list-main:has(.kjun-list-description) > :is(.kjun-list-check,.kjun-list-chevron,.kjun-list-busy){margin-top:calc(var(--_kjun-list-lift) + (var(--_kjun-list-band) - var(--_kjun-extension-list-end-icon-size)) / 2)}
+.kjun-list-main:has(.kjun-list-description) > .kjun-list-mark{margin-top:calc(var(--_kjun-list-lift) + (var(--_kjun-list-band) - var(--_kjun-extension-list-mark-size)) / 2)}
+.kjun-list-main:has(.kjun-list-description) > .kjun-switch{margin-top:calc(var(--_kjun-list-lift) + (var(--_kjun-list-band) - var(--_kjun-extension-switch-heights-md)) / 2)}
 .kjun-list-icon-background{display:flex;flex-shrink:0;align-items:center;justify-content:center;width:var(--_kjun-list-tile-size,var(--_kjun-list-leading-width));height:var(--_kjun-list-tile-size,var(--_kjun-list-leading-width));border-radius:var(--_kjun-extension-list-icon-background-radius)}
 .kjun-list-icon{color:var(--_kjun-color-text-secondary)}
 .kjun-list-row[data-destructive] .kjun-list-icon{color:var(--_kjun-color-danger)}
@@ -138,10 +142,10 @@
 /* A busy row (not a switch) spins in place of its mark, check or chevron. */
 .kjun-list-busy{flex-shrink:0;color:var(--_kjun-color-text-tertiary)}
 .kjun-list-main > .kjun-switch{flex-shrink:0}
-.kjun-list-actions{display:flex;flex-wrap:wrap;gap:var(--_kjun-extension-list-actions-gap);padding-inline-end:var(--_kjun-list-actions-padding);max-width:45%}
+.kjun-list-actions{display:flex;flex-wrap:wrap;gap:var(--_kjun-extension-list-actions-gap);padding-inline-end:var(--_kjun-list-actions-padding);max-width:var(--_kjun-extension-list-actions-max-percent)}
 /* With a description, actions center on the band of the title and first description line like the row's other ends,
    so a long row keeps its button beside the title rather than at its middle. */
-.kjun-list-row:has(> .kjun-list-main .kjun-list-description) > .kjun-list-actions{align-self:flex-start;align-items:center;min-height:var(--_kjun-list-band);margin-top:var(--_kjun-list-padding-y)}
+.kjun-list-row:has(> .kjun-list-main .kjun-list-description) > .kjun-list-actions{align-self:flex-start;align-items:center;min-height:var(--_kjun-list-band);margin-top:calc(var(--_kjun-list-padding-y) + var(--_kjun-list-lift))}
 /* Move buttons of a reorderable section sit after the row's own actions and never wrap apart. */
 .kjun-list-reorder{display:inline-flex;align-items:center;flex:0 0 auto;gap:var(--_kjun-extension-list-actions-gap)}
 /* The handle drags, so a touch on it never scrolls; the held row stays in the flow with the pressed fill (a step past
@@ -193,6 +197,8 @@
 .kjun-list[data-variant=open]>.kjun-list-row[data-destructive] .kjun-list-icon{color:var(--_kjun-color-danger)}
 /* No specificity, so the row's hover and pressed fill still win over the chosen row's. */
 :where(.kjun-list[data-variant=open]>.kjun-list-row:has(> .kjun-list-main:is([role=radio],[role=checkbox])[aria-checked=true])){background:var(--_kjun-color-selected-bg)}
+/* The item open now (current) takes the selected fill; hover and press still show over it, like an open section's chosen row. */
+:where(.kjun-list-row[data-current]){background:var(--_kjun-color-selected-bg)}
 /* A choice's mark, in an open section or a multiple-choice list: an empty ring (a rounded square for multiple choice),
    filled with a check when chosen. */
 .kjun-list-mark{flex:none;display:flex;align-items:center;justify-content:center;width:var(--_kjun-extension-list-mark-size);height:var(--_kjun-extension-list-mark-size);border-radius:50%;box-shadow:inset 0 0 0 var(--_kjun-border-control-width) var(--_kjun-color-border-strong);color:var(--_kjun-color-on-brand)}

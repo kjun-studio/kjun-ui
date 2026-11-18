@@ -69,8 +69,22 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect((await box(page.getByText('No leading', { exact: true }))).x - (await box(main(noLeading, native))).x).toBeCloseTo(16);
     const long = row(page, 'Long description'), frontBox = await box(leading(long, native));
     expect(frontBox.height).toBe(56);
-    expect(frontBox.y).toBeCloseTo((await box(page.getByText('Long description', { exact: true }))).y);
+    // A leading square taller than the title and first description line moves that band down by half the difference,
+    // so the band and the square center on one line (the band starts that far below the square's top).
+    const lineHeight = (text: string) => page.getByText(text, { exact: true }).evaluate(node => parseFloat(getComputedStyle(node).lineHeight));
+    const band = await lineHeight('Long description') + 4 + await page.getByText('설명이 여러 줄로', { exact: false }).first().evaluate(node => parseFloat(getComputedStyle(node).lineHeight));
+    expect((await box(page.getByText('Long description', { exact: true }))).y - frontBox.y).toBeCloseTo((56 - band) / 2, 0);
     const longBox = await box(main(long, native));
+    // Its switch centers on the same line as the square, beside a one-line description too.
+    const large = row(page, 'Large switch'), largeFront = await box(leading(large, native));
+    // The drawn switch: the row's widest box past the text that is no taller than a switch (Native draws it with views).
+    const trackCenter = await page.getByRole('switch', { name: /Large switch/ }).evaluate(control => {
+      const right = control.getBoundingClientRect().right;
+      const boxes = [...control.querySelectorAll('*')].map(node => node.getBoundingClientRect()).filter(rect => rect.right > right - 80 && rect.width >= 36 && rect.width <= 64 && rect.height >= 20 && rect.height <= 32);
+      const track = boxes.sort((a, b) => b.width - a.width)[0];
+      return track.top + track.height / 2;
+    });
+    expect(trackCenter).toBeCloseTo(largeFront.y + largeFront.height / 2, 0);
     expect(longBox.height).toBeGreaterThan(88);
     expect(frontBox.y + frontBox.height).toBeLessThanOrEqual(longBox.y + longBox.height - 16);
     const nested = page.getByRole('list', { name: 'Nested rows', exact: true }).getByRole('listitem');

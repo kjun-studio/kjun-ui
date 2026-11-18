@@ -16,7 +16,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         h("KjunListRow", { title: "총 결제 금액", emphasized: true }, undefined, { trailing: "29,000원" }),
       ]);
       return h("KjunListSection", { title: "설정", description: "계정과 알림을 관리합니다.", variant: settings.variant }, [
-        h("KjunListRow", { title: settings.long ? "모든 기기에서 사용할 프로필과 계정 표시 이름" : "프로필 설정", description: "이름과 사진을 변경합니다.", leadingSize, disabled, ...action(() => set("message", "프로필 설정 열기")) }, undefined, { leading: h("KjunAvatar", { name: "김하늘", size: leadingSize ?? "sm" }), actions: h("KjunButton", { variant: "secondary", size: "sm", ...action(() => set("message", "프로필 공유")) }, "공유") }),
+        h("KjunListRow", { title: settings.long ? "모든 기기에서 사용할 프로필과 계정 표시 이름" : "프로필 설정", description: "이름과 사진을 변경합니다.", leadingSize, current: settings.current || undefined, disabled, ...action(() => set("message", "프로필 설정 열기")) }, undefined, { leading: h("KjunAvatar", { name: "김하늘", size: leadingSize ?? "sm" }), actions: h("KjunButton", { variant: "secondary", size: "sm", ...action(() => set("message", "프로필 공유")) }, "공유") }),
         h("KjunListRow", { icon: "bell", leadingSize, iconColor, iconBackground, title: "알림 받기", description: "행 어디를 눌러도 켜고 끕니다.", disabled, checked: get("notifications", true), onCheckedChange: change("notifications") }),
         h("KjunListRow", { icon: "lock", leadingSize, iconColor, iconBackground, title: "비밀번호", chevron: true, disabled, ...action(() => set("message", "비밀번호 열기")) }, undefined, { trailing: "3개월 전 변경" }),
         // A row that opens its own content: the head is the button, the content sits outside it.

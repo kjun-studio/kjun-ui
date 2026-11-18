@@ -5,7 +5,7 @@ import { warnNestedControls } from "../../../shared/package-runtime/nested-contr
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { KjunIcon } from "./button";
 import { Collapse } from "./collapse";
-import { linkRel, listRowChoice, listRowEnd, listRowExpandable, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
+import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowExpandable, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { ListShapeContext } from "./list-context";
 import { ReorderContext, ReorderControls, useReorder, type KjunListReorderControls, type KjunListReorderMove } from "./reorder-controls";
 import { reorderPlace } from "../../../shared/package-runtime/reorder";
@@ -50,6 +50,9 @@ export interface KjunListRowProps {
   emphasized?: boolean;
   /** Ends the row with a decorative chevron that marks it as navigation. */
   chevron?: boolean;
+  /** The item open now, such as the message shown beside its list or the settings page in view: the row takes the
+   * selected fill and its link or button aria-current ("page" on a link). Not for switch or choice rows. */
+  current?: boolean;
   /** One choice in a single-choice list: true draws a check at the end (in an open section or a multiple-choice list, a filled mark; unchosen rows an empty one). A pressable row given it (true or false) reads as a radio. */
   selected?: boolean;
   /** Makes the whole row a switch: it draws one at the end and toggles on any press. */
@@ -74,7 +77,7 @@ export interface KjunListRowProps {
   titleLines?: number;
   descriptionLines?: number;
 }
-export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, trailingPosition = "side", actions, href, target, rel, disabled = false, destructive = false, emphasized = false, chevron = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onClick: ownClick, ariaLabel, children, titleLines, descriptionLines, expanded, onExpandedChange, expandedContent }: KjunListRowProps) {
+export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, trailingPosition = "side", actions, href, target, rel, disabled = false, destructive = false, emphasized = false, chevron = false, current = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onClick: ownClick, ariaLabel, children, titleLines, descriptionLines, expanded, onExpandedChange, expandedContent }: KjunListRowProps) {
   const selection = useContext(ListSelectionContext), { open, details } = useContext(ListShapeContext), choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
   // In a reorderable section a row its order lists draws move buttons after its own actions.
   const reorder = useContext(ReorderContext), movable = !!reorder && !!reorderPlace(reorder.order, value);
@@ -87,7 +90,8 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   const content = useRef<HTMLSpanElement>(null), pressable = kind !== "static";
   const looseChoice = (kind === "radio" || kind === "checkbox") && selection.mode === "none";
   useEffect(() => { if (pressable) warnNestedControls(content.current, "KJUN ListRow: a pressable row's content contains buttons or links; move them to actions."); }, [pressable]);
-  useEffect(() => warnListRowProps({ checked, selected, href, chevron, looseChoice, expanded, pressableDetails: !!details && pressable }), [checked !== undefined, selected !== undefined, !!href, chevron, looseChoice, expanded !== undefined, !!details && pressable]);
+  useEffect(() => warnListRowProps({ checked, selected, href, chevron, looseChoice, expanded, pressableDetails: !!details && pressable, current }), [checked !== undefined, selected !== undefined, !!href, chevron, looseChoice, expanded !== undefined, !!details && pressable, current]);
+  const now = listRowCurrent(kind, current);
   const clamp = (lines?: number) => lines ? { WebkitLineClamp: lines } as CSSProperties : undefined;
   const custom = hasContent(leading), geometry = listLeadingGeometry({ size: leadingSize, custom, background: iconBackground != null, open });
   const glyph = icon ? <KjunIcon name={icon} className="kjun-list-icon" size={geometry.iconSize} style={{ color: iconColor }} /> : null;
@@ -109,13 +113,14 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   const contents = <>{front && <span className="kjun-list-leading">{front}</span>}<span className="kjun-list-body">{onTitle ? <span className="kjun-list-value-line">{titleBlock}{endValue}</span> : titleBlock}{below && endValue}{description && <span id={id + "-description"} className="kjun-list-description" data-clamp={descriptionLines ? "" : undefined} style={clamp(descriptionLines)}>{description}</span>}{hasBody && <span ref={content} id={id + "-content"} className="kjun-list-content">{children}</span>}</span>{!onTitle && !below && endValue}{mark}{toggle && <span className={"kjun-switch kjun-switch--md" + (checked ? " kjun-switch--on" : "")} aria-hidden="true"><span className="kjun-switch-thumb">{busy && <KjunSpinnerGlyph className="kjun-switch-spinner" size={tokens.extensions.switch.spinnerSize} />}</span></span>}{expandable ? end !== "spinner" && <KjunIcon name="chevron-down" className="kjun-list-chevron kjun-list-expand-icon" size={tokens.iconSizes.default} />
     : chevron && end !== "spinner" && <KjunIcon name="chevron-right" className="kjun-list-chevron" size={tokens.iconSizes.default} />}</>;
   // A switch row is one switch control: the drawn switch is decoration and the row carries role and state.
+  // A disabled link row has no address, so it keeps the link role by hand and reads as a disabled link.
   // A choice row is a radio (a checkbox in a multiple-choice section), checked when selected; the check is its drawing.
   const main = toggle ? <button className="kjun-list-main" type="button" role="switch" aria-checked={checked} {...label} aria-busy={busy || undefined} disabled={disabled} onClick={(event) => { if (busy) return; onCheckedChange?.(!checked); onClick?.(event); }}>{contents}</button>
     : choiceRow ? <button className="kjun-list-main" type="button" role={kind} aria-checked={!!selected} {...label} aria-busy={busy || undefined} disabled={disabled} onClick={onClick}>{contents}</button>
-    : href ? <a className="kjun-list-main" href={disabled ? undefined : href} target={target} rel={linkRel(target, rel)} {...label} aria-disabled={disabled || undefined} aria-busy={busy || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a>
-    : onClick ? <button className="kjun-list-main" type="button" {...label} aria-expanded={expandable ? expanded : undefined} aria-controls={expandable ? id + "-expanded" : undefined} aria-busy={busy || undefined} disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main">{contents}</div>;
+    : href ? <a className="kjun-list-main" href={disabled ? undefined : href} role={disabled ? "link" : undefined} target={target} rel={linkRel(target, rel)} {...label} aria-current={now} aria-disabled={disabled || undefined} aria-busy={busy || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a>
+    : onClick ? <button className="kjun-list-main" type="button" {...label} aria-current={now} aria-expanded={expandable ? expanded : undefined} aria-controls={expandable ? id + "-expanded" : undefined} aria-busy={busy || undefined} disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main" aria-current={now}>{contents}</div>;
   // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
-  return <li className="kjun-list-row" role={selection.mode === "single" ? "none" : undefined} data-leading={front ? (custom ? "" : "icon") : undefined} data-leading-size={front ? geometry.size : undefined} style={leadingStyle} data-destructive={destructive || undefined} data-emphasized={emphasized || undefined} data-trailing={below ? "below" : undefined} data-disabled={disabled || undefined} data-reordering={movable && reorder!.grabbed === value || undefined} data-expandable={expandable ? "" : undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{(hasContent(actions) || movable) && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}{movable && <ReorderControls value={value!} name={title} />}</div>}{expandable && <div id={id + "-expanded"} className="kjun-list-expanded"><Collapse open={!!expanded}><div className="kjun-list-expanded-body">{expandedContent}</div></Collapse></div>}</li>;
+  return <li className="kjun-list-row" role={selection.mode === "single" ? "none" : undefined} data-leading={front ? (custom ? "" : "icon") : undefined} data-leading-size={front ? geometry.size : undefined} style={leadingStyle} data-destructive={destructive || undefined} data-emphasized={emphasized || undefined} data-current={now ? "" : undefined} data-trailing={below ? "below" : undefined} data-disabled={disabled || undefined} data-reordering={movable && reorder!.grabbed === value || undefined} data-expandable={expandable ? "" : undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{(hasContent(actions) || movable) && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}{movable && <ReorderControls value={value!} name={title} />}</div>}{expandable && <div id={id + "-expanded"} className="kjun-list-expanded"><Collapse open={!!expanded}><div className="kjun-list-expanded-body">{expandedContent}</div></Collapse></div>}</li>;
 }
 export interface KjunListSectionProps {
   title?: string; description?: string; actions?: ReactNode; children?: ReactNode; ariaLabel?: string;

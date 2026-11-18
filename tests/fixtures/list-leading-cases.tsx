@@ -26,6 +26,7 @@ export function ListLeadingCases({ K, native = false }: { K: any; native?: boole
       <K.KjunListRow title="Circle action" icon="bell" leadingSize="xs" iconBackground={iconBackground} chevron {...press} />
       <K.KjunListRow title="Disabled circle" icon="bell" leadingSize="lg" iconColor={iconColor} iconBackground={iconBackground} disabled {...press} />
       <K.KjunListRow title="Circle switch" icon="bell" iconBackground={iconBackground} checked={checked} onCheckedChange={setChecked} />
+      <K.KjunListRow title="Large switch" icon="bell" leadingSize="lg" iconBackground={iconBackground} description="한 줄 설명" checked={checked} onCheckedChange={setChecked} />
       <K.KjunListRow title="Nested parent" icon="bell" leadingSize="lg">
         <K.KjunListSection ariaLabel="Nested rows"><K.KjunListRow title="Nested default" icon="bell" /></K.KjunListSection>
       </K.KjunListRow>
