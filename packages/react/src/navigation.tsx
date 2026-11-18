@@ -1,12 +1,11 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from '@kjun-ui/tokens';
 import { Collapse } from "./collapse";
-import { useInitialTab, useAccordionState } from "../../../shared/package-runtime/navigation";
+import { useAccordionState } from "../../../shared/package-runtime/navigation";
 import { accordionKeyTarget } from "../../../shared/package-runtime/accordion-state";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { breadcrumbCurrent, collapseBreadcrumb, type BreadcrumbItem } from "../../../shared/package-runtime/breadcrumb";
 import { useSelectionIndicator } from "./use-selection-indicator";
-import { manageTabList } from "../../../shared/package-runtime/tab-keyboard";
 import {
 Children,
 createContext,
@@ -22,7 +21,6 @@ type CSSProperties,
 type ReactElement,
 type ReactNode,
 } from "react";
-import { Tab,TabList,TabPanel,Tabs,TabListStateContext } from "react-aria-components";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunDropdown, KjunDropdownItem } from "./dropdown";
 import { KjunBadge } from "./display";

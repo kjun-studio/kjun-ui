@@ -1,6 +1,5 @@
 .kjun-tabs-track { position: relative; overflow-x: auto; min-width: 0; scrollbar-width: none; }
 .kjun-tabs-track .kjun-tabs-list { overflow: visible; width: max-content; }
-.kjun-vue-tabs .kjun-tabs-scroller { position: relative; }
 .kjun-motion-label { display: inline-grid; }
 .kjun-motion-label::before, .kjun-motion-label::after { content: attr(data-label); letter-spacing: var(--_kjun-type-control-tracking); visibility: hidden; grid-area: 1 / 1; }
 .kjun-motion-label::before { font-weight: var(--_kjun-type-label-weight); }
@@ -11,8 +10,8 @@
 [data-variant="underline"] .kjun-tab-indicator { background: var(--_kjun-color-brand); border-radius: calc(var(--_kjun-extension-tabs-indicator-height) / 2); }
 /* A disabled selected tab paints its underline in the disabled-ink role, like its label. */
 [data-variant="underline"] :has(> .kjun-tab[aria-selected="true"]:is([aria-disabled="true"], :disabled)) ~ .kjun-tab-indicator { background: var(--_kjun-color-text-disabled); }
-.kjun-tabs-track .kjun-tab, .kjun-vue-tabs .kjun-tab { z-index: 1; background: transparent !important; }
-.kjun-tabs-track .kjun-tab::after, .kjun-vue-tabs .kjun-tab::after { display: none; }
+.kjun-tabs-track .kjun-tab { z-index: 1; background: transparent !important; }
+.kjun-tabs-track .kjun-tab::after { display: none; }
 .kjun-tabs[data-variant="pills"] .kjun-tab { transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), color var(--_kjun-motion-control) var(--_kjun-ease-out); }
 .kjun-bottom-navigation > a::before, .kjun-floating-navigation > a { transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out); }
 .kjun-accordion-trigger svg { transition: transform var(--_kjun-motion-collapse) var(--_kjun-ease-out); }

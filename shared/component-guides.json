@@ -361,12 +361,12 @@
     "description": "Tabs의 제목과 연결된 본문을 구성합니다.",
     "interaction": "Tabs에 name·label과 본문을 제공하는 하위 구성입니다. 자체 value는 없으며 활성 선택값은 부모 Tabs에 연결합니다.",
     "differences": "세 플랫폼 모두 부모 Tabs가 자식 TabPane의 props(name·label·badge·badgeVariant 등)로 탭을 구성합니다.",
-    "states": "name으로 선택값과 연결합니다. 세 플랫폼 모두 자식을 함께 마운트하고 탭 전환 중에도 내부 상태를 유지합니다. 선택되지 않은 패널은 화면·키보드·접근성 탐색에서 숨깁니다. 패널 제거 또는 페이지 이탈 시 자식이 해제됩니다. 숨겨진 자식의 효과·타이머는 유지되므로 프로젝트가 선택값에 따라 요청·구독을 제어합니다."
+    "states": "name으로 선택값과 연결합니다. 세 플랫폼 모두 자식을 함께 마운트하고 탭 전환 중에도 내부 상태를 유지합니다. Tabs에 lazy를 주면 패널 내용은 그 탭을 처음 고를 때 그리고, 그 뒤로는 숨긴 채 유지합니다. 선택되지 않은 패널은 화면·키보드·접근성 탐색에서 숨깁니다. 패널 제거 또는 페이지 이탈 시 자식이 해제됩니다. 숨겨진 자식의 효과·타이머는 유지되므로 프로젝트가 선택값에 따라 요청·구독을 제어합니다."
   },
   "KjunTabs": {
     "slug": "tabs",
     "description": "동일 영역의 보기를 선택하고 현재 패널을 표시합니다.",
-    "interaction": "활성 탭의 name을 value에 연결합니다. 변경 통지를 반영하고 items 또는 TabPane으로 목록과 본문을 구성합니다. disabled 항목은 선택과 보조 메뉴 콜백을 차단하며, 누르는 도중 비활성화·제거되면 예약된 보조 동작을 취소합니다. 스크롤되는 모달이나 패널에서 탭 헤더를 고정하려면 items만 넘겨 탭 목록만 렌더링하고, 앱의 position: sticky 래퍼로 감싼 뒤 본문은 앱이 선택 값에 따라 그립니다.",
+    "interaction": "활성 탭의 name을 value에 연결합니다. 변경 통지를 반영하고 items 또는 TabPane으로 목록과 본문을 구성합니다. disabled 항목은 선택과 보조 메뉴 콜백을 차단하며, 누르는 도중 비활성화·제거되면 예약된 보조 동작을 취소합니다. 스크롤되는 모달이나 패널에서 탭 헤더를 고정하려면 stickyHeader를 주고, 위에 고정된 영역이 있으면 stickyOffset으로 그 높이만큼 띄웁니다. Native는 웹에서만 스스로 고정되며, iOS·Android에서는 탭 막대를 부모 ScrollView의 stickyHeaderIndices에 넣으세요. 탭이 폭을 넘으면 가로로 스크롤되고, 뒤에 탭이 더 있는 가장자리는 흐려집니다. 선택한 탭은 처음 그릴 때와 바뀔 때 보이는 곳으로 스크롤되며, 이때 페이지는 움직이지 않습니다. 이미 선택된 탭을 다시 누르면 변경을 알리지 않습니다.",
     "differences": "Vue v-model과 actions 슬롯·tab-menu에 대응해 React·Native는 value·onValueChange·actions·onTabMenu를 제공합니다. 웹 키보드 이동과 Native 누름 조작을 구분합니다.",
     "states": "기본 높이는 44px, compact는 32px이며 14px 글자를 사용합니다. 선택은 600, 미선택은 500 굵기와 보조 텍스트 색상으로 구분합니다. underline은 첫 탭과 본문 시작선을 맞추고 2px 선택선을 표시하며, 포커스 테두리를 라벨과 선택선 바깥에 그립니다. pills는 그림자 없는 중립 배경으로 선택을, hover 배경으로 포인터 위치를 표시합니다. Native의 compact 탭은 32px 높이를 유지하면서 44px 터치 영역을 사용합니다. 웹에서 방향키·Home/End로 이동하고 비활성 항목은 건너뜁니다."
   },
@@ -555,7 +555,7 @@
   "KjunSplitPane": {
     "slug": "split-pane",
     "description": "두 패널 사이의 경계를 끌어 첫 패널의 크기를 바꿉니다.",
-    "interaction": "크기는 첫 패널이 경계 옆 공간에서 차지하는 비율(0~1)입니다. 직접 관리하거나 size와 onSizeChange(Vue v-model:size)로 앱이 관리합니다. 끌기를 놓거나 키로 옮기면 onChangeCommit(Vue change)이 한 번 발생하며, 크기 저장은 이때 앱이 합니다. 경계에 포커스를 두면 화살표 키로 16px씩, Home·End로 한계까지 옮기고 Enter로 defaultSize로 돌아갑니다.",
+    "interaction": "크기는 첫 패널이 경계 옆 공간에서 차지하는 비율(0~1)입니다. 창 폭이 바뀌어도 사이드 목록이 같은 폭을 지켜야 하면 sizeUnit=\"px\"로 픽셀을 씁니다. 직접 관리하거나 size와 onSizeChange(Vue v-model:size)로 앱이 관리합니다. 끌기를 놓거나 키로 옮기면 onChangeCommit(Vue change)이 한 번 발생하며, 크기 저장은 이때 앱이 합니다. 경계에 포커스를 두면 화살표 키로 16px씩, Home·End로 한계까지 옮기고 Enter로 defaultSize로 돌아갑니다. 경계를 두 번 눌러도 defaultSize로 돌아갑니다. collapsible을 주면 첫 패널을 접을 수 있습니다. 최소 크기의 절반쯤보다 작게 끌면 collapsedSize로 접히고, Enter가 접기와 펼치기를 오가며 Home이 접습니다. collapsedSize를 48처럼 주면 접힌 자리에 아이콘 레일이 남으므로, collapsed(Vue v-model:collapsed) 값을 보고 first에 레일을 그리세요.",
     "differences": "웹은 경계를 separator 역할로 그리고 현재·최소·최대 크기를 백분율로 알립니다. 누르는 영역은 20px이고 터치 화면에서는 44px입니다. Native는 경계를 조절 컨트롤로 알리고 스크린리더의 늘리기·줄이기 동작으로 16pt씩 옮기며, 키보드 조작은 Native Web에서만 동작합니다.",
     "states": "direction horizontal은 좌우, vertical은 상하로 나눕니다. 상하 분할은 부모가 높이를 정해야 합니다. minSize·maxSize는 [첫 패널, 둘째 패널]의 px 한계입니다. 비율과 한계가 부딪치면 최소 크기가 이기고, 두 최소 크기의 합보다 좁으면 첫 패널의 최소 크기를 지킵니다. 컨테이너 크기가 바뀌면 비율을 유지한 채 한계를 다시 적용합니다. disabled는 경계를 고정하고 포커스·키·끌기를 받지 않습니다. 좁은 화면에서 한 패널만 보이게 하는 일은 앱이 정합니다."
   },

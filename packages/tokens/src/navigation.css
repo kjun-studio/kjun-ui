@@ -31,7 +31,7 @@
 }
 .kjun-tabs[data-variant="underline"]:not([data-full-width]) .kjun-tab:first-child { padding-inline-start:0; }
 /* fullWidth: tabs share the row equally; the underline then spans the whole tab. */
-.kjun-tabs[data-full-width] .kjun-tabs-header > :is(.kjun-tabs-track, .kjun-tabs-scroller) { flex:1; }
+.kjun-tabs[data-full-width] .kjun-tabs-header > .kjun-tabs-track { flex:1; }
 .kjun-tabs[data-full-width] .kjun-tabs-list { width:auto; min-width:max-content; }
 .kjun-tabs[data-full-width] .kjun-tab { flex:1 0 0; justify-content:center; min-width:max-content; }
 /* Pills are chips: each tab carries its own fill and the selected one inverts, with no sliding marker. */
@@ -53,16 +53,27 @@
   outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-inset-offset);
 }
 /* Underline tabs ring outside their label and indicator (the first tab has no start padding to clip into).
-   Their scroller (React track, Vue list) keeps room for the ring so overflow does not cut it. */
-.kjun-tabs[data-variant="underline"] :is(.kjun-tabs-track, .kjun-tabs-scroller) {
+   Their track keeps room for the ring so overflow does not cut it. */
+.kjun-tabs[data-variant="underline"] .kjun-tabs-track {
   --_kjun-tab-ring-room:calc(var(--_kjun-state-focus-width) + var(--_kjun-state-focus-offset));
   padding:var(--_kjun-tab-ring-room); margin:calc(-1 * var(--_kjun-tab-ring-room));
-  scroll-padding-inline:var(--_kjun-tab-ring-room);
 }
+/* A tab list that overflows fades at each edge with more tabs past it, as KjunScrollFade does. A focused or selected
+   tab scrolls in clear of the fade (scroll-padding), so its label and ring stay whole. */
+.kjun-tabs-track { --_kjun-fade-to: to right; scroll-padding-inline:var(--_kjun-extension-scroll-fade-width); }
+.kjun-tabs-track:dir(rtl) { --_kjun-fade-to: to left; }
+.kjun-tabs-track:is([data-fade-start], [data-fade-end]) {
+  --_kjun-fade-start: currentColor;
+  --_kjun-fade-end: currentColor;
+  -webkit-mask-image: linear-gradient(var(--_kjun-fade-to), var(--_kjun-fade-start), currentColor var(--_kjun-extension-scroll-fade-width), currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), var(--_kjun-fade-end));
+  mask-image: linear-gradient(var(--_kjun-fade-to), var(--_kjun-fade-start), currentColor var(--_kjun-extension-scroll-fade-width), currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), var(--_kjun-fade-end));
+}
+.kjun-tabs-track[data-fade-start] { --_kjun-fade-start: transparent; }
+.kjun-tabs-track[data-fade-end] { --_kjun-fade-end: transparent; }
 .kjun-tabs[data-variant="underline"] .kjun-tab:is([data-focus-visible], :focus-visible) { outline-offset:var(--_kjun-state-focus-offset); }
 .kjun-tab:hover:not([aria-selected="true"]):not([aria-disabled="true"]):not(:disabled) { color:var(--_kjun-color-text); }
 /* Unselected chips darken to the hover surface, like Chip and ButtonGroup. */
-.kjun-tabs[data-variant="pills"] :is(.kjun-tabs-track, .kjun-tabs-scroller) .kjun-tab:hover:not([aria-selected="true"]):not([aria-disabled="true"]):not(:disabled) {
+.kjun-tabs[data-variant="pills"] .kjun-tabs-track .kjun-tab:hover:not([aria-selected="true"]):not([aria-disabled="true"]):not(:disabled) {
   background:var(--_kjun-color-hover) !important;
 }
 .kjun-tab-badge { font-variant-numeric:tabular-nums; }

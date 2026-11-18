@@ -292,6 +292,7 @@ export const kjunPropValues = Object.freeze({
   }),
   KjunSplitPane: Object.freeze({
     direction: Object.freeze(["horizontal","vertical"] as const),
+    sizeUnit: Object.freeze(["px","ratio"] as const),
   }),
   KjunStack: Object.freeze({
     as: Object.freeze(["article","aside","div","fieldset","footer","form","header","main","nav","ol","section","ul"] as const),

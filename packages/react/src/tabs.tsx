@@ -3,9 +3,11 @@ import { navigationBadge, navigationLabel } from "../../../shared/package-runtim
 import { tokens } from '@kjun-ui/tokens';
 import { useInitialTab } from "../../../shared/package-runtime/navigation";
 import { useSelectionIndicator } from "./use-selection-indicator";
-import { manageTabList } from "../../../shared/package-runtime/tab-keyboard";
+import { manageTabList, revealTab } from "../../../shared/package-runtime/tab-keyboard";
+import { trackScrollFade } from "../../../shared/package-runtime/scroll-fade";
 import {
 Children,
+createContext,
 isValidElement,
 useContext,
 useEffect,
@@ -40,6 +42,8 @@ export interface KjunTabsProps {
   stickyHeader?: boolean;
   /** Top gap of the sticky header: a number in px or a CSS length. */
   stickyOffset?: number | string;
+  /** Each TabPane draws its content the first time its tab is selected, then keeps it (hidden) like the others. */
+  lazy?: boolean;
   ariaLabel?: string;
   onValueChange?: (value: string) => void;
   onChange?: (value: string) => void;
@@ -50,6 +54,8 @@ export interface KjunTabsProps {
     pointer: "mouse" | "touch";
   }) => void;
 }
+// Which panes may draw their content: all of them, or under lazy the ones whose tab has been selected.
+const TabsLazyContext = createContext<{ lazy: boolean; seen: ReadonlySet<string> }>({ lazy: false, seen: new Set() });
 function TabActions({ children }: { children?: ReactNode }) {
   // Actions may own a collection (Select, Dropdown). Render them only after
   // React Aria has collected this TabList, so their items cannot become tabs.
@@ -65,6 +71,7 @@ export function KjunTabs({
   children,
   stickyHeader = false,
   stickyOffset = 0,
+  lazy = false,
   ariaLabel,
   onValueChange,
   onChange,
@@ -112,11 +119,40 @@ export function KjunTabs({
     onChange?.(name);
   };
   useInitialTab(value, tabs.find(tab => !tab.disabled)?.name, change);
+  const seen = useRef(new Set<string>());
+  if (value) seen.current.add(value);
+  // An overflowing tab list fades at the edges that have more tabs past them, like KjunScrollFade.
+  useLayoutEffect(() => {
+    const track = group.current;
+    if (!track || typeof ResizeObserver === "undefined") return;
+    const fade = trackScrollFade(track, () => "horizontal", edges => {
+      track.toggleAttribute("data-fade-start", edges.start);
+      track.toggleAttribute("data-fade-end", edges.end);
+    });
+    return fade.destroy;
+  }, [group]);
+  // The selected tab is scrolled into the track when it changes, and at once on the first render.
+  const revealed = useRef(false);
+  useLayoutEffect(() => {
+    const reveal = () => {
+      const track = group.current, tab = track?.querySelector<HTMLElement>('[role="tab"][aria-selected="true"]');
+      if (!track || !tab) return false;
+      revealTab(track, tab, tokens.extensions.scrollFade.width, revealed.current);
+      revealed.current = true;
+      return true;
+    };
+    // React Aria may draw the tabs a frame after the list is mounted.
+    if (reveal()) return;
+    const frame = requestAnimationFrame(reveal);
+    return () => cancelAnimationFrame(frame);
+  }, [group, value]);
   return (
+    <TabsLazyContext.Provider value={{ lazy, seen: seen.current }}>
     <TabListStateContext.Provider value={null}>
     <Tabs
       selectedKey={value}
-      onSelectionChange={(key) => change(String(key))}
+      // React Aria reports a press on the tab that is already selected; like Vue and Native, report only real changes.
+      onSelectionChange={(key) => { if (String(key) !== value) change(String(key)); }}
       className="kjun-tabs"
       data-variant={variant}
       data-density={density}
@@ -187,16 +223,18 @@ export function KjunTabs({
       {children && <div className="kjun-tab-content">{children}</div>}
     </Tabs>
     </TabListStateContext.Provider>
+    </TabsLazyContext.Provider>
   );
 }
 export interface KjunTabPaneProps extends TabItem {
   children?: ReactNode;
 }
 export function KjunTabPane({ name, children }: KjunTabPaneProps) {
+  const { lazy, seen } = useContext(TabsLazyContext);
   return (
     <TabPanel id={name} className="kjun-tab-panel" shouldForceMount
       style={({ isInert }) => ({ display: isInert ? 'none' : undefined })}>
-      {children}
+      {!lazy || seen.has(name) ? children : null}
     </TabPanel>
   );
 }

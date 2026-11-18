@@ -2,9 +2,9 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { tokens } from '@kjun-ui/tokens';
 import { selectionTypeStyle } from "./typography";
-import { Children, createContext, isValidElement, useContext, useCallback, useLayoutEffect, useRef, useId, useState, type ReactElement, type ReactNode } from "react";
+import { Children, createContext, isValidElement, useContext, useCallback, useEffect, useLayoutEffect, useRef, useId, useState, type ReactElement, type ReactNode } from "react";
 import { useInitialTab } from "../../../shared/package-runtime/navigation";
-import { Animated, Platform, ScrollView, View, type LayoutRectangle } from "react-native";
+import { Animated, Platform, ScrollView, View, type LayoutRectangle, type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIcon } from "./button";
 import { BadgeView } from "./display-primitives";
@@ -14,6 +14,8 @@ import { KText, content } from "./internal";
 import { useKjunStyles } from "./provider";
 import { useTabKeyboard, usePanelFocus } from "./tabs-accessibility";
 import { useButtonGroupMotion } from "./button-group-motion";
+import { ScrollFadeEdge } from "./scroll-fade-edge";
+import { sameEdges, scrollEdges, type ScrollEdges } from "../../../shared/package-runtime/scroll-fade";
 export interface TabItem {
   name: string;
   label: string;
@@ -31,6 +33,13 @@ export interface KjunTabsProps {
   fullWidth?: boolean;
   actions?: ReactNode;
   children?: ReactNode;
+  /** Native Web keeps the header inside its scroll container while the panels scroll. On iOS and Android, put the
+   * tab bar in the parent ScrollView's stickyHeaderIndices instead: a view cannot stick on its own there. */
+  stickyHeader?: boolean;
+  /** Top gap of the sticky header on Native Web, in points. */
+  stickyOffset?: number;
+  /** Each TabPane draws its content the first time its tab is selected, then keeps it (hidden) like the others. */
+  lazy?: boolean;
   ariaLabel?: string;
   onValueChange?: (value: string) => void;
   onChange?: (value: string) => void;
@@ -41,7 +50,7 @@ export interface KjunTabsProps {
     pointer: "mouse" | "touch";
   }) => void;
 }
-const TabContext = createContext({ value: "", id: "", names: [] as string[] });
+const TabContext = createContext({ value: "", id: "", names: [] as string[], lazy: false, seen: new Set<string>() as ReadonlySet<string> });
 export function KjunTabs({
   value,
   items = [],
@@ -50,6 +59,9 @@ export function KjunTabs({
   fullWidth = false,
   actions,
   children,
+  stickyHeader = false,
+  stickyOffset = 0,
+  lazy = false,
   ariaLabel,
   onValueChange,
   onChange,
@@ -110,20 +122,61 @@ export function KjunTabs({
     onValueChange?.(name);
     onChange?.(name);
   };
-  useTabKeyboard(root, change);
+  // Like React Aria and Vue, pressing the tab that is already selected reports nothing.
+  const select = (name: string) => { if (name !== value) change(name); };
+  useTabKeyboard(root, select);
   useInitialTab(value, tabs.find(tab => !tab.disabled)?.name, change);
+  const seen = useRef(new Set<string>());
+  if (value) seen.current.add(value);
+  // The scroller's offset and sizes give the faded edges and where to scroll the selected tab, as on Web.
+  const scroller = useRef<ScrollView>(null), boxes = useRef(new Map<string, { x: number; width: number }>());
+  const box = useRef({ scrollLeft: 0, scrollTop: 0, clientWidth: 0, clientHeight: 0, scrollWidth: 0, scrollHeight: 0 });
+  const [edges, setEdges] = useState<ScrollEdges>({ start: false, end: false });
+  // The scroller reaches roomX past the row on each side; its edges sit inside that room.
+  const updateBox = (next: Partial<typeof box.current>) => {
+    box.current = { ...box.current, ...next };
+    const { scrollLeft, clientWidth, scrollWidth } = box.current;
+    const found = scrollEdges({ ...box.current, scrollLeft, clientWidth: clientWidth - 2 * roomX, scrollWidth: scrollWidth - 2 * roomX }, "horizontal");
+    setEdges(previous => sameEdges(previous, found) ? previous : found);
+  };
+  const revealed = useRef(false), valueNow = useRef(value);
+  valueNow.current = value;
+  const reveal = () => {
+    const tab = boxes.current.get(valueNow.current), { scrollLeft, clientWidth, scrollWidth } = box.current;
+    if (!tab || !clientWidth || !scrollWidth) return;
+    const pad = roomX + tokens.extensions.scrollFade.width, left = scrollLeft + pad, right = scrollLeft + clientWidth - pad;
+    const target = tab.x < left ? tab.x - pad : tab.x + tab.width > right ? tab.x + tab.width - clientWidth + pad : scrollLeft;
+    const x = Math.max(0, Math.min(target, scrollWidth - clientWidth));
+    if (Math.abs(x - scrollLeft) >= 1) scroller.current?.scrollTo({ x, animated: revealed.current });
+    revealed.current = true;
+  };
+  // The selected tab scrolls into the row when it changes; the first time it is measured it jumps there at once.
+  useEffect(() => { if (revealed.current) reveal(); }, [value]);
+  const firstReveal = () => { if (!revealed.current) reveal(); };
   return (
-    <TabContext.Provider value={{ value, id, names: tabs.map(tab => tab.name) }}>
+    <TabContext.Provider value={{ value, id, names: tabs.map(tab => tab.name), lazy, seen: seen.current }}>
       <View ref={root}>
         {/* Actions sit beside the tab list, not inside it, so they neither scroll away nor read as tabs. */}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flexDirection: "row", alignItems: "center",
+          ...(stickyHeader && Platform.OS === "web" ? ({ position: "sticky", top: stickyOffset, zIndex: tokens.layers.page.sticky,
+            backgroundColor: colors.surface } as unknown as ViewStyle) : {}) }}>
+        <View style={{ flexGrow: 1, flexShrink: 1, minWidth: 0 }}>
         <ScrollView
+          ref={scroller}
           horizontal
+          scrollEventThrottle={16}
+          onLayout={event => { updateBox({ clientWidth: event.nativeEvent.layout.width }); firstReveal(); }}
+          onContentSizeChange={scrollWidth => { updateBox({ scrollWidth }); firstReveal(); }}
+          onScroll={event => {
+            updateBox({ scrollLeft: event.nativeEvent.contentOffset.x });
+            // Layout arrives late on Native Web: once the row has been scrolled (by focus or a finger), the first reveal must not pull it back.
+            revealed.current = true;
+          }}
           accessibilityRole="tablist"
           accessibilityLabel={ariaLabel}
           showsHorizontalScrollIndicator={false}
           // Underline tabs ring outside their label and indicator, and compact tabs extend their touch target.
-          style={{ flexGrow: 1, flexShrink: 1, marginHorizontal: -roomX, marginVertical: -roomY }}
+          style={{ flexGrow: 1, marginHorizontal: -roomX, marginVertical: -roomY }}
           contentContainerStyle={{
             flexGrow: fullWidth ? 1 : undefined,
             flexDirection: "row",
@@ -155,10 +208,15 @@ export function KjunTabs({
                 {...(Platform.OS === 'web' ? {
                   nativeID: `${id}-tab-${tab.name}`,
                   dataSet: { tabName: tab.name },
-                  'aria-controls': panelNames.includes(tab.name) ? `${id}-panel-${tab.name}` : undefined,
+                  'aria-controls': active && panelNames.includes(tab.name) ? `${id}-panel-${tab.name}` : undefined,
                 } : {})}
                 ref={node => { if (node) tabRefs.current.set(tab.name, node); else tabRefs.current.delete(tab.name); }}
-                onLayout={event => measureIndicator(tab.name, event.nativeEvent.layout)}
+                onLayout={event => {
+                  const layout = event.nativeEvent.layout;
+                  boxes.current.set(tab.name, { x: layout.x, width: layout.width });
+                  measureIndicator(tab.name, layout);
+                  if (tab.name === value) firstReveal();
+                }}
                 accessibilityRole="tab"
                 focusRingInset={!underline}
                 hitSlop={slop ? { top: slop, bottom: slop } : undefined}
@@ -168,7 +226,7 @@ export function KjunTabs({
                   disabled: !!tab.disabled,
                 }}
                 disabled={tab.disabled}
-                onPress={() => change(tab.name)}
+                onPress={() => select(tab.name)}
                 onPressIn={() => { pressedMenu.current = !tab.disabled && onTabMenu ? tab.name : null; }}
                 onPressOut={() => { pressedMenu.current = null; }}
                 onLongPress={(event) => {
@@ -228,6 +286,10 @@ export function KjunTabs({
             );
           })}
         </ScrollView>
+        {/* More tabs past an edge fade it into the surface, as KjunScrollFade does. */}
+        {edges.start ? <ScrollFadeEdge edge="start" horizontal color={colors.surface} /> : null}
+        {edges.end ? <ScrollFadeEdge edge="end" horizontal color={colors.surface} /> : null}
+        </View>
         {hasContent(actions) ? <View style={{ flexShrink: 0, flexDirection: "row", alignItems: "center" }}>{content(actions)}</View> : null}
         </View>
         {hasContent(children) && <View style={{ marginTop: geometry.contentGap }}>{content(children)}</View>}
@@ -239,15 +301,16 @@ export interface KjunTabPaneProps extends TabItem {
   children?: ReactNode;
 }
 export function KjunTabPane({ name, children }: KjunTabPaneProps) {
-  const { value, id, names } = useContext(TabContext);
+  const { value, id, names, lazy, seen } = useContext(TabContext);
   const root = useRef<View>(null);
   usePanelFocus(root);
   const hidden = value !== name;
   // Hiding a panel preserves its children's state; removing it releases them.
   return <View ref={root} style={hidden ? { display: 'none' } : undefined}
     accessibilityElementsHidden={hidden} importantForAccessibility={hidden ? 'no-hide-descendants' : 'auto'}
-    pointerEvents={hidden ? 'none' : 'auto'} {...(Platform.OS === 'web' ? {
+    pointerEvents={hidden ? 'none' : 'auto'} {...(Platform.OS === 'web' && !hidden ? {
+    // Only the shown panel is a tabpanel, as React Aria and Vue draw it; its tab points here.
     role: 'tabpanel' as const, nativeID: `${id}-panel-${name}`,
     'aria-labelledby': names.includes(name) ? `${id}-tab-${name}` : undefined,
-  } : {})}>{content(children)}</View>;
+  } : {})}>{!lazy || seen.has(name) ? content(children) : null}</View>;
 }

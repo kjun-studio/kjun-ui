@@ -106,7 +106,11 @@ export function generate(input: UsageInput) {
         b.node('KjunTabPane', { name: 'one', label: '첫 탭' }, b.text('첫 내용')),
         b.node('KjunTabPane', { name: 'two', label: '둘째 탭' }, b.text('둘째 내용')),
         b.node('KjunTabPane', { name: 'blocked', label: '비활성 탭', disabled: true }, b.text('비활성 내용')),
-      ].join('\n')); break;
+        // Tabs past the width scroll; the edges with more tabs fade and the selected tab stays in view.
+        ...(s.many ? [['archive', '보관'], ['trash', '휴지통'], ['shared', '공유됨'], ['starred', '중요']].map(([tab, label]) => b.node('KjunTabPane', { name: tab, label }, b.text(label + ' 내용'))) : []),
+      ].join('\n'));
+      if (s.many) content = b.node(b.native ? 'View' : 'div', { style: b.native ? { width: 320 } : { maxWidth: '320px' } }, content);
+      break;
     case 'KjunIconToggle': return iconToggleExample(input);
     case 'KjunFab':
       content = b.node(name, { icon: 'plus', ...(s.label ? { label: s.label } : { ariaLabel: '일정 추가' }), ...(s.size === 'sm' ? { size: 'sm' } : {}), ...(s.label && s.collapsed ? { collapsed: true } : {}), ...b.props('loading', 'disabled'), [b.native ? 'onPress' : 'onClick']: b.handler('add', '', b.result('"일정 추가"')) }); break;

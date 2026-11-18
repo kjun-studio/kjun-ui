@@ -1,10 +1,11 @@
 import { useKjunMessages } from "./runtime/messages";
-import { Fragment, camelize, computed, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref, watch,
+import { Fragment, camelize, computed, inject, onBeforeUnmount, onMounted, onUpdated, provide, reactive, ref, watch,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type VNode, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { isFocusVisible, installFocusVisible } from "../../../shared/package-runtime/focus-visible";
-import { manageTabList, panelNeedsFocus } from "../../../shared/package-runtime/tab-keyboard";
+import { manageTabList, panelNeedsFocus, revealTab } from "../../../shared/package-runtime/tab-keyboard";
+import { trackScrollFade } from "../../../shared/package-runtime/scroll-fade";
 import { KjunIcon } from "./button";
 import { KjunBadge } from "./display";
 import { navigationBadge, navigationLabel } from "../../../shared/package-runtime/navigation-badge";
@@ -22,7 +23,11 @@ export interface TabItem {
 }
 export interface TabMenuEvent { name: string; x: number; y: number; pointer: "mouse" | "touch" }
 
-interface TabsContext { selected: () => string; tabId: (name: string) => string; panelId: (name: string) => string }
+interface TabsContext {
+  selected: () => string; tabId: (name: string) => string; panelId: (name: string) => string;
+  /** Whether a pane may draw its content: always, or under lazy once its tab has been selected. */
+  drawn: (name: string) => boolean;
+}
 const kjunTabsKey: InjectionKey<TabsContext> = Symbol("kjunTabs");
 
 /** Pane props read from the default slot, like React reads its TabPane children. */
@@ -36,6 +41,12 @@ function paneItems(nodes: VNode[] | undefined): TabItem[] {
     items.push({ ...props, disabled: props.disabled === "" || !!props.disabled } as TabItem);
   }
   return items;
+}
+
+const paneKeys = ["name", "label", "icon", "badge", "badgeVariant", "disabled"] as const;
+/** Pane lists match when every pane has the same fields; cheaper than serialising both on each render. */
+function samePanes(a: TabItem[], b: TabItem[]) {
+  return a.length === b.length && a.every((pane, index) => paneKeys.every(key => pane[key] === b[index][key]));
 }
 
 /** A single initial request per candidate when the controlled value is empty. */
@@ -59,6 +70,8 @@ const kjunTabsProps = {
   /** Keep the header inside its scroll container while the tab panels scroll. */
   stickyHeader: { type: Boolean, default: false },
   stickyOffset: { type: [Number, String] as PropType<number | string>, default: 0 },
+  /** Each KjunTabPane draws its content the first time its tab is selected, then keeps it (hidden) like the others. */
+  lazy: { type: Boolean, default: false },
   ariaLabel: { type: String, default: undefined },
   /** Declared as a prop so the tab menu only engages when the app listens. */
   onTabMenu: { type: Function as PropType<(event: TabMenuEvent) => void>, default: undefined },
@@ -81,7 +94,10 @@ export const KjunTabs = defineComponent({
     const tabs = computed(() => props.items.length ? props.items : panes.value);
     const change = (name: string) => { emit("update:modelValue", name); emit("change", name); };
     useInitialTab(() => props.modelValue, () => tabs.value.find(tab => !tab.disabled)?.name, change);
+    const seen = reactive(new Set<string>());
+    watch(() => props.modelValue, name => { if (name) seen.add(name); }, { immediate: true });
     provide(kjunTabsKey, {
+      drawn: name => !props.lazy || seen.has(name),
       selected: () => props.modelValue,
       tabId: name => `${listId}-tab-${name}`,
       panelId: name => `${listId}-tabpanel-${name}`,
@@ -90,8 +106,27 @@ export const KjunTabs = defineComponent({
     const focused = ref<string | null>(null), visible = ref(false), hovered = ref<string | null>(null), within = ref(false);
     let stop: (() => void) | undefined, uninstall: (() => void) | undefined;
     const select = (name: string) => { if (name !== props.modelValue) change(name); };
-    onMounted(() => { uninstall = installFocusVisible(document); if (list.value) stop = manageTabList(list.value, select); });
-    onBeforeUnmount(() => { stop?.(); uninstall?.(); clear(); });
+    let fade: { destroy: () => void } | undefined, revealed = false;
+    // The selected tab is scrolled into the track when it changes, and at once on the first render.
+    const reveal = () => {
+      const track = group.value, tab = track?.querySelector<HTMLElement>('[role="tab"][aria-selected="true"]');
+      if (!track || !tab) return;
+      revealTab(track, tab, tokens.extensions.scrollFade.width, revealed);
+      revealed = true;
+    };
+    onMounted(() => {
+      uninstall = installFocusVisible(document);
+      if (list.value) stop = manageTabList(list.value, select);
+      // An overflowing tab list fades at the edges that have more tabs past them, like KjunScrollFade.
+      const track = group.value;
+      if (track && typeof ResizeObserver !== "undefined") fade = trackScrollFade(track, () => "horizontal", edges => {
+        track.toggleAttribute("data-fade-start", edges.start);
+        track.toggleAttribute("data-fade-end", edges.end);
+      });
+      reveal();
+    });
+    watch(() => props.modelValue, reveal, { flush: "post" });
+    onBeforeUnmount(() => { stop?.(); uninstall?.(); fade?.destroy(); clear(); });
 
     let timer: ReturnType<typeof setTimeout> | undefined, press: { name: string; x: number; y: number } | null = null;
     const canOpenMenu = (name: string) => !!props.onTabMenu && tabs.value.some(tab => tab.name === name && !tab.disabled);
@@ -100,9 +135,10 @@ export const KjunTabs = defineComponent({
 
     return () => {
       const content = slots.default?.() as VNode[] | undefined;
-      // Pane props come from this render's slot; keep the list in step without another render pass.
+      // Pane props come from this render's slot. The render reads fromSlot, not panes, so updating panes here
+      // only wakes the watchers (initial tab, pending menu) and never schedules another render.
       const fromSlot = paneItems(content);
-      if (JSON.stringify(fromSlot) !== JSON.stringify(panes.value)) panes.value = fromSlot;
+      if (!samePanes(fromSlot, panes.value)) panes.value = fromSlot;
       const panelNames = new Set(fromSlot.map(pane => pane.name));
       const tabList = props.items.length ? props.items : fromSlot;
       return (
@@ -214,7 +250,7 @@ export const KjunTabPane = defineComponent({
         <div ref={panel} class="kjun-tab-panel" id={active ? tabs?.panelId(props.name) : undefined} role={active ? "tabpanel" : undefined}
           aria-labelledby={active ? tabs?.tabId(props.name) : undefined} inert={!active} data-inert={active ? undefined : "true"}
           style={{ display: active ? undefined : "none" }}>
-          {slots.default?.()}
+          {tabs?.drawn(props.name) === false ? null : slots.default?.()}
         </div>
       );
     };

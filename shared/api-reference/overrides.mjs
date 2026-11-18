@@ -19,11 +19,16 @@ set("Popover Tooltip", {
   panelClass: "팝업 내용에 적용할 클래스입니다. Popover는 dialog, Tooltip은 말풍선에 적용하며 트리거에는 적용하지 않습니다.",
   panelStyle: "팝업 내용의 스타일입니다. Popover는 dialog, Tooltip은 말풍선에 적용합니다. 일반 class·style은 트리거 영역에 적용합니다.",
 }, "vue3");
-// Web only: Native has no sticky positioning; the app's ScrollView (stickyHeaderIndices) owns sticky headers there.
 for (const platform of ["vue3", "react"]) set("Tabs", {
   stickyHeader: "가장 가까운 스크롤 컨테이너에서 탭 헤더를 고정합니다. 패널은 기존 탭 안에 유지되어 키보드 이동·aria-controls 연결이 보존됩니다.",
   stickyOffset: "고정 헤더의 위쪽 간격입니다. 숫자는 px, 문자열은 CSS 길이이며 기본값은 0입니다. stickyHeader=true일 때 적용합니다.",
 }, platform);
+// Native Web sticks with position: sticky; iOS and Android have no sticky view, so the app's ScrollView owns it there.
+set("Tabs", {
+  stickyHeader: "Native Web에서 가장 가까운 스크롤 영역에 탭 헤더를 고정합니다. iOS·Android에는 스스로 고정되는 뷰가 없으므로 탭 막대를 부모 ScrollView의 stickyHeaderIndices에 넣으세요.",
+  stickyOffset: { type: "number", summary: "Native Web 고정 헤더의 위쪽 간격(pt)입니다. 기본값은 0이며 stickyHeader=true일 때 적용합니다." },
+}, "native");
+set("Tabs", { lazy: "각 TabPane의 내용을 그 탭을 처음 고를 때 그립니다. 한 번 그린 패널은 다른 탭으로 가도 숨긴 채 상태를 지킵니다. 차트·표처럼 무거운 탭이 여럿일 때 첫 화면 비용을 줄입니다. 기본값 false는 모든 패널을 처음부터 그립니다." });
 set("TabPane", { badge: { type: "string | number | null", summary: "null·undefined는 배지를 숨기고 숫자 0은 표시합니다." } }, "vue3");
 set("KpiRow", { items: "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. clickable 또는 href 항목은 값 줄 끝에 chevron을 그립니다. href 항목은 실제 링크(Native는 RN Web에서만 링크, 기기에서는 버튼)로 그리고, 클릭 콜백·item-click에 세 번째 인자로 이벤트를 넘겨 라우터가 preventDefault할 수 있게 합니다. Enter는 한 번만(자동 반복 무시), Space는 키를 뗄 때 동작합니다. 숫자는 표시 자릿수로 반올림한 값으로 방향 색을 정합니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다." });
 set("Progress", {

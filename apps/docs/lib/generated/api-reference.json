@@ -22517,7 +22517,7 @@
             "required": false,
             "default": "\"default\"",
             "description": "",
-            "summary": "표면의 배경·전경·테두리 색상 역할을 선택합니다. 모두 단색 채움이고 glass만 반투명입니다. default가 아닌 색 표면(muted·accent·success·warning·danger·subtle·brand) 안의 배지는 surface 색 바탕으로 그려 표면과 구분합니다. muted는 흰(surface) 영역 안에 놓을 때 쓰고, 페이지 바탕 위에는 default를 씁니다. border·elevation은 독립적으로 적용됩니다.",
+            "summary": "표면의 배경·전경·테두리 색상 역할을 선택합니다. 모두 단색 채움이고 glass만 반투명입니다. default가 아닌 색 표면(muted·accent·success·warning·danger·subtle·brand) 안의 배지는 surface 색 바탕으로 그려 표면과 구분합니다. brand 표면 안의 primary·link 버튼은 brand 색 대신 brandAction 역할(기본: onBrand 바탕·brand 글자, link는 onBrand 글자)로 그려 표면에 묻히지 않게 합니다. muted는 흰(surface) 영역 안에 놓을 때 쓰고, 페이지 바탕 위에는 default를 씁니다. border·elevation은 독립적으로 적용됩니다.",
             "source": "packages/vue3/src/card.tsx"
           },
           {
@@ -22587,7 +22587,7 @@
             "required": false,
             "default": "—",
             "description": "Makes the whole card one link (an a element), such as a card that opens a page. Like pressable, no buttons or links inside.\nA router can take",
-            "summary": "카드 전체를 하나의 링크(a 요소)로 만듭니다. 다른 페이지로 가는 카드에 씁니다. pressable처럼 hover 상승·누름·초점 링이 생기며, 안에 버튼·링크를 넣지 마세요. 라우터를 쓰면 클릭 처리에서 기본 이동을 막고 라우터로 이동하세요.",
+            "summary": "카드 전체를 하나의 링크(a 요소)로 만듭니다. 다른 페이지로 가는 카드에 씁니다. pressable처럼 hover 상승·누름·초점 링이 생기고, 제목이 있고 headerActions가 없으면 헤더 끝에 20px 오른쪽 화살표(text-tertiary, hover에서 text-secondary)를 그려 링크임을 보여 줍니다. 안에 버튼·링크를 넣지 마세요. 라우터를 쓰면 클릭 처리에서 기본 이동을 막고 라우터로 이동하세요.",
             "source": "packages/vue3/src/card.tsx"
           },
           {
@@ -22735,7 +22735,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "헤더 오른쪽 행동입니다. 제목 첫 줄에 맞춰 놓이고(제목이 두 줄이어도), 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
+            "summary": "헤더 오른쪽 행동입니다. 제목 첫 줄에 맞춰 놓이고(제목이 두 줄이어도), 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 본문과 같은 줄 끝에 세로 가운데로 두고(본문과 16px), 본문이 160px보다 좁아지면 본문 위 줄 끝으로 올립니다. 미디어나 footer가 있으면 헤더 줄 끝에 둡니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -22807,7 +22807,7 @@
             "required": false,
             "default": "\"default\"",
             "description": "",
-            "summary": "표면의 배경·전경·테두리 색상 역할을 선택합니다. 모두 단색 채움이고 glass만 반투명입니다. default가 아닌 색 표면(muted·accent·success·warning·danger·subtle·brand) 안의 배지는 surface 색 바탕으로 그려 표면과 구분합니다. muted는 흰(surface) 영역 안에 놓을 때 쓰고, 페이지 바탕 위에는 default를 씁니다. border·elevation은 독립적으로 적용됩니다.",
+            "summary": "표면의 배경·전경·테두리 색상 역할을 선택합니다. 모두 단색 채움이고 glass만 반투명입니다. default가 아닌 색 표면(muted·accent·success·warning·danger·subtle·brand) 안의 배지는 surface 색 바탕으로 그려 표면과 구분합니다. brand 표면 안의 primary·link 버튼은 brand 색 대신 brandAction 역할(기본: onBrand 바탕·brand 글자, link는 onBrand 글자)로 그려 표면에 묻히지 않게 합니다. muted는 흰(surface) 영역 안에 놓을 때 쓰고, 페이지 바탕 위에는 default를 씁니다. border·elevation은 독립적으로 적용됩니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -22859,7 +22859,7 @@
             "required": false,
             "default": "—",
             "description": "Makes the whole card one link (an a element), such as a card that opens a page. Like pressable, no buttons or links inside.\nA router can take onClick: call event.preventDefault() and navigate.",
-            "summary": "카드 전체를 하나의 링크(a 요소)로 만듭니다. 다른 페이지로 가는 카드에 씁니다. pressable처럼 hover 상승·누름·초점 링이 생기며, 안에 버튼·링크를 넣지 마세요. 라우터를 쓰면 클릭 처리에서 기본 이동을 막고 라우터로 이동하세요.",
+            "summary": "카드 전체를 하나의 링크(a 요소)로 만듭니다. 다른 페이지로 가는 카드에 씁니다. pressable처럼 hover 상승·누름·초점 링이 생기고, 제목이 있고 headerActions가 없으면 헤더 끝에 20px 오른쪽 화살표(text-tertiary, hover에서 text-secondary)를 그려 링크임을 보여 줍니다. 안에 버튼·링크를 넣지 마세요. 라우터를 쓰면 클릭 처리에서 기본 이동을 막고 라우터로 이동하세요.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -23029,7 +23029,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "헤더 오른쪽 행동입니다. 제목 첫 줄에 맞춰 놓이고(제목이 두 줄이어도), 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
+            "summary": "헤더 오른쪽 행동입니다. 제목 첫 줄에 맞춰 놓이고(제목이 두 줄이어도), 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 본문과 같은 줄 끝에 세로 가운데로 두고(본문과 16px), 본문이 160px보다 좁아지면 본문 위 줄 끝으로 올립니다. 미디어나 footer가 있으면 헤더 줄 끝에 둡니다.",
             "source": "packages/native/src/card.tsx"
           },
           {
@@ -23101,7 +23101,7 @@
             "required": false,
             "default": "\"default\"",
             "description": "",
-            "summary": "표면의 배경·전경·테두리 색상 역할을 선택합니다. 모두 단색 채움이고 glass만 반투명입니다. default가 아닌 색 표면(muted·accent·success·warning·danger·subtle·brand) 안의 배지는 surface 색 바탕으로 그려 표면과 구분합니다. muted는 흰(surface) 영역 안에 놓을 때 쓰고, 페이지 바탕 위에는 default를 씁니다. border·elevation은 독립적으로 적용됩니다.",
+            "summary": "표면의 배경·전경·테두리 색상 역할을 선택합니다. 모두 단색 채움이고 glass만 반투명입니다. default가 아닌 색 표면(muted·accent·success·warning·danger·subtle·brand) 안의 배지는 surface 색 바탕으로 그려 표면과 구분합니다. brand 표면 안의 primary·link 버튼은 brand 색 대신 brandAction 역할(기본: onBrand 바탕·brand 글자, link는 onBrand 글자)로 그려 표면에 묻히지 않게 합니다. muted는 흰(surface) 영역 안에 놓을 때 쓰고, 페이지 바탕 위에는 default를 씁니다. border·elevation은 독립적으로 적용됩니다.",
             "source": "packages/native/src/card.tsx"
           },
           {
@@ -25901,6 +25901,15 @@
             "source": "packages/vue3/src/tabs.tsx"
           },
           {
+            "name": "lazy",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Each KjunTabPane draws its content the first time its tab is selected, then keeps it (hidden) like the others.",
+            "summary": "각 TabPane의 내용을 그 탭을 처음 고를 때 그립니다. 한 번 그린 패널은 다른 탭으로 가도 숨긴 채 상태를 지킵니다. 차트·표처럼 무거운 탭이 여럿일 때 첫 화면 비용을 줄입니다. 기본값 false는 모든 패널을 처음부터 그립니다.",
+            "source": "packages/vue3/src/tabs.tsx"
+          },
+          {
             "name": "ariaLabel",
             "type": "string",
             "required": false,
@@ -26047,6 +26056,15 @@
             "source": "packages/react/src/tabs.tsx"
           },
           {
+            "name": "lazy",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Each TabPane draws its content the first time its tab is selected, then keeps it (hidden) like the others.",
+            "summary": "각 TabPane의 내용을 그 탭을 처음 고를 때 그립니다. 한 번 그린 패널은 다른 탭으로 가도 숨긴 채 상태를 지킵니다. 차트·표처럼 무거운 탭이 여럿일 때 첫 화면 비용을 줄입니다. 기본값 false는 모든 패널을 처음부터 그립니다.",
+            "source": "packages/react/src/tabs.tsx"
+          },
+          {
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
@@ -26162,6 +26180,33 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
+            "source": "packages/native/src/tabs.tsx"
+          },
+          {
+            "name": "stickyHeader",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Native Web keeps the header inside its scroll container while the panels scroll. On iOS and Android, put the\ntab bar in the parent ScrollView's stickyHeaderIndices instead: a view cannot stick on its own there.",
+            "summary": "Native Web에서 가장 가까운 스크롤 영역에 탭 헤더를 고정합니다. iOS·Android에는 스스로 고정되는 뷰가 없으므로 탭 막대를 부모 ScrollView의 stickyHeaderIndices에 넣으세요.",
+            "source": "packages/native/src/tabs.tsx"
+          },
+          {
+            "name": "stickyOffset",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Top gap of the sticky header on Native Web, in points.",
+            "summary": "Native Web 고정 헤더의 위쪽 간격(pt)입니다. 기본값은 0이며 stickyHeader=true일 때 적용합니다.",
+            "source": "packages/native/src/tabs.tsx"
+          },
+          {
+            "name": "lazy",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Each TabPane draws its content the first time its tab is selected, then keeps it (hidden) like the others.",
+            "summary": "각 TabPane의 내용을 그 탭을 처음 고를 때 그립니다. 한 번 그린 패널은 다른 탭으로 가도 숨긴 채 상태를 지킵니다. 차트·표처럼 무거운 탭이 여럿일 때 첫 화면 비용을 줄입니다. 기본값 false는 모든 패널을 처음부터 그립니다.",
             "source": "packages/native/src/tabs.tsx"
           },
           {
@@ -46835,21 +46880,30 @@
             "source": "packages/vue3/src/split-pane.tsx"
           },
           {
+            "name": "sizeUnit",
+            "type": "SplitUnit",
+            "required": false,
+            "default": "\"ratio\"",
+            "description": "\"ratio\": sizes are the first pane's share (0–1) of the room beside the handle, so the split keeps its proportion as\nthe container resizes. \"px\": sizes are the first pane's pixels, so a side list keeps its width.",
+            "summary": "크기 값의 단위입니다. ratio(기본값)는 경계를 뺀 공간에서 첫 패널이 차지하는 비율(0~1)이라 컨테이너가 커지면 함께 커집니다. px는 첫 패널의 픽셀이라 창 폭이 바뀌어도 사이드 목록이 같은 폭을 지킵니다. size·defaultSize와 크기 콜백 값이 모두 이 단위를 따릅니다.",
+            "source": "packages/vue3/src/split-pane.tsx"
+          },
+          {
             "name": "size",
             "type": "number",
             "required": false,
             "default": "—",
-            "description": "v-model:size. The first pane's share (0–1) of the room beside the handle; without it the split keeps its own.",
-            "summary": "제어할 때 첫 패널이 차지하는 비율(0~1)입니다. 경계를 뺀 공간 기준이며, 한계를 벗어난 값은 화면에서 가장 가까운 허용 크기로 그립니다.",
+            "description": "v-model:size. The first pane's size in sizeUnit; without it the split keeps its own.",
+            "summary": "제어할 때 첫 패널의 크기입니다(sizeUnit 단위). 한계를 벗어난 값은 화면에서 가장 가까운 허용 크기로 그립니다.",
             "source": "packages/vue3/src/split-pane.tsx"
           },
           {
             "name": "defaultSize",
             "type": "number",
             "required": false,
-            "default": "0.5",
-            "description": "The starting share without size, and the share Enter restores.",
-            "summary": "제어하지 않을 때의 처음 비율이자 Enter가 되돌리는 비율입니다. 기본값 0.5입니다.",
+            "default": "—",
+            "description": "The starting size without size, and the size a double press (or Enter, when the pane does not collapse) restores. Half the room without it.",
+            "summary": "제어하지 않을 때의 처음 크기이자 손잡이를 두 번 누르면(접히지 않는 패널은 Enter도) 되돌아가는 크기입니다(sizeUnit 단위). 생략하면 공간의 절반입니다.",
             "source": "packages/vue3/src/split-pane.tsx"
           },
           {
@@ -46857,7 +46911,7 @@
             "type": "SplitMin",
             "required": false,
             "default": "—",
-            "description": "Smallest pixels of the first and second pane. A minimum beats the share and the maximums.",
+            "description": "Smallest pixels of the first and second pane. A minimum beats the size and the maximums.",
             "summary": "[첫 패널, 둘째 패널]의 최소 크기(px)입니다. 기본값 [0, 0]입니다. 비율이나 maxSize와 부딪치면 최소 크기가 이기고, 컨테이너가 두 최소 크기의 합보다 좁으면 첫 패널의 최소 크기를 지킵니다.",
             "source": "packages/vue3/src/split-pane.tsx"
           },
@@ -46887,6 +46941,42 @@
             "description": "Keeps the split where it is: the handle takes no pointer, key or focus.",
             "summary": "경계를 고정합니다. 손잡이는 포커스·키·끌기를 받지 않고 막대가 옅은 테두리색이 됩니다. 기본값 false입니다.",
             "source": "packages/vue3/src/split-pane.tsx"
+          },
+          {
+            "name": "collapsible",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "The first pane collapses to collapsedSize when dragged past half its minimum, or with Enter or Home.",
+            "summary": "첫 패널을 접을 수 있게 합니다. 최소 크기와 접힌 크기의 중간보다 작게 끌면 접히고 다시 끌어 넓히면 펼쳐집니다. Enter는 접기와 펼치기를 오가고, Home은 접으며, 접힌 상태에서 증가 키는 접기 전 크기로 펼칩니다. 기본값 false입니다.",
+            "source": "packages/vue3/src/split-pane.tsx"
+          },
+          {
+            "name": "collapsedSize",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "Pixels a collapsed first pane keeps, e.g. 48 for an icon rail the app draws in the first slot. 0 hides the pane.",
+            "summary": "접힌 첫 패널이 남기는 크기(px)입니다. 기본값 0이면 패널이 사라지고 읽기·탭 순서에서도 빠집니다. 48처럼 주면 아이콘 레일이 남으며, 레일 내용은 앱이 collapsed 값을 보고 first에 그립니다.",
+            "source": "packages/vue3/src/split-pane.tsx"
+          },
+          {
+            "name": "collapsed",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "v-model:collapsed. Without it the split keeps its own, starting from defaultCollapsed.",
+            "summary": "제어할 때 첫 패널의 접힘 상태입니다. 접는 조작은 변경 요청을 보내고, 소비자가 이 값을 갱신해야 접힙니다.",
+            "source": "packages/vue3/src/split-pane.tsx"
+          },
+          {
+            "name": "defaultCollapsed",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "제어하지 않을 때 접힌 채로 시작합니다. 기본값 false입니다.",
+            "source": "packages/vue3/src/split-pane.tsx"
           }
         ],
         "events": [
@@ -46894,15 +46984,15 @@
             "name": "update:size",
             "source": "packages/vue3/src/split-pane.tsx",
             "type": "이벤트",
-            "summary": "첫 패널의 새 비율을 알립니다.",
+            "summary": "첫 패널의 새 크기를 알립니다.",
             "details": [
               {
                 "label": "발생 시점",
-                "text": "끄는 동안 값이 바뀔 때마다, 그리고 화살표·Home·End·Enter로 옮길 때"
+                "text": "끄는 동안 값이 바뀔 때마다, 화살표·Home·End·Enter로 옮길 때, 손잡이를 두 번 눌러 기본 크기로 돌릴 때"
               },
               {
                 "label": "전달값",
-                "text": "number: 한계를 적용한 0~1 비율(소수 넷째 자리까지)"
+                "text": "number: 한계를 적용한 크기. ratio는 0~1 비율(소수 넷째 자리까지), px는 정수 픽셀"
               },
               {
                 "label": "반환값",
@@ -46927,7 +47017,7 @@
               },
               {
                 "label": "전달값",
-                "text": "number: 마지막 0~1 비율"
+                "text": "number: 마지막 크기(sizeUnit 단위)"
               },
               {
                 "label": "반환값",
@@ -46936,6 +47026,31 @@
               {
                 "label": "상태 책임",
                 "text": "크기를 저장한다면 이 시점에 저장하세요. 저장과 복원은 소비자가 맡습니다."
+              }
+            ],
+            "example": "/components/split-pane#preview"
+          },
+          {
+            "name": "update:collapsed",
+            "source": "packages/vue3/src/split-pane.tsx",
+            "type": "이벤트",
+            "summary": "첫 패널을 접거나 펼치라는 요청입니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "끌어서 접힘 경계를 지날 때, Enter·Home·증가 키, 손잡이를 두 번 누를 때"
+              },
+              {
+                "label": "전달값",
+                "text": "boolean: 바뀔 접힘 상태"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "제어할 때는 소비자가 collapsed를 갱신합니다. 접힘 상태를 저장하려면 이 시점에 저장하세요."
               }
             ],
             "example": "/components/split-pane#preview"
@@ -46980,7 +47095,7 @@
           }
         ],
         "ownership": [
-          "크기는 첫 패널이 경계 옆 공간에서 차지하는 비율(0~1)입니다. 직접 관리하거나 size와 onSizeChange(Vue v-model:size)로 앱이 관리합니다. 끌기를 놓거나 키로 옮기면 onChangeCommit(Vue change)이 한 번 발생하며, 크기 저장은 이때 앱이 합니다. 경계에 포커스를 두면 화살표 키로 16px씩, Home·End로 한계까지 옮기고 Enter로 defaultSize로 돌아갑니다.",
+          "크기는 첫 패널이 경계 옆 공간에서 차지하는 비율(0~1)입니다. 창 폭이 바뀌어도 사이드 목록이 같은 폭을 지켜야 하면 sizeUnit=\"px\"로 픽셀을 씁니다. 직접 관리하거나 size와 onSizeChange(Vue v-model:size)로 앱이 관리합니다. 끌기를 놓거나 키로 옮기면 onChangeCommit(Vue change)이 한 번 발생하며, 크기 저장은 이때 앱이 합니다. 경계에 포커스를 두면 화살표 키로 16px씩, Home·End로 한계까지 옮기고 Enter로 defaultSize로 돌아갑니다. 경계를 두 번 눌러도 defaultSize로 돌아갑니다. collapsible을 주면 첫 패널을 접을 수 있습니다. 최소 크기의 절반쯤보다 작게 끌면 collapsedSize로 접히고, Enter가 접기와 펼치기를 오가며 Home이 접습니다. collapsedSize를 48처럼 주면 접힌 자리에 아이콘 레일이 남으므로, collapsed(Vue v-model:collapsed) 값을 보고 first에 레일을 그리세요.",
           "웹은 경계를 separator 역할로 그리고 현재·최소·최대 크기를 백분율로 알립니다. 누르는 영역은 20px이고 터치 화면에서는 44px입니다. Native는 경계를 조절 컨트롤로 알리고 스크린리더의 늘리기·줄이기 동작으로 16pt씩 옮기며, 키보드 조작은 Native Web에서만 동작합니다."
         ],
         "types": []
@@ -46997,21 +47112,30 @@
             "source": "packages/react/src/split-pane.tsx"
           },
           {
+            "name": "sizeUnit",
+            "type": "SplitUnit | undefined",
+            "required": false,
+            "default": "\"ratio\"",
+            "description": "\"ratio\": sizes are the first pane's share (0–1) of the room beside the handle, so the split keeps its proportion as\nthe container resizes. \"px\": sizes are the first pane's pixels, so a side list keeps its width.",
+            "summary": "크기 값의 단위입니다. ratio(기본값)는 경계를 뺀 공간에서 첫 패널이 차지하는 비율(0~1)이라 컨테이너가 커지면 함께 커집니다. px는 첫 패널의 픽셀이라 창 폭이 바뀌어도 사이드 목록이 같은 폭을 지킵니다. size·defaultSize와 크기 콜백 값이 모두 이 단위를 따릅니다.",
+            "source": "packages/react/src/split-pane.tsx"
+          },
+          {
             "name": "size",
             "type": "number | undefined",
             "required": false,
             "default": "—",
-            "description": "Controlled share (0–1) of the room beside the handle that the first pane takes; pair with onSizeChange.",
-            "summary": "제어할 때 첫 패널이 차지하는 비율(0~1)입니다. 경계를 뺀 공간 기준이며, 한계를 벗어난 값은 화면에서 가장 가까운 허용 크기로 그립니다.",
+            "description": "Controlled size of the first pane in sizeUnit; pair with onSizeChange.",
+            "summary": "제어할 때 첫 패널의 크기입니다(sizeUnit 단위). 한계를 벗어난 값은 화면에서 가장 가까운 허용 크기로 그립니다.",
             "source": "packages/react/src/split-pane.tsx"
           },
           {
             "name": "defaultSize",
             "type": "number | undefined",
             "required": false,
-            "default": "0.5",
-            "description": "The starting share without size, and the share Enter restores.",
-            "summary": "제어하지 않을 때의 처음 비율이자 Enter가 되돌리는 비율입니다. 기본값 0.5입니다.",
+            "default": "—",
+            "description": "The starting size without size, and the size a double press (or Enter, when the pane does not collapse) restores. Half the room without it.",
+            "summary": "제어하지 않을 때의 처음 크기이자 손잡이를 두 번 누르면(접히지 않는 패널은 Enter도) 되돌아가는 크기입니다(sizeUnit 단위). 생략하면 공간의 절반입니다.",
             "source": "packages/react/src/split-pane.tsx"
           },
           {
@@ -47019,7 +47143,7 @@
             "type": "SplitMin | undefined",
             "required": false,
             "default": "—",
-            "description": "Smallest pixels of the first and second pane. A minimum beats the share and the maximums.",
+            "description": "Smallest pixels of the first and second pane. A minimum beats the size and the maximums.",
             "summary": "[첫 패널, 둘째 패널]의 최소 크기(px)입니다. 기본값 [0, 0]입니다. 비율이나 maxSize와 부딪치면 최소 크기가 이기고, 컨테이너가 두 최소 크기의 합보다 좁으면 첫 패널의 최소 크기를 지킵니다.",
             "source": "packages/react/src/split-pane.tsx"
           },
@@ -47051,20 +47175,84 @@
             "source": "packages/react/src/split-pane.tsx"
           },
           {
+            "name": "collapsible",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The first pane collapses to collapsedSize when dragged past half its minimum, or with Enter or Home.",
+            "summary": "첫 패널을 접을 수 있게 합니다. 최소 크기와 접힌 크기의 중간보다 작게 끌면 접히고 다시 끌어 넓히면 펼쳐집니다. Enter는 접기와 펼치기를 오가고, Home은 접으며, 접힌 상태에서 증가 키는 접기 전 크기로 펼칩니다. 기본값 false입니다.",
+            "source": "packages/react/src/split-pane.tsx"
+          },
+          {
+            "name": "collapsedSize",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Pixels a collapsed first pane keeps, e.g. 48 for an icon rail the app draws in first. 0 hides the pane.",
+            "summary": "접힌 첫 패널이 남기는 크기(px)입니다. 기본값 0이면 패널이 사라지고 읽기·탭 순서에서도 빠집니다. 48처럼 주면 아이콘 레일이 남으며, 레일 내용은 앱이 collapsed 값을 보고 first에 그립니다.",
+            "source": "packages/react/src/split-pane.tsx"
+          },
+          {
+            "name": "collapsed",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Controlled collapsed state; pair with onCollapsedChange.",
+            "summary": "제어할 때 첫 패널의 접힘 상태입니다. 접는 조작은 변경 요청을 보내고, 소비자가 이 값을 갱신해야 접힙니다.",
+            "source": "packages/react/src/split-pane.tsx"
+          },
+          {
+            "name": "defaultCollapsed",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "제어하지 않을 때 접힌 채로 시작합니다. 기본값 false입니다.",
+            "source": "packages/react/src/split-pane.tsx"
+          },
+          {
+            "name": "onCollapsedChange",
+            "type": "((collapsed: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "첫 패널을 접거나 펼치라는 요청입니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "끌어서 접힘 경계를 지날 때, Enter·Home·증가 키, 손잡이를 두 번 누를 때"
+              },
+              {
+                "label": "전달값",
+                "text": "boolean: 바뀔 접힘 상태"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "제어할 때는 소비자가 collapsed를 갱신합니다. 접힘 상태를 저장하려면 이 시점에 저장하세요."
+              }
+            ],
+            "source": "packages/react/src/split-pane.tsx",
+            "example": "/components/split-pane#preview"
+          },
+          {
             "name": "onSizeChange",
             "type": "((size: number) => void) | undefined",
             "required": false,
             "default": "—",
             "description": "Every step of a drag or key press.",
-            "summary": "첫 패널의 새 비율을 알립니다.",
+            "summary": "첫 패널의 새 크기를 알립니다.",
             "details": [
               {
                 "label": "발생 시점",
-                "text": "끄는 동안 값이 바뀔 때마다, 그리고 화살표·Home·End·Enter로 옮길 때"
+                "text": "끄는 동안 값이 바뀔 때마다, 화살표·Home·End·Enter로 옮길 때, 손잡이를 두 번 눌러 기본 크기로 돌릴 때"
               },
               {
                 "label": "전달값",
-                "text": "number: 한계를 적용한 0~1 비율(소수 넷째 자리까지)"
+                "text": "number: 한계를 적용한 크기. ratio는 0~1 비율(소수 넷째 자리까지), px는 정수 픽셀"
               },
               {
                 "label": "반환값",
@@ -47092,7 +47280,7 @@
               },
               {
                 "label": "전달값",
-                "text": "number: 마지막 0~1 비율"
+                "text": "number: 마지막 크기(sizeUnit 단위)"
               },
               {
                 "label": "반환값",
@@ -47177,7 +47365,7 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "크기는 첫 패널이 경계 옆 공간에서 차지하는 비율(0~1)입니다. 직접 관리하거나 size와 onSizeChange(Vue v-model:size)로 앱이 관리합니다. 끌기를 놓거나 키로 옮기면 onChangeCommit(Vue change)이 한 번 발생하며, 크기 저장은 이때 앱이 합니다. 경계에 포커스를 두면 화살표 키로 16px씩, Home·End로 한계까지 옮기고 Enter로 defaultSize로 돌아갑니다.",
+          "크기는 첫 패널이 경계 옆 공간에서 차지하는 비율(0~1)입니다. 창 폭이 바뀌어도 사이드 목록이 같은 폭을 지켜야 하면 sizeUnit=\"px\"로 픽셀을 씁니다. 직접 관리하거나 size와 onSizeChange(Vue v-model:size)로 앱이 관리합니다. 끌기를 놓거나 키로 옮기면 onChangeCommit(Vue change)이 한 번 발생하며, 크기 저장은 이때 앱이 합니다. 경계에 포커스를 두면 화살표 키로 16px씩, Home·End로 한계까지 옮기고 Enter로 defaultSize로 돌아갑니다. 경계를 두 번 눌러도 defaultSize로 돌아갑니다. collapsible을 주면 첫 패널을 접을 수 있습니다. 최소 크기의 절반쯤보다 작게 끌면 collapsedSize로 접히고, Enter가 접기와 펼치기를 오가며 Home이 접습니다. collapsedSize를 48처럼 주면 접힌 자리에 아이콘 레일이 남으므로, collapsed(Vue v-model:collapsed) 값을 보고 first에 레일을 그리세요.",
           "웹은 경계를 separator 역할로 그리고 현재·최소·최대 크기를 백분율로 알립니다. 누르는 영역은 20px이고 터치 화면에서는 44px입니다. Native는 경계를 조절 컨트롤로 알리고 스크린리더의 늘리기·줄이기 동작으로 16pt씩 옮기며, 키보드 조작은 Native Web에서만 동작합니다."
         ],
         "types": []
@@ -47194,21 +47382,30 @@
             "source": "packages/native/src/split-pane.tsx"
           },
           {
+            "name": "sizeUnit",
+            "type": "SplitUnit | undefined",
+            "required": false,
+            "default": "\"ratio\"",
+            "description": "\"ratio\": sizes are the first pane's share (0–1) of the room beside the handle, so the split keeps its proportion as\nthe container resizes. \"px\": sizes are the first pane's points, so a side list keeps its width.",
+            "summary": "크기 값의 단위입니다. ratio(기본값)는 경계를 뺀 공간에서 첫 패널이 차지하는 비율(0~1)이라 컨테이너가 커지면 함께 커집니다. px는 첫 패널의 픽셀이라 창 폭이 바뀌어도 사이드 목록이 같은 폭을 지킵니다. size·defaultSize와 크기 콜백 값이 모두 이 단위를 따릅니다.",
+            "source": "packages/native/src/split-pane.tsx"
+          },
+          {
             "name": "size",
             "type": "number | undefined",
             "required": false,
             "default": "—",
-            "description": "Controlled share (0–1) of the room beside the handle that the first pane takes; pair with onSizeChange.",
-            "summary": "제어할 때 첫 패널이 차지하는 비율(0~1)입니다. 경계를 뺀 공간 기준이며, 한계를 벗어난 값은 화면에서 가장 가까운 허용 크기로 그립니다.",
+            "description": "Controlled size of the first pane in sizeUnit; pair with onSizeChange.",
+            "summary": "제어할 때 첫 패널의 크기입니다(sizeUnit 단위). 한계를 벗어난 값은 화면에서 가장 가까운 허용 크기로 그립니다.",
             "source": "packages/native/src/split-pane.tsx"
           },
           {
             "name": "defaultSize",
             "type": "number | undefined",
             "required": false,
-            "default": "0.5",
-            "description": "The starting share without size, and the share Enter restores on Native Web.",
-            "summary": "제어하지 않을 때의 처음 비율이자 Enter가 되돌리는 비율입니다. 기본값 0.5입니다.",
+            "default": "—",
+            "description": "The starting size without size, and the size a double tap (or Enter on Native Web, when the pane does not collapse) restores. Half the room without it.",
+            "summary": "제어하지 않을 때의 처음 크기이자 손잡이를 두 번 누르면(접히지 않는 패널은 Enter도) 되돌아가는 크기입니다(sizeUnit 단위). 생략하면 공간의 절반입니다.",
             "source": "packages/native/src/split-pane.tsx"
           },
           {
@@ -47216,7 +47413,7 @@
             "type": "SplitMin | undefined",
             "required": false,
             "default": "—",
-            "description": "Smallest points of the first and second pane. A minimum beats the share and the maximums.",
+            "description": "Smallest points of the first and second pane. A minimum beats the size and the maximums.",
             "summary": "[첫 패널, 둘째 패널]의 최소 크기(px)입니다. 기본값 [0, 0]입니다. 비율이나 maxSize와 부딪치면 최소 크기가 이기고, 컨테이너가 두 최소 크기의 합보다 좁으면 첫 패널의 최소 크기를 지킵니다.",
             "source": "packages/native/src/split-pane.tsx"
           },
@@ -47248,20 +47445,84 @@
             "source": "packages/native/src/split-pane.tsx"
           },
           {
+            "name": "collapsible",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The first pane collapses to collapsedSize when dragged past half its minimum, with Enter or Home on Native Web, or a screen reader action.",
+            "summary": "첫 패널을 접을 수 있게 합니다. 최소 크기와 접힌 크기의 중간보다 작게 끌면 접히고 다시 끌어 넓히면 펼쳐집니다. Enter는 접기와 펼치기를 오가고, Home은 접으며, 접힌 상태에서 증가 키는 접기 전 크기로 펼칩니다. 기본값 false입니다.",
+            "source": "packages/native/src/split-pane.tsx"
+          },
+          {
+            "name": "collapsedSize",
+            "type": "number | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Points a collapsed first pane keeps, e.g. 48 for an icon rail the app draws in first. 0 hides the pane.",
+            "summary": "접힌 첫 패널이 남기는 크기(px)입니다. 기본값 0이면 패널이 사라지고 읽기·탭 순서에서도 빠집니다. 48처럼 주면 아이콘 레일이 남으며, 레일 내용은 앱이 collapsed 값을 보고 first에 그립니다.",
+            "source": "packages/native/src/split-pane.tsx"
+          },
+          {
+            "name": "collapsed",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Controlled collapsed state; pair with onCollapsedChange.",
+            "summary": "제어할 때 첫 패널의 접힘 상태입니다. 접는 조작은 변경 요청을 보내고, 소비자가 이 값을 갱신해야 접힙니다.",
+            "source": "packages/native/src/split-pane.tsx"
+          },
+          {
+            "name": "defaultCollapsed",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "",
+            "summary": "제어하지 않을 때 접힌 채로 시작합니다. 기본값 false입니다.",
+            "source": "packages/native/src/split-pane.tsx"
+          },
+          {
+            "name": "onCollapsedChange",
+            "type": "((collapsed: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "첫 패널을 접거나 펼치라는 요청입니다.",
+            "details": [
+              {
+                "label": "발생 시점",
+                "text": "끌어서 접힘 경계를 지날 때, Enter·Home·증가 키, 손잡이를 두 번 누를 때, 화면 낭독기의 활성화 동작"
+              },
+              {
+                "label": "전달값",
+                "text": "boolean: 바뀔 접힘 상태"
+              },
+              {
+                "label": "반환값",
+                "text": "반환값을 사용하지 않습니다."
+              },
+              {
+                "label": "상태 책임",
+                "text": "제어할 때는 소비자가 collapsed를 갱신합니다. 접힘 상태를 저장하려면 이 시점에 저장하세요."
+              }
+            ],
+            "source": "packages/native/src/split-pane.tsx",
+            "example": "/components/split-pane#preview"
+          },
+          {
             "name": "onSizeChange",
             "type": "((size: number) => void) | undefined",
             "required": false,
             "default": "—",
             "description": "Every step of a drag, key press or screen reader adjustment.",
-            "summary": "첫 패널의 새 비율을 알립니다.",
+            "summary": "첫 패널의 새 크기를 알립니다.",
             "details": [
               {
                 "label": "발생 시점",
-                "text": "끄는 동안 값이 바뀔 때마다, 그리고 화살표·Home·End·Enter로 옮길 때"
+                "text": "끄는 동안 값이 바뀔 때마다, 화살표·Home·End·Enter로 옮길 때, 손잡이를 두 번 눌러 기본 크기로 돌릴 때"
               },
               {
                 "label": "전달값",
-                "text": "number: 한계를 적용한 0~1 비율(소수 넷째 자리까지)"
+                "text": "number: 한계를 적용한 크기. ratio는 0~1 비율(소수 넷째 자리까지), px는 정수 픽셀"
               },
               {
                 "label": "반환값",
@@ -47289,7 +47550,7 @@
               },
               {
                 "label": "전달값",
-                "text": "number: 마지막 0~1 비율"
+                "text": "number: 마지막 크기(sizeUnit 단위)"
               },
               {
                 "label": "반환값",
@@ -47356,7 +47617,7 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "크기는 첫 패널이 경계 옆 공간에서 차지하는 비율(0~1)입니다. 직접 관리하거나 size와 onSizeChange(Vue v-model:size)로 앱이 관리합니다. 끌기를 놓거나 키로 옮기면 onChangeCommit(Vue change)이 한 번 발생하며, 크기 저장은 이때 앱이 합니다. 경계에 포커스를 두면 화살표 키로 16px씩, Home·End로 한계까지 옮기고 Enter로 defaultSize로 돌아갑니다.",
+          "크기는 첫 패널이 경계 옆 공간에서 차지하는 비율(0~1)입니다. 창 폭이 바뀌어도 사이드 목록이 같은 폭을 지켜야 하면 sizeUnit=\"px\"로 픽셀을 씁니다. 직접 관리하거나 size와 onSizeChange(Vue v-model:size)로 앱이 관리합니다. 끌기를 놓거나 키로 옮기면 onChangeCommit(Vue change)이 한 번 발생하며, 크기 저장은 이때 앱이 합니다. 경계에 포커스를 두면 화살표 키로 16px씩, Home·End로 한계까지 옮기고 Enter로 defaultSize로 돌아갑니다. 경계를 두 번 눌러도 defaultSize로 돌아갑니다. collapsible을 주면 첫 패널을 접을 수 있습니다. 최소 크기의 절반쯤보다 작게 끌면 collapsedSize로 접히고, Enter가 접기와 펼치기를 오가며 Home이 접습니다. collapsedSize를 48처럼 주면 접힌 자리에 아이콘 레일이 남으므로, collapsed(Vue v-model:collapsed) 값을 보고 first에 레일을 그리세요.",
           "웹은 경계를 separator 역할로 그리고 현재·최소·최대 크기를 백분율로 알립니다. 누르는 영역은 20px이고 터치 화면에서는 44px입니다. Native는 경계를 조절 컨트롤로 알리고 스크린리더의 늘리기·줄이기 동작으로 16pt씩 옮기며, 키보드 조작은 Native Web에서만 동작합니다."
         ],
         "types": []

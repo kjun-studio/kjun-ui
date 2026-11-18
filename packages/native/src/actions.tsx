@@ -2,8 +2,8 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { typeStyle } from "./typography";
 import { tokens,type ButtonSize } from "@kjun-ui/tokens";
-import { useContext,useEffect,useId,useRef,useState,type ReactNode } from "react";
-import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
+import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
+import { ScrollFadeEdge } from "./scroll-fade-edge";
 import { sameEdges, scrollEdges, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
 import { AccessibilityInfo,Platform,ScrollView,View,type GestureResponderEvent,type ColorValue,type StyleProp,type ViewStyle } from "react-native";
 import { externalLinkIconName, safeExternalUrl } from "../../../shared/package-runtime/external-link";
@@ -333,29 +333,16 @@ export interface KjunScrollFadeProps {
 /** Fades whichever edge along `direction` still has content to scroll to, like Web, with a gradient into fadeColor. */
 export function KjunScrollFade({ children, direction = "horizontal", fadeColor, ariaLabel, style }: KjunScrollFadeProps) {
   const { colors } = useKjunStyles(), color = fadeColor ?? colors.surface;
-  const horizontal = direction === "horizontal", width = tokens.extensions.scrollFade.width;
+  const horizontal = direction === "horizontal";
   const ringRoom = tokens.states.focus.width + tokens.states.focus.offset;
   const box = useRef({ scrollLeft: 0, scrollTop: 0, clientWidth: 0, clientHeight: 0, scrollWidth: 0, scrollHeight: 0 });
   const [edges, setEdges] = useState<ScrollEdges>({ start: false, end: false });
-  const id = "kjun-scroll-fade-" + useId().replace(/:/g, "");
   const update = (next: Partial<typeof box.current>) => {
     box.current = { ...box.current, ...next };
     const found = scrollEdges(box.current, direction);
     setEdges(previous => sameEdges(previous, found) ? previous : found);
   };
-  const fade = (edge: "start" | "end") => (
-    <View pointerEvents="none" style={{ position: "absolute", ...(horizontal
-      ? { top: 0, bottom: 0, width, ...(edge === "start" ? { left: 0 } : { right: 0 }) }
-      : { left: 0, right: 0, height: width, ...(edge === "start" ? { top: 0 } : { bottom: 0 }) }) }}>
-      <Svg width="100%" height="100%">
-        <Defs><LinearGradient id={id + edge} x1="0%" y1="0%" x2={horizontal ? "100%" : "0%"} y2={horizontal ? "0%" : "100%"}>
-          <Stop offset="0" stopColor={color} stopOpacity={edge === "start" ? 1 : 0} />
-          <Stop offset="1" stopColor={color} stopOpacity={edge === "start" ? 0 : 1} />
-        </LinearGradient></Defs>
-        <Rect width="100%" height="100%" fill={`url(#${id + edge})`} />
-      </Svg>
-    </View>
-  );
+
   return (
     <View style={[{ flexGrow: 0, position: "relative" }, horizontal ? { maxWidth: "100%" } : { maxHeight: "100%" }, style]} accessibilityLabel={ariaLabel}
       {...(Platform.OS === "web" && ariaLabel ? { role: "region" as const } : {})}>
@@ -375,8 +362,8 @@ export function KjunScrollFade({ children, direction = "horizontal", fadeColor, 
       >
         {children}
       </ScrollView>
-      {edges.start ? fade("start") : null}
-      {edges.end ? fade("end") : null}
+      {edges.start ? <ScrollFadeEdge edge="start" horizontal={horizontal} color={color} /> : null}
+      {edges.end ? <ScrollFadeEdge edge="end" horizontal={horizontal} color={color} /> : null}
     </View>
   );
 }

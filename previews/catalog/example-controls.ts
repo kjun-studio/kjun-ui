@@ -323,7 +323,8 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
       });
     case "KjunTabs":
     case "KjunTabPane":
-      return h(
+      // Many tabs overflow the 320px box: the row scrolls, fades at the edges with more tabs and keeps the selected tab in view.
+      return h("Box", { width: settings.many ? 320 : undefined }, h(
         "KjunTabs",
         { ariaLabel: "예제 보기", value: get("tab", "one"), onValueChange: change("tab"), variant: settings.variant, density: settings.density, fullWidth: !!settings.fullWidth },
         [
@@ -334,8 +335,9 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
             { name: "blocked", label: "비활성 탭", disabled: true },
             "비활성 내용"
           ),
+          ...(settings.many ? [["archive", "보관"], ["trash", "휴지통"], ["shared", "공유됨"], ["starred", "중요"]].map(([name, label]) => h("KjunTabPane", { name, label }, label + " 내용")) : []),
         ]
-      );
+      ));
     case "KjunDropdown":
     case "KjunDropdownItem":
     case "KjunDropdownDivider":

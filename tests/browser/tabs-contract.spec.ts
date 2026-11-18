@@ -10,7 +10,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect.poll(() => lifecycle(page)).toEqual({ mounts: 2, unmounts: 0 });
     await page.getByRole('tab', { name: '둘째 탭', exact: true }).click();
     await expect(first).toHaveCount(0);
-    await expect(page.getByRole('tabpanel')).toHaveCount(1);
+    await expect(page.getByTestId('tabs').getByRole('tabpanel')).toHaveCount(1);
     await page.keyboard.press('Tab'); await expect(page.getByRole('textbox', { name: '둘째 초안' })).toBeFocused();
     await page.keyboard.press('Tab'); await expect(page.getByRole('button', { name: '둘째 카운터 0' })).toBeFocused();
     await page.keyboard.press('Tab'); await expect(page.locator('#after')).toBeFocused();
@@ -70,8 +70,80 @@ for (const platform of ['react', 'vue3', 'native']) {
     await press(); await page.clock.runFor(600); await release();
     await expect(menus).toHaveText(platform === 'native' ? '["one"]' : '["one","one"]');
     await press(); await configure(page, { shown: false });
-    await expect(page.getByRole('tab')).toHaveCount(0);
+    await expect(page.getByTestId('tabs').getByRole('tab')).toHaveCount(0);
     await page.clock.runFor(600); await release();
     await expect(menus).toHaveText(platform === 'native' ? '["one"]' : '["one","one"]');
+  });
+}
+
+for (const platform of ['react', 'vue3', 'native']) {
+  const web = platform !== 'native';
+  test(`${platform}: pressing the selected tab again reports no change`, async ({ page }) => {
+    await openFixture(page, platform, '', 'tabs-contract');
+    const changes = page.getByTestId('changes'), first = page.getByRole('tab', { name: '첫 탭', exact: true });
+    await first.click();
+    await first.press('Enter');
+    await expect(changes).toHaveText('[]');
+    await page.getByRole('tab', { name: '둘째 탭', exact: true }).click();
+    await expect(changes).toHaveText('["two"]');
+    await page.getByRole('tab', { name: '둘째 탭', exact: true }).click();
+    await expect(changes).toHaveText('["two"]');
+  });
+
+  test(`${platform}: an overflowing tab row keeps the selected tab in view and fades the edges with more tabs`, async ({ page }) => {
+    await openFixture(page, platform, '', 'tabs-contract');
+    const row = page.getByTestId('overflow'), list = row.getByRole('tablist', { name: '넘치는 탭' });
+    // The tab sits inside the 280px row; a tab between others also stays clear of the 24px fade. Web draws the fade
+    // on the track, which reaches the focus ring's room past the row; Native draws it on the row.
+    const inView = async (label: string, clear = 0) => {
+      const box = (await (web ? row.locator('.kjun-tabs-track') : row).boundingBox())!, tab = (await row.getByRole('tab', { name: label, exact: true }).boundingBox())!;
+      return tab.x >= box.x + clear - 1 && tab.x + tab.width <= box.x + box.width - clear + 1;
+    };
+    const track = row.locator('.kjun-tabs-track');
+    const scrollY = await page.evaluate(() => scrollY);
+    // The last tab starts selected: the row opens scrolled to it without moving the page.
+    await expect.poll(() => inView('여덟째')).toBe(true);
+    expect(await page.evaluate(() => scrollY)).toBe(scrollY);
+    if (web) {
+      await expect(track).toHaveAttribute('data-fade-start', '');
+      await expect(track).not.toHaveAttribute('data-fade-end', /.*/);
+    }
+    await page.evaluate(() => (window as any).configureTabContract({ overflow: 'a' }));
+    await expect.poll(() => inView('첫째')).toBe(true);
+    if (web) {
+      await expect(track).toHaveAttribute('data-fade-end', '');
+      await expect(track).not.toHaveAttribute('data-fade-start', /.*/);
+    }
+    await page.evaluate(() => (window as any).configureTabContract({ overflow: 'e' }));
+    await expect.poll(() => inView('다섯째', 24)).toBe(true);
+    if (web) {
+      await expect(track).toHaveAttribute('data-fade-start', '');
+      await expect(track).toHaveAttribute('data-fade-end', '');
+    }
+    await expect(list.getByRole('tab', { name: '다섯째', exact: true })).toHaveAttribute('aria-selected', 'true');
+  });
+
+  test(`${platform}: lazy panes draw their content the first time their tab is selected and keep it`, async ({ page }) => {
+    await openFixture(page, platform, '', 'tabs-contract');
+    const row = page.getByTestId('overflow');
+    await expect(row.getByText('여덟째 내용')).toBeVisible();
+    await expect(row.getByText('첫째 내용')).toHaveCount(0);
+    await expect(row.getByText('셋째 내용')).toHaveCount(0);
+    await row.getByRole('tab', { name: '첫째', exact: true }).click();
+    await expect(row.getByText('첫째 내용')).toBeVisible();
+    await row.getByRole('tab', { name: '여덟째', exact: true }).click();
+    await expect(row.getByText('첫째 내용')).toHaveCount(1);
+    await expect(row.getByText('첫째 내용')).toBeHidden();
+    await expect(row.getByText('셋째 내용')).toHaveCount(0);
+  });
+
+  test(`${platform}: only the selected tab points at its panel, which alone is a tabpanel`, async ({ page }) => {
+    await openFixture(page, platform, '', 'tabs-contract');
+    const tabs = page.getByTestId('tabs');
+    const selected = tabs.getByRole('tab', { name: '첫 탭', exact: true }), other = tabs.getByRole('tab', { name: '둘째 탭', exact: true });
+    const panel = await selected.getAttribute('aria-controls');
+    expect(panel).toBeTruthy();
+    await expect(tabs.locator('#' + panel)).toHaveAttribute('role', 'tabpanel');
+    await expect(other).not.toHaveAttribute('aria-controls', /.*/);
   });
 }

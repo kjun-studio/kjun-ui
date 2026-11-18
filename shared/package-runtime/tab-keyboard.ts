@@ -70,3 +70,17 @@ export function panelNeedsFocus(panel: HTMLElement): boolean {
   for (const child of panel.childNodes) { const result = visit(child); if (result !== undefined) return result; }
   return true;
 }
+
+/**
+ * Scrolls the tab track just enough to show a tab clear of the edge fade (pad pixels). Only the track moves: unlike
+ * scrollIntoView this never scrolls the page, so a selected tab revealed on the first render keeps the reader's place.
+ * The rectangles work in both reading directions.
+ */
+export function revealTab(track: HTMLElement, tab: HTMLElement, pad: number, smooth: boolean) {
+  if (track.scrollWidth <= track.clientWidth) return;
+  const box = track.getBoundingClientRect(), item = tab.getBoundingClientRect();
+  const delta = item.left < box.left + pad ? item.left - box.left - pad : item.right > box.right - pad ? item.right - box.right + pad : 0;
+  if (Math.abs(delta) < 1) return;
+  const reduced = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  track.scrollBy({ left: delta, behavior: smooth && !reduced ? "smooth" : "instant" });
+}
