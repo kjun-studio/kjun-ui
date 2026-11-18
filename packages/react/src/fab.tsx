@@ -1,7 +1,8 @@
 import { fabOffset } from "../../../shared/package-runtime/bottom-bar";
+import { developmentMode, fabNameWarning } from "../../../shared/package-runtime/development";
 import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { tokens } from "@kjun-ui/tokens";
-import { forwardRef, type ButtonHTMLAttributes, type CSSProperties, type MouseEvent } from "react";
+import { forwardRef, useEffect, type ButtonHTMLAttributes, type CSSProperties, type MouseEvent } from "react";
 import { KjunIcon, useMinimumLoading } from "./button";
 
 export type KjunFabSize = "sm" | "md";
@@ -9,6 +10,8 @@ export interface KjunFabProps extends Omit<ButtonHTMLAttributes<HTMLButtonElemen
   icon: string;
   /** Visible text beside the icon; the circle becomes a capsule of the same height. */
   label?: string;
+  /** Folds a labelled FAB back into its circle (e.g. while the page scrolls); the label stays its name. */
+  collapsed?: boolean;
   /** The accessible name. Required without a label, since the icon alone says nothing. */
   ariaLabel?: string;
   /** "md" (default) is 56, "sm" is 48. Both take a label, loading and every state. */
@@ -26,15 +29,17 @@ export interface KjunFabProps extends Omit<ButtonHTMLAttributes<HTMLButtonElemen
 }
 /** A primary action pinned to the bottom end of the viewport: a circle, or a capsule with a label. */
 export const KjunFab = forwardRef<HTMLButtonElement, KjunFabProps>(function KjunFab(
-  { icon, label, ariaLabel, size = "md", loading = false, disabled = false, safeArea = true, avoidBottomBar = true, offsetBottom = 0, onClick, className = "", style, ...rest }, ref) {
+  { icon, label, collapsed = false, ariaLabel, size = "md", loading = false, disabled = false, safeArea = true, avoidBottomBar = true, offsetBottom = 0, onClick, className = "", style, ...rest }, ref) {
   const busy = useMinimumLoading(loading), offset = fabOffset(offsetBottom);
   const iconSize = size === "sm" ? tokens.extensions.fab.smallIconSize : tokens.extensions.fab.iconSize;
-  return <button {...rest} ref={ref} type="button" className={"kjun-fab " + className} data-size={size} data-label={label ? "" : undefined}
+  const name = ariaLabel || rest["aria-label"];
+  useEffect(() => { const warning = developmentMode() && fabNameWarning(label, name); if (warning) console.warn(warning); }, [label, name]);
+  return <button {...rest} ref={ref} type="button" className={"kjun-fab " + className} data-size={size} data-label={label ? "" : undefined} data-collapsed={label && collapsed ? "" : undefined}
     data-safe-area={safeArea ? undefined : "false"} data-bottom-bar={avoidBottomBar ? undefined : "false"}
-    aria-label={ariaLabel || rest["aria-label"]} aria-busy={busy || undefined} disabled={disabled}
+    aria-label={name} aria-busy={busy || undefined} disabled={disabled}
     onClick={event => { if (!busy) onClick?.(event); }}
     style={{ ...(offset ? { "--_kjun-fab-offset": offset + "px" } as CSSProperties : {}), ...style }}>
     {busy ? <KjunSpinnerGlyph size={iconSize} /> : <KjunIcon name={icon} size={iconSize} />}
-    {label && <span className="kjun-fab-label">{label}</span>}
+    {label && <span className="kjun-fab-label"><span>{label}</span></span>}
   </button>;
 });

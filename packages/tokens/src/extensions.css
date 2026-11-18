@@ -384,14 +384,18 @@ button.kjun-avatar-group:disabled{cursor:not-allowed;opacity:var(--_kjun-state-o
 
 /* KjunFab: an action pinned to the viewport's bottom end, above page content and clear of the safe area and of docked
    bottom bars (their height arrives as --_kjun-bottom-bar on the provider scope; a bar with its own safe area already covers it). */
-.kjun-fab{--_kjun-fab-size:var(--_kjun-extension-fab-size);--_kjun-fab-safe:var(--_kjun-safe-area-bottom);--_kjun-fab-bar:var(--_kjun-bottom-bar,0px);position:fixed;inset-inline-end:var(--_kjun-extension-fab-inset);bottom:calc(var(--_kjun-extension-fab-inset) + var(--_kjun-fab-offset,0px) + max(var(--_kjun-fab-bar),var(--_kjun-fab-safe)));z-index:var(--_kjun-layer-page-navigation);display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:var(--_kjun-fab-size);max-width:calc(100% - 2 * var(--_kjun-extension-fab-inset));height:var(--_kjun-fab-size);padding:0;border:0;border-radius:var(--_kjun-geometry-radius-radius9999);background:var(--_kjun-color-brand);color:var(--_kjun-color-on-brand);box-shadow:var(--_kjun-fab-elevation);cursor:pointer;transition:background-color var(--_kjun-motion-control) var(--_kjun-ease-out),transform var(--_kjun-motion-control) var(--_kjun-ease-out)}
+.kjun-fab{--_kjun-fab-size:var(--_kjun-extension-fab-size);--_kjun-fab-safe:var(--_kjun-safe-area-bottom);--_kjun-fab-bar:var(--_kjun-bottom-bar,0px);position:fixed;inset-inline-end:var(--_kjun-extension-fab-inset);bottom:calc(var(--_kjun-extension-fab-inset) + var(--_kjun-fab-offset,0px) + max(var(--_kjun-fab-bar),var(--_kjun-fab-safe)));z-index:var(--_kjun-layer-page-navigation);display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:var(--_kjun-fab-size);max-width:calc(100% - 2 * var(--_kjun-extension-fab-inset));height:var(--_kjun-fab-size);padding:0;border:0;border-radius:var(--_kjun-geometry-radius-radius9999);background:var(--_kjun-color-brand);color:var(--_kjun-color-on-brand);box-shadow:var(--_kjun-fab-elevation);cursor:pointer;transition:background-color var(--_kjun-motion-control) var(--_kjun-ease-out),transform var(--_kjun-motion-control) var(--_kjun-ease-out),padding var(--_kjun-motion-control) var(--_kjun-ease-out),gap var(--_kjun-motion-control) var(--_kjun-ease-out)}
 .kjun-fab[data-size="sm"]{--_kjun-fab-size:var(--_kjun-extension-fab-small-size)}
 .kjun-fab[data-safe-area="false"]{--_kjun-fab-safe:0px}.kjun-fab[data-bottom-bar="false"]{--_kjun-fab-bar:0px}
 .kjun-fab > :is(.kjun-icon,.kjun-spinner-glyph){flex-shrink:0}
 /* With a label the circle becomes a capsule of the same height; the icon side takes the tighter inset. */
 .kjun-fab[data-label]{gap:var(--_kjun-extension-fab-label-gaps-md);padding-inline:var(--_kjun-extension-fab-padding-start-md) var(--_kjun-extension-fab-padding-end-md);font-size:var(--_kjun-type-control-large-size);line-height:var(--_kjun-type-control-large-line);font-weight:var(--_kjun-type-control-large-weight);letter-spacing:var(--_kjun-type-control-large-tracking)}
 .kjun-fab[data-label][data-size="sm"]{gap:var(--_kjun-extension-fab-label-gaps-sm);padding-inline:var(--_kjun-extension-fab-padding-start-sm) var(--_kjun-extension-fab-padding-end-sm);font-size:var(--_kjun-type-control-size);line-height:var(--_kjun-type-control-line);font-weight:var(--_kjun-type-control-weight);letter-spacing:var(--_kjun-type-control-tracking)}
-.kjun-fab-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* Collapsed, a labelled FAB folds back into its circle: the label's grid column eases to 0fr (it keeps naming the button). */
+.kjun-fab[data-label][data-collapsed]{gap:0;padding-inline:0}
+.kjun-fab-label{display:grid;grid-template-columns:1fr;min-width:0;transition:grid-template-columns var(--_kjun-motion-control) var(--_kjun-ease-out),opacity var(--_kjun-motion-control) var(--_kjun-ease-out)}
+.kjun-fab-label > span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kjun-fab[data-collapsed] .kjun-fab-label{grid-template-columns:0fr;opacity:0}
 /* A touch leaves no hover behind; loading keeps the resting colour and only stops the press. */
 @media (hover:hover){.kjun-fab:hover:not(:disabled,[aria-busy="true"]){background:var(--_kjun-color-brand-hover)}}
 .kjun-fab:active:not(:disabled,[aria-busy="true"]){background:var(--_kjun-color-brand-active);transform:scale(0.94)}
@@ -399,7 +403,7 @@ button.kjun-avatar-group:disabled{cursor:not-allowed;opacity:var(--_kjun-state-o
 /* Disabled stays opaque: a floating button must not let the content under it show through. */
 .kjun-fab:disabled{background:color-mix(in srgb,var(--_kjun-color-brand) calc(var(--_kjun-state-opacity-disabled) * 100%),var(--_kjun-color-surface));cursor:not-allowed}
 .kjun-fab[aria-busy="true"]{cursor:default}
-@media (prefers-reduced-motion:reduce){.kjun-fab{transition:none}.kjun-fab:active:not(:disabled,[aria-busy="true"]){transform:none}}
+@media (prefers-reduced-motion:reduce){.kjun-fab,.kjun-fab-label{transition:none}.kjun-fab:active:not(:disabled,[aria-busy="true"]){transform:none}}
 
 /* Navigation bars and the bottom action bar can drop their own surface. */
 .kjun-top-navigation[data-surface="false"],.kjun-bottom-navigation[data-surface="false"],.kjun-bottom-action-bar[data-surface="false"]{background:transparent}

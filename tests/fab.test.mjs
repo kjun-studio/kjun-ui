@@ -52,3 +52,28 @@ test('both FAB sizes share one contract: only the diameter, icon and label inset
     assert.match(read(`packages/${platform}/src/app-navigation.tsx`), /trackBottomBar|useKjunBottomBar/, platform);
   }
 });
+
+test('a FAB without a label or an accessible name is warned about in development', async () => {
+  const { fabNameWarning } = await import('../shared/package-runtime/development.ts');
+  assert.match(fabNameWarning(undefined, undefined), /KjunFab needs a label or ariaLabel/);
+  assert.match(fabNameWarning('  ', ''), /KjunFab/);
+  assert.equal(fabNameWarning('일정 추가', undefined), '');
+  assert.equal(fabNameWarning(undefined, '일정 추가'), '');
+  for (const platform of ['react', 'vue3', 'native']) assert.match(read(`packages/${platform}/src/fab.tsx`), /fabNameWarning/, platform);
+});
+
+test('a collapsed labelled FAB folds into its circle and keeps the label as its name', () => {
+  const css = read('packages/tokens/src/extensions.css');
+  assert.match(css, /\.kjun-fab\[data-label\]\[data-collapsed\]\{gap:0;padding-inline:0\}/);
+  assert.match(css, /\.kjun-fab\[data-collapsed\] \.kjun-fab-label\{grid-template-columns:0fr;opacity:0\}/);
+  assert.match(css, /prefers-reduced-motion:reduce\)\{\.kjun-fab,\.kjun-fab-label\{transition:none\}/);
+  for (const platform of ['react', 'vue3']) {
+    const source = read(`packages/${platform}/src/fab.tsx`);
+    // Only a FAB with a label folds; the label stays in the DOM, so it still names the button.
+    assert.match(source, /data-collapsed=\{(props\.)?label && (props\.)?collapsed \? "" : undefined\}/, platform);
+    assert.match(source, /kjun-fab-label"><span>/, platform);
+  }
+  const native = read('packages/native/src/fab.tsx');
+  assert.match(native, /const folded = !!label && collapsed/);
+  assert.match(native, /accessibilityLabel=\{ariaLabel \|\| label\}/);
+});
