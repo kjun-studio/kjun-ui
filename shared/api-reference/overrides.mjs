@@ -191,11 +191,12 @@ set("Breadcrumb", { items: { type: "{ label: string; to?: string; icon?: string;
 set("ScrollFade", { ariaLabel: "스크롤 영역의 이름입니다. 주면 웹은 초점을 받는 영역(region)이 되어 안에 초점 받을 요소가 없어도 키보드로 스크롤할 수 있습니다." });
 set("ScrollFade", { fadeColor: { type: "ColorValue", default: "colors.surface", summary: "가장자리가 흐려지며 섞일 색입니다. 스크롤 영역 뒤의 바탕색을 주세요." } }, "native");
 set("Badge", {
-  count: "children 대신 보일 숫자입니다. max보다 크면 \"99+\"처럼 보이고, 0 이하면 배지를 그리지 않습니다.",
+  count: "children 대신 보일 숫자입니다. max보다 크면 \"99+\"처럼 보이고, 0 이하면 배지를 그리지 않습니다. 숫자 배지는 내비게이션 배지처럼 완전한 알약이고 최소 폭이 높이와 같아 한 자리 수는 원으로 그립니다.",
+  dot: "글자 앞에 톤 색 점을 그립니다. 글자 없이 점만 주면 채움과 여백 없이 8px 점만 그리므로 label로 뜻을 함께 주세요.",
   max: { default: "99", summary: "전부 보여 줄 가장 큰 숫자입니다. 넘으면 max+로 보입니다." },
   label: "화면 낭독기가 읽을 배지의 뜻입니다(예: 읽지 않은 알림 3개). 주면 그린 글자는 낭독기에서 숨깁니다. 점만 있는 배지에는 꼭 주세요.",
 });
-set("Badge", { accessibilityLabel: "그린 글자 대신 화면 낭독기가 읽을 이름입니다. label과 같은 일을 하며 label보다 우선합니다.", testID: "테스트에서 배지를 찾는 ID입니다." }, "native");
+set("Badge", { accessibilityLabel: "Native 전용 별칭입니다. 그린 글자 대신 화면 낭독기가 읽을 이름으로 label과 같은 일을 하며 label보다 우선합니다. 세 플랫폼에 같은 코드를 쓰려면 label을 쓰세요.", testID: "테스트에서 배지를 찾는 ID입니다." }, "native");
 // Progress documents its own value (null is missing data) above.
 set("AnimatedNumber PriceCell SignedValue Deviation ProgressCell HeatmapCell", {
   value: "표시·계산에 사용할 숫자 값입니다. 입력 편집이나 변경 통지는 제공하지 않습니다.",
@@ -301,6 +302,7 @@ set("Dropdown", {
 
 set("CollectionMark", {
   active: "등록·관심 여부를 표시합니다. 이 컴포넌트는 변경 행동을 제공하지 않습니다.",
+  label: { default: '"즐겨찾기" · "관심"', summary: "켜진 표시를 화면 낭독기가 읽는 이름입니다. 생략하면 kind에 따라 메시지의 favoriteMark·interestMark를 씁니다. 꺼진 표시는 그림으로만 두고 읽지 않습니다." },
 });
 set("KpiHero", { value: "대표 지표의 현재 값입니다. 계산과 데이터 조회는 소비자가 수행합니다." });
 set("Text", {
