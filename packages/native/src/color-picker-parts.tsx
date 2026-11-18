@@ -213,8 +213,10 @@ export function ColorChannel({ channel, value, max, label, valueText, color, inc
 }
 
 /** One radio group of color items; "no color" is the item whose value is null. */
-export function SwatchGrid({ items, selected, label, onPick, swatchRef }: {
+export function SwatchGrid({ items, selected, label, onPick, swatchRef, ground }: {
   items: { value: string | null; label: string }[]; selected: number; label: string;
+  /** What the swatches sit on, shown in the gap between a swatch and its ring: the input fill inline, the surface in a panel. */
+  ground?: ColorValue;
   onPick: (value: string | null) => void; swatchRef?: (index: number, el: View | null) => void;
 }) {
   const { colors } = useKjunStyles();
@@ -222,7 +224,7 @@ export function SwatchGrid({ items, selected, label, onPick, swatchRef }: {
   useLayoutEffect(() => Platform.OS === "web" && group ? bindRadioKeyboard(group as unknown as HTMLElement) : undefined, [group]);
   // Eight fixed columns: start from the panel's content width, then follow the measured row (a narrow screen shrinks the panel).
   const [width, setWidth] = useState(picker.width - 2 * picker.padding);
-  const size = colorSwatchSize(width, picker.swatchGap), ring = ringShadow(colors.surface, colors.brand);
+  const size = colorSwatchSize(width, picker.swatchGap), ring = ringShadow(ground ?? colors.surface, colors.brand);
   return (
     <View ref={setGroup} accessibilityRole="radiogroup" accessibilityLabel={label}
       onLayout={event => { const next = event.nativeEvent.layout.width; if (next > 0 && Math.abs(next - width) > 0.5) setWidth(next); }}

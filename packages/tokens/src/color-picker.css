@@ -114,10 +114,10 @@
 .kjun-color-swatch > svg { position: relative; }
 .kjun-color-swatch[data-ink="light"] > svg { color: white; }
 .kjun-color-swatch[data-ink="dark"] > svg { color: black; }
-.kjun-color-swatch:hover:not([data-selected]) { box-shadow: 0 0 0 var(--_kjun-extension-color-picker-ring-gap) var(--_kjun-color-surface), 0 0 0 calc(var(--_kjun-extension-color-picker-ring-gap) + var(--_kjun-extension-color-picker-ring-width)) var(--_kjun-color-border-strong); }
+.kjun-color-swatch:hover:not([data-selected]) { box-shadow: 0 0 0 var(--_kjun-extension-color-picker-ring-gap) var(--_kjun-color-picker-ground, var(--_kjun-color-surface)), 0 0 0 calc(var(--_kjun-extension-color-picker-ring-gap) + var(--_kjun-extension-color-picker-ring-width)) var(--_kjun-color-border-strong); }
 /* One ring: the selected swatch and the keyboard-focused swatch share it; the selected one also carries a check. */
 .kjun-color-swatch[data-selected], .kjun-color-swatch:focus-visible {
-  box-shadow: 0 0 0 var(--_kjun-extension-color-picker-ring-gap) var(--_kjun-color-surface), 0 0 0 calc(var(--_kjun-extension-color-picker-ring-gap) + var(--_kjun-extension-color-picker-ring-width)) var(--_kjun-color-brand);
+  box-shadow: 0 0 0 var(--_kjun-extension-color-picker-ring-gap) var(--_kjun-color-picker-ground, var(--_kjun-color-surface)), 0 0 0 calc(var(--_kjun-extension-color-picker-ring-gap) + var(--_kjun-extension-color-picker-ring-width)) var(--_kjun-color-brand);
 }
 
 /* variant="swatch": a square color button as tall as the field. With an icon it is a clear tool button: the icon over a bar of the color. */
@@ -137,6 +137,8 @@
 
 /* inline: the panel sits in the page as a filled block (no border or shadow, which belong to floating layers).
    Its fields take the surface so they still read as fields on the fill. */
+/* The gap between a swatch and its ring shows the ground the swatch sits on: the input fill here, the surface in a floating panel. */
+.kjun-color-inline { --_kjun-color-picker-ground: var(--_kjun-color-input-bg); }
 .kjun-color-inline { max-width: 100%; border-radius: var(--_kjun-geometry-input-md-radius); background: var(--_kjun-color-input-bg);
   padding: var(--_kjun-extension-color-picker-padding); }
 .kjun-color-inline .kjun-color-inputs .kjun-input:not(:focus) { background: var(--_kjun-color-surface); }

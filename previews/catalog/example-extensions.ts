@@ -151,7 +151,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
           onValueChange: change("slider"), onChangeCommit: (value: number) => set("message", "확정: " + value) });
     }
     case "KjunTimePicker":
-      return h("Box", { width: 360 }, h("KjunFormGroup", { label: "알림 시각", error: error ? "알림 시각을 선택해 주세요." : "" }, h(name, { value: get("time", null), precision: settings.precision, minuteStep: settings.minuteStep, secondStep: settings.secondStep, min: settings.bounded ? (settings.precision === "second" ? "09:30:15" : "09:30") : undefined, max: settings.bounded ? (settings.precision === "second" ? "18:30:45" : "18:30") : undefined, disabled, error, clearable: settings.clearable, size: settings.size, block: settings.block, ariaLabel: "알림 시각", onValueChange: change("time"), onChangeCommit: (value: string | null) => set("message", "선택: " + value) })));
+      return h("Box", { width: 360 }, h("KjunFormGroup", { label: "알림 시각", error: error ? "알림 시각을 선택해 주세요." : "" }, h(name, { value: get("time", null), precision: settings.precision, minuteStep: settings.minuteStep, secondStep: settings.secondStep, min: settings.bounded ? (settings.precision === "second" ? "09:30:15" : "09:30") : undefined, max: settings.bounded ? (settings.precision === "second" ? "18:30:45" : "18:30") : undefined, disabled, error, clearable: settings.clearable, size: settings.size, block: settings.block, hourCycle: settings.hourCycle === "12" ? 12 : undefined, ariaLabel: "알림 시각", onValueChange: change("time"), onChangeCommit: (value: string | null) => set("message", "선택: " + value) })));
     case "KjunZoneGauge": {
       // Zone colours are the app's own: KJUN draws them as given.
       const color = (role: string) => platform === "native" ? colors[role] : `var(--kjun-${role})`;
@@ -181,7 +181,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       return h("Box", { width: 360 }, h("KjunFormGroup", { label: "라벨 색", error: error ? "라벨 색을 선택해 주세요." : "" }, h(name, { value: get("color", settings.alpha ? "#3B82F6CC" : "#3B82F6"),
         swatches: settings.swatches ? ["#EF4444", "#F97316", "#EAB308", "#22C55E", "#14B8A6", "#3B82F6", "#8B5CF6", "#EC4899", "#64748B", "#111111"] : undefined, custom: settings.custom, alpha: settings.alpha, input: settings.input, clearable: settings.clearable, eyeDropper: settings.eyeDropper,
         recentColors: settings.recent ? get("recentColors", ["#0EA5E9", "#7C3AED"]) : undefined, onRecentColorsChange: settings.recent ? change("recentColors") : undefined,
-        size: settings.size, disabled, error, ariaLabel: "라벨 색", onValueChange: change("color") })));
+        size: settings.size, inline: settings.layout === "inline" || undefined, variant: settings.layout === "swatch" || settings.layout === "tool" ? "swatch" : undefined, icon: settings.layout === "tool" ? "typography" : undefined, disabled, error, ariaLabel: "라벨 색", onValueChange: change("color") })));
     case "KjunFileUpload": {
       const sample = settings.sample === "여러 상태" ? [
         { id: "receipt", name: "영수증_11월.pdf", size: 245760, status: "done" },

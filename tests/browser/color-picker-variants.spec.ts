@@ -29,6 +29,10 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(inline.getByRole('button', { name: /^테마 색/ })).toHaveCount(0);
       await swatches(inline).getByRole('radio', { name: '#22C55E' }).click();
       await expect(page.getByTestId('cp-inline-value')).toHaveText('#22C55E');
+      // The gap between the selected swatch and its ring shows the inline fill, not the surface of a floating panel.
+      const ground = await inline.getByRole('group', { name: '테마 색' }).evaluate(node => getComputedStyle(node).backgroundColor);
+      const ring = await swatches(inline).getByRole('radio', { checked: true }).evaluate(node => getComputedStyle(node).boxShadow);
+      expect(ring.match(/rgba?\([^)]*\)/)![0]).toBe(ground);
       await expect(page.getByTestId('cp-inline-recent')).toHaveText('["#22C55E","#0EA5E9"]');
       // A pick from the recent row keeps the row as it is under the pointer.
       await inline.getByRole('radiogroup', { name: '최근 사용 색' }).getByRole('radio', { name: '#0EA5E9' }).click();

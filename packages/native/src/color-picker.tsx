@@ -81,9 +81,9 @@ export function KjunColorPicker({
   const [triggerWidth, setTriggerWidth] = useState(0);
   const panelWidth = Math.min(Math.max(picker.width, triggerWidth), picker.touchMaxWidth);
   const detail = summary.percent !== undefined && summary.percent < 100 ? summary.percent + "%" : "";
-  const grid = (model.swatches.length > 0 || clearable) && { items: swatchItems(model.swatches, clearable, m.colorNone), selected, label: m.swatches, onPick: model.pick,
+  const grid = (model.swatches.length > 0 || clearable) && { items: swatchItems(model.swatches, clearable, m.colorNone), selected, label: m.swatches, onPick: model.pick, ground: inline ? colors.inputBg : undefined,
     swatchRef: (index: number, el: View | null) => { targets.current.swatches[index] = el; } };
-  const recent = model.recent && model.recent.length > 0 && { items: model.recent, selected: model.recentSelected, label: m.recentColors, onPick: model.pickRecent };
+  const recent = model.recent && model.recent.length > 0 && { items: model.recent, selected: model.recentSelected, label: m.recentColors, onPick: model.pickRecent, ground: inline ? colors.inputBg : undefined };
   const label = ariaLabel || field?.label || placeholder || m.colorPlaceholder;
 
   const ref = useRef<View>(null);
