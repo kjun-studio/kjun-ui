@@ -41,6 +41,8 @@ export const FloatingPanel = defineComponent({
     repositionKey: { type: Number, default: 0 },
     /** Another element that counts as inside (an anchored Popover's trigger area): pressing it is not an outside press. */
     inside: { type: Function as PropType<() => HTMLElement | null>, default: undefined },
+    /** The panel dialog's name when no element names it (labelledBy). */
+    ariaLabel: { type: String, default: undefined },
   },
   setup(props, { slots, expose }) {
     const m = useKjunMessages();
@@ -121,6 +123,7 @@ export const FloatingPanel = defineComponent({
             data-placement={position.side} inert={!props.open}
             role={props.dialog && !props.nonModal ? "dialog" : undefined} tabindex={props.dialog && !props.nonModal ? -1 : undefined}
             aria-labelledby={props.dialog && !props.nonModal ? props.labelledBy : undefined}
+            aria-label={props.dialog && !props.nonModal && !props.labelledBy ? props.ariaLabel : undefined}
             style={{
               position: "fixed", zIndex: layer.zIndex.value, top: position.top + "px", left: position.left + "px",
               maxHeight: position.maxHeight != null ? position.maxHeight + "px" : undefined,

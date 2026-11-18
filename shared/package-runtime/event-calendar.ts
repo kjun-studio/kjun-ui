@@ -26,7 +26,7 @@ export const weekDays = (weekStartIso: string, today = todayIso()): CalendarDay[
   const iso = addDays(weekStartIso, index), date = parseDate(iso)!;
   return {
     iso, day: date.day, weekday: weekdayOf(date.year, date.month, date.day), outside: false, blocked: false, today: iso === today,
-    selected: false, rangeStart: false, rangeEnd: false, inRange: false,
+    selected: false, rangeStart: false, rangeEnd: false, inRange: false, limited: false,
   };
 });
 

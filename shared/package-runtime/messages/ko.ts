@@ -82,6 +82,11 @@ export const kjunMessagesKo = {
   rangeEndDay: "종료일",
   inRangeDay: "선택한 기간",
   chooseEndDate: "종료일을 선택하세요",
+  /** The range presets' group name. */
+  rangePresets: "빠른 선택",
+  /** The note while a range's end is picked under minDays or maxDays (either may be missing). */
+  rangeLength: (minDays?: number, maxDays?: number) => minDays && maxDays ? `${minDays}~${maxDays}일 사이로 고를 수 있어요`
+    : maxDays ? `최대 ${maxDays}일까지 고를 수 있어요` : `최소 ${minDays}일 이상 골라 주세요`,
   today: "오늘",
   apply: "적용",
   rangePlaceholder: "기간 선택",

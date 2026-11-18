@@ -45,6 +45,7 @@ assign("RefreshButton", [choice("mode", "표현", ["icon", "text"], "icon"), cho
 assign("Textarea DatePicker", [size, disabled, error]);
 assign("Combobox", [size, disabled, loading, error]);
 assign("DatePicker DateRangePicker", [size, disabled, error, toggle("clearable", "지우기")]);
+assign("DateRangePicker", [size, disabled, error, toggle("clearable", "지우기"), toggle("maxDays", "최대 7일")]);
 assign("Switch", [size, disabled, loading, toggle("description", "설명")]);
 assign("Checkbox Radio", [size, disabled, toggle("description", "설명"), error]);
 assign("RadioGroup", [size, disabled, error]);

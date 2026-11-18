@@ -30,6 +30,7 @@ export function FloatingPanel({
   repositionKey = 0,
   inside,
   labelledBy,
+  ariaLabel,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
@@ -51,6 +52,8 @@ export function FloatingPanel({
   inside?: RefObject<HTMLElement | null>;
   /** The id of the element that names the panel when it is a dialog. */
   labelledBy?: string;
+  /** The panel dialog's name when no element names it. */
+  ariaLabel?: string;
 }) {
   const motion = usePresence(open, useReducedMotion(), tokens.motion.popupExit);
   const layer = useLayer(open, motion.present, "popup", () => onOpenChange(false), triggerRef, returnFocus);
@@ -82,6 +85,7 @@ export function FloatingPanel({
     <AriaPopover
       ref={panel}
       aria-labelledby={labelledBy}
+      aria-label={labelledBy ? undefined : ariaLabel}
       isNonModal={nonModal}
       isKeyboardDismissDisabled={layer.keyboardManaged}
       isOpen={motion.present}

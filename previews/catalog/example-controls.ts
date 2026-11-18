@@ -295,6 +295,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         ariaLabel: "사용 기간",
         size: settings.size,
         clearable: settings.clearable,
+        maxDays: settings.maxDays ? 7 : undefined,
         disabled,
         error,
       }), error ? "사용 기간을 선택해 주세요." : "");

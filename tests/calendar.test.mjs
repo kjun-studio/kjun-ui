@@ -6,7 +6,7 @@ import { build } from 'esbuild';
 const output = await build({ entryPoints: ['shared/package-runtime/calendar.ts'], bundle: true, write: false, format: 'esm', platform: 'node' });
 const {
   addMonths, calendarDays, calendarFooter, canApplyRange, monthOutside, moveDate, normalizeRange, orderWeekdays, parseDate,
-  pickMonth, pickRange, rangeBand, rangeSubmitted, stepDisabled, stepTarget, toIsoDate, yearChoices, yearGrid, formatRange,
+  pickMonth, pickRange, rangeBand, rangeDays, rangeSubmitted, stepDisabled, stepTarget, toIsoDate, yearGrid, formatRange,
 } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 
 test('addMonths keeps the day inside the target month, leap years included', () => {
@@ -95,15 +95,15 @@ test('the navigation buttons step by month, year or twelve years and stop at the
 test('month and year limits', () => {
   assert.equal(monthOutside(2026, 7, '2026-09-03'), true);
   assert.equal(monthOutside(2026, 8, '2026-09-03'), false);
-  assert.deepEqual(yearChoices(2026, '2025-01-01', '2026-12-31'), [2025, 2026]);
-  assert.deepEqual(yearChoices(2026), [2024, 2025, 2026, 2027, 2028]);
 });
 
 test('the footer shows Clear only when clearing is allowed', () => {
-  assert.deepEqual(calendarFooter({ range: true, clearable: false, todayBlocked: false }), { clear: false, action: 'apply', shown: true });
-  assert.deepEqual(calendarFooter({ range: false, clearable: false, todayBlocked: true }), { clear: false, action: null, shown: false });
-  assert.deepEqual(calendarFooter({ range: false, clearable: true, todayBlocked: true }), { clear: true, action: null, shown: true });
-  assert.deepEqual(calendarFooter({ range: true, apply: false, clearable: false, todayBlocked: false }), { clear: false, action: null, shown: false });
+  assert.deepEqual(calendarFooter({ range: true, clearable: false, todayBlocked: false }), { clear: false, note: false, action: 'apply', shown: true });
+  assert.deepEqual(calendarFooter({ range: false, clearable: false, todayBlocked: true }), { clear: false, note: false, action: null, shown: false });
+  assert.deepEqual(calendarFooter({ range: false, clearable: true, todayBlocked: true }), { clear: true, note: false, action: null, shown: true });
+  assert.deepEqual(calendarFooter({ range: true, apply: false, clearable: false, todayBlocked: false }), { clear: false, note: false, action: null, shown: false });
+  // A length note takes the clear button's place and keeps the footer shown.
+  assert.deepEqual(calendarFooter({ range: true, apply: false, clearable: true, todayBlocked: false, note: true }), { clear: false, note: true, action: null, shown: true });
 });
 
 test('formatRange drops a repeated year only for the Korean format', () => {
@@ -119,4 +119,32 @@ test('fixedWeeks always gives six weeks', () => {
   assert.equal(calendarDays(2026, 4, {}).length, 42);
   assert.equal(calendarDays(2026, 10, {}).length, 35);
   assert.equal(calendarDays(2026, 10, { fixedWeeks: true })[41].iso, '2026-12-12');
+});
+
+test('minDays and maxDays: ends outside the length fade while picking and restart the range when picked', () => {
+  const limits = { maxDays: 7 };
+  assert.equal(rangeDays('2026-09-08', '2026-09-14'), 7);
+  assert.equal(rangeDays('2026-09-14', '2026-09-08'), 7);
+  assert.equal(rangeDays('2026-12-31', '2027-01-01'), 2);
+  assert.deepEqual(pickRange({ start: '2026-09-08', end: '' }, '2026-09-14', undefined, limits), { start: '2026-09-08', end: '2026-09-14' });
+  assert.deepEqual(pickRange({ start: '2026-09-08', end: '' }, '2026-09-15', undefined, limits), { start: '2026-09-15', end: '' });
+  assert.deepEqual(pickRange({ start: '2026-09-08', end: '' }, '2026-09-02', undefined, limits), { start: '2026-09-02', end: '2026-09-08' });
+  assert.deepEqual(pickRange({ start: '2026-09-08', end: '' }, '2026-09-09', undefined, { minDays: 3 }), { start: '2026-09-09', end: '' });
+  const days = calendarDays(2026, 8, { today: '2026-09-01', range: { start: '2026-09-08', end: '' }, limits });
+  const limited = days.filter(day => day.limited && !day.outside).map(day => day.day);
+  assert.deepEqual(limited, [1, ...Array.from({ length: 16 }, (_, i) => 15 + i)]);
+  assert.equal(days.find(day => day.iso === '2026-09-08').limited, false);
+  // A finished range and a range without limits mark nothing.
+  assert.equal(calendarDays(2026, 8, { range: { start: '2026-09-08', end: '2026-09-10' }, limits }).some(day => day.limited), false);
+  assert.equal(calendarDays(2026, 8, { range: { start: '2026-09-08', end: '' } }).some(day => day.limited), false);
+});
+
+test('the preview band is drawn only for an end the pick would keep', () => {
+  const unavailable = iso => iso === '2026-09-12';
+  const across = calendarDays(2026, 8, { range: { start: '2026-09-10', end: '' }, preview: '2026-09-14', unavailable });
+  assert.equal(across.some(day => day.inRange || day.rangeEnd), false);
+  const before = calendarDays(2026, 8, { range: { start: '2026-09-10', end: '' }, preview: '2026-09-11', unavailable });
+  assert.equal(before.find(day => day.iso === '2026-09-11').rangeEnd, true);
+  const tooLong = calendarDays(2026, 8, { range: { start: '2026-09-01', end: '' }, preview: '2026-09-20', limits: { maxDays: 7 } });
+  assert.equal(tooLong.some(day => day.inRange), false);
 });

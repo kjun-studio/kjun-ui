@@ -20,6 +20,8 @@ export interface CalendarDayCellProps {
   /** Picker: today inside a range band shows a bare brand number instead of the pill. */
   inRangeToday?: boolean;
   marks?: DayMarks<ColorValue>; column?: number;
+  /** Web picker: the roving tab stop, 0 on the focused day. */
+  tabIndex?: 0 | -1;
   onPress: () => void; onLongPress?: () => void; longPressLabel?: string;
 }
 
@@ -29,7 +31,7 @@ const data = (set: Record<string, string | number | boolean | undefined>) => Pla
 const longPress = "longpress";
 
 export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim, past = false, inRangeToday = false, marks, column = 0,
-  onPress, onLongPress, longPressLabel }: CalendarDayCellProps) {
+  onPress, onLongPress, longPressLabel, tabIndex }: CalendarDayCellProps) {
   const { colors, fontFamily, numericFontFamily } = useKjunStyles();
   const event = emphasis === "event";
   const selected = day.selected;
@@ -52,7 +54,8 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
       {...(Platform.OS === "web" && day.today ? { "aria-current": "date" } : {})}
       {...data({ iso: day.iso, density, today: day.today || undefined, selected: selected || undefined, outside: day.outside || undefined,
         past: past || undefined, tone: tone === "text" ? undefined : tone, inRange: day.inRange || undefined,
-        rangeStart: day.rangeStart || undefined, rangeEnd: day.rangeEnd || undefined })}
+        rangeStart: day.rangeStart || undefined, rangeEnd: day.rangeEnd || undefined, limited: day.limited || undefined })}
+      {...(Platform.OS === "web" && tabIndex != null ? { tabIndex } : {})}
       {...actions}
       disabled={day.blocked} onPress={onPress} onLongPress={onLongPress} delayLongPress={onLongPress ? calendar.longPressDelay : undefined}
       // Android draws later-added fills with square corners, so every fill below exists from the start and only its colour changes.
@@ -97,8 +100,11 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
   return (
     <View style={{ width: calendar.daySize, height: calendar.daySize }}>
       {/* A range joins its ends with a quiet band under the days between them; it ends under the squared ends. */}
+      {/* At the week's edges it stops at the cell and closes with the day's corner, so the row reads as finished. */}
       {band && <View pointerEvents="none" style={{ position: "absolute", top: 0, bottom: 0, backgroundColor: colors.brandSubtleBg,
-        left: day.rangeStart ? calendar.daySize / 2 : -calendar.rangeBleed, right: day.rangeEnd ? calendar.daySize / 2 : -calendar.rangeBleed }} />}
+        left: day.rangeStart ? calendar.daySize / 2 : column === 0 ? 0 : -calendar.rangeBleed, right: day.rangeEnd ? calendar.daySize / 2 : column === 6 ? 0 : -calendar.rangeBleed,
+        ...(column === 0 && !day.rangeStart ? { borderTopLeftRadius: calendar.dayRadius, borderBottomLeftRadius: calendar.dayRadius } : {}),
+        ...(column === 6 && !day.rangeEnd ? { borderTopRightRadius: calendar.dayRadius, borderBottomRightRadius: calendar.dayRadius } : {}) }} />}
       {cell}
     </View>
   );

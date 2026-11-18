@@ -93,7 +93,7 @@ export function generate(input: UsageInput) {
     case 'KjunDatePicker':
       content = b.node(name, { value: b.state('date', '2026-09-12'), onValueChange: b.update('date'), min: '2026-09-01', max: '2026-09-30', ariaLabel: '시작일', ...b.props('size', 'disabled', 'error') }); break;
     case 'KjunDateRangePicker':
-      content = b.node(name, { value: b.state('range', { start: '2026-09-08', end: '2026-09-16' }), onValueChange: b.update('range'), min: '2026-09-01', max: '2026-10-31', ariaLabel: '사용 기간', ...b.props('size', 'disabled', 'error') }); break;
+      content = b.node(name, { value: b.state('range', { start: '2026-09-08', end: '2026-09-16' }), onValueChange: b.update('range'), min: '2026-09-01', max: '2026-10-31', ariaLabel: '사용 기간', ...(s.maxDays ? { maxDays: 7 } : {}), ...b.props('size', 'disabled', 'error') }); break;
     case 'KjunButtonGroup': case 'KjunFilterGroup': {
       if (name === 'KjunButtonGroup' && s.iconOnly) {
         content = b.node(name, { value: b.state('view', 'line'), onValueChange: b.update('view'), options: b.data('options', viewOptions), disabled: s.disabled, ariaLabel: '차트 형태', ...b.props('size', 'fullWidth') }); break;

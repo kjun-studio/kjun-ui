@@ -8,7 +8,11 @@ export interface CalendarDay {
   iso: string; day: number; weekday: number;
   outside: boolean; blocked: boolean; today: boolean;
   selected: boolean; rangeStart: boolean; rangeEnd: boolean; inRange: boolean;
+  /** While a range's end is picked: the day would make the range shorter than minDays or longer than maxDays. */
+  limited: boolean;
 }
+/** The length a range may take, counting both ends; either bound may be left out. */
+export interface RangeLimits { minDays?: number; maxDays?: number }
 
 const pattern = /^(\d{4})-(\d{2})-(\d{2})$/;
 export function parseDate(iso: string | null | undefined) {
@@ -57,11 +61,14 @@ export function rangeBand(range: DateRange | undefined, preview?: string): DateR
 }
 
 /** Whole weeks covering the month from weekStart (Sunday by default), with the neighbouring months' days marked outside; fixedWeeks always gives six. */
-export function calendarDays(year: number, month: number, { value, range, min, max, today = todayIso(), weekStart = 0, unavailable, preview, fixedWeeks }:
-  { value?: string; range?: DateRange; min?: string; max?: string; today?: string; weekStart?: WeekStart; unavailable?: DateUnavailable; preview?: string; fixedWeeks?: boolean }): CalendarDay[] {
+export function calendarDays(year: number, month: number, { value, range, min, max, today = todayIso(), weekStart = 0, unavailable, preview, fixedWeeks, limits }:
+  { value?: string; range?: DateRange; min?: string; max?: string; today?: string; weekStart?: WeekStart; unavailable?: DateUnavailable; preview?: string; fixedWeeks?: boolean; limits?: RangeLimits }): CalendarDay[] {
   const first = (weekdayOf(year, month, 1) - weekStart + 7) % 7, count = monthLength(year, month);
   const total = fixedWeeks ? 42 : Math.ceil((first + count) / 7) * 7;
-  const band = rangeBand(range, preview);
+  // A preview that the pick would not keep (across an unavailable day or outside the length) draws no band.
+  const kept = !!range?.start && !range.end && !!preview && !!pickRange(range, preview, unavailable, limits).end;
+  const band = range?.end || kept ? rangeBand(range, preview) : null;
+  const picking = !!range?.start && !range.end;
   const start = range?.start || "", end = range?.end || "";
   return Array.from({ length: total }, (_, index) => {
     const iso = toIsoDate(year, month, index - first + 1), date = parseDate(iso)!;
@@ -72,6 +79,7 @@ export function calendarDays(year: number, month: number, { value, range, min, m
       selected: !outside && (iso === value || iso === start || iso === end),
       rangeStart: !outside && !!band && iso === band.start, rangeEnd: !outside && !!band && iso === band.end,
       inRange: !outside && !!band && iso > band.start && iso < band.end,
+      limited: picking && iso !== range!.start && outsideLimits(range!.start, iso, limits),
     };
   });
 }
@@ -105,11 +113,24 @@ export function moveDate(iso: string, key: string, shift = false, weekStart: Wee
  * The next range after picking a day: a fresh pick starts a range, the second pick ends it (in either order).
  * A range may not run across an unavailable day; picking past one starts a new range there.
  */
-export function pickRange(range: DateRange, iso: string, unavailable?: DateUnavailable): DateRange {
+export function pickRange(range: DateRange, iso: string, unavailable?: DateUnavailable, limits?: RangeLimits): DateRange {
   if (!range.start || range.end) return { start: iso, end: "" };
+  // Outside minDays or maxDays the pick starts a new range there instead.
+  if (outsideLimits(range.start, iso, limits)) return { start: iso, end: "" };
   const next = iso < range.start ? { start: iso, end: range.start } : { start: range.start, end: iso };
   if (unavailable) for (let day = addDays(next.start, 1); day < next.end; day = addDays(day, 1)) if (unavailable(day)) return { start: iso, end: "" };
   return next;
+}
+/** Days a range covers, counting both ends ("09-08" to "09-14" is 7). */
+export function rangeDays(a: string, b: string) {
+  const utc = (iso: string) => { const d = parseDate(iso)!, t = new Date(0); t.setUTCFullYear(d.year, d.month, d.day); return t.getTime(); };
+  return Math.round(Math.abs(utc(b) - utc(a)) / 86400000) + 1;
+}
+/** Whether ending a range that starts on start at iso breaks minDays or maxDays. */
+export function outsideLimits(start: string, iso: string, limits?: RangeLimits) {
+  if (!limits || (!limits.minDays && !limits.maxDays)) return false;
+  const days = rangeDays(start, iso);
+  return (!!limits.minDays && days < limits.minDays) || (!!limits.maxDays && days > limits.maxDays);
 }
 /** A range Apply can commit: both ends, or neither (which clears it). */
 export const canApplyRange = (range: DateRange) => !!range.start === !!range.end;
@@ -142,10 +163,11 @@ export const pickYear = (focus: string, year: number) => addMonths(focus, (year 
 export const yearGrid = (year: number) => Array.from({ length: 12 }, (_, i) => year - (((year % 12) + 12) % 12) + i);
 export const yearOutside = (year: number, min?: string, max?: string) =>
   (!!max && toIsoDate(year, 0, 1) > max) || (!!min && toIsoDate(year, 11, 31) < min);
-/** What the footer holds: a clear button when clearing is allowed, then Apply for ranges (unless they commit on the second pick) or Today when today can be picked. */
-export function calendarFooter({ range, apply = range, clearable, todayBlocked }: { range: boolean; apply?: boolean; clearable: boolean; todayBlocked: boolean }) {
+/** What the footer holds: a length note while one applies, else a clear button when clearing is allowed, then Apply for ranges (unless they commit on the second pick) or Today when today can be picked. */
+export function calendarFooter({ range, apply = range, clearable, todayBlocked, note = false }: { range: boolean; apply?: boolean; clearable: boolean; todayBlocked: boolean; note?: boolean }) {
   const action: "apply" | "today" | null = range ? (apply ? "apply" : null) : todayBlocked ? null : "today";
-  return { clear: clearable, action, shown: clearable || !!action };
+  // While a length limit applies to the end being picked, its note takes the clear button's place.
+  return { clear: clearable && !note, note, action, shown: clearable || note || !!action };
 }
 
 /** The day a calendar opens on: the value (or range start), else today, kept inside the bounds. */
@@ -171,13 +193,6 @@ export function monthNames(year: number, scope: KjunMessageScope = defaultMessag
   return { title: scope.messages.yearTitle(year), months: Array.from({ length: 12 }, (_, m) => scope.messages.monthName(m + 1)) };
 }
 
-/** Five years around the shown one for the month view's year chips, kept inside the bounds. */
-export function yearChoices(year: number, min?: string, max?: string) {
-  const low = parseDate(min)?.year ?? -Infinity, high = parseDate(max)?.year ?? Infinity;
-  let from = Math.max(low, year - 2);
-  if (from + 4 > high) from = Math.max(low, high - 4);
-  return Array.from({ length: 5 }, (_, i) => from + i).filter(y => y >= low && y <= high);
-}
 
 /** Range field text: the end drops a repeated year ("2026. 09. 08. – 09. 16."). */
 export function formatRange(range: DateRange, format: (iso: string) => string) {

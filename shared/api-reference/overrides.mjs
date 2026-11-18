@@ -207,6 +207,12 @@ set("DatePicker DateRangePicker", {
 set("DateRangePicker", {
   presets: { type: "{ label: string; value: { start: string; end: string } }[]", summary: "날짜 위에 칩으로 보이는 미리 정한 기간입니다(예: 최근 7일). 누르면 초안 기간이 바뀌고 적용으로 확정합니다. 순서가 뒤집히거나 범위를 벗어난 값은 정리해서 씁니다." },
   autoApply: { default: "false", summary: "두 번째 날짜를 고르는 즉시 확정하고 닫습니다. 적용 버튼은 보이지 않습니다." },
+  minDays: { type: "number", summary: "고를 수 있는 가장 짧은 기간(양 끝 포함 일수)입니다. 시작일을 고른 동안 더 짧아지는 날은 흐리게 보이고, 누르면 그 날에서 새 기간을 시작합니다. 바닥에 길이 안내가 보입니다." },
+  maxDays: { type: "number", summary: "고를 수 있는 가장 긴 기간(양 끝 포함 일수)입니다. 시작일을 고른 동안 더 길어지는 날은 흐리게 보이고, 누르면 그 날에서 새 기간을 시작합니다. 바닥에 길이 안내가 보입니다. value와 presets에는 적용하지 않습니다." },
+});
+set("DatePicker DateRangePicker", {
+  open: { type: "boolean", summary: "달력이 열려 있는지 앱이 정합니다(Vue는 v-model:open). 생략하면 필드가 직접 관리합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫히며, disabled면 열리지 않습니다." },
+  onOpenChange: { type: "(open: boolean) => void", summary: "트리거·Escape·바깥 누르기·날짜 확정으로 열림 상태가 바뀌어야 할 때 호출합니다." },
 });
 set("Select", { readOnly: { default: "false", summary: "값을 보여 주기만 하고 목록을 열거나 지우지 않습니다. 트리거는 초점을 받고 aria-readonly로 알립니다." } });
 for (const platform of ["vue3", "react"]) set("DropdownItem", {

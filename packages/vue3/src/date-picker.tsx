@@ -29,9 +29,24 @@ const dateFieldProps = {
   id: { type: String, default: undefined },
   /** Submits the value with a form through a hidden input. */
   name: { type: String, default: undefined },
+  /** Opens and closes the calendar from the app (v-model:open); leave it out to let the field own it. */
+  open: { type: Boolean, default: undefined },
 } as const;
 type DateFieldOptions = ExtractPublicPropTypes<typeof dateFieldProps>;
 /** The Select-style field that opens a calendar; both pickers share it. */
+/** The calendar's open state: v-model:open when given, otherwise kept here; a disabled field reads closed. */
+function useOpen(props: Readonly<{ open?: boolean; disabled?: boolean }>, emit: (open: boolean) => void) {
+  const internal = ref(false);
+  return computed<boolean>({
+    get: () => !props.disabled && (typeof props.open === "boolean" ? props.open : internal.value),
+    set: next => {
+      const current = !props.disabled && (typeof props.open === "boolean" ? props.open : internal.value);
+      if (next === current || (next && props.disabled)) return;
+      if (typeof props.open !== "boolean") internal.value = next;
+      emit(next);
+    },
+  });
+}
 function useDateField(props: Readonly<DateFieldOptions & { placeholder?: string }>, open: Ref<boolean>) {
   const field = useKjunField(), scope = useKjunMessageScope();
   const trigger = ref<HTMLButtonElement | null>(null), valueId = useId().replace(/[^\w-]/g, "") + "-date";
@@ -68,6 +83,8 @@ function useDateField(props: Readonly<DateFieldOptions & { placeholder?: string 
           {props.name && <input type="hidden" name={props.name} value={state.submitted} />}
         </div>
         <FloatingPanel field open={open.value && !props.disabled} onOpenChange={(next: boolean) => { open.value = next; }} trigger={() => trigger.value} placement="bottom-start" panelClass="kjun-calendar-panel"
+          // The calendar dialog takes the field's name.
+          labelledBy={owner?.labelId} ariaLabel={label}
           // A month of days with its footer is taller than a field list, so it takes the general popup height.
           maxHeight={tokens.extensions.floating.maxHeight}>
           {cloneVNode(calendar(), { key: opens.value })}
@@ -83,14 +100,14 @@ const kjunDatePickerProps = {
   modelValue: { type: String as PropType<string | null>, default: "" },
 } as const;
 export type KjunDatePickerProps = ExtractPublicPropTypes<typeof kjunDatePickerProps>;
-/** v-model holds YYYY-MM-DD; choosing a day commits and closes. */
+/** v-model holds YYYY-MM-DD; choosing a day commits and closes. Optional v-model:open. */
 export const KjunDatePicker = defineComponent({
   name: "KjunDatePicker",
   props: kjunDatePickerProps,
-  emits: { "update:modelValue": (_value: string) => true, change: (_value: string) => true },
+  emits: { "update:modelValue": (_value: string) => true, change: (_value: string) => true, "update:open": (_open: boolean) => true },
   setup(props, { emit }) {
     const scope = useKjunMessageScope();
-    const open = ref(false);
+    const open = useOpen(props, next => emit("update:open", next));
     const render = useDateField(props, open);
     const commit = (next: string) => { if (next !== props.modelValue) { emit("update:modelValue", next); emit("change", next); } open.value = false; };
     return () => render({
@@ -110,17 +127,21 @@ const kjunDateRangePickerProps = {
   presets: { type: Array as PropType<readonly DateRangePreset[]>, default: undefined },
   /** Commits as soon as the second day is picked, without Apply. */
   autoApply: { type: Boolean, default: false },
+  /** Shortest and longest range in days, counting both ends; other ends fade while the end is picked and start a new range when pressed. */
+  minDays: { type: Number, default: undefined },
+  maxDays: { type: Number, default: undefined },
 } as const;
 export type KjunDateRangePickerProps = ExtractPublicPropTypes<typeof kjunDateRangePickerProps>;
-/** v-model holds { start, end }: the first pick starts the range, the second ends it, and Apply commits it. */
+/** v-model holds { start, end }: the first pick starts the range, the second ends it, and Apply commits it. Optional v-model:open. */
 export const KjunDateRangePicker = defineComponent({
   name: "KjunDateRangePicker",
   props: kjunDateRangePickerProps,
-  emits: { "update:modelValue": (_value: DateRange) => true, change: (_value: DateRange) => true },
+  emits: { "update:modelValue": (_value: DateRange) => true, change: (_value: DateRange) => true, "update:open": (_open: boolean) => true },
   setup(props, { emit }) {
     const scope = useKjunMessageScope();
     const value = computed(() => normalizeRange(props.modelValue, props.min, props.max));
-    const open = ref(false), draft = ref<DateRange>({ ...value.value });
+    const limits = () => ({ minDays: props.minDays, maxDays: props.maxDays });
+    const open = useOpen(props, next => emit("update:open", next)), draft = ref<DateRange>({ ...value.value });
     watch(open, next => { if (next) draft.value = { ...value.value }; });
     const render = useDateField(props, open);
     const commit = (next: DateRange) => {
@@ -128,7 +149,7 @@ export const KjunDateRangePicker = defineComponent({
       open.value = false;
     };
     const pick = (iso: string) => {
-      draft.value = pickRange(draft.value, iso, props.isDateUnavailable);
+      draft.value = pickRange(draft.value, iso, props.isDateUnavailable, limits());
       if (props.autoApply && draft.value.end) commit(draft.value);
     };
     return () => {
@@ -137,7 +158,7 @@ export const KjunDateRangePicker = defineComponent({
         text: formatRange(value.value, format), spoken: rangeSpoken(value.value, scope.value), submitted: rangeSubmitted(value.value),
         placeholder: props.placeholder ?? scope.value.messages.rangePlaceholder, clearLabel: scope.value.messages.clearDates,
         onClear: () => commit({ start: "", end: "" }),
-      }, () => <CalendarView range={draft.value} min={props.min} max={props.max} clearable={props.clearable} weekStart={props.weekStart} markSunday={props.markSunday} markSaturday={props.markSaturday}
+      }, () => <CalendarView range={draft.value} limits={limits()} min={props.min} max={props.max} clearable={props.clearable} weekStart={props.weekStart} markSunday={props.markSunday} markSaturday={props.markSaturday}
         isDateUnavailable={props.isDateUnavailable} presets={props.presets}
         onPreset={(next: DateRange) => { draft.value = normalizeRange(next, props.min, props.max); if (props.autoApply) commit(draft.value); }}
         onSelect={pick} onClear={() => { draft.value = { start: "", end: "" }; }} onApply={props.autoApply ? undefined : () => commit(draft.value)} />);

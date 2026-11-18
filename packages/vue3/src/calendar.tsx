@@ -2,8 +2,8 @@ import { useKjunMessageScope } from "./runtime/messages";
 import { calendarLabels } from "../../../shared/package-runtime/messages";
 import {
   calendarDays, calendarFooter, canApplyRange, clampDate, dateLabel, initialFocus, isBlocked, monthNames, monthOutside, moveDate,
-  orderWeekdays, parseDate, pickMonth, pickYear, rangeRole, stepDisabled, stepTarget, todayIso, toIsoDate, yearChoices, yearGrid,
-  yearOutside, type CalendarMode, type DateRange, type DateUnavailable, type WeekStart,
+  orderWeekdays, parseDate, pickMonth, pickYear, rangeRole, stepDisabled, stepTarget, todayIso, toIsoDate, yearGrid,
+  yearOutside, type CalendarMode, type DateRange, type DateUnavailable, type RangeLimits, type WeekStart,
 } from "../../../shared/package-runtime/calendar";
 import { dayTone } from "../../../shared/package-runtime/event-calendar";
 import { nextTick, onMounted, ref, useId, watch, type PropType } from "vue";
@@ -41,6 +41,8 @@ export const CalendarView = defineComponent({
     /** Range mode: ready-made ranges shown as chips above the days. */
     presets: { type: Array as PropType<readonly DateRangePreset[]>, default: undefined },
     onPreset: { type: Function as PropType<(range: DateRange) => void>, default: undefined },
+    /** Range mode: the shortest and longest range while the end is picked. */
+    limits: { type: Object as PropType<RangeLimits>, default: undefined },
   },
   setup(props) {
     const scope = useKjunMessageScope();
@@ -55,6 +57,13 @@ export const CalendarView = defineComponent({
     const place = () => nextTick(() => { if (mode.value === "days") grid.value?.querySelector<HTMLButtonElement>(`[data-iso="${focus.value}"]`)?.focus({ preventScroll: true }); });
     onMounted(place);
     watch(mode, place);
+    // Picking a year swaps the year cells for months; focus moves to the shown month instead of falling to the page.
+    const months = ref<HTMLElement | null>(null);
+    const placeMonth = () => nextTick(() => months.value?.querySelector<HTMLButtonElement>(`[data-month="${parseDate(focus.value)!.month}"]:not(:disabled)`)?.focus({ preventScroll: true }));
+    const limitNote = () => {
+      const limits = props.limits;
+      return props.range?.start && !props.range.end && (limits?.minDays || limits?.maxDays) ? scope.value.messages.rangeLength(limits.minDays, limits.maxDays) : "";
+    };
     const go = (iso: string, moveFocus = false) => { focus.value = clampDate(iso, props.min, props.max); if (moveFocus) place(); };
     const head = ref<HTMLElement | null>(null);
     // A button that turns off at the bounds hands keyboard focus to the other one (or the heading) instead of the page.
@@ -66,7 +75,7 @@ export const CalendarView = defineComponent({
     };
     const announcement = () => {
       const m = scope.value.messages, shown = parseDate(focus.value)!;
-      if (props.range?.start && !props.range.end) return m.chooseEndDate;
+      if (props.range?.start && !props.range.end) return m.chooseEndDate + (limitNote() ? ", " + limitNote() : "");
       if (mode.value === "days") return calendarLabels(shown.year, shown.month, scope.value).title;
       const years = yearGrid(shown.year);
       return mode.value === "months" ? monthNames(shown.year, scope.value).title : `${years[0]} – ${years[11]}`;
@@ -77,11 +86,11 @@ export const CalendarView = defineComponent({
       const icon = tokens.extensions.calendar.navSize / 2, weekStart = props.weekStart;
       const selectedMonth = parseDate(props.range ? props.range.start : props.value);
       const labels = calendarLabels(shown.year, shown.month, scope.value), names = monthNames(shown.year, scope.value);
-      const years = yearGrid(shown.year);
+      const years = yearGrid(shown.year), note = limitNote();
       const title = mode.value === "days" ? labels.title : mode.value === "months" ? names.title : `${years[0]} – ${years[11]}`;
       const picking = !!props.range?.start && !props.range.end;
       const footer = calendarFooter({ range: !!props.range, apply: !!props.onApply, clearable: props.clearable,
-        todayBlocked: isBlocked(today, props.min, props.max) || !!props.isDateUnavailable?.(today) });
+        todayBlocked: isBlocked(today, props.min, props.max) || !!props.isDateUnavailable?.(today), note: !!note });
       const tone = (weekday: number) => {
         const t = dayTone(weekday, { markSunday: props.markSunday, markSaturday: props.markSaturday, holiday: false });
         return t === "text" ? undefined : t;
@@ -105,9 +114,9 @@ export const CalendarView = defineComponent({
           {/* The heading and the range step are announced as they change, not only when a day takes focus. */}
           <div class="kjun-sr-only" aria-live="polite">{spoken.value}</div>
           {mode.value === "days" && !!props.presets?.length && (
-            <div class="kjun-calendar-presets" role="group">
+            <div class="kjun-calendar-presets" role="group" aria-label={m.rangePresets}>
               {props.presets.map(preset => (
-                <button key={preset.label} type="button" class="kjun-calendar-year" onClick={() => props.onPreset?.(preset.value)}
+                <button key={preset.label} type="button" class="kjun-calendar-year kjun-calendar-preset" onClick={() => props.onPreset?.(preset.value)}
                   aria-pressed={props.range?.start === preset.value.start && props.range?.end === preset.value.end}>{preset.label}</button>
               ))}
             </div>
@@ -125,7 +134,7 @@ export const CalendarView = defineComponent({
                 <span key={day} class="kjun-calendar-weekday" data-tone={tone((index + weekStart) % 7)} aria-hidden="true">{day}</span>
               ))}
               {calendarDays(shown.year, shown.month, { value: props.value, range: props.range, min: props.min, max: props.max, today, weekStart,
-                unavailable: props.isDateUnavailable, preview: picking ? preview.value : undefined }).map(day => {
+                unavailable: props.isDateUnavailable, preview: picking ? preview.value : undefined, limits: props.limits }).map(day => {
                 const role = props.range ? rangeRole(day) : null;
                 return (
                   <button key={day.iso} type="button" class="kjun-calendar-day" data-density="compact" data-iso={day.iso}
@@ -135,7 +144,7 @@ export const CalendarView = defineComponent({
                     aria-describedby={role ? `${uid}-${role}` : undefined}
                     data-tone={tone(day.weekday)} data-outside={day.outside || undefined} data-today={day.today || undefined}
                     data-selected={day.selected || undefined} data-in-range={day.inRange || undefined}
-                    data-range-start={day.rangeStart || undefined} data-range-end={day.rangeEnd || undefined}
+                    data-range-start={day.rangeStart || undefined} data-range-end={day.rangeEnd || undefined} data-limited={day.limited || undefined}
                     onMouseenter={() => { if (picking && !day.blocked) preview.value = day.iso; }}
                     onClick={() => { if (day.blocked) return; focus.value = day.iso; preview.value = undefined; props.onSelect(day.iso); }}>
                     <span class="kjun-calendar-day-number">{day.day}</span>
@@ -150,23 +159,17 @@ export const CalendarView = defineComponent({
             </div>
           ) : mode.value === "months" ? (
             <>
-              <div class="kjun-calendar-months">
+              <div ref={months} class="kjun-calendar-months">
                 {names.months.map((name, month) => {
                   const selected = selectedMonth?.year === shown.year && selectedMonth.month === month;
                   const current = today.startsWith(toIsoDate(shown.year, month, 1).slice(0, 7));
-                  return <button key={name} type="button" class="kjun-calendar-month" disabled={monthOutside(shown.year, month, props.min, props.max)}
+                  return <button key={name} type="button" class="kjun-calendar-month" data-month={month} disabled={monthOutside(shown.year, month, props.min, props.max)}
                     aria-pressed={selected} aria-current={current ? "date" : undefined} data-selected={selected || undefined} data-current={current || undefined}
                     onClick={() => { go(pickMonth(focus.value, month)); mode.value = "days"; }}>
                     {name}
                   </button>;
                 })}
               </div>
-              {/* Year chips only when the bounds leave more than one year to choose. */}
-              {yearChoices(shown.year, props.min, props.max).length > 1 && <div class="kjun-calendar-years" role="group" aria-label={names.title}>
-                {yearChoices(shown.year, props.min, props.max).map(year => (
-                  <button key={year} type="button" class="kjun-calendar-year" aria-pressed={year === shown.year} onClick={() => go(pickYear(focus.value, year))}>{year}</button>
-                ))}
-              </div>}
             </>
           ) : (
             <div class="kjun-calendar-months">
@@ -174,7 +177,7 @@ export const CalendarView = defineComponent({
                 const selected = year === shown.year, current = today.startsWith(String(year).padStart(4, "0"));
                 return <button key={year} type="button" class="kjun-calendar-month" data-year={year} disabled={yearOutside(year, props.min, props.max)}
                   aria-pressed={selected} aria-current={current ? "date" : undefined} data-selected={selected || undefined} data-current={current || undefined}
-                  onClick={() => { go(pickYear(focus.value, year)); mode.value = "months"; }}>
+                  onClick={() => { go(pickYear(focus.value, year)); mode.value = "months"; placeMonth(); }}>
                   {year}
                 </button>;
               })}
@@ -182,7 +185,8 @@ export const CalendarView = defineComponent({
           )}
           {mode.value === "days" && footer.shown && (
             <div class="kjun-calendar-foot">
-              {footer.clear ? <KjunButton size="sm" variant="ghost" onClick={() => props.onClear?.()}>{props.range ? m.clearDates : m.clearDate}</KjunButton> : <span />}
+              {footer.note ? <span class="kjun-calendar-note">{note}</span>
+                : footer.clear ? <KjunButton size="sm" variant="ghost" onClick={() => props.onClear?.()}>{props.range ? m.clearDates : m.clearDate}</KjunButton> : <span />}
               {footer.action === "apply"
                 ? <KjunButton size="sm" variant="secondary" disabled={!props.range || !canApplyRange(props.range)} onClick={() => props.onApply?.()}>{m.apply}</KjunButton>
                 : footer.action === "today" ? <KjunButton size="sm" variant="secondary" onClick={() => { go(today, true); props.onSelect(today); }}>{m.today}</KjunButton> : null}

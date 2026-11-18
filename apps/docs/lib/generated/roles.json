@@ -140,7 +140,6 @@
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/avatar-group.tsx",
       "packages/native/src/button.tsx",
-      "packages/native/src/calendar.tsx",
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/choice-radio.tsx",
       "packages/native/src/color-picker-parts.tsx",
@@ -1350,7 +1349,6 @@
       "--divider"
     ],
     "implementationFiles": [
-      "packages/tokens/src/calendar.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
@@ -1361,7 +1359,6 @@
       "packages/tokens/src/side-navigation.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
-      "packages/native/src/calendar.tsx",
       "packages/native/src/file-upload-row.tsx",
       "packages/native/src/file-upload.tsx",
       "packages/native/src/floating-panel.tsx",

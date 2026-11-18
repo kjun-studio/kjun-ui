@@ -76,6 +76,9 @@ export const kjunMessagesEn: KjunMessages = {
   rangeEndDay: "End date",
   inRangeDay: "In selected range",
   chooseEndDate: "Choose the end date",
+  rangePresets: "Quick ranges",
+  rangeLength: (minDays?: number, maxDays?: number) => minDays && maxDays ? `Choose ${minDays} to ${maxDays} days`
+    : maxDays ? `Choose up to ${maxDays} days` : `Choose at least ${minDays} days`,
   today: "Today",
   apply: "Apply",
   rangePlaceholder: "Select dates",

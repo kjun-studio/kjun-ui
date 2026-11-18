@@ -197,6 +197,11 @@ export function FloatingPanel({
       if (tag) AccessibilityInfo.setAccessibilityFocus(tag);
     }
   }, [open, anchored, sized, focusOnOpen]);
+  useEffect(() => {
+    // React Native Web's Modal is the dialog the screen reader enters; it takes the panel's name, as the web panel does.
+    if (Platform.OS !== "web" || !open || !ariaLabel || !panelRef.current) return;
+    (panelRef.current as unknown as HTMLElement).closest?.('[role="dialog"]')?.setAttribute("aria-label", ariaLabel);
+  }, [open, anchored, sized, ariaLabel]);
   const gap = field ? tokens.extensions.floating.fieldGap : tokens.extensions.floating.anchorGap;
   const contentSizedMenu = menu && !matchTriggerWidth;
   // Tooltips hug their text up to the maximum width, like Web.

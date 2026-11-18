@@ -59,6 +59,9 @@
 .kjun-calendar-day[data-density="compact"][data-range-start]::before { left: 50%; }
 .kjun-calendar-day[data-density="compact"][data-range-end]::before { right: 50%; }
 .kjun-calendar-day[data-density="compact"][data-range-start][data-range-end]::before { display: none; }
+/* At the week's edges the band stops at the cell and closes with the day's corner, so a row reads as finished, not cut. The grid holds seven weekday labels before the days. */
+.kjun-calendar-grid > .kjun-calendar-day[data-density="compact"]:nth-child(7n+8):not([data-range-start])::before { left: 0; border-top-left-radius: var(--_kjun-extension-calendar-day-radius); border-bottom-left-radius: var(--_kjun-extension-calendar-day-radius); }
+.kjun-calendar-grid > .kjun-calendar-day[data-density="compact"]:nth-child(7n+14):not([data-range-end])::before { right: 0; border-top-right-radius: var(--_kjun-extension-calendar-day-radius); border-bottom-right-radius: var(--_kjun-extension-calendar-day-radius); }
 .kjun-calendar-months { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--_kjun-extension-calendar-month-gap); margin-top: var(--_kjun-extension-calendar-month-gap); }
 .kjun-calendar-month {
   height: var(--_kjun-extension-calendar-month-height); border: 0; border-radius: var(--_kjun-extension-calendar-month-radius);
@@ -71,10 +74,11 @@
 .kjun-calendar-month:disabled { color: var(--_kjun-color-text-disabled); cursor: default; }
 /* The year view reuses the month grid. */
 .kjun-calendar-month[data-year] { font-variant-numeric: tabular-nums; }
-/* Range presets are year-style chips that wrap above the days. */
+/* Range presets are quiet chips that wrap above the days: text only, and the chosen one takes the secondary fill so it never competes with the range ends. */
 .kjun-calendar-presets { display: flex; flex-wrap: wrap; gap: var(--_kjun-extension-calendar-year-gap); margin-bottom: var(--_kjun-extension-calendar-footer-gap); }
-.kjun-calendar-presets .kjun-calendar-year { flex: none; padding: 0 var(--_kjun-geometry-dimension-value12); }
-.kjun-calendar-years { display: flex; gap: var(--_kjun-extension-calendar-year-gap); margin-top: var(--_kjun-extension-calendar-footer-gap); }
+.kjun-calendar-presets .kjun-calendar-year { flex: none; padding: 0 var(--_kjun-geometry-dimension-value12); background: transparent; }
+.kjun-calendar-presets .kjun-calendar-year:hover:not([aria-pressed="true"]) { background: var(--_kjun-color-hover); }
+.kjun-calendar-presets .kjun-calendar-year[aria-pressed="true"] { background: var(--_kjun-color-secondary); color: var(--_kjun-color-text); font-weight: var(--_kjun-type-control-weight); }
 .kjun-calendar-year {
   flex: 1; height: var(--_kjun-extension-calendar-year-height); padding: 0; border: 0; border-radius: var(--_kjun-geometry-radius-radius9999);
   background: var(--_kjun-color-secondary); color: var(--_kjun-color-text-secondary); cursor: pointer;
@@ -84,6 +88,12 @@
 :is(.kjun-calendar-title, .kjun-calendar-nav, .kjun-calendar-month, .kjun-calendar-year):focus-visible { outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset: var(--_kjun-state-focus-offset); }
 .kjun-calendar-foot {
   display: flex; align-items: center; justify-content: space-between; gap: var(--_kjun-extension-calendar-footer-gap);
-  margin-top: var(--_kjun-extension-calendar-footer-gap); padding-top: var(--_kjun-extension-calendar-footer-gap);
-  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-divider);
+  /* Space alone separates the footer from the days; no rule line. */
+  margin-top: var(--_kjun-extension-calendar-footer-space);
+}
+/* A range length limit: ends that would break it fade while the end is picked, and the footer says the limit. */
+.kjun-calendar-day[data-limited]:not([data-outside]) .kjun-calendar-day-number { opacity: var(--_kjun-extension-calendar-limit-opacity); }
+.kjun-calendar-note {
+  min-width: 0; color: var(--_kjun-color-text-secondary);
+  font-size: var(--_kjun-type-caption-size); line-height: var(--_kjun-type-caption-line); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking);
 }

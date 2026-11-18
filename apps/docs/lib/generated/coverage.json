@@ -732,7 +732,7 @@
       "title": "DatePicker",
       "docs": "/components/date-picker",
       "category": "inputs",
-      "differences": "세 플랫폼 모두 같은 KJUN 달력을 엽니다. 웹은 필드를 누르거나 ↓ 키로 열고, 달력 안에서 방향키(하루·한 주), Home·End(주의 처음·끝), PageUp·PageDown(한 달, Shift와 함께 한 해)으로 이동한 뒤 Enter로 고릅니다. 날짜를 직접 타이핑하지는 않습니다. Vue v-model·change와 React·Native onValueChange·onChange를 사용합니다.",
+      "differences": "세 플랫폼 모두 같은 KJUN 달력을 엽니다. 웹은 필드를 누르거나 ↓ 키로 열고, 달력 안에서 방향키(하루·한 주), Home·End(주의 처음·끝), PageUp·PageDown(한 달, Shift와 함께 한 해)으로 이동한 뒤 Enter로 고릅니다. 날짜를 직접 타이핑하지는 않습니다. Vue v-model·change와 React·Native onValueChange·onChange를 사용합니다. 달력을 앱에서 열고 닫으려면 open·onOpenChange(Vue v-model:open)를 연결합니다. 연도를 고르면 초점은 보이는 달의 월 칸으로 옮겨 갑니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

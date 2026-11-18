@@ -16748,6 +16748,15 @@
             "source": "packages/vue3/src/date-picker.tsx"
           },
           {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "Opens and closes the calendar from the app (v-model:open); leave it out to let the field own it.",
+            "summary": "달력이 열려 있는지 앱이 정합니다(Vue는 v-model:open). 생략하면 필드가 직접 관리합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫히며, disabled면 열리지 않습니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
             "name": "modelValue",
             "type": "string | null",
             "required": false,
@@ -16769,6 +16778,12 @@
             "source": "packages/vue3/src/date-picker.tsx",
             "type": "이벤트",
             "summary": "change 이벤트를 통지합니다."
+          },
+          {
+            "name": "update:open",
+            "source": "packages/vue3/src/date-picker.tsx",
+            "type": "이벤트",
+            "summary": "update:open 이벤트를 통지합니다."
           }
         ],
         "slots": [],
@@ -16901,6 +16916,24 @@
             "default": "—",
             "description": "Submits the value with a form through a hidden input.",
             "summary": "폼 제출용 숨은 input의 이름입니다. DatePicker는 날짜, DateRangePicker는 'start/end' 문자열을 제출합니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "Opens and closes the calendar from the app; leave it out to let the field own it.",
+            "summary": "달력이 열려 있는지 앱이 정합니다(Vue는 v-model:open). 생략하면 필드가 직접 관리합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫히며, disabled면 열리지 않습니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "(open: boolean) => void",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "트리거·Escape·바깥 누르기·날짜 확정으로 열림 상태가 바뀌어야 할 때 호출합니다.",
             "source": "packages/react/src/date-picker.tsx"
           },
           {
@@ -17053,6 +17086,24 @@
             "default": "—",
             "description": "",
             "summary": "필드를 오류 상태로 표시합니다. 오류 설명과 검증 결과는 소비자가 별도로 제공합니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "Opens and closes the calendar from the app; leave it out to let the field own it.",
+            "summary": "달력이 열려 있는지 앱이 정합니다(Vue는 v-model:open). 생략하면 필드가 직접 관리합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫히며, disabled면 열리지 않습니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "(open: boolean) => void",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "트리거·Escape·바깥 누르기·날짜 확정으로 열림 상태가 바뀌어야 할 때 호출합니다.",
             "source": "packages/native/src/date-picker.tsx"
           },
           {
@@ -17237,6 +17288,15 @@
             "source": "packages/vue3/src/date-picker.tsx"
           },
           {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "Opens and closes the calendar from the app (v-model:open); leave it out to let the field own it.",
+            "summary": "달력이 열려 있는지 앱이 정합니다(Vue는 v-model:open). 생략하면 필드가 직접 관리합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫히며, disabled면 열리지 않습니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
             "name": "modelValue",
             "type": "{ start: string; end: string }",
             "required": false,
@@ -17262,6 +17322,24 @@
             "description": "Commits as soon as the second day is picked, without Apply.",
             "summary": "두 번째 날짜를 고르는 즉시 확정하고 닫습니다. 적용 버튼은 보이지 않습니다.",
             "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
+            "name": "minDays",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "Shortest and longest range in days, counting both ends; other ends fade while the end is picked and start a new range when pressed.",
+            "summary": "고를 수 있는 가장 짧은 기간(양 끝 포함 일수)입니다. 시작일을 고른 동안 더 짧아지는 날은 흐리게 보이고, 누르면 그 날에서 새 기간을 시작합니다. 바닥에 길이 안내가 보입니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
+          },
+          {
+            "name": "maxDays",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "고를 수 있는 가장 긴 기간(양 끝 포함 일수)입니다. 시작일을 고른 동안 더 길어지는 날은 흐리게 보이고, 누르면 그 날에서 새 기간을 시작합니다. 바닥에 길이 안내가 보입니다. value와 presets에는 적용하지 않습니다.",
+            "source": "packages/vue3/src/date-picker.tsx"
           }
         ],
         "events": [
@@ -17276,6 +17354,12 @@
             "source": "packages/vue3/src/date-picker.tsx",
             "type": "이벤트",
             "summary": "change 이벤트를 통지합니다."
+          },
+          {
+            "name": "update:open",
+            "source": "packages/vue3/src/date-picker.tsx",
+            "type": "이벤트",
+            "summary": "update:open 이벤트를 통지합니다."
           }
         ],
         "slots": [],
@@ -17327,6 +17411,24 @@
             "default": "false",
             "description": "Commits as soon as the second day is picked, without Apply.",
             "summary": "두 번째 날짜를 고르는 즉시 확정하고 닫습니다. 적용 버튼은 보이지 않습니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "minDays",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "Shortest and longest range in days, counting both ends; other ends fade while the end is picked and start a new range when pressed.",
+            "summary": "고를 수 있는 가장 짧은 기간(양 끝 포함 일수)입니다. 시작일을 고른 동안 더 짧아지는 날은 흐리게 보이고, 누르면 그 날에서 새 기간을 시작합니다. 바닥에 길이 안내가 보입니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "maxDays",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "고를 수 있는 가장 긴 기간(양 끝 포함 일수)입니다. 시작일을 고른 동안 더 길어지는 날은 흐리게 보이고, 누르면 그 날에서 새 기간을 시작합니다. 바닥에 길이 안내가 보입니다. value와 presets에는 적용하지 않습니다.",
             "source": "packages/react/src/date-picker.tsx"
           },
           {
@@ -17429,6 +17531,24 @@
             "source": "packages/react/src/date-picker.tsx"
           },
           {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "Opens and closes the calendar from the app; leave it out to let the field own it.",
+            "summary": "달력이 열려 있는지 앱이 정합니다(Vue는 v-model:open). 생략하면 필드가 직접 관리합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫히며, disabled면 열리지 않습니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "(open: boolean) => void",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "트리거·Escape·바깥 누르기·날짜 확정으로 열림 상태가 바뀌어야 할 때 호출합니다.",
+            "source": "packages/react/src/date-picker.tsx"
+          },
+          {
             "name": "weekStart",
             "type": "0 | 1 | 2 | 3 | 4 | 5 | 6",
             "required": false,
@@ -17518,6 +17638,24 @@
             "source": "packages/native/src/date-picker.tsx"
           },
           {
+            "name": "minDays",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "Shortest and longest range in days, counting both ends; other ends fade while the end is picked and start a new range when pressed.",
+            "summary": "고를 수 있는 가장 짧은 기간(양 끝 포함 일수)입니다. 시작일을 고른 동안 더 짧아지는 날은 흐리게 보이고, 누르면 그 날에서 새 기간을 시작합니다. 바닥에 길이 안내가 보입니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "maxDays",
+            "type": "number",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "고를 수 있는 가장 긴 기간(양 끝 포함 일수)입니다. 시작일을 고른 동안 더 길어지는 날은 흐리게 보이고, 누르면 그 날에서 새 기간을 시작합니다. 바닥에 길이 안내가 보입니다. value와 presets에는 적용하지 않습니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
             "name": "clearable",
             "type": "boolean | undefined",
             "required": false,
@@ -17596,6 +17734,24 @@
             "default": "—",
             "description": "",
             "summary": "필드를 오류 상태로 표시합니다. 오류 설명과 검증 결과는 소비자가 별도로 제공합니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "Opens and closes the calendar from the app; leave it out to let the field own it.",
+            "summary": "달력이 열려 있는지 앱이 정합니다(Vue는 v-model:open). 생략하면 필드가 직접 관리합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫히며, disabled면 열리지 않습니다.",
+            "source": "packages/native/src/date-picker.tsx"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "(open: boolean) => void",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "트리거·Escape·바깥 누르기·날짜 확정으로 열림 상태가 바뀌어야 할 때 호출합니다.",
             "source": "packages/native/src/date-picker.tsx"
           },
           {
