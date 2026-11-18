@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   SPLIT_KEY_STEP, splitClamp, splitFromRatio, splitDrag, splitKeyAction, splitKeyHeld, splitKeyTarget, splitLimits, splitPercent, splitResolve, splitShare, splitToRatio,
+  splitCollapseAt, splitDoublePress, splitFoldedPx, splitKeyCollapse, splitReport, splitWanted, splitWantedPx,
 } from '../shared/package-runtime/split-pane.ts';
+import { tokens } from '@kjun-ui/tokens';
 
 test('the first pane may take the room between both minimums and maximums', () => {
   // 700 wide with a 20 handle leaves 680 for the two panes.
@@ -91,6 +93,8 @@ test('arrow keys follow the split direction and reading direction; Home, End and
 
 test('a key action names the next size inside the limits', () => {
   const limits = { low: 200, high: 440 };
+  // The step is the extensions.splitPane.keyStep token.
+  assert.equal(SPLIT_KEY_STEP, tokens.extensions.splitPane.keyStep);
   assert.equal(SPLIT_KEY_STEP, 16);
   assert.equal(splitKeyTarget('increase', 320, limits, 340), 336);
   assert.equal(splitKeyTarget('decrease', 320, limits, 340), 304);
@@ -101,4 +105,56 @@ test('a key action names the next size inside the limits', () => {
   assert.equal(splitKeyTarget('reset', 320, limits, 340), 340);
   // The default size is clamped too.
   assert.equal(splitKeyTarget('reset', 320, limits, 100), 200);
+});
+
+test('sizes are a share or pixels, and pixels without a default start at half the room', () => {
+  assert.equal(splitWanted(undefined, undefined, 'ratio'), 0.5);
+  assert.equal(splitWanted(2, undefined, 'ratio'), 1);
+  assert.equal(splitWanted(undefined, 280, 'px'), 280);
+  assert.equal(splitWanted(Number.NaN, 280, 'px'), 280);
+  assert.equal(splitWanted(-10, undefined, 'px'), 0);
+  assert.equal(splitWanted(undefined, undefined, 'px'), null);
+  // 700 wide with a 20 handle leaves 680.
+  assert.equal(splitWantedPx(0.25, 'ratio', 700, 20), 170);
+  assert.equal(splitWantedPx(280, 'px', 700, 20), 280);
+  assert.equal(splitWantedPx(null, 'px', 700, 20), 340);
+  assert.equal(splitReport(280.4, 'px', 700, 20), 280);
+  assert.equal(splitReport(170, 'ratio', 700, 20), 0.25);
+});
+
+test('a collapsed pane keeps collapsedSize inside the room and folds past the midpoint to its minimum', () => {
+  assert.equal(splitFoldedPx(undefined, 700, 20), 0);
+  assert.equal(splitFoldedPx(48, 700, 20), 48);
+  assert.equal(splitFoldedPx(48, 40, 20), 20);
+  // Minimum 160, rail 48: the midpoint is 104.
+  assert.equal(splitCollapseAt(103, 160, 48), true);
+  assert.equal(splitCollapseAt(104, 160, 48), false);
+  // Collapsing to nothing with minimum 160: below 80.
+  assert.equal(splitCollapseAt(79, 160, 0), true);
+  assert.equal(splitCollapseAt(80, 160, 0), false);
+  // No minimum: only a drag below the collapsed size folds it.
+  assert.equal(splitCollapseAt(40, 0, 48), true);
+  assert.equal(splitCollapseAt(-1, 0, 0), true);
+  assert.equal(splitCollapseAt(0, 0, 0), false);
+});
+
+test('keys on a collapsible pane follow the window splitter: Enter toggles, Home collapses, increase restores', () => {
+  assert.deepEqual(splitKeyCollapse('reset', false, false), { collapse: null, move: true });
+  assert.deepEqual(splitKeyCollapse('min', false, false), { collapse: null, move: true });
+  assert.deepEqual(splitKeyCollapse('reset', true, false), { collapse: true, move: false });
+  assert.deepEqual(splitKeyCollapse('reset', true, true), { collapse: false, move: false });
+  assert.deepEqual(splitKeyCollapse('min', true, false), { collapse: true, move: false });
+  assert.deepEqual(splitKeyCollapse('decrease', true, false), { collapse: null, move: true });
+  assert.deepEqual(splitKeyCollapse('increase', true, true), { collapse: false, move: false });
+  assert.deepEqual(splitKeyCollapse('max', true, true), { collapse: false, move: true });
+  assert.deepEqual(splitKeyCollapse('decrease', true, true), { collapse: null, move: false });
+  assert.deepEqual(splitKeyCollapse('min', true, true), { collapse: null, move: false });
+});
+
+test('two presses close in time and place are a double press', () => {
+  const first = { at: 1000, x: 100, y: 50 };
+  assert.equal(splitDoublePress(null, first), false);
+  assert.equal(splitDoublePress(first, { at: 1300, x: 104, y: 52 }), true);
+  assert.equal(splitDoublePress(first, { at: 1301, x: 100, y: 50 }), false);
+  assert.equal(splitDoublePress(first, { at: 1100, x: 111, y: 50 }), false);
 });

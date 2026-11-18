@@ -257,12 +257,17 @@ const fileUploadCallbacks = {
 const fileUploadTypes = [fields("KjunUploadFile", "files의 항목입니다.", [["id", "string", "고유한 파일 id"], ["name", "string", "파일 이름"], ["size", "number", "바이트 크기"], ["status", "\"queued\" | \"uploading\" | \"done\" | \"error\"", "업로드 상태"], ["progress", "number | undefined", "uploading일 때 0~100. 없으면 막대가 불확정으로 움직입니다."], ["error", "string | undefined", "실패 행에 보일 문구"], ["previewUrl", "string | undefined", "이미지 썸네일 주소"], ["type", "string | undefined", "MIME 형식"]])];
 const splitPaneSummaries = {
   direction: "나누는 방향입니다. horizontal(기본값)은 패널을 좌우로, vertical은 상하로 둡니다. 상하 분할은 부모가 높이를 정해야 합니다.",
-  size: "제어할 때 첫 패널이 차지하는 비율(0~1)입니다. 경계를 뺀 공간 기준이며, 한계를 벗어난 값은 화면에서 가장 가까운 허용 크기로 그립니다.",
-  defaultSize: "제어하지 않을 때의 처음 비율이자 Enter가 되돌리는 비율입니다. 기본값 0.5입니다.",
+  sizeUnit: "크기 값의 단위입니다. ratio(기본값)는 경계를 뺀 공간에서 첫 패널이 차지하는 비율(0~1)이라 컨테이너가 커지면 함께 커집니다. px는 첫 패널의 픽셀이라 창 폭이 바뀌어도 사이드 목록이 같은 폭을 지킵니다. size·defaultSize와 크기 콜백 값이 모두 이 단위를 따릅니다.",
+  size: "제어할 때 첫 패널의 크기입니다(sizeUnit 단위). 한계를 벗어난 값은 화면에서 가장 가까운 허용 크기로 그립니다.",
+  defaultSize: "제어하지 않을 때의 처음 크기이자 손잡이를 두 번 누르면(접히지 않는 패널은 Enter도) 되돌아가는 크기입니다(sizeUnit 단위). 생략하면 공간의 절반입니다.",
   minSize: "[첫 패널, 둘째 패널]의 최소 크기(px)입니다. 기본값 [0, 0]입니다. 비율이나 maxSize와 부딪치면 최소 크기가 이기고, 컨테이너가 두 최소 크기의 합보다 좁으면 첫 패널의 최소 크기를 지킵니다.",
   maxSize: "[첫 패널, 둘째 패널]의 최대 크기(px)입니다. null은 제한 없음이며 기본값 [null, null]입니다.",
   ariaLabel: "경계 손잡이의 접근성 이름입니다(예: 메시지 목록 크기). 손잡이는 현재·최소·최대 크기를 백분율로 함께 알립니다.",
   disabled: "경계를 고정합니다. 손잡이는 포커스·키·끌기를 받지 않고 막대가 옅은 테두리색이 됩니다. 기본값 false입니다.",
+  collapsible: "첫 패널을 접을 수 있게 합니다. 최소 크기와 접힌 크기의 중간보다 작게 끌면 접히고 다시 끌어 넓히면 펼쳐집니다. Enter는 접기와 펼치기를 오가고, Home은 접으며, 접힌 상태에서 증가 키는 접기 전 크기로 펼칩니다. 기본값 false입니다.",
+  collapsedSize: "접힌 첫 패널이 남기는 크기(px)입니다. 기본값 0이면 패널이 사라지고 읽기·탭 순서에서도 빠집니다. 48처럼 주면 아이콘 레일이 남으며, 레일 내용은 앱이 collapsed 값을 보고 first에 그립니다.",
+  collapsed: "제어할 때 첫 패널의 접힘 상태입니다. " + "접는 조작은 변경 요청을 보내고, 소비자가 이 값을 갱신해야 접힙니다.",
+  defaultCollapsed: "제어하지 않을 때 접힌 채로 시작합니다. 기본값 false입니다.",
   className: "루트에 더할 클래스입니다. 패널 크기는 size·minSize·maxSize로 정하세요.",
   style: "루트에 더할 스타일입니다. 바깥 크기나 여백에 사용하세요. 루트는 부모의 폭과 높이를 채웁니다.",
   id: "루트의 ID입니다.",
@@ -272,10 +277,11 @@ const splitPaneSlots = {
   second: slot("둘째 패널의 내용입니다. 첫 패널과 경계를 뺀 나머지 공간을 채웁니다.", "ReactNode", "패널은 내용이 넘치면 스스로 스크롤합니다."),
 };
 const splitPaneCallbacks = {
-  onSizeChange: event("첫 패널의 새 비율을 알립니다.", "끄는 동안 값이 바뀔 때마다, 그리고 화살표·Home·End·Enter로 옮길 때", "number: 한계를 적용한 0~1 비율(소수 넷째 자리까지)", "반환값을 사용하지 않습니다.", "제어할 때는 소비자가 size를 갱신합니다. 갱신하지 않으면 경계는 움직이지 않습니다."),
-  onChangeCommit: event("크기 조절이 끝났음을 알립니다.", "끌기를 놓거나 취소될 때 한 번, 키로 옮길 때마다 한 번. 값이 바뀌지 않았으면 발생하지 않습니다.", "number: 마지막 0~1 비율", "반환값을 사용하지 않습니다.", "크기를 저장한다면 이 시점에 저장하세요. 저장과 복원은 소비자가 맡습니다."),
+  onSizeChange: event("첫 패널의 새 크기를 알립니다.", "끄는 동안 값이 바뀔 때마다, 화살표·Home·End·Enter로 옮길 때, 손잡이를 두 번 눌러 기본 크기로 돌릴 때", "number: 한계를 적용한 크기. ratio는 0~1 비율(소수 넷째 자리까지), px는 정수 픽셀", "반환값을 사용하지 않습니다.", "제어할 때는 소비자가 size를 갱신합니다. 갱신하지 않으면 경계는 움직이지 않습니다."),
+  onChangeCommit: event("크기 조절이 끝났음을 알립니다.", "끌기를 놓거나 취소될 때 한 번, 키로 옮길 때마다 한 번. 값이 바뀌지 않았으면 발생하지 않습니다.", "number: 마지막 크기(sizeUnit 단위)", "반환값을 사용하지 않습니다.", "크기를 저장한다면 이 시점에 저장하세요. 저장과 복원은 소비자가 맡습니다."),
 };
 const callback = (name, key, platform) => {
+  if (name === "KjunSplitPane" && key === "onCollapsedChange") return event("첫 패널을 접거나 펼치라는 요청입니다.", "끌어서 접힘 경계를 지날 때, Enter·Home·증가 키, 손잡이를 두 번 누를 때" + (platform === "native" ? ", 화면 낭독기의 활성화 동작" : ""), "boolean: 바뀔 접힘 상태", "반환값을 사용하지 않습니다.", "제어할 때는 소비자가 collapsed를 갱신합니다. 접힘 상태를 저장하려면 이 시점에 저장하세요.");
   if (name === "KjunSplitPane") return splitPaneCallbacks[key];
   if (name === "KjunNumberInput" && key === "onValueChange") return event("값 변경을 소비자에게 알립니다.", "편집할 때마다. 확정이나 Escape로 보이는 값이 바뀌면(3.5 → 3.50) 그 값도 한 번 더 알려 value가 늘 화면과 같습니다", "string: 그룹 구분 문자가 없는 값(\"\", \"1250000\", \"-3.5\")", "반환값을 사용하지 않습니다.", "소비자가 value를 갱신합니다. 편집 중 값은 소수 자릿수를 채우지 않은 상태입니다.");
   if (name === "KjunNumberInput" && key === "onChangeCommit") return event("편집이 확정됐음을 알립니다.", "blur 또는 Enter. 소수 자릿수를 채운 값으로, 값 변경 콜백 다음", "string: 소수 자릿수를 채운 값(\"12.50\")", "반환값을 사용하지 않습니다.", "저장·조회 등 확정이 필요한 작업에 쓰고, 범위 밖 값을 받아들일지는 앱이 정합니다.");
@@ -397,7 +403,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
   if (name === "KjunRangeSlider" && platform === "vue3") props.modelValue.type = "[number, number]";
   const events = {}, slots = {};
   if (platform === "vue3") {
-    const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper", "KjunNumberInput"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : name === "KjunAvatarGroup" ? { click: "onClick" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunSteps" ? { "step-select": "onStepSelect" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange", "update:expanded": "onExpandedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange", "update:order": "onOrderChange", reorder: "onReorder" } : {};
+    const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit", "update:collapsed": "onCollapsedChange" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper", "KjunNumberInput"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : name === "KjunAvatarGroup" ? { click: "onClick" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunSteps" ? { "step-select": "onStepSelect" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange", "update:expanded": "onExpandedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange", "update:order": "onOrderChange", reorder: "onReorder" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
     if (name === "KjunEventCalendar") Object.assign(events, eventCalendarEvents);
     const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions", "expanded"], KjunListSection: ["badge", "actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default"], KjunNumberInput: ["prefix", "suffix"] }[name] || [];

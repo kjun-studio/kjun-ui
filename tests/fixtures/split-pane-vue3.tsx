@@ -6,6 +6,7 @@ applyDemoColors('default');
 const panes = (first = 'First', second = 'Second') => ({ first: () => <div>{first}</div>, second: () => <div>{second}</div> });
 const App = defineComponent(() => {
   const sizes = ref<number[]>([]), commits = ref<number[]>([]), controlled = ref(0.5), width = ref(700);
+  const pxWidth = ref(700), pxCommits = ref<number[]>([]), collapsed = ref(false);
   const box = (id: string, width: number, height: number, node: any) => <div data-testid={id} style={{ display: "flex", width: width + "px", height: height + "px" }}>{node}</div>;
   return () => <K.KjunProvider>{{ default: () => <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '16px' }}>
     {box('basic', 700, 120, <K.KjunSplitPane ariaLabel="Basic" defaultSize={0.6} minSize={[200, 240]}
@@ -22,6 +23,14 @@ const App = defineComponent(() => {
     <K.KjunButton variant="secondary" onClick={() => { width.value = 420; }}>Shrink</K.KjunButton>
     <K.KjunButton variant="secondary" onClick={() => { width.value = 700; }}>Grow</K.KjunButton>
     {box('capped', 700, 120, <K.KjunSplitPane ariaLabel="Capped" maxSize={[300, null]}>{panes()}</K.KjunSplitPane>)}
+    {box('pixels', pxWidth.value, 120, <K.KjunSplitPane ariaLabel="Pixels" sizeUnit="px" defaultSize={240} minSize={[120, 200]}
+      onChange={(size: number) => { pxCommits.value = [...pxCommits.value, size]; }}>{panes()}</K.KjunSplitPane>)}
+    <K.KjunButton variant="secondary" onClick={() => { pxWidth.value = 500; }}>Narrow pixels</K.KjunButton>
+    <output data-testid="px-commits">{JSON.stringify(pxCommits.value)}</output>
+    {box('rail', 700, 120, <K.KjunSplitPane ariaLabel="Rail" defaultSize={0.4} minSize={[160, 200]} collapsible collapsedSize={48} collapsed={collapsed.value}
+      onUpdate:collapsed={(next: boolean) => { collapsed.value = next; }}>{panes(collapsed.value ? 'Rail' : 'List')}</K.KjunSplitPane>)}
+    <output data-testid="collapsed">{String(collapsed.value)}</output>
+    {box('folded', 700, 120, <K.KjunSplitPane ariaLabel="Folded" collapsible defaultCollapsed minSize={[160, 200]}>{panes('Hidden first')}</K.KjunSplitPane>)}
   </div> }}</K.KjunProvider>;
 });
 createApp(App).mount('#root');

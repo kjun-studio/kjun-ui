@@ -132,6 +132,7 @@ export const kjunMessagesKo = {
   searchTable: "표 검색",
   expandRow: "행 확장",
   collapse: "접기",
+  expand: "펼치기",
   showDetails: "상세 보기",
   ascending: "오름차순",
   sortBy: "정렬",

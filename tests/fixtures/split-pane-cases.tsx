@@ -5,6 +5,9 @@ export function SplitPaneCases({ K, native = false, providerProps = {} }: { K: a
   const [commits, setCommits] = useState<number[]>([]);
   const [controlled, setControlled] = useState(0.5);
   const [width, setWidth] = useState(700);
+  const [pxWidth, setPxWidth] = useState(700);
+  const [pxCommits, setPxCommits] = useState<number[]>([]);
+  const [collapsed, setCollapsed] = useState(false);
   const press = (action: () => void) => ({ [native ? 'onPress' : 'onClick']: action });
   const pane = (label: string) => native ? <K.KjunText>{label}</K.KjunText> : <div>{label}</div>;
   const box = (id: string, w: number, h: number, node: any) => <div data-testid={id} style={{ display: 'flex', width: w, height: h }}>{node}</div>;
@@ -23,5 +26,13 @@ export function SplitPaneCases({ K, native = false, providerProps = {} }: { K: a
     <K.KjunButton variant="secondary" {...press(() => setWidth(420))}>Shrink</K.KjunButton>
     <K.KjunButton variant="secondary" {...press(() => setWidth(700))}>Grow</K.KjunButton>
     {box('capped', 700, 120, <K.KjunSplitPane ariaLabel="Capped" maxSize={[300, null]} first={pane('First')} second={pane('Second')} />)}
+    {box('pixels', pxWidth, 120, <K.KjunSplitPane ariaLabel="Pixels" sizeUnit="px" defaultSize={240} minSize={[120, 200]} first={pane('First')} second={pane('Second')}
+      onChangeCommit={(size: number) => setPxCommits(old => [...old, size])} />)}
+    <K.KjunButton variant="secondary" {...press(() => setPxWidth(500))}>Narrow pixels</K.KjunButton>
+    <output data-testid="px-commits">{JSON.stringify(pxCommits)}</output>
+    {box('rail', 700, 120, <K.KjunSplitPane ariaLabel="Rail" defaultSize={0.4} minSize={[160, 200]} collapsible collapsedSize={48} collapsed={collapsed}
+      onCollapsedChange={setCollapsed} first={pane(collapsed ? 'Rail' : 'List')} second={pane('Second')} />)}
+    <output data-testid="collapsed">{String(collapsed)}</output>
+    {box('folded', 700, 120, <K.KjunSplitPane ariaLabel="Folded" collapsible defaultCollapsed minSize={[160, 200]} first={pane('Hidden first')} second={pane('Second')} />)}
   </div></K.KjunProvider>;
 }

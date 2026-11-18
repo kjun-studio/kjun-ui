@@ -12,6 +12,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       return Math.round(vertical ? bar.y - root.y : bar.x - root.x);
     };
     const drag = async (page: Page, id: string, name: string, dx: number, dy = 0, release = true) => {
+      // The mouse works in viewport coordinates: cases further down the page scroll in first.
+      await handle(page, id, name).scrollIntoViewIfNeeded();
       const bar = (await handle(page, id, name).boundingBox())!;
       const x = bar.x + bar.width / 2, y = bar.y + bar.height / 2;
       await page.mouse.move(x, y);
@@ -147,6 +149,87 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect.poll(() => firstSize(page, 'resizable', 'Resizable')).toBe(200);
       await page.getByRole('button', { name: 'Grow' }).click();
       await expect.poll(() => firstSize(page, 'resizable', 'Resizable')).toBe(408);
+    });
+
+    test('a side-by-side handle spans the panes\' height, and focus rings only the bar', async ({ page }) => {
+      // The box is 120 tall: the handle is a 20 by 120 target on every platform.
+      const bar = handle(page, 'basic', 'Basic');
+      expect(Math.round((await bar.boundingBox())!.height)).toBe(120);
+      await bar.focus();
+      await page.keyboard.press('ArrowLeft');
+      // The browser's own outline would ring the whole handle; only the bar inside carries the ring.
+      expect(await bar.evaluate(node => getComputedStyle(node).outlineStyle)).toBe('none');
+      expect(await bar.evaluate(node => {
+        const ring = [...node.querySelectorAll('*'), node].map(el => getComputedStyle(el)).filter(style => style.outlineStyle !== 'none' && parseFloat(style.outlineWidth) > 0);
+        return ring.length;
+      })).toBe(1);
+    });
+
+    test('a double press on the handle restores the default size and commits once', async ({ page }) => {
+      await drag(page, 'basic', 'Basic', -100);
+      await expect.poll(() => firstSize(page, 'basic', 'Basic')).toBe(308);
+      await handle(page, 'basic', 'Basic').dblclick();
+      await expect.poll(() => firstSize(page, 'basic', 'Basic')).toBe(408);
+      const commits = await numbers(page, 'commits');
+      expect(commits.at(-1)).toBeCloseTo(0.6, 3);
+      // One commit for the drag and one for the double press.
+      expect(commits).toHaveLength(2);
+    });
+
+    test('pixel sizes keep the first pane\'s width as the container narrows and report whole pixels', async ({ page }) => {
+      await expect.poll(() => firstSize(page, 'pixels', 'Pixels')).toBe(240);
+      await page.getByRole('button', { name: 'Narrow pixels' }).click();
+      await expect.poll(() => firstSize(page, 'pixels', 'Pixels')).toBe(240);
+      await drag(page, 'pixels', 'Pixels', 40);
+      await expect.poll(() => firstSize(page, 'pixels', 'Pixels')).toBe(280);
+      expect(await numbers(page, 'px-commits')).toEqual([280]);
+      // 500 leaves 480 beside the handle; the second pane keeps its 200 minimum.
+      await drag(page, 'pixels', 'Pixels', 200);
+      await expect.poll(() => firstSize(page, 'pixels', 'Pixels')).toBe(280);
+      expect(await numbers(page, 'px-commits')).toEqual([280]);
+    });
+
+    test('a collapsible pane folds to its rail past half its minimum and opens with Enter, an increase key or a drag back', async ({ page }) => {
+      const bar = handle(page, 'rail', 'Rail'), collapsed = page.getByTestId('collapsed');
+      // 40% of 680 is 272; the minimum is 160 and the rail 48, so the fold point is 104.
+      await expect.poll(() => firstSize(page, 'rail', 'Rail')).toBe(272);
+      await drag(page, 'rail', 'Rail', -150);
+      await expect.poll(() => firstSize(page, 'rail', 'Rail')).toBe(160);
+      await expect(collapsed).toHaveText('false');
+      await drag(page, 'rail', 'Rail', -80);
+      await expect(collapsed).toHaveText('true');
+      await expect.poll(() => firstSize(page, 'rail', 'Rail')).toBe(48);
+      await expect(page.getByTestId('rail').getByText('Rail', { exact: true })).toBeVisible();
+      await expect(bar).toHaveAttribute('aria-valuenow', '7');
+      await expect(bar).toHaveAttribute('aria-valuemin', '7');
+      await bar.focus();
+      await page.keyboard.press('Enter');
+      await expect(collapsed).toHaveText('false');
+      await expect.poll(() => firstSize(page, 'rail', 'Rail')).toBe(160);
+      await page.keyboard.press('Home');
+      await expect(collapsed).toHaveText('true');
+      await page.keyboard.press('ArrowLeft');
+      await expect(collapsed).toHaveText('true');
+      await page.keyboard.press('ArrowRight');
+      await expect(collapsed).toHaveText('false');
+      await expect.poll(() => firstSize(page, 'rail', 'Rail')).toBe(160);
+      await page.keyboard.press('Enter');
+      await expect(collapsed).toHaveText('true');
+      // Dragging out of the rail opens it at the pointer, never below the minimum.
+      await drag(page, 'rail', 'Rail', 200);
+      await expect(collapsed).toHaveText('false');
+      await expect.poll(() => firstSize(page, 'rail', 'Rail')).toBe(248);
+      if (web) await expect(page.getByTestId('rail').locator('.kjun-split-pane')).not.toHaveAttribute('data-collapsed', /.*/);
+    });
+
+    test('a pane collapsed to nothing leaves the reading order and opens to half the room', async ({ page }) => {
+      await expect.poll(() => firstSize(page, 'folded', 'Folded')).toBe(0);
+      await expect(page.getByTestId('folded').getByText('Hidden first')).toBeHidden();
+      if (web) await expect(page.getByTestId('folded').locator('.kjun-split-pane-first')).toHaveAttribute('inert', '');
+      await handle(page, 'folded', 'Folded').focus();
+      await page.keyboard.press('Enter');
+      await expect.poll(() => firstSize(page, 'folded', 'Folded')).toBe(340);
+      await expect(page.getByTestId('folded').getByText('Hidden first')).toBeVisible();
     });
 
     if (web) test('a cancelled pointer ends the drag where it is and commits once', async ({ page }) => {

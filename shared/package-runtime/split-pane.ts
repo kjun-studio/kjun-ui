@@ -1,14 +1,20 @@
 // Framework-free KjunSplitPane rules shared by React, Vue and Native: the first pane's allowed size, ratio and pixel
-// conversion, pointer positions and keys. Sizes are the first pane's share (0–1) of the room left beside the handle.
+// conversion, pointer positions, keys and collapsing. With sizeUnit "ratio" sizes are the first pane's share (0–1) of
+// the room left beside the handle; with "px" they are the first pane's pixels.
+import { tokens } from "@kjun-ui/tokens";
 
 export type SplitDirection = "horizontal" | "vertical";
 export type SplitMin = readonly [number, number];
 export type SplitMax = readonly [number | null, number | null];
 export interface SplitLimits { low: number; high: number }
 export type SplitKeyAction = "decrease" | "increase" | "min" | "max" | "reset";
+export type SplitUnit = "ratio" | "px";
 
 /** Pixels one arrow key press moves the handle. */
-export const SPLIT_KEY_STEP = 16;
+export const SPLIT_KEY_STEP: number = tokens.extensions.splitPane.keyStep;
+/** Two presses on the handle this close in time, and this close in place, are a double press that restores the default size. */
+export const SPLIT_DOUBLE_PRESS_MS = 300;
+export const SPLIT_PRESS_SLOP = 10;
 
 const room = (total: number, handle: number) => Math.max(0, total - handle);
 
@@ -83,4 +89,59 @@ export function splitKeyTarget(action: SplitKeyAction, px: number, limits: Split
   if (action === "max") return limits.high;
   if (action === "reset") return splitClamp(resetPx, limits);
   return splitClamp(px + (action === "increase" ? SPLIT_KEY_STEP : -SPLIT_KEY_STEP), limits);
+}
+
+/**
+ * The wanted size in its unit. A ratio falls back to the default share (or one half); pixels fall back to the default
+ * pixels, or to null when there is none, which means half the room once the split is measured.
+ */
+export function splitWanted(size: number | undefined, fallback: number | undefined, unit: SplitUnit): number | null {
+  if (unit === "ratio") return splitShare(size, fallback ?? 0.5);
+  const usable = (value: number | undefined) => value !== undefined && Number.isFinite(value);
+  return usable(size) ? Math.max(0, size as number) : usable(fallback) ? Math.max(0, fallback as number) : null;
+}
+
+/** The first pane's pixels for a wanted size, before the limits. */
+export function splitWantedPx(value: number | null, unit: SplitUnit, total: number, handle: number) {
+  const space = room(total, handle);
+  return value === null ? space / 2 : unit === "px" ? value : value * space;
+}
+
+/** The size reported to the app: a ratio with four decimals, or whole pixels. */
+export function splitReport(px: number, unit: SplitUnit, total: number, handle: number) {
+  return unit === "px" ? Math.round(Math.max(0, px)) : splitToRatio(px, total, handle);
+}
+
+/** A collapsed first pane's pixels: collapsedSize, never past the room. */
+export function splitFoldedPx(collapsedSize: number | undefined, total: number, handle: number) {
+  const size = collapsedSize !== undefined && Number.isFinite(collapsedSize) ? Math.max(0, collapsedSize) : 0;
+  return Math.min(size, room(total, handle));
+}
+
+/**
+ * While dragging a collapsible pane: the pointer collapses it once it passes the midpoint between the collapsed size
+ * and the pane's smallest open size, and opens it again on the way back.
+ */
+export function splitCollapseAt(px: number, low: number, folded: number) {
+  return px < (Math.max(low, folded) + folded) / 2;
+}
+
+/**
+ * What a key does to a collapsible pane, as in the window-splitter pattern: Enter toggles it, Home collapses it, and
+ * from collapsed an increase restores the size it had while End opens it to the largest size. move says whether the
+ * key then moves the handle as on a pane that does not collapse.
+ */
+export function splitKeyCollapse(action: SplitKeyAction, collapsible: boolean, collapsed: boolean): { collapse: boolean | null; move: boolean } {
+  if (!collapsible) return { collapse: null, move: true };
+  if (action === "reset") return { collapse: !collapsed, move: false };
+  if (!collapsed) return action === "min" ? { collapse: true, move: false } : { collapse: null, move: true };
+  if (action === "increase") return { collapse: false, move: false };
+  if (action === "max") return { collapse: false, move: true };
+  return { collapse: null, move: false };
+}
+
+/** A second press within the double-press time and slop of the first. */
+export function splitDoublePress(previous: { at: number; x: number; y: number } | null, now: { at: number; x: number; y: number }) {
+  return !!previous && now.at - previous.at <= SPLIT_DOUBLE_PRESS_MS &&
+    Math.abs(now.x - previous.x) <= SPLIT_PRESS_SLOP && Math.abs(now.y - previous.y) <= SPLIT_PRESS_SLOP;
 }

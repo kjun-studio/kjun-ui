@@ -261,7 +261,8 @@
       "touchHandleHit": { "$ref": "native.minimumTouchTarget" },
       "barWidth": { "$ref": "dimension.value4" },
       "barLength": { "$ref": "dimension.value40" },
-      "activeBarLength": { "$ref": "dimension.value56" }
+      "activeBarLength": { "$ref": "dimension.value56" },
+      "keyStep": { "$ref": "dimension.value16" }
     },
     "fileUpload": {
       "zoneHeight": 136,

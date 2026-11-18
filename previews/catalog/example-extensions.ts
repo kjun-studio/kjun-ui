@@ -165,12 +165,17 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         : [{ key: "bull", label: "강세", value: values[0], color: color("danger") }, { key: "flat", label: "중립", value: values[1] }, { key: "bear", label: "약세", value: values[2], color: color("info") }] }));
     }
     case "KjunSplitPane": {
-      const vertical = settings.direction === "vertical";
+      const vertical = settings.direction === "vertical", px = settings.unit === "px", rail = !!settings.collapsible;
       const pane = (title: string, subtitle: string) => h("KjunCard", { title, subtitle });
-      return h("Stack", {}, [h("Box", { width: 560, height: vertical ? 320 : 180 }, h(name, { ariaLabel: "메시지 목록 크기", direction: settings.direction, size: get("split", 0.6), onSizeChange: change("split"), defaultSize: 0.6,
-        minSize: settings.limits ? vertical ? [80, 80] : [160, 200] : undefined, disabled, onChangeCommit: (size: number) => set("message", "확정: " + size) }, undefined,
-        { first: pane("메시지 목록", "첫 패널"), second: pane("상세 내용", "둘째 패널") })),
-        h("Text", {}, `첫 패널 비율: ${Math.round(get("split", 0.6) * 100)}%`)]);
+      const start = px ? 240 : 0.6, split = get("split", start), collapsed = rail && !!get("collapsed", false);
+      // A collapsed list leaves a 48px rail; the app draws it from the collapsed value.
+      const first = collapsed ? h("KjunIcon", { name: "list", size: 20 }) : pane("메시지 목록", "첫 패널");
+      return h("Stack", {}, [h("Box", { width: 560, height: vertical ? 320 : 180 }, h(name, { ariaLabel: "메시지 목록 크기", direction: settings.direction, sizeUnit: px ? "px" : undefined,
+        size: split, onSizeChange: change("split"), defaultSize: start,
+        minSize: settings.limits ? vertical ? [80, 80] : [160, 200] : undefined, disabled, onChangeCommit: (size: number) => set("message", "확정: " + size),
+        ...(rail ? { collapsible: true, collapsedSize: 48, collapsed, onCollapsedChange: change("collapsed") } : {}) }, undefined,
+        { first, second: pane("상세 내용", "둘째 패널") })),
+        h("Text", {}, collapsed ? "첫 패널: 접힘" : px ? `첫 패널 폭: ${split}px` : `첫 패널 비율: ${Math.round(split * 100)}%`)]);
     }
     case "KjunColorPicker":
       return h("Box", { width: 360 }, h("KjunFormGroup", { label: "라벨 색", error: error ? "라벨 색을 선택해 주세요." : "" }, h(name, { value: get("color", settings.alpha ? "#3B82F6CC" : "#3B82F6"),

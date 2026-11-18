@@ -1,7 +1,10 @@
 /* KjunSplitPane: two panes and a handle between them. The first pane takes --_kjun-split-pane-size (0–1) of the room
-   beside the handle, so the split holds its ratio as the container resizes without a script. */
+   beside the handle, so the split holds its ratio as the container resizes without a script. Sizes in pixels and a
+   collapsed pane set --_kjun-split-pane-basis instead. */
 .kjun-split-pane {
   --_kjun-split-pane-hit: var(--_kjun-extension-split-pane-handle-hit);
+  /* Not inherited: a split inside a pixel-sized pane keeps its own ratio. */
+  --_kjun-split-pane-basis: initial;
   display: flex;
   width: 100%;
   height: 100%;
@@ -27,7 +30,7 @@
   overflow: auto;
 }
 .kjun-split-pane-first {
-  flex: 0 0 calc((100% - var(--_kjun-split-pane-hit)) * var(--_kjun-split-pane-size));
+  flex: 0 0 var(--_kjun-split-pane-basis, calc((100% - var(--_kjun-split-pane-hit)) * var(--_kjun-split-pane-size)));
 }
 .kjun-split-pane-second {
   flex: 1 1 0;

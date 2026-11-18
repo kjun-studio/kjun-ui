@@ -124,6 +124,7 @@ export const kjunMessagesEn: KjunMessages = {
   searchTable: "Search table",
   expandRow: "Expand row",
   collapse: "Collapse",
+  expand: "Expand",
   showDetails: "Show details",
   ascending: "Ascending",
   sortBy: "Sort",

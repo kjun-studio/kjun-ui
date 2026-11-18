@@ -200,13 +200,18 @@ export function generate(input: UsageInput) {
       content = b.node(name, { label: '애널리스트 의견', items: expr('opinions'), size: s.size === 'sm' ? 'sm' : undefined, legend: s.legend === false ? false : undefined }); break;
     }
     case 'KjunSplitPane': {
-      const vertical = s.direction === 'vertical', height = vertical ? 320 : 180;
+      const vertical = s.direction === 'vertical', height = vertical ? 320 : 180, px = s.unit === 'px', rail = !!s.collapsible, start = px ? 240 : 0.6;
       const pane = (title: string, subtitle: string) => b.node('KjunCard', { title, subtitle });
+      // A collapsed list leaves a 48px rail; the app draws it from the collapsed value.
+      const icon = b.node('KjunIcon', { name: 'list', size: 20 }), list = pane('메시지 목록', '첫 패널');
+      const first = !rail ? list : b.vue ? `${icon.replace('<KjunIcon', '<KjunIcon v-if="state.collapsed"')}\n${list.replace('<KjunCard', '<KjunCard v-else')}`
+        : `{${b.read('collapsed')} ? ${icon} : ${list}}`;
       content = b.group([b.node(b.native ? 'View' : 'div', { style: { height: b.native ? height : height + 'px' } },
-        b.node(name, { ariaLabel: '메시지 목록 크기', direction: vertical ? 'vertical' : undefined, size: b.state('split', 0.6), onSizeChange: b.update('split'), defaultSize: 0.6,
-          minSize: s.limits ? vertical ? [80, 80] : [160, 200] : undefined, disabled: s.disabled || undefined, onChangeCommit: commit() }, '',
-        { first: pane('메시지 목록', '첫 패널'), second: pane('상세 내용', '둘째 패널') })),
-        b.text(expr('"첫 패널 비율: " + Math.round(state.split * 100) + "%"'))]); break;
+        b.node(name, { ariaLabel: '메시지 목록 크기', direction: vertical ? 'vertical' : undefined, sizeUnit: px ? 'px' : undefined, size: b.state('split', start), onSizeChange: b.update('split'), defaultSize: start,
+          minSize: s.limits ? vertical ? [80, 80] : [160, 200] : undefined, disabled: s.disabled || undefined, onChangeCommit: commit(),
+          ...(rail ? { collapsible: true, collapsedSize: 48, collapsed: b.state('collapsed', false), onCollapsedChange: b.update('collapsed') } : {}) }, '',
+        { first, second: pane('상세 내용', '둘째 패널') })),
+        b.text(expr(px ? '"첫 패널 폭: " + state.split + "px"' : '"첫 패널 비율: " + Math.round(state.split * 100) + "%"'))]); break;
     }
     case 'KjunColorPicker':
       content = b.node(name, { value: b.state('color', s.alpha ? '#3B82F6CC' : '#3B82F6'), onValueChange: b.update('color'), swatches: s.swatches ? ['#EF4444', '#F97316', '#EAB308', '#22C55E', '#14B8A6', '#3B82F6', '#8B5CF6', '#EC4899', '#64748B', '#111111'] : undefined,

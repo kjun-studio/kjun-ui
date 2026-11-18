@@ -1015,6 +1015,7 @@
   --_kjun-extension-split-pane-bar-width: 4px;
   --_kjun-extension-split-pane-bar-length: 40px;
   --_kjun-extension-split-pane-active-bar-length: 56px;
+  --_kjun-extension-split-pane-key-step: 16px;
   --_kjun-extension-file-upload-zone-height: 136px;
   --_kjun-extension-file-upload-zone-gap: 8px;
   --_kjun-extension-file-upload-zone-icon: 40px;
