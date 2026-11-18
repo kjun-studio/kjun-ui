@@ -508,8 +508,14 @@
   --_kjun-extension-slider-small-pressed-thumb: 18px;
   --_kjun-extension-slider-small-track-height: 24px;
   --_kjun-extension-slider-minimum-width: 100px;
-  --_kjun-extension-radio-size: 24px;
-  --_kjun-extension-radio-dot: 10px;
+  --_kjun-extension-radio-sizes-sm: 20px;
+  --_kjun-extension-radio-sizes-md: 24px;
+  --_kjun-extension-radio-sizes-lg: 28px;
+  --_kjun-extension-radio-dots-sm: 8px;
+  --_kjun-extension-radio-dots-md: 10px;
+  --_kjun-extension-radio-dots-lg: 12px;
+  --_kjun-extension-radio-group-gaps-horizontal: 16px;
+  --_kjun-extension-radio-group-gaps-vertical: 8px;
   --_kjun-extension-radio-border-width: 2px;
   --_kjun-extension-radio-label-gap: 8px;
   --_kjun-extension-market-table-header-height: 44px;

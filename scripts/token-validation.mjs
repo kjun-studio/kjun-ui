@@ -148,8 +148,10 @@ export function validateTokenRelationships(data) {
     throw Error('Native Chip removal target is smaller than its control or minimum touch target');
   for (const key of ['minWidth', 'maxWidth', 'closeSize', 'iconSize']) positive(toast[key], 'extensions.toast.' + key);
   if (toast.minWidth > toast.maxWidth) throw Error('Toast minWidth exceeds maxWidth');
-  positive(radio.dot, 'extensions.radio.dot');
-  if (radio.dot > radio.size - 2 * radio.borderWidth) throw Error('Radio dot exceeds inner size');
+  for (const size of ['sm', 'md', 'lg']) {
+    positive(radio.dots[size], 'extensions.radio.dots.' + size);
+    if (radio.dots[size] > radio.sizes[size] - 2 * radio.borderWidth) throw Error('Radio dot exceeds inner size');
+  }
   const { content, sticky, navigation } = data.layers.page;
   if (!(content < sticky && sticky < navigation))
     throw Error('Page layer order must be content < sticky < navigation');

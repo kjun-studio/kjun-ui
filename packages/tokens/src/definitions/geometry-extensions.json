@@ -275,8 +275,16 @@
       "small": { "track": { "$ref": "extensions.progress.heights.sm" }, "thumb": 16, "pressedThumb": 18, "trackHeight": 24 }
     },
     "radio": {
-      "size": { "$ref": "extensions.checkbox.sizes.md" },
-      "dot": 10,
+      "sizes": {
+        "sm": { "$ref": "extensions.checkbox.sizes.sm" },
+        "md": { "$ref": "extensions.checkbox.sizes.md" },
+        "lg": { "$ref": "extensions.checkbox.sizes.lg" }
+      },
+      "dots": { "sm": 8, "md": 10, "lg": 12 },
+      "groupGaps": {
+        "horizontal": { "$ref": "dimension.value16" },
+        "vertical": { "$ref": "dimension.value8" }
+      },
       "borderWidth": 2,
       "labelGap": { "$ref": "dimension.value8" }
     },
