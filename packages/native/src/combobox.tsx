@@ -6,7 +6,7 @@ import { useId,useRef,type ReactNode,type Ref } from "react";
 import { Platform, View } from "react-native";
 import { KjunSpinner } from "./display";
 import { KjunInput,FieldContext,type KjunInputProps } from "./input";
-import { PanelSearchTriggerContext } from "./field-surface";
+import { QuietFocusContext } from "./field-surface";
 import type { KjunTextInputHandle } from "./handles";
 import { KText } from "./internal";
 import { FloatingPanel } from "./layers";
@@ -180,11 +180,10 @@ export function SearchField<T extends SelectOption>({
   return (
     <>
       <View ref={ref} collapsable={false}>
-        <PanelSearchTriggerContext.Provider value>
+        {/* Like Select: the open field keeps its ring, and the search in the panel shows only its fill. */}
         <KjunInput {...own} ref={inputRef} {...inputProps} {...(Platform.OS === 'web' ? { onClick: openFromPress } : { onPressIn: openFromPress })} aria-expanded={open && !disabled}
           onBlur={(event) => { own?.onBlur?.(event); focusGuard.clear(); }}
           onFocus={(event) => { own?.onFocus?.(event); if (!clearing.current && focusGuard.canOpen()) onOpenChange(true); }} />
-        </PanelSearchTriggerContext.Provider>
       </View>
       <FloatingPanel
         field
@@ -203,7 +202,9 @@ export function SearchField<T extends SelectOption>({
             borderBottomColor: colors.border,
           }}
         >
-          <KjunInput {...inputProps} nativeID={searchId} autoFocus />
+          <QuietFocusContext.Provider value>
+            <KjunInput {...inputProps} nativeID={searchId} autoFocus />
+          </QuietFocusContext.Provider>
         </View>
         {loading ? (
           // Centered like the Select loading row on every platform.

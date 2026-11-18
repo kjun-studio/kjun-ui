@@ -24,12 +24,7 @@ export function fieldTarget(action: () => void, disabled: boolean) {
   return Platform.OS === "web" ? { onClick: activate } : { onTouchEnd: activate };
 }
 
-/**
- * A field whose open panel holds its own focused search input (Combobox, SearchInput).
- * While open the field shows the opened fill, like an open Select trigger, so only the panel input draws a focus border.
- */
-export const PanelSearchTriggerContext = createContext(false);
-/** Inside an open select list the search keeps only its fill when focused: the open trigger already shows the ring. */
+/** Inside an open Select or Combobox list the search keeps only its fill when focused: the open field already shows the ring. */
 export const QuietFocusContext = createContext(false);
 
 /** Shared field state, independent of each control's value and keyboard model. */
@@ -40,10 +35,9 @@ export function useFieldSurface(size: InputSize, { disabled = false, readOnly = 
   const [hovered, setHovered] = useState(false);
   const quiet = useContext(QuietFocusContext);
   const spec = tokens.input[size];
-  const opensPanelInput = useContext(PanelSearchTriggerContext);
-  const active = !disabled && (focused || (open && !opensPanelInput));
+  const active = !disabled && (focused || open);
   const ring = active && !quiet;
-  const hover = !disabled && !readOnly && !invalid && !active && (hovered || (open && opensPanelInput));
+  const hover = !disabled && !readOnly && !invalid && !active && hovered;
   const border = useMotionValue(Platform.OS === "web" ? 0 : invalid ? 2 : ring ? 1 : 0, tokens.motion.control);
   const background = useMotionValue(Platform.OS === "web" || !hover ? 0 : 1, tokens.motion.control);
   const animateBorder = Platform.OS !== "web" && typeof colors.danger === "string" && typeof colors.inputBorderFocus === "string";
