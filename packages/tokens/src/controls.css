@@ -116,7 +116,7 @@
 @media (prefers-reduced-motion: reduce) {
   .kjun-button-group-indicator[data-animate="true"], .kjun-button-group button { transition: none; }
 }
-.kjun-button-group button:hover:not(:disabled):not([aria-pressed="true"]) {
+.kjun-button-group button:hover:not(:disabled, [aria-busy="true"]):not([aria-pressed="true"]) {
   background: var(--_kjun-color-hover);
 }
 /* One disabled rule, as Button and fields: no fading; the ink takes the disabled-text role and fills stay. */
@@ -221,18 +221,18 @@
   max-width: 100%;
 }
 /* An open action menu or Popover keeps its trigger button in the active paint after hover/focus leaves it. */
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="secondary"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="secondary"]:not(:disabled) {
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="secondary"]:not(:disabled, [aria-busy="true"]), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="secondary"]:not(:disabled, [aria-busy="true"]) {
   background: var(--_kjun-color-button-secondary-active);
 }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="ghost"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="ghost"]:not(:disabled) {
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="ghost"]:not(:disabled, [aria-busy="true"]), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="ghost"]:not(:disabled, [aria-busy="true"]) {
   background: var(--_kjun-color-active);
   color: var(--_kjun-color-text);
 }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="primary"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="primary"]:not(:disabled) { background: var(--_kjun-color-brand-active); }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="danger"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="danger"]:not(:disabled) { background: var(--_kjun-color-danger-active); }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="success"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="success"]:not(:disabled) { background: var(--_kjun-color-success-active); }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="warning"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="warning"]:not(:disabled) { background: var(--_kjun-color-warning-active); }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="danger-ghost"]:not(:disabled), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="danger-ghost"]:not(:disabled) {
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="primary"]:not(:disabled, [aria-busy="true"]), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="primary"]:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-brand-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="danger"]:not(:disabled, [aria-busy="true"]), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="danger"]:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-danger-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="success"]:not(:disabled, [aria-busy="true"]), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="success"]:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-success-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="warning"]:not(:disabled, [aria-busy="true"]), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="warning"]:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-warning-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="danger-ghost"]:not(:disabled, [aria-busy="true"]), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="danger-ghost"]:not(:disabled, [aria-busy="true"]) {
   background: var(--_kjun-color-danger-bg);
   color: var(--_kjun-color-danger-dark);
 }

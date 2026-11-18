@@ -40,7 +40,7 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         h("Text", { "data-caption": "" }, item.caption),
         h("Group", {}, [h(name, { size: settings.size, variant: settings.variant, disabled, loading,
           ...item.props, ...action(() => set("count", get("count", 0) + 1)),
-        }, item.label)]),
+        }, item.label, item.prefixNode ? { prefix: h("KjunIcon", item.prefixNode) } : {})]),
       ])));
       return h("Stack", {}, [h("Group", {}, [h(name, {
         size: settings.size, variant: settings.variant, disabled, loading,

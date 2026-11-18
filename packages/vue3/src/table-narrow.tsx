@@ -1,3 +1,4 @@
+import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import type { VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import type { TableCardSection } from "./table-types";
@@ -99,7 +100,7 @@ export function tableCards(c: TableNarrowContext) {
   const card = (row: Row, i: number) => (
     <div key={state.key(row, i)} role="listitem" class={"kjun-table-card kjun-table-row-action " + c.customClass(row, i)} data-selectable={c.selectable || undefined}
       data-selected={(c.selectable && state.selectedRow(row)) || undefined}
-      tabindex={c.clickable ? 0 : undefined} onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} onClick={() => c.rowClick(row, i)}>
+      tabindex={c.clickable ? 0 : undefined} onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} onClick={(event: MouseEvent) => { if (!fromNestedControl(event)) c.rowClick(row, i); }}>
       {tiles ? [
         (c.selectable || badges.length > 0) && <div class="kjun-table-card-header">{c.selectable && c.checkbox(row, i)}{badgeList(row, i)}</div>,
         heading(row, i),
@@ -170,7 +171,7 @@ export function tableList(c: TableNarrowContext) {
   const item = (row: Row, i: number) => (
     <div key={state.key(row, i)} role="listitem">
       <div class={"kjun-table-list-item kjun-table-row-action " + c.customClass(row, i)} data-selected={state.selectedRow(row) || undefined}
-        tabindex={c.clickable ? 0 : undefined} onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} onClick={() => c.rowClick(row, i)}>
+        tabindex={c.clickable ? 0 : undefined} onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} onClick={(event: MouseEvent) => { if (!fromNestedControl(event)) c.rowClick(row, i); }}>
         {c.selectable && c.checkbox(row, i)}
         <div class="kjun-table-list-main">
           <span class="kjun-table-list-title">{title && c.cell(title, row, i, "listTitle")}</span>

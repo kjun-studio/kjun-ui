@@ -93,7 +93,7 @@ export const KjunButton = defineComponent({
   name: "KjunButton",
   props: kjunButtonProps,
   emits: { click: (_event: MouseEvent) => true },
-  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
+  slots: Object as SlotsType<{ default?: () => VNodeChild; prefix?: () => VNodeChild; suffix?: () => VNodeChild }>,
   setup(props, { attrs, slots, emit }) {
     const size = useActionSize(() => props.size, "md");
     const inheritedShape = inject(kjunActionShapeKey, null);
@@ -105,14 +105,20 @@ export const KjunButton = defineComponent({
       const children = slots.default?.();
       const content = hasContent(children);
       const s = size.value, loading = busy.value;
-      const { prefixIcon, suffixIcon } = props;
+      // A prefix/suffix slot takes the icon's place, inset and loading rules; it wins over the icon name.
+      const prefixSlot = slots.prefix?.(), suffixSlot = slots.suffix?.();
+      const prefixNode = hasContent(prefixSlot), suffixNode = hasContent(suffixSlot);
+      const prefixIcon = prefixNode || !!props.prefixIcon, suffixIcon = suffixNode || !!props.suffixIcon;
       const iconOnly = !content && !!(prefixIcon || suffixIcon || loading);
       const height = Math.max(tokens.button.heights[s], navigation?.controlSize ?? 0);
       const iconSize = navigation?.iconSize ?? tokens.button.iconSizes[s];
       const contentHeight = Math.max(content ? tokens.button.typography[s].lineHeightPx : 0,
         prefixIcon || suffixIcon || (!content && loading) ? iconSize : 0);
-      const spinPrefix = loading && prefixIcon && (props.spinOnLoading ?? prefixIcon === "refresh");
-      const before = prefixIcon && !(loading && !spinPrefix) ? prefixIcon : undefined;
+      const spinPrefix = loading && !prefixNode && !!props.prefixIcon && (props.spinOnLoading ?? props.prefixIcon === "refresh");
+      const before = prefixIcon && !(loading && !spinPrefix);
+      // Only a hidden suffix sets its own opacity, so the disabled rule in the stylesheet can dim the node.
+      const media = (node: VNodeChild, hidden = false) =>
+        <span class="kjun-button-media" style={{ width: iconSize + "px", height: iconSize + "px", ...(hidden ? { opacity: 0 } : {}) }}>{node}</span>;
       const loader = () => spinnerGlyph({ size: iconSize });
       const overlayLoading = loading && !prefixIcon && !suffixIcon;
       // Icon glyphs carry their own side bearing, so the icon side takes a tighter inset.
@@ -128,7 +134,9 @@ export const KjunButton = defineComponent({
           data-wrap={props.wrap || cardActions || undefined}
           data-disabled={String(props.disabled)}
           aria-label={props.ariaLabel || undefined}
-          disabled={props.disabled || loading}
+          // A loading button stays focusable (a keyboard user keeps their place) and refuses presses itself.
+          disabled={props.disabled}
+          aria-disabled={loading && !props.disabled ? "true" : undefined}
           aria-busy={loading ? "true" : undefined}
           style={css({
             height,
@@ -143,15 +151,16 @@ export const KjunButton = defineComponent({
           }, (navigation || props.wrap || cardActions) && { height: "auto", maxWidth: "100%", paddingBlock: Math.max(0, (height - contentHeight) / 2) },
             props.variant === "link" && { height: "auto", minHeight: 0, minWidth: 0, width: "auto", padding: 0, borderRadius: 0 })}
           onClick={(event: MouseEvent) => {
-            event.stopPropagation();
-            if (!props.disabled && !loading) emit("click", event);
+            // While loading the click does nothing, a submit button included. It still bubbles, like any click.
+            if (loading) { event.preventDefault(); return; }
+            if (!props.disabled) emit("click", event);
           }}
         >
           {loading && prefixIcon && !spinPrefix && loader()}
-          {before && <KjunIcon name={before} filled={!loading && props.prefixIconFilled} spin={loading} size={iconSize} />}
+          {before && (prefixNode ? media(prefixSlot) : <KjunIcon name={props.prefixIcon!} filled={!loading && props.prefixIconFilled} spin={loading} size={iconSize} />)}
           <span class="kjun-button-label" style={{ opacity: overlayLoading ? 0 : 1 }}>{children}</span>
-          {suffixIcon && (loading && !prefixIcon ? loader() : (
-            <KjunIcon name={suffixIcon} filled={!loading && props.suffixIconFilled}
+          {suffixIcon && (loading && !prefixIcon ? loader() : suffixNode ? media(suffixSlot, loading && prefixIcon) : (
+            <KjunIcon name={props.suffixIcon!} filled={!loading && props.suffixIconFilled}
               style={{ opacity: loading && prefixIcon ? 0 : 1 }} size={iconSize} />
           ))}
           {overlayLoading && <span class="kjun-button-loader" aria-hidden="true">{loader()}</span>}

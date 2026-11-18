@@ -1,3 +1,4 @@
+import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import { tokens } from "@kjun-ui/tokens";
 import type { KeyboardEvent } from "react";
 import type { TableCardsProps } from "../../../shared/package-runtime/table-presentation";
@@ -21,7 +22,7 @@ export function TableList<Row extends object>(props: Props<Row>) {
         data-selected={state.selectedRow(row) || undefined}
         tabIndex={onRowClick ? 0 : undefined}
         onKeyDown={event => rowKeyDown(event, row, i)}
-        onClick={() => onRowClick?.(row, i)}
+        onClick={event => { if (!fromNestedControl(event)) onRowClick?.(row, i); }}
       >
         {selectable && checkbox(row, i)}
         <div className="kjun-table-list-main">

@@ -21,6 +21,10 @@ const settledPaint = async (page: Page) => {
   return previous;
 };
 const ink = (page: Page) => button(page).evaluate(el => getComputedStyle(el.querySelector('span, [dir="auto"]') || el).color);
+// A loading button refuses presses but stays focusable. Web reads it as aria-disabled; React Native Web's Pressable
+// writes its own aria-disabled from `disabled`, so there only aria-busy shows it (devices get accessibilityState).
+const refusing = (page: Page, platform: string, id = 'text') => platform === 'native'
+  ? expect(button(page, id)).toHaveAttribute('aria-busy', 'true') : expect(button(page, id)).toBeDisabled();
 for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: button geometry and neighboring actions stay stable through loading`, async ({ page }) => {
     await openFixture(page, platform, '', 'button-design');
@@ -37,7 +41,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       await configure(page, { loading: true });
       await expect(button(page)).toHaveAttribute('aria-busy', 'true');
       for (const id of ids) {
-        await expect(button(page, id)).toBeDisabled();
+        await refusing(page, platform, id);
         await expect(button(page, id)).toHaveAccessibleName(id === 'text' ? '변경 사항 저장' : id === 'prefix' || id === 'icon' ? '항목 추가' : id === 'suffix' ? 'Save changes' : id === 'both' ? '추가하고 이동' : '다음');
       }
       expect(await boxes(page)).toEqual(before);
@@ -65,7 +69,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       }
       for (const state of [{ disabled: true, loading: false }, { disabled: false, loading: true }]) {
         await configure(page, state);
-        await expect(button(page)).toBeDisabled();
+        await (state.loading ? refusing(page, platform) : expect(button(page)).toBeDisabled());
         const bg = await settledPaint(page);
         await button(page).hover({ force: true });
         await page.mouse.down();
@@ -95,10 +99,11 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.mouse.up();
       await page.mouse.move(0, 0);
     }
-    for (const variant of ['primary', 'secondary', 'danger', 'success', 'warning', 'ghost', 'danger-ghost']) {
+    // A disabled link stays a bare line of text: no neutral fill behind it.
+    for (const variant of ['primary', 'secondary', 'danger', 'success', 'warning', 'ghost', 'danger-ghost', 'link']) {
       await configure(page, { variant, disabled: true, loading: false });
       await expect(button(page)).toHaveCSS('opacity', '1');
-      await paint(variant.includes('ghost') ? 'rgba(0, 0, 0, 0)' : 'rgb(216, 224, 232)');
+      await paint(variant.includes('ghost') || variant === 'link' ? 'rgba(0, 0, 0, 0)' : 'rgb(216, 224, 232)');
       await expect.poll(() => ink(page)).toBe('rgb(136, 153, 170)');
     }
   });
@@ -114,26 +119,72 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.keyboard.press('Space');
     await expect(page.getByTestId('events')).toHaveText('2');
     await configure(page, { loading: true });
-    await expect(button(page)).toBeDisabled();
+    await refusing(page, platform);
     await configure(page, { loading: false });
-    await expect(button(page)).toBeDisabled();
+    await refusing(page, platform);
     await configure(page, { loading: true });
     await page.clock.runFor(450);
-    await expect(button(page)).toBeDisabled();
+    await refusing(page, platform);
     await configure(page, { loading: false });
     await page.clock.runFor(10);
     await expect(button(page)).toBeEnabled();
+    await expect(button(page)).not.toHaveAttribute('aria-busy', 'true');
     await button(page, 'icon').click();
     await expect(page.getByTestId('events')).toHaveText('3');
   });
 
   test(`${platform}: initially loading buttons keep their accessible name and release after completion`, async ({ page }) => {
     await openFixture(page, platform, '?loading', 'button-design');
-    await expect(button(page)).toBeDisabled();
+    await refusing(page, platform);
     const before = await boxes(page);
     await configure(page, { loading: false });
     await expect(button(page)).toBeEnabled();
     expect(await boxes(page)).toEqual(before);
     await expect(button(page)).toHaveAccessibleName('변경 사항 저장');
+  });
+
+  test(`${platform}: a loading button keeps keyboard focus and refuses presses without disabling`, async ({ page }) => {
+    await openFixture(page, platform, '', 'button-design');
+    await page.keyboard.press('Tab');
+    await expect(button(page)).toBeFocused();
+    await configure(page, { loading: true });
+    await expect(button(page)).toBeFocused();
+    await expect(button(page)).toHaveAttribute('aria-busy', 'true');
+    await expect(button(page)).not.toHaveAttribute('disabled', /.*/);
+    if (platform !== 'native') {
+      await expect(button(page)).toHaveAttribute('aria-disabled', 'true');
+      await expect(button(page)).toHaveCSS('cursor', 'progress');
+    }
+    await page.keyboard.press('Enter');
+    await page.keyboard.press('Space');
+    // Playwright waits for an aria-disabled target to enable; force sends the click the user would.
+    await button(page).click({ force: true });
+    await expect(page.getByTestId('events')).toHaveText('0');
+  });
+
+  test(`${platform}: a click on a button still reaches page-level listeners`, async ({ page }) => {
+    // React Native Web's press responder stops the DOM click itself; devices have no page-level listeners.
+    test.skip(platform === 'native', 'React Native Web stops press clicks in its responder');
+    await openFixture(page, platform, '', 'button-design');
+    await page.evaluate(() => { (window as any).bubbled = 0; document.addEventListener('click', () => { (window as any).bubbled++; }); });
+    await button(page).click();
+    await expect(page.getByTestId('events')).toHaveText('1');
+    expect(await page.evaluate(() => (window as any).bubbled)).toBe(1);
+  });
+
+  test(`${platform}: a prefix node sits in the icon box and follows the icon's loading and disabled rules`, async ({ page }) => {
+    await openFixture(page, platform, '', 'button-design');
+    const host = button(page, 'node'), node = page.getByTestId('node').locator('[data-node]');
+    const [b, box, icon] = await Promise.all([host.boundingBox(), node.locator('..').boundingBox(), button(page, 'prefix').boundingBox()]);
+    // md: a 16px box at the 12px icon-side inset, like prefixIcon; the 20px node is clipped, the button keeps its height.
+    expect(box!.width).toBe(16);
+    expect(box!.height).toBe(16);
+    expect(Math.round(box!.x - b!.x)).toBe(12);
+    expect(b!.height).toBe(icon!.height);
+    await configure(page, { loading: true });
+    await expect(node).toHaveCount(0);
+    await configure(page, { loading: false, disabled: true });
+    await expect(node).toHaveCount(1);
+    await expect.poll(() => node.locator('..').evaluate(el => Number(getComputedStyle(el).opacity))).toBeLessThan(1);
   });
 }

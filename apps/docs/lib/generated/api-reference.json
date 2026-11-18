@@ -26220,7 +26220,7 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
+            "summary": "진행 중인 작업을 표시합니다. 로딩 중에도 버튼은 포커스를 유지하고(aria-disabled·aria-busy) 누름·제출을 막습니다. 짧은 요청에서도 최소 400ms 동안 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
             "source": "packages/vue3/src/button.tsx"
           },
           {
@@ -26329,6 +26329,20 @@
             "source": "packages/vue3/src/button.tsx",
             "type": "제공 데이터 없음",
             "summary": "default 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "prefix",
+            "data": [],
+            "source": "packages/vue3/src/button.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "prefix 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "suffix",
+            "data": [],
+            "source": "packages/vue3/src/button.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "suffix 영역의 기본 내용을 교체합니다."
           }
         ],
         "ownership": [],
@@ -26369,7 +26383,7 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
+            "summary": "진행 중인 작업을 표시합니다. 로딩 중에도 버튼은 포커스를 유지하고(aria-disabled·aria-busy) 누름·제출을 막습니다. 짧은 요청에서도 최소 400ms 동안 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
             "source": "packages/react/src/button.tsx"
           },
           {
@@ -26406,6 +26420,24 @@
             "default": "—",
             "description": "",
             "summary": "내용 뒤에 표시할 아이콘입니다.",
+            "source": "packages/react/src/button.tsx"
+          },
+          {
+            "name": "prefix",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "A node in the icon's place (a brand logo, a small avatar), fitted to the size's icon box. Wins over prefixIcon.",
+            "summary": "앞 아이콘 자리에 둘 노드입니다(다색 브랜드 로고, 작은 아바타). 크기별 아이콘 칸(md 16px)에 맞춰 가운데 놓고 넘치는 부분은 자릅니다. 여백·로딩 스피너 교체는 prefixIcon과 같고, prefixIcon보다 우선합니다. 비활성이면 웹은 회색·반투명, Native는 반투명으로 그립니다. Vue 3는 prefix 슬롯을 씁니다.",
+            "source": "packages/react/src/button.tsx"
+          },
+          {
+            "name": "suffix",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "A node in the suffix icon's place, fitted to the size's icon box. Wins over suffixIcon.",
+            "summary": "뒤 아이콘 자리에 둘 노드입니다. 칸·여백·로딩 규칙은 suffixIcon과 같고 suffixIcon보다 우선합니다. Vue 3는 suffix 슬롯을 씁니다.",
             "source": "packages/react/src/button.tsx"
           },
           {
@@ -26593,7 +26625,7 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
+            "summary": "진행 중인 작업을 표시합니다. 로딩 중에도 버튼은 포커스를 유지하고(aria-disabled·aria-busy) 누름·제출을 막습니다. 짧은 요청에서도 최소 400ms 동안 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
             "source": "packages/native/src/button.tsx"
           },
           {
@@ -26630,6 +26662,24 @@
             "default": "—",
             "description": "",
             "summary": "내용 뒤에 표시할 아이콘입니다.",
+            "source": "packages/native/src/button.tsx"
+          },
+          {
+            "name": "prefix",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "A node in the icon's place (a brand logo, a small avatar), fitted to the size's icon box. Wins over prefixIcon.",
+            "summary": "앞 아이콘 자리에 둘 노드입니다(다색 브랜드 로고, 작은 아바타). 크기별 아이콘 칸(md 16px)에 맞춰 가운데 놓고 넘치는 부분은 자릅니다. 여백·로딩 스피너 교체는 prefixIcon과 같고, prefixIcon보다 우선합니다. 비활성이면 반투명으로 그립니다.",
+            "source": "packages/native/src/button.tsx"
+          },
+          {
+            "name": "suffix",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "A node in the suffix icon's place, fitted to the size's icon box. Wins over suffixIcon.",
+            "summary": "뒤 아이콘 자리에 둘 노드입니다. 칸·여백·로딩 규칙은 suffixIcon과 같고 suffixIcon보다 우선합니다.",
             "source": "packages/native/src/button.tsx"
           },
           {

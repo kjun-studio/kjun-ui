@@ -1115,6 +1115,7 @@
   --_kjun-state-opacity-hover-soft: 0.5;
   --_kjun-state-opacity-selected-within: 0.5;
   --_kjun-state-opacity-muted: 0.55;
+  --_kjun-state-scale-pressed: 0.98;
   --_kjun-state-focus-width: 2px;
   --_kjun-state-focus-offset: 2px;
   --_kjun-state-focus-choice-offset: 3px;

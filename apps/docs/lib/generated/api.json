@@ -2104,6 +2104,16 @@
         "name": "default",
         "data": [],
         "source": "packages/vue3/src/button.tsx"
+      },
+      {
+        "name": "prefix",
+        "data": [],
+        "source": "packages/vue3/src/button.tsx"
+      },
+      {
+        "name": "suffix",
+        "data": [],
+        "source": "packages/vue3/src/button.tsx"
       }
     ],
     "react": [
@@ -2162,6 +2172,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "prefix",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "A node in the icon's place (a brand logo, a small avatar), fitted to the size's icon box. Wins over prefixIcon."
+      },
+      {
+        "name": "suffix",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "A node in the suffix icon's place, fitted to the size's icon box. Wins over suffixIcon."
       },
       {
         "name": "prefixIconFilled",
@@ -2332,6 +2356,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "prefix",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "A node in the icon's place (a brand logo, a small avatar), fitted to the size's icon box. Wins over prefixIcon."
+      },
+      {
+        "name": "suffix",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "A node in the suffix icon's place, fitted to the size's icon box. Wins over suffixIcon."
       },
       {
         "name": "prefixIconFilled",

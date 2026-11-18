@@ -5,16 +5,16 @@ import { CardActionsContext } from "./card-actions-context";
 import { useActionPill, useActionSize } from "../../../shared/package-runtime/action-size";
 import { tokens,type ButtonSize,type ButtonVariant } from "@kjun-ui/tokens";
 import { useIcon } from "../../../shared/package-runtime/icon-context";
+import { useMinimumLoading } from "../../../shared/package-runtime/minimum-loading";
 import {
 createElement,
 useContext,
 forwardRef,
-useEffect,
-useRef,
-useState,
 type ButtonHTMLAttributes,
+type ReactNode,
 type SVGProps,
 } from "react";
+export { useMinimumLoading };
 export interface KjunIconProps extends SVGProps<SVGSVGElement> {
   name: string;
   size?: number | string;
@@ -55,26 +55,8 @@ export function KjunIcon({
     </svg>
   );
 }
-export function useMinimumLoading(loading: boolean) {
-  const [active, setActive] = useState(loading);
-  const began = useRef(loading ? Date.now() : 0);
-  useEffect(() => {
-    if (loading) {
-      began.current = Date.now();
-      setActive(true);
-      return;
-    }
-    const wait = Math.max(
-      0,
-      tokens.button.loadingMinimum - (Date.now() - began.current)
-    );
-    const timer = setTimeout(() => setActive(false), wait);
-    return () => clearTimeout(timer);
-  }, [loading]);
-  return loading || active;
-}
 export interface KjunButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> {
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size" | "prefix"> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   /** "circle" makes an icon-only button round: as wide as its height with a full radius. "pill" rounds a button with a label
@@ -86,6 +68,10 @@ export interface KjunButtonProps
   wrap?: boolean;
   prefixIcon?: string;
   suffixIcon?: string;
+  /** A node in the icon's place (a brand logo, a small avatar), fitted to the size's icon box. Wins over prefixIcon. */
+  prefix?: ReactNode;
+  /** A node in the suffix icon's place, fitted to the size's icon box. Wins over suffixIcon. */
+  suffix?: ReactNode;
   prefixIconFilled?: boolean;
   suffixIconFilled?: boolean;
   ariaLabel?: string;
@@ -103,8 +89,10 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
       loading = false,
       disabled = false,
       block = false,
-      prefixIcon,
-      suffixIcon,
+      prefixIcon: prefixName,
+      suffixIcon: suffixName,
+      prefix,
+      suffix,
       prefixIconFilled,
       suffixIconFilled,
       ariaLabel,
@@ -126,6 +114,9 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
       children !== null &&
       children !== "" &&
       children !== false;
+    const prefixNode = prefix != null && prefix !== false, suffixNode = suffix != null && suffix !== false;
+    // Either form of a side item takes the icon's place, inset and loading rules.
+    const prefixIcon = prefixNode || !!prefixName, suffixIcon = suffixNode || !!suffixName;
     const iconOnly = !hasContent && !!(prefixIcon || suffixIcon || busy);
     const navigation = useContext(TopNavigationContext);
     const height = Math.max(tokens.button.heights[size], navigation?.controlSize ?? 0);
@@ -133,8 +124,11 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
     const contentHeight = Math.max(hasContent ? tokens.button.typography[size].lineHeightPx : 0,
       prefixIcon || suffixIcon || (!hasContent && busy) ? iconSize : 0);
     const spinPrefix =
-      busy && prefixIcon && (spinOnLoading ?? prefixIcon === "refresh");
-    const before = prefixIcon && !(busy && !spinPrefix) ? prefixIcon : undefined;
+      busy && !prefixNode && !!prefixName && (spinOnLoading ?? prefixName === "refresh");
+    const before = prefixIcon && !(busy && !spinPrefix);
+    // Only a hidden suffix sets its own opacity, so the disabled rule in the stylesheet can dim the node.
+    const media = (node: ReactNode, hidden = false) =>
+      <span className="kjun-button-media" style={{ width: iconSize, height: iconSize, ...(hidden ? { opacity: 0 } : {}) }}>{node}</span>;
     const loader = <KjunSpinnerGlyph size={iconSize} />;
     const overlayLoading = busy && !prefixIcon && !suffixIcon;
     // Icon glyphs carry their own side bearing, so the icon side takes a tighter inset.
@@ -151,7 +145,9 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
         data-disabled={disabled}
         data-wrap={wrap || undefined}
         aria-label={ariaLabel || rest["aria-label"]}
-        disabled={disabled || busy}
+        // A loading button stays focusable (a keyboard user keeps their place) and refuses presses itself.
+        disabled={disabled}
+        aria-disabled={(busy && !disabled) || rest["aria-disabled"] || undefined}
         aria-busy={busy || undefined}
         style={{
           height,
@@ -171,23 +167,24 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
           ...style,
         }}
         onClick={(e) => {
-          e.stopPropagation();
-          if (!disabled && !busy) onClick?.(e);
+          // While loading the click does nothing, a submit button included. It still bubbles, like any click.
+          if (busy) { e.preventDefault(); return; }
+          if (!disabled) onClick?.(e);
         }}
       >
         {busy && prefixIcon && !spinPrefix && loader}
-        {before && (
+        {before && (prefixNode ? media(prefix) : (
           <KjunIcon
-            name={before}
+            name={prefixName!}
             filled={!busy && prefixIconFilled}
             spin={busy}
             size={iconSize}
           />
-        )}
+        ))}
         <span className="kjun-button-label" style={{ opacity: overlayLoading ? 0 : 1 }}>{children}</span>
-        {suffixIcon && (busy && !prefixIcon ? loader : (
+        {suffixIcon && (busy && !prefixIcon ? loader : suffixNode ? media(suffix, busy && prefixIcon) : (
           <KjunIcon
-            name={suffixIcon}
+            name={suffixName!}
             filled={!busy && suffixIconFilled}
             style={{ opacity: busy && prefixIcon ? 0 : 1 }}
             size={iconSize}

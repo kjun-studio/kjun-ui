@@ -11,7 +11,8 @@ import { useActionPill, useActionSize } from "../../../shared/package-runtime/ac
 import { DataStateContentContext } from "./data-state-context";
 import { tokens,type ButtonSize,type ButtonVariant } from "@kjun-ui/tokens";
 import { useIcon } from "../../../shared/package-runtime/icon-context";
-import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
+import { useContext,useEffect,useRef,type ReactNode } from "react";
+import { useMinimumLoading } from "../../../shared/package-runtime/minimum-loading";
 import {
 Animated,
 Easing,
@@ -126,23 +127,7 @@ export function IconBase({
   );
 }
 const hiddenDrawing = { accessible: false, accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants" as const, "aria-hidden": true };
-export function useMinimumLoading(loading: boolean) {
-  const [active, setActive] = useState(loading);
-  const began = useRef(loading ? Date.now() : 0);
-  useEffect(() => {
-    if (loading) {
-      began.current = Date.now();
-      setActive(true);
-      return;
-    }
-    const timer = setTimeout(
-      () => setActive(false),
-      Math.max(0, tokens.button.loadingMinimum - (Date.now() - began.current))
-    );
-    return () => clearTimeout(timer);
-  }, [loading]);
-  return loading || active;
-}
+export { useMinimumLoading };
 export interface KjunButtonProps
   extends Omit<PressableProps, "children" | "style"> {
   children?: ReactNode;
@@ -157,6 +142,10 @@ export interface KjunButtonProps
   wrap?: boolean;
   prefixIcon?: string;
   suffixIcon?: string;
+  /** A node in the icon's place (a brand logo, a small avatar), fitted to the size's icon box. Wins over prefixIcon. */
+  prefix?: ReactNode;
+  /** A node in the suffix icon's place, fitted to the size's icon box. Wins over suffixIcon. */
+  suffix?: ReactNode;
   prefixIconFilled?: boolean;
   suffixIconFilled?: boolean;
   ariaLabel?: string;
@@ -173,8 +162,10 @@ export function KjunButton(input: KjunButtonProps) {
   block = false,
   wrap = false,
   disabled = false,
-  prefixIcon,
-  suffixIcon,
+  prefixIcon: prefixName,
+  suffixIcon: suffixName,
+  prefix,
+  suffix,
   prefixIconFilled,
   suffixIconFilled,
   ariaLabel,
@@ -200,6 +191,9 @@ export function KjunButton(input: KjunButtonProps) {
     children !== null &&
     children !== false &&
     children !== "";
+  const prefixNode = prefix != null && prefix !== false, suffixNode = suffix != null && suffix !== false;
+  // Either form of a side item takes the icon's place, inset and loading rules.
+  const prefixIcon = prefixNode || !!prefixName, suffixIcon = suffixNode || !!suffixName;
   const iconOnly = !hasContent && !!(prefixIcon || suffixIcon || busy);
   const positive = ["primary", "danger", "success", "warning"].includes(
     variant
@@ -222,8 +216,11 @@ export function KjunButton(input: KjunButtonProps) {
       : variant === "warning"
       ? c.warning
       : "transparent";
-  const spinPrefix = busy && !!prefixIcon && (spinOnLoading ?? prefixIcon === "refresh");
-  const before = prefixIcon && !(busy && !spinPrefix) ? prefixIcon : undefined;
+  const spinPrefix = busy && !prefixNode && !!prefixName && (spinOnLoading ?? prefixName === "refresh");
+  const before = prefixIcon && !(busy && !spinPrefix);
+  // A node sits in the icon box and is clipped there; disabled dims it, as the web build greys it.
+  const media = (node: ReactNode, hidden = false) => <View style={{ width: iconSize, height: iconSize, overflow: "hidden",
+    alignItems: "center", justifyContent: "center", opacity: hidden ? 0 : disabled ? tokens.states.opacity.disabled : 1 }}>{node}</View>;
   const overlayLoading = busy && !prefixIcon && !suffixIcon;
   const paint = (pressed: boolean, hovered: boolean) => {
     const expanded = props.accessibilityState?.expanded;
@@ -250,10 +247,10 @@ export function KjunButton(input: KjunButtonProps) {
       accessibilityRole="button"
       accessibilityLabel={ariaLabel || props.accessibilityLabel}
       accessibilityState={{ ...props.accessibilityState, disabled: !!disabled || busy, busy }}
-      disabled={disabled || busy}
+      // A loading button stays focusable and refuses presses itself; screen readers still hear it as unavailable and busy.
+      disabled={!!disabled}
       hitSlop={{ top: hit, bottom: hit, left: hit, right: hit }}
       onPress={(event) => {
-        event.stopPropagation();
         if (!disabled && !busy) onPress?.(event);
       }}
       style={({ pressed, hovered }: any) => [
@@ -283,7 +280,7 @@ export function KjunButton(input: KjunButtonProps) {
             // AccessiblePressable draws the ring for keyboard focus; Pressable's own focused state is also true after a click.
             outlineColor: c.focusRing, outlineWidth: 0, outlineOffset: tokens.states.focus.offset,
           } : {}),
-          transform: [{ scale: pressed && !disabled && !busy ? 0.98 : 1 }],
+          transform: [{ scale: pressed && !disabled && !busy ? tokens.states.scale.pressed : 1 }],
           ...(multiline ? {
             height: 'auto' as const, maxWidth: '100%' as const,
             paddingVertical: Math.max(0, (height - Math.max(tokens.button.typography[size].lineHeightPx,
@@ -299,15 +296,15 @@ export function KjunButton(input: KjunButtonProps) {
         const color = paint(pressed, hovered && Platform.OS === "web").ink;
         return <>
           {busy && !!prefixIcon && !spinPrefix && <KjunSpinnerGlyph size={iconSize} color={color} />}
-          {before && <KjunIcon name={before} filled={!busy && prefixIconFilled}
-            size={iconSize} color={color} spin={busy} />}
+          {before && (prefixNode ? media(prefix) : <KjunIcon name={prefixName!} filled={!busy && prefixIconFilled}
+            size={iconSize} color={color} spin={busy} />)}
           {hasContent && <FontText numberOfLines={navigation?.slot ? 1 : undefined} ellipsizeMode="tail" style={{ fontFamily,
             ...typeStyle(tokens.button.typography[size]),
             color, opacity: overlayLoading ? 0 : 1,
             ...(multiline || navigation ? { flexShrink: 1, minWidth: 0, textAlign: 'center' as const } : {}),
           }}>{children}</FontText>}
           {!!suffixIcon && <View style={{ opacity: busy && prefixIcon ? 0 : 1 }}>
-            {busy && !prefixIcon ? <KjunSpinnerGlyph size={iconSize} color={color} /> : <KjunIcon name={suffixIcon}
+            {busy && !prefixIcon ? <KjunSpinnerGlyph size={iconSize} color={color} /> : suffixNode ? media(suffix) : <KjunIcon name={suffixName!}
               filled={!busy && suffixIconFilled} size={iconSize} color={color} />}
           </View>}
           {overlayLoading && <View pointerEvents="none" accessible={false} style={{

@@ -2,6 +2,11 @@ import { expect, test, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 const configureButton = (page: Page, next: object) => page.evaluate(next => (window as any).configureButton(next), next);
 const button = (page: Page) => page.getByTestId('text').getByRole('button').first();
+// Loading refuses presses but keeps focus: aria-disabled on the web; React Native Web writes its own aria-disabled from
+// `disabled`, so there aria-busy alone shows it.
+const refusing = (page: Page, platform: string) => platform === 'native'
+  ? expect(button(page)).toHaveAttribute('aria-busy', 'true') : expect(button(page)).toBeDisabled();
+const unavailable = (page: Page, platform: string, state: string) => state === 'loading' ? refusing(page, platform) : expect(button(page)).toBeDisabled();
 for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: press, cancellation and becoming unavailable never execute a stale action`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -16,14 +21,14 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(events).toHaveText('1');
     for (const state of ['disabled', 'loading']) {
       await control.hover(); await page.mouse.down();
-      await configureButton(page, { [state]: true }); await expect(control).toBeDisabled();
+      await configureButton(page, { [state]: true }); await unavailable(page, platform, state);
       await expect(control).toHaveCSS('transform', platform === 'native' ? 'matrix(1, 0, 0, 1, 0, 0)' : 'none');
       await page.mouse.up(); await expect(events).toHaveText('1');
-      await configureButton(page, { [state]: false }); await expect(control).toBeEnabled();
+      await configureButton(page, { [state]: false }); await expect(control).toBeEnabled(); await expect(control).not.toHaveAttribute('aria-busy', 'true');
       await control.focus(); await page.keyboard.down('Space');
-      await configureButton(page, { [state]: true }); await expect(control).toBeDisabled();
+      await configureButton(page, { [state]: true }); await unavailable(page, platform, state);
       await page.keyboard.up('Space'); await expect(events).toHaveText('1');
-      await configureButton(page, { [state]: false }); await expect(control).toBeEnabled();
+      await configureButton(page, { [state]: false }); await expect(control).toBeEnabled(); await expect(control).not.toHaveAttribute('aria-busy', 'true');
     }
     await control.focus(); await page.keyboard.press('Enter'); await page.keyboard.press('Space');
     await expect(events).toHaveText('3');
@@ -36,8 +41,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     if (!initial) await configureButton(page, { loading: true });
     await expect(control).toHaveAttribute('aria-busy', 'true');
     await configureButton(page, { loading: false });
-    await page.clock.runFor(390); await expect(control).toBeDisabled();
-    await page.clock.runFor(20); await expect(control).toBeEnabled();
+    await page.clock.runFor(390); await refusing(page, platform);
+    await page.clock.runFor(20); await expect(control).toBeEnabled(); await expect(control).not.toHaveAttribute('aria-busy', 'true');
     expect(await control.boundingBox()).toEqual(before); await expect(control).toHaveAccessibleName('변경 사항 저장');
     await configureButton(page, { loading: true }); await expect(control).toHaveAttribute('aria-busy', 'true');
     await page.clock.runFor(100); await configureButton(page, { loading: false });

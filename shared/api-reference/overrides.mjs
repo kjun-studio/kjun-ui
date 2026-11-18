@@ -390,7 +390,16 @@ set("RefreshButton", {
 });
 
 set("Popover", { noPadding: { default:"false", summary:"기본 16px 패딩과 12px 콘텐츠 간격을 제거합니다. 직접 구성하는 콘텐츠에 사용합니다." } });
+set("Button", { loading: "진행 중인 작업을 표시합니다. 로딩 중에도 버튼은 포커스를 유지하고(aria-disabled·aria-busy) 누름·제출을 막습니다. 짧은 요청에서도 최소 400ms 동안 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다." });
 set("Button", { wrap: { default:"false", summary:"긴 라벨을 줄바꿈합니다. 크기별 높이는 최소 높이가 되고, 버튼이 칸을 넘지 않고 세로로 늘어납니다." } });
+set("Button", {
+  prefix: { type: "ReactNode", summary: "앞 아이콘 자리에 둘 노드입니다(다색 브랜드 로고, 작은 아바타). 크기별 아이콘 칸(md 16px)에 맞춰 가운데 놓고 넘치는 부분은 자릅니다. 여백·로딩 스피너 교체는 prefixIcon과 같고, prefixIcon보다 우선합니다. 비활성이면 웹은 회색·반투명, Native는 반투명으로 그립니다. Vue 3는 prefix 슬롯을 씁니다." },
+  suffix: { type: "ReactNode", summary: "뒤 아이콘 자리에 둘 노드입니다. 칸·여백·로딩 규칙은 suffixIcon과 같고 suffixIcon보다 우선합니다. Vue 3는 suffix 슬롯을 씁니다." },
+}, "react");
+set("Button", {
+  prefix: { type: "ReactNode", summary: "앞 아이콘 자리에 둘 노드입니다(다색 브랜드 로고, 작은 아바타). 크기별 아이콘 칸(md 16px)에 맞춰 가운데 놓고 넘치는 부분은 자릅니다. 여백·로딩 스피너 교체는 prefixIcon과 같고, prefixIcon보다 우선합니다. 비활성이면 반투명으로 그립니다." },
+  suffix: { type: "ReactNode", summary: "뒤 아이콘 자리에 둘 노드입니다. 칸·여백·로딩 규칙은 suffixIcon과 같고 suffixIcon보다 우선합니다." },
+}, "native");
 set("RefreshButton", { wrap: { default:"false", summary:"Button의 wrap과 같습니다. 텍스트 모드의 긴 문구를 줄바꿈합니다." } });
 set("Alert", { live: { summary:"보조기기 알림 방식입니다. assertive는 role=alert, polite는 status, off는 알리지 않습니다. 생략하면 danger는 alert, 나머지는 status입니다." } });
 set("Tooltip", { open: { summary:"표시 여부를 직접 제어합니다. 생략하면 hover와 포커스로 열립니다. Vue는 v-model:open입니다." }, onOpenChange: { summary:"hover·포커스·Escape로 열림 상태가 바뀌어야 할 때 호출합니다. 제어형이면 open을 바꿔야 반영됩니다." } });

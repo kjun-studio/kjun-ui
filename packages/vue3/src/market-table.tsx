@@ -1,3 +1,4 @@
+import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "./runtime/messages";
@@ -112,7 +113,7 @@ export const KjunMarketTable = defineComponent({
                         const priceCol = columns.find(c => c.type === "price" && !props.cellLoading(row, c) && getValue(row, c.key) != null);
                         const interest = !!props.interestKeys?.has(id), favorite = !!props.favoriteKeys?.has(id);
                         return (
-                          <tr key={String(id ?? i)} onClick={() => props.onRowClick?.(row)}>
+                          <tr key={String(id ?? i)} onClick={(event: MouseEvent) => { if (!fromNestedControl(event)) props.onRowClick?.(row); }}>
                             {showActions && (
                               <td class="kjun-market-actions">
                                 <KjunIconToggle size="xs" active={interest} activeIcon="heart" activeColor="var(--_kjun-color-interest)"

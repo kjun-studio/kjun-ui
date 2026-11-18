@@ -1,3 +1,4 @@
+import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
@@ -30,7 +31,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
         data-selected={state.selectedRow(row) || undefined}
         // Stripes follow the data rows only, so expanded rows and group headers do not flip them.
         data-stripe={i % 2 === 1 || undefined}
-        onClick={() => onRowClick?.(row, i)}
+        onClick={event => { if (!fromNestedControl(event)) onRowClick?.(row, i); }}
       >
         {selectable && <td className="kjun-table-action-cell">{checkbox(row, i)}</td>}
         {visible.map((col, c) => {

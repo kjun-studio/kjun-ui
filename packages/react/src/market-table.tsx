@@ -1,3 +1,4 @@
+import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
@@ -186,7 +187,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
                 return (
                   <tr
                     key={String(id ?? i)}
-                    onClick={() => props.onRowClick?.(row)}
+                    onClick={(event) => { if (!fromNestedControl(event)) props.onRowClick?.(row); }}
                   >
                     {showActions && (
                       <td className="kjun-market-actions">

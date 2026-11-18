@@ -1,3 +1,4 @@
+import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import { tokens } from "@kjun-ui/tokens";
 import type { KeyboardEvent, ReactNode } from "react";
 import type { TableCardSection } from "./table-model";
@@ -76,7 +77,7 @@ export function TableCards<Row extends object>(props: Props<Row>) {
         data-selected={(selectable && state.selectedRow(row)) || undefined}
         tabIndex={onRowClick ? 0 : undefined}
         onKeyDown={event => rowKeyDown(event, row, i)}
-        onClick={() => onRowClick?.(row, i)}
+        onClick={event => { if (!fromNestedControl(event)) onRowClick?.(row, i); }}
       >
         {tiles ? (
           <>

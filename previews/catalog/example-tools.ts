@@ -19,7 +19,7 @@ export interface ExampleContext {
   error?: boolean;
   settings?: Record<string, any>;
 }
-export const buttonComparisons: Record<string, { caption: string; label?: string; props?: Record<string, any> }[]> = {
+export const buttonComparisons: Record<string, { caption: string; label?: string; props?: Record<string, any>; prefixNode?: Record<string, any> }[]> = {
   "크기": ["xs", "sm", "md", "lg", "xl"].map(size => ({ caption: size, label: "저장", props: { size } })),
   "변형": ["primary", "secondary", "ghost", "danger", "danger-ghost", "success", "warning"].map(variant => ({ caption: variant, label: variant.includes("danger") ? "삭제" : "계속하기", props: { variant } })),
   "라벨·아이콘": [
@@ -29,6 +29,8 @@ export const buttonComparisons: Record<string, { caption: string; label?: string
     { caption: "뒤 아이콘", label: "다음", props: { suffixIcon: "arrow-right" } },
     { caption: "양쪽 아이콘", label: "항목 추가", props: { prefixIcon: "plus", suffixIcon: "arrow-right" } },
     { caption: "아이콘 전용", props: { prefixIcon: "plus", ariaLabel: "항목 추가" } },
+    // A node in the icon box keeps its own color (a brand mark), which prefixIcon cannot: it paints with the button ink.
+    { caption: "앞 노드", label: "Google로 계속하기", props: { variant: "secondary" }, prefixNode: { name: "brand-google", size: 16, color: "#4285F4" } },
   ],
   "상태": [
     { caption: "기본", label: "계속하기", props: { disabled: false, loading: false } },

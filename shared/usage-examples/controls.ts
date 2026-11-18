@@ -18,7 +18,8 @@ export function generate(input: UsageInput) {
         const wrapper = b.native ? 'View' : 'div';
         content = b.node(wrapper, { style: { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', gap: b.native ? 12 : '12px' } },
           cases.map(item => b.node(wrapper, { style: { display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: b.native ? 12 : '12px' } },
-            [b.text(item.caption), b.node(name, { ...b.props('size', 'variant', 'disabled', 'loading'), ...item.props }, item.label ? b.text(item.label) : '')].join('\n'),
+            [b.text(item.caption), b.node(name, { ...b.props('size', 'variant', 'disabled', 'loading'), ...item.props }, item.label ? b.text(item.label) : '',
+              item.prefixNode ? { prefix: b.node('KjunIcon', item.prefixNode) } : {})].join('\n'),
           )).join('\n'));
 
         break;

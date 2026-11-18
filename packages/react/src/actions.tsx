@@ -198,7 +198,7 @@ export function KjunCopyButton({
   );
 }
 export interface KjunRefreshButtonProps
-  extends Omit<KjunButtonProps, "onClick" | "children"> {
+  extends Omit<KjunButtonProps, "onClick" | "children" | "prefix" | "suffix"> {
   targetName?: string;
   mode?: "icon" | "text";
   text?: string;

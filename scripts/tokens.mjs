@@ -29,6 +29,7 @@ const css =
   "\n" + Object.entries(data.layers.page).map(([key,value]) => `  --_kjun-layer-page-${kebab(key)}: ${value};`).join("\n") +
   "\n" + componentElevationCss() + "\n" + extensionGeometryCss(data, definitions) +
   "\n" + Object.entries(data.states.opacity).map(([key, value]) => `  --_kjun-state-opacity-${kebab(key)}: ${value};`).join("\n") +
+  "\n" + Object.entries(data.states.scale).map(([key, value]) => `  --_kjun-state-scale-${kebab(key)}: ${value};`).join("\n") +
   "\n" + Object.entries(data.states.focus).map(([key, value]) => `  --_kjun-state-focus-${kebab(key)}: ${value}px;`).join("\n") +
   "\n" + Object.entries(data.border).map(([key, value]) => `  --_kjun-border-${kebab(key)}: ${value}px;`).join("\n") +
   "\n" + Object.entries(data.motionDistance).map(([key, value]) => `  --_kjun-motion-distance-${kebab(key)}: ${value}px;`).join("\n") +

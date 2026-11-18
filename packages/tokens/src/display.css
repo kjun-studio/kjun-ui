@@ -334,10 +334,10 @@
 }
 /* Secondary actions and the close button tint the alert's own fill instead of sitting on it as gray or white. */
 .kjun-alert-actions .kjun-button[data-variant="secondary"] { background: var(--_kjun-alert-tint-control); }
-.kjun-alert-actions .kjun-button[data-variant="secondary"]:hover:not(:disabled) { background: var(--_kjun-alert-tint-hover); }
-.kjun-alert-actions .kjun-button[data-variant="secondary"]:active:not(:disabled) { background: var(--_kjun-alert-tint-active); }
+.kjun-alert-actions .kjun-button[data-variant="secondary"]:hover:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-alert-tint-hover); }
+.kjun-alert-actions .kjun-button[data-variant="secondary"]:active:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-alert-tint-active); }
 @media (hover: none), (pointer: coarse) {
-  .kjun-alert-actions .kjun-button[data-variant="secondary"]:hover:not(:disabled):not(:active) { background: var(--_kjun-alert-tint-control); }
+  .kjun-alert-actions .kjun-button[data-variant="secondary"]:hover:not(:disabled, [aria-busy="true"]):not(:active) { background: var(--_kjun-alert-tint-control); }
 }
 .kjun-alert-close:hover { background: var(--_kjun-alert-tint-hover); color: var(--_kjun-color-text); }
 .kjun-alert-close:active { background: var(--_kjun-alert-tint-active); color: var(--_kjun-color-text); }

@@ -1,3 +1,4 @@
+import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { useKjunMessages } from "./runtime/messages";
 import { type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
@@ -50,7 +51,7 @@ export const KjunMarketSimpleList = defineComponent({
                   const activate = props.onRowClick && (() => props.onRowClick?.(row));
                   return (
                     <div key={String(getValue(row, props.rowKey) ?? i)} class="kjun-market-row" role={activate ? "button" : undefined}
-                      tabindex={activate ? 0 : undefined} onClick={() => activate?.()} onKeydown={rowKeydown(activate)}>
+                      tabindex={activate ? 0 : undefined} onClick={(event: MouseEvent) => { if (!fromNestedControl(event)) activate?.(); }} onKeydown={rowKeydown(activate)}>
                       {marketIdentity(row, props, slots)}
                       <div class="kjun-market-quote">
                         <div class="kjun-market-price"><KjunPriceCell value={price} formatter={props.priceFormatter} stale={stale} /></div>

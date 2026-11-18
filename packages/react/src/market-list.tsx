@@ -1,3 +1,4 @@
+import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
@@ -51,7 +52,7 @@ export function KjunMarketSimpleList<
                 className="kjun-market-row"
                 role={props.onRowClick ? "button" : undefined}
                 tabIndex={props.onRowClick ? 0 : undefined}
-                onClick={() => props.onRowClick?.(row)}
+                onClick={(event) => { if (!fromNestedControl(event)) props.onRowClick?.(row); }}
                 onKeyDown={(event) => {
                   if (props.onRowClick && event.target === event.currentTarget &&
                       !event.defaultPrevented && (event.key === "Enter" || event.key === " ")) {

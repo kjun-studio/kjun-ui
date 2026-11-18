@@ -221,7 +221,7 @@ export function KjunCopyButton({
   );
 }
 export interface KjunRefreshButtonProps
-  extends Omit<KjunButtonProps, "onPress" | "children"> {
+  extends Omit<KjunButtonProps, "onPress" | "children" | "prefix" | "suffix"> {
   targetName?: string;
   mode?: "icon" | "text";
   text?: string;

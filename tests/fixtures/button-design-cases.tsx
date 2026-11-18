@@ -12,14 +12,17 @@ export const buttonItems = [
   { id: 'both', label: '추가하고 이동', props: { prefixIcon: 'plus', suffixIcon: 'arrow-right' } },
   { id: 'icon', label: undefined, props: { prefixIcon: 'plus', ariaLabel: '항목 추가' } },
   { id: 'suffix-icon', label: undefined, props: { suffixIcon: 'arrow-right', ariaLabel: '다음' } },
+  { id: 'node', label: 'Google로 계속하기', props: {}, node: true },
 ];
+// A prefix node larger than the icon box: the button clips it to the box instead of growing.
+export const nodeStyle = { display: 'block', width: 20, height: 20, background: '#4285F4' };
 export function ButtonDesignCases({ Button, native = false }: { Button: ComponentType<any>; native?: boolean }) {
   const [config, setConfig] = useState({ size: 'md', variant: 'primary', disabled: false, loading: location.search.includes('loading'), block: false });
   const [count, setCount] = useState(0);
   useLayoutEffect(() => { Object.assign(window, { configureButton: (next: object) => setConfig(old => ({ ...old, ...next })) }); }, []);
   return <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
     {buttonItems.map(item => <div key={item.id} data-testid={item.id} style={{ display: 'flex', gap: 12, alignItems: 'center', width: 300, maxWidth: '100%' }}>
-      <Button {...config} {...item.props} {...{ [native ? 'onPress' : 'onClick']: () => setCount(n => n + 1) }}>{item.label}</Button>
+      <Button {...config} {...item.props} {...(item.node ? { prefix: <span data-node style={nodeStyle} /> } : {})} {...{ [native ? 'onPress' : 'onClick']: () => setCount(n => n + 1) }}>{item.label}</Button>
       {!config.block && <Button variant="ghost" size={config.size}>취소</Button>}
     </div>)}
     <output data-testid="events">{count}</output>

@@ -1,3 +1,4 @@
+import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import type { KjunMessages } from "../../../shared/package-runtime/messages";
 import { Fragment, type PropType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
@@ -116,7 +117,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; c
         onKeydown={(event: KeyboardEvent) => c.rowKeyDown(event, row, i)} data-selected={state.selectedRow(row) || undefined}
         // Stripes follow the data rows only, so expanded rows and group headers do not flip them.
         data-stripe={i % 2 === 1 || undefined}
-        onClick={() => c.rowClick(row, i)}>
+        onClick={(event: MouseEvent) => { if (!fromNestedControl(event)) c.rowClick(row, i); }}>
         {selectable && <td class="kjun-table-action-cell">{c.checkbox(row, i)}</td>}
         {visible.map((col, index) => {
           if (!spans[index]) return null;

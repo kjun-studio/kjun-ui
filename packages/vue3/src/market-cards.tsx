@@ -1,3 +1,4 @@
+import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "./runtime/messages";
@@ -87,7 +88,7 @@ export const KjunMarketCards = defineComponent({
                     const value = getValue(row, state.key);
                     return (
                       <div key={String(getValue(row, props.rowKey) ?? i)} class="kjun-market-row kjun-market-row-compact" role={activate ? "button" : undefined}
-                        tabindex={activate ? 0 : undefined} onClick={() => activate?.()} onKeydown={rowKeydown(activate)}>
+                        tabindex={activate ? 0 : undefined} onClick={(event: MouseEvent) => { if (!fromNestedControl(event)) activate?.(); }} onKeydown={rowKeydown(activate)}>
                         {marketIdentity(row, props, slots)}
                         <div class="kjun-market-quote">
                           {state.pill?.format === "sparkline"

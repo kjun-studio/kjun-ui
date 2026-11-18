@@ -22,8 +22,8 @@
   text-decoration: none;
   vertical-align: middle;
 }
-.kjun-button:active:not(:disabled) {
-  transform: scale(0.98);
+.kjun-button:active:not(:disabled, [aria-busy="true"]) {
+  transform: scale(var(--_kjun-state-scale-pressed));
 }
 .kjun-button:focus-visible {
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
@@ -33,39 +33,39 @@
   background: var(--_kjun-color-brand);
   color: var(--_kjun-color-on-brand);
 }
-.kjun-button[data-variant="primary"]:hover:not(:disabled) {
+.kjun-button[data-variant="primary"]:hover:not(:disabled, [aria-busy="true"]) {
   background: var(--_kjun-color-brand-hover);
 }
-.kjun-button[data-variant="primary"]:active:not(:disabled) {
+.kjun-button[data-variant="primary"]:active:not(:disabled, [aria-busy="true"]) {
   background: var(--_kjun-color-brand-active);
 }
 .kjun-button[data-variant="secondary"] {
   background: var(--_kjun-color-button-secondary);
   color: var(--_kjun-color-text);
 }
-.kjun-button[data-variant="secondary"]:hover:not(:disabled) {
+.kjun-button[data-variant="secondary"]:hover:not(:disabled, [aria-busy="true"]) {
   background: var(--_kjun-color-button-secondary-hover);
 }
-.kjun-button[data-variant="secondary"]:active:not(:disabled) {
+.kjun-button[data-variant="secondary"]:active:not(:disabled, [aria-busy="true"]) {
   background: var(--_kjun-color-button-secondary-active);
 }
 /* A link button hugs its text: no fill, no inset, the brand ink, underlined on hover and keyboard focus. */
 .kjun-button[data-variant="link"] { background: transparent; color: var(--_kjun-color-brand); }
-.kjun-button[data-variant="link"]:is(:hover, [data-focus-visible], :focus-visible):not(:disabled) { text-decoration: underline; }
-.kjun-button[data-variant="link"]:active:not(:disabled) { color: var(--_kjun-color-brand-active); }
+.kjun-button[data-variant="link"]:is(:hover, [data-focus-visible], :focus-visible):not(:disabled, [aria-busy="true"]) { text-decoration: underline; }
+.kjun-button[data-variant="link"]:active:not(:disabled, [aria-busy="true"]) { color: var(--_kjun-color-brand-active); }
 .kjun-button[data-variant="ghost"],
 .kjun-button[data-variant="danger-ghost"] {
   background: transparent;
   color: var(--_kjun-color-text-secondary);
 }
-.kjun-button[data-variant="ghost"]:hover:not(:disabled) {
+.kjun-button[data-variant="ghost"]:hover:not(:disabled, [aria-busy="true"]) {
   background: var(--_kjun-color-hover);
   color: var(--_kjun-color-text);
 }
 .kjun-button[data-variant="danger-ghost"] {
   color: var(--_kjun-color-danger);
 }
-.kjun-button[data-variant="danger-ghost"]:hover:not(:disabled) {
+.kjun-button[data-variant="danger-ghost"]:hover:not(:disabled, [aria-busy="true"]) {
   color: var(--_kjun-color-danger);
   background: var(--_kjun-color-danger-bg);
 }
@@ -73,35 +73,43 @@
   background: var(--_kjun-color-danger);
   color: var(--_kjun-color-on-danger);
 }
-.kjun-button[data-variant="danger"]:hover:not(:disabled) {
+.kjun-button[data-variant="danger"]:hover:not(:disabled, [aria-busy="true"]) {
   background: var(--_kjun-color-danger-dark);
 }
 .kjun-button[data-variant="success"] {
   background: var(--_kjun-color-success);
   color: var(--_kjun-color-on-success);
 }
-.kjun-button[data-variant="success"]:hover:not(:disabled) {
+.kjun-button[data-variant="success"]:hover:not(:disabled, [aria-busy="true"]) {
   background: var(--_kjun-color-success-dark);
 }
 .kjun-button[data-variant="warning"] {
   background: var(--_kjun-color-warning);
   color: var(--_kjun-color-on-warning);
 }
-.kjun-button[data-variant="warning"]:hover:not(:disabled) {
+.kjun-button[data-variant="warning"]:hover:not(:disabled, [aria-busy="true"]) {
   background: var(--_kjun-color-warning-dark);
 }
 .kjun-button:disabled {
   cursor: not-allowed;
+}
+/* A loading button keeps focus (aria-disabled, not disabled) and holds its own paint; it only refuses presses. */
+.kjun-button[aria-busy="true"] {
+  cursor: progress;
 }
 /* Disabled actions share one neutral paint so no variant reads as a paler tone of itself. */
 .kjun-button[data-disabled="true"] {
   background: var(--_kjun-color-button-secondary);
   color: var(--_kjun-color-text-disabled);
 }
-.kjun-button[data-disabled="true"]:is([data-variant="ghost"], [data-variant="danger-ghost"]) {
+.kjun-button[data-disabled="true"]:is([data-variant="ghost"], [data-variant="danger-ghost"], [data-variant="link"]) {
   background: transparent;
 }
 .kjun-button-label { display: inline-flex; align-items: center; }
+/* prefix/suffix nodes sit in the size's icon box; a larger node is clipped, not allowed to change the button's geometry. */
+.kjun-button-media { display: inline-flex; flex: none; align-items: center; justify-content: center; overflow: hidden; }
+.kjun-button-media > * { max-width: 100%; max-height: 100%; }
+.kjun-button[data-disabled="true"] > .kjun-button-media { filter: grayscale(1); opacity: var(--_kjun-state-opacity-disabled); }
 .kjun-button-loader {
   position: absolute;
   inset: 0;
@@ -110,11 +118,11 @@
   justify-content: center;
   pointer-events: none;
 }
-.kjun-button[data-variant="ghost"]:active:not(:disabled) { background: var(--_kjun-color-active); }
-.kjun-button[data-variant="danger-ghost"]:active:not(:disabled) { background: var(--_kjun-color-danger-bg); color: var(--_kjun-color-danger-dark); }
-.kjun-button[data-variant="danger"]:active:not(:disabled) { background: var(--_kjun-color-danger-active); }
-.kjun-button[data-variant="success"]:active:not(:disabled) { background: var(--_kjun-color-success-active); }
-.kjun-button[data-variant="warning"]:active:not(:disabled) { background: var(--_kjun-color-warning-active); }
+.kjun-button[data-variant="ghost"]:active:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-active); }
+.kjun-button[data-variant="danger-ghost"]:active:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-danger-bg); color: var(--_kjun-color-danger-dark); }
+.kjun-button[data-variant="danger"]:active:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-danger-active); }
+.kjun-button[data-variant="success"]:active:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-success-active); }
+.kjun-button[data-variant="warning"]:active:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-warning-active); }
 .kjun-icon {
   display: inline-block;
   flex-shrink: 0;
@@ -441,23 +449,23 @@
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
-  .kjun-button[data-variant="primary"]:hover:not(:disabled):not(:active) {
+  .kjun-button[data-variant="primary"]:hover:not(:disabled, [aria-busy="true"]):not(:active) {
     background: var(--_kjun-color-brand);
   }
-  .kjun-button[data-variant="secondary"]:hover:not(:disabled):not(:active) {
+  .kjun-button[data-variant="secondary"]:hover:not(:disabled, [aria-busy="true"]):not(:active) {
     background: var(--_kjun-color-button-secondary);
   }
-  .kjun-button[data-variant="ghost"]:hover:not(:disabled):not(:active),
-  .kjun-button[data-variant="danger-ghost"]:hover:not(:disabled):not(:active) {
+  .kjun-button[data-variant="ghost"]:hover:not(:disabled, [aria-busy="true"]):not(:active),
+  .kjun-button[data-variant="danger-ghost"]:hover:not(:disabled, [aria-busy="true"]):not(:active) {
     background: transparent;
   }
-  .kjun-button[data-variant="danger"]:hover:not(:disabled):not(:active) {
+  .kjun-button[data-variant="danger"]:hover:not(:disabled, [aria-busy="true"]):not(:active) {
     background: var(--_kjun-color-danger);
   }
-  .kjun-button[data-variant="success"]:hover:not(:disabled):not(:active) {
+  .kjun-button[data-variant="success"]:hover:not(:disabled, [aria-busy="true"]):not(:active) {
     background: var(--_kjun-color-success);
   }
-  .kjun-button[data-variant="warning"]:hover:not(:disabled):not(:active) {
+  .kjun-button[data-variant="warning"]:hover:not(:disabled, [aria-busy="true"]):not(:active) {
     background: var(--_kjun-color-warning);
   }
 }
