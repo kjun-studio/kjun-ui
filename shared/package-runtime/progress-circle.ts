@@ -19,3 +19,12 @@ export function progressState(value: number | null, max: number, indeterminate: 
   if (indeterminate) return "indeterminate";
   return value === null || !Number.isFinite(value) || !Number.isFinite(max) || max <= 0 ? "missing" : "determinate";
 }
+
+/**
+ * Whole percent for a known value, clamped to 0–100. Unfinished work never rounds up to 100:
+ * 99.6% reads 99%, so "100%" always means done.
+ */
+export function progressPercent(value: number, max: number): number {
+  const exact = Math.min(100, Math.max(0, (value / max) * 100)), rounded = Math.round(exact);
+  return rounded === 100 && exact < 100 ? 99 : rounded;
+}

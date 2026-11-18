@@ -8,7 +8,7 @@ import { emptyGeometry, type EmptySize } from "../../../shared/package-runtime/e
 import { badgeGeometry, badgeToneRoles } from "../../../shared/package-runtime/badge-tone";
 import { collapseAlert } from "../../../shared/package-runtime/alert-exit";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
-import { progressCircle, progressState } from "../../../shared/package-runtime/progress-circle";
+import { progressCircle, progressPercent, progressState } from "../../../shared/package-runtime/progress-circle";
 import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
 import { typeStyle } from "./typography";
@@ -133,9 +133,10 @@ export interface KjunSpinnerProps {
 export function KjunSpinner({ size = "md", text }: KjunSpinnerProps) {
   const m = useKjunMessages();
   return (
-    <span role="status" aria-label={text || m.loading} className="kjun-spinner" data-size={size} data-stacked={(text && spinnerStacked(size)) || undefined}>
+    // A live region announces its content, not its name: the loading words sit inside it, hidden when there is no text.
+    <span role="status" className="kjun-spinner" data-size={size} data-stacked={(text && spinnerStacked(size)) || undefined}>
       <KjunSpinnerGlyph size={tokens.extensions.spinner.sizes[size]} stroke={tokens.extensions.spinner.strokeWidths[size]} />
-      {text && <span>{text}</span>}
+      {text ? <span>{text}</span> : <span className="kjun-sr-only">{m.loading}</span>}
     </span>
   );
 }
@@ -248,14 +249,17 @@ export function KjunProgress({
   subLabel,
   shape = "bar",
 }: KjunProgressProps) {
-  const m = useKjunMessages(), markerId = "kjun-progress-marker-" + useId().replace(/:/g, "");
+  const m = useKjunMessages(), baseId = "kjun-progress-" + useId().replace(/:/g, ""), markerId = baseId + "-marker";
+  // A label that is not plain text names the bar through aria-labelledby, so screen readers say what is shown.
+  const labelId = label && typeof label !== "string" ? baseId + "-label" : undefined, noDataId = baseId + "-nodata";
   const state = progressState(value, max, indeterminate);
-  const percentage = state === "determinate" ? Math.min(100, Math.max(0, Math.round((value! / max) * 100))) : 0;
+  const percentage = state === "determinate" ? progressPercent(value!, max) : 0;
   const text = state === "indeterminate" ? m.loadingEllipsis : state === "missing" ? "—" : valueText ?? `${percentage}%`;
   const name = typeof label === "string" ? label : m.progress, color = role(variant === "primary" ? "brand" : variant);
   const accessibility = {
     role: state === "missing" ? "img" : "progressbar",
-    "aria-label": state === "missing" ? `${name}: ${m.noData}` : name,
+    "aria-label": labelId ? undefined : state === "missing" ? `${name}: ${m.noData}` : name,
+    "aria-labelledby": labelId && (state === "missing" ? `${labelId} ${noDataId}` : labelId),
     "aria-valuemin": state === "missing" ? undefined : 0,
     "aria-valuemax": state === "missing" ? undefined : 100,
     "aria-valuenow": state === "determinate" ? percentage : undefined,
@@ -275,7 +279,8 @@ export function KjunProgress({
           </svg>
           {showLabel && c.showsPercentage && state !== "indeterminate" && <span className="kjun-progress-circle-percent">{text}</span>}
         </div>
-        {label && <div className="kjun-progress-circle-label">{label}</div>}
+        {label && <div id={labelId} className="kjun-progress-circle-label">{label}</div>}
+        {labelId && state === "missing" && <span id={noDataId} hidden>{m.noData}</span>}
         {subLabel && <div className="kjun-progress-sub">{subLabel}</div>}
       </div>
     );
@@ -285,7 +290,7 @@ export function KjunProgress({
     <div className="kjun-progress" data-state={state}>
       {(label || showLabel) && (
         <div className="kjun-progress-label">
-          {label && <span>{label}</span>}
+          {label && <span id={labelId}>{label}</span>}
           {showLabel && <span>{text}</span>}
         </div>
       )}
@@ -295,6 +300,7 @@ export function KjunProgress({
         {mark != null && <span className="kjun-progress-marker" aria-hidden="true" style={{ left: `calc(${mark}% - ${progressMarkerInset(mark)}px)` }} />}
       </div>
       {mark != null && markerLabel && <span id={markerId} hidden>{markerLabel}</span>}
+      {labelId && state === "missing" && <span id={noDataId} hidden>{m.noData}</span>}
       {subLabel && <div className="kjun-progress-sub">{subLabel}</div>}
     </div>
   );

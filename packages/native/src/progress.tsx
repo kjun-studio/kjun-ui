@@ -1,8 +1,8 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { progressCircle, progressState } from "../../../shared/package-runtime/progress-circle";
+import { progressCircle, progressPercent, progressState } from "../../../shared/package-runtime/progress-circle";
 import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
 import { tokens } from "@kjun-ui/tokens";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { Animated, Easing, StyleSheet, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { typeStyle } from "./typography";
@@ -42,14 +42,16 @@ export function ProgressMarker({ percent }: { percent: number }) {
 }
 // Share of the bar the unknown-progress segment covers, like Web's 30% sweep.
 const segment = 0.3;
-// One 0→1 sweep per spin period while active; reduced motion holds it still.
+// One 0→1 sweep per spin period while active. With reduced motion it is one breath per shimmer period
+// (the circle pulses like the spinner ring; the bar ignores it and parks its segment).
 function useSweep(active: boolean, reduced: boolean) {
   const sweep = useRef(new Animated.Value(0)).current;
   useEffect(() => {
-    if (!active || reduced) { sweep.setValue(0); return; }
-    const loop = Animated.loop(Animated.timing(sweep, { toValue: 1, duration: tokens.motion.spin, easing: Easing.linear, useNativeDriver: nativeDriver }));
+    if (!active) { sweep.setValue(0); return; }
+    const loop = Animated.loop(Animated.timing(sweep, { toValue: 1, duration: reduced ? tokens.motion.shimmer : tokens.motion.spin,
+      easing: reduced ? Easing.inOut(Easing.ease) : Easing.linear, useNativeDriver: nativeDriver }));
     loop.start();
-    return () => loop.stop();
+    return () => { loop.stop(); sweep.setValue(0); };
   }, [active, reduced, sweep]);
   return sweep;
 }
@@ -71,22 +73,28 @@ export function KjunProgress({
   const { colors, numericFontFamily, fontFamily } = useKjunStyles();
   const reduced = useReducedMotion();
   const state = progressState(value, max, indeterminate), busy = state === "indeterminate";
-  const percentage = state === "determinate" ? Math.min(100, Math.max(0, Math.round((value! / max) * 100))) : 0;
+  const percentage = state === "determinate" ? progressPercent(value!, max) : 0;
   const text = busy ? m.loadingEllipsis : state === "missing" ? "—" : valueText ?? `${percentage}%`;
   const sweep = useSweep(busy, reduced);
   const [trackWidth, setTrackWidth] = useState(0);
+  // A label that is not plain text names the bar through aria-labelledby where the platform supports it
+  // (Android, Native Web); the generic name stays as the fallback.
+  const labelId = "kjun-progress-label-" + useId().replace(/:/g, ""), linked = !!label && typeof label !== "string" && state !== "missing";
+  const named = (node: ReactNode) => (linked ? <View nativeID={labelId}>{node}</View> : node);
   const name = typeof label === "string" ? label : m.progress, color = variant === "primary" ? colors.brand : colors[variant];
   // Missing data is an image named "no data", not a 0% bar. RN Web drops accessibilityValue, so values also go out as aria-*.
   const semantics = state === "missing"
     ? { accessibilityRole: "image" as const, accessibilityLabel: `${name}: ${m.noData}` }
-    : { accessibilityRole: "progressbar" as const, accessibilityLabel: name, accessibilityState: { busy },
+    : { accessibilityRole: "progressbar" as const, accessibilityLabel: name, accessibilityState: { busy }, "aria-labelledby": linked ? labelId : undefined,
       accessibilityValue: busy ? { text: m.loadingEllipsis } : { min: 0, max: 100, now: percentage, ...(valueText ? { text: valueText } : {}) },
       "aria-valuemin": 0, "aria-valuemax": 100, "aria-valuenow": busy ? undefined : percentage,
       "aria-valuetext": busy ? m.loadingEllipsis : valueText, "aria-busy": busy || undefined };
   if (shape === "circle") {
     // Like Web: circle, then label and subLabel centred below it. Unknown progress spins a quarter arc.
     const c = progressCircle(size, busy ? 25 : percentage);
-    const spin = { transform: [{ rotate: sweep.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "360deg"] }) }] };
+    // Reduced motion: a still quarter arc would read as 25%, so it breathes like the spinner ring.
+    const spin = reduced ? { opacity: sweep.interpolate({ inputRange: [0, 0.5, 1], outputRange: [1, tokens.states.opacity.spinnerPulse, 1] }) }
+      : { transform: [{ rotate: sweep.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "360deg"] }) }] };
     return (
       <View style={{ alignSelf: "flex-start", alignItems: "center" }}>
         <View {...semantics} style={{ width: c.diameter, height: c.diameter, alignItems: "center", justifyContent: "center" }}>
@@ -100,7 +108,7 @@ export function KjunProgress({
           {showLabel && c.showsPercentage && !busy && <KText style={{ ...typeStyle(size === "lg" ? "numberMd" : "meta"), fontFamily: numericFontFamily || fontFamily,
             fontVariant: ["tabular-nums"], color: colors.text }}>{text}</KText>}
         </View>
-        {content(label, { ...typeStyle("caption"), marginTop: tokens.dimension.value8, color: colors.textSecondary, textAlign: "center" })}
+        {named(content(label, { ...typeStyle("caption"), marginTop: tokens.dimension.value8, color: colors.textSecondary, textAlign: "center" }))}
         {content(subLabel, { ...typeStyle("caption"), marginTop: tokens.dimension.value4, color: colors.textTertiary, textAlign: "center" })}
       </View>
     );
@@ -113,7 +121,7 @@ export function KjunProgress({
     <View>
       {!!(label || showLabel) && (
         <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: tokens.dimension.value8 }}>
-          {content(label, { ...typeStyle("caption"), color: colors.textSecondary })}
+          {named(content(label, { ...typeStyle("caption"), color: colors.textSecondary }))}
           {showLabel && <KText style={{ ...typeStyle("caption"), color: colors.textSecondary }}>{text}</KText>}
         </View>
       )}

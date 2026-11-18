@@ -498,8 +498,10 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  /* A loading ring that stops turning reads as stuck, so it breathes in place instead. */
-  .kjun-spin.kjun-spinner-glyph {
+  /* A loading ring that stops turning reads as stuck, so it breathes in place instead;
+     so does unknown circle progress, whose still quarter arc would read as 25%. */
+  .kjun-spin.kjun-spinner-glyph,
+  .kjun-progress-circle > svg.kjun-spin {
     animation: kjun-spinner-pulse var(--_kjun-motion-shimmer) ease-in-out infinite !important;
   }
   .kjun-scope .kjun-input,

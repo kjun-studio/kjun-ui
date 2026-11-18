@@ -214,7 +214,7 @@
 .kjun-spinner[data-stacked] {
   flex-direction: column;
 }
-.kjun-spinner > span {
+.kjun-spinner > span:not(.kjun-sr-only) {
   margin-left: var(--_kjun-geometry-dimension-value8);
   font-size: var(--_kjun-type-body-size);
   color: var(--_kjun-color-text-secondary);

@@ -10,7 +10,7 @@ import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/aler
 import { collapseAlert } from "../../../shared/package-runtime/alert-exit";
 import { badgeGeometry, badgeToneRoles } from "../../../shared/package-runtime/badge-tone";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
-import { progressCircle } from "../../../shared/package-runtime/progress-circle";
+import { progressCircle, progressPercent, progressState } from "../../../shared/package-runtime/progress-circle";
 import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
 import { alertActionSizes } from "../../../shared/package-runtime/alert-action-size";
 import { typeStyle } from "../../../shared/package-runtime/typography";
@@ -121,10 +121,11 @@ export const KjunSpinner = defineComponent({
     const m = useKjunMessages();
     return () => {
       return (
-        <span role="status" aria-label={props.text || m.value.loading} class="kjun-spinner" data-size={props.size}
+        // A live region announces its content, not its name: the loading words sit inside it, hidden when there is no text.
+        <span role="status" class="kjun-spinner" data-size={props.size}
           data-stacked={(props.text && spinnerStacked(props.size)) || undefined}>
           {spinnerGlyph({ size: tokens.extensions.spinner.sizes[props.size], stroke: tokens.extensions.spinner.strokeWidths[props.size] })}
-          {props.text && <span>{props.text}</span>}
+          {props.text ? <span>{props.text}</span> : <span class="kjun-sr-only">{m.value.loading}</span>}
         </span>
       );
     };
@@ -222,18 +223,20 @@ export const KjunProgress = defineComponent({
     subLabel?: () => VNodeChild;
   }>,
   setup(props, { slots }) {
-    const m = useKjunMessages(), markerId = "kjun-progress-marker-" + useId().replace(/[^\w-]/g, "");
+    const m = useKjunMessages(), baseId = "kjun-progress-" + useId().replace(/[^\w-]/g, ""), markerId = baseId + "-marker", noDataId = baseId + "-nodata";
     return () => {
-      const missing = props.value === null || !Number.isFinite(props.value) || !Number.isFinite(props.max) || props.max <= 0;
-      const state = props.indeterminate ? "indeterminate" : missing ? "missing" : "determinate";
-      const percentage = state === "determinate" ? Math.min(100, Math.max(0, Math.round((props.value! / props.max) * 100))) : 0;
+      const state = progressState(props.value, props.max, props.indeterminate);
+      const percentage = state === "determinate" ? progressPercent(props.value!, props.max) : 0;
       const text = state === "indeterminate" ? m.value.loadingEllipsis : state === "missing" ? "—" : props.valueText ?? `${percentage}%`;
       const label = slots.label ? slots.label() : props.label;
       const subLabel = slots.subLabel ? slots.subLabel() : props.subLabel;
       const name = typeof props.label === "string" && !slots.label ? props.label : m.value.progress;
+      // A slot label is not plain text: it names the bar through aria-labelledby, so screen readers say what is shown.
+      const labelId = slots.label && hasContent(label) ? baseId + "-label" : undefined;
       const accessibility = {
         role: state === "missing" ? "img" : "progressbar",
-        "aria-label": state === "missing" ? `${name}: ${m.value.noData}` : name,
+        "aria-label": labelId ? undefined : state === "missing" ? `${name}: ${m.value.noData}` : name,
+        "aria-labelledby": labelId && (state === "missing" ? `${labelId} ${noDataId}` : labelId),
         "aria-valuemin": state === "missing" ? undefined : 0,
         "aria-valuemax": state === "missing" ? undefined : 100,
         "aria-valuenow": state === "determinate" ? percentage : undefined,
@@ -255,7 +258,8 @@ export const KjunProgress = defineComponent({
               </svg>
               {props.showLabel && c.showsPercentage && state !== "indeterminate" && <span class="kjun-progress-circle-percent">{text}</span>}
             </div>
-            {label && <div class="kjun-progress-circle-label">{label}</div>}
+            {label && <div id={labelId} class="kjun-progress-circle-label">{label}</div>}
+            {labelId && state === "missing" && <span id={noDataId} hidden>{m.value.noData}</span>}
             {subLabel && <div class="kjun-progress-sub">{subLabel}</div>}
           </div>
         );
@@ -265,7 +269,7 @@ export const KjunProgress = defineComponent({
         <div class="kjun-progress" data-state={state}>
           {(label || props.showLabel) && (
             <div class="kjun-progress-label">
-              {label && <span>{label}</span>}
+              {label && <span id={labelId}>{label}</span>}
               {props.showLabel && <span>{text}</span>}
             </div>
           )}
@@ -275,6 +279,7 @@ export const KjunProgress = defineComponent({
             {mark != null && <span class="kjun-progress-marker" aria-hidden="true" style={{ left: `calc(${mark}% - ${progressMarkerInset(mark)}px)` }} />}
           </div>
           {mark != null && props.markerLabel && <span id={markerId} hidden>{props.markerLabel}</span>}
+          {labelId && state === "missing" && <span id={noDataId} hidden>{m.value.noData}</span>}
           {subLabel && <div class="kjun-progress-sub">{subLabel}</div>}
         </div>
       );
