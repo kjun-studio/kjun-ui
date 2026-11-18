@@ -1,5 +1,5 @@
 import { joinHints, mergeIds } from "../../../shared/package-runtime/aria-ids";
-import { textareaBounds, textareaCanSubmit, textareaCount, textareaMaxRows, textareaPadding, type TextareaMaxRows } from "../../../shared/package-runtime/textarea";
+import { textareaBounds, textareaCanSubmit, textareaCount, textareaMaxRows, textareaPadding, textareaSubmitKey, type TextareaMaxRows, type TextareaSubmitKey } from "../../../shared/package-runtime/textarea";
 import type { InputVariant } from "../../../shared/package-runtime/input-variant";
 import { inputTypeStyle, typeStyle } from "./typography";
 import { FieldTextInput, useFieldSurface } from "./field-surface";
@@ -44,11 +44,17 @@ export interface KjunTextareaProps extends TextInputProps {
   actions?: ReactNode;
   /** Composer: shows a submit button at the end of the bar, named by this label. */
   submitLabel?: string;
-  /** The submit button, while there is text within maxLength and nothing is sending. */
+  /** Sends the text: the submit button or the submit key, while there is text within maxLength and nothing is sending. */
   onSubmit?: (value: string) => void;
+  /**
+   * "mod-enter" (default) sends on Ctrl/⌘+Enter; "enter" sends on Enter, and Shift+Enter starts a new line. A device
+   * keyboard reports no modifier keys, so there only "enter" sends, from its return key.
+   */
+  submitOn?: TextareaSubmitKey;
   /** Sending: the submit button spins and further sends are ignored until it ends. */
   submitting?: boolean;
   disabled?: boolean;
+  /** @deprecated Use readOnly, as on KjunInput. */
   readonly?: boolean;
   ariaLabel?: string;
 }
@@ -65,6 +71,7 @@ export const KjunTextarea: ForwardRefExoticComponent<KjunTextareaProps & RefAttr
       actions,
       submitLabel,
       onSubmit,
+      submitOn = "mod-enter",
       submitting = false,
       disabled = false,
       readonly = false,
@@ -73,6 +80,8 @@ export const KjunTextarea: ForwardRefExoticComponent<KjunTextareaProps & RefAttr
       onFocus,
       onBlur,
       onContentSizeChange,
+      onKeyPress,
+      onSubmitEditing,
       ...props
     },
     ref
@@ -137,7 +146,8 @@ export const KjunTextarea: ForwardRefExoticComponent<KjunTextareaProps & RefAttr
         {...(Platform.OS === "web" ? {
           "aria-disabled": disabled,
           "aria-invalid": invalid || undefined,
-          "aria-describedby": mergeIds(field?.describedBy, showCount ? countId : undefined),
+          // A caller's description comes first, as on KjunInput.
+          "aria-describedby": mergeIds((props as { "aria-describedby"?: string })["aria-describedby"], field?.describedBy, showCount ? countId : undefined),
           "aria-busy": submitting || undefined,
           "aria-labelledby": field?.label && !field.labelHidden ? field.id + "-label" : undefined,
           "aria-required": field?.required || undefined,
@@ -152,6 +162,22 @@ export const KjunTextarea: ForwardRefExoticComponent<KjunTextareaProps & RefAttr
         onBlur={(e) => {
           surface.setFocused(false);
           onBlur?.(e);
+        }}
+        // Native Web reports the keyboard event with its modifiers, so both submit keys work as on Web.
+        onKeyPress={(event) => {
+          onKeyPress?.(event);
+          const key = event as unknown as { key?: string; shiftKey?: boolean; metaKey?: boolean; ctrlKey?: boolean; altKey?: boolean; keyCode?: number; nativeEvent: { key: string; isComposing?: boolean }; isDefaultPrevented?: () => boolean; preventDefault: () => void };
+          if (Platform.OS !== "web" || !onSubmit || key.isDefaultPrevented?.()) return;
+          if (!textareaSubmitKey({ ...key, key: key.key ?? key.nativeEvent.key, isComposing: key.nativeEvent.isComposing }, submitOn)) return;
+          // The send key never types a line break, even while there is nothing to send.
+          key.preventDefault();
+          if (canSubmit) onSubmit(value);
+        }}
+        // A device keyboard's return key submits instead of starting a line in "enter" mode.
+        {...(Platform.OS !== "web" && onSubmit && submitOn === "enter" ? { submitBehavior: "submit" as const } : {})}
+        onSubmitEditing={(event) => {
+          onSubmitEditing?.(event);
+          if (Platform.OS !== "web" && onSubmit && submitOn === "enter" && canSubmit) onSubmit(value);
         }}
         onContentSizeChange={(e) => {
           if (Platform.OS !== "web") setMeasured({ layout, height: e.nativeEvent.contentSize.height });

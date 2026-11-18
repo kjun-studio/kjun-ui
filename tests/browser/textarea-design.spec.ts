@@ -52,10 +52,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.getByTestId('sent')).toHaveText('회의 메모');
     await expect(area(page)).toHaveValue('');
     await expect(count).toHaveText('0/20');
+    // Native Web reads the keyboard event's modifiers, so the submit key works there as on Web.
+    await area(page).fill('단축키');
+    await area(page).press('Control+Enter');
+    await expect(page.getByTestId('sent')).toHaveText('단축키');
     if (platform !== 'native') {
-      await area(page).fill('단축키');
-      await area(page).press('Control+Enter');
-      await expect(page.getByTestId('sent')).toHaveText('단축키');
       // The attribute stops typing at the limit.
       await area(page).fill('');
       await area(page).pressSequentially('가나다라마바사아자차카타파하가나다라마바사아');
@@ -73,9 +74,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     const submit = composer(page).getByRole('button', { name: '보내기' });
     await submit.click({ force: true });
     await expect(page.getByTestId('sent')).toHaveText('');
+    await area(page).press('Control+Enter');
+    await expect(page.getByTestId('sent')).toHaveText('');
     if (platform !== 'native') {
-      await area(page).press('Control+Enter');
-      await expect(page.getByTestId('sent')).toHaveText('');
       await expect(area(page)).toHaveAttribute('aria-busy', 'true');
       await area(page).fill('가나다라마바사아자차카타파하가나다라마');
       await expect(composer(page).locator('[aria-live="polite"]')).toHaveText('1자 남음');
@@ -86,7 +87,7 @@ for (const platform of ['react', 'vue3', 'native']) {
   });
 }
 
-for (const platform of ['react', 'vue3']) {
+for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: Enter mode sends on Enter and keeps Shift+Enter for a new line; a draggable field stops growing`, async ({ page }) => {
     await openFixture(page, platform, '', 'input-design');
     await page.evaluate(() => (window as any).configureInputDesign({ submitOn: 'enter' }));
@@ -95,6 +96,8 @@ for (const platform of ['react', 'vue3']) {
     await expect(area(page)).toHaveValue('첫 줄\n');
     await area(page).press('Enter');
     await expect(page.getByTestId('sent')).toHaveText('첫 줄');
+    // Native has no drag handle to resize with.
+    if (platform === 'native') return;
     await page.evaluate(() => (window as any).configureInputDesign({ resize: 'vertical' }));
     await expect(area(page)).not.toHaveAttribute('data-grow');
   });

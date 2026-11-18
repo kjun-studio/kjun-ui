@@ -60,13 +60,20 @@ const KjunTextareaComponent = defineComponent({
     const grow = () => { const [minimum, maximum] = bounds(); if (textareaGrows(minimum, maximum, props.resize)) growTextarea(textarea.value, minimum, maximum); };
     // Growth follows the text and the width it wraps in.
     watch(() => [props.modelValue, props.size, props.rows, props.maxRows, footer()], () => nextTick(grow), { flush: "post" });
+    // Turning the bar on or off renders a new <textarea>, so the width observer follows the element, not the first mount.
     let observer: ResizeObserver | undefined;
-    onMounted(() => {
+    const observe = (node: HTMLTextAreaElement | null) => {
+      observer?.disconnect();
+      observer = undefined;
+      if (!node) return;
       grow();
-      if (typeof ResizeObserver === "undefined" || !textarea.value) return;
-      let width = textarea.value.clientWidth;
-      observer = new ResizeObserver(() => { const node = textarea.value; if (node && node.clientWidth !== width) { width = node.clientWidth; grow(); } });
-      observer.observe(textarea.value);
+      if (typeof ResizeObserver === "undefined") return;
+      let width = node.clientWidth;
+      observer = new ResizeObserver(() => { if (node.clientWidth !== width) { width = node.clientWidth; grow(); } });
+      observer.observe(node);
+    };
+    onMounted(() => {
+      watch(textarea, observe, { immediate: true, flush: "post" });
       // A web font that arrives late can rewrap the text without changing the width.
       document.fonts?.ready.then(() => { if (textarea.value?.isConnected) grow(); });
     });
