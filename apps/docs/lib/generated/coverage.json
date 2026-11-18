@@ -2034,7 +2034,7 @@
       "title": "Pagination",
       "docs": "/components/pagination",
       "category": "navigation",
-      "differences": "Vue v-model:page·v-model:pageSize·change에 대응해 React·Native는 onPageChange·onChange·onPageSizeChange를 제공합니다. 세 플랫폼 모두 formatter로 전체 개수 표시를 바꿉니다.",
+      "differences": "Vue v-model:page·v-model:pageSize·change에 대응해 React·Native는 onPageChange·onChange·onPageSizeChange를 제공합니다. 세 플랫폼 모두 formatter로 표시 범위의 시작·끝 행과 전체 개수 표시를 바꿉니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

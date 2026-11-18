@@ -81,7 +81,8 @@
         "$ref": "iconSizes.default"
       },
       "dotSize": 8,
-      "minimumHeight": 36
+      "minimumHeight": 36,
+      "paddingX": { "xs": { "$ref": "dimension.value8" }, "sm": { "$ref": "dimension.value12" }, "md": { "$ref": "dimension.value12" }, "lg": { "$ref": "dimension.value14" }, "xl": { "$ref": "dimension.value16" } }
     },
     "chip": {
       "iconSizes": {

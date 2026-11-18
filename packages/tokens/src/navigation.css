@@ -58,18 +58,18 @@
   --_kjun-tab-ring-room:calc(var(--_kjun-state-focus-width) + var(--_kjun-state-focus-offset));
   padding:var(--_kjun-tab-ring-room); margin:calc(-1 * var(--_kjun-tab-ring-room));
 }
-/* A tab list that overflows fades at each edge with more tabs past it, as KjunScrollFade does. A focused or selected
-   tab scrolls in clear of the fade (scroll-padding), so its label and ring stay whole. */
-.kjun-tabs-track { --_kjun-fade-to: to right; scroll-padding-inline:var(--_kjun-extension-scroll-fade-width); }
-.kjun-tabs-track:dir(rtl) { --_kjun-fade-to: to left; }
-.kjun-tabs-track:is([data-fade-start], [data-fade-end]) {
+/* A tab list or a scrolling FilterGroup that overflows fades at each edge with more items past it, as KjunScrollFade
+   does. A focused or selected item scrolls in clear of the fade (scroll-padding), so its label and ring stay whole. */
+:is(.kjun-tabs-track, .kjun-filter-group[data-scroll="true"]) { --_kjun-fade-to: to right; scroll-padding-inline:var(--_kjun-extension-scroll-fade-width); }
+:is(.kjun-tabs-track, .kjun-filter-group[data-scroll="true"]):dir(rtl) { --_kjun-fade-to: to left; }
+:is(.kjun-tabs-track, .kjun-filter-group[data-scroll="true"]):is([data-fade-start], [data-fade-end]) {
   --_kjun-fade-start: currentColor;
   --_kjun-fade-end: currentColor;
   -webkit-mask-image: linear-gradient(var(--_kjun-fade-to), var(--_kjun-fade-start), currentColor var(--_kjun-extension-scroll-fade-width), currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), var(--_kjun-fade-end));
   mask-image: linear-gradient(var(--_kjun-fade-to), var(--_kjun-fade-start), currentColor var(--_kjun-extension-scroll-fade-width), currentColor calc(100% - var(--_kjun-extension-scroll-fade-width)), var(--_kjun-fade-end));
 }
-.kjun-tabs-track[data-fade-start] { --_kjun-fade-start: transparent; }
-.kjun-tabs-track[data-fade-end] { --_kjun-fade-end: transparent; }
+:is(.kjun-tabs-track, .kjun-filter-group[data-scroll="true"])[data-fade-start] { --_kjun-fade-start: transparent; }
+:is(.kjun-tabs-track, .kjun-filter-group[data-scroll="true"])[data-fade-end] { --_kjun-fade-end: transparent; }
 .kjun-tabs[data-variant="underline"] .kjun-tab:is([data-focus-visible], :focus-visible) { outline-offset:var(--_kjun-state-focus-offset); }
 .kjun-tab:hover:not([aria-selected="true"]):not([aria-disabled="true"]):not(:disabled) { color:var(--_kjun-color-text); }
 /* Unselected chips darken to the hover surface, like Chip and ButtonGroup. */
@@ -193,8 +193,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--_kjun-extension-pagination-gap);
+  /* No top line: an in-flow component separates by space and fill, never by an outer hairline. */
   padding: var(--_kjun-extension-pagination-padding);
-  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
   font-size: var(--_kjun-type-body-size);
   color: var(--_kjun-color-text-secondary);
   line-height: var(--_kjun-type-body-line);
@@ -211,7 +211,7 @@
 .kjun-pagination-desktop {
   display: none;
 }
-.kjun-pagination button:not(.kjun-select-trigger) {
+.kjun-pagination :is(.kjun-pagination-mobile, .kjun-pagination-desktop) button {
   width: var(--_kjun-extension-pagination-item-size);
   height: var(--_kjun-extension-pagination-item-size);
   display: inline-flex;
@@ -223,20 +223,51 @@
   color: inherit;
   cursor: pointer;
 }
-.kjun-pagination button:not(.kjun-select-trigger):hover:not(:disabled) {
+/* The current page keeps its brand fill under the pointer; pressing it does nothing, so it shows no hand. */
+.kjun-pagination :is(.kjun-pagination-mobile, .kjun-pagination-desktop) button:hover:not(:disabled, [aria-current]) {
   background: var(--_kjun-color-hover);
 }
 /* One disabled rule, as Button and fields: no fading; the arrow takes the disabled-text role. */
-.kjun-pagination button:not(.kjun-select-trigger):disabled {
+.kjun-pagination :is(.kjun-pagination-mobile, .kjun-pagination-desktop) button:disabled {
   color: var(--_kjun-color-text-disabled);
   cursor: not-allowed;
 }
-.kjun-pagination button:not(.kjun-select-trigger)[aria-current] {
+.kjun-pagination :is(.kjun-pagination-mobile, .kjun-pagination-desktop) button[aria-current] {
   background: var(--_kjun-color-brand);
   color: var(--_kjun-color-on-brand);
+  cursor: default;
 }
+/* An ellipsis takes a page button's width, so the list keeps one width on every page and the arrows stay put. */
+.kjun-pagination-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_kjun-extension-pagination-item-size);
+  height: var(--_kjun-extension-pagination-item-size);
+}
+.kjun-pagination-desktop button { font-variant-numeric: tabular-nums; }
+/* The range line stays on one line; a narrow row moves the controls to the next line instead. */
+.kjun-pagination-range { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .kjun-pagination-controls { display:flex; align-items:center; flex-wrap:wrap; gap:var(--_kjun-extension-pagination-item-gap); }
-.kjun-pagination-size { min-width:var(--_kjun-extension-pagination-selector-minimum-width); flex-shrink:0; }
+/* Page size: a quiet text button at the range line's type, opening the sizes as a menu. */
+.kjun-pagination-size {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--_kjun-geometry-dimension-value4);
+  height: var(--_kjun-extension-pagination-item-size);
+  padding: 0 var(--_kjun-geometry-dimension-value8);
+  border: 0;
+  border-radius: var(--_kjun-extension-pagination-radius);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.kjun-pagination-size:hover:not(:disabled) { background: var(--_kjun-color-hover); }
+.kjun-pagination-size:disabled { color: var(--_kjun-color-text-disabled); cursor: not-allowed; }
 .kjun-pagination-mobile { margin-inline-start:auto; flex-shrink:0; }
 .kjun-pagination-mobile > span {
   padding: 0 var(--_kjun-extension-pagination-label-padding-x);
@@ -245,19 +276,29 @@
   font-variant-numeric:tabular-nums;
 }
 .kjun-pagination-mobile strong { font-weight:var(--_kjun-type-control-weight); }
+/* layout="auto" follows the window; "full" and "compact" keep one form at any width. */
 @media (width >= token(responsive.pagination)) {
-  .kjun-pagination {
+  .kjun-pagination:not([data-layout="compact"]) {
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
   }
-  .kjun-pagination-mobile {
+  .kjun-pagination:not([data-layout="compact"]) .kjun-pagination-mobile {
     display: none;
   }
-  .kjun-pagination-desktop {
+  .kjun-pagination:not([data-layout="compact"]) .kjun-pagination-desktop {
     display: flex;
   }
 }
+.kjun-pagination[data-layout="full"] {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+.kjun-pagination[data-layout="full"] .kjun-pagination-mobile { display: none; }
+.kjun-pagination[data-layout="full"] .kjun-pagination-desktop { display: flex; }
 /* Square icon controls take the button height and corner for the same size, so they line up in a row of buttons. */
 .kjun-icon-toggle {
   --_kjun-icon-toggle-size: var(--_kjun-extension-icon-toggle-sizes-md);

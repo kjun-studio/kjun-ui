@@ -89,10 +89,11 @@ test("Native Select isolates popup search and DatePicker consumes live field fee
 for (const platform of ["react", "vue3", "native"]) test(`${platform} page size stays reversible with one or zero pages`, async ({ page }) => {
   await followupFixture(page, platform, "pagination");
   // The equally named popup can remain mounted briefly while closing.
-  const size = page.getByRole("button", { name: "페이지당 항목 수", exact: true });
+  // The size button names its current size ("페이지당 항목 수, 20개씩") and opens the sizes as menu radio items.
+  const size = page.getByRole("button", { name: /^페이지당 항목 수, /, exact: true });
   const choose = async (value: string) => {
     await size.click();
-    await page.getByRole(platform === "native" ? "radio" : "option", { name: value + "개씩", exact: true }).click();
+    await page.getByRole("menuitemradio", { name: value + "개씩", exact: true }).click();
   };
   await choose("50");
   await expect(page.getByTestId("model")).toHaveText("50:1");

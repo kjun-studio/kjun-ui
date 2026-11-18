@@ -1,12 +1,14 @@
 import { useKjunMessages } from "./runtime/messages";
 import { spinnerGlyph } from "./spinner-glyph";
-import { computed, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref,
+import { computed, inject, onBeforeUnmount, onMounted, onUpdated, provide, ref, watch,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { tokens, type ButtonSize, type InputSize } from "@kjun-ui/tokens";
 import { selectionTypeStyle, typeStyle } from "../../../shared/package-runtime/typography";
 import { selectionIndicator } from "../../../shared/package-runtime/selection-indicator";
 import { groupKeydown } from "../../../shared/package-runtime/group-keyboard";
+import { filterSelected, nextFilterValue } from "../../../shared/package-runtime/filter-value";
+import { trackFilterScroll } from "../../../shared/package-runtime/filter-scroll";
 import { KjunIcon } from "./button";
 import { KjunTooltip } from "./popover";
 import { useKjunField, useKjunId } from "./input";
@@ -24,6 +26,8 @@ export interface ChoiceOption<T = ChoiceValue> {
   icon?: string;
   /** ButtonGroup only: show the icon alone in a square segment; label becomes the accessible name and tooltip. */
   iconOnly?: boolean;
+  /** FilterGroup only: a count after the label ("진행 중 12"), joined to the label in the accessible name. A string is shown as given. */
+  count?: number | string;
   dot?: string;
 }
 const choiceClass = (disabled: boolean) => "kjun-choice" + (disabled ? " kjun-choice--disabled" : "");
@@ -323,7 +327,6 @@ export const KjunButtonGroup = defineComponent({
   },
 });
 
-const filterPadding = { xs: tokens.dimension.value8, sm: tokens.dimension.value12, md: tokens.dimension.value12, lg: tokens.dimension.value14, xl: tokens.dimension.value16 };
 const kjunFilterGroupProps = {
   modelValue: { type: [String, Number, Boolean, null, Array] as PropType<ChoiceValue | ChoiceValue[]>, default: null },
   options: { type: Array as PropType<ChoiceOption[]>, required: true },
@@ -339,34 +342,47 @@ export const KjunFilterGroup = defineComponent({
   props: kjunFilterGroupProps,
   emits: { "update:modelValue": (_value: ChoiceValue | ChoiceValue[]) => true, change: (_value: ChoiceValue | ChoiceValue[]) => true },
   setup(props, { emit }) {
+    const m = useKjunMessages(), root = ref<HTMLElement | null>(null);
+    // Scroll mode, as React's useFilterScroll: fade the clipped edges and keep the selected chip in view
+    // (in multiple mode only on mount, so turning a chip off does not pull the row elsewhere).
+    let tracker: ReturnType<typeof trackFilterScroll> | undefined;
+    const track = () => {
+      tracker?.destroy(); tracker = undefined;
+      if (props.scroll && root.value) { tracker = trackFilterScroll(root.value); tracker.reveal(); }
+    };
+    onMounted(track);
+    watch(() => props.scroll, track, { flush: "post" });
+    watch(() => props.modelValue, () => { if (!props.multiple) tracker?.reveal(); }, { flush: "post" });
+    onBeforeUnmount(() => tracker?.destroy());
     return () => {
       const value = props.modelValue, size = props.size;
-      const selected = (v: ChoiceValue) => props.multiple ? Array.isArray(value) && (v === null ? value.length === 0 : value.includes(v)) : value === v;
       return (
-        <div role="group" aria-label={props.ariaLabel} class="kjun-filter-group" data-scroll={String(props.scroll)} onKeydown={groupKeydown}>
-          {props.options.map(option => (
-            <button key={String(option.value)} type="button" class="kjun-filter-chip"
-              // Corners follow the button scale with the height, so every size keeps the same shape.
-              style={css({ borderRadius: tokens.button.radii[size] })} aria-pressed={selected(option.value)} disabled={props.disabled || option.disabled}
-              onClick={() => {
-                const next = props.multiple
-                  ? option.value === null ? []
-                    : Array.isArray(value) && value.includes(option.value) ? value.filter(v => v !== option.value)
-                    : [...(Array.isArray(value) ? value : []), option.value]
-                  : option.value;
-                emit("update:modelValue", next);
-                emit("change", next);
-              }}>
-              <span style={css({ height: tokens.button.heights[size], paddingInline: filterPadding[size], ...selectionTypeStyle(size, selected(option.value)) })}>
-                {option.dot && <i style={{ background: option.dot }} />}
-                {option.icon && <KjunIcon name={option.icon} size={tokens.extensions.selection.iconSize} />}
-                <span class="kjun-filter-label">
-                  <span aria-hidden="true" style={css(typeStyle(tokens.button.typography[size]))}>{option.label}</span>
-                  <span>{option.label}</span>
+        <div ref={root} role="group" aria-label={props.ariaLabel} class="kjun-filter-group" data-scroll={String(props.scroll)} onKeydown={groupKeydown}>
+          {props.options.map(option => {
+            const on = filterSelected(value, option.value, props.multiple), counted = option.count != null && option.count !== "";
+            return (
+              <button key={String(option.value)} type="button" class="kjun-filter-chip"
+                // Corners follow the button scale with the height, so every size keeps the same shape.
+                style={css({ borderRadius: tokens.button.radii[size] })} aria-pressed={on}
+                aria-label={counted ? m.value.filterCount(option.label, String(option.count)) : undefined}
+                disabled={props.disabled || option.disabled}
+                onClick={() => {
+                  const next = nextFilterValue(value, option.value, props.multiple);
+                  emit("update:modelValue", next);
+                  emit("change", next);
+                }}>
+                <span style={css({ height: tokens.button.heights[size], paddingInline: tokens.extensions.selection.paddingX[size], ...selectionTypeStyle(size, on) })}>
+                  {option.dot && <i style={{ background: option.dot }} />}
+                  {option.icon && <KjunIcon name={option.icon} size={tokens.extensions.selection.iconSize} />}
+                  <span class="kjun-filter-label">
+                    <span aria-hidden="true" style={css(typeStyle(tokens.button.typography[size]))}>{option.label}</span>
+                    <span>{option.label}</span>
+                  </span>
+                  {counted && <span class="kjun-filter-count">{option.count}</span>}
                 </span>
-              </span>
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
       );
     };

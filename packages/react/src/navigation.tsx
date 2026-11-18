@@ -25,7 +25,7 @@ type ReactNode,
 import { KjunButton, KjunIcon } from "./button";
 import { KjunDropdown, KjunDropdownItem } from "./dropdown";
 import { KjunBadge } from "./display";
-import { KjunSelect } from "./select";
+import { paginationItems, pageRows } from "../../../shared/package-runtime/pagination";
 export * from "./tabs";
 const AccordionContext = createContext<{
   opened: ReadonlySet<string>;
@@ -268,11 +268,16 @@ export interface KjunPaginationProps {
   showInfo?: boolean;
   showSizeSelector?: boolean;
   showFirstLast?: boolean;
+  /** "auto" switches to the short form below the pagination breakpoint; "full" and "compact" keep one form. */
+  layout?: KjunPaginationLayout;
+  /** Locks every control, for example while the next page loads. The current page keeps its fill. */
+  disabled?: boolean;
   formatter?: (value: number) => string;
   onPageChange?: (page: number) => void;
   onChange?: (page: number) => void;
   onPageSizeChange?: (size: number) => void;
 }
+export type KjunPaginationLayout = "auto" | "full" | "compact";
 export function KjunPagination({
   currentPage,
   page,
@@ -284,6 +289,8 @@ export function KjunPagination({
   showInfo = false,
   showSizeSelector = false,
   showFirstLast = true,
+  layout = "auto",
+  disabled = false,
   formatter = String,
   onPageChange,
   onChange,
@@ -293,53 +300,52 @@ export function KjunPagination({
   const current = Math.max(1, Math.min(totalPages, currentPage ?? page ?? 1));
   if (totalPages <= 1 && !showSizeSelector && !(showInfo && totalRows > 0)) return null;
   const change = (v: number) => {
-    if (v < 1 || v > totalPages || v === current) return;
+    if (disabled || v < 1 || v > totalPages || v === current) return;
     onPageChange?.(v);
     onChange?.(v);
   };
-  const visible = new Set([
-    1,
-    totalPages,
-    ...Array.from(
-      { length: Math.min(totalPages, siblingCount * 2 + 1) },
-      (_, i) => current - siblingCount + i
-    ).filter((v) => v >= 1 && v <= totalPages),
-  ]);
-  const pages = [...visible]
-    .sort((a, b) => a - b)
-    .flatMap((v, i, all) => (i && v - all[i - 1] > 1 ? ["...", v] : [v]));
+  const rows = pageRows(current, pageSize, totalRows);
   const button = (target: number, label: string, icon: string) => (
     <button
       type="button"
       aria-label={label}
-      disabled={target < 1 || target > totalPages || target === current}
+      disabled={disabled || target < 1 || target > totalPages || target === current}
       onClick={() => change(target)}
     >
       <KjunIcon name={icon} size={tokens.extensions.pagination.iconSize} />
     </button>
   );
   return (
-    <nav aria-label={m.pagination} className="kjun-pagination">
+    <nav aria-label={m.pagination} className="kjun-pagination" data-layout={layout}>
       {showInfo && totalRows > 0 ? (
-        <span>
-          {m.pageRange((current - 1) * pageSize + 1, Math.min(current * pageSize, totalRows), formatter(totalRows))}
+        <span className="kjun-pagination-range">
+          {m.pageRange(formatter(rows.from), formatter(rows.to), formatter(totalRows))}
         </span>
       ) : (
         <span />
       )}
       <div className="kjun-pagination-controls">
         {showSizeSelector && (
-          <div className="kjun-pagination-size"><KjunSelect
-            size="sm"
-            ariaLabel={m.itemsPerPage}
-            value={pageSize}
-            options={pageSizeOptions.map(n => ({ value: n, label: m.perPage(n) }))}
-            onValueChange={(value) => {
-              onPageSizeChange?.(Number(value));
-              onPageChange?.(1);
-              onChange?.(1);
-            }}
-          /></div>
+          // A quiet text button that opens the sizes as single-choice menu items, at the range line's type size.
+          <KjunDropdown
+            placement="bottom-end"
+            disabled={disabled}
+            trigger={
+              <button type="button" className="kjun-pagination-size" aria-label={m.pageSizeMenu(m.perPage(pageSize))} disabled={disabled}>
+                {m.perPage(pageSize)}
+                <KjunIcon name="chevron-down" size={tokens.extensions.pagination.iconSize} />
+              </button>
+            }
+          >
+            {pageSizeOptions.map(n => (
+              <KjunDropdownItem key={n} selected={n === pageSize} onClick={() => {
+                if (n === pageSize) return;
+                onPageSizeChange?.(n);
+                onPageChange?.(1);
+                onChange?.(1);
+              }}>{m.perPage(n)}</KjunDropdownItem>
+            ))}
+          </KjunDropdown>
         )}
         {totalPages > 1 && <div className="kjun-pagination-mobile">
           {button(current - 1, m.previousPage, "chevron-left")}
@@ -351,15 +357,16 @@ export function KjunPagination({
         {totalPages > 1 && <div className="kjun-pagination-desktop">
           {showFirstLast && button(1, m.firstPage, "chevrons-left")}
           {button(current - 1, m.previousPage, "chevron-left")}
-          {pages.map((n, i) =>
+          {paginationItems(current, totalPages, siblingCount).map((n) =>
             typeof n === "string" ? (
-              <span key={"dots" + i}>...</span>
+              <span key={n} className="kjun-pagination-ellipsis" aria-hidden="true">…</span>
             ) : (
               <button
                 key={n}
                 type="button"
                 aria-label={m.page(n)}
                 aria-current={current === n ? "page" : undefined}
+                disabled={disabled && current !== n}
                 onClick={() => change(n)}
               >
                 {n}

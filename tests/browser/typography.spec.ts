@@ -85,17 +85,19 @@ for(const platform of ['react','vue3','native']) {
     const selected=[pagination.getByText('1',{exact:true}).filter({visible:true}),page.getByTestId('market-cards').getByRole('button',{name:'선택 지표',exact:true})];
     for(const node of selected) await expect.poll(async()=>(await textStyle(node)).color).toBe('rgb(170, 187, 204)');
     if(platform==='native') {
-      expect(await textStyle(pagination.getByText('20개씩',{exact:true}))).toMatchObject({size:'16px',line:'24px'});
+      // The size button sits at the range line's body type.
+      expect(await textStyle(pagination.getByText('20개씩',{exact:true}))).toMatchObject({size:'14px',line:'20px'});
       await page.getByRole('button',{name:'날짜 sm',exact:true}).click();
       await expect.poll(async()=>(await textStyle(page.getByRole('button',{name:'2026년 9월 16일 수요일',exact:true}))).color).toBe('rgb(170, 187, 204)');
     } else {
-      const select=pagination.getByRole('button',{name:'페이지당 항목 수'});
-      await expect(select).toHaveCSS('font-size','16px');
-      expect((await select.boundingBox())!.height).toBe(tokens.input.sm.height);
+      // The size button sits at the range line's body type and the page buttons' height.
+      const select=pagination.getByRole('button',{name:/^페이지당 항목 수/});
+      await expect(select).toHaveCSS('font-size','14px');
+      expect((await select.boundingBox())!.height).toBe(tokens.extensions.pagination.itemSize);
       await select.scrollIntoViewIfNeeded();
       await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
       await select.click();
-      await expect(page.getByRole('option').first()).toHaveCSS('font-size','14px');
+      await expect(page.getByRole('menuitemradio').first()).toHaveCSS('font-size','14px');
       await page.keyboard.press('Escape');
     }
     await page.evaluate(()=>(window as any).updateTokenPalette());
@@ -106,7 +108,7 @@ for(const platform of ['react','vue3','native']) {
     } else {
       await page.evaluate(()=>document.documentElement.style.fontSize='20px');
       expect(await textStyle(page.getByTestId('fields-sm').getByText('2026. 09. 16.',{exact:true}))).toMatchObject({size:'20px',line:'30px'});
-      await expect(pagination.getByRole('button',{name:'페이지당 항목 수'})).toHaveCSS('font-size','20px');
+      await expect(pagination.getByRole('button',{name:/^페이지당 항목 수/})).toHaveCSS('font-size','17.5px');
     }
   });
   test(`${platform}: KPI stages and narrow layouts`,async({page}, testInfo)=>{

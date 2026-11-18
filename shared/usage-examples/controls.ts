@@ -1,5 +1,5 @@
 import { UsageBuilder, expr, literal, type UsageInput } from './builder';
-import { defaultOptions, viewOptions, buttonComparisons, inputComparisons, inputCaseProps, fieldOptions, groupedFieldOptions, formActionsComparisons, formActionsFill } from '../../previews/catalog/example-tools';
+import { defaultOptions, viewOptions, statusFilterOptions, buttonComparisons, inputComparisons, inputCaseProps, fieldOptions, groupedFieldOptions, formActionsComparisons, formActionsFill } from '../../previews/catalog/example-tools';
 import { iconToggleExample } from './icon-toggle';
 
 export function generate(input: UsageInput) {
@@ -97,6 +97,11 @@ export function generate(input: UsageInput) {
     case 'KjunButtonGroup': case 'KjunFilterGroup': {
       if (name === 'KjunButtonGroup' && s.iconOnly) {
         content = b.node(name, { value: b.state('view', 'line'), onValueChange: b.update('view'), options: b.data('options', viewOptions), disabled: s.disabled, ariaLabel: '차트 형태', ...b.props('size', 'fullWidth') }); break;
+      }
+      if (name === 'KjunFilterGroup' && (s.count || s.scroll)) {
+        content = b.node(name, { value: b.state('status', ['doing']), onValueChange: b.update('status'), options: b.data('options', statusFilterOptions(!!s.count)), multiple: true, ...(s.scroll ? { scroll: true } : {}), disabled: s.disabled, ariaLabel: '상태 필터' });
+        if (s.scroll) content = b.node(b.native ? 'View' : 'div', { style: b.native ? { width: 280 } : { maxWidth: '280px' } }, content);
+        break;
       }
       const key = name === 'KjunButtonGroup' ? 'group' : 'filters';
       content = b.node(name, { value: b.state(key, key === 'group' ? 'a' : ['a']), onValueChange: b.update(key), options: options(), multiple: key === 'filters', disabled: s.disabled, ariaLabel: '과일 보기', ...(key === 'group' ? b.props('size', 'fullWidth') : {}) }); break;

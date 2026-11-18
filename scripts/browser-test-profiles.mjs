@@ -65,6 +65,8 @@ const componentGroups = {
   'date-picker': [...files('date-picker-design', 'event-calendar', 'input-design', 'additions', 'i18n'), ...fields, ...visuals],
   'event-calendar': files('event-calendar', 'date-picker-design'),
   radio: [...files('radio-design', 'expanded'), ...fields, ...visuals],
+  pagination: [...files('pagination-filter', 'visual-table-contracts', 'token-table-propagation', 'table-contracts', 'live-updates'), ...visuals],
+  'filter-group': [...files('pagination-filter', 'button-group-motion', 'selection-label-width', 'token-form-propagation'), ...visuals],
   accessibility: files('accessibility-tabs', 'accessibility-components', 'accessibility-controls', 'elevation-keyboard', 'input-contracts'),
 };
 for (const scope of ['select', 'popover', 'tooltip', 'button']) componentGroups[scope].push(...files('adoption-attrs'));

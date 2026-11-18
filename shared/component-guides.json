@@ -381,8 +381,8 @@
     "slug": "pagination",
     "description": "현재 페이지, 이동 가능한 페이지와 페이지 크기를 표시합니다.",
     "interaction": "현재 페이지·전체 범위·페이지 크기를 외부에서 제공합니다. 이동 통지를 받은 소비자가 실제 데이터와 페이지 값을 함께 갱신합니다.",
-    "differences": "Vue v-model:page·v-model:pageSize·change에 대응해 React·Native는 onPageChange·onChange·onPageSizeChange를 제공합니다. 세 플랫폼 모두 formatter로 전체 개수 표시를 바꿉니다.",
-    "states": "페이지 크기는 공통 Select로 선택합니다. 좁은 화면에서는 현재 페이지를 굵게 표시하고 이전·다음 이동을 한 그룹으로 유지합니다. 현재 페이지·전체 개수·페이지 크기로 이동 가능한 범위를 계산합니다. 처음·끝 페이지에서 불가능한 이동은 비활성으로 표시합니다."
+    "differences": "Vue v-model:page·v-model:pageSize·change에 대응해 React·Native는 onPageChange·onChange·onPageSizeChange를 제공합니다. 세 플랫폼 모두 formatter로 표시 범위의 시작·끝 행과 전체 개수 표시를 바꿉니다.",
+    "states": "페이지 크기는 채움 없는 글자 버튼이 여는 단일 선택 메뉴로 고릅니다. 좁은 화면에서는 현재 페이지를 굵게 표시하고 이전·다음 이동을 한 그룹으로 유지하며, layout으로 화면 폭과 관계없이 짧은 형태(compact)나 번호 목록(full)을 고릅니다. 번호 목록은 어느 페이지에서나 칸 수가 같아 화살표가 움직이지 않습니다. 처음·끝 페이지에서 불가능한 이동과 disabled 중의 이동은 비활성으로 표시하고, 현재 페이지는 채움을 유지합니다."
   },
   "KjunBadge": {
     "slug": "badge",
@@ -424,7 +424,7 @@
     "description": "단일 또는 복수 필터 조건을 선택합니다.",
     "interaction": "multiple에 따라 단일 값이나 배열을 선택합니다. 선택 통지는 조건 변경 요청이며 실제 목록 필터링은 소비자가 수행합니다.",
     "differences": "Vue v-model·change와 React·Native onValueChange·onChange를 사용합니다. scroll은 필터의 가로 배치이며 데이터 요청과 무관합니다.",
-    "states": "선택된 조건과 해제 가능한 조건, 비활성 항목을 구분합니다. 필터 선택은 이벤트로 전달하며 실제 데이터 필터링은 프로젝트 책임입니다."
+    "states": "선택된 조건과 해제 가능한 조건, 비활성 항목을 구분합니다. count를 준 칩은 라벨 뒤에 개수를 보조 글자로 붙입니다. scroll에서 넘치면 칩이 더 있는 가장자리를 흐리고 선택한 칩을 보이는 범위로 옮깁니다. 필터 선택은 이벤트로 전달하며 실제 데이터 필터링은 프로젝트 책임입니다."
   },
   "KjunIcon": {
     "slug": "icon",

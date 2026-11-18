@@ -168,8 +168,13 @@ export const kjunMessagesKo = {
   pagination: "페이지 탐색",
   itemsPerPage: "페이지당 항목 수",
   perPage: (count: number) => `${count}개씩`,
-  pageRange: (from: number, to: number, total: string) => `${from} - ${to} / ${total}개`,
+  /** Pagination page-size button: its accessible name, which keeps the shown label ("20개씩"). */
+  pageSizeMenu: (label: string) => `페이지당 항목 수, ${label}`,
+  /** The rows on the page and the total, each already passed through Pagination formatter. */
+  pageRange: (from: string, to: string, total: string) => `${from} - ${to} / ${total}개`,
   page: (page: number) => `${page} 페이지`,
+  /** A FilterGroup chip with a count: its accessible name. count is already formatted. */
+  filterCount: (label: string, count: string) => `${label}, ${count}개`,
   firstPage: "첫 페이지",
   previousPage: "이전 페이지",
   nextPage: "다음 페이지",

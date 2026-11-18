@@ -14,6 +14,10 @@ import { ChoiceOption,ChoiceValue } from "./choice-controls";
 import { KText, finePointer } from "./internal";
 import { useKjunStyles } from "./provider";
 import { ButtonGroupLabel, useButtonGroupMotion } from "./button-group-motion";
+import { ScrollFadeEdge } from "./scroll-fade-edge";
+import { useFilterRow } from "./use-filter-row";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { filterSelected, nextFilterValue } from "../../../shared/package-runtime/filter-value";
 export interface KjunButtonGroupProps {
   value: ChoiceValue;
   options: ChoiceOption[];
@@ -165,42 +169,33 @@ export function KjunFilterGroup({
   onChange,
 }: KjunFilterGroupProps) {
   const { colors } = useKjunStyles();
+  const m = useKjunMessages();
   // Like Web's selection media rule: a wide window with a fine pointer uses the plain button height;
   // narrow or touch layouts keep the 36px chip in a 44px touch row.
   const wide = useWindowDimensions().width >= tokens.responsive.selection,
     roomy = wide && finePointer();
-  const selected = (v: ChoiceValue) =>
-    multiple
-      ? Array.isArray(value) &&
-        (v === null ? value.length === 0 : value.includes(v))
-      : value === v;
-  const children = (
+  const row = useFilterRow(scroll, multiple, value);
+  const chips = (
     <View
+      role="group"
       accessibilityLabel={ariaLabel}
-      style={{
-        flexDirection: "row",
-        flexWrap: scroll ? "nowrap" : "wrap",
-        gap: tokens.dimension.value8,
-      }}
+      style={{ flexDirection: "row", flexWrap: scroll ? "nowrap" : "wrap", gap: tokens.dimension.value8 }}
     >
       {options.map((option) => {
-        const active = selected(option.value),
-          blocked = disabled || option.disabled;
+        const active = filterSelected(value, option.value, multiple),
+          blocked = disabled || option.disabled,
+          counted = option.count != null && option.count !== "",
+          ink = blocked ? colors.textDisabled : active ? colors.filterSelectedText : colors.textSecondary;
         return (
           <Pressable
             key={String(option.value)}
+            onLayout={event => row.measure(option.value, event)}
             accessibilityRole="button"
-            accessibilityLabel={option.label}
+            accessibilityLabel={counted ? m.filterCount(option.label, String(option.count)) : option.label}
             accessibilityState={{ selected: active, disabled: !!blocked }}
             disabled={blocked}
             onPress={() => {
-              const next = multiple
-                ? option.value === null
-                  ? []
-                  : Array.isArray(value) && value.includes(option.value)
-                  ? value.filter((v) => v !== option.value)
-                  : [...(Array.isArray(value) ? value : []), option.value]
-                : option.value;
+              const next = nextFilterValue(value, option.value, multiple);
               onValueChange?.(next);
               onChange?.(next);
             }}
@@ -209,7 +204,7 @@ export function KjunFilterGroup({
               justifyContent: "center",
             }}
           >
-            <View
+            {({ pressed }) => <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -217,12 +212,11 @@ export function KjunFilterGroup({
                 gap: tokens.dimension.value4,
                 minHeight: roomy ? undefined : tokens.extensions.selection.minimumHeight,
                 height: roomy ? tokens.button.heights[size] : Math.max(tokens.extensions.selection.minimumHeight, tokens.button.heights[size]),
-                paddingHorizontal: { xs: tokens.dimension.value8, sm: tokens.dimension.value12, md: tokens.dimension.value12, lg: tokens.dimension.value14, xl: tokens.dimension.value16 }[
-                  size
-                ],
+                paddingHorizontal: tokens.extensions.selection.paddingX[size],
                 // Corners follow the button scale with the height, so every size keeps the same shape.
                 borderRadius: tokens.button.radii[size],
-                backgroundColor: active ? colors.filterSelectedBg : colors.secondary,
+                // An unselected chip darkens to the hover surface while pressed, as Web does under the pointer.
+                backgroundColor: active ? colors.filterSelectedBg : pressed && !blocked ? colors.hover : colors.secondary,
               }}
             >
               {option.dot && (
@@ -230,18 +224,12 @@ export function KjunFilterGroup({
                   style={{
                     width: tokens.extensions.selection.dotSize,
                     height: tokens.extensions.selection.dotSize,
-                    borderRadius: tokens.radius.radius4,
+                    borderRadius: tokens.extensions.selection.dotSize / 2,
                     backgroundColor: option.dot,
                   }}
                 />
               )}
-              {!!option.icon && (
-                <KjunIcon
-                  name={option.icon}
-                  size={tokens.extensions.selection.iconSize}
-                  color={blocked ? colors.textDisabled : active ? colors.filterSelectedText : colors.textSecondary}
-                />
-              )}
+              {!!option.icon && <KjunIcon name={option.icon} size={tokens.extensions.selection.iconSize} color={ink} />}
               <View style={{ alignItems: 'center' }}>
               <KText accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
                 style={{ ...selectionTypeStyle(size, true), opacity: 0 }}>{option.label}</KText>
@@ -254,29 +242,44 @@ export function KjunFilterGroup({
                 style={{
                   position: 'absolute', top: 0,
                   ...selectionTypeStyle(size, active),
-
                   // One disabled rule, like Button and fields: the chip keeps its fill and its ink takes the disabled-text role.
-                  color: blocked ? colors.textDisabled : active ? colors.filterSelectedText : colors.textSecondary,
+                  color: ink,
                 }}
               >
                 {option.label}
               </KText>
               </View>
-            </View>
+              {counted && (
+                // Outside the label's reserved width, so a changing count never shifts the weight swap; Web's count style.
+                <KText accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
+                  style={{ ...selectionTypeStyle(size, false), marginLeft: tokens.dimension.value2, color: blocked ? colors.textDisabled : active ? colors.filterSelectedText : colors.textTertiary, fontVariant: ["tabular-nums"] }}>
+                  {option.count}
+                </KText>
+              )}
+            </View>}
           </Pressable>
         );
       })}
     </View>
   );
-  return scroll ? (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      style={{ flexGrow: 0 }}
-    >
-      {children}
-    </ScrollView>
-  ) : (
-    children
+  if (!scroll) return chips;
+  return (
+    <View style={{ flexGrow: 0 }}>
+      <ScrollView
+        ref={row.scroller}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        scrollEventThrottle={16}
+        style={{ flexGrow: 0 }}
+        onLayout={event => row.update({ clientWidth: event.nativeEvent.layout.width })}
+        onContentSizeChange={scrollWidth => row.update({ scrollWidth })}
+        onScroll={event => row.update({ scrollLeft: event.nativeEvent.contentOffset.x }, true)}
+      >
+        {chips}
+      </ScrollView>
+      {/* More chips past an edge fade it into the surface, as KjunScrollFade and Tabs do. */}
+      {row.edges.start ? <ScrollFadeEdge edge="start" horizontal color={colors.surface} /> : null}
+      {row.edges.end ? <ScrollFadeEdge edge="end" horizontal color={colors.surface} /> : null}
+    </View>
   );
 }

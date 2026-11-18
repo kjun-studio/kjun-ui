@@ -10,6 +10,7 @@ import {
   columns,
   options,
   viewOptions,
+  statusFilterOptions,
   priceFormat,
   searchLoader,
   type ExampleTools,
@@ -320,6 +321,19 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         disabled,
       });
     case "KjunFilterGroup":
+      // Counts and the scrolling row use status filters; a 280px box makes the row overflow so its edges fade.
+      if (settings.count || settings.scroll) {
+        const group = h(name, {
+          value: get("status", ["doing"]),
+          multiple: true,
+          scroll: !!settings.scroll,
+          options: statusFilterOptions(!!settings.count),
+          onValueChange: change("status"),
+          ariaLabel: "상태 필터",
+          disabled,
+        });
+        return settings.scroll ? h("Box", { width: 280 }, group) : group;
+      }
       return h(name, {
         value: get("filters", ["a"]),
         multiple: true,
@@ -412,6 +426,8 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         pageSize: get("pageSize", 20),
         showInfo: true,
         showSizeSelector: true,
+        layout: settings.layout,
+        disabled,
         onPageChange: change("page"),
         onPageSizeChange: (n: number) => { set("pageSize", n); message("페이지 크기 " + n); },
       });

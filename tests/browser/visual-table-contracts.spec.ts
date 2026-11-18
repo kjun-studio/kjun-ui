@@ -1,7 +1,7 @@
 import { captureReview } from './review-captures';
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
-import { output, configure, visit, state, option } from './visual-contract-helpers';
+import { output, configure, visit, state } from './visual-contract-helpers';
 
 for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: a Table column with a non-function format renders the raw value and warns once`,async({page})=>{
@@ -23,9 +23,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.setViewportSize({ width: 390, height: 650 });
     await visit(page, platform, 'KjunPagination');
     await configure(page, 'KjunPagination', {}, { page: 4, pageSize: 20 });
-    const size = page.getByRole('button', { name: '페이지당 항목 수', exact: true });
+    const size = page.getByRole('button', { name: '페이지당 항목 수, 20개씩', exact: true });
     await size.click();
-    await option(page, platform, '50개씩').click();
+    await page.getByRole('menuitemradio', { name: '50개씩', exact: true }).click();
     await expect.poll(async () => (await state(page)).pageSize).toBe(50);
     await expect.poll(async () => (await state(page)).page).toBe(1);
     const previous = page.getByRole('button', { name: '이전 페이지', exact: true }).filter({ visible: true });

@@ -67,7 +67,7 @@ export function generate(input: UsageInput) {
         ? [{ label: '홈', to: '#home' }, { label: '프로젝트', to: '#projects' }, { label: '디자인 시스템', to: '#system' }, { label: '컴포넌트', to: '#components' }, { label: '현재 위치' }]
         : [{ label: '홈', to: '#home' }, { label: '목록', to: '#list' }, { label: '현재 위치' }]), ...(s.long ? { maxItems: 3 } : {}), onNavigate: notify('navigate', '탐색') }); break;
     case 'KjunPagination':
-      content = b.node(name, { currentPage: b.state('page', 1), onPageChange: b.update('page'), pageSize: b.state('pageSize', 20), onPageSizeChange: b.update('pageSize'), totalPages: 10, totalRows: 195, showInfo: true, showSizeSelector: true }); break;
+      content = b.node(name, { currentPage: b.state('page', 1), onPageChange: b.update('page'), pageSize: b.state('pageSize', 20), onPageSizeChange: b.update('pageSize'), totalPages: 10, totalRows: 195, showInfo: true, showSizeSelector: true, ...(s.layout && s.layout !== 'auto' ? { layout: s.layout } : {}), ...(s.disabled ? { disabled: true } : {}) }); break;
     case 'KjunText':
       content = b.group([b.node(name, { variant: 'sectionTitle' }, b.text('섹션 제목')), b.node(name, { tone: 'secondary' }, b.text('보조 설명 문구입니다.')),
         b.node(name, { maxLines: 2, expandable: true }, b.text('주문하신 상품은 평일 오후 2시 이전에 결제하면 당일 출고됩니다. 도서산간 지역은 추가 배송비가 들 수 있고, 교환과 반품은 받은 날부터 7일 안에 신청해 주세요.'))]); break;

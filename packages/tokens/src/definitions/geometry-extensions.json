@@ -340,9 +340,6 @@
       "smTitleLineHeight": { "$ref": "typography.body.lineHeightPx" },
       "smActionGap": { "$ref": "dimension.value16" }
     },
-    "pagination": {
-      "selectorMinimumWidth": 104
-    },
     "badge": {
       "radius": { "$ref": "radius.radius6" },
       "gap": { "$ref": "dimension.value4" },

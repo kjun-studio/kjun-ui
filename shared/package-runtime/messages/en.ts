@@ -155,8 +155,13 @@ export const kjunMessagesEn: KjunMessages = {
   pagination: "Pagination",
   itemsPerPage: "Items per page",
   perPage: (count: number) => `${count} per page`,
-  pageRange: (from: number, to: number, total: string) => `${from}–${to} of ${total}`,
+  /** Pagination page-size button: its accessible name, which keeps the shown label ("20개씩"). */
+  pageSizeMenu: (label: string) => `Items per page, ${label}`,
+  /** The rows on the page and the total, each already passed through Pagination formatter. */
+  pageRange: (from: string, to: string, total: string) => `${from}–${to} of ${total}`,
   page: (page: number) => `Page ${page}`,
+  /** A FilterGroup chip with a count: its accessible name. count is already formatted. */
+  filterCount: (label: string, count: string) => `${label}, ${count}`,
   firstPage: "First page",
   previousPage: "Previous page",
   nextPage: "Next page",

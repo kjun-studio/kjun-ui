@@ -10,7 +10,7 @@ import { hasContent } from "./runtime/slots";
 import { accordionKeyTarget, openedFromValue, registerOpened, toggleOpened, trimToSingle, unregisterOpened } from "../../../shared/package-runtime/accordion-state";
 import { breadcrumbCurrent, collapseBreadcrumb, type BreadcrumbItem } from "../../../shared/package-runtime/breadcrumb";
 import { KjunDropdown, KjunDropdownItem } from "./dropdown";
-import { KjunSelect } from "./select-control";
+import { paginationItems, pageRows } from "../../../shared/package-runtime/pagination";
 
 interface AccordionContext { opened: () => ReadonlySet<string>; controlled: () => boolean; toggle: (id: string) => void; register: (id: string, defaultOpen: boolean) => () => void }
 const kjunAccordionKey: InjectionKey<AccordionContext> = Symbol("kjunAccordion");
@@ -225,8 +225,13 @@ const kjunPaginationProps = {
   showInfo: { type: Boolean, default: false },
   showSizeSelector: { type: Boolean, default: false },
   showFirstLast: { type: Boolean, default: true },
+  /** "auto" switches to the short form below the pagination breakpoint; "full" and "compact" keep one form. */
+  layout: { type: String as PropType<KjunPaginationLayout>, default: "auto" },
+  /** Locks every control, for example while the next page loads. The current page keeps its fill. */
+  disabled: { type: Boolean, default: false },
   formatter: { type: Function as PropType<(value: number) => string>, default: String },
 } as const;
+export type KjunPaginationLayout = "auto" | "full" | "compact";
 export type KjunPaginationProps = ExtractPublicPropTypes<typeof kjunPaginationProps>;
 export const KjunPagination = defineComponent({
   name: "KjunPagination",
@@ -235,33 +240,43 @@ export const KjunPagination = defineComponent({
   setup(props, { emit }) {
     const m = useKjunMessages();
     return () => {
-      const { totalPages, siblingCount, pageSize, totalRows } = props;
+      const { totalPages, siblingCount, pageSize, totalRows, disabled } = props;
       const current = Math.max(1, Math.min(totalPages, props.currentPage ?? props.page ?? 1));
       if (totalPages <= 1 && !props.showSizeSelector && !(props.showInfo && totalRows > 0)) return null;
       const change = (v: number) => {
-        if (v < 1 || v > totalPages || v === current) return;
+        if (disabled || v < 1 || v > totalPages || v === current) return;
         emit("update:page", v); emit("change", v);
       };
-      const visible = new Set([1, totalPages, ...Array.from({ length: Math.min(totalPages, siblingCount * 2 + 1) },
-        (_, i) => current - siblingCount + i).filter(v => v >= 1 && v <= totalPages)]);
-      const pages = [...visible].sort((a, b) => a - b).flatMap((v, i, all) => (i && v - all[i - 1] > 1 ? ["...", v] : [v]));
+      const rows = pageRows(current, pageSize, totalRows);
       const button = (target: number, label: string, icon: string) => (
-        <button type="button" aria-label={label} disabled={target < 1 || target > totalPages || target === current} onClick={() => change(target)}>
+        <button type="button" aria-label={label} disabled={disabled || target < 1 || target > totalPages || target === current} onClick={() => change(target)}>
           <KjunIcon name={icon} size={tokens.extensions.pagination.iconSize} />
         </button>
       );
       return (
-        <nav aria-label={m.value.pagination} class="kjun-pagination">
+        <nav aria-label={m.value.pagination} class="kjun-pagination" data-layout={props.layout}>
           {props.showInfo && totalRows > 0
-            ? <span>{m.value.pageRange((current - 1) * pageSize + 1, Math.min(current * pageSize, totalRows), props.formatter(totalRows))}</span>
+            ? <span class="kjun-pagination-range">{m.value.pageRange(props.formatter(rows.from), props.formatter(rows.to), props.formatter(totalRows))}</span>
             : <span />}
           <div class="kjun-pagination-controls">
             {props.showSizeSelector && (
-              <div class="kjun-pagination-size">
-                <KjunSelect size="sm" ariaLabel={m.value.itemsPerPage} modelValue={pageSize}
-                  options={props.pageSizeOptions.map(n => ({ value: n, label: m.value.perPage(n) }))}
-                  onUpdate:modelValue={(value: unknown) => { emit("update:pageSize", Number(value)); emit("update:page", 1); emit("change", 1); }} />
-              </div>
+              // A quiet text button that opens the sizes as single-choice menu items, at the range line's type size.
+              <KjunDropdown placement="bottom-end" disabled={disabled}>
+                {{
+                  trigger: () => (
+                    <button type="button" class="kjun-pagination-size" aria-label={m.value.pageSizeMenu(m.value.perPage(pageSize))} disabled={disabled}>
+                      {m.value.perPage(pageSize)}
+                      <KjunIcon name="chevron-down" size={tokens.extensions.pagination.iconSize} />
+                    </button>
+                  ),
+                  default: () => props.pageSizeOptions.map(n => (
+                    <KjunDropdownItem key={n} selected={n === pageSize} onClick={() => {
+                      if (n === pageSize) return;
+                      emit("update:pageSize", n); emit("update:page", 1); emit("change", 1);
+                    }}>{m.value.perPage(n)}</KjunDropdownItem>
+                  )),
+                }}
+              </KjunDropdown>
             )}
             {totalPages > 1 && (
               <div class="kjun-pagination-mobile">
@@ -274,9 +289,10 @@ export const KjunPagination = defineComponent({
               <div class="kjun-pagination-desktop">
                 {props.showFirstLast && button(1, m.value.firstPage, "chevrons-left")}
                 {button(current - 1, m.value.previousPage, "chevron-left")}
-                {pages.map((n, i) => typeof n === "string"
-                  ? <span key={"dots" + i}>...</span>
-                  : <button key={n} type="button" aria-label={m.value.page(n)} aria-current={current === n ? "page" : undefined} onClick={() => change(n)}>{n}</button>)}
+                {paginationItems(current, totalPages, siblingCount).map(n => typeof n === "string"
+                  ? <span key={n} class="kjun-pagination-ellipsis" aria-hidden="true">…</span>
+                  : <button key={n} type="button" aria-label={m.value.page(n)} aria-current={current === n ? "page" : undefined}
+                      disabled={disabled && current !== n} onClick={() => change(n)}>{n}</button>)}
                 {button(current + 1, m.value.nextPage, "chevron-right")}
                 {props.showFirstLast && button(totalPages, m.value.lastPage, "chevrons-right")}
               </div>

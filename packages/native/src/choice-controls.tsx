@@ -33,6 +33,8 @@ export interface ChoiceOption<T = ChoiceValue> {
   icon?: string;
   /** ButtonGroup only: show the icon alone in a square segment; label becomes the accessible name and tooltip. */
   iconOnly?: boolean;
+  /** FilterGroup only: a count after the label ("진행 중 12"), joined to the label in the accessible name. A string is shown as given. */
+  count?: number | string;
   dot?: ColorValue;
 }
 export interface KjunCheckboxProps<T = ChoiceValue> {

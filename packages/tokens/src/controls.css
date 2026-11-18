@@ -194,6 +194,15 @@
 .kjun-filter-label {
   display: inline-grid;
 }
+/* A count sits after the label, outside its reserved width, so a changing number never shifts the weight swap. */
+.kjun-filter-count {
+  margin-inline-start: var(--_kjun-geometry-dimension-value2);
+  font-weight: var(--_kjun-type-label-weight);
+  font-variant-numeric: tabular-nums;
+  color: var(--_kjun-color-text-tertiary);
+}
+.kjun-filter-chip[aria-pressed="true"] .kjun-filter-count { color: var(--_kjun-color-filter-selected-text); }
+.kjun-filter-chip:disabled .kjun-filter-count { color: var(--_kjun-color-text-disabled); }
 .kjun-filter-label > span {
   grid-area: 1/1;
 }

@@ -52,9 +52,9 @@ button.kjun-avatar-group:disabled{cursor:not-allowed;opacity:var(--_kjun-state-o
 .kjun-chip button:active:not(:disabled){background:color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-tint-active) * 100%), transparent)}
 .kjun-chip[data-disabled=true]{opacity:var(--_kjun-state-opacity-disabled)}
 /* Links and page buttons use the system ring instead of the browser default. */
-.kjun-scope :is(.kjun-bottom-navigation a,.kjun-floating-navigation a,.kjun-chip button,.kjun-breadcrumb a,.kjun-external-link,.kjun-pagination-button):focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
+.kjun-scope :is(.kjun-bottom-navigation a,.kjun-floating-navigation a,.kjun-chip button,.kjun-breadcrumb a,.kjun-external-link):focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
 /* Kept out of the :is() above: its :not() would raise that whole rule over the inset overrides below. */
-.kjun-scope .kjun-pagination button:not(.kjun-select-trigger):focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
+.kjun-scope .kjun-pagination button:focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
 /* Inline text links round the ring so it does not box the glyphs. */
 .kjun-scope :is(.kjun-breadcrumb a,.kjun-external-link):focus-visible{border-radius:var(--_kjun-geometry-radius-radius4)}
 /* Draw the removal ring inside its circle so it stays within the chip outline and clear of the label. */

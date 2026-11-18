@@ -1,5 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { tokens, type ButtonSize } from "@kjun-ui/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { Collapse } from "./collapse";
 import { useAccordionState } from "../../../shared/package-runtime/navigation";
@@ -19,13 +19,13 @@ useState,
 type ReactElement,
 type ReactNode,
 } from "react";
-import { Animated,ScrollView,View,useWindowDimensions,Platform,type StyleProp,type TextStyle,type ViewStyle } from "react-native";
+import { Animated,ScrollView,View,Platform,type StyleProp,type TextStyle,type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunButton,KjunIcon } from "./button";
 import { KText,content } from "./internal";
 import { useKjunStyles } from "./provider";
-import { KjunSelect } from "./select";
 export { KjunTabs, KjunTabPane, type TabItem, type KjunTabsProps, type KjunTabPaneProps } from "./tabs";
+export { KjunPagination, type KjunPaginationProps, type KjunPaginationLayout } from "./pagination";
 const AccordionContext = createContext<{
   opened: ReadonlySet<string>;
   controlled: boolean;
@@ -329,160 +329,6 @@ export function KjunBreadcrumb({
           </Fragment>
         );
       })}
-    </View>
-  );
-}
-export interface KjunPaginationProps {
-  currentPage?: number;
-  page?: number;
-  totalPages: number;
-  totalRows?: number;
-  pageSize?: number;
-  pageSizeOptions?: number[];
-  siblingCount?: number;
-  showInfo?: boolean;
-  showSizeSelector?: boolean;
-  showFirstLast?: boolean;
-  formatter?: (value: number) => string;
-  onPageChange?: (page: number) => void;
-  onChange?: (page: number) => void;
-  onPageSizeChange?: (size: number) => void;
-}
-export function KjunPagination({
-  currentPage,
-  page,
-  totalPages,
-  totalRows = 0,
-  pageSize = 20,
-  pageSizeOptions = [10, 20, 50, 100],
-  siblingCount = 1,
-  showInfo = false,
-  showSizeSelector = false,
-  showFirstLast = true,
-  formatter = String,
-  onPageChange,
-  onChange,
-  onPageSizeChange,
-}: KjunPaginationProps) {
-  const m = useKjunMessages();
-  const { colors } = useKjunStyles(),
-    window = useWindowDimensions(),
-    current = Math.max(1, Math.min(totalPages, currentPage ?? page ?? 1));
-  if (totalPages <= 1 && !showSizeSelector && !(showInfo && totalRows > 0)) return null;
-  const compact = window.width < tokens.responsive.pagination;
-  const change = (v: number) => {
-    if (v < 1 || v > totalPages || v === current) return;
-    onPageChange?.(v);
-    onChange?.(v);
-  };
-  const visible = new Set([
-    1,
-    totalPages,
-    ...Array.from(
-      { length: Math.min(totalPages, siblingCount * 2 + 1) },
-      (_, i) => current - siblingCount + i
-    ).filter((v) => v >= 1 && v <= totalPages),
-  ]);
-  const pages = [...visible]
-    .sort((a, b) => a - b)
-    .flatMap((v, i, all) => (i && v - all[i - 1] > 1 ? ["...", v] : [v]));
-  // Painted at Web's item size; KjunButton's hitSlop reaches the 44pt touch target around it.
-  const pageButtonStyle = {
-    width: tokens.extensions.pagination.itemSize,
-    height: tokens.extensions.pagination.itemSize,
-    borderRadius: tokens.extensions.pagination.radius,
-    paddingHorizontal: 0,
-  };
-  // Arrows are icon-only buttons; take the button size whose icon matches the pagination icon role.
-  const arrowSize = (Object.keys(tokens.button.iconSizes) as ButtonSize[])
-    .find(size => tokens.button.iconSizes[size] === tokens.extensions.pagination.iconSize) ?? "sm";
-  const button = (target: number, label: string, icon: string) => (
-    <KjunButton
-      style={pageButtonStyle}
-      size={arrowSize}
-      variant="ghost"
-      ariaLabel={label}
-      disabled={target < 1 || target > totalPages || target === current}
-      // An icon-only button centers the chevron and paints it with the ghost ink, like the page numbers and Web.
-      prefixIcon={icon}
-      onPress={() => change(target)}
-    />
-  );
-  return (
-    <View
-      accessibilityLabel={m.pagination}
-      style={{
-        flexDirection: compact ? "column" : "row",
-        alignItems: compact ? "stretch" : "center",
-        justifyContent: "space-between",
-        gap: tokens.extensions.pagination.gap,
-        padding: tokens.extensions.pagination.padding,
-        borderTopWidth: tokens.border.defaultWidth,
-        borderTopColor: colors.border,
-      }}
-    >
-      {showInfo && totalRows > 0 ? (
-        <KText style={{ color: colors.textSecondary }}>
-          {m.pageRange((current - 1) * pageSize + 1, Math.min(current * pageSize, totalRows), formatter(totalRows))}
-        </KText>
-      ) : (
-        <View />
-      )}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          gap: tokens.extensions.pagination.itemGap,
-          flexWrap: "wrap",
-        }}
-      >
-        {showSizeSelector && (
-          <View style={{ minWidth: tokens.extensions.pagination.selectorMinimumWidth }}><KjunSelect
-            size="sm"
-            ariaLabel={m.itemsPerPage}
-            value={pageSize}
-            options={pageSizeOptions.map((n) => ({
-              value: n,
-              label: m.perPage(n),
-            }))}
-            onValueChange={(v) => {
-              onPageSizeChange?.(Number(v));
-              onPageChange?.(1);
-              onChange?.(1);
-            }}
-          /></View>
-        )}
-        {totalPages > 1 && <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.pagination.itemGap, marginLeft: compact ? "auto" : undefined }}>
-        {!compact && showFirstLast && button(1, m.firstPage, "chevrons-left")}
-        {button(current - 1, m.previousPage, "chevron-left")}
-        {compact ? (
-          <KText style={{ paddingHorizontal: tokens.extensions.pagination.labelPaddingX, color: colors.text, fontVariant: ["tabular-nums"] }}>
-            <KText style={{ fontWeight: typeStyle('control').fontWeight }}>{current}</KText> / {totalPages}
-          </KText>
-        ) : (
-          pages.map((n, i) =>
-            typeof n === "string" ? (
-              <KText key={"dots" + i}>...</KText>
-            ) : (
-              <KjunButton
-                key={n}
-                style={pageButtonStyle}
-                size="sm"
-                variant={current === n ? "primary" : "ghost"}
-                ariaLabel={m.page(n)}
-                onPress={() => change(n)}
-              >
-                {n}
-              </KjunButton>
-            )
-          )
-        )}
-        {button(current + 1, m.nextPage, "chevron-right")}
-        {!compact &&
-          showFirstLast &&
-          button(totalPages, m.lastPage, "chevrons-right")}
-        </View>}
-      </View>
     </View>
   );
 }

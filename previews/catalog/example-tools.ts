@@ -177,6 +177,14 @@ export const defaultOptions = [
   { value: "b", label: "배", disabled: true },
   { value: "c", label: "체리" },
 ];
+/** FilterGroup's status filters: "전체" (null) clears the others; counts are shown when the example asks for them. */
+export const statusFilterOptions = (count: boolean) => [
+  { value: null, label: "전체", count: 48 },
+  { value: "doing", label: "진행 중", count: 12 },
+  { value: "review", label: "검토 대기", count: 7 },
+  { value: "done", label: "완료", count: 29 },
+  { value: "archived", label: "보관", count: 0 },
+].map(option => count ? option : { value: option.value, label: option.label });
 /** ButtonGroup's icon-only view switcher: each label becomes the segment's accessible name and tooltip. */
 export const viewOptions = [
   { value: "line", label: "선 차트", icon: "chart-line", iconOnly: true },

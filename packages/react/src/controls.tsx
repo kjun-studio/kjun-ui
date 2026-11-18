@@ -4,6 +4,9 @@ import { KjunIcon } from "./button";
 import { KjunTooltip } from "./popover";
 import { useSelectionIndicator } from "./use-selection-indicator";
 import { groupKeydown } from "../../../shared/package-runtime/group-keyboard";
+import { filterSelected, nextFilterValue } from "../../../shared/package-runtime/filter-value";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { useFilterScroll } from "./use-filter-scroll";
 export * from "./choice-controls";
 import type { ChoiceOption, ChoiceValue } from "./choice-controls";
 export { KjunTextarea } from "./textarea";
@@ -106,56 +109,53 @@ export function KjunFilterGroup({
   onValueChange,
   onChange,
 }: KjunFilterGroupProps) {
-  const selected = (v: ChoiceValue) =>
-    multiple
-      ? Array.isArray(value) &&
-        (v === null ? value.length === 0 : value.includes(v))
-      : value === v;
+  const m = useKjunMessages();
+  const root = useFilterScroll(scroll, multiple, value);
   return (
     <div
+      ref={root}
       role="group"
       aria-label={ariaLabel}
       className={className ? "kjun-filter-group " + className : "kjun-filter-group"}
       data-scroll={scroll}
       onKeyDown={groupKeydown}
     >
-      {options.map((option) => (
-        <button
-          key={String(option.value)}
-          type="button"
-          className="kjun-filter-chip"
-          // Corners follow the button scale with the height, so every size keeps the same shape.
-          style={{ borderRadius: tokens.button.radii[size] }}
-          aria-pressed={selected(option.value)}
-          disabled={disabled || option.disabled}
-          onClick={() => {
-            const next = multiple
-              ? option.value === null
-                ? []
-                : Array.isArray(value) && value.includes(option.value)
-                ? value.filter((v) => v !== option.value)
-                : [...(Array.isArray(value) ? value : []), option.value]
-              : option.value;
-            onValueChange?.(next);
-            onChange?.(next);
-          }}
-        >
-          <span
-            style={{
-              height: tokens.button.heights[size],
-              paddingInline: { xs: tokens.dimension.value8, sm: tokens.dimension.value12, md: tokens.dimension.value12, lg: tokens.dimension.value14, xl: tokens.dimension.value16 }[size],
-              ...selectionTypeStyle(size, selected(option.value)),
+      {options.map((option) => {
+        const on = filterSelected(value, option.value, multiple), counted = option.count != null && option.count !== "";
+        return (
+          <button
+            key={String(option.value)}
+            type="button"
+            className="kjun-filter-chip"
+            // Corners follow the button scale with the height, so every size keeps the same shape.
+            style={{ borderRadius: tokens.button.radii[size] }}
+            aria-pressed={on}
+            aria-label={counted ? m.filterCount(option.label, String(option.count)) : undefined}
+            disabled={disabled || option.disabled}
+            onClick={() => {
+              const next = nextFilterValue(value, option.value, multiple);
+              onValueChange?.(next);
+              onChange?.(next);
             }}
           >
-            {option.dot && <i style={{ background: option.dot }} />}
-            {option.icon && <KjunIcon name={option.icon} size={tokens.extensions.selection.iconSize} />}
-            <span className="kjun-filter-label">
-              <span aria-hidden="true" style={typeStyle(tokens.button.typography[size])}>{option.label}</span>
-              <span>{option.label}</span>
+            <span
+              style={{
+                height: tokens.button.heights[size],
+                paddingInline: tokens.extensions.selection.paddingX[size],
+                ...selectionTypeStyle(size, on),
+              }}
+            >
+              {option.dot && <i style={{ background: option.dot }} />}
+              {option.icon && <KjunIcon name={option.icon} size={tokens.extensions.selection.iconSize} />}
+              <span className="kjun-filter-label">
+                <span aria-hidden="true" style={typeStyle(tokens.button.typography[size])}>{option.label}</span>
+                <span>{option.label}</span>
+              </span>
+              {counted && <span className="kjun-filter-count">{option.count}</span>}
             </span>
-          </span>
-        </button>
-      ))}
+          </button>
+        );
+      })}
     </div>
   );
 }
