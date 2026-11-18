@@ -212,7 +212,8 @@
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-list.tsx",
       "packages/native/src/table-toolbar.tsx",
-      "packages/native/src/tabs.tsx"
+      "packages/native/src/tabs.tsx",
+      "packages/native/src/toast.tsx"
     ]
   },
   {
@@ -240,6 +241,7 @@
       "packages/tokens/src/split-pane.css",
       "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
+      "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/native/src/actions.tsx",
       "packages/native/src/app-navigation.tsx",
@@ -266,7 +268,8 @@
       "packages/native/src/split-pane.tsx",
       "packages/native/src/steps.tsx",
       "packages/native/src/table-list.tsx",
-      "packages/native/src/tabs.tsx"
+      "packages/native/src/tabs.tsx",
+      "packages/native/src/toast.tsx"
     ]
   },
   {

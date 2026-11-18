@@ -58,7 +58,7 @@ export interface ToastItem extends ToastOptions {
   remaining: number;
   startedAt: number;
   paused: boolean;
-  /** Shown by toast.promise while it waits: a spinning icon and no timer. */
+  /** Shown by toast.loading and toast.promise while it waits: a spinning icon and no timer. */
   loading?: boolean;
   /** Beyond KjunFeedbackProvider's maxToasts: it waits behind the shown toasts with its time paused. */
   hidden?: boolean;
@@ -84,6 +84,9 @@ export interface KjunFeedback {
     clearAll(): void;
     /** Changes a shown toast in place and restarts its time; a new type without a duration takes that type's default. */
     update(id: number, patch: ToastPatch): void;
+    /** Shows a loading toast that stays until update turns it into a result (or dismiss removes it); returns its id.
+     * An update that clears loading without a duration takes the new type's default time. */
+    loading(message: string, options?: Partial<Omit<ToastOptions, "duration">>): number;
     /** Shows a loading toast, then turns it into a success or an error toast; returns the same promise. */
     promise<T>(promise: Promise<T> | (() => Promise<T>), messages: ToastPromiseMessages<T>, options?: Partial<ToastOptions>): Promise<T>;
   };
@@ -224,7 +227,9 @@ export function createFeedbackController({ external = false } = {}) {
     const toast = toasts.find((t) => t.id === id);
     if (!toast || disposed) return;
     const type = patch.type === "error" ? "danger" : patch.type ?? toast.type;
-    const duration = patch.duration ?? (type !== toast.type ? defaultDuration(type) : toast.duration ?? 0);
+    // A new type, or a loading toast that has finished, starts that type's default time unless a duration is given.
+    const settled = !!toast.loading && patch.loading === false;
+    const duration = patch.duration ?? (type !== toast.type || settled ? defaultDuration(type) : toast.duration ?? 0);
     const held = duration > 0 && !!pauseReasons.get(id)?.size;
     if (!duration) pauseReasons.delete(id);
     toasts = toasts.map((t) => t.id === id
@@ -319,6 +324,7 @@ export function createFeedbackController({ external = false } = {}) {
         for (const t of cleared) t.onDismiss?.("api");
       },
       update: (id, patch) => batch(() => update(id, patch)),
+      loading: (message, options = {}) => batch(() => add("info", message, { ...options, duration: 0, loading: true } as Partial<ToastOptions>)),
       promise: (value, messages, options = {}) => {
         const running = Promise.resolve(typeof value === "function" ? value() : value);
         const id = batch(() => add("info", messages.loading, { ...options, duration: 0, loading: true } as Partial<ToastOptions>));

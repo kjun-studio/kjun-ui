@@ -60,8 +60,9 @@ export function ToastView({
   const line = typeStyle("control").lineHeight, target = Math.max(spec.closeSize, tokens.native.minimumTouchTarget);
   // A danger toast colours its heading, or its one line; every other tone keeps colour in the icon.
   const heading = tone === "danger" ? colors.danger : colors.text;
-  // Korean wraps between words on iOS, like keep-all on the web.
+  // Korean wraps between words: iOS by its line-break strategy, Native Web by CSS (as in Alert); Android keeps its default.
   const words = { lineBreakStrategyIOS: "hangul-word" as const };
+  const wordStyle = Platform.OS === "web" ? ({ wordBreak: "keep-all" } as object) : null;
   const action = toast.action && (
     <Pressable
       accessibilityRole="button"
@@ -123,16 +124,18 @@ export function ToastView({
           borderColor: colors.border,
         }}
       >
-        <View style={{ height: line, justifyContent: "center" }}>
+        <View style={{ height: line, justifyContent: "center",
+          // A triangle's optical center sits below its box center (as in Alert).
+          transform: tone === "warning" && !toast.loading ? [{ translateY: -spec.warningIconLift }] : undefined }}>
           {toast.loading ? <KjunSpinnerGlyph size={spec.iconSize} color={colors[`${tone}Accent`]} /> : <KjunIcon name={icon} size={spec.iconSize} color={colors[`${tone}Accent`]} />}
         </View>
         <View style={compact ? { flexShrink: 1 } : { flex: 1, minWidth: 0 }}>
           {!!toast.title && (
-            <KText {...words} style={{ ...typeStyle("control"), color: heading, marginBottom: spec.titleGap }}>
+            <KText {...words} style={[{ ...typeStyle("control"), color: heading, marginBottom: spec.titleGap }, wordStyle]}>
               {toast.title}
             </KText>
           )}
-          <KText {...words} style={toast.title ? { ...typeStyle("body"), color: colors.textSecondary } : { ...typeStyle("label"), color: heading }}>
+          <KText {...words} style={[toast.title ? { ...typeStyle("body"), color: colors.textSecondary } : { ...typeStyle("label"), color: heading }, wordStyle]}>
             {toast.message}
           </KText>
           {!sideAction && action && <View style={{ marginTop: spec.actionGap - (tokens.native.minimumTouchTarget - line) / 2,
@@ -150,15 +153,16 @@ export function ToastView({
                 onFocus={() => controller.holdAll(reasons.focus)}
                 onBlur={() => controller.releaseAll(reasons.focus)}
                 onPress={() => dismiss("close")}
-                style={{
-                  minWidth: target,
-                  minHeight: target,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: spec.closeRadius,
-                }}
+                style={{ minWidth: target, minHeight: target, alignItems: "center", justifyContent: "center" }}
               >
-                <KjunIcon name="x" size={spec.closeIconSize} color={colors.textSecondary} />
+                {({ pressed, hovered }: any) => (
+                  // The drawn square keeps the web close size; the touch target around it stays larger.
+                  <View style={{ width: spec.closeSize, height: spec.closeSize, alignItems: "center", justifyContent: "center",
+                    borderRadius: spec.closeRadius,
+                    backgroundColor: pressed ? colors.hover : hovered ? colors.secondary : "transparent" }}>
+                    <KjunIcon name="x" size={spec.closeIconSize} color={pressed || hovered ? colors.text : colors.textSecondary} />
+                  </View>
+                )}
               </Pressable>
             )}
           </View>

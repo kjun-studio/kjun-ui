@@ -103,6 +103,19 @@ test('promise shows a loading toast and turns it into success or error, returnin
   c.dispose();
 });
 
+test('loading shows a spinning toast with no timer; clearing loading starts the result type default time', () => {
+  const c = createFeedbackController();
+  const id = c.api.toast.loading('uploading', { title: 'file.pdf', duration: 1000 });
+  const shown = c.getSnapshot().toasts[0];
+  assert.deepEqual([shown.message, shown.title, shown.type, shown.loading, shown.duration], ['uploading', 'file.pdf', 'info', true, 0]);
+  c.api.toast.update(id, { message: 'uploaded', loading: false });
+  assert.deepEqual(c.getSnapshot().toasts.map(t => [t.message, t.type, t.loading, t.duration]), [['uploaded', 'info', false, 3000]]);
+  const failed = c.api.toast.loading('sending');
+  c.api.toast.update(failed, { type: 'error', message: 'not sent', loading: false });
+  assert.equal(c.getSnapshot().toasts.find(t => t.id === failed).duration, 0);
+  c.dispose();
+});
+
 test('the shown count follows the Provider; a stack-wide hold pauses every toast, new ones included', () => {
   const c = createFeedbackController();
   for (let i = 0; i < 4; i++) c.api.toast.info(String(i));

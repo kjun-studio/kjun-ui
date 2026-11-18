@@ -14,7 +14,7 @@ createApp(defineComponent(() => () => {
       <button data-testid="before">Before</button>
       <div data-testid="alert" style={{ width: c.width + 'px' }}>
         <K.KjunAlert key={c.generation} variant={c.variant} size={c.size} title={c.emptyFragment ? ' ' : String(c.title ?? '')}
-          closable={c.closable} onClose={() => state.closed++}>
+          closable={c.closable} {...(c.icon !== undefined ? { icon: c.icon } : {})} onClose={() => state.closed++}>
           {{ default: () => c.action ? button() : c.emptyFragment ? null : String(c.body ?? ''),
             ...(c.actions ? { actions: () => action() } : {}) }}
         </K.KjunAlert>

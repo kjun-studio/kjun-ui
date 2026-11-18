@@ -1,5 +1,5 @@
 import { Fragment, useLayoutEffect, useState } from 'react';
-export const alertConfig = { size: 'md', title: 'Alert title', body: 'Alert body', variant: 'info', closable: true, action: false, actions: false, actionSize: undefined as string | undefined, width: 360, generation: 0 };
+export const alertConfig = { size: 'md', title: 'Alert title', body: 'Alert body', variant: 'info', closable: true, action: false, actions: false, actionSize: undefined as string | undefined, width: 360, generation: 0, icon: undefined as string | false | undefined };
 export function AlertCases({ K }: { K: any }) {
   const [config, setConfig] = useState<any>(alertConfig);
   const [events, setEvents] = useState({ close: 0, action: 0 });
@@ -12,7 +12,7 @@ export function AlertCases({ K }: { K: any }) {
   return <div style={{ padding: 24, display: 'grid', gap: 24, justifyItems: 'start' }}>
     <button data-testid="before">Before</button>
     <div data-testid="alert" style={{ width: config.width }}>
-      <K.KjunAlert key={config.generation} variant={config.variant} size={config.size} title={title} closable={config.closable}
+      <K.KjunAlert key={config.generation} variant={config.variant} size={config.size} title={title} closable={config.closable} icon={config.icon}
         actions={config.actions ? action : undefined}
         onClose={() => setEvents(e => ({ ...e, close: e.close + 1 }))}>
         {config.action ? button() : body}

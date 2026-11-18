@@ -154,11 +154,13 @@ export interface KjunAlertProps {
   variant?: SemanticTone;
   size?: "sm" | "md" | "lg";
   title?: ReactNode;
+  /** An icon name in place of the tone's icon (its filled form when the icon has one), or false for no icon. */
+  icon?: string | false;
   closable?: boolean;
   /** How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise. */
   live?: AlertLive;
   children?: ReactNode;
-  /** Buttons placed under the message; unsized KjunButtons follow the alert size. */
+  /** Buttons for the alert, under the message when it has a title and beside it otherwise; unsized KjunButtons follow the alert size. */
   actions?: ReactNode;
   /** Extra class on the alert root, for placement in the page layout; it leaves with the alert when closed. */
   className?: string;
@@ -169,6 +171,7 @@ export function KjunAlert({
   variant,
   size = "md",
   title,
+  icon,
   closable = false,
   live,
   children,
@@ -184,6 +187,13 @@ export function KjunAlert({
   const tone = variant || (type === "error" ? "danger" : type),
     scale = size === "sm" || size === "lg" ? size : "md",
     paint = alertToneRoles(tone);
+  // Without a title the actions sit beside the message, centred on its first line, like a toast's.
+  const titled = hasContent(title), beside = !titled && hasContent(actions);
+  const actionBox = hasContent(actions) && (
+    <ActionSizeContext.Provider value={alertActionSizes[scale]}>
+      <div className="kjun-alert-actions" data-placement={beside ? "end" : undefined}>{actions}</div>
+    </ActionSizeContext.Provider>
+  );
   return (
     <div
       ref={root}
@@ -193,18 +203,17 @@ export function KjunAlert({
       data-tone={tone}
       style={paint.bg ? { background: role(paint.bg) } : undefined}
     >
-      <span className="kjun-alert-icon" style={{ color: role(paint.icon) }}>
-        <KjunIcon name={alertIcons[tone]} filled size={tokens.extensions.alert.iconSizes[scale]} />
-      </span>
+      {icon !== false && (
+        <span className="kjun-alert-icon" data-icon={icon ? "custom" : undefined} style={{ color: role(paint.icon) }}>
+          <KjunIcon name={icon || alertIcons[tone]} filled size={tokens.extensions.alert.iconSizes[scale]} />
+        </span>
+      )}
       <div className="kjun-alert-content">
-        {hasContent(title) && <div className="kjun-alert-title">{title}</div>}
+        {titled && <div className="kjun-alert-title">{title}</div>}
         {hasContent(children) && <div className="kjun-alert-description">{children}</div>}
-        {hasContent(actions) && (
-          <ActionSizeContext.Provider value={alertActionSizes[scale]}>
-            <div className="kjun-alert-actions">{actions}</div>
-          </ActionSizeContext.Provider>
-        )}
+        {!beside && actionBox}
       </div>
+      {beside && actionBox}
       {closable && (
         <button
           className="kjun-alert-close"

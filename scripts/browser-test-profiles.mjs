@@ -10,7 +10,7 @@ const layers = files('elevation', 'elevation-edges', 'elevation-inputs', 'elevat
 
 // 제목 필터 대신 파일 전체를 선택해 플랫폼별 사례와 함께 쓰이는 컴포넌트를 보존한다.
 const componentGroups = {
-  alert: [...files('alert-design', 'root-class', 'accessibility-components', 'chip-toast-tokens'), ...visuals],
+  alert: [...files('alert-design', 'feedback-features', 'root-class', 'accessibility-components', 'chip-toast-tokens'), ...visuals],
   empty: [...files('empty-design', 'data-state-design', 'token-display-propagation'), ...visuals],
   'data-state': [...files('data-state-design', 'empty-design', 'skeleton-design', 'loading-options', 'table-contracts', 'runtime-cards', 'runtime-market'), ...contracts],
   card: [...files('card-design', 'tiles', 'pressable', 'root-class', 'card-contract', 'card-review', 'card-layout', 'card-colors', 'card-hairline', 'geometry-tokens'), ...visuals],
@@ -27,7 +27,7 @@ const componentGroups = {
   tabs: [...files('tabs-contract', 'tabs-design', 'accessibility-tabs', 'controlled-state', 'live-updates', 'component-motion', 'expanded', 'react-tabs-actions'), ...visuals],
   accordion: [...files('accordion-design', 'controlled-state', 'component-motion', 'expanded', 'accessibility-components'), ...visuals],
   navigation: [...files('top-navigation-design', 'trail', 'bottom-navigation-design', 'floating-navigation-design', 'bottom-action-bar-design', 'accessibility-components'), ...visuals],
-  feedback: [...files('feedback-dialog', 'feedback-input', 'feedback-motion', 'copy-button-feedback', 'chip-toast-tokens', 'toast-stack', 'component-motion', 'native-layout'), ...layers, ...contracts],
+  feedback: [...files('feedback-dialog', 'feedback-features', 'feedback-input', 'feedback-motion', 'copy-button-feedback', 'chip-toast-tokens', 'toast-stack', 'component-motion', 'native-layout'), ...layers, ...contracts],
   modal: [...layers, ...files('modal-return-focus', 'quantity', 'feedback-dialog', 'feedback-input', 'form-actions', 'component-motion'), ...contracts],
   drawer: [...layers, ...files('component-motion', 'size-contracts', 'native-layout', 'drawer-scroll', 'drawer-handle')],
   popover: [...layers, ...files('popover-design', 'expanded', 'react-popover-trigger')],

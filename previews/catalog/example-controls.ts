@@ -116,6 +116,8 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
     case "KjunAlert":
       return h(name, {
         variant: settings.tone, size: settings.size, title: settings.title,
+        // "기본" keeps the tone's icon; a name replaces it and "없음" draws none.
+        ...(settings.icon && settings.icon !== "기본" ? { icon: settings.icon === "없음" ? false : settings.icon } : {}),
         closable: settings.closable, onClose: () => message("알림 닫힘"),
       }, settings.body, settings.action
         ? { actions: h("KjunButton", { variant: "secondary", ...action(() => message("재시도 요청")) }, "다시 시도") }

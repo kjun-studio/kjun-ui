@@ -138,12 +138,14 @@ const kjunAlertProps = {
   variant: { type: String as PropType<SemanticTone>, default: undefined },
   size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
   title: { type: String, default: undefined },
+  /** An icon name in place of the tone's icon (its filled form when the icon has one), or false for no icon. */
+  icon: { type: [String, Boolean] as PropType<string | false>, default: undefined },
   closable: { type: Boolean, default: false },
   /** How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise. */
   live: { type: String as PropType<AlertLive>, default: undefined },
 } as const;
 export type KjunAlertProps = ExtractPublicPropTypes<typeof kjunAlertProps>;
-/** Slots: default (message), title, actions (unsized KjunButtons follow the alert size). */
+/** Slots: default (message), title, actions (under the message with a title, beside it without; unsized KjunButtons follow the alert size). */
 export const KjunAlert = defineComponent({
   name: "KjunAlert",
   props: kjunAlertProps,
@@ -168,22 +170,28 @@ export const KjunAlert = defineComponent({
       const scale = props.size === "sm" || props.size === "lg" ? props.size : "md", paint = alertToneRoles(tone);
       const title = slots.title ? slots.title() : props.title;
       const children = slots.default?.(), actions = slots.actions?.();
+      const titled = slots.title ? hasContent(title as ReturnType<NonNullable<typeof slots.title>>) : props.title != null && String(props.title).trim() !== "";
+      // Without a title the actions sit beside the message, centred on its first line, like a toast's.
+      const beside = !titled && hasContent(actions);
+      const actionBox = hasContent(actions) && (
+        <KjunActionSize size={alertActionSizes[scale]}>
+          {{ default: () => <div class="kjun-alert-actions" data-placement={beside ? "end" : undefined}>{actions}</div> }}
+        </KjunActionSize>
+      );
       return (
         <div ref={root} role={alertRole(tone, props.live)} class="kjun-alert" data-size={scale} data-tone={tone}
           style={paint.bg ? { background: role(paint.bg) } : undefined}>
-          <span class="kjun-alert-icon" style={{ color: role(paint.icon) }}>
-            <KjunIcon name={alertIcons[tone]} filled size={tokens.extensions.alert.iconSizes[scale]} />
-          </span>
+          {props.icon !== false && (
+            <span class="kjun-alert-icon" data-icon={props.icon ? "custom" : undefined} style={{ color: role(paint.icon) }}>
+              <KjunIcon name={props.icon || alertIcons[tone]} filled size={tokens.extensions.alert.iconSizes[scale]} />
+            </span>
+          )}
           <div class="kjun-alert-content">
-            {(slots.title ? hasContent(title as ReturnType<NonNullable<typeof slots.title>>) : props.title != null && String(props.title).trim() !== "")
-              && <div class="kjun-alert-title">{title}</div>}
+            {titled && <div class="kjun-alert-title">{title}</div>}
             {hasContent(children) && <div class="kjun-alert-description">{children}</div>}
-            {hasContent(actions) && (
-              <KjunActionSize size={alertActionSizes[scale]}>
-                {{ default: () => <div class="kjun-alert-actions">{actions}</div> }}
-              </KjunActionSize>
-            )}
+            {!beside && actionBox}
           </div>
+          {beside && actionBox}
           {props.closable && (
             <button class="kjun-alert-close" type="button" aria-label={m.value.close} onClick={close}>
               <KjunIcon name="x" size={tokens.extensions.alert.closeIconSize} />

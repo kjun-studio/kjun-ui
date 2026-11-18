@@ -116,6 +116,8 @@ button.kjun-toast-more:focus-visible { outline: var(--_kjun-state-focus-width) s
   height: var(--_kjun-type-control-line);
   font-size: var(--_kjun-extension-toast-icon-size);
 }
+/* A triangle's optical center sits below its box center (as in Alert). */
+.kjun-toast[data-tone="warning"]:not([data-loading]) .kjun-toast-icon svg { transform: translateY(calc(-1 * var(--_kjun-extension-toast-warning-icon-lift))); }
 .kjun-toast-content {
   flex: 1;
   min-width: 0;
@@ -199,6 +201,15 @@ button.kjun-toast-more:focus-visible { outline: var(--_kjun-state-focus-width) s
   background: var(--_kjun-color-secondary);
   color: var(--_kjun-color-text);
 }
+.kjun-toast-close:active {
+  background: var(--_kjun-color-hover);
+  color: var(--_kjun-color-text);
+}
+/* Touch screens leave no hover behind a tap. */
+@media (hover: none), (pointer: coarse) {
+  .kjun-toast-action:hover:not(:active) { color: var(--_kjun-color-text); }
+  .kjun-toast-close:hover:not(:active) { background: transparent; color: var(--_kjun-color-text-secondary); }
+}
 .kjun-toast-action:focus-visible,
 .kjun-toast-close:focus-visible {
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
@@ -212,7 +223,6 @@ button.kjun-toast-more:focus-visible { outline: var(--_kjun-state-focus-width) s
   padding: 0 var(--_kjun-extension-toast-compact-padding-end) 0 var(--_kjun-extension-toast-compact-padding-start);
   gap: var(--_kjun-extension-toast-compact-gap);
   border-radius: var(--_kjun-extension-toast-compact-radius);
-  white-space: nowrap;
 }
 .kjun-toast[data-compact="true"] .kjun-toast-side { margin-block: 0; }
 @media (width <= token(responsive.toast)) {

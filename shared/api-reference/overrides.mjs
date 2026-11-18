@@ -460,6 +460,12 @@ set("Button", {
 }, "native");
 set("RefreshButton", { wrap: { default:"false", summary:"Button의 wrap과 같습니다. 텍스트 모드의 긴 문구를 줄바꿈합니다." } });
 set("Alert", { live: { summary:"보조기기 알림 방식입니다. assertive는 role=alert, polite는 status, off는 알리지 않습니다. 생략하면 danger는 alert, 나머지는 status입니다." } });
+set("Alert", {
+  type: "호환용 종류입니다. 새 코드는 variant를 쓰세요. error는 danger와 같고, variant가 있으면 variant가 우선합니다.",
+  icon: "종류별 기본 아이콘 대신 그릴 아이콘 이름입니다(채움형이 있으면 채움형). 기본 세트에 없는 이름은 앱에서 아이콘을 등록해야 합니다. false면 아이콘 없이 본문이 안쪽 여백에서 시작합니다. 크기와 색은 기본 아이콘과 같습니다.",
+  actions: "행동 버튼입니다. 제목이 있으면 본문 아래에, 없으면 문장 오른쪽에 첫 줄 가운데로 놓입니다. size를 생략한 KjunButton은 sm 알림에서 xs, md에서 sm, lg에서 md 크기를 씁니다. 직접 지정한 size가 우선합니다.",
+  closable: "닫기 버튼을 표시합니다. sm은 24px, md는 28px이며 터치 화면에서는 누를 수 있는 영역이 최소 터치 크기로 넓어집니다. 닫을 때 포커스가 알림 안에 있었다면 다음(마지막이면 이전) 요소로 옮깁니다.",
+});
 set("Tooltip", { open: { summary:"표시 여부를 직접 제어합니다. 생략하면 hover와 포커스로 열립니다. Vue는 v-model:open입니다." }, onOpenChange: { summary:"hover·포커스·Escape로 열림 상태가 바뀌어야 할 때 호출합니다. 제어형이면 open을 바꿔야 반영됩니다." } });
 set("FormGroup", { labelHidden: { default:"false", summary:"라벨을 화면에서만 숨깁니다. 라벨은 계속 입력의 이름이 됩니다." } });
 set("Select", { id: { summary:"트리거 버튼 id입니다. 바깥 <label for>가 이름을 붙일 수 있고, 생략하면 FormGroup의 id를 씁니다. id나 FormGroup이 있으면 placeholder를 이름으로 쓰지 않습니다." }, ariaDescribedBy: { summary:"추가 설명 요소 id입니다. FormGroup의 안내·오류와 중복 없이 합칩니다. Vue는 ariaDescribedby입니다." }, ariaDescribedby: { summary:"추가 설명 요소 id입니다. FormGroup의 안내·오류와 중복 없이 합칩니다." } });

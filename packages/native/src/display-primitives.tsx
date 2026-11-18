@@ -3,6 +3,7 @@ import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { alertLiveRegion, alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
+import { keepFocusPastAlert } from "../../../shared/package-runtime/alert-exit";
 import { typeStyle } from "./typography";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import { badgeGeometry, badgeToneRoles, type BadgeToneRoles } from "../../../shared/package-runtime/badge-tone";
@@ -275,11 +276,13 @@ export interface KjunAlertProps {
   variant?: SemanticTone;
   size?: "sm" | "md" | "lg";
   title?: ReactNode;
+  /** An icon name in place of the tone's icon (its filled form when the icon has one), or false for no icon. */
+  icon?: string | false;
   closable?: boolean;
   /** How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise. */
   live?: AlertLive;
   children?: ReactNode;
-  /** Buttons placed under the message; unsized KjunButtons follow the alert size. */
+  /** Buttons for the alert, under the message when it has a title and beside it otherwise; unsized KjunButtons follow the alert size. */
   actions?: ReactNode;
   onClose?: () => void;
 }
@@ -290,6 +293,7 @@ export function KjunAlert({
   variant,
   size = "md",
   title,
+  icon,
   closable = false,
   live,
   children,
@@ -300,7 +304,7 @@ export function KjunAlert({
   const { colors } = useKjunStyles();
   const [visible, setVisible] = useState(true);
   const reduced = useReducedMotion();
-  const fade = useRef(new Animated.Value(1)).current, closing = useRef(false);
+  const fade = useRef(new Animated.Value(1)).current, closing = useRef(false), root = useRef<any>(null);
   if (!visible) return null;
   const tone = variant || (type === "error" ? "danger" : type),
     small = size === "sm", scale = size === "sm" || size === "lg" ? size : "md";
@@ -315,9 +319,25 @@ export function KjunAlert({
   const wordStyle = Platform.OS === "web" ? ({ wordBreak: "keep-all" } as object) : null;
   const text = (value: ReactNode, style: object) => typeof value === "string" || typeof value === "number"
     ? <KText {...words} style={[style, wordStyle]}>{value}</KText> : content(value, style);
+  // Without a title the actions sit beside the message, centred on its first line, like a toast's.
+  const beside = !titled && hasContent(actions);
+  const actionBox = hasContent(actions) && (
+    <ActionSizeContext.Provider value={alertActionSizes[scale]}>
+      <AlertActionsContext.Provider value={true}>
+        <View style={beside
+          ? { flexDirection: "row", alignItems: "center", gap: geometry.actionsGap, flexShrink: 0,
+            marginVertical: (lineHeight - tokens.button.heights[alertActionSizes[scale]]) / 2 }
+          : { flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: geometry.actionsGap, marginTop: geometry[scale].actionGap }}>
+          {content(actions)}
+        </View>
+      </AlertActionsContext.Provider>
+    </ActionSizeContext.Provider>
+  );
   const close = () => {
     if (closing.current) return;
     closing.current = true;
+    // Native Web hands focus on before the close button leaves; devices move accessibility focus themselves.
+    if (Platform.OS === "web") keepFocusPastAlert(root.current as HTMLElement | null);
     const done = () => {
       // Devices collapse the freed space; Native Web removes the faded alert.
       if (!reduced && Platform.OS !== "web") LayoutAnimation.configureNext(LayoutAnimation.create(tokens.motion.collapse, "easeOut", "opacity"));
@@ -329,6 +349,7 @@ export function KjunAlert({
   };
   return (
     <Animated.View
+      ref={root}
       role={alertRole(tone, live)}
       accessibilityLiveRegion={alertLiveRegion(tone, live)}
       style={{
@@ -342,11 +363,13 @@ export function KjunAlert({
         backgroundColor: paint.bg ? pick(paint.bg) : textTint(colors.text, "tintFill", colors.secondary),
       }}
     >
-      <View style={{ height: lineHeight, justifyContent: "center", flexShrink: 0,
-        // A triangle's optical center sits below its box center.
-        transform: tone === "warning" ? [{ translateY: -geometry.warningIconLift }] : undefined }}>
-        <KjunIcon name={alertIcons[tone]} filled size={geometry.iconSizes[scale]} color={pick(paint.icon)} />
-      </View>
+      {icon !== false && (
+        <View style={{ height: lineHeight, justifyContent: "center", flexShrink: 0,
+          // A triangle's optical center sits below its box center.
+          transform: !icon && tone === "warning" ? [{ translateY: -geometry.warningIconLift }] : undefined }}>
+          <KjunIcon name={icon || alertIcons[tone]} filled size={geometry.iconSizes[scale]} color={pick(paint.icon)} />
+        </View>
+      )}
       <View style={{ flex: 1, minWidth: 0, minHeight: lineHeight }}>
         {titled && text(title, { ...typeStyle(titleType[scale]), color: colors.text })}
         {hasContent(children) && <View style={{ marginTop: titled ? geometry.descriptionGap : 0 }}>
@@ -355,16 +378,9 @@ export function KjunAlert({
             color: colors.text,
           })}
         </View>}
-        {hasContent(actions) && (
-          <ActionSizeContext.Provider value={alertActionSizes[scale]}>
-            <AlertActionsContext.Provider value={true}>
-              <View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: geometry.actionsGap, marginTop: geometry[scale].actionGap }}>
-                {content(actions)}
-              </View>
-            </AlertActionsContext.Provider>
-          </ActionSizeContext.Provider>
-        )}
+        {!beside && actionBox}
       </View>
+      {beside && actionBox}
       {closable && (
         <Pressable
           accessibilityRole="button"

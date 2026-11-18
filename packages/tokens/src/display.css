@@ -241,6 +241,8 @@
   --_kjun-alert-line: var(--_kjun-type-control-line);
   --_kjun-alert-close: var(--_kjun-extension-alert-close-size);
   --_kjun-alert-action-gap: var(--_kjun-extension-alert-md-action-gap);
+  /* Alert actions are one button step below the alert size (alertActionSizes). */
+  --_kjun-alert-action-height: var(--_kjun-geometry-button-heights-sm);
   /* Text-role tints stay readable on any fill and page background, light or dark. */
   --_kjun-alert-tint-fill: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-tint-fill) * 100%), transparent);
   --_kjun-alert-tint-control: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-tint-control) * 100%), transparent);
@@ -253,6 +255,7 @@
   --_kjun-alert-line: var(--_kjun-type-control-small-line);
   --_kjun-alert-close: var(--_kjun-extension-alert-sm-close-size);
   --_kjun-alert-action-gap: var(--_kjun-extension-alert-sm-action-gap);
+  --_kjun-alert-action-height: var(--_kjun-geometry-button-heights-xs);
   gap: var(--_kjun-extension-alert-sm-gap);
   border-radius: var(--_kjun-extension-alert-sm-radius);
   padding: var(--_kjun-extension-alert-sm-padding-y) var(--_kjun-extension-alert-sm-padding-x);
@@ -261,6 +264,7 @@
 .kjun-alert[data-size="lg"] {
   --_kjun-alert-line: var(--_kjun-type-control-large-line);
   --_kjun-alert-action-gap: var(--_kjun-extension-alert-lg-action-gap);
+  --_kjun-alert-action-height: var(--_kjun-geometry-button-heights-md);
   gap: var(--_kjun-extension-alert-lg-gap);
   padding: var(--_kjun-extension-alert-lg-padding-y) var(--_kjun-extension-alert-lg-padding-x);
 }
@@ -271,7 +275,7 @@
   height: var(--_kjun-alert-line);
 }
 /* A triangle's optical center sits below its box center. */
-.kjun-alert[data-tone="warning"] .kjun-alert-icon svg { transform: translateY(calc(-1 * var(--_kjun-extension-alert-warning-icon-lift))); }
+.kjun-alert[data-tone="warning"] .kjun-alert-icon:not([data-icon="custom"]) svg { transform: translateY(calc(-1 * var(--_kjun-extension-alert-warning-icon-lift))); }
 .kjun-alert-content {
   min-height: var(--_kjun-alert-line);
   overflow-wrap: anywhere;
@@ -329,6 +333,15 @@
   padding: 0;
   color: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-muted) * 100%), transparent);
   cursor: pointer;
+  position: relative;
+}
+/* Touch screens press a minimum-target square around the glyph; the drawn button keeps its size. */
+@media (pointer: coarse) {
+  .kjun-alert-close::after {
+    content: "";
+    position: absolute;
+    inset: calc((var(--_kjun-alert-close) - var(--_kjun-geometry-native-minimum-touch-target)) / 2);
+  }
 }
 .kjun-alert-actions {
   display: flex;
@@ -336,6 +349,12 @@
   align-items: center;
   gap: var(--_kjun-extension-alert-actions-gap);
   margin-top: var(--_kjun-alert-action-gap);
+}
+/* Without a title the actions sit beside the message, centred on its first line like the close button. */
+.kjun-alert-actions[data-placement="end"] {
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  margin-block: calc((var(--_kjun-alert-line) - var(--_kjun-alert-action-height)) / 2);
 }
 /* Secondary actions and the close button tint the alert's own fill instead of sitting on it as gray or white. */
 .kjun-alert-actions .kjun-button[data-variant="secondary"] { background: var(--_kjun-alert-tint-control); }
@@ -346,6 +365,9 @@
 }
 .kjun-alert-close:hover { background: var(--_kjun-alert-tint-hover); color: var(--_kjun-color-text); }
 .kjun-alert-close:active { background: var(--_kjun-alert-tint-active); color: var(--_kjun-color-text); }
+@media (hover: none), (pointer: coarse) {
+  .kjun-alert-close:hover:not(:active) { background: transparent; color: color-mix(in srgb, var(--_kjun-color-text) calc(var(--_kjun-state-opacity-muted) * 100%), transparent); }
+}
 .kjun-alert-close:focus-visible {
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
   outline-offset: var(--_kjun-state-focus-offset);

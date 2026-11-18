@@ -64,6 +64,17 @@ const methods = [
     ),
   ),
   method(
+    "toast.loading",
+    "(message: string, options?: Omit<ToastOptions, \"duration\">) => number",
+    event(
+      "돌아가는 아이콘의 알림을 보이고 ID를 돌려줍니다. toast.update로 결과 알림으로 바꿉니다.",
+      "서비스 호출 즉시",
+      "문장과 옵션(title, key, action 등)",
+      "Toast ID",
+      "자동으로 닫히지 않고 닫기 버튼을 둡니다. update에서 loading: false를 주면 duration이 없을 때 그 종류의 기본 시간으로 닫힙니다(오류는 남음). 작업이 Promise 하나로 끝나면 toast.promise가 더 짧습니다.",
+    ),
+  ),
+  method(
     "toast.promise",
     "<T>(promise: Promise<T> | (() => Promise<T>), messages: { loading; success; error }, options?) => Promise<T>",
     event(
@@ -120,7 +131,7 @@ const options = [
     구분: "false여도 duration 자동 종료나 API dismiss는 동작합니다.",
   }),
   option("ToastOptions.compact", "boolean", "false", "제목 없는 한 줄 알림을 내용 폭의 캡슐로 표시합니다.", {
-    조건: "title이 있으면 무시합니다. 닫기 버튼이 없으므로 duration이 0일 때만 닫기 버튼을 둡니다. action은 문장 뒤에 하나 둡니다.",
+    조건: "title이 있으면 무시합니다. 닫기 버튼이 없으므로 duration이 0일 때만 닫기 버튼을 둡니다. action은 문장 뒤에 하나 둡니다. 문장이 화면 폭을 넘으면 잘리지 않고 줄을 바꿉니다.",
   }),
   option("ToastOptions.showProgress", "boolean", "—", "더 이상 사용하지 않습니다.", {
     호환: "0.19.0부터 남은 시간 진행 표시를 그리지 않아 값을 무시합니다. 자동 종료 시간과 hover·focus 일시 정지는 그대로입니다.",

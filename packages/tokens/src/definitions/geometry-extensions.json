@@ -426,6 +426,7 @@
       "closeSize": { "$ref": "dimension.value32" },
       "closeIconSize": { "$ref": "dimension.value16" },
       "iconSize": { "$ref": "dimension.value20" },
+      "warningIconLift": { "$ref": "border.hairlineWidth" },
       "paddingY": { "$ref": "dimension.value14" },
       "paddingStart": { "$ref": "dimension.value16" },
       "paddingEnd": { "$ref": "dimension.value8" },

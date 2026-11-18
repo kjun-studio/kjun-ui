@@ -629,6 +629,13 @@
         "description": ""
       },
       {
+        "name": "icon",
+        "type": "string | false",
+        "required": false,
+        "default": "—",
+        "description": "An icon name in place of the tone's icon (its filled form when the icon has one), or false for no icon."
+      },
+      {
         "name": "closable",
         "type": "boolean",
         "required": false,
@@ -696,6 +703,13 @@
         "description": ""
       },
       {
+        "name": "icon",
+        "type": "string | false | undefined",
+        "required": false,
+        "default": "—",
+        "description": "An icon name in place of the tone's icon (its filled form when the icon has one), or false for no icon."
+      },
+      {
         "name": "closable",
         "type": "boolean | undefined",
         "required": false,
@@ -721,7 +735,7 @@
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": "Buttons placed under the message; unsized KjunButtons follow the alert size."
+        "description": "Buttons for the alert, under the message when it has a title and beside it otherwise; unsized KjunButtons follow the alert size."
       },
       {
         "name": "className",
@@ -768,6 +782,13 @@
         "description": ""
       },
       {
+        "name": "icon",
+        "type": "string | false | undefined",
+        "required": false,
+        "default": "—",
+        "description": "An icon name in place of the tone's icon (its filled form when the icon has one), or false for no icon."
+      },
+      {
         "name": "closable",
         "type": "boolean | undefined",
         "required": false,
@@ -793,7 +814,7 @@
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": "Buttons placed under the message; unsized KjunButtons follow the alert size."
+        "description": "Buttons for the alert, under the message when it has a title and beside it otherwise; unsized KjunButtons follow the alert size."
       },
       {
         "name": "onClose",
