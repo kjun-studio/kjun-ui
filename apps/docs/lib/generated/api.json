@@ -10498,6 +10498,13 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Names an icon that carries meaning on its own; screen readers then read it as an image. Without it the icon is decorative and hidden."
       }
     ],
     "events": [],
@@ -10530,6 +10537,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Names an icon that carries meaning on its own; screen readers then read it as an image. Without it the icon is decorative and hidden."
       },
       {
         "name": "className",
@@ -10637,6 +10651,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Names an icon that carries meaning on its own; screen readers then read it as an image. Without it the icon is decorative and hidden."
       }
     ]
   },
@@ -21535,6 +21556,27 @@
       {
         "name": "style",
         "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onKeyDown",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").KeyboardEventHandler<HTMLDivElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onClick",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").MouseEventHandler<HTMLDivElement> | undefined",
         "required": false,
         "default": "—",
         "description": ""

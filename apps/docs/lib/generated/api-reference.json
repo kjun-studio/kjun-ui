@@ -27719,6 +27719,15 @@
             "description": "",
             "summary": "채움 형태의 아이콘을 사용합니다.",
             "source": "packages/vue3/src/button.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Names an icon that carries meaning on its own; screen readers then read it as an image. Without it the icon is decorative and hidden.",
+            "summary": "혼자서 뜻을 전하는 아이콘의 이름입니다. 주면 화면 낭독기가 이미지로 읽고, 생략하면 장식으로 숨깁니다. 웹은 aria-label 속성도 같은 뜻으로 받습니다.",
+            "source": "packages/vue3/src/button.tsx"
           }
         ],
         "events": [],
@@ -27762,6 +27771,15 @@
             "default": "false",
             "description": "",
             "summary": "채움 형태의 아이콘을 사용합니다.",
+            "source": "packages/react/src/button.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Names an icon that carries meaning on its own; screen readers then read it as an image. Without it the icon is decorative and hidden.",
+            "summary": "혼자서 뜻을 전하는 아이콘의 이름입니다. 주면 화면 낭독기가 이미지로 읽고, 생략하면 장식으로 숨깁니다. 웹은 aria-label 속성도 같은 뜻으로 받습니다.",
             "source": "packages/react/src/button.tsx"
           },
           {
@@ -27905,6 +27923,15 @@
             "default": "—",
             "description": "",
             "summary": "채움 형태의 아이콘을 사용합니다.",
+            "source": "packages/native/src/button.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Names an icon that carries meaning on its own; screen readers then read it as an image. Without it the icon is decorative and hidden.",
+            "summary": "혼자서 뜻을 전하는 아이콘의 이름입니다. 주면 화면 낭독기가 이미지로 읽고, 생략하면 장식으로 숨깁니다. 웹은 aria-label 속성도 같은 뜻으로 받습니다.",
             "source": "packages/native/src/button.tsx"
           }
         ],
@@ -30466,7 +30493,7 @@
             "required": false,
             "default": "\"horizontal\"",
             "description": "Which way the content scrolls; vertical needs a height (style or class) to scroll within.",
-            "summary": "항목을 가로 또는 세로로 배치합니다.",
+            "summary": "내용이 스크롤되는 방향입니다. horizontal(기본)은 좌우, vertical은 위아래로 스크롤하며 그 방향의 양 끝을 흐리게 합니다. vertical은 높이(style·class)가 있어야 스크롤됩니다.",
             "source": "packages/vue3/src/actions.tsx"
           },
           {
@@ -30509,7 +30536,7 @@
             "required": false,
             "default": "\"horizontal\"",
             "description": "Which way the content scrolls; vertical needs a height (style or class) to scroll within.",
-            "summary": "항목을 가로 또는 세로로 배치합니다.",
+            "summary": "내용이 스크롤되는 방향입니다. horizontal(기본)은 좌우, vertical은 위아래로 스크롤하며 그 방향의 양 끝을 흐리게 합니다. vertical은 높이(style·class)가 있어야 스크롤됩니다.",
             "source": "packages/react/src/actions.tsx"
           },
           {
@@ -30538,6 +30565,33 @@
             "description": "",
             "summary": "기본 요소에 추가할 플랫폼 스타일입니다.",
             "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 요소 또는 연결할 필드의 식별자입니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "onKeyDown",
+            "type": "KeyboardEventHandler<HTMLDivElement> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소의 키보드 이벤트를 전달합니다.",
+            "source": "packages/react/src/actions.tsx"
+          },
+          {
+            "name": "onClick",
+            "type": "MouseEventHandler<HTMLDivElement> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소의 클릭 이벤트를 전달합니다.",
+            "source": "packages/react/src/actions.tsx"
           }
         ],
         "events": [],
@@ -30562,7 +30616,7 @@
             "required": false,
             "default": "\"horizontal\"",
             "description": "Which way the content scrolls; vertical needs a height (style) to scroll within.",
-            "summary": "항목을 가로 또는 세로로 배치합니다.",
+            "summary": "내용이 스크롤되는 방향입니다. horizontal(기본)은 좌우, vertical은 위아래로 스크롤하며 그 방향의 양 끝을 흐리게 합니다. vertical은 높이(style·class)가 있어야 스크롤됩니다.",
             "source": "packages/native/src/actions.tsx"
           },
           {
