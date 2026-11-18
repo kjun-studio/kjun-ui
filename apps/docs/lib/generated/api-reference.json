@@ -23870,6 +23870,24 @@
       "react": {
         "props": [
           {
+            "name": "open",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Controls visibility; omit for internal state.",
+            "summary": "표시 상태를 제어합니다. 생략하면 내부 상태를 사용합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫힙니다. disabled 또는 로딩 중인 트리거는 열리지 않습니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Asked to open or close; with `open`, update it to accept. onOpen and onClose report the visibility that follows.",
+            "summary": "열기·닫기 요청입니다. onOpen·onClose는 실제 표시 전환을 알립니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
             "name": "disabled",
             "type": "boolean | undefined",
             "required": false,
@@ -23984,6 +24002,24 @@
       "native": {
         "props": [
           {
+            "name": "open",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Controls visibility; omit for internal state.",
+            "summary": "표시 상태를 제어합니다. 생략하면 내부 상태를 사용합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫힙니다. disabled 또는 로딩 중인 트리거는 열리지 않습니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Asked to open or close; with `open`, update it to accept. onOpen and onClose report the visibility that follows.",
+            "summary": "열기·닫기 요청입니다. onOpen·onClose는 실제 표시 전환을 알립니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
             "name": "disabled",
             "type": "boolean | undefined",
             "required": false,
@@ -24015,8 +24051,8 @@
             "type": "string | undefined",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "메뉴와 접근성으로 연결할 트리거 식별자입니다.",
+            "description": "Id for the trigger; Native Web names the menu after it.",
+            "summary": "트리거 버튼의 id(nativeID)입니다. Native Web은 이 id로 메뉴 이름을 연결합니다(aria-labelledby). 생략하면 트리거의 라벨을 메뉴 이름으로 씁니다.",
             "source": "packages/native/src/dropdown.tsx"
           },
           {
@@ -24114,9 +24150,31 @@
             "description": "Names the group for screen readers when it has no visible title.",
             "summary": "제목 없이 묶을 때 화면 낭독기에 알릴 묶음 이름입니다. title이 있으면 title이 이름이 됩니다.",
             "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
+            "name": "modelValue",
+            "type": "string | null",
+            "required": false,
+            "default": "—",
+            "description": "v-model: makes the items with a `value` one single choice; the item whose value matches shows the check. null chooses none.",
+            "summary": "현재 표시·입력·선택값입니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
           }
         ],
-        "events": [],
+        "events": [
+          {
+            "name": "update:modelValue",
+            "source": "packages/vue3/src/dropdown.tsx",
+            "type": "이벤트",
+            "summary": "update:modelValue 이벤트를 통지합니다."
+          },
+          {
+            "name": "change",
+            "source": "packages/vue3/src/dropdown.tsx",
+            "type": "이벤트",
+            "summary": "change 이벤트를 통지합니다."
+          }
+        ],
         "slots": [
           {
             "name": "default",
@@ -24147,6 +24205,24 @@
             "default": "—",
             "description": "Names the group for screen readers when it has no visible title.",
             "summary": "제목 없이 묶을 때 화면 낭독기에 알릴 묶음 이름입니다. title이 있으면 title이 이름이 됩니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "value",
+            "type": "string | null | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Makes the items with a `value` one single choice: the item whose value matches shows the check. null chooses none.",
+            "summary": "주면 value가 있는 항목을 한 묶음의 단일 선택으로 만듭니다. value가 같은 항목에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 아무것도 고르지 않은 상태입니다. 하위 메뉴 안의 항목은 묶음에 들지 않습니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Called with the chosen item's value.",
+            "summary": "항목을 고르면 그 항목의 value로 호출합니다. 항목의 onClick·onPress 뒤에 호출됩니다.",
             "source": "packages/react/src/dropdown.tsx"
           },
           {
@@ -24185,6 +24261,24 @@
             "source": "packages/native/src/dropdown.tsx"
           },
           {
+            "name": "value",
+            "type": "string | null | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Makes the items with a `value` one single choice: the item whose value matches shows the check. null chooses none.",
+            "summary": "주면 value가 있는 항목을 한 묶음의 단일 선택으로 만듭니다. value가 같은 항목에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 아무것도 고르지 않은 상태입니다. 하위 메뉴 안의 항목은 묶음에 들지 않습니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: string) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Called with the chosen item's value.",
+            "summary": "항목을 고르면 그 항목의 value로 호출합니다. 항목의 onPress 뒤에 호출됩니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
             "name": "children",
             "type": "ReactNode",
             "required": true,
@@ -24208,8 +24302,8 @@
             "type": "string",
             "required": false,
             "default": "—",
-            "description": "Stable key for the submenu; defaults to the label.",
-            "summary": "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다.",
+            "description": "Stable key for the submenu; defaults to the label. Give each submenu its own id when two at one level share a label.",
+            "summary": "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다. 같은 단계에 라벨이 같은 하위 메뉴가 둘 이상이면 각각 id를 주세요. 주지 않으면 둘이 함께 열립니다.",
             "source": "packages/vue3/src/dropdown.tsx"
           },
           {
@@ -24260,8 +24354,8 @@
             "type": "string | undefined",
             "required": false,
             "default": "—",
-            "description": "Stable key for the submenu; defaults to the label.",
-            "summary": "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다.",
+            "description": "Stable key for the submenu; defaults to the label. Give each submenu its own id when two at one level share a label.",
+            "summary": "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다. 같은 단계에 라벨이 같은 하위 메뉴가 둘 이상이면 각각 id를 주세요. 주지 않으면 둘이 함께 열립니다.",
             "source": "packages/react/src/dropdown.tsx"
           },
           {
@@ -24313,8 +24407,8 @@
             "type": "string | undefined",
             "required": false,
             "default": "—",
-            "description": "Stable key for the submenu; defaults to the label.",
-            "summary": "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다.",
+            "description": "Stable key for the submenu; defaults to the label. Give each submenu its own id when two at one level share a label.",
+            "summary": "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다. 같은 단계에 라벨이 같은 하위 메뉴가 둘 이상이면 각각 id를 주세요. 주지 않으면 둘이 함께 열립니다.",
             "source": "packages/native/src/dropdown.tsx"
           },
           {
@@ -24454,6 +24548,15 @@
             "source": "packages/vue3/src/dropdown.tsx"
           },
           {
+            "name": "value",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Inside a KjunDropdownSection with v-model: the value this single choice stands for.",
+            "summary": "value가 있는 KjunDropdownSection 안에서 이 항목이 나타내는 값입니다. 묶음의 value와 같으면 선택된 항목으로 그립니다. 묶음 밖에서는 쓰지 않습니다.",
+            "source": "packages/vue3/src/dropdown.tsx"
+          },
+          {
             "name": "href",
             "type": "string",
             "required": false,
@@ -24585,6 +24688,15 @@
             "source": "packages/react/src/dropdown.tsx"
           },
           {
+            "name": "value",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Inside a KjunDropdownSection with `value`: the value this single choice stands for.",
+            "summary": "value가 있는 KjunDropdownSection 안에서 이 항목이 나타내는 값입니다. 묶음의 value와 같으면 선택된 항목으로 그립니다. 묶음 밖에서는 쓰지 않습니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
             "name": "href",
             "type": "string | undefined",
             "required": false,
@@ -24707,6 +24819,15 @@
             "default": "false",
             "description": "Keeps the menu open after choosing, for toggles the user flips several times.",
             "summary": "고른 뒤에도 메뉴를 닫지 않습니다. 여러 번 켜고 끄는 checked 항목에 씁니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "value",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Inside a KjunDropdownSection with `value`: the value this single choice stands for.",
+            "summary": "value가 있는 KjunDropdownSection 안에서 이 항목이 나타내는 값입니다. 묶음의 value와 같으면 선택된 항목으로 그립니다. 묶음 밖에서는 쓰지 않습니다.",
             "source": "packages/native/src/dropdown.tsx"
           },
           {
@@ -30903,6 +31024,24 @@
             "source": "packages/react/src/dropdown.tsx"
           },
           {
+            "name": "open",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Controls visibility; omit for internal state.",
+            "summary": "표시 상태를 제어합니다. 생략하면 내부 상태를 사용합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫힙니다. disabled 또는 로딩 중인 트리거는 열리지 않습니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Asked to open or close; with `open`, update it to accept. onOpen and onClose report the visibility that follows.",
+            "summary": "열기·닫기 요청입니다. onOpen·onClose는 실제 표시 전환을 알립니다.",
+            "source": "packages/react/src/dropdown.tsx"
+          },
+          {
             "name": "placement",
             "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
             "required": false,
@@ -31100,6 +31239,24 @@
             "source": "packages/native/src/dropdown.tsx"
           },
           {
+            "name": "open",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Controls visibility; omit for internal state.",
+            "summary": "표시 상태를 제어합니다. 생략하면 내부 상태를 사용합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫힙니다. disabled 또는 로딩 중인 트리거는 열리지 않습니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Asked to open or close; with `open`, update it to accept. onOpen and onClose report the visibility that follows.",
+            "summary": "열기·닫기 요청입니다. onOpen·onClose는 실제 표시 전환을 알립니다.",
+            "source": "packages/native/src/dropdown.tsx"
+          },
+          {
             "name": "placement",
             "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
             "required": false,
@@ -31122,8 +31279,8 @@
             "type": "string | undefined",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "메뉴와 접근성으로 연결할 트리거 식별자입니다.",
+            "description": "Id for the trigger; Native Web names the menu after it.",
+            "summary": "트리거 버튼의 id(nativeID)입니다. Native Web은 이 id로 메뉴 이름을 연결합니다(aria-labelledby). 생략하면 트리거의 라벨을 메뉴 이름으로 씁니다.",
             "source": "packages/native/src/dropdown.tsx"
           },
           {

@@ -181,6 +181,8 @@
       "density"
     ],
     "react": [
+      "open",
+      "onOpenChange",
       "disabled",
       "placement",
       "menuId",
@@ -194,6 +196,8 @@
       "density"
     ],
     "native": [
+      "open",
+      "onOpenChange",
       "disabled",
       "placement",
       "menuId",
@@ -213,17 +217,22 @@
   "KjunDropdownSection": {
     "vue3": [
       "title",
-      "ariaLabel"
+      "ariaLabel",
+      "modelValue"
     ],
     "react": [
       "title",
       "children",
-      "ariaLabel"
+      "ariaLabel",
+      "value",
+      "onValueChange"
     ],
     "native": [
       "title",
       "children",
-      "ariaLabel"
+      "ariaLabel",
+      "value",
+      "onValueChange"
     ]
   },
   "KjunDropdownSubmenu": {
@@ -261,7 +270,8 @@
       "shortcut",
       "keepOpen",
       "href",
-      "target"
+      "target",
+      "value"
     ],
     "react": [
       "id",
@@ -277,7 +287,8 @@
       "shortcut",
       "keepOpen",
       "href",
-      "target"
+      "target",
+      "value"
     ],
     "native": [
       "id",
@@ -290,7 +301,8 @@
       "checked",
       "description",
       "shortcut",
-      "keepOpen"
+      "keepOpen",
+      "value"
     ]
   },
   "KjunFormActions": {
@@ -421,6 +433,8 @@
       "density"
     ],
     "react": [
+      "open",
+      "onOpenChange",
       "label",
       "size",
       "variant",
@@ -444,6 +458,8 @@
       "density"
     ],
     "native": [
+      "open",
+      "onOpenChange",
       "label",
       "size",
       "variant",

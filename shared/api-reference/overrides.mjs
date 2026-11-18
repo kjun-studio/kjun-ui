@@ -73,9 +73,28 @@ set("DropdownItem", {
   shortcut: "끝에 보이는 단축키 안내(예: ⌘D)입니다. 웹은 aria-keyshortcuts로도 알립니다. 실제 키 연결은 소비자가 합니다. Native는 Native Web에서만 보입니다.",
 });
 set("Dropdown MenuButton", { density: { default: '"comfortable"', summary: "compact는 32px 행으로 표·툴바 같은 데스크톱 화면에 씁니다. 터치 기기는 44px를 유지합니다." } });
+set("DropdownSection", {
+  value: "주면 value가 있는 항목을 한 묶음의 단일 선택으로 만듭니다. value가 같은 항목에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 아무것도 고르지 않은 상태입니다. 하위 메뉴 안의 항목은 묶음에 들지 않습니다.",
+  onValueChange: "항목을 고르면 그 항목의 value로 호출합니다. 항목의 onClick·onPress 뒤에 호출됩니다.",
+}, "react");
+set("DropdownSection", {
+  value: "주면 value가 있는 항목을 한 묶음의 단일 선택으로 만듭니다. value가 같은 항목에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 아무것도 고르지 않은 상태입니다. 하위 메뉴 안의 항목은 묶음에 들지 않습니다.",
+  onValueChange: "항목을 고르면 그 항목의 value로 호출합니다. 항목의 onPress 뒤에 호출됩니다.",
+}, "native");
+set("DropdownSection", { modelValue: "v-model로 value가 있는 항목을 한 묶음의 단일 선택으로 만듭니다. value가 같은 항목에 체크를 그리고 radio 메뉴 항목으로 읽힙니다. null이면 아무것도 고르지 않은 상태입니다. 고르면 update:modelValue와 change가 그 항목의 value로 발생합니다. 하위 메뉴 안의 항목은 묶음에 들지 않습니다." }, "vue3");
+set("DropdownItem", { value: "value가 있는 KjunDropdownSection 안에서 이 항목이 나타내는 값입니다. 묶음의 value와 같으면 선택된 항목으로 그립니다. 묶음 밖에서는 쓰지 않습니다." });
+set("Dropdown MenuButton", {
+  open: "표시 상태를 제어합니다. 생략하면 내부 상태를 사용합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫힙니다. disabled 또는 로딩 중인 트리거는 열리지 않습니다.",
+  onOpenChange: "열기·닫기 요청입니다. onOpen·onClose는 실제 표시 전환을 알립니다.",
+}, "react");
+set("Dropdown MenuButton", {
+  open: "표시 상태를 제어합니다. 생략하면 내부 상태를 사용합니다. 주면 onOpenChange에서 값을 바꿔야 열리고 닫힙니다. disabled 또는 로딩 중인 트리거는 열리지 않습니다.",
+  onOpenChange: "열기·닫기 요청입니다. onOpen·onClose는 실제 표시 전환을 알립니다.",
+  triggerId: "트리거 버튼의 id(nativeID)입니다. Native Web은 이 id로 메뉴 이름을 연결합니다(aria-labelledby). 생략하면 트리거의 라벨을 메뉴 이름으로 씁니다.",
+}, "native");
 set("DropdownSection", { ariaLabel: "제목 없이 묶을 때 화면 낭독기에 알릴 묶음 이름입니다. title이 있으면 title이 이름이 됩니다.", title: "묶음 위의 작은 제목입니다. 화면 낭독기에는 묶음 이름으로 읽힙니다.", children: "묶음에 넣을 KjunDropdownItem·KjunDropdownSubmenu입니다." });
 set("DropdownSubmenu", {
-  id: "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다.",
+  id: "하위 메뉴를 구분하는 안정적인 키입니다. 생략하면 label을 씁니다. 같은 단계에 라벨이 같은 하위 메뉴가 둘 이상이면 각각 id를 주세요. 주지 않으면 둘이 함께 열립니다.",
   label: "하위 메뉴 행과 돌아가기 행의 라벨입니다.",
   icon: "하위 메뉴 행 앞쪽 열의 아이콘 이름입니다.",
   disabled: "하위 메뉴를 열 수 없게 합니다.",

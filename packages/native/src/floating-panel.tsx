@@ -40,6 +40,7 @@ export function LayerTrigger({
   disabled = false,
   expanded,
   popup,
+  nativeID,
 }: {
   trigger: ReactNode;
   onPress: () => void;
@@ -48,6 +49,8 @@ export function LayerTrigger({
   expanded?: boolean;
   /** What opens, for aria-haspopup on Native Web. */
   popup?: "menu" | "dialog";
+  /** Id for the trigger when it has none of its own (Native Web reads it as the element id). */
+  nativeID?: string;
 }) {
   // The trigger says what it opens and whether it is open, as on Web.
   const state = (current?: object) => expanded === undefined ? {} : {
@@ -59,8 +62,10 @@ export function LayerTrigger({
       onPress?: () => void;
       disabled?: boolean;
       accessibilityState?: object;
+      nativeID?: string;
     }>;
     return cloneElement(child, {
+      ...(nativeID ? { nativeID } : {}),
       disabled: disabled || child.props.disabled,
       ...state(child.props.accessibilityState),
       onPress: () => {
@@ -72,7 +77,7 @@ export function LayerTrigger({
     });
   }
   return (
-    <Pressable accessibilityRole="button" disabled={disabled} onPress={onPress} {...state()}>
+    <Pressable accessibilityRole="button" nativeID={nativeID} disabled={disabled} onPress={onPress} {...state()}>
       {content(trigger)}
     </Pressable>
   );

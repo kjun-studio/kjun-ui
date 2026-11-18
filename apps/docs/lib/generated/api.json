@@ -7613,6 +7613,20 @@
     ],
     "react": [
       {
+        "name": "open",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Controls visibility; omit for internal state."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "((open: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Asked to open or close; with `open`, update it to accept. onOpen and onClose report the visibility that follows."
+      },
+      {
         "name": "disabled",
         "type": "boolean | undefined",
         "required": false,
@@ -7692,6 +7706,20 @@
     ],
     "native": [
       {
+        "name": "open",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Controls visibility; omit for internal state."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "((open: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Asked to open or close; with `open`, update it to accept. onOpen and onClose report the visibility that follows."
+      },
+      {
         "name": "disabled",
         "type": "boolean | undefined",
         "required": false,
@@ -7717,7 +7745,7 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Id for the trigger; Native Web names the menu after it."
       },
       {
         "name": "density",
@@ -7836,6 +7864,13 @@
         "description": "Keeps the menu open after choosing, for toggles the user flips several times."
       },
       {
+        "name": "value",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Inside a KjunDropdownSection with v-model: the value this single choice stands for."
+      },
+      {
         "name": "href",
         "type": "string",
         "required": false,
@@ -7935,6 +7970,13 @@
         "description": "Keeps the menu open after choosing, for toggles the user flips several times."
       },
       {
+        "name": "value",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Inside a KjunDropdownSection with `value`: the value this single choice stands for."
+      },
+      {
         "name": "href",
         "type": "string | undefined",
         "required": false,
@@ -8028,6 +8070,13 @@
         "description": "Keeps the menu open after choosing, for toggles the user flips several times."
       },
       {
+        "name": "value",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Inside a KjunDropdownSection with `value`: the value this single choice stands for."
+      },
+      {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": true,
@@ -8058,9 +8107,25 @@
         "required": false,
         "default": "—",
         "description": "Names the group for screen readers when it has no visible title."
+      },
+      {
+        "name": "modelValue",
+        "type": "string | null",
+        "required": false,
+        "default": "—",
+        "description": "v-model: makes the items with a `value` one single choice; the item whose value matches shows the check. null chooses none."
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "update:modelValue",
+        "source": "packages/vue3/src/dropdown.tsx"
+      },
+      {
+        "name": "change",
+        "source": "packages/vue3/src/dropdown.tsx"
+      }
+    ],
     "slots": [
       {
         "name": "default",
@@ -8082,6 +8147,20 @@
         "required": false,
         "default": "—",
         "description": "Names the group for screen readers when it has no visible title."
+      },
+      {
+        "name": "value",
+        "type": "string | null | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Makes the items with a `value` one single choice: the item whose value matches shows the check. null chooses none."
+      },
+      {
+        "name": "onValueChange",
+        "type": "((value: string) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called with the chosen item's value."
       },
       {
         "name": "children",
@@ -8107,6 +8186,20 @@
         "description": "Names the group for screen readers when it has no visible title."
       },
       {
+        "name": "value",
+        "type": "string | null | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Makes the items with a `value` one single choice: the item whose value matches shows the check. null chooses none."
+      },
+      {
+        "name": "onValueChange",
+        "type": "((value: string) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Called with the chosen item's value."
+      },
+      {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": true,
@@ -8122,7 +8215,7 @@
         "type": "string",
         "required": false,
         "default": "—",
-        "description": "Stable key for the submenu; defaults to the label."
+        "description": "Stable key for the submenu; defaults to the label. Give each submenu its own id when two at one level share a label."
       },
       {
         "name": "label",
@@ -8160,7 +8253,7 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": "Stable key for the submenu; defaults to the label."
+        "description": "Stable key for the submenu; defaults to the label. Give each submenu its own id when two at one level share a label."
       },
       {
         "name": "label",
@@ -8197,7 +8290,7 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": "Stable key for the submenu; defaults to the label."
+        "description": "Stable key for the submenu; defaults to the label. Give each submenu its own id when two at one level share a label."
       },
       {
         "name": "label",
@@ -17941,6 +18034,20 @@
         "description": ""
       },
       {
+        "name": "open",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Controls visibility; omit for internal state."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "((open: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Asked to open or close; with `open`, update it to accept. onOpen and onClose report the visibility that follows."
+      },
+      {
         "name": "placement",
         "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
         "required": false,
@@ -18090,6 +18197,20 @@
         "description": ""
       },
       {
+        "name": "open",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Controls visibility; omit for internal state."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "((open: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Asked to open or close; with `open`, update it to accept. onOpen and onClose report the visibility that follows."
+      },
+      {
         "name": "placement",
         "type": "\"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\" | undefined",
         "required": false,
@@ -18108,7 +18229,7 @@
         "type": "string | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Id for the trigger; Native Web names the menu after it."
       },
       {
         "name": "density",

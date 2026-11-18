@@ -7,7 +7,7 @@ export function DropdownStructureCases({ K, native = false }: { K: any; native?:
   const [config, setConfig] = useState(structureConfig);
   const [sort, setSort] = useState('name');
   const [hidden, setHidden] = useState(true), [alerts, setAlerts] = useState(false);
-  const [last, setLast] = useState('');
+  const [last, setLast] = useState(''), [controlled, setControlled] = useState(false);
   useLayoutEffect(() => {
     Object.assign(window, { configureStructure: (next: object) => setConfig(c => ({ ...c, ...next })) });
     setDropdownColors();
@@ -16,9 +16,10 @@ export function DropdownStructureCases({ K, native = false }: { K: any; native?:
   return <K.KjunProvider {...(native ? { colors: dropdownColors, fontFamily: 'sans-serif' } : {})}>
     <div style={{ padding: 24 }}>
       <K.KjunDropdown density={config.density} trigger={<K.KjunButton variant="secondary">구조 메뉴</K.KjunButton>}>
-        <K.KjunDropdownSection title="정렬">
-          <K.KjunDropdownItem selected={sort === 'name'} {...press('이름순', () => setSort('name'))}>이름순</K.KjunDropdownItem>
-          <K.KjunDropdownItem selected={sort === 'date'} {...press('날짜순', () => setSort('date'))}>날짜순</K.KjunDropdownItem>
+        {/* The section's value makes its items one single choice. */}
+        <K.KjunDropdownSection title="정렬" value={sort} onValueChange={setSort}>
+          <K.KjunDropdownItem value="name" {...press('이름순')}>이름순</K.KjunDropdownItem>
+          <K.KjunDropdownItem value="date" {...press('날짜순')}>날짜순</K.KjunDropdownItem>
         </K.KjunDropdownSection>
         <K.KjunDropdownDivider />
         <K.KjunDropdownItem checked={hidden} description="보관한 항목 포함" shortcut="⌘H" {...press('숨긴 항목 보기', () => setHidden(v => !v))}>숨긴 항목 보기</K.KjunDropdownItem>
@@ -34,7 +35,13 @@ export function DropdownStructureCases({ K, native = false }: { K: any; native?:
         </K.KjunDropdownSubmenu>
         <K.KjunDropdownItem variant="danger" icon="trash" {...press('삭제')}>삭제</K.KjunDropdownItem>
       </K.KjunDropdown>
+      {/* Controlled visibility: the parent opens it from outside and accepts each request. */}
+      <K.KjunButton variant="ghost" {...{ [native ? 'onPress' : 'onClick']: () => setControlled(true) }}>밖에서 열기</K.KjunButton>
+      <K.KjunDropdown open={controlled} onOpenChange={setControlled} trigger={<K.KjunButton variant="secondary">제어 메뉴</K.KjunButton>}>
+        <K.KjunDropdownItem {...press('제어 항목')}>제어 항목</K.KjunDropdownItem>
+      </K.KjunDropdown>
       <span data-testid="last" style={{ display: 'none' }}>{last}</span>
+      <span data-testid="controlled" style={{ display: 'none' }}>{String(controlled)}</span>
     </div>
   </K.KjunProvider>;
 }

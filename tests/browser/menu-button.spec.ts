@@ -26,7 +26,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     for (const [size, height, iconSize] of [['xs', 24, 14], ['sm', 32, 16], ['md', 40, 16], ['lg', 48, 18], ['xl', 56, 20]] as const) {
       for (const compact of [false, true]) {
         await configure(page, { size, compact, loading: false });
-        await expect(trigger(page)).toBeEnabled();
+        // The previous round's loading ring stays for Button's minimum loading interval.
+        await expect(trigger(page)).not.toHaveAttribute('aria-busy', 'true');
         await expect(trigger(page)).toHaveCSS('height', `${height}px`);
         await expect(icon(page)).toHaveAttribute('width', String(iconSize));
         await expect.poll(() => shape(page, 'menu')).toEqual(await shape(page, 'reference'));
@@ -44,7 +45,7 @@ for (const platform of ['react', 'vue3', 'native']) {
         }
         const before = await shape(page, 'menu');
         await configure(page, { loading: true });
-        await expect(trigger(page)).toBeDisabled();
+        // A loading Button keeps focus: it says aria-busy instead of turning disabled.
         await expect(trigger(page)).toHaveAttribute('aria-busy', 'true');
         await expect(trigger(page)).toHaveCSS('opacity', '1');
         expect(await shape(page, 'menu')).toEqual(before);
@@ -96,11 +97,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(trigger(page)).toHaveAttribute('aria-expanded', 'true');
     await configure(page, { loading: true });
     await expect(trigger(page)).toHaveAttribute('aria-expanded', 'false');
-    await expect(trigger(page)).toBeDisabled();
+    await expect(trigger(page)).toHaveAttribute('aria-busy', 'true');
     await expect(trigger(page)).toHaveCSS('opacity', '1');
     await configure(page, { loading: false });
     await page.clock.runFor(390);
-    await expect(trigger(page)).toBeDisabled();
+    await expect(trigger(page)).toHaveAttribute('aria-busy', 'true');
     // Dispatch directly to exercise the dropdown's capture and keyboard paths too.
     await trigger(page).evaluate(el => {
       el.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -109,7 +110,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(trigger(page)).toHaveAttribute('aria-expanded', 'false');
     await expect(page.getByTestId('events')).toHaveText('open,close');
     await page.clock.runFor(20);
-    await expect(trigger(page)).toBeEnabled();
+    await expect(trigger(page)).not.toHaveAttribute('aria-busy', 'true');
     await trigger(page).click();
     await expect(trigger(page)).toHaveAttribute('aria-expanded', 'true');
     await configure(page, { disabled: true, loading: true });

@@ -11,8 +11,15 @@ const DropdownContext = createContext<(() => void) | null>(null);
 interface MenuView { view: string; open: (key: string) => void; back: () => void }
 const MenuViewContext = createContext<MenuView>({ view: "", open: () => {}, back: () => {} });
 const MenuLevelContext = createContext("");
+// A section with `value` makes its items with a `value` one single choice.
+interface Choice { value: string | null; onValueChange?: (value: string) => void }
+const ChoiceContext = createContext<Choice | null>(null);
 const useShown = () => useContext(MenuViewContext).view === useContext(MenuLevelContext);
 export interface KjunDropdownProps {
+  /** Controls visibility; omit for internal state. */
+  open?: boolean;
+  /** Asked to open or close; with `open`, update it to accept. onOpen and onClose report the visibility that follows. */
+  onOpenChange?: (open: boolean) => void;
   disabled?: boolean;
   placement?: Extract<
     Placement,
@@ -31,6 +38,8 @@ export interface KjunDropdownProps {
   returnFocus?: FocusReturn;
 }
 export function KjunDropdown({
+  open: openProp,
+  onOpenChange,
   disabled = false,
   placement = "bottom-start",
   menuId,
@@ -43,8 +52,7 @@ export function KjunDropdown({
   onClose,
   returnFocus,
 }: KjunDropdownProps) {
-  const [open, setOpen] = useState(false),
-    currentOpen = useRef(false),
+  const [internal, setInternal] = useState(false),
     ref = useRef<HTMLDivElement>(null),
     id = "kjun-" + useId();
   const [stack, setStack] = useState<string[]>([]);
@@ -104,18 +112,29 @@ export function KjunDropdown({
       "aria-disabled": disabled || button.props["aria-disabled"],
     });
   };
+  const requested = openProp ?? internal, open = requested && !unavailable;
+  // The latest request, so two requests from one event report once.
+  const currentOpen = useRef(requested);
+  currentOpen.current = requested;
   const change = (value: boolean) => {
-    // The rendered button also covers its minimum loading interval.
+    // The rendered button also covers its minimum loading interval: a loading Button stays focusable and says aria-busy.
+    const button = ref.current?.querySelector('button');
     if (value === currentOpen.current || (value &&
-      (unavailable || ref.current?.querySelector('button')?.disabled))) return;
+      (unavailable || button?.disabled || button?.getAttribute("aria-busy") === "true"))) return;
     currentOpen.current = value;
-    setOpen(value);
-    if (!value) setStack([]);
-    if (value) onOpen?.();
-    else onClose?.();
+    if (openProp === undefined) setInternal(value);
+    onOpenChange?.(value);
   };
+  // Lifecycle callbacks describe accepted visibility, not a request the parent may reject.
+  const shown = useRef(false);
   useEffect(() => {
-    if (unavailable) change(false);
+    if (open === shown.current) return;
+    shown.current = open;
+    if (open) onOpen?.();
+    else { setStack([]); onClose?.(); }
+  }, [open]);
+  useEffect(() => {
+    if (unavailable && requested) change(false);
   }, [unavailable]);
   const menuView: MenuView = { view, open: key => { byKeyboard.current = "first"; returnTo.current = ""; setStack(current => [...current, key]); },
     back: () => { returnTo.current = view; setStack(current => current.slice(0, -1)); } };
@@ -185,6 +204,8 @@ export interface KjunDropdownItemProps {
   textValue?: string;
   /** Keeps the menu open after choosing, for toggles the user flips several times. */
   keepOpen?: boolean;
+  /** Inside a KjunDropdownSection with `value`: the value this single choice stands for. */
+  value?: string;
   /** Makes the item a link; the browser follows it. */
   href?: string;
   target?: string;
@@ -212,13 +233,15 @@ export function KjunDropdownItem({
   shortcut,
   textValue,
   keepOpen = false,
+  value,
   href,
   target,
   children,
   onClick,
 }: KjunDropdownItemProps) {
-  const close = useContext(DropdownContext);
+  const close = useContext(DropdownContext), choice = useContext(ChoiceContext);
   const shown = useShown();
+  if (choice && value !== undefined) selected = choice.value === value;
   // A boolean `selected` makes this a single-choice item and `checked` a toggle, like Native's radio and checkbox.
   // react-aria only assigns those roles through menu-wide selection, which would also turn plain action items into them.
   // Applied whenever the rendered element attaches; react-aria keeps its own role value, so React never resets it.
@@ -245,6 +268,7 @@ export function KjunDropdownItem({
       data-kjun-selected={selected === true || undefined}
       onAction={() => {
         onClick?.();
+        if (choice && value !== undefined) choice.onValueChange?.(value);
         if (!keepOpen) close?.();
       }}
     >
@@ -257,16 +281,21 @@ export interface KjunDropdownSectionProps {
   title?: string;
   /** Names the group for screen readers when it has no visible title. */
   ariaLabel?: string;
+  /** Makes the items with a `value` one single choice: the item whose value matches shows the check. null chooses none. */
+  value?: string | null;
+  /** Called with the chosen item's value. */
+  onValueChange?: (value: string) => void;
   children: ReactNode;
 }
-export function KjunDropdownSection({ title, ariaLabel, children }: KjunDropdownSectionProps) {
-  const shown = useShown();
+export function KjunDropdownSection({ title, ariaLabel, value, onValueChange, children }: KjunDropdownSectionProps) {
+  const shown = useShown(), parent = useContext(ChoiceContext);
+  const items = <ChoiceContext.Provider value={value === undefined ? parent : { value, onValueChange }}>{children}</ChoiceContext.Provider>;
   // Outside its own level the group draws nothing itself, but a submenu inside it may be the level shown.
-  if (!shown) return <>{children}</>;
-  return <MenuSection className="kjun-menu-section" aria-label={title ? undefined : ariaLabel}>{title && <Header className="kjun-menu-section-title">{title}</Header>}{children}</MenuSection>;
+  if (!shown) return items;
+  return <MenuSection className="kjun-menu-section" aria-label={title ? undefined : ariaLabel}>{title && <Header className="kjun-menu-section-title">{title}</Header>}{items}</MenuSection>;
 }
 export interface KjunDropdownSubmenuProps {
-  /** Stable key for the submenu; defaults to the label. */
+  /** Stable key for the submenu; defaults to the label. Give each submenu its own id when two at one level share a label. */
   id?: string;
   label: string;
   icon?: string;
@@ -291,7 +320,8 @@ export function KjunDropdownSubmenu({ id, label, icon, disabled = false, childre
         <KjunIcon name="chevron-left" className="kjun-menu-icon" size={tokens.extensions.menu.iconSize} /><span className="kjun-menu-label"><span>{label}</span></span>
       </MenuItem>
     )}
-    <MenuLevelContext.Provider value={key}>{children}</MenuLevelContext.Provider>
+    {/* A submenu's items are their own level, outside any single choice around the submenu row. */}
+    <ChoiceContext.Provider value={null}><MenuLevelContext.Provider value={key}>{children}</MenuLevelContext.Provider></ChoiceContext.Provider>
   </>;
 }
 export function KjunDropdownDivider() {

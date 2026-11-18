@@ -11,9 +11,10 @@ export function generate(input: UsageInput) {
     b.node('KjunDropdownItem', { variant: 'danger', [action]: notify('selectLast', '마지막 항목 선택') }, b.text('마지막 항목')),
     ...(s.rich ? [
       b.node('KjunDropdownDivider'),
-      b.node('KjunDropdownSection', { title: '정렬' }, [
-        b.node('KjunDropdownItem', { selected: true, [action]: notify('sortRecent', '최근 수정순') }, b.text('최근 수정순')),
-        b.node('KjunDropdownItem', { selected: false, [action]: notify('sortName', '이름순') }, b.text('이름순')),
+      // The section's value marks the chosen item; choosing writes it back.
+      b.node('KjunDropdownSection', { title: '정렬', value: b.state('sort', 'recent'), onValueChange: b.update('sort') }, [
+        b.node('KjunDropdownItem', { value: 'recent' }, b.text('최근 수정순')),
+        b.node('KjunDropdownItem', { value: 'name' }, b.text('이름순')),
       ].join('\n')),
       b.node('KjunDropdownSubmenu', { label: '공유', icon: 'send' }, [
         b.node('KjunDropdownItem', { shortcut: '⌘L', [action]: notify('copyLink', '링크 복사') }, b.text('링크 복사')),

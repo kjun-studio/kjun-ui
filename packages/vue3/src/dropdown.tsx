@@ -18,6 +18,10 @@ const kjunDropdownKey: InjectionKey<MenuContext> = Symbol("kjunDropdown");
 // A ref, so a submenu whose label (and so its key) changes keeps its items in step.
 const kjunMenuLevelKey: InjectionKey<{ value: string }> = Symbol("kjunMenuLevel");
 const topLevel = { value: "" };
+// A section with a v-model makes its items with a `value` one single choice; a submenu's items leave it.
+interface Choice { value: string | null; select: (value: string) => void }
+const kjunMenuChoiceKey: InjectionKey<{ get: () => Choice | null }> = Symbol("kjunMenuChoice");
+const noChoice = { get: () => null };
 const items = (menu: HTMLElement) => [...menu.querySelectorAll<HTMLElement>(':is([role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"]):not([data-disabled])')];
 // Typeahead reads the label only, not its description or shortcut.
 const itemText = (item: HTMLElement) => item.dataset.textValue || item.querySelector(".kjun-menu-label > span")?.textContent || item.textContent || "";
@@ -62,11 +66,13 @@ export const KjunDropdown = defineComponent({
     // Going back from a submenu returns focus to the row that opened it.
     let returnTo = "";
     const button = () => wrapper.value?.querySelector<HTMLButtonElement>("button") ?? null;
+    // A loading Button stays focusable and says aria-busy, also through its minimum loading interval.
+    const blocked = (node: HTMLButtonElement | null) => !!node && (node.disabled || node.getAttribute("aria-busy") === "true");
     const controlId = () => props.triggerId || button()?.id || uid;
     const popupId = computed(() => props.menuId || uid + "-menu");
     const change = (value: boolean) => {
       // The rendered button also covers its minimum loading interval.
-      if (value === requested.value || (value && (props.disabled || button()?.disabled))) return;
+      if (value === requested.value || (value && (props.disabled || blocked(button())))) return;
       if (props.open === undefined) internal.value = value;
       emit("update:open", value);
     };
@@ -86,13 +92,13 @@ export const KjunDropdown = defineComponent({
       node.setAttribute("aria-expanded", String(open.value));
       if (open.value) node.setAttribute("aria-controls", popupId.value); else node.removeAttribute("aria-controls");
       // A disabled or loading trigger closes its menu, like React's `unavailable`.
-      unavailable.value = node.disabled;
+      unavailable.value = blocked(node);
     };
     // A child's minimum loading interval can end without rerendering this component.
     watch(wrapper, (element, _previous, onCleanup) => {
       if (!element) return;
       const observer = new MutationObserver(bindTrigger);
-      observer.observe(element, { subtree: true, childList: true, attributes: true, attributeFilter: ["disabled"] });
+      observer.observe(element, { subtree: true, childList: true, attributes: true, attributeFilter: ["disabled", "aria-busy"] });
       onCleanup(() => observer.disconnect());
     }, { flush: "post" });
     watch(() => [open.value, props.disabled, wrapper.value], bindTrigger, { flush: "post", immediate: true });
@@ -187,6 +193,8 @@ const kjunDropdownItemProps = {
   textValue: { type: String, default: undefined },
   /** Keeps the menu open after choosing, for toggles the user flips several times. */
   keepOpen: { type: Boolean, default: false },
+  /** Inside a KjunDropdownSection with v-model: the value this single choice stands for. */
+  value: { type: String, default: undefined },
   /** Makes the item a link; the browser follows it. */
   href: { type: String, default: undefined },
   target: { type: String, default: undefined },
@@ -232,16 +240,19 @@ export const KjunDropdownItem = defineComponent({
   emits: { click: (_event: MouseEvent | KeyboardEvent) => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
-    const level = inject(kjunMenuLevelKey, topLevel);
+    const level = inject(kjunMenuLevelKey, topLevel), choice = inject(kjunMenuChoiceKey, noChoice);
+    const group = () => props.value === undefined ? null : choice.get();
     const row = useMenuRow(() => props.disabled, event => {
       emit("click", event);
+      group()?.select(props.value!);
       // A link row follows its href on click; a key press follows it here.
       if (props.href && event instanceof KeyboardEvent) (row.item.value as HTMLAnchorElement | null)?.click();
       if (!props.keepOpen) row.menu?.close();
     });
     return () => {
       if ((row.menu?.view.value ?? "") !== level.value) return null;
-      const state = props.selected ?? props.checked;
+      const current = group(), selected = current ? current.value === props.value : props.selected;
+      const state = selected ?? props.checked;
       const Tag = props.href ? "a" : "div";
       const label = slots.default?.();
       // A plain-text label is its own typeahead text; anything else falls back to the rendered label.
@@ -250,8 +261,8 @@ export const KjunDropdownItem = defineComponent({
       return (
         <Tag ref={row.item} id={props.id} class="kjun-menu-item" data-variant={props.variant} href={props.disabled ? undefined : props.href} target={props.target}
           // A boolean `selected` makes this a single-choice item and `checked` a toggle, like Native's radio and checkbox.
-          role={props.selected !== null ? "menuitemradio" : props.checked !== null ? "menuitemcheckbox" : "menuitem"} aria-checked={state === null ? undefined : state}
-          aria-keyshortcuts={props.shortcut} data-kjun-selected={props.selected === true || undefined} data-text-value={text} {...row.attrs()}>
+          role={selected !== null ? "menuitemradio" : props.checked !== null ? "menuitemcheckbox" : "menuitem"} aria-checked={state === null ? undefined : state}
+          aria-keyshortcuts={props.shortcut} data-kjun-selected={selected === true || undefined} data-text-value={text} {...row.attrs()}>
           {itemBody({ icon: props.icon, check: state, description: props.description, shortcut: props.shortcut }, label)}
         </Tag>
       );
@@ -264,15 +275,20 @@ const kjunDropdownSectionProps = {
   title: { type: String, default: undefined },
   /** Names the group for screen readers when it has no visible title. */
   ariaLabel: { type: String, default: undefined },
+  /** v-model: makes the items with a `value` one single choice; the item whose value matches shows the check. null chooses none. */
+  modelValue: { type: String as PropType<string | null>, default: undefined },
 } as const;
 export type KjunDropdownSectionProps = ExtractPublicPropTypes<typeof kjunDropdownSectionProps>;
-/** Default slot: items of the group. */
+/** Default slot: items of the group. Events: update:modelValue, change (the chosen item's value). */
 export const KjunDropdownSection = defineComponent({
   name: "KjunDropdownSection",
   props: kjunDropdownSectionProps,
+  emits: { "update:modelValue": (_value: string) => true, change: (_value: string) => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
-  setup(props, { slots }) {
-    const menu = inject(kjunDropdownKey, null), level = inject(kjunMenuLevelKey, topLevel);
+  setup(props, { slots, emit }) {
+    const menu = inject(kjunDropdownKey, null), level = inject(kjunMenuLevelKey, topLevel), parent = inject(kjunMenuChoiceKey, noChoice);
+    const select = (value: string) => { emit("update:modelValue", value); emit("change", value); };
+    provide(kjunMenuChoiceKey, { get: () => props.modelValue === undefined ? parent.get() : { value: props.modelValue, select } });
     const titleId = useKjunId("kjun-menu-section-");
     // Outside its own level the group draws nothing itself, but a submenu inside it may be the level shown.
     return () => (menu?.view.value ?? "") !== level.value ? slots.default?.() : (
@@ -285,7 +301,7 @@ export const KjunDropdownSection = defineComponent({
 });
 
 const kjunDropdownSubmenuProps = {
-  /** Stable key for the submenu; defaults to the label. */
+  /** Stable key for the submenu; defaults to the label. Give each submenu its own id when two at one level share a label. */
   id: { type: String, default: undefined },
   label: { type: String, required: true },
   icon: { type: String, default: undefined },
@@ -302,6 +318,7 @@ export const KjunDropdownSubmenu = defineComponent({
     const level = inject(kjunMenuLevelKey, topLevel);
     const key = computed(() => (level.value ? level.value + "/" : "") + (props.id ?? props.label));
     provide(kjunMenuLevelKey, key);
+    provide(kjunMenuChoiceKey, noChoice);
     const trigger = useMenuRow(() => props.disabled, () => trigger.menu?.open(key.value));
     const back = useMenuRow(() => false, () => back.menu?.back());
     return () => {

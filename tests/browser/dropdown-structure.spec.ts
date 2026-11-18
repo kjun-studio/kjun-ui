@@ -54,6 +54,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(back).toBeVisible();
     await expect(row(page, '링크 복사')).toBeVisible();
     await expect(row(page, '이름순')).toHaveCount(0);
+    // The back row's icon column is kept for every row of the submenu, so the labels share one start line.
+    await expect.poll(async () => Math.round((await row(page, '링크 복사').getByText('링크 복사').boundingBox())!.x)
+      - Math.round((await back.getByText('공유').boundingBox())!.x)).toBe(0);
     await back.click();
     await expect(row(page, '이름순')).toBeVisible();
     await expect(row(page, '링크 복사')).toHaveCount(0);
@@ -81,6 +84,38 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(menu(page, platform)).toBeHidden();
     await expect(page.getByTestId('last')).toHaveText('PDF');
     await expect(trigger(page)).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test(`${platform}: a section value makes its items one single choice`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await openFixture(page, platform, '', 'dropdown-structure');
+    await trigger(page).click();
+    await page.getByRole(radio, { name: '날짜순' }).click();
+    await expect(menu(page, platform)).toBeHidden();
+    // The item's own handler runs, then the section reports the item's value.
+    await expect(page.getByTestId('last')).toHaveText('날짜순');
+    await trigger(page).click();
+    await expect(page.getByRole(radio, { name: '날짜순' })).toHaveAttribute('aria-checked', 'true');
+    await expect(page.getByRole(radio, { name: '이름순' })).toHaveAttribute('aria-checked', 'false');
+    // Items inside a submenu are not part of the choice around it.
+    await row(page, '공유').click();
+    await expect(page.getByRole('menuitem', { name: '링크 복사' })).toBeVisible();
+  });
+
+  test(`${platform}: open can be controlled from outside`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await openFixture(page, platform, '', 'dropdown-structure');
+    const controlled = page.getByRole('button', { name: '제어 메뉴', exact: true });
+    await page.getByRole('button', { name: '밖에서 열기', exact: true }).click();
+    await expect(row(page, '제어 항목')).toBeVisible();
+    await expect(controlled).toHaveAttribute('aria-expanded', 'true');
+    await row(page, '제어 항목').click();
+    await expect(row(page, '제어 항목')).toHaveCount(0);
+    await expect(page.getByTestId('controlled')).toHaveText('false');
+    await expect(page.getByTestId('last')).toHaveText('제어 항목');
+    await controlled.click();
+    await expect(row(page, '제어 항목')).toBeVisible();
+    await expect(page.getByTestId('controlled')).toHaveText('true');
   });
 
   test(`${platform}: compact density tightens rows for fine pointers`, async ({ page }) => {
@@ -129,5 +164,36 @@ for (const platform of ['react', 'vue3', 'native']) {
     // ↑ opens on the last row. (Typeahead is covered by tests/typeahead.test.mjs: Playwright types Hangul without key events.)
     await page.keyboard.press('ArrowUp');
     await expect(row(page, '삭제')).toBeFocused();
+  });
+
+  // Native Web walks its rows with the same keys as the web menus.
+  if (!web) test(`${platform}: keys walk rows and submenus on Native Web`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await openFixture(page, platform, '', 'dropdown-structure');
+    await trigger(page).press('Enter');
+    await expect(row(page, '이름순')).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await expect(row(page, '날짜순')).toBeFocused();
+    await page.keyboard.press('End');
+    await expect(row(page, '삭제')).toBeFocused();
+    await page.keyboard.press('ArrowUp');
+    await expect(row(page, '공유')).toBeFocused();
+    await page.keyboard.press('Home');
+    await expect(row(page, '이름순')).toBeFocused();
+    await page.keyboard.press('End');
+    await page.keyboard.press('ArrowUp');
+    await page.keyboard.press('ArrowRight');
+    await expect(page.getByRole('menuitem', { name: '뒤로, 공유', exact: true })).toBeFocused();
+    await expect(row(page, '링크 복사')).toBeVisible();
+    await page.keyboard.press('ArrowLeft');
+    await expect(row(page, '링크 복사')).toHaveCount(0);
+    await expect(row(page, '공유')).toBeFocused();
+    // Escape inside a submenu steps back one level instead of closing.
+    await page.keyboard.press('ArrowRight');
+    await expect(row(page, '링크 복사')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(row(page, '공유')).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(menu(page, platform)).toBeHidden();
   });
 }
