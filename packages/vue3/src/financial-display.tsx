@@ -5,6 +5,7 @@ import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import { deviationText } from "../../../shared/package-runtime/signed-number";
 import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
+import { heatCell, progressCellState, type HeatCellColor, type HeatCellMode, type ProgressCellColor } from "../../../shared/package-runtime/data-cells";
 import { KjunIcon } from "./button";
 import { KjunBadge, type DisplaySize } from "./display";
 import { useKjunId } from "./input";
@@ -66,11 +67,14 @@ export const KjunDeviation = defineComponent({
 });
 
 const kjunHeatmapCellProps = {
-  value: { type: Number, default: 0 },
+  /** null or a number that is not finite shows a dash on no fill. */
+  value: { type: [Number, null] as PropType<number | null>, default: 0 },
   min: { type: Number, default: 0 },
   max: { type: Number, default: 1 },
-  mode: { type: String as PropType<"diverging" | "sequential" | "price">, default: "diverging" },
-  color: { type: String as PropType<"brand" | "success" | "danger" | "warning">, default: "brand" },
+  /** Where diverging and price cells change side (default the middle of min and max). Both sides share one scale. */
+  center: { type: Number, default: undefined },
+  mode: { type: String as PropType<HeatCellMode>, default: "diverging" },
+  color: { type: String as PropType<HeatCellColor>, default: "brand" },
 } as const;
 export type KjunHeatmapCellProps = ExtractPublicPropTypes<typeof kjunHeatmapCellProps>;
 /** Default slot replaces the shown value. */
@@ -80,17 +84,16 @@ export const KjunHeatmapCell = defineComponent({
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     return () => {
-      const { value, min, max, mode } = props;
-      const ratio = max === min ? 0.5 : Math.min(1, Math.max(0, (value - min) / (max - min)));
-      const role = mode === "price" ? ratio >= 0.5 ? "price-up" : "price-down" : mode === "diverging" ? ratio >= 0.5 ? "success" : "danger" : props.color;
-      const magnitude = mode === "sequential" ? ratio : Math.abs(ratio - 0.5) * 2, { heatMinimum, heatMaximum } = tokens.states.opacity;
+      const cell = heatCell(props.value, props.min, props.max, props.mode, props.color, props.center);
+      // A missing value keeps the cell's neutral fill, so a grid keeps its rhythm, and shows a dash.
+      if (cell.missing) return <span class="kjun-heat-cell" data-missing=""><span aria-hidden="true" class="kjun-heat-layer" style={{ background: "var(--_kjun-color-secondary)" }} /><span>—</span></span>;
       return (
-        <span class="kjun-heat-cell" ref={domainRef(mode === "price")}>
-          {/* A zero cell keeps its shape on the neutral fill; any other value starts from a visible minimum. */}
-          <span aria-hidden="true" class="kjun-heat-layer" style={magnitude
-            ? { background: `var(--_kjun-color-${role})`, opacity: heatMinimum + (heatMaximum - heatMinimum) * magnitude }
+        <span class="kjun-heat-cell" ref={domainRef(props.mode === "price")}>
+          {/* A cell at the centre keeps its shape on the neutral fill; any other value starts from a visible minimum. */}
+          <span aria-hidden="true" class="kjun-heat-layer" style={cell.magnitude
+            ? { background: `var(--_kjun-color-${cell.role})`, opacity: cell.opacity }
             : { background: "var(--_kjun-color-secondary)" }} />
-          <span>{slots.default ? slots.default() : signedText(value)}</span>
+          <span>{slots.default ? slots.default() : signedText(props.value)}</span>
         </span>
       );
     };
@@ -101,9 +104,14 @@ const kjunProgressCellProps = {
   value: { type: Number, default: 0 },
   max: { type: Number, default: 100 },
   showLabel: { type: Boolean, default: true },
-  color: { type: String as PropType<"auto" | "brand" | "success" | "danger" | "warning" | "custom">, default: "auto" },
+  /** "custom" (or customColor alone) takes customColor; without one "custom" falls back to the auto colours. */
+  color: { type: String as PropType<ProgressCellColor>, default: "auto" },
   customColor: { type: String, default: undefined },
   height: { type: Number, default: tokens.extensions.financial.progressHeight },
+  /** Shown and read in place of the rounded percent, e.g. "12/20건"; the bar's length still comes from value and max. */
+  valueText: { type: String, default: undefined },
+  /** The bar's name for screen readers, e.g. the row's name ("A팀 진척"). */
+  ariaLabel: { type: String, default: undefined },
   /** A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget. */
   marker: { type: Number, default: undefined },
   /** Read by screen readers as the bar's description, e.g. "오늘 기준 53%". */
@@ -117,18 +125,17 @@ export const KjunProgressCell = defineComponent({
     const markerId = useKjunId("kjun-progress-marker-");
     return () => {
       const mark = progressMarker(props.marker, props.max);
-      const percent = props.max > 0 && Number.isFinite(props.value) ? Math.min(100, Math.max(0, (props.value / props.max) * 100)) : 0;
-      const role = props.color === "auto" ? percent < 30 ? "danger" : percent < 70 ? "warning" : "success" : props.color;
+      const { percent, rounded, role, custom } = progressCellState(props.value, props.max, props.color, props.customColor);
       return (
         <div class="kjun-progress-cell">
           {/* The bar is a progressbar, so its value reaches screen readers also without the visible label. */}
-          <div style={css({ height: props.height })} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(percent)}
-            data-marker={mark != null || undefined} aria-describedby={mark != null && props.markerLabel ? markerId : undefined}>
-            <span style={{ width: percent + "%", background: props.color === "custom" ? props.customColor : `var(--_kjun-color-${role})` }} />
+          <div style={css({ height: props.height })} role="progressbar" aria-label={props.ariaLabel} aria-valuemin={0} aria-valuemax={100} aria-valuenow={rounded}
+            aria-valuetext={props.valueText} data-marker={mark != null || undefined} aria-describedby={mark != null && props.markerLabel ? markerId : undefined}>
+            <span style={{ width: percent + "%", background: custom ?? `var(--_kjun-color-${role})` }} />
             {mark != null && <span class="kjun-progress-marker" aria-hidden="true" style={{ left: `calc(${mark}% - ${progressMarkerInset(mark)}px)` }} />}
             {mark != null && props.markerLabel && <span id={markerId} hidden>{props.markerLabel}</span>}
           </div>
-          {props.showLabel && <span aria-hidden="true">{Math.round(percent)}%</span>}
+          {props.showLabel && <span aria-hidden="true">{props.valueText ?? rounded + "%"}</span>}
         </div>
       );
     };

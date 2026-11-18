@@ -4,6 +4,7 @@ import { tokens } from "@kjun-ui/tokens";
 import { deviationText } from "../../../shared/package-runtime/signed-number";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
 import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
+import { heatCell, progressCellState, type HeatCellColor, type HeatCellMode, type ProgressCellColor } from "../../../shared/package-runtime/data-cells";
 import {
 useId,
 type ReactNode
@@ -83,43 +84,36 @@ export function KjunDeviation({
   );
 }
 export interface KjunHeatmapCellProps {
-  value?: number;
+  /** null or a number that is not finite shows a dash on no fill. */
+  value?: number | null;
   min?: number;
   max?: number;
-  mode?: "diverging" | "sequential" | "price";
-  color?: "brand" | "success" | "danger" | "warning";
+  /** Where diverging and price cells change side (default the middle of min and max). Both sides share one scale. */
+  center?: number;
+  mode?: HeatCellMode;
+  color?: HeatCellColor;
   children?: ReactNode;
 }
 export function KjunHeatmapCell({
   value = 0,
   min = 0,
   max = 1,
+  center,
   mode = "diverging",
   color = "brand",
   children,
 }: KjunHeatmapCellProps) {
-  const ratio =
-    max === min ? 0.5 : Math.min(1, Math.max(0, (value - min) / (max - min)));
-  const role =
-    mode === "price"
-      ? ratio >= 0.5
-        ? "price-up"
-        : "price-down"
-      : mode === "diverging"
-      ? ratio >= 0.5
-        ? "success"
-        : "danger"
-      : color;
-  const magnitude = mode === "sequential" ? ratio : Math.abs(ratio - 0.5) * 2,
-    { heatMinimum, heatMaximum } = tokens.states.opacity;
+  const cell = heatCell(value, min, max, mode, color, center);
+  // A missing value keeps the cell's neutral fill, so a grid keeps its rhythm, and shows a dash.
+  if (cell.missing) return <span className="kjun-heat-cell" data-missing=""><span aria-hidden="true" className="kjun-heat-layer" style={{ background: "var(--_kjun-color-secondary)" }} /><span>—</span></span>;
   return (
     <span className="kjun-heat-cell" ref={domainColorRef(mode === 'price')}>
       <span
         aria-hidden="true"
         className="kjun-heat-layer"
-        // A zero cell keeps its shape on the neutral fill; any other value starts from a visible minimum.
-        style={magnitude
-          ? { background: `var(--_kjun-color-${role})`, opacity: heatMinimum + (heatMaximum - heatMinimum) * magnitude }
+        // A cell at the centre keeps its shape on the neutral fill; any other value starts from a visible minimum.
+        style={cell.magnitude
+          ? { background: `var(--_kjun-color-${cell.role})`, opacity: cell.opacity }
           : { background: "var(--_kjun-color-secondary)" }}
       />
       <span>{signedText(children ?? value)}</span>
@@ -130,9 +124,14 @@ export interface KjunProgressCellProps {
   value?: number;
   max?: number;
   showLabel?: boolean;
-  color?: "auto" | "brand" | "success" | "danger" | "warning" | "custom";
+  /** "custom" (or customColor alone) takes customColor; without one "custom" falls back to the auto colours. */
+  color?: ProgressCellColor;
   customColor?: string;
   height?: number;
+  /** Shown and read in place of the rounded percent, e.g. "12/20건"; the bar's length still comes from value and max. */
+  valueText?: string;
+  /** The bar's name for screen readers, e.g. the row's name ("A팀 진척"). */
+  ariaLabel?: string;
   /** A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget. */
   marker?: number;
   /** Read by screen readers as the bar's description, e.g. "오늘 기준 53%". */
@@ -145,38 +144,23 @@ export function KjunProgressCell({
   color = "auto",
   customColor,
   height = tokens.extensions.financial.progressHeight,
+  valueText,
+  ariaLabel,
   marker,
   markerLabel,
 }: KjunProgressCellProps) {
   const mark = progressMarker(marker, max), markerId = "kjun-progress-marker-" + useId().replace(/:/g, "");
-  const percent =
-      max > 0 && Number.isFinite(value)
-        ? Math.min(100, Math.max(0, (value / max) * 100))
-        : 0,
-    role =
-      color === "auto"
-        ? percent < 30
-          ? "danger"
-          : percent < 70
-          ? "warning"
-          : "success"
-        : color;
+  const { percent, rounded, role, custom } = progressCellState(value, max, color, customColor);
   return (
     <div className="kjun-progress-cell">
       {/* The bar is a progressbar, so its value reaches screen readers also without the visible label. */}
-      <div style={{ height }} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(percent)}
-        data-marker={mark != null || undefined} aria-describedby={mark != null && markerLabel ? markerId : undefined}>
-        <span
-          style={{
-            width: percent + "%",
-            background:
-              color === "custom" ? customColor : `var(--_kjun-color-${role})`,
-          }}
-        />
+      <div style={{ height }} role="progressbar" aria-label={ariaLabel} aria-valuemin={0} aria-valuemax={100} aria-valuenow={rounded}
+        aria-valuetext={valueText} data-marker={mark != null || undefined} aria-describedby={mark != null && markerLabel ? markerId : undefined}>
+        <span style={{ width: percent + "%", background: custom ?? `var(--_kjun-color-${role})` }} />
         {mark != null && <span className="kjun-progress-marker" aria-hidden="true" style={{ left: `calc(${mark}% - ${progressMarkerInset(mark)}px)` }} />}
         {mark != null && markerLabel && <span id={markerId} hidden>{markerLabel}</span>}
       </div>
-      {showLabel && <span aria-hidden="true">{Math.round(percent)}%</span>}
+      {showLabel && <span aria-hidden="true">{valueText ?? rounded + "%"}</span>}
     </div>
   );
 }

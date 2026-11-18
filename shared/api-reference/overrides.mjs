@@ -424,9 +424,21 @@ set("SignedValue", {
   format: { summary: "표시 형식입니다. percent는 값을 보이는 그대로 퍼센트로 표시합니다(2.35 → +2.35%). 비율(0.0235)을 가진 곳은 value * 100으로 넘기세요." },
 });
 set("PriceCell", {
+  flash: { default: "false", summary: "값이 바뀌면 이전 값과 비교해 오르면 상승색, 내리면 하락색으로 잠깐 깜빡입니다. true·\"text\"는 숫자 색이 motion.priceFlash(800ms) 동안 돌아오고, \"background\"는 가격 셀의 알약 배경이 motion.priceBackground(1000ms) 동안 옅어집니다. 배경을 담을 좌우 8px·위아래 2px 여백은 \"background\"일 때만 생기고, 그 밖의 가격은 주변 글자와 같은 선에서 시작합니다. 시세 목록·표 안의 가격 셀은 여백이 0이라 배경이 숫자에 붙습니다. 움직임 줄이기 설정에서는 깜빡이지 않습니다." },
   flashClass:
-    "소비자가 지정한 웹 강조 클래스입니다. 가격 변화를 감지해 자동으로 넣고 빼지 않습니다.",
-  status: "가격 뒤에 둘 상태 표시입니다. 문구와 배지 색은 앱이 정하고, KJUN은 가격 셀 뒤 6px 간격과 세로 가운데 정렬만 맡습니다(단독 가격 셀은 강조 배경용 좌우 8px 여백이 있어 숫자에서 14px, 시세 목록·표에서는 6px). 목록·표에는 xs KjunBadge를 권장합니다.",
+    "더 이상 권장하지 않습니다. flash를 쓰세요. 소비자가 직접 넣고 빼는 웹 강조 클래스이며 가격 변화를 감지하지 않습니다.",
+  status: "가격 뒤에 둘 상태 표시입니다. 문구와 배지 색은 앱이 정하고, KJUN은 가격 셀 뒤 6px 간격과 세로 가운데 정렬만 맡습니다(flash=\"background\"인 단독 가격 셀은 배경용 좌우 8px 여백이 있어 숫자에서 14px, 그 밖에는 6px). 목록·표에는 xs KjunBadge를 권장합니다.",
+  stale: "가격을 옅은 글자색으로 표시합니다. 색만 바뀌므로 '지연' 같은 뜻은 status 배지로 함께 알립니다.",
+  value: "가격입니다. null이면 status가 있을 때 — 와 상태를, 없으면 불러오는 중으로 보고 스켈레톤과 화면 낭독기용 '로딩 중'(메시지 loading)을 표시합니다.",
+});
+set("HeatmapCell", {
+  value: "칸의 값입니다. null이거나 유한하지 않은 숫자면 채움 없이 — 를 표시합니다.",
+  center: { default: "(min + max) / 2", summary: "diverging·price에서 색이 갈리는 기준점입니다. 기준보다 크면 success·상승색, 작으면 danger·하락색입니다. 양쪽은 같은 눈금(기준에서 min·max 가운데 먼 쪽까지의 거리)을 쓰므로 같은 진하기가 같은 크기를 뜻합니다. sequential에서는 쓰지 않습니다." },
+});
+set("ProgressCell", {
+  valueText: "반올림한 백분율 대신 보여 주고 읽어 줄 문구입니다(예: \"12/20건\"). 막대 길이는 value와 max로 정합니다. 라벨 칸은 최소 32px이고 문구가 길면 넓어지므로, 한 열에서 막대 길이를 맞추려면 문구 길이를 맞춥니다.",
+  ariaLabel: "막대의 접근성 이름입니다(예: \"A팀 진척\"). 표 행마다 무엇의 진행률인지 화면 낭독기가 읽도록 줍니다.",
+  color: { default: '"auto"', summary: "막대 색입니다. auto는 30% 미만 danger, 70% 미만 warning, 그 이상 success입니다. custom은 customColor를 쓰고, customColor만 주어도(color가 auto일 때) custom으로 봅니다. custom인데 customColor가 없으면 auto 색을 씁니다." },
 });
 set("MarketSimpleList MarketTable", { renderStatus: "행의 시세 상태(종가·지연 등)를 반환합니다. 목록은 등락률 앞, 표는 가격 칸 값 뒤에 둡니다. 문구와 배지 색은 앱이 정합니다." });
 set("Progress", { label: "진행률의 제목입니다. showLabel과 관계없이 표시하며 showLabel은 백분율을 더합니다." });

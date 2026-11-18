@@ -252,11 +252,18 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         button("숫자 변경", () => set("number", get("number", 1234567) + 123)),
       ]);
     case "KjunPriceCell":
-      return h(name, {
-        value: 1234567,
-        formatter: priceFormat,
-        stale: settings.stale,
-      }, undefined, { status: settings.stale ? h("KjunBadge", { variant: "warning", size: "xs" }, "지연") : null });
+      return h("Stack", {}, [
+        h(name, {
+          value: get("price", 84200),
+          formatter: priceFormat,
+          stale: settings.stale,
+          flash: true,
+        }, undefined, { status: settings.stale ? h("KjunBadge", { variant: "warning", size: "xs" }, "지연") : null }),
+        h("Group", {}, [
+          button("오름", () => set("price", get("price", 84200) + 100)),
+          button("내림", () => set("price", get("price", 84200) - 100)),
+        ]),
+      ]);
     case "KjunSignedValue":
       return h(
         "Group",
@@ -280,12 +287,15 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
       return h(
         "Group",
         {},
-        [-1, -0.5, 0, 0.5, 1].map((value) =>
-          h(name, { value, min: -1, max: 1, mode: "price" }, String(value))
+        [-4, -1, 0, 2, 6, 10].map((value) =>
+          h(name, { value, min: -5, max: 10, center: 0, mode: "price" }, (value > 0 ? "+" : "") + value + "%")
         )
       );
     case "KjunProgressCell":
-      return h(name, { value: 42, max: 100, showLabel: true });
+      return h("Stack", {}, [
+        h(name, { value: 42, max: 100, showLabel: true, ariaLabel: "A팀 진척" }),
+        h(name, { value: 12, max: 20, valueText: "12/20건", ariaLabel: "B팀 진척" }),
+      ]);
     case "KjunCollectionMark":
       return h("Group", {}, [
         h(name, { kind: "favorite", active: true }),

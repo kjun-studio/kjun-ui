@@ -28,6 +28,7 @@ import { signedText } from "./number-display";
 import { useKjunStyles } from "./provider";
 import { ProgressMarker } from "./progress";
 import { progressMarker } from "../../../shared/package-runtime/progress-marker";
+import { heatCell, progressCellState, type HeatCellColor, type HeatCellMode, type ProgressCellColor } from "../../../shared/package-runtime/data-cells";
 
 // Fill strength of a non-neutral deviation step.
 const deviationFill = { neutral: 1, low: tokens.states.opacity.deviationLow, medium: tokens.states.opacity.deviationMedium, strong: tokens.states.opacity.deviationStrong };
@@ -138,59 +139,53 @@ export function KjunDeviation({
   );
 }
 export interface KjunHeatmapCellProps {
-  value?: number;
+  /** null or a number that is not finite shows a dash on no fill. */
+  value?: number | null;
   min?: number;
   max?: number;
-  mode?: "diverging" | "sequential" | "price";
-  color?: "brand" | "success" | "danger" | "warning";
+  /** Where diverging and price cells change side (default the middle of min and max). Both sides share one scale. */
+  center?: number;
+  mode?: HeatCellMode;
+  color?: HeatCellColor;
   children?: ReactNode;
 }
 export function KjunHeatmapCell({
   value = 0,
   min = 0,
   max = 1,
+  center,
   mode = "diverging",
   color = "brand",
   children,
 }: KjunHeatmapCellProps) {
-  const { colors, domainColors, numericFontFamily, fontFamily } =
-      useKjunStyles(),
-    ratio =
-      max === min ? 0.5 : Math.min(1, Math.max(0, (value - min) / (max - min)));
-  const background =
-    mode === "price"
-      ? domainColor(domainColors, ratio >= 0.5 ? "priceUp" : "priceDown")
-      : mode === "diverging"
-      ? ratio >= 0.5
-        ? colors.success
-        : colors.danger
-      : colors[color];
-  const magnitude = mode === "sequential" ? ratio : Math.abs(ratio - 0.5) * 2;
+  const { colors, domainColors, numericFontFamily, fontFamily } = useKjunStyles(),
+    cell = heatCell(value, min, max, mode, color, center),
+    numeric = { fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums" as const] };
+  const box = {
+    position: "relative" as const,
+    alignSelf: "flex-start" as const,
+    paddingVertical: tokens.extensions.financial.pillPaddingY,
+    paddingHorizontal: tokens.extensions.financial.pillPaddingX,
+    borderRadius: tokens.extensions.financial.cellRadius,
+  };
+  // Like Web: a missing value keeps the neutral fill, so a grid keeps its rhythm, and shows a dash.
+  if (cell.missing) return <View style={[box, { backgroundColor: colors.secondary }]}><KText style={{ ...numeric, color: colors.textDisabled }}>—</KText></View>;
+  const background = cell.role === "price-up" ? domainColor(domainColors, "priceUp")
+    : cell.role === "price-down" ? domainColor(domainColors, "priceDown") : colors[cell.role];
   return (
-    <View
-      style={{
-        position: "relative",
-        alignSelf: "flex-start",
-        paddingVertical: tokens.extensions.financial.pillPaddingY,
-        paddingHorizontal: tokens.extensions.financial.pillPaddingX,
-        borderRadius: tokens.extensions.financial.cellRadius,
-      }}
-    >
+    <View style={box}>
       <View
         pointerEvents="none"
         style={{
           position: "absolute",
           inset: 0,
           borderRadius: tokens.extensions.financial.cellRadius,
-          // A zero cell keeps its shape on the neutral fill; any other value starts from a visible minimum.
-          backgroundColor: magnitude ? background : colors.secondary,
-          opacity: magnitude ? tokens.states.opacity.heatMinimum + (tokens.states.opacity.heatMaximum - tokens.states.opacity.heatMinimum) * magnitude : 1,
+          // A cell at the centre keeps its shape on the neutral fill; any other value starts from a visible minimum.
+          backgroundColor: cell.magnitude ? background : colors.secondary,
+          opacity: cell.opacity,
         }}
       />
-      {content(children ?? value, {
-        fontFamily: numericFontFamily || fontFamily,
-        fontVariant: ["tabular-nums"],
-      }, signedText)}
+      {content(children ?? value, numeric, signedText)}
     </View>
   );
 }
@@ -198,9 +193,14 @@ export interface KjunProgressCellProps {
   value?: number;
   max?: number;
   showLabel?: boolean;
-  color?: "auto" | "brand" | "success" | "danger" | "warning" | "custom";
+  /** "custom" (or customColor alone) takes customColor; without one "custom" falls back to the auto colours. */
+  color?: ProgressCellColor;
   customColor?: ColorValue;
   height?: number;
+  /** Shown and read in place of the rounded percent, e.g. "12/20건"; the bar's length still comes from value and max. */
+  valueText?: string;
+  /** The bar's name for screen readers, e.g. the row's name ("A팀 진척"). */
+  ariaLabel?: string;
   /** A reference point across the bar on the value's own scale (0 to max), such as today's share of a budget. */
   marker?: number;
   /** Read by screen readers as the bar's hint, e.g. "오늘 기준 53%". */
@@ -213,30 +213,27 @@ export function KjunProgressCell({
   color = "auto",
   customColor,
   height = tokens.extensions.financial.progressHeight,
+  valueText,
+  ariaLabel,
   marker,
   markerLabel,
 }: KjunProgressCellProps) {
   const mark = progressMarker(marker, max);
   const { colors, numericFontFamily, fontFamily } = useKjunStyles(),
-    percent =
-      max > 0 && Number.isFinite(value)
-        ? Math.min(100, Math.max(0, (value / max) * 100))
-        : 0,
-    role =
-      color === "auto"
-        ? percent < 30
-          ? "danger"
-          : percent < 70
-          ? "warning"
-          : "success"
-        : color;
+    { percent, rounded, role, custom } = progressCellState(value, max, color, customColor);
   return (
     // One progressbar with its value, so screen readers hear it also without the visible label.
     <View
       accessible
       accessibilityRole="progressbar"
-      accessibilityValue={{ min: 0, max: 100, now: Math.round(percent) }}
+      accessibilityLabel={ariaLabel}
+      accessibilityValue={{ min: 0, max: 100, now: rounded, ...(valueText ? { text: valueText } : {}) }}
       accessibilityHint={mark != null ? markerLabel : undefined}
+      // Like KjunProgress: RN Web drops accessibilityValue, so the value also goes out as aria-*.
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={rounded}
+      aria-valuetext={valueText}
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -258,10 +255,7 @@ export function KjunProgressCell({
             width: `${percent}%`,
             height: "100%",
             borderRadius: tokens.extensions.financial.progressRadius,
-            backgroundColor:
-              color === "custom"
-                ? customColor
-                : colors[role as keyof typeof colors],
+            backgroundColor: custom ?? colors[role as keyof typeof colors],
           }}
         />
       </View>
@@ -273,13 +267,13 @@ export function KjunProgressCell({
             ...typeStyle('caption'),
             color: colors.textSecondary,
             minWidth: tokens.extensions.financial.progressLabelWidth,
-            // Like Web: the value sits beside its bar; the fixed width keeps every bar the same length.
-            textAlign: "left",
+            // Like Web: the value sits beside its bar, end-aligned so a column's digits line up; the minimum width keeps every bar the same length.
+            textAlign: "right",
             fontFamily: numericFontFamily || fontFamily,
             fontVariant: ["tabular-nums"],
           }}
         >
-          {Math.round(percent)}%
+          {valueText ?? rounded + "%"}
         </KText>
       )}
     </View>

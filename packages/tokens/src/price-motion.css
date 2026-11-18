@@ -61,8 +61,12 @@
 .kjun-scope .kjun-price-flash-down-bg-pop { animation: kjun-price-flash-down-bg-pop var(--_kjun-motion-price-background) var(--_kjun-ease-out); }
 
 
+/* Only a background flash needs room around the digits; a plain price lines up with the text around it.
+   A manual background class (deprecated flashClass) keeps the room too. */
 .kjun-scope .kjun-price-cell {
   display: inline-block;
+}
+.kjun-scope .kjun-price-cell:is([data-flash="background"], [class*="kjun-price-flash-"][class*="-bg"]) {
   padding: var(--_kjun-geometry-dimension-value2) var(--_kjun-geometry-dimension-value8);
   border-radius: var(--_kjun-geometry-radius-radius9999);
 }

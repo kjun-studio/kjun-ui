@@ -10,6 +10,8 @@ type ReactNode
 } from "react";
 import { KjunSkeleton } from "./display";
 import { splitNumberSign } from "../../../shared/package-runtime/number-sign";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { priceFlashClass, priceFlashDirection, priceFlashKind, type PriceFlash } from "../../../shared/package-runtime/data-cells";
 /** A leading sign drawn tight to its digits (see splitNumberSign); other content passes through. */
 export function signedText(value: ReactNode): ReactNode {
   const parts = splitNumberSign(value);
@@ -72,26 +74,49 @@ export interface KjunPriceCellProps {
   /** The app's status after the price, such as a KjunBadge; KJUN owns only its spacing and alignment.
    * With no price (value null) a status still shows after a dash, for states such as "거래정지"; without one null is loading. */
   status?: ReactNode;
+  /** Flash when the value moves: true or "text" colours the digits up or down, "background" fills the cell's pill.
+   * Off under reduced motion. */
+  flash?: PriceFlash;
+  /** @deprecated Use flash. A class the app adds and removes itself. */
   flashClass?: string;
   fromPrevious?: boolean;
+}
+/** The flash class for the latest move, restarted on every move and cleared when its animation ends. */
+function usePriceFlash(value: number | null | undefined, flash: PriceFlash | undefined) {
+  const kind = priceFlashKind(flash), previous = useRef(value), [shown, setShown] = useState("");
+  useEffect(() => {
+    const direction = kind ? priceFlashDirection(previous.current, value) : null;
+    previous.current = value;
+    if (!kind || !direction) return;
+    // Drop the class for a frame so a move during a running flash starts it again.
+    setShown("");
+    const frame = requestAnimationFrame(() => setShown(priceFlashClass(kind, direction)));
+    return () => cancelAnimationFrame(frame);
+  }, [value, kind]);
+  return [kind ? shown : "", () => setShown("")] as const;
 }
 export function KjunPriceCell({
   value,
   formatter,
   stale = false,
   status,
+  flash,
   flashClass = "",
   fromPrevious = true,
 }: KjunPriceCellProps) {
+  const m = useKjunMessages(), [flashing, endFlash] = usePriceFlash(value, flash);
   if (value == null) return hasContent(status)
     ? <><span className="kjun-price-cell" data-missing="">—</span><PriceStatus status={status} /></>
-    : <KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth} />;
+    : <span className="kjun-price-loading"><KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth} /><span className="kjun-sr-only">{m.loading}</span></span>;
+  const className = ["kjun-price-cell", flashClass, flashing].filter(Boolean).join(" ");
   return (
     <>
       <span
-        className={"kjun-price-cell " + flashClass}
-        ref={domainColorRef(/\bkjun-price-flash-(up|down)/.test(flashClass))}
+        className={className}
+        data-flash={priceFlashKind(flash) ?? undefined}
+        ref={domainColorRef(/\bkjun-price-flash-(up|down)/.test(className))}
         style={{ color: stale ? "var(--_kjun-color-text-tertiary)" : undefined }}
+        onAnimationEnd={event => { if (event.target === event.currentTarget) endFlash(); }}
       >
         <KjunAnimatedNumber
           value={value}

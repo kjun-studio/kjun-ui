@@ -40,9 +40,9 @@
     "native": ["columns", "rows", "showActions"]
   },
   "KjunPriceCell": {
-    "vue3": ["value", "formatter", "stale", "flashClass", "fromPrevious"],
-    "react": ["value", "formatter", "flashClass", "fromPrevious", "stale", "status"],
-    "native": ["value", "formatter", "fromPrevious", "stale", "status"]
+    "vue3": ["value", "formatter", "stale", "flash", "flashClass", "fromPrevious"],
+    "react": ["value", "formatter", "flash", "flashClass", "fromPrevious", "stale", "status"],
+    "native": ["value", "formatter", "flash", "fromPrevious", "stale", "status"]
   },
   "KjunSignedValue": {
     "vue3": ["value", "format", "decimals", "prefix", "suffix", "showSign", "tone", "loading", "stale", "formatter"],

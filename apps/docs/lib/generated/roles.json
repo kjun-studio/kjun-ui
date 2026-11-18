@@ -610,6 +610,7 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/file-upload.css",
+      "packages/tokens/src/financial.css",
       "packages/tokens/src/layout.css",
       "packages/tokens/src/motion.css",
       "packages/tokens/src/navigation.css",

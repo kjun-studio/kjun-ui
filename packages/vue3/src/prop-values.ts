@@ -227,6 +227,9 @@ export const kjunPropValues = Object.freeze({
   KjunPressable: Object.freeze({
     pressEffect: Object.freeze(["none","overlay"] as const),
   }),
+  KjunPriceCell: Object.freeze({
+    flash: Object.freeze([false,true,"background","text"] as const),
+  }),
   KjunProgress: Object.freeze({
     shape: Object.freeze(["bar","circle"] as const),
     size: Object.freeze(["sm","md","lg"] as const),

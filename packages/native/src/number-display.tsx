@@ -4,7 +4,9 @@ import { typeStyle } from "./typography";
 import { useNumberMotion } from "../../../shared/package-runtime/use-number-motion";
 import { createContext,useContext,useEffect,useRef,useState,type ReactNode } from "react";
 import {
+Animated,
 StyleSheet,
+type ColorValue,
 Text,
 View,
 type StyleProp,
@@ -15,6 +17,9 @@ import { KText,content,domainColor,useReducedMotion, FontText } from "./internal
 import { useKjunStyles } from "./provider";
 import { KpiNumberLine } from "./kpi-number-line";
 import { splitNumberSign } from "../../../shared/package-runtime/number-sign";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { usePriceFlash } from "./price-flash";
+import type { PriceFlash } from "../../../shared/package-runtime/data-cells";
 /** A leading sign drawn tight to its digits (see splitNumberSign), nested in the value's Text; other content passes through. */
 export function signedText(value: ReactNode): ReactNode {
   const parts = splitNumberSign(value);
@@ -74,6 +79,9 @@ export interface KjunPriceCellProps {
   stale?: boolean;
   /** The app's status after the price, such as a KjunBadge; KJUN owns only its spacing and alignment. */
   status?: ReactNode;
+  /** Flash when the value moves: true or "text" colours the digits up or down, "background" fills the cell's pill.
+   * Off under reduced motion. */
+  flash?: PriceFlash;
   fromPrevious?: boolean;
 }
 export function KjunPriceCell({
@@ -81,24 +89,27 @@ export function KjunPriceCell({
   formatter,
   stale = false,
   status,
+  flash,
   fromPrevious = true,
 }: KjunPriceCellProps) {
-  const { colors } = useKjunStyles(), quoteType = useContext(MarketQuoteTypeContext);
+  const { colors, domainColors } = useKjunStyles(), quoteType = useContext(MarketQuoteTypeContext), m = useKjunMessages();
+  const { kind, direction, opacity } = usePriceFlash(value, flash);
   // With no price a status still shows after a dash, for states such as "거래정지"; without one null is loading.
   if (value == null) return hasContent(status)
     ? <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.financial.statusGap }}><KText style={{ ...quoteType?.price, color: colors.textTertiary }}>—</KText><PriceStatus status={status} /></View>
-    : <KjunSkeleton type="line" role="numberSm" width={tokens.extensions.financial.priceSkeletonWidth} />;
+    : <View accessible accessibilityLabel={m.loading} accessibilityState={{ busy: true }}><KjunSkeleton type="line" role="numberSm" width={tokens.extensions.financial.priceSkeletonWidth} /></View>;
+  // Like Web: only a background flash keeps room around the digits.
+  const pill = quoteType || kind !== "background" ? undefined : { paddingVertical: tokens.extensions.financial.pillPaddingY, paddingHorizontal: tokens.extensions.financial.pillPaddingX, borderRadius: tokens.radius.radius9999 };
+  const number = (color: ColorValue) => <KjunAnimatedNumber value={value} formatter={formatter} fromPrevious={fromPrevious} style={{ ...quoteType?.price, color }} />;
+  const tone = direction === "down" ? "priceDown" : "priceUp";
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.financial.statusGap }}>
-      <View
-        style={quoteType ? undefined : { paddingVertical: tokens.extensions.financial.pillPaddingY, paddingHorizontal: tokens.extensions.financial.pillPaddingX, borderRadius: tokens.radius.radius9999 }}
-      >
-        <KjunAnimatedNumber
-          value={value}
-          formatter={formatter}
-          fromPrevious={fromPrevious}
-          style={{ ...quoteType?.price, color: stale ? colors.textTertiary : colors.text }}
-        />
+      <View style={pill}>
+        {kind === "background" && direction && <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, { borderRadius: tokens.radius.radius9999, backgroundColor: domainColor(domainColors, `${tone}Bg`), opacity }]} />}
+        {number(stale ? colors.textTertiary : colors.text)}
+        {/* The text flash is the same number in the move's colour over the plain one, fading out; both count together. */}
+        {kind === "text" && <Animated.View pointerEvents="none" aria-hidden importantForAccessibility="no-hide-descendants"
+          style={[StyleSheet.absoluteFill, pill, { opacity: direction ? opacity : 0 }]}>{number(domainColor(domainColors, tone))}</Animated.View>}
       </View>
       <PriceStatus status={status} />
     </View>
