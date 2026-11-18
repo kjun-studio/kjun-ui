@@ -1042,7 +1042,7 @@
       "title": "ErrorBoundary",
       "docs": "/components/error-boundary",
       "category": "feedback",
-      "differences": "Vue onErrorCaptured와 React·Native 오류 경계의 포착 범위는 각 프레임워크를 따릅니다. Vue는 fallback 슬롯과 error·reset 이벤트, React·Native는 fallback·onError·onReset으로 대체 화면과 보고를 연결합니다.",
+      "differences": "Vue는 fallback 슬롯({ error, reset })과 error·reset 이벤트, React·Native는 fallback(요소 또는 { error, reset }을 받는 함수)·onError·onReset으로 대체 화면과 보고를 연결합니다. Vue는 이벤트 처리기 오류를 React처럼 앱 오류 처리기로 그대로 넘깁니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

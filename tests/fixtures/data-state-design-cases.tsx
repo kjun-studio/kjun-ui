@@ -16,7 +16,7 @@ export function DataStateCases({ K }: { K: any }) {
   return <div style={{ padding: 24 }}>
     <div data-testid="region" style={{ width: c.width }}>
       {Related ? <Related {...relatedProps} {...c} data={c.empty ? [] : [{ id: 'a', name: 'Result row', price: 100 }]} rows={c.empty ? [] : [{ id: 'a', name: 'Result row', price: 100 }]} onRetry={action('retry')} /> :
-      <K.KjunDataState {...c} onRetry={action('retry')} onEmptyAction={action('empty')}
+      <K.KjunDataState {...c} onRetry={action('retry')} onEmptyAction={c.noEmptyHandler ? undefined : action('empty')}
         emptyContent={c.customEmpty ? <K.KjunEmpty text="Empty title" description="Empty description">{c.emptyActionText && retry()}</K.KjunEmpty> : undefined}
         errorContent={c.customError ? <K.KjunAlert title="Custom error">{retry()}</K.KjunAlert> : undefined}
         loadingContent={c.customLoading ? <K.KjunSkeleton type="block" height={64} /> : undefined}>

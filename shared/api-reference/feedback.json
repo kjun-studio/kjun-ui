@@ -87,6 +87,7 @@
       "loadingPadding",
       "empty",
       "emptyText",
+      "emptyDescription",
       "emptyIcon",
       "emptyActionText",
       "loadingText",
@@ -96,7 +97,8 @@
       "skeleton",
       "skeletonType",
       "skeletonCount",
-      "onRetry"
+      "onRetry",
+      "onEmptyAction"
     ],
     "react": [
       "preserveContent",
@@ -106,6 +108,7 @@
       "loadingPadding",
       "empty",
       "emptyText",
+      "emptyDescription",
       "emptyIcon",
       "emptyActionText",
       "loadingText",
@@ -135,6 +138,7 @@
       "loadingPadding",
       "empty",
       "emptyText",
+      "emptyDescription",
       "emptyIcon",
       "emptyActionText",
       "loadingText",
@@ -160,13 +164,15 @@
   "KjunErrorBoundary": {
     "vue3": [
       "fallbackMessage",
-      "size"
+      "size",
+      "resetKeys"
     ],
     "react": [
       "children",
       "fallbackMessage",
       "size",
       "fallback",
+      "resetKeys",
       "onError",
       "onReset"
     ],
@@ -175,6 +181,7 @@
       "fallbackMessage",
       "size",
       "fallback",
+      "resetKeys",
       "onError",
       "onReset"
     ]

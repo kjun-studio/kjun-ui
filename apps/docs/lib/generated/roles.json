@@ -361,7 +361,6 @@
       "packages/tokens/src/color-picker.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
-      "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
       "packages/tokens/src/distribution.css",
       "packages/tokens/src/event-calendar.css",
@@ -372,6 +371,7 @@
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/reset.css",
       "packages/tokens/src/side-navigation.css",
+      "packages/tokens/src/skeleton.css",
       "packages/tokens/src/split-pane.css",
       "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
@@ -676,6 +676,7 @@
       "packages/tokens/src/market.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/reset.css",
+      "packages/tokens/src/skeleton.css",
       "packages/tokens/src/split-pane.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
@@ -688,6 +689,7 @@
       "packages/native/src/choice-controls.tsx",
       "packages/native/src/color-picker-parts.tsx",
       "packages/native/src/combobox.tsx",
+      "packages/native/src/data-state.tsx",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/field-clear.tsx",
       "packages/native/src/financial-display.tsx",
@@ -1326,7 +1328,7 @@
       "--skeleton"
     ],
     "implementationFiles": [
-      "packages/tokens/src/data-state.css",
+      "packages/tokens/src/skeleton.css",
       "packages/native/src/skeleton-clock.ts"
     ]
   },
@@ -1340,7 +1342,7 @@
       "--skeleton-shine"
     ],
     "implementationFiles": [
-      "packages/tokens/src/data-state.css",
+      "packages/tokens/src/skeleton.css",
       "packages/native/src/skeleton-clock.ts"
     ]
   },
@@ -1355,13 +1357,13 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/controls.css",
-      "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
       "packages/tokens/src/file-upload.css",
       "packages/tokens/src/layout.css",
       "packages/tokens/src/list.css",
       "packages/tokens/src/navigation.css",
       "packages/tokens/src/side-navigation.css",
+      "packages/tokens/src/skeleton.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
       "packages/native/src/file-upload-row.tsx",

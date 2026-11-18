@@ -5906,6 +5906,13 @@
         "description": ""
       },
       {
+        "name": "emptyDescription",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Why it is empty and what to do next, under the title."
+      },
+      {
         "name": "emptyIcon",
         "type": "string",
         "required": false,
@@ -5974,14 +5981,16 @@
         "required": false,
         "default": "—",
         "description": "Declared as a prop: the retry button appears only when the app listens."
-      }
-    ],
-    "events": [
+      },
       {
-        "name": "empty-action",
-        "source": "packages/vue3/src/data-state.tsx"
+        "name": "onEmptyAction",
+        "type": "(() => void)",
+        "required": false,
+        "default": "—",
+        "description": "Declared as a prop like onRetry: the empty action appears only when the app listens."
       }
     ],
+    "events": [],
     "slots": [
       {
         "name": "default",
@@ -6056,6 +6065,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "emptyDescription",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Why it is empty and what to do next, under the title."
       },
       {
         "name": "emptyIcon",
@@ -6247,6 +6263,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "emptyDescription",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Why it is empty and what to do next, under the title."
       },
       {
         "name": "emptyIcon",
@@ -8881,6 +8904,13 @@
         "required": false,
         "default": "\"md\"",
         "description": "The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages."
+      },
+      {
+        "name": "resetKeys",
+        "type": "readonly unknown[]",
+        "required": false,
+        "default": "—",
+        "description": "A change in any of these values (a route, a query) resets a failed boundary, like pressing retry."
       }
     ],
     "events": [
@@ -8902,6 +8932,7 @@
       {
         "name": "fallback",
         "data": [
+          "error",
           "reset"
         ],
         "source": "packages/vue3/src/data-state.tsx"
@@ -8931,10 +8962,17 @@
       },
       {
         "name": "fallback",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((props: import(\"/workspace/packages/react/src/data-state\").KjunErrorFallbackProps) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Replaces the default fallback; a function receives the caught error and reset, like Vue's fallback slot."
+      },
+      {
+        "name": "resetKeys",
+        "type": "readonly unknown[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A change in any of these values (a route, a query) resets a failed boundary, like pressing retry."
       },
       {
         "name": "onError",
@@ -8948,7 +8986,7 @@
         "type": "(() => void) | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Called after the boundary resets, from retry, a fallback's reset or a resetKeys change."
       }
     ],
     "native": [
@@ -8975,10 +9013,17 @@
       },
       {
         "name": "fallback",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((props: import(\"/workspace/packages/native/src/data-state\").KjunErrorFallbackProps) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Replaces the default fallback; a function receives the caught error and reset, like Vue's fallback slot."
+      },
+      {
+        "name": "resetKeys",
+        "type": "readonly unknown[] | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A change in any of these values (a route, a query) resets a failed boundary, like pressing retry."
       },
       {
         "name": "onError",
@@ -8992,7 +9037,7 @@
         "type": "(() => void) | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Called after the boundary resets, from retry, a fallback's reset or a resetKeys change."
       }
     ]
   },

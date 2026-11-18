@@ -13,6 +13,7 @@ import { Component,useState,type ErrorInfo,type ReactNode } from "react";
 import { Platform,View,type ViewStyle } from "react-native";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import { DataStateContentContext } from "./data-state-context";
+import { shadowLayers } from "../../../shared/package-runtime/elevation";
 import { IconBase, KjunButton } from "./button";
 import {
 KjunAlert,
@@ -43,6 +44,8 @@ export interface KjunDataStateProps extends QueryDisplayProps {
   loadingPadding?: "default" | "none";
   empty?: boolean;
   emptyText?: string;
+  /** Why it is empty and what to do next, under the title. */
+  emptyDescription?: string;
   emptyIcon?: string;
   emptyActionText?: string;
   loadingText?: string;
@@ -68,6 +71,7 @@ export function KjunDataState({
   loadingPadding = "default",
   empty = false,
   emptyText,
+  emptyDescription,
   emptyIcon,
   emptyActionText,
   loadingText,
@@ -107,14 +111,18 @@ export function KjunDataState({
       style={{ position: "relative" }}
       accessibilityState={{ busy: !!query.loading || refreshing }}
     >
-      <View>
+      {/* The refresh pill floats over the content's top centre, so a refresh never moves the content. */}
+      <View pointerEvents="none" style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1, alignItems: "center", paddingHorizontal: tokens.dimension.value12 }}>
         {(refreshing || state.queryRefreshing) && (
           <View
-            accessibilityRole="alert"
+            // Polite like the Web role="status"; Android announces only with an explicit live region.
+            accessible
+            role="status"
+            accessibilityLiveRegion="polite"
+            accessibilityLabel={refreshingText}
             style={{
-              alignSelf: "flex-end",
               maxWidth: "100%",
-              marginBottom: tokens.dimension.value12,
+              marginTop: tokens.dimension.value12,
               flexDirection: "row",
               alignItems: "center",
               gap: tokens.dimension.value6,
@@ -122,6 +130,10 @@ export function KjunDataState({
               paddingHorizontal: tokens.dimension.value8,
               borderRadius: tokens.radius.radius12,
               backgroundColor: colors.surface,
+              // A floating layer: its own outline and a lifted shadow keep it apart from a surface of the same colour.
+              borderWidth: tokens.border.defaultWidth,
+              borderColor: colors.border,
+              boxShadow: shadowLayers(tokens.elevation.lifted, colors),
             }}
           >
             <KjunSpinnerGlyph size={tokens.extensions.spinner.sizes.xs} stroke={tokens.extensions.spinner.strokeWidths.xs} color={colors.brand} />
@@ -133,7 +145,9 @@ export function KjunDataState({
       </View>
       {state.initialLoading ? (
         <View
-          accessibilityLabel={revealed ? loadingText : undefined}
+          {...(revealed
+            ? { accessible: true, role: "status" as const, accessibilityLabel: loadingText, accessibilityLiveRegion: "polite" as const }
+            : {})}
           aria-hidden={revealed ? undefined : true}
           importantForAccessibility={revealed ? undefined : "no-hide-descendants"}
           style={{ ...(loadingPadding === "none" ? { paddingVertical: 0 } : { paddingVertical: padding, minHeight, justifyContent: "center" as const }), opacity: revealed ? undefined : 0 }}
@@ -153,17 +167,11 @@ export function KjunDataState({
             ))}
         </View>
       ) : blockingError ? (
-        <DataStateContentContext.Provider value="message">
-        <View style={{ paddingVertical: padding, minHeight, justifyContent: "center" }}>
+        <DataStateContentContext.Provider value={errorContent ? "message" : "empty"}>
+        <View {...(errorContent ? {} : stateErrorRole)} style={{ paddingVertical: padding, minHeight, justifyContent: "center" }}>
           {errorContent || (
-            <KjunAlert type="danger" title={m.errorTitle} actions={onRetry && (
-              <KjunButton variant="secondary" onPress={onRetry}>
-                {retryText}
-              </KjunButton>
-            )}>
-              {/* The alert's own body type applies, like any other KjunAlert. */}
-              {query.error}
-            </KjunAlert>
+            // The same form as the boundary's fallback: a failed first load has nothing to show, like a render error.
+            <StateError size={size} title={m.errorTitle} description={query.error} retryText={retryText} onRetry={onRetry} />
           )}
         </View>
         </DataStateContentContext.Provider>
@@ -171,8 +179,10 @@ export function KjunDataState({
         <DataStateContentContext.Provider value="empty">
         <View style={{ paddingVertical: padding, minHeight, justifyContent: "center" }}>
           {emptyContent || (
-            <KjunEmpty text={emptyText} icon={emptyIcon}>
-              {!!emptyActionText && (
+            // A small state draws the small empty, like the boundary's fallback.
+            <KjunEmpty text={emptyText} description={emptyDescription} icon={emptyIcon} size={size === "sm" ? "sm" : "md"}>
+              {/* Like retry, the action appears only when the app handles it. */}
+              {!!emptyActionText && !!onEmptyAction && (
                 <KjunButton onPress={onEmptyAction}>{emptyActionText}</KjunButton>
               )}
             </KjunEmpty>
@@ -222,26 +232,44 @@ export function KjunDataState({
   );
 }
 type BoundarySize = "sm" | "md" | "lg";
-/** The default fallback: KjunEmpty's hierarchy inside DataState's padding and minimum height, so both read as one family. */
-function BoundaryFallback({ title, size, onRetry }: { title?: string; size: BoundarySize; onRetry: () => void }) {
-  const m = useKjunMessages();
+// The content it replaced is gone, so the failure is announced at once.
+const stateErrorRole = { role: "alert" as const, accessibilityLiveRegion: "assertive" as const };
+/**
+ * A failure with nothing else to show: KjunEmpty's hierarchy with a danger icon and a secondary retry.
+ * DataState's blocking error and the boundary share it; their wrappers announce it.
+ */
+function StateError({ size, title, description, retryText, onRetry, headingLevel = false }: {
+  size: BoundarySize; title: string; description?: ReactNode; retryText: string; onRetry?: () => void; headingLevel?: false | 3;
+}) {
   const { colors } = useKjunStyles();
   const compact = size === "sm", g = emptyGeometry(compact ? "sm" : "md");
   return (
-    <DataStateContentContext.Provider value="empty">
-    <View style={{ paddingVertical: tokens.extensions.state.padding[size], minHeight: tokens.extensions.state.minimumHeights[size], justifyContent: "center" }}>
-      <KjunEmpty
-        icon={<IconBase name="alert-circle" size={g.iconSize} color={colors.danger} strokeWidth={g.iconStroke} />}
-        size={compact ? "sm" : "md"}
-        headingLevel={3}
-        text={title || m.somethingWentWrong}
-        description={m.retryHint}
-      >
-        {/* Secondary like DataState's retry. It resets the boundary rather than reloading the page. */}
+    <KjunEmpty
+      icon={<IconBase name="alert-circle" size={g.iconSize} color={colors.danger} strokeWidth={g.iconStroke} />}
+      size={compact ? "sm" : "md"}
+      headingLevel={headingLevel}
+      text={title}
+      description={description}
+    >
+      {onRetry && (
         <KjunButton variant="secondary" size={compact ? "sm" : "md"} onPress={onRetry}>
-          {m.retry}
+          {retryText}
         </KjunButton>
-      </KjunEmpty>
+      )}
+    </KjunEmpty>
+  );
+}
+/** The default fallback inside DataState's padding and minimum height, so both read as one family. */
+function BoundaryFallback({ title, size, onRetry }: { title?: string; size: BoundarySize; onRetry: () => void }) {
+  const m = useKjunMessages();
+  return (
+    <DataStateContentContext.Provider value="empty">
+    <View
+      {...stateErrorRole}
+      style={{ paddingVertical: tokens.extensions.state.padding[size], minHeight: tokens.extensions.state.minimumHeights[size], justifyContent: "center" }}
+    >
+      {/* Retry resets the boundary rather than reloading the page. */}
+      <StateError size={size} headingLevel={3} title={title || m.somethingWentWrong} description={m.retryHint} retryText={m.retry} onRetry={onRetry} />
     </View>
     </DataStateContentContext.Provider>
   );
@@ -251,28 +279,43 @@ export interface KjunErrorBoundaryProps {
   fallbackMessage?: string;
   /** The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages. */
   size?: "sm" | "md" | "lg";
-  fallback?: ReactNode;
+  /** Replaces the default fallback; a function receives the caught error and reset, like Vue's fallback slot. */
+  fallback?: ReactNode | ((props: KjunErrorFallbackProps) => ReactNode);
+  /** A change in any of these values (a route, a query) resets a failed boundary, like pressing retry. */
+  resetKeys?: readonly unknown[];
   onError?: (error: Error, info: ErrorInfo) => void;
+  /** Called after the boundary resets, from retry, a fallback's reset or a resetKeys change. */
   onReset?: () => void;
 }
+export interface KjunErrorFallbackProps {
+  error: Error;
+  reset: () => void;
+}
+const changed = (a: readonly unknown[] = [], b: readonly unknown[] = []) =>
+  a.length !== b.length || a.some((value, i) => !Object.is(value, b[i]));
 export class KjunErrorBoundary extends Component<
   KjunErrorBoundaryProps,
-  { error: boolean }
+  { error: Error | null }
 > {
-  state = { error: false };
-  static getDerivedStateFromError() {
-    return { error: true };
+  state: { error: Error | null } = { error: null };
+  static getDerivedStateFromError(error: unknown) {
+    return { error: error instanceof Error ? error : new Error(String(error)) };
   }
   componentDidCatch(error: Error, info: ErrorInfo) {
     this.props.onError?.(error, info);
   }
+  componentDidUpdate(previous: KjunErrorBoundaryProps, state: { error: Error | null }) {
+    // Only a boundary that was already showing its fallback resets; the render that failed keeps it.
+    if (this.state.error && state.error && changed(previous.resetKeys, this.props.resetKeys)) this.reset();
+  }
   reset = () => {
-    this.setState({ error: false });
+    this.setState({ error: null });
     this.props.onReset?.();
   };
   render() {
-    return this.state.error
-      ? this.props.fallback || <BoundaryFallback title={this.props.fallbackMessage} size={this.props.size ?? "md"} onRetry={this.reset} />
-      : this.props.children;
+    const { error } = this.state, { fallback } = this.props;
+    if (!error) return this.props.children;
+    if (typeof fallback === "function") return fallback({ error, reset: this.reset });
+    return fallback || <BoundaryFallback title={this.props.fallbackMessage} size={this.props.size ?? "md"} onRetry={this.reset} />;
   }
 }

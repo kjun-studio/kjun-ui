@@ -28,7 +28,7 @@ test('every skeleton shares one pulse clock', () => {
 });
 
 test('the web pulse waits for the shared phase and every part pulses towards the shine colour', () => {
-  const display = read('packages/tokens/src/display.css'), state = read('packages/tokens/src/data-state.css');
+  const display = read('packages/tokens/src/display.css'), state = read('packages/tokens/src/skeleton.css');
   assert.match(display, /animation-delay: var\(--_kjun-skeleton-delay, 0ms\)/);
   // Chart parts change colour like the bars do; an opacity pulse would fade a faint base colour out at the peak.
   assert.match(state, /@keyframes kjun-chart-pulse \{\n  50% \{\n    background-color: var\(--_kjun-color-skeleton-shine\);/);
@@ -83,7 +83,7 @@ test('the table skeleton has no frame or header fill and the stat value stands a
 });
 
 test('the chart skeleton announces its loading text without drawing it', () => {
-  assert.doesNotMatch(read('packages/tokens/src/data-state.css'), /\.kjun-chart-skeleton-status/);
+  assert.doesNotMatch(read('packages/tokens/src/skeleton.css'), /\.kjun-chart-skeleton-status/);
   for (const path of ['packages/react/src/skeletons.tsx', 'packages/vue3/src/skeletons.tsx'])
     assert.match(read(path), /(className|class)="kjun-sr-only" data-kjun-chart-part="status"/, path);
 });

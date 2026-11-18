@@ -12,7 +12,7 @@ const layers = files('elevation', 'elevation-edges', 'elevation-inputs', 'elevat
 const componentGroups = {
   alert: [...files('alert-design', 'feedback-features', 'root-class', 'accessibility-components', 'chip-toast-tokens'), ...visuals],
   empty: [...files('empty-design', 'data-state-design', 'token-display-propagation'), ...visuals],
-  'data-state': [...files('data-state-design', 'empty-design', 'skeleton-design', 'loading-options', 'table-contracts', 'runtime-cards', 'runtime-market'), ...contracts],
+  'data-state': [...files('data-state-design', 'error-boundary', 'empty-design', 'skeleton-design', 'loading-options', 'table-contracts', 'runtime-cards', 'runtime-market'), ...contracts],
   card: [...files('card-design', 'tiles', 'pressable', 'root-class', 'card-contract', 'card-review', 'card-layout', 'card-colors', 'card-hairline', 'geometry-tokens'), ...visuals],
   table: [...files('table-contracts', 'table-edge', 'table-percent', 'table-refine', 'table-structure', 'table-reorder', 'table-groups', 'table-list', 'table-card-layouts', 'loading-options', 'runtime-cards', 'data-state-design', 'accessibility-components'), ...contracts, ...visuals],
   market: [...files('runtime-market', 'price-status', 'loading-options', 'data-state-design', 'geometry-tokens'), ...visuals],

@@ -88,7 +88,7 @@ export { KjunZoneGauge, type KjunZoneGaugeProps, type KjunGaugeZone } from "./zo
 export { KjunStackedBar, type KjunStackedBarProps, type KjunStackedBarItem } from "./stacked-bar";
 
 export { KjunDataState, KjunErrorBoundary } from "./data-state";
-export type { KjunDataStateProps, KjunErrorBoundaryProps } from "./data-state";
+export type { KjunDataStateProps, KjunErrorBoundaryProps, KjunErrorFallbackProps } from "./data-state";
 
 export * from "./skeletons";
 

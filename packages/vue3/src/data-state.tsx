@@ -1,6 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
 import { spinnerGlyph } from "./spinner-glyph";
-import { getCurrentInstance, onErrorCaptured, ref, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { getCurrentInstance, onErrorCaptured, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { tokens, advanceQueryDisplay, initialQueryDisplay, queryDisplayStatus, type QueryDisplayProps, type QueryDisplayState } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
@@ -8,6 +8,20 @@ import { KjunAlert, KjunEmpty, KjunSkeleton, type KjunSkeletonProps } from "./di
 import { useLoadingReveal } from "./runtime/loading-reveal";
 import { hasContent } from "./runtime/slots";
 import { css } from "./runtime/style";
+
+type StateSize = "sm" | "md" | "lg";
+/**
+ * A failure with nothing else to show: KjunEmpty's hierarchy with a danger icon and a secondary retry.
+ * DataState's blocking error and the boundary share it; their wrappers announce it (role alert), as the content it replaced is gone.
+ */
+function stateError(o: { size: StateSize; title: string; description?: string | null; retryText: string; onRetry?: () => void; headingLevel?: false | 3 }) {
+  const compact = o.size === "sm";
+  return (
+    <KjunEmpty icon="alert-circle" size={compact ? "sm" : "md"} headingLevel={o.headingLevel ?? false} text={o.title} description={o.description ?? undefined}>
+      {o.onRetry && <KjunButton variant="secondary" size={compact ? "sm" : "md"} onClick={() => o.onRetry?.()}>{o.retryText}</KjunButton>}
+    </KjunEmpty>
+  );
+}
 
 /** Tracks which query the shown result belongs to; advances synchronously inside render like React's derived state. */
 export function useQueryDisplay(query: () => QueryDisplayProps) {
@@ -34,6 +48,8 @@ const kjunDataStateProps = {
   loadingPadding: { type: String as PropType<"default" | "none">, default: "default" },
   empty: { type: Boolean, default: false },
   emptyText: { type: String, default: undefined },
+  /** Why it is empty and what to do next, under the title. */
+  emptyDescription: { type: String, default: undefined },
   emptyIcon: { type: String, default: undefined },
   emptyActionText: { type: String, default: undefined },
   loadingText: { type: String, default: undefined },
@@ -46,20 +62,21 @@ const kjunDataStateProps = {
   skeletonCount: { type: Number, default: 3 },
   /** Declared as a prop: the retry button appears only when the app listens. */
   onRetry: { type: Function as PropType<() => void>, default: undefined },
+  /** Declared as a prop like onRetry: the empty action appears only when the app listens. */
+  onEmptyAction: { type: Function as PropType<() => void>, default: undefined },
 } as const;
 export type KjunDataStateProps = ExtractPublicPropTypes<typeof kjunDataStateProps>;
-/** Slots: default (content), loading, empty, error({ error, retry }). Events: retry, empty-action. */
+/** Slots: default (content), loading, empty, error({ error, retry }). Listeners (declared as props): retry, empty-action. */
 export const KjunDataState = defineComponent({
   name: "KjunDataState",
   props: kjunDataStateProps,
-  emits: { "empty-action": () => true },
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
     loading?: () => VNodeChild;
     empty?: () => VNodeChild;
     error?: (scope: { error: string | null; retry: (() => void) | undefined }) => VNodeChild;
   }>,
-  setup(props, { slots, emit }) {
+  setup(props, { slots }) {
     const m = useKjunMessages();
     const status = useQueryDisplay(() => ({ queryKey: props.queryKey, resultKey: props.resultKey, loading: props.loading, error: props.error, hasLoadedOnce: props.hasLoadedOnce }));
     const revealed = useLoadingReveal(() => status().initialLoading, () => props.loadingDelay);
@@ -81,8 +98,10 @@ export const KjunDataState = defineComponent({
             )}
           </div>
           {state.initialLoading ? (
-            <div class="kjun-data-loading-block" role={revealed() ? "status" : undefined} aria-label={revealed() ? (props.loadingText ?? m.value.loadingEllipsis) : undefined} aria-hidden={revealed() ? undefined : "true"}
+            <div class="kjun-data-loading-block" role={revealed() ? "status" : undefined} aria-hidden={revealed() ? undefined : "true"}
               style={css({ ...(props.loadingPadding === "none" ? { paddingBlock: 0 } : { paddingBlock: padding, minHeight }), visibility: revealed() ? undefined : "hidden" })}>
+              {/* A live region announces its content, not its name: the default spinner shows the words, the others carry them hidden. */}
+              {(hasContent(loading) || props.skeleton) && <span class="kjun-sr-only">{props.loadingText ?? m.value.loadingEllipsis}</span>}
               {hasContent(loading) ? loading : props.skeleton ? (
                 <div style={css({ display: "grid", gap: tokens.dimension.value12 })}>
                   {Array.from({ length: props.skeletonCount }, (_, i) => <KjunSkeleton key={i} type={props.skeletonType} />)}
@@ -92,17 +111,17 @@ export const KjunDataState = defineComponent({
               )}
             </div>
           ) : blockingError ? (
-            <div class="kjun-data-error kjun-state-actions" style={css({ paddingBlock: padding, minHeight })}>
-              {hasContent(error) ? error : (
-                // The alert's own body type applies, like any other KjunAlert.
-                <KjunAlert type="danger" title={m.value.errorTitle}>{{ default: () => props.error, ...(retry ? { actions: () => retry } : {}) }}</KjunAlert>
-              )}
+            <div class="kjun-data-error kjun-state-actions" role={hasContent(error) ? undefined : "alert"} style={css({ paddingBlock: padding, minHeight })}>
+              {hasContent(error) ? error
+                // The same form as the boundary's fallback: a failed first load has nothing to show, like a render error.
+                : stateError({ size: props.size, title: m.value.errorTitle, description: props.error, retryText: props.retryText ?? m.value.retry, onRetry: props.onRetry })}
             </div>
           ) : props.empty ? (
             <div class="kjun-data-empty kjun-state-actions" style={css({ paddingBlock: padding, minHeight })}>
               {hasContent(empty) ? empty : (
-                <KjunEmpty text={(props.emptyText ?? m.value.noData)} icon={props.emptyIcon}>
-                  {props.emptyActionText && <KjunButton onClick={() => emit("empty-action")}>{props.emptyActionText}</KjunButton>}
+                // A small state draws the small empty, like the boundary's fallback; the action appears only when the app listens, like retry.
+                <KjunEmpty text={(props.emptyText ?? m.value.noData)} description={props.emptyDescription} icon={props.emptyIcon} size={props.size === "sm" ? "sm" : "md"}>
+                  {props.emptyActionText && props.onEmptyAction && <KjunButton onClick={() => props.onEmptyAction?.()}>{props.emptyActionText}</KjunButton>}
                 </KjunEmpty>
               )}
             </div>
@@ -129,12 +148,16 @@ const kjunErrorBoundaryProps = {
   fallbackMessage: { type: String, default: undefined },
   /** The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages. */
   size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+  /** A change in any of these values (a route, a query) resets a failed boundary, like pressing retry. */
+  resetKeys: { type: Array as PropType<readonly unknown[]>, default: undefined },
 } as const;
+/** Event handler errors pass on, as React's boundary never sees them: "… event handler" in development, runtime-5/6 in production. */
+const handlerError = (info: string) => /event handler$|#runtime-[56]$/.test(info);
 export type KjunErrorBoundaryProps = ExtractPublicPropTypes<typeof kjunErrorBoundaryProps>;
 /**
- * Like React's error boundary, the nearest boundary handles a render error: it shows the fallback slot,
- * emits error, reports to the app's errorHandler (or the console, as Vue would) and stops outer boundaries.
- * Slots: default, fallback({ reset }). Events: error(error, info), reset.
+ * Like React's error boundary, the nearest boundary handles a render, setup, lifecycle or watcher error: it shows the
+ * fallback slot, emits error, reports to the app's errorHandler (or the console, as Vue would) and stops outer boundaries.
+ * Errors thrown in event handlers pass on untouched, as in React. Slots: default, fallback({ error, reset }). Events: error(error, info), reset.
  */
 export const KjunErrorBoundary = defineComponent({
   name: "KjunErrorBoundary",
@@ -142,33 +165,37 @@ export const KjunErrorBoundary = defineComponent({
   emits: { error: (_error: unknown, _info: string) => true, reset: () => true },
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
-    fallback?: (scope: { reset: () => void }) => VNodeChild;
+    fallback?: (scope: { error: Error; reset: () => void }) => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
-    const failed = ref(false);
+    const failed = shallowRef<Error | null>(null);
     const config = getCurrentInstance()!.appContext.config;
     onErrorCaptured((error, instance, info) => {
-      failed.value = true;
+      if (handlerError(info)) return;
+      failed.value = error instanceof Error ? error : new Error(String(error));
       emit("error", error, info);
       if (config.errorHandler) config.errorHandler(error, instance, info);
       else console.error(error);
       return false;
     });
-    const reset = () => { failed.value = false; emit("reset"); };
+    const reset = () => { failed.value = null; emit("reset"); };
+    // Only a boundary that was already showing its fallback resets when a key changes.
+    watch(() => props.resetKeys, (next, previous) => {
+      const a = previous ?? [], b = next ?? [];
+      if (failed.value && (a.length !== b.length || a.some((value, i) => !Object.is(value, b[i])))) reset();
+    });
     return () => {
       if (!failed.value) return slots.default?.();
-      const fallback = slots.fallback?.({ reset });
+      const fallback = slots.fallback?.({ error: failed.value, reset });
       if (hasContent(fallback)) return fallback;
-      const compact = props.size === "sm";
-      // The default fallback: KjunEmpty's hierarchy inside DataState's padding and minimum height, so both read as one family.
+      // The default fallback inside DataState's padding and minimum height, so both read as one family.
       return (
-        <div class="kjun-error-fallback kjun-state-actions" data-size={props.size}
+        // The content it replaced is gone, so the failure is announced at once.
+        <div class="kjun-error-fallback kjun-state-actions" role="alert" data-size={props.size}
           style={css({ paddingBlock: tokens.extensions.state.padding[props.size], minHeight: tokens.extensions.state.minimumHeights[props.size] })}>
-          <KjunEmpty icon="alert-circle" size={compact ? "sm" : "md"} headingLevel={3} text={props.fallbackMessage || m.value.somethingWentWrong} description={m.value.retryHint}>
-            {/* Secondary like DataState's retry. It resets the boundary rather than reloading the page. */}
-            <KjunButton variant="secondary" size={compact ? "sm" : "md"} onClick={reset}>{m.value.retry}</KjunButton>
-          </KjunEmpty>
+          {/* Retry resets the boundary rather than reloading the page. */}
+          {stateError({ size: props.size, headingLevel: 3, title: props.fallbackMessage || m.value.somethingWentWrong, description: m.value.retryHint, retryText: m.value.retry, onRetry: reset })}
         </div>
       );
     };

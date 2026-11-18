@@ -37,7 +37,7 @@ export function chartMatrixMuted(row: number, column: number) {
   return (row + column + 2) % 3 === 0;
 }
 
-/** Donut ring diameter as a share of the skeleton height; data-state.css repeats it as 80% and 80cqh. */
+/** Donut ring diameter as a share of the skeleton height; skeleton.css repeats it as 80% and 80cqh. */
 export const chartDonutRatio = 0.8;
 
 /** Inner diameter of the donut ring. */

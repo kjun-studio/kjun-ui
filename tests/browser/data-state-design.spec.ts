@@ -19,11 +19,13 @@ async function contained(region: Locator) {
   }
 }
 for (const platform of ['react', 'vue3', 'native']) {
-  test(`${platform}: DataState refresh row retains content, focus and scroll`, async ({ page }) => {
+  test(`${platform}: DataState refresh pill floats over content and retains it, focus and scroll`, async ({ page }) => {
     await openFixture(page, platform, '', 'data-state-design');
     const region = page.getByTestId('region'), input = page.getByRole('textbox', { name: 'Retained input' });
     await input.fill('edited'); await input.focus();
     await page.getByTestId('scroll').evaluate(el => { el.scrollTop = 40; (window as any).retainedNode = el; });
+    await update(page, { width: 200 });
+    const restingTitle = await box(region.getByText('Result title'));
     for (const loading of [true, false, true]) {
       await update(page, { loading, width: 200, refreshingText: '최신 문서와 세부 정보를 업데이트하고 있습니다' });
       await expect(input).toBeFocused(); await expect(input).toHaveValue('edited');
@@ -31,7 +33,11 @@ for (const platform of ['react', 'vue3', 'native']) {
       if (loading) {
         const status = region.getByText('최신 문서와 세부 정보를 업데이트하고 있습니다', { exact: true });
         const statusBox = await box(status), title = await box(region.getByText('Result title'));
-        expect(statusBox.y + statusBox.height).toBeLessThan(title.y);
+        // The pill floats over the content's top, so the content does not move while it refreshes.
+        expect(title.y).toBe(restingTitle.y);
+        // The pill (the text's parent, beside its spinner) sits centred.
+        const r = await box(region), pill = await box(status.locator('..'));
+        expect(Math.abs(Math.round(pill.x + pill.width / 2 - (r.x + r.width / 2)))).toBeLessThanOrEqual(1);
         expect(await status.evaluate(el => { const r = el.getBoundingClientRect(); return document.elementsFromPoint(r.x + r.width / 2, r.y + r.height / 2).some(item => item.contains(el)); })).toBe(true);
         await contained(region);
       }
@@ -50,15 +56,23 @@ for (const platform of ['react', 'vue3', 'native']) {
     for (const [size, padding] of [['sm', 24], ['md', 48], ['lg', 80]] as const) {
       // Every state keeps the size's minimum height, so switching between them does not jump.
       const height = (content: number) => Math.max(tokens.extensions.state.minimumHeights[size], 2 * padding + content);
+      // A small state draws the small empty, like the boundary's fallback.
+      const e = tokens.extensions.empty, sm = size === 'sm';
+      const title = sm ? 20 : 24, icon = sm ? e.smIconSize + e.smIconGap : e.iconSize + e.iconGap, actionGap = sm ? e.smActionGap : e.actionGap;
       await update(page, { empty: true, emptyText: 'Empty title', size });
-      expect((await box(region)).height).toBe(height(24));
-      await expect(region.getByText('Empty title', { exact: true })).toHaveCSS('font-size', '16px');
+      expect((await box(region)).height).toBe(height(title));
+      await expect(region.getByText('Empty title', { exact: true })).toHaveCSS('font-size', `${sm ? e.smTitleSize : e.titleSize}px`);
       await update(page, { customEmpty: true });
       expect((await box(region)).height).toBe(height(48));
       await update(page, { customEmpty: false, emptyIcon: 'search', emptyActionText: 'Create' });
-      // Icon 32 + 16 gap + 24 title + 20 gap + 40 button.
-      expect((await box(region)).height).toBe(height(132));
-      await update(page, { empty: false, emptyIcon: '', emptyActionText: '', loading: true, resultKey: null, loadingText: 'Loading' });
+      // Icon and its gap, the title, the action gap and the 40px button.
+      expect((await box(region)).height).toBe(height(icon + title + actionGap + 40));
+      // The description sits under the title in the description type.
+      await update(page, { emptyDescription: 'Empty description' });
+      const description = region.getByText('Empty description', { exact: true });
+      await expect(description).toHaveCSS('font-size', `${e.descriptionSize}px`);
+      expect(Math.round((await box(description)).y - (await box(region.getByText('Empty title', { exact: true }))).y)).toBe(title + e.descriptionGap);
+      await update(page, { empty: false, emptyIcon: '', emptyActionText: '', emptyDescription: undefined, loading: true, resultKey: null, loadingText: 'Loading' });
       expect((await box(region)).height).toBe(height(56));
       const text = region.getByText('Loading', { exact: true }), spinner = region.locator('svg').first();
       // The loading ring is decorative (the block's status carries the text), so it is found by its drawing.
@@ -85,11 +99,22 @@ for (const platform of ['react', 'vue3', 'native']) {
       await captureReview(region, { path: `artifacts/data-state-visual-fix/related-${platform}-${related}-empty.png` });
     }
     for (const related of ['KjunTable', 'KjunMarketTable', 'KjunMarketCards', 'KjunMarketSimpleList']) {
-      await update(page, { related, loading: true, empty: false });
-      const status = await box(region.getByText('갱신 중...', { exact: true }));
-      const row = await box(region.getByText('Result row', { exact: true }));
-      expect(status.y + status.height).toBeLessThan(row.y);
+      await update(page, { related, loading: false, empty: false });
+      const resting = await box(region.getByText('Result row', { exact: true }));
+      await update(page, { loading: true });
+      await expect(region.getByText('갱신 중...', { exact: true })).toBeVisible();
+      // Related lists keep their rows in place while the pill floats over them.
+      expect((await box(region.getByText('Result row', { exact: true }))).y).toBe(resting.y);
     }
+    // Like retry, the empty action appears only when the app handles it.
+    await update(page, { related: '', loading: false, empty: true, emptyActionText: 'Create' });
+    await expect(region.getByRole('button', { name: 'Create' })).toBeVisible();
+    await update(page, { noEmptyHandler: true });
+    await expect(region.getByRole('button', { name: 'Create' })).toHaveCount(0);
+    // A skeleton has no visible words, so its live region carries the loading text (Native names it).
+    await update(page, { empty: false, noEmptyHandler: false, loading: true, resultKey: null, skeleton: true, loadingText: 'Loading' });
+    if (platform === 'native') await expect(region.getByRole('status', { name: 'Loading' })).toBeAttached();
+    else await expect(region.getByRole('status').filter({ hasText: 'Loading' })).toHaveCount(1);
   });
   test(`${platform}: DataState narrow actions wrap, activate once, and warnings have one gap`, async ({ page }) => {
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
@@ -102,8 +127,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     await retry.press('Enter'); await retry.press('Space');
     await expect(page.getByTestId('events')).toHaveText('2/0/0');
     const title = await box(region.getByText('오류 발생', { exact: true })), desc = await box(region.getByText('Connection failed', { exact: true }));
-    // The error is an Alert: title and description sit one Alert description gap apart.
-    expect(desc.y - title.y - title.height).toBe(tokens.extensions.alert.descriptionGap);
+    // The blocking error shares the boundary's Empty form: the description sits one Empty description gap under the title.
+    expect(Math.round(desc.y - title.y - title.height)).toBe(tokens.extensions.empty.descriptionGap);
+    await expect(region.getByRole('alert')).toContainText('Connection failed');
     await update(page, { resultKey: 'a' }); await contained(region);
     const card = region.getByText('Result title').locator('xpath=ancestor::*[contains(concat(" ",normalize-space(@class)," ")," kjun-card ")][1]');
     const content = platform === 'native' ? region.locator(':scope > * > *').nth(1) : card;

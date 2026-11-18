@@ -104,6 +104,7 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
             loadingText: settings.loadingText,
             refreshingText: settings.refreshingText,
             emptyText: settings.emptyText,
+            emptyDescription: settings.emptyDescription || undefined,
             emptyIcon: settings.emptyIcon,
             emptyActionText: settings.emptyActionText,
             retryText: settings.retryText,

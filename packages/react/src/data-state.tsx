@@ -36,6 +36,8 @@ export interface KjunDataStateProps extends QueryDisplayProps {
   loadingPadding?: "default" | "none";
   empty?: boolean;
   emptyText?: string;
+  /** Why it is empty and what to do next, under the title. */
+  emptyDescription?: string;
   emptyIcon?: string;
   emptyActionText?: string;
   loadingText?: string;
@@ -61,6 +63,7 @@ export function KjunDataState({
   loadingPadding = "default",
   empty = false,
   emptyText,
+  emptyDescription,
   emptyIcon,
   emptyActionText,
   loadingText,
@@ -108,10 +111,11 @@ export function KjunDataState({
         <div
           className="kjun-data-loading-block"
           role={revealed ? "status" : undefined}
-          aria-label={revealed ? loadingText : undefined}
           aria-hidden={revealed ? undefined : true}
           style={{ ...(loadingPadding === "none" ? { paddingBlock: 0 } : { paddingBlock: padding, minHeight }), visibility: revealed ? undefined : "hidden" }}
         >
+          {/* A live region announces its content, not its name: the default spinner shows the words, the others carry them hidden. */}
+          {(loadingContent || skeleton) && <span className="kjun-sr-only">{loadingText}</span>}
           {loadingContent ||
             (skeleton ? (
               <div style={{ display: "grid", gap: tokens.dimension.value12 }}>
@@ -127,23 +131,19 @@ export function KjunDataState({
             ))}
         </div>
       ) : blockingError ? (
-        <div className="kjun-data-error kjun-state-actions" style={{ paddingBlock: padding, minHeight }}>
+        <div className="kjun-data-error kjun-state-actions" role={errorContent ? undefined : "alert"} style={{ paddingBlock: padding, minHeight }}>
           {errorContent || (
-            <KjunAlert type="danger" title={m.errorTitle} actions={onRetry && (
-              <KjunButton variant="secondary" onClick={onRetry}>
-                {retryText}
-              </KjunButton>
-            )}>
-              {/* The alert's own body type applies, like any other KjunAlert. */}
-              {query.error}
-            </KjunAlert>
+            // The same form as the boundary's fallback: a failed first load has nothing to show, like a render error.
+            <StateError size={size} title={m.errorTitle} description={query.error} retryText={retryText} onRetry={onRetry} />
           )}
         </div>
       ) : empty ? (
         <div className="kjun-data-empty kjun-state-actions" style={{ paddingBlock: padding, minHeight }}>
           {emptyContent || (
-            <KjunEmpty text={emptyText} icon={emptyIcon}>
-              {emptyActionText && (
+            // A small state draws the small empty, like the boundary's fallback.
+            <KjunEmpty text={emptyText} description={emptyDescription} icon={emptyIcon} size={size === "sm" ? "sm" : "md"}>
+              {/* Like retry, the action appears only when the app handles it. */}
+              {emptyActionText && onEmptyAction && (
                 <KjunButton onClick={onEmptyAction}>{emptyActionText}</KjunButton>
               )}
             </KjunEmpty>
@@ -179,22 +179,36 @@ export function KjunDataState({
   );
 }
 type BoundarySize = "sm" | "md" | "lg";
-/** The default fallback: KjunEmpty's hierarchy inside DataState's padding and minimum height, so both read as one family. */
+/**
+ * A failure with nothing else to show: KjunEmpty's hierarchy with a danger icon and a secondary retry.
+ * DataState's blocking error and the boundary share it; their wrappers announce it (role alert), as the content it replaced is gone.
+ */
+function StateError({ size, title, description, retryText, onRetry, headingLevel = false }: {
+  size: BoundarySize; title: string; description?: ReactNode; retryText: string; onRetry?: () => void; headingLevel?: false | 3;
+}) {
+  const compact = size === "sm";
+  return (
+    <KjunEmpty icon="alert-circle" size={compact ? "sm" : "md"} headingLevel={headingLevel} text={title} description={description}>
+      {onRetry && (
+        <KjunButton variant="secondary" size={compact ? "sm" : "md"} onClick={onRetry}>
+          {retryText}
+        </KjunButton>
+      )}
+    </KjunEmpty>
+  );
+}
+/** The default fallback inside DataState's padding and minimum height, so both read as one family. */
 function BoundaryFallback({ title, size, onRetry }: { title?: string; size: BoundarySize; onRetry: () => void }) {
   const m = useKjunMessages();
-  const compact = size === "sm";
   return (
     <div
       className="kjun-error-fallback kjun-state-actions"
+      role="alert"
       data-size={size}
       style={{ paddingBlock: tokens.extensions.state.padding[size], minHeight: tokens.extensions.state.minimumHeights[size] }}
     >
-      <KjunEmpty icon="alert-circle" size={compact ? "sm" : "md"} headingLevel={3} text={title || m.somethingWentWrong} description={m.retryHint}>
-        {/* Secondary like DataState's retry. It resets the boundary rather than reloading the page. */}
-        <KjunButton variant="secondary" size={compact ? "sm" : "md"} onClick={onRetry}>
-          {m.retry}
-        </KjunButton>
-      </KjunEmpty>
+      {/* Retry resets the boundary rather than reloading the page. */}
+      <StateError size={size} headingLevel={3} title={title || m.somethingWentWrong} description={m.retryHint} retryText={m.retry} onRetry={onRetry} />
     </div>
   );
 }
@@ -203,28 +217,43 @@ export interface KjunErrorBoundaryProps {
   fallbackMessage?: string;
   /** The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages. */
   size?: "sm" | "md" | "lg";
-  fallback?: ReactNode;
+  /** Replaces the default fallback; a function receives the caught error and reset, like Vue's fallback slot. */
+  fallback?: ReactNode | ((props: KjunErrorFallbackProps) => ReactNode);
+  /** A change in any of these values (a route, a query) resets a failed boundary, like pressing retry. */
+  resetKeys?: readonly unknown[];
   onError?: (error: Error, info: ErrorInfo) => void;
+  /** Called after the boundary resets, from retry, a fallback's reset or a resetKeys change. */
   onReset?: () => void;
 }
+export interface KjunErrorFallbackProps {
+  error: Error;
+  reset: () => void;
+}
+const changed = (a: readonly unknown[] = [], b: readonly unknown[] = []) =>
+  a.length !== b.length || a.some((value, i) => !Object.is(value, b[i]));
 export class KjunErrorBoundary extends Component<
   KjunErrorBoundaryProps,
-  { error: boolean }
+  { error: Error | null }
 > {
-  state = { error: false };
-  static getDerivedStateFromError() {
-    return { error: true };
+  state: { error: Error | null } = { error: null };
+  static getDerivedStateFromError(error: unknown) {
+    return { error: error instanceof Error ? error : new Error(String(error)) };
   }
   componentDidCatch(error: Error, info: ErrorInfo) {
     this.props.onError?.(error, info);
   }
+  componentDidUpdate(previous: KjunErrorBoundaryProps, state: { error: Error | null }) {
+    // Only a boundary that was already showing its fallback resets; the render that failed keeps it.
+    if (this.state.error && state.error && changed(previous.resetKeys, this.props.resetKeys)) this.reset();
+  }
   reset = () => {
-    this.setState({ error: false });
+    this.setState({ error: null });
     this.props.onReset?.();
   };
   render() {
-    return this.state.error
-      ? this.props.fallback || <BoundaryFallback title={this.props.fallbackMessage} size={this.props.size ?? "md"} onRetry={this.reset} />
-      : this.props.children;
+    const { error } = this.state, { fallback } = this.props;
+    if (!error) return this.props.children;
+    if (typeof fallback === "function") return fallback({ error, reset: this.reset });
+    return fallback || <BoundaryFallback title={this.props.fallbackMessage} size={this.props.size ?? "md"} onRetry={this.reset} />;
   }
 }

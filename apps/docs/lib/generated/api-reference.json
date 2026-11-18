@@ -12646,7 +12646,7 @@
             "details": [
               {
                 "label": "표시 조건",
-                "text": "현재 조건 결과가 있으면 갱신 경고로, 결과가 없으면 차단 오류로 표시합니다."
+                "text": "현재 조건 결과가 있으면 본문 아래 갱신 경고(Alert)로, 결과가 없으면 차단 오류로 표시합니다. 차단 오류는 ErrorBoundary 대체 화면과 같은 Empty 구성(오류 아이콘, 제목, 메시지, 재시도)입니다."
               },
               {
                 "label": "상태 책임",
@@ -12716,11 +12716,11 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "본문 위 별도 줄에 갱신 상태를 표시합니다.",
+            "summary": "본문 위 가운데에 떠 있는 알약으로 갱신 상태를 표시합니다.",
             "details": [
               {
                 "label": "배치",
-                "text": "긴 문구는 영역 안에서 줄바꿈하며 제목이나 행동 버튼을 덮지 않습니다."
+                "text": "본문을 밀어내지 않고 위 가운데 12px에 겹쳐 표시합니다. 긴 문구는 영역 안에서 줄바꿈하며 포인터 입력은 아래 본문으로 전달됩니다."
               }
             ],
             "source": "packages/vue3/src/data-state.tsx",
@@ -12758,6 +12758,15 @@
             "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
+            "source": "packages/vue3/src/data-state.tsx"
+          },
+          {
+            "name": "emptyDescription",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Why it is empty and what to do next, under the title.",
+            "summary": "빈 상태 제목 아래에 표시할 설명 문구입니다.",
             "source": "packages/vue3/src/data-state.tsx"
           },
           {
@@ -12822,7 +12831,7 @@
             "details": [
               {
                 "label": "구성",
-                "text": "sm 24px · md 48px · lg 80px입니다. 빈 상태의 KjunEmpty에는 여백을 중복 적용하지 않습니다."
+                "text": "sm 24px · md 48px · lg 80px입니다. 빈 상태의 KjunEmpty에는 여백을 중복 적용하지 않으며, sm이면 기본 빈 상태도 KjunEmpty sm으로 표시합니다."
               }
             ],
             "source": "packages/vue3/src/data-state.tsx",
@@ -12882,13 +12891,13 @@
             ],
             "source": "packages/vue3/src/data-state.tsx",
             "example": "/components/data-state#preview"
-          }
-        ],
-        "events": [
+          },
           {
-            "name": "empty-action",
-            "source": "packages/vue3/src/data-state.tsx",
-            "type": "이벤트",
+            "name": "onEmptyAction",
+            "type": "(() => void)",
+            "required": false,
+            "default": "—",
+            "description": "Declared as a prop like onRetry: the empty action appears only when the app listens.",
             "summary": "빈 상태의 행동을 요청합니다.",
             "details": [
               {
@@ -12905,12 +12914,14 @@
               },
               {
                 "label": "상태 책임",
-                "text": "생성·조건 변경 등 실제 행동은 소비자가 구현합니다."
+                "text": "생성·조건 변경 등 실제 행동은 소비자가 구현합니다. 콜백·리스너가 없으면 emptyActionText가 있어도 버튼을 표시하지 않습니다."
               }
             ],
+            "source": "packages/vue3/src/data-state.tsx",
             "example": "/components/data-state#preview"
           }
         ],
+        "events": [],
         "slots": [
           {
             "name": "default",
@@ -13041,11 +13052,11 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "본문 위 별도 줄에 갱신 상태를 표시합니다.",
+            "summary": "본문 위 가운데에 떠 있는 알약으로 갱신 상태를 표시합니다.",
             "details": [
               {
                 "label": "배치",
-                "text": "긴 문구는 영역 안에서 줄바꿈하며 제목이나 행동 버튼을 덮지 않습니다."
+                "text": "본문을 밀어내지 않고 위 가운데 12px에 겹쳐 표시합니다. 긴 문구는 영역 안에서 줄바꿈하며 포인터 입력은 아래 본문으로 전달됩니다."
               }
             ],
             "source": "packages/react/src/data-state.tsx",
@@ -13083,6 +13094,15 @@
             "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
+            "source": "packages/react/src/data-state.tsx"
+          },
+          {
+            "name": "emptyDescription",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Why it is empty and what to do next, under the title.",
+            "summary": "빈 상태 제목 아래에 표시할 설명 문구입니다.",
             "source": "packages/react/src/data-state.tsx"
           },
           {
@@ -13147,7 +13167,7 @@
             "details": [
               {
                 "label": "구성",
-                "text": "sm 24px · md 48px · lg 80px입니다. 빈 상태의 KjunEmpty에는 여백을 중복 적용하지 않습니다."
+                "text": "sm 24px · md 48px · lg 80px입니다. 빈 상태의 KjunEmpty에는 여백을 중복 적용하지 않으며, sm이면 기본 빈 상태도 KjunEmpty sm으로 표시합니다."
               }
             ],
             "source": "packages/react/src/data-state.tsx",
@@ -13310,7 +13330,7 @@
               },
               {
                 "label": "상태 책임",
-                "text": "생성·조건 변경 등 실제 행동은 소비자가 구현합니다."
+                "text": "생성·조건 변경 등 실제 행동은 소비자가 구현합니다. 콜백·리스너가 없으면 emptyActionText가 있어도 버튼을 표시하지 않습니다."
               }
             ],
             "source": "packages/react/src/data-state.tsx",
@@ -13390,7 +13410,7 @@
             "details": [
               {
                 "label": "표시 조건",
-                "text": "현재 조건 결과가 있으면 갱신 경고로, 결과가 없으면 차단 오류로 표시합니다."
+                "text": "현재 조건 결과가 있으면 본문 아래 갱신 경고(Alert)로, 결과가 없으면 차단 오류로 표시합니다. 차단 오류는 ErrorBoundary 대체 화면과 같은 Empty 구성(오류 아이콘, 제목, 메시지, 재시도)입니다."
               },
               {
                 "label": "상태 책임",
@@ -13472,11 +13492,11 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "본문 위 별도 줄에 갱신 상태를 표시합니다.",
+            "summary": "본문 위 가운데에 떠 있는 알약으로 갱신 상태를 표시합니다.",
             "details": [
               {
                 "label": "배치",
-                "text": "긴 문구는 영역 안에서 줄바꿈하며 제목이나 행동 버튼을 덮지 않습니다."
+                "text": "본문을 밀어내지 않고 위 가운데 12px에 겹쳐 표시합니다. 긴 문구는 영역 안에서 줄바꿈하며 포인터 입력은 아래 본문으로 전달됩니다."
               }
             ],
             "source": "packages/native/src/data-state.tsx",
@@ -13514,6 +13534,15 @@
             "default": "—",
             "description": "",
             "summary": "데이터나 검색 결과가 없을 때 표시할 문구입니다.",
+            "source": "packages/native/src/data-state.tsx"
+          },
+          {
+            "name": "emptyDescription",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Why it is empty and what to do next, under the title.",
+            "summary": "빈 상태 제목 아래에 표시할 설명 문구입니다.",
             "source": "packages/native/src/data-state.tsx"
           },
           {
@@ -13578,7 +13607,7 @@
             "details": [
               {
                 "label": "구성",
-                "text": "sm 24px · md 48px · lg 80px입니다. 빈 상태의 KjunEmpty에는 여백을 중복 적용하지 않습니다."
+                "text": "sm 24px · md 48px · lg 80px입니다. 빈 상태의 KjunEmpty에는 여백을 중복 적용하지 않으며, sm이면 기본 빈 상태도 KjunEmpty sm으로 표시합니다."
               }
             ],
             "source": "packages/native/src/data-state.tsx",
@@ -13741,7 +13770,7 @@
               },
               {
                 "label": "상태 책임",
-                "text": "생성·조건 변경 등 실제 행동은 소비자가 구현합니다."
+                "text": "생성·조건 변경 등 실제 행동은 소비자가 구현합니다. 콜백·리스너가 없으면 emptyActionText가 있어도 버튼을 표시하지 않습니다."
               }
             ],
             "source": "packages/native/src/data-state.tsx",
@@ -13821,7 +13850,7 @@
             "details": [
               {
                 "label": "표시 조건",
-                "text": "현재 조건 결과가 있으면 갱신 경고로, 결과가 없으면 차단 오류로 표시합니다."
+                "text": "현재 조건 결과가 있으면 본문 아래 갱신 경고(Alert)로, 결과가 없으면 차단 오류로 표시합니다. 차단 오류는 ErrorBoundary 대체 화면과 같은 Empty 구성(오류 아이콘, 제목, 메시지, 재시도)입니다."
               },
               {
                 "label": "상태 책임",
@@ -13878,6 +13907,15 @@
             "description": "The default fallback's padding and minimum height, like KjunDataState: md for pages and panels, sm for cards, lg for full pages.",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
             "source": "packages/vue3/src/data-state.tsx"
+          },
+          {
+            "name": "resetKeys",
+            "type": "readonly unknown[]",
+            "required": false,
+            "default": "—",
+            "description": "A change in any of these values (a route, a query) resets a failed boundary, like pressing retry.",
+            "summary": "값이 바뀌면 오류 대체 화면을 초기화할 키 목록입니다.",
+            "source": "packages/vue3/src/data-state.tsx"
           }
         ],
         "events": [
@@ -13905,10 +13943,11 @@
           {
             "name": "fallback",
             "data": [
+              "error",
               "reset"
             ],
             "source": "packages/vue3/src/data-state.tsx",
-            "type": "{ reset }",
+            "type": "{ error, reset }",
             "summary": "fallback 영역의 기본 내용을 교체합니다."
           }
         ],
@@ -13943,11 +13982,19 @@
           },
           {
             "name": "fallback",
-            "type": "ReactNode",
+            "type": "ReactNode | ((props: KjunErrorFallbackProps) => ReactNode)",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "하위 렌더링 실패 시 대신 표시할 콘텐츠입니다."
+            "description": "Replaces the default fallback; a function receives the caught error and reset, like Vue's fallback slot.",
+            "summary": "하위 렌더링 실패 시 대신 표시할 콘텐츠입니다. 함수로 전달하면 { error, reset }을 받습니다."
+          },
+          {
+            "name": "resetKeys",
+            "type": "readonly unknown[] | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A change in any of these values (a route, a query) resets a failed boundary, like pressing retry.",
+            "summary": "값이 바뀌면 오류 대체 화면을 초기화할 키 목록입니다."
           },
           {
             "name": "onError",
@@ -13962,8 +14009,8 @@
             "type": "(() => void) | undefined",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "오류 대체 화면에서 초기화를 요청하면 호출합니다."
+            "description": "Called after the boundary resets, from retry, a fallback's reset or a resetKeys change.",
+            "summary": "오류 대체 화면이 초기화되면 호출합니다(재시도, reset 함수, resetKeys 변경)."
           }
         ],
         "events": [],
@@ -13999,11 +14046,19 @@
           },
           {
             "name": "fallback",
-            "type": "ReactNode",
+            "type": "ReactNode | ((props: KjunErrorFallbackProps) => ReactNode)",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "하위 렌더링 실패 시 대신 표시할 콘텐츠입니다."
+            "description": "Replaces the default fallback; a function receives the caught error and reset, like Vue's fallback slot.",
+            "summary": "하위 렌더링 실패 시 대신 표시할 콘텐츠입니다. 함수로 전달하면 { error, reset }을 받습니다."
+          },
+          {
+            "name": "resetKeys",
+            "type": "readonly unknown[] | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A change in any of these values (a route, a query) resets a failed boundary, like pressing retry.",
+            "summary": "값이 바뀌면 오류 대체 화면을 초기화할 키 목록입니다."
           },
           {
             "name": "onError",
@@ -14018,8 +14073,8 @@
             "type": "(() => void) | undefined",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "오류 대체 화면에서 초기화를 요청하면 호출합니다."
+            "description": "Called after the boundary resets, from retry, a fallback's reset or a resetKeys change.",
+            "summary": "오류 대체 화면이 초기화되면 호출합니다(재시도, reset 함수, resetKeys 변경)."
           }
         ],
         "events": [],

@@ -28,8 +28,8 @@ export const queryProps = {
 };
 const common = {
   ...queryProps,
-  size: detail("대체 상태의 위아래 여백을 지정합니다.", { 구성: "sm 24px · md 48px · lg 80px입니다. 빈 상태의 KjunEmpty에는 여백을 중복 적용하지 않습니다." }),
-  refreshingText: detail("본문 위 별도 줄에 갱신 상태를 표시합니다.", { 배치: "긴 문구는 영역 안에서 줄바꿈하며 제목이나 행동 버튼을 덮지 않습니다." }),
+  size: detail("대체 상태의 위아래 여백을 지정합니다.", { 구성: "sm 24px · md 48px · lg 80px입니다. 빈 상태의 KjunEmpty에는 여백을 중복 적용하지 않으며, sm이면 기본 빈 상태도 KjunEmpty sm으로 표시합니다." }),
+  refreshingText: detail("본문 위 가운데에 떠 있는 알약으로 갱신 상태를 표시합니다.", { 배치: "본문을 밀어내지 않고 위 가운데 12px에 겹쳐 표시합니다. 긴 문구는 영역 안에서 줄바꿈하며 포인터 입력은 아래 본문으로 전달됩니다." }),
   retryText: detail("오류와 갱신 경고의 재시도 버튼 문구입니다.", { 배치: "긴 문구는 버튼 안에서 줄바꿈하고 버튼 높이가 늘어납니다." }),
   preserveContent: detail("가려진 본문의 인스턴스를 유지합니다.", {
     "적용 조건":
@@ -47,7 +47,7 @@ const common = {
       "최초 로딩 → 차단 오류 → 빈 상태 순으로 대체 콘텐츠를 표시합니다. 빈 결과 판정은 소비자가 data를 검사해 전달합니다.",
   }),
   error: detail("요청 실패 메시지입니다.", {
-    "표시 조건": "현재 조건 결과가 있으면 갱신 경고로, 결과가 없으면 차단 오류로 표시합니다.",
+    "표시 조건": "현재 조건 결과가 있으면 본문 아래 갱신 경고(Alert)로, 결과가 없으면 차단 오류로 표시합니다. 차단 오류는 ErrorBoundary 대체 화면과 같은 Empty 구성(오류 아이콘, 제목, 메시지, 재시도)입니다.",
     "상태 책임": "재시도 시 소비자가 오류를 정리하고 loading을 갱신합니다.",
   }),
 };
@@ -63,13 +63,12 @@ const empty = event(
   "emptyActionText로 표시된 버튼 실행 시",
   "없음",
   "반환값은 사용하지 않습니다.",
-  "생성·조건 변경 등 실제 행동은 소비자가 구현합니다.",
+  "생성·조건 변경 등 실제 행동은 소비자가 구현합니다. 콜백·리스너가 없으면 emptyActionText가 있어도 버튼을 표시하지 않습니다.",
 );
 export default {
   vue3: {
     ownership,
-    props: { ...common, onRetry: retry },
-    events: { "empty-action": empty },
+    props: { ...common, onRetry: retry, onEmptyAction: empty },
     slots: {
       loading: slot("기본 최초 로딩 표시를 교체합니다."),
       empty: slot("기본 빈 상태를 교체합니다.", "제공 데이터 없음", "DataState가 size에 따른 바깥 여백을 담당합니다. 슬롯의 KjunEmpty에는 기본 여백을 중복 적용하지 않습니다."),

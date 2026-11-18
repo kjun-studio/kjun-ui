@@ -172,14 +172,14 @@
     "description": "최초 조회·조건 변경·동일 조건 갱신·실패를 구분하여 표시합니다.",
     "interaction": "요청은 소비자가 수행합니다. queryKey는 현재 조건, resultKey는 현재 데이터가 속한 조건이며 성공 시 데이터와 결과 키를 함께 갱신합니다.",
     "differences": "세 플랫폼 모두 생략한 resultKey와 명시적 null을 구분합니다. Vue는 loading·empty·error 슬롯(error는 error·retry를 받음), React·Native는 loadingContent·emptyContent·errorContent 요소를 사용합니다.",
-    "states": "갱신 표시는 본문 위, 갱신 실패 경고는 본문 아래에 12px 간격으로 배치합니다. 빈 상태는 Empty를 사용하고 size에 따른 여백을 한 번만 적용합니다. 로딩·오류·빈 상태는 size별 최소 높이(sm 176px, md 240px, lg 320px)를 함께 써서 상태가 바뀌어도 높이가 튀지 않고 내용은 세로 가운데에 놓입니다(loadingPadding=\"none\" 로딩은 제외). 긴 행동 문구는 줄바꿈합니다. 요청 취소·늦은 응답의 데이터 반영 방지는 소비자가 구현합니다."
+    "states": "갱신 표시는 본문을 밀지 않고 본문 위 가운데에 떠 있는 알약으로, 갱신 실패 경고는 본문 아래에 12px 간격으로 배치합니다. 결과가 없는 실패는 ErrorBoundary와 같은 Empty 구성으로 표시합니다. 빈 상태는 Empty를 사용하고 size에 따른 여백을 한 번만 적용하며, sm이면 Empty sm으로 표시합니다. emptyDescription은 제목 아래 설명이고 행동 버튼은 onEmptyAction(Vue @empty-action)이 있을 때만 표시합니다. 로딩·오류·빈 상태는 size별 최소 높이(sm 176px, md 240px, lg 320px)를 함께 써서 상태가 바뀌어도 높이가 튀지 않고 내용은 세로 가운데에 놓입니다(loadingPadding=\"none\" 로딩은 제외). 긴 행동 문구는 줄바꿈합니다. 요청 취소·늦은 응답의 데이터 반영 방지는 소비자가 구현합니다."
   },
   "KjunErrorBoundary": {
     "slug": "error-boundary",
     "description": "하위 렌더링 오류를 대체 콘텐츠로 표현하고 오류 보고를 프로젝트에 전달합니다.",
-    "interaction": "하위 렌더 오류를 포착해 대체 화면을 표시합니다. 이벤트 처리기나 비동기 요청의 실패는 해당 업무 코드에서 처리해야 합니다.",
-    "differences": "Vue onErrorCaptured와 React·Native 오류 경계의 포착 범위는 각 프레임워크를 따릅니다. Vue는 fallback 슬롯과 error·reset 이벤트, React·Native는 fallback·onError·onReset으로 대체 화면과 보고를 연결합니다.",
-    "states": "하위 렌더 오류를 대체 화면으로 표시합니다. 기본 대체 화면은 Empty와 같은 구성(오류 아이콘, 제목, 설명, 다시 시도 버튼)이며 size에 따라 DataState와 같은 여백과 최소 높이(sm 176px, md 240px, lg 320px)를 씁니다. 카드처럼 작은 영역은 sm을 사용합니다. 재시도하면 오류 상태를 초기화하며 보고 콜백으로 프로젝트의 오류 수집을 연결합니다."
+    "interaction": "하위 렌더 오류를 포착해 대체 화면을 표시합니다. 이벤트 처리기나 비동기 요청의 실패는 세 플랫폼 모두 포착하지 않으므로 해당 업무 코드에서 처리해야 합니다. resetKeys의 값이 바뀌면(예: 경로 이동) 실패한 경계를 다시 시도와 같이 초기화합니다.",
+    "differences": "Vue는 fallback 슬롯({ error, reset })과 error·reset 이벤트, React·Native는 fallback(요소 또는 { error, reset }을 받는 함수)·onError·onReset으로 대체 화면과 보고를 연결합니다. Vue는 이벤트 처리기 오류를 React처럼 앱 오류 처리기로 그대로 넘깁니다.",
+    "states": "하위 렌더 오류를 대체 화면으로 표시합니다. 기본 대체 화면은 Empty와 같은 구성(오류 아이콘, 제목, 설명, 다시 시도 버튼)이며 size에 따라 DataState와 같은 여백과 최소 높이(sm 176px, md 240px, lg 320px)를 씁니다. 카드처럼 작은 영역은 sm을 사용합니다. 기본 대체 화면은 나타날 때 alert로 알립니다. 재시도하면 오류 상태를 초기화하며 보고 콜백으로 프로젝트의 오류 수집을 연결합니다."
   },
   "KjunProgress": {
     "slug": "progress",

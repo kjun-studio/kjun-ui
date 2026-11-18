@@ -30,6 +30,7 @@ for (const platform of ['react', 'vue3', 'native'] as const) for (const mode of 
       }
       if (preset.id === 'spinner') await expect(page.getByText('로딩 중...', { exact: true })).toHaveCSS('font-size', '14px');
       if (preset.id === 'empty-action') {
+        await expect(page.getByText('조건을 바꾸거나 초기화해 다시 조회하세요.', { exact: true })).toBeVisible();
         await page.getByRole('button', { name: '조건 초기화', exact: true }).click();
         await expect(page.getByText('조건 초기화 요청', { exact: true })).toBeVisible();
       }

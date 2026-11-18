@@ -95,7 +95,7 @@ export { KjunColorPicker, type KjunColorPickerProps, type KjunColorSwatch } from
 export { KjunFileUpload, type KjunFileUploadProps, type KjunUploadFile, type KjunUploadStatus, type KjunRejectedFile, type KjunRejectReason, type KjunPickedFile } from "./file-upload";
 
 export { KjunDataState, KjunErrorBoundary } from "./data-state";
-export type { KjunDataStateProps, KjunErrorBoundaryProps } from "./data-state";
+export type { KjunDataStateProps, KjunErrorBoundaryProps, KjunErrorFallbackProps } from "./data-state";
 
 export * from "./skeletons";
 

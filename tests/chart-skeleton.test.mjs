@@ -62,7 +62,7 @@ test('unknown chart skeleton kinds fall back to frame', () => {
 });
 
 test('the donut ratio is shared by the helper, the web CSS and Native', () => {
-  const css = read('packages/tokens/src/data-state.css'), percent = chartDonutRatio * 100;
+  const css = read('packages/tokens/src/skeleton.css'), percent = chartDonutRatio * 100;
   const donut = css.slice(css.indexOf('.kjun-chart-skeleton-donut {'), css.indexOf('}', css.indexOf('.kjun-chart-skeleton-donut {')));
   assert.match(donut, new RegExp(`height: ${percent}%;`));
   assert.match(read('packages/native/src/skeletons.tsx'), /chartDonutRatio \* 100/);

@@ -13,7 +13,7 @@ const s = reactive({ c: { ...dataStateConfig } as any, events: { retry: 0, empty
 Object.assign(window, { configureDataState: (next: object) => { s.c = { ...s.c, ...next }; } });
 const action = (key: 'retry' | 'empty' | 'export') => () => { s.events[key]++; };
 // The design-only keys stay out of the component props.
-const stateProps = ({ width, related, customEmpty, customError, customLoading, ...rest }: any) => rest;
+const stateProps = ({ width, related, customEmpty, customError, customLoading, noEmptyHandler, ...rest }: any) => rest;
 createApp(defineComponent(() => () => {
   const c = s.c, Related: any = c.related ? (K as any)[c.related] : null;
   const rowsFor = c.empty ? [] : [{ id: 'a', name: 'Result row', price: 100 }];
@@ -26,7 +26,7 @@ createApp(defineComponent(() => () => {
           ? <K.KjunTable columns={relatedProps.columns as any} data={rowsFor} queryKey={queryKey} resultKey={resultKey} loading={loading} error={error} onRetry={action('retry')} />
           : <Related {...relatedProps} queryKey={queryKey} resultKey={resultKey} loading={loading} error={error} rows={rowsFor} onRetry={action('retry')} />
       ) : (
-        <K.KjunDataState {...stateProps(c)} onRetry={action('retry')} onEmpty-action={action('empty')}>
+        <K.KjunDataState {...stateProps(c)} onRetry={action('retry')} onEmpty-action={c.noEmptyHandler ? undefined : action('empty')}>
           {{
             default: () => <K.KjunCard title="Result title" surface="muted">
               {{

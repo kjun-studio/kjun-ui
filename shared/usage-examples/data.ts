@@ -33,7 +33,7 @@ export function generate(input: UsageInput) {
         b.button('동일 조건 갱신', b.handler('refresh', '', b.set('queryLoading', 'true')), { variant: 'secondary' }),
         b.button('조회 완료', b.handler('complete', '', b.set('resultKey', b.read('queryKey')) + '\n' + b.set('queryLoading', 'false') + '\n' + b.set('queryError', 'null')), { variant: 'secondary' }),
         b.button('조회 실패', b.handler('fail', '', b.set('queryLoading', 'false') + '\n' + b.set('queryError', '"조회에 실패했습니다"')), { variant: 'secondary' }),
-        b.node(name, { queryKey, resultKey, loading, error, hasLoadedOnce: !['최초 로딩', '최초 실패'].includes(String(s.queryState)), ...b.props('preserveContent', 'skeleton', 'empty', 'size', 'loadingText', 'refreshingText', 'emptyText', 'emptyIcon', 'emptyActionText', 'retryText'), skeletonCount: 1,
+        b.node(name, { queryKey, resultKey, loading, error, hasLoadedOnce: !['최초 로딩', '최초 실패'].includes(String(s.queryState)), ...b.props('preserveContent', 'skeleton', 'empty', 'size', 'loadingText', 'refreshingText', 'emptyText', 'emptyDescription', 'emptyIcon', 'emptyActionText', 'retryText'), skeletonCount: 1,
           onEmptyAction: notify('resetConditions', '', '"조건 초기화 요청"'),
           onRetry: b.handler('retry', '', b.set('queryError', 'null') + '\n' + b.set('queryLoading', 'true')),
         }, b.node('KjunCard', { title: '조회 결과', surface: 'muted' }, b.native ? '{"이전 결과와 현재 조건을 구분합니다."}' : b.text('이전 결과와 현재 조건을 구분합니다.'))),
