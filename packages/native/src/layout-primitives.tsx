@@ -10,7 +10,8 @@ import {
 } from "../../../shared/package-runtime/layout-primitives";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { KjunFormGroup } from "./input";
-import { KjunButton } from "./button";
+import { KjunButton, KjunIcon } from "./button";
+import { AccessiblePressable } from "./a11y";
 import { KjunBadge, KjunSpinner } from "./display-primitives";
 import { KjunChip } from "./chip";
 import { KjunCopyButton, KjunExternalLink } from "./actions";
@@ -90,8 +91,13 @@ export function KjunText({ variant = "body", tone = "default", align, maxLines, 
       {!open && <View pointerEvents="none" aria-hidden={true} importantForAccessibility="no-hide-descendants" style={{ position: "absolute", top: 0, left: 0, right: 0, opacity: 0 }}>
         <Root style={textStyle} onLayout={measure("full")}>{children}</Root>
       </View>}
-      {(open || overflows) && <KjunButton variant="link" size="sm" suffixIcon={open ? "chevron-up" : "chevron-down"} accessibilityState={{ expanded: open }}
-        onPress={() => change(!open)}>{open ? m.showLessText : m.showMoreText}</KjunButton>}
+      {(open || overflows) && <AccessiblePressable accessibilityRole="button" accessibilityState={{ expanded: open }} onPress={() => change(!open)}
+        style={({ pressed }: { pressed: boolean }) => ({ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: tokens.space.inline.xs,
+          opacity: pressed ? tokens.states.opacity.pressed : 1 })}>
+        {/* A quiet text button in the label role (text-secondary, 500): a step below the text it opens, not a link. */}
+        <KText style={[typeStyle("label"), { color: colors.textSecondary }]}>{open ? m.showLessText : m.showMoreText}</KText>
+        <KjunIcon name={open ? "chevron-up" : "chevron-down"} size={tokens.button.iconSizes.sm} color={colors.textSecondary} />
+      </AccessiblePressable>}
     </View>
   );
 }

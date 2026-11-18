@@ -63,6 +63,25 @@
   min-width: 0;
 }
 .kjun-text-expandable > .kjun-text { align-self: stretch; }
+/* 펼치기 버튼: label 역할(크기·줄높이·굵기)과 text-secondary 색의 조용한 글자 버튼. 링크가 아니라 글의 보조 동작이다. */
+.kjun-text-expandable > .kjun-text-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--_kjun-geometry-space-inline-xs);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--_kjun-type-label-size);
+  line-height: var(--_kjun-type-label-line);
+  font-weight: var(--_kjun-type-label-weight);
+  letter-spacing: var(--_kjun-type-label-tracking);
+  color: var(--_kjun-color-text-secondary);
+}
+.kjun-text-expandable > .kjun-text-toggle:hover { text-decoration: underline; }
+.kjun-text-expandable > .kjun-text-toggle:focus-visible { outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset: var(--_kjun-state-focus-offset); }
 
 /* KjunStack·KjunInline: 세로·가로 배치. 클래스 대신 data 속성을 써서 KJUN 마크업으로 판정되지 않는다. 그래서 안에
    넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받고, 몇 겹 겹쳐도 달라지지 않는다.

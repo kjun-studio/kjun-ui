@@ -9,7 +9,7 @@ import {
   type TextDecoration, type TextTag, type TextTone, type TextVariant,
 } from "../../../shared/package-runtime/layout-primitives";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { KjunButton } from "./button";
+import { KjunIcon } from "./button";
 export type { DirectionValue, FlexDirection, InlineAlign, InlineAlignValue, InlineGap, InlineGapValue, InlineJustify, InlineRowGap, InlineRowGapValue, InsetStep,
   JustifyValue, LegacyStackGap, PaddingValue, Responsive, ResponsiveBasis, StackAlign, StackAlignValue, StackBreakpoint, StackDivider, StackGap, StackGapValue,
   StackJustify, StackTag, TextAlign, TextDecoration, TextTag, TextTone, TextVariant };
@@ -105,9 +105,12 @@ function ExpandToggle({ element, clamped, expanded, controls, content, onChange 
     return () => observer.disconnect();
   }, [element, clamped, content]);
   if (!expanded && !overflows) return null;
+  // A quiet text button in the label role (text-secondary, 500): a step below the text it opens, not a link.
   return (
-    <KjunButton variant="link" size="sm" suffixIcon={expanded ? "chevron-up" : "chevron-down"} aria-expanded={expanded} aria-controls={controls}
-      onClick={() => onChange(!expanded)}>{expanded ? m.showLessText : m.showMoreText}</KjunButton>
+    <button type="button" className="kjun-text-toggle" aria-expanded={expanded} aria-controls={controls} onClick={() => onChange(!expanded)}>
+      {expanded ? m.showLessText : m.showMoreText}
+      <KjunIcon name={expanded ? "chevron-up" : "chevron-down"} size={tokens.button.iconSizes.sm} />
+    </button>
   );
 }
 

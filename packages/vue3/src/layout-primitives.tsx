@@ -9,7 +9,7 @@ import {
   type TextDecoration, type TextTag, type TextTone, type TextVariant,
 } from "../../../shared/package-runtime/layout-primitives";
 import { useKjunMessages } from "./runtime/messages";
-import { KjunButton } from "./button";
+import { KjunIcon } from "./button";
 export type { DirectionValue, FlexDirection, InlineAlign, InlineAlignValue, InlineGap, InlineGapValue, InlineJustify, InlineRowGap, InlineRowGapValue, InsetStep,
   JustifyValue, LegacyStackGap, PaddingValue, Responsive, ResponsiveBasis, StackAlign, StackAlignValue, StackBreakpoint, StackDivider, StackGap, StackGapValue,
   StackJustify, StackTag, TextAlign, TextDecoration, TextTag, TextTone, TextVariant };
@@ -80,8 +80,9 @@ export const KjunText = defineComponent({
       return (
         <div class="kjun-text-expandable">
           {text}
-          {(open || overflows.value) && <KjunButton variant="link" size="sm" suffixIcon={open ? "chevron-up" : "chevron-down"} aria-expanded={open ? "true" : "false"}
-            aria-controls={id} onClick={() => change(!open)}>{open ? m.value.showLessText : m.value.showMoreText}</KjunButton>}
+          {(open || overflows.value) && <button type="button" class="kjun-text-toggle" aria-expanded={open ? "true" : "false"} aria-controls={id}
+            onClick={() => change(!open)}>{open ? m.value.showLessText : m.value.showMoreText}
+            <KjunIcon name={open ? "chevron-up" : "chevron-down"} size={tokens.button.iconSizes.sm} /></button>}
         </div>
       );
     };
