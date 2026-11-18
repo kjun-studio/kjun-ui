@@ -47100,9 +47100,34 @@
             "description": "\"lineThrough\" strikes the text, e.g. a price before a discount.",
             "summary": "lineThrough는 할인 전 가격처럼 글자에 취소선을 긋습니다.",
             "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "expandable",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "With maxLines, a \"더보기\" button under the text opens the rest and turns into \"접기\". It shows only while the text\noverflows (or is open). The text and the button sit in a wrapper div; class, style, id and aria-* stay on the text element.",
+            "summary": "maxLines와 함께 쓰면 글 아래에 '더보기' 버튼을 두어 나머지를 펼치고, 펼친 뒤에는 '접기'로 바뀝니다. 버튼은 글이 실제로 줄어들었을 때(또는 펼쳐 있을 때)만 보이며 aria-expanded로 상태를 알립니다. 글과 버튼을 감싸는 블록이 생기고, id·class·style·aria는 글 요소에 그대로 붙습니다. 문구는 Provider의 messages(showMoreText·showLessText)로 바꿉니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
+            "name": "expanded",
+            "type": "boolean",
+            "required": false,
+            "default": "—",
+            "description": "v-model:expanded: whether the expandable text is open; leave it out to let the text keep it.",
+            "summary": "expandable 글을 펼쳤는지 여부입니다. 생략하면 컴포넌트가 직접 관리하고, 주면 onExpandedChange(Vue는 v-model:expanded)와 함께 앱이 정합니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
           }
         ],
-        "events": [],
+        "events": [
+          {
+            "name": "update:expanded",
+            "source": "packages/vue3/src/layout-primitives.tsx",
+            "type": "이벤트",
+            "summary": "update:expanded 이벤트를 통지합니다."
+          }
+        ],
         "slots": [
           {
             "name": "default",
@@ -47160,6 +47185,33 @@
             "default": "—",
             "description": "Clamp to this many lines with an ellipsis; the full text stays in the DOM.",
             "summary": "이 줄 수를 넘으면 말줄임표로 줄입니다. 전체 문장은 그대로 남아 보조 기술이 읽습니다. 1보다 작은 값은 줄이지 않습니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "expandable",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "With maxLines, a \"더보기\" button under the text opens the rest and turns into \"접기\". It shows only while the text\noverflows (or is open). The text and the button sit in a wrapper div; the text element keeps the other props.",
+            "summary": "maxLines와 함께 쓰면 글 아래에 '더보기' 버튼을 두어 나머지를 펼치고, 펼친 뒤에는 '접기'로 바뀝니다. 버튼은 글이 실제로 줄어들었을 때(또는 펼쳐 있을 때)만 보이며 aria-expanded로 상태를 알립니다. 글과 버튼을 감싸는 블록이 생기고, id·class·style·aria는 글 요소에 그대로 붙습니다. 문구는 Provider의 messages(showMoreText·showLessText)로 바꿉니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "expanded",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Whether the expandable text is open; leave it out to let the text keep it.",
+            "summary": "expandable 글을 펼쳤는지 여부입니다. 생략하면 컴포넌트가 직접 관리하고, 주면 onExpandedChange(Vue는 v-model:expanded)와 함께 앱이 정합니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
+            "name": "onExpandedChange",
+            "type": "((expanded: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "더보기·접기 버튼을 눌러 펼침 상태가 바뀔 때 다음 값을 받습니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
@@ -47333,6 +47385,33 @@
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
+            "name": "expandable",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "With maxLines, a \"더보기\" button under the text opens the rest and turns into \"접기\". It shows only while the text\noverflows (or is open), measured with a hidden full copy. The text and the button sit in a View.",
+            "summary": "maxLines와 함께 쓰면 글 아래에 '더보기' 버튼을 두어 나머지를 펼치고, 펼친 뒤에는 '접기'로 바뀝니다. 버튼은 글이 실제로 줄어들었을 때(또는 펼쳐 있을 때)만 보이며 aria-expanded로 상태를 알립니다. 글과 버튼을 감싸는 블록이 생기고, id·class·style·aria는 글 요소에 그대로 붙습니다. 문구는 Provider의 messages(showMoreText·showLessText)로 바꿉니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "expanded",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Whether the expandable text is open; leave it out to let the text keep it.",
+            "summary": "expandable 글을 펼쳤는지 여부입니다. 생략하면 컴포넌트가 직접 관리하고, 주면 onExpandedChange(Vue는 v-model:expanded)와 함께 앱이 정합니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
+            "name": "onExpandedChange",
+            "type": "((expanded: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "더보기·접기 버튼을 눌러 펼침 상태가 바뀔 때 다음 값을 받습니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
             "name": "style",
             "type": "StyleProp<TextStyle>",
             "required": false,
@@ -47398,11 +47477,11 @@
           },
           {
             "name": "align",
-            "type": "StackAlign",
+            "type": "StackAlignValue",
             "required": false,
             "default": "\"stretch\"",
-            "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons, badges, chips and other\ncontent-width controls keep their own; a full-width button says so with block.",
-            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지합니다(전체 폭 버튼은 block, 앱이 감싼 요소는 data-kjun-intrinsic). start·center·end는 모든 자식을 내용 폭으로 둡니다.",
+            "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons, badges, chips and other\ncontent-width controls keep their own; a full-width button says so with block. An object changes it with the width.",
+            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지합니다(전체 폭 버튼은 block, 앱이 감싼 요소는 data-kjun-intrinsic). start·center·end는 모든 자식을 내용 폭으로 둡니다. { base: \"stretch\", medium: \"center\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, direction과 함께 가로로 놓일 때의 정렬을 따로 정합니다.",
             "source": "packages/vue3/src/layout-primitives.tsx"
           },
           {
@@ -47470,11 +47549,11 @@
           },
           {
             "name": "justify",
-            "type": "StackJustify",
+            "type": "JustifyValue",
             "required": false,
             "default": "\"start\"",
-            "description": "How children share the spare length: between puts the first at the start and the last at the end.",
-            "summary": "Stack이 자식보다 길 때 남는 길이의 분배(start·center·end·between)입니다. between은 첫 자식을 시작, 마지막 자식을 끝에 붙입니다. 묶음 사이를 벌리려면 KjunSpacer를 넣습니다.",
+            "description": "How children share the spare length: between puts the first at the start and the last at the end. Takes an object per width.",
+            "summary": "Stack이 자식보다 길 때 남는 길이의 분배(start·center·end·between)입니다. between은 첫 자식을 시작, 마지막 자식을 끝에 붙입니다. 묶음 사이를 벌리려면 KjunSpacer를 넣습니다. align처럼 화면 폭별 객체를 받습니다.",
             "source": "packages/vue3/src/layout-primitives.tsx"
           },
           {
@@ -47513,11 +47592,11 @@
           },
           {
             "name": "align",
-            "type": "StackAlign | undefined",
+            "type": "StackAlignValue | undefined",
             "required": false,
             "default": "\"stretch\"",
-            "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons, badges, chips and other\ncontent-width controls keep their own; a full-width button says so with block.",
-            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지합니다(전체 폭 버튼은 block, 앱이 감싼 요소는 data-kjun-intrinsic). start·center·end는 모든 자식을 내용 폭으로 둡니다.",
+            "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons, badges, chips and other\ncontent-width controls keep their own; a full-width button says so with block. An object changes it with the width.",
+            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지합니다(전체 폭 버튼은 block, 앱이 감싼 요소는 data-kjun-intrinsic). start·center·end는 모든 자식을 내용 폭으로 둡니다. { base: \"stretch\", medium: \"center\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, direction과 함께 가로로 놓일 때의 정렬을 따로 정합니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
@@ -47585,11 +47664,11 @@
           },
           {
             "name": "justify",
-            "type": "StackJustify | undefined",
+            "type": "JustifyValue | undefined",
             "required": false,
             "default": "\"start\"",
-            "description": "",
-            "summary": "Stack이 자식보다 길 때 남는 길이의 분배(start·center·end·between)입니다. between은 첫 자식을 시작, 마지막 자식을 끝에 붙입니다. 묶음 사이를 벌리려면 KjunSpacer를 넣습니다.",
+            "description": "Main-axis distribution; takes an object per width like gap.",
+            "summary": "Stack이 자식보다 길 때 남는 길이의 분배(start·center·end·between)입니다. between은 첫 자식을 시작, 마지막 자식을 끝에 붙입니다. 묶음 사이를 벌리려면 KjunSpacer를 넣습니다. align처럼 화면 폭별 객체를 받습니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
@@ -47692,11 +47771,11 @@
           },
           {
             "name": "align",
-            "type": "StackAlign | undefined",
+            "type": "StackAlignValue | undefined",
             "required": false,
             "default": "\"stretch\"",
-            "description": "Cross-axis alignment. Buttons, badges and chips keep their own width under stretch (the default), as on Web.",
-            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지합니다(전체 폭 버튼은 block, 앱이 감싼 요소는 data-kjun-intrinsic). start·center·end는 모든 자식을 내용 폭으로 둡니다.",
+            "description": "Cross-axis alignment. Buttons, badges, chips and other content-width controls keep their own width under stretch (the default),\nas on Web. An object changes it with the width.",
+            "summary": "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지합니다(전체 폭 버튼은 block, 앱이 감싼 요소는 data-kjun-intrinsic). start·center·end는 모든 자식을 내용 폭으로 둡니다. { base: \"stretch\", medium: \"center\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, direction과 함께 가로로 놓일 때의 정렬을 따로 정합니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
@@ -47764,11 +47843,11 @@
           },
           {
             "name": "justify",
-            "type": "StackJustify | undefined",
+            "type": "JustifyValue | undefined",
             "required": false,
             "default": "\"start\"",
-            "description": "",
-            "summary": "Stack이 자식보다 길 때 남는 길이의 분배(start·center·end·between)입니다. between은 첫 자식을 시작, 마지막 자식을 끝에 붙입니다. 묶음 사이를 벌리려면 KjunSpacer를 넣습니다.",
+            "description": "Main-axis distribution; takes an object per width like gap.",
+            "summary": "Stack이 자식보다 길 때 남는 길이의 분배(start·center·end·between)입니다. between은 첫 자식을 시작, 마지막 자식을 끝에 붙입니다. 묶음 사이를 벌리려면 KjunSpacer를 넣습니다. align처럼 화면 폭별 객체를 받습니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
@@ -47818,12 +47897,21 @@
             "source": "packages/vue3/src/layout-primitives.tsx"
           },
           {
+            "name": "rowGap",
+            "type": "InlineRowGapValue",
+            "required": false,
+            "default": "—",
+            "description": "The space between wrapped lines: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24); absent, the lines keep the gap. Takes an object per width.",
+            "summary": "여러 줄로 넘어갔을 때 줄 사이 간격입니다. xs·sm·smMd·md·lg는 space.stack(4·8·12·16·24px), none은 0이고, 생략하면 gap과 같습니다. 가로(row)로 놓일 때만 쓰며, 화면 폭별 객체를 받습니다.",
+            "source": "packages/vue3/src/layout-primitives.tsx"
+          },
+          {
             "name": "align",
-            "type": "InlineAlign",
+            "type": "InlineAlignValue",
             "required": false,
             "default": "\"center\"",
-            "description": "",
-            "summary": "자식의 세로 정렬(start·center·end·baseline·stretch)입니다.",
+            "description": "Cross-axis alignment; an object changes it with the width.",
+            "summary": "자식의 세로 정렬(start·center·end·baseline·stretch)입니다. 화면 폭별 객체를 받습니다.",
             "source": "packages/vue3/src/layout-primitives.tsx"
           },
           {
@@ -47900,11 +47988,11 @@
           },
           {
             "name": "justify",
-            "type": "StackJustify",
+            "type": "JustifyValue",
             "required": false,
             "default": "\"start\"",
-            "description": "How children share the spare length: between puts the first at the start and the last at the end.",
-            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
+            "description": "How children share the spare length: between puts the first at the start and the last at the end. Takes an object per width.",
+            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다. 화면 폭별 객체를 받습니다.",
             "source": "packages/vue3/src/layout-primitives.tsx"
           },
           {
@@ -47942,12 +48030,21 @@
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
+            "name": "rowGap",
+            "type": "InlineRowGapValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The space between wrapped lines: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24); absent, the lines keep the gap. Takes an object per width.",
+            "summary": "여러 줄로 넘어갔을 때 줄 사이 간격입니다. xs·sm·smMd·md·lg는 space.stack(4·8·12·16·24px), none은 0이고, 생략하면 gap과 같습니다. 가로(row)로 놓일 때만 쓰며, 화면 폭별 객체를 받습니다.",
+            "source": "packages/react/src/layout-primitives.tsx"
+          },
+          {
             "name": "align",
-            "type": "InlineAlign | undefined",
+            "type": "InlineAlignValue | undefined",
             "required": false,
             "default": "\"center\"",
-            "description": "",
-            "summary": "자식의 세로 정렬(start·center·end·baseline·stretch)입니다.",
+            "description": "Cross-axis alignment; an object changes it with the width.",
+            "summary": "자식의 세로 정렬(start·center·end·baseline·stretch)입니다. 화면 폭별 객체를 받습니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
@@ -48024,11 +48121,11 @@
           },
           {
             "name": "justify",
-            "type": "StackJustify | undefined",
+            "type": "JustifyValue | undefined",
             "required": false,
             "default": "\"start\"",
-            "description": "",
-            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
+            "description": "Main-axis distribution; takes an object per width like gap.",
+            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다. 화면 폭별 객체를 받습니다.",
             "source": "packages/react/src/layout-primitives.tsx"
           },
           {
@@ -48130,12 +48227,21 @@
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
+            "name": "rowGap",
+            "type": "InlineRowGapValue | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The space between wrapped lines: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24); absent, the lines keep the gap. Takes an object per width.",
+            "summary": "여러 줄로 넘어갔을 때 줄 사이 간격입니다. xs·sm·smMd·md·lg는 space.stack(4·8·12·16·24px), none은 0이고, 생략하면 gap과 같습니다. 가로(row)로 놓일 때만 쓰며, 화면 폭별 객체를 받습니다.",
+            "source": "packages/native/src/layout-primitives.tsx"
+          },
+          {
             "name": "align",
-            "type": "InlineAlign | undefined",
+            "type": "InlineAlignValue | undefined",
             "required": false,
             "default": "\"center\"",
-            "description": "",
-            "summary": "자식의 세로 정렬(start·center·end·baseline·stretch)입니다.",
+            "description": "Cross-axis alignment; an object changes it with the width.",
+            "summary": "자식의 세로 정렬(start·center·end·baseline·stretch)입니다. 화면 폭별 객체를 받습니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {
@@ -48212,11 +48318,11 @@
           },
           {
             "name": "justify",
-            "type": "StackJustify | undefined",
+            "type": "JustifyValue | undefined",
             "required": false,
             "default": "\"start\"",
-            "description": "",
-            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다.",
+            "description": "Main-axis distribution; takes an object per width like gap.",
+            "summary": "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다. 화면 폭별 객체를 받습니다.",
             "source": "packages/native/src/layout-primitives.tsx"
           },
           {

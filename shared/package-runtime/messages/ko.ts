@@ -143,6 +143,9 @@ export const kjunMessagesKo = {
   // 사이드 내비게이션 묶음의 처음 행 다음에 오는 행과, 다시 접는 행.
   showMoreItems: (count: number) => `${count}개 더 보기`,
   showFewerItems: "접기",
+  // KjunText expandable: the button under a clamped text.
+  showMoreText: "더보기",
+  showLessText: "접기",
   // Read after a destination name for a dot badge that has no count.
   // A numeric badge read in full, e.g. "새 항목 120개" even when it shows 99+.
   newCount: (count: number) => `새 항목 ${count}개`,

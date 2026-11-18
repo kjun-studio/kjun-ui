@@ -135,6 +135,8 @@ export const kjunMessagesEn: KjunMessages = {
   // The row after a side navigation group's first rows, and the row that folds them again.
   showMoreItems: (count: number) => `Show ${count} more`,
   showFewerItems: "Show less",
+  showMoreText: "Show more",
+  showLessText: "Show less",
   // A numeric badge read in full, e.g. "120 new" even when it shows 99+.
   newCount: (count: number) => `${count} new`,
   // A switch that is saving its new state.

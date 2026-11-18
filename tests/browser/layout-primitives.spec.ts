@@ -150,6 +150,52 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(chip.width).toBeLessThan(area.width / 2);
     });
 
+    test('an expandable text shows a more button only when it overflows, and opens and closes', async ({ page }) => {
+      const region = page.getByTestId('text-expand'), more = region.getByRole('button', { name: '더보기' });
+      await expect(more).toBeVisible();
+      await expect(page.getByTestId('text-expand-short').getByRole('button')).toHaveCount(0);
+      const text = region.getByText(/한 줄로 줄여야/).first();
+      const lineHeight = tokens.typography.body.lineHeightPx, closed = await box(text);
+      expect(Math.round(closed.height)).toBe(2 * lineHeight);
+      if (platform !== 'native') await expect(more).toHaveAttribute('aria-expanded', 'false');
+      await more.click();
+      const less = region.getByRole('button', { name: '접기' });
+      await expect(less).toBeVisible();
+      if (platform !== 'native') await expect(less).toHaveAttribute('aria-expanded', 'true');
+      await expect.poll(async () => Math.round((await box(text)).height)).toBeGreaterThan(2 * lineHeight);
+      // The button sits one xs step under the text, at its start.
+      const [opened, button] = [await box(text), await box(less)];
+      expect(Math.round(button.y - (opened.y + opened.height))).toBe(tokens.space.stack.xs);
+      expect(Math.round(button.x)).toBe(Math.round(opened.x));
+      await less.click();
+      await expect(region.getByRole('button', { name: '더보기' })).toBeVisible();
+      await expect.poll(async () => Math.round((await box(text)).height)).toBe(2 * lineHeight);
+    });
+
+    test('content-width controls follow the alignment: centered in an Inline, centered by a centered Stack', async ({ page }) => {
+      const row = page.getByTestId('inline-controls');
+      const [button, badge] = [await box(row.getByRole('button', { name: '저장' })), await box(row.getByText('신규', { exact: true }))];
+      expect(Math.abs((button.y + button.height / 2) - (badge.y + badge.height / 2))).toBeLessThan(1);
+      const area = await box(page.getByTestId('stack-center-copy')), copy = await box(page.getByTestId('stack-center-copy').getByRole('button'));
+      expect(Math.abs((area.x + area.width / 2) - (copy.x + copy.width / 2))).toBeLessThan(1);
+    });
+
+    test('align and justify change with the width, and a button follows them', async ({ page }) => {
+      const region = page.getByTestId('stack-align-responsive');
+      await page.setViewportSize({ width: tokens.responsive.stackMedium, height: 900 });
+      await expect.poll(async () => { const [a, b] = [await box(region), await box(region.getByRole('button'))]; return Math.round(a.x + a.width - (b.x + b.width)); }).toBe(0);
+      const [first, button] = [await box(boxes(page, 'stack-align-responsive').first()), await box(region.getByRole('button'))];
+      expect(Math.abs((first.y + first.height / 2) - (button.y + button.height / 2))).toBeLessThan(1);
+      await page.setViewportSize({ width: tokens.responsive.stackMedium - 1, height: 900 });
+      await expect.poll(async () => Math.round((await box(region.getByRole('button'))).x - (await box(region)).x)).toBe(0);
+      expect((await box(region.getByRole('button'))).width).toBeLessThan((await box(region)).width / 2);
+    });
+
+    test('rowGap sets the space between wrapped lines and gap stays between neighbours', async ({ page }) => {
+      expect(await distance(page, 'inline-row-gap', 'x')).toBe(tokens.space.inline.sm);
+      expect(await distance(page, 'inline-row-gap', 'y', 1)).toBe(tokens.space.stack.md);
+    });
+
     test('direction turns the stack into a row from the medium width', async ({ page }) => {
       await page.setViewportSize({ width: tokens.responsive.stackMedium, height: 900 });
       await expect.poll(() => distance(page, 'stack-direction', 'x')).toBe(tokens.space.stack.md);

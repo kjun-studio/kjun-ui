@@ -5,7 +5,8 @@ const boxes = (count: number, wide = false) => Array.from({ length: count }, (_,
 export function LayoutCases({ K, native = false }: { K: any; native?: boolean }) {
   const field = (label: string) => <K.KjunFormGroup key={label} label={label}><K.KjunInput value="" onValueChange={() => {}} /></K.KjunFormGroup>;
   return <div style={{ padding: 16 }}>
-    <div data-testid="text-variants">{variants.map(v => <K.KjunText key={v} variant={v}>{v}</K.KjunText>)}</div>
+    {/* The display words are wider than a 320px screen; the region clips them so the page itself does not scroll. */}
+    <div data-testid="text-variants" style={{ overflowX: 'hidden' }}>{variants.map(v => <K.KjunText key={v} variant={v}>{v}</K.KjunText>)}</div>
     <div data-testid="text-tones">{tones.map(t => <K.KjunText key={t} tone={t}>{toneTexts[t]}</K.KjunText>)}</div>
     {Object.entries(toneProbes).map(([tone, value]) => <span key={tone} data-testid={'probe-' + tone} style={{ color: `var(${value})` }}>probe</span>)}
     <div data-testid="text-features">
@@ -46,6 +47,12 @@ export function LayoutCases({ K, native = false }: { K: any; native?: boolean })
     <div data-testid="stack-container" style={{ width: 280 }}><K.KjunStack responsive="container" gap={{ base: 'xs', wide: 'lg' }}>{boxes(2)}</K.KjunStack></div>
     <div data-testid="stack-viewport" style={{ width: 280 }}><K.KjunStack gap={{ base: 'xs', wide: 'lg' }}>{boxes(2)}</K.KjunStack></div>
     <div data-testid="stack-spacer" style={{ height: 200 }}><K.KjunStack gap="sm" divider="strong" style={{ height: 200 }}>{boxes(1)}<K.KjunSpacer />{boxes(1)}</K.KjunStack></div>
+    <div data-testid="text-expand" style={{ width: 160, display: 'flex', flexDirection: 'column' }}><K.KjunText maxLines={2} expandable>{longSentence}</K.KjunText></div>
+    <div data-testid="text-expand-short" style={{ width: 160, display: 'flex', flexDirection: 'column' }}><K.KjunText maxLines={2} expandable>짧은 글</K.KjunText></div>
+    <div data-testid="inline-controls"><K.KjunInline><K.KjunButton size="lg">저장</K.KjunButton><K.KjunBadge>신규</K.KjunBadge></K.KjunInline></div>
+    <div data-testid="stack-center-copy" style={{ width: 240 }}><K.KjunStack align="center"><K.KjunCopyButton value="KJUN" text="복사" /></K.KjunStack></div>
+    <div data-testid="stack-align-responsive" style={{ width: 280 }}><K.KjunStack direction={{ base: 'column', medium: 'row' }} align={{ base: 'stretch', medium: 'center' }} justify={{ medium: 'between' }}>{boxes(1)}<K.KjunButton>보기</K.KjunButton></K.KjunStack></div>
+    <div data-testid="inline-row-gap" style={{ width: 150 }}><K.KjunInline gap="sm" rowGap="md">{boxes(4, true)}</K.KjunInline></div>
     <div data-testid="inline-strong"><K.KjunInline gap="md" divider="strong">{boxes(2)}</K.KjunInline></div>
     <DividerToggle K={K} />
     {native ? <K.KjunStack testID="stack-native-props" accessibilityLabel="쌓인 영역">{boxes(1)}</K.KjunStack>

@@ -290,14 +290,17 @@ set("Text", {
   maxLines: { summary: "이 줄 수를 넘으면 말줄임표로 줄입니다. 전체 문장은 그대로 남아 보조 기술이 읽습니다. 1보다 작은 값은 줄이지 않습니다." },
   numeric: { default: "false", summary: "숫자를 고정폭으로 그려 세로로 나열한 금액의 자릿수를 맞춥니다. 크기·굵기는 variant 그대로입니다." },
   decoration: { summary: "lineThrough는 할인 전 가격처럼 글자에 취소선을 긋습니다." },
+  expandable: { default: "false", summary: "maxLines와 함께 쓰면 글 아래에 '더보기' 버튼을 두어 나머지를 펼치고, 펼친 뒤에는 '접기'로 바뀝니다. 버튼은 글이 실제로 줄어들었을 때(또는 펼쳐 있을 때)만 보이며 aria-expanded로 상태를 알립니다. 글과 버튼을 감싸는 블록이 생기고, id·class·style·aria는 글 요소에 그대로 붙습니다. 문구는 Provider의 messages(showMoreText·showLessText)로 바꿉니다." },
+  expanded: { summary: "expandable 글을 펼쳤는지 여부입니다. 생략하면 컴포넌트가 직접 관리하고, 주면 onExpandedChange(Vue는 v-model:expanded)와 함께 앱이 정합니다." },
+  onExpandedChange: { summary: "더보기·접기 버튼을 눌러 펼침 상태가 바뀔 때 다음 값을 받습니다." },
   title: { summary: "브라우저 기본 툴팁입니다. maxLines로 줄인 문장의 전체 내용을 마우스로 확인할 때 씁니다. 터치 기기에서는 보이지 않습니다." },
   lang: { summary: "이 글자의 언어 코드입니다. 화면 언어와 다른 문장에 지정합니다." },
   dir: { summary: "글자 방향(ltr·rtl·auto)입니다." },
 });
 set("Stack", {
   gap: { default: '"md"', summary: "자식 사이 간격 단계입니다. xs·sm·smMd·md·lg는 space.stack(4·8·12·16·24px), sectionSm·sectionMd·sectionLg는 space.section(32·48·64px)이고 none은 0입니다. section-sm처럼 쓰던 이전 이름도 동작하며 개발 모드에서 한 번 알립니다. { base: \"sm\", medium: \"lg\" }처럼 객체를 주면 화면 폭에 따라 바뀝니다(compact 640·medium 768·wide 1024px 이상, 가장 넓은 단계가 이깁니다)." },
-  align: { default: '"stretch"', summary: "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지합니다(전체 폭 버튼은 block, 앱이 감싼 요소는 data-kjun-intrinsic). start·center·end는 모든 자식을 내용 폭으로 둡니다." },
-  justify: { default: '"start"', summary: "Stack이 자식보다 길 때 남는 길이의 분배(start·center·end·between)입니다. between은 첫 자식을 시작, 마지막 자식을 끝에 붙입니다. 묶음 사이를 벌리려면 KjunSpacer를 넣습니다." },
+  align: { default: '"stretch"', summary: "자식의 가로 정렬입니다. stretch는 블록 자식이 폭을 채우고 버튼·배지·칩처럼 내용 폭인 컨트롤은 제 폭을 유지합니다(전체 폭 버튼은 block, 앱이 감싼 요소는 data-kjun-intrinsic). start·center·end는 모든 자식을 내용 폭으로 둡니다. { base: \"stretch\", medium: \"center\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, direction과 함께 가로로 놓일 때의 정렬을 따로 정합니다." },
+  justify: { default: '"start"', summary: "Stack이 자식보다 길 때 남는 길이의 분배(start·center·end·between)입니다. between은 첫 자식을 시작, 마지막 자식을 끝에 붙입니다. 묶음 사이를 벌리려면 KjunSpacer를 넣습니다. align처럼 화면 폭별 객체를 받습니다." },
   divider: { default: "false", summary: "자식 사이에 구분 요소를 넣습니다. true와 full은 divider 색 1px 선, inset은 dividerInset만큼 들여 시작하는 선, strong은 구획을 나누는 8px 바탕색 띠입니다. 선은 gap 가운데에 그려 자식 사이 거리가 gap 그대로이고, 띠는 gap에 두께를 더합니다. KjunSpacer 옆에는 그리지 않으며, 선은 Stack의 요소라 앱 자식의 스타일은 바뀌지 않습니다." },
   direction: { default: '"column"', summary: "자식을 세로(column)로 쌓을지 가로(row)로 놓을지 정합니다. { base: \"column\", medium: \"row\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, 좁으면 세로·넓으면 가로인 카드를 컴포넌트 하나로 그립니다. 방향이 바뀌면 구분선도 따라 눕습니다." },
   padding: { summary: "안쪽 여백 단계입니다. sm·md·lg는 space.inset(12·16·24px)이고 none은 0입니다. 네 방향에 같은 값을 주며 gap처럼 화면 폭별 객체를 받습니다. 배경과 모서리는 앱이 정합니다." },
@@ -309,8 +312,9 @@ set("Stack", {
 });
 set("Inline", {
   gap: { default: '"sm"', summary: "자식 사이 가로·줄 간격 단계입니다. xs·sm·md·lg는 space.inline(4·8·12·16px)이고 none은 0입니다. Stack처럼 화면 폭별 객체를 받습니다." },
-  align: { default: '"center"', summary: "자식의 세로 정렬(start·center·end·baseline·stretch)입니다." },
-  justify: { default: '"start"', summary: "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다." },
+  rowGap: { summary: "여러 줄로 넘어갔을 때 줄 사이 간격입니다. xs·sm·smMd·md·lg는 space.stack(4·8·12·16·24px), none은 0이고, 생략하면 gap과 같습니다. 가로(row)로 놓일 때만 쓰며, 화면 폭별 객체를 받습니다." },
+  align: { default: '"center"', summary: "자식의 세로 정렬(start·center·end·baseline·stretch)입니다. 화면 폭별 객체를 받습니다." },
+  justify: { default: '"start"', summary: "가로 분배(start·center·end·between)입니다. between은 양 끝에 붙입니다. 화면 폭별 객체를 받습니다." },
   wrap: { default: "true", summary: "줄 폭이 모자라면 다음 줄로 넘깁니다. false이면 한 줄을 유지합니다." },
   divider: { default: "false", summary: "자식 사이에 세로 구분선을 넣습니다. 종류와 간격 규칙은 Stack과 같습니다." },
   direction: { default: '"row"', summary: "자식을 가로(row)로 놓을지 세로(column)로 쌓을지 정합니다. { base: \"column\", medium: \"row\" }처럼 객체를 주면 화면 폭에 따라 바뀌어, 좁으면 세로·넓으면 가로인 카드를 컴포넌트 하나로 그립니다. 방향이 바뀌면 구분선도 따라 눕습니다." },

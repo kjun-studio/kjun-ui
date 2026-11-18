@@ -36,6 +36,13 @@ export type InlineGap = "none" | "xs" | "sm" | "md" | "lg";
 export type InlineGapValue = Responsive<InlineGap>;
 export type InlineAlign = "start" | "center" | "end" | "baseline" | "stretch";
 export type InlineJustify = "start" | "center" | "end" | "between";
+/** align and justify also take a value per width, like gap: { base: "stretch", medium: "center" }. */
+export type StackAlignValue = Responsive<StackAlign>;
+export type InlineAlignValue = Responsive<InlineAlign>;
+export type JustifyValue = Responsive<StackJustify>;
+/** The space between the wrapped lines of an Inline: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24). */
+export type InlineRowGap = "none" | "xs" | "sm" | "smMd" | "md" | "lg";
+export type InlineRowGapValue = Responsive<InlineRowGap>;
 
 export const titleVariants: readonly TextVariant[] = ["pageTitle", "sectionTitle", "cardTitle"];
 const numeric = /^(number|display)/;
@@ -55,6 +62,8 @@ export const clampLines = (maxLines: number | undefined) => {
   const lines = Math.floor(maxLines ?? 0);
   return lines >= 1 ? lines : undefined;
 };
+/** Web: whether a clamped text hides lines (its content is taller than the clamped box). */
+export const clampOverflows = (element: { scrollHeight: number; clientHeight: number }) => element.scrollHeight - element.clientHeight > 1;
 
 export const stackBreakpoints: readonly StackBreakpoint[] = ["compact", "medium", "wide"];
 /** A responsive value as its steps: base (the fallback when absent) and any breakpoint the app named. */
@@ -114,6 +123,11 @@ export const stackGapCss = (step: StackGap) => step === "none" ? "0px"
     : `var(--_kjun-geometry-space-stack-${kebabStep(step)})`;
 export const inlineGapCss = (step: InlineGap) => step === "none" ? "0px" : `var(--_kjun-geometry-space-inline-${step})`;
 export const insetCss = (step: InsetStep) => step === "none" ? "0px" : `var(--_kjun-geometry-space-inset-${step})`;
+/** CSS values of the alignment names; the same names map to flex values on Native. */
+export const crossAxisCss = { stretch: "stretch", start: "flex-start", center: "center", end: "flex-end", baseline: "baseline" } as const;
+export const mainAxisCss = { start: "flex-start", center: "center", end: "flex-end", between: "space-between" } as const;
+/** How a content-width control (button, badge, chip…) sits under an alignment: its own width under stretch, the parent's alignment otherwise. */
+export const intrinsicSelf = (align: StackAlign | InlineAlign) => align === "stretch" ? "flex-start" : "auto";
 
 export interface FlexLayoutInput {
   kind: "stack" | "inline";
@@ -123,6 +137,10 @@ export interface FlexLayoutInput {
   paddingX?: PaddingValue;
   paddingY?: PaddingValue;
   dividerInset?: InsetStep;
+  align?: StackAlignValue | InlineAlignValue;
+  justify?: JustifyValue;
+  /** Inline only: the space between wrapped lines; absent, the lines keep the gap. */
+  rowGap?: InlineRowGapValue;
   /** The measured width for responsive="container"; every responsive value then resolves to one step. */
   width?: number;
   breakpoints?: Record<StackBreakpoint, number>;
@@ -137,12 +155,14 @@ export function flexLayout(input: FlexLayoutInput): { attrs: Attrs; vars: Record
   const padding = responsiveSteps<InsetStep>(input.padding, "none");
   const pick = (own: PaddingValue | undefined) => own == null ? padding : responsiveSteps<InsetStep>(own, "none");
   const px = pick(input.paddingX), py = pick(input.paddingY);
+  const align = responsiveSteps<StackAlign | InlineAlign>(input.align, stack ? "stretch" : "center");
+  const justify = responsiveSteps<StackJustify>(input.justify, "start");
   const measured = input.width != null && input.breakpoints;
   // In container mode the measured width picks one step, written as base, so no media rule applies.
   const flat = <T,>(steps: Steps<T>): Steps<T> => measured ? { base: stepAt(steps, input.width!, input.breakpoints!) } : steps;
-  const g = flat(gap), d = flat(direction), x = flat(px), y = flat(py);
+  const g = flat(gap), d = flat(direction), x = flat(px), y = flat(py), a = flat(align), j = flat(justify);
   const gapCss = (step: string) => stack ? stackGapCss(step as StackGap) : inlineGapCss(step as InlineGap);
-  const attrs: Attrs = { "data-gap": g.base, "data-direction": d.base };
+  const attrs: Attrs = { "data-gap": g.base, "data-direction": d.base, "data-align": a.base, "data-justify": j.base === "start" ? undefined : j.base };
   const vars: Record<string, string> = { "--_kjun-flex-gap-base": gapCss(g.base) };
   const hasPadding = [x, y].some(steps => [steps.base, ...stackBreakpoints.map(name => steps[name])].some(step => step && step !== "none"));
   if (hasPadding) Object.assign(vars, { "--_kjun-flex-px-base": insetCss(x.base), "--_kjun-flex-py-base": insetCss(y.base) }), attrs["data-padding"] = "";
@@ -151,6 +171,18 @@ export function flexLayout(input: FlexLayoutInput): { attrs: Attrs; vars: Record
     if (d[name]) attrs["data-direction-" + name] = d[name];
     if (hasPadding && x[name]) attrs["data-px-" + name] = x[name], vars["--_kjun-flex-px-" + name] = insetCss(x[name]!);
     if (hasPadding && y[name]) attrs["data-py-" + name] = y[name], vars["--_kjun-flex-py-" + name] = insetCss(y[name]!);
+    // The breakpoint rules read the CSS value from a variable, so one rule per breakpoint serves every name.
+    if (a[name]) attrs["data-align-" + name] = a[name], vars["--_kjun-flex-align-" + name] = crossAxisCss[a[name]!], vars["--_kjun-flex-self-" + name] = intrinsicSelf(a[name]!);
+    if (j[name]) attrs["data-justify-" + name] = j[name], vars["--_kjun-flex-justify-" + name] = mainAxisCss[j[name]!];
+  }
+  if (!stack && input.rowGap != null) {
+    // Without a base the lines keep the gap until a named breakpoint applies; the base is always written so a nested Inline
+    // never inherits an outer one's.
+    const given = typeof input.rowGap === "object" ? input.rowGap.base : input.rowGap;
+    const rows = flat(responsiveSteps<InlineRowGap | undefined>(input.rowGap as Responsive<InlineRowGap | undefined>, given));
+    attrs["data-row-gap"] = rows.base ?? "";
+    vars["--_kjun-flex-row-gap-base"] = rows.base ? stackGapCss(rows.base) : "var(--_kjun-flex-gap)";
+    for (const name of stackBreakpoints) if (rows[name]) attrs["data-row-gap-" + name] = rows[name], vars["--_kjun-flex-row-gap-" + name] = stackGapCss(rows[name]!);
   }
   if (input.dividerInset && input.dividerInset !== "md") vars["--_kjun-flex-divider-inset"] = insetCss(input.dividerInset);
   return { attrs, vars };

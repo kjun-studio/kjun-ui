@@ -60,7 +60,8 @@ export function generate(input: UsageInput) {
     case 'KjunPagination':
       content = b.node(name, { currentPage: b.state('page', 1), onPageChange: b.update('page'), pageSize: b.state('pageSize', 20), onPageSizeChange: b.update('pageSize'), totalPages: 10, totalRows: 195, showInfo: true, showSizeSelector: true }); break;
     case 'KjunText':
-      content = b.group([b.node(name, { variant: 'sectionTitle' }, b.text('섹션 제목')), b.node(name, { tone: 'secondary' }, b.text('보조 설명 문구입니다.'))]); break;
+      content = b.group([b.node(name, { variant: 'sectionTitle' }, b.text('섹션 제목')), b.node(name, { tone: 'secondary' }, b.text('보조 설명 문구입니다.')),
+        b.node(name, { maxLines: 2, expandable: true }, b.text('주문하신 상품은 평일 오후 2시 이전에 결제하면 당일 출고됩니다. 도서산간 지역은 추가 배송비가 들 수 있고, 교환과 반품은 받은 날부터 7일 안에 신청해 주세요.'))]); break;
     case 'KjunStack': {
       // Only the options the reader changed are written out; the defaults (gap md, align stretch, justify start, column) stay implicit.
       const direction = s.direction === '좁으면 세로' ? { base: 'column', medium: 'row' } : s.direction && s.direction !== 'column' ? s.direction : undefined;

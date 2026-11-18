@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import {
-  dividerVariant, flexLayout, interleave, isResponsive, responsiveSteps, stackGapCss, stackGapName, stackGapSteps, stepAt,
+  clampOverflows, dividerVariant, flexLayout, interleave, isResponsive, responsiveSteps, stackGapCss, stackGapName, stackGapSteps, stepAt,
 } from '../shared/package-runtime/layout-primitives.ts';
 
 const tokens = JSON.parse(await readFile(new URL('../packages/tokens/src/tokens.json', import.meta.url), 'utf8'));
@@ -76,4 +76,38 @@ test('dividers go between children but not next to a spacer', () => {
   assert.equal(dividerVariant(true), 'full');
   assert.equal(dividerVariant('strong'), 'strong');
   assert.equal(dividerVariant(false), undefined);
+});
+
+test('align and justify name their base and write a variable per breakpoint', () => {
+  const { attrs, vars } = flexLayout({ kind: 'stack', align: { base: 'stretch', medium: 'center' }, justify: { medium: 'between' } });
+  assert.equal(attrs['data-align'], 'stretch');
+  assert.equal(attrs['data-align-medium'], 'center');
+  assert.equal(vars['--_kjun-flex-align-medium'], 'center');
+  // A content-width control keeps its own width under stretch and follows the parent otherwise.
+  assert.equal(vars['--_kjun-flex-self-medium'], 'auto');
+  assert.equal(attrs['data-justify'], undefined);
+  assert.equal(attrs['data-justify-medium'], 'between');
+  assert.equal(vars['--_kjun-flex-justify-medium'], 'space-between');
+  assert.equal(flexLayout({ kind: 'inline' }).attrs['data-align'], 'center');
+  assert.equal(flexLayout({ kind: 'stack', justify: 'end' }).attrs['data-justify'], 'end');
+  const measured = flexLayout({ kind: 'stack', align: { base: 'stretch', medium: 'center' }, width: 900, breakpoints });
+  assert.equal(measured.attrs['data-align'], 'center');
+  assert.equal(measured.attrs['data-align-medium'], undefined);
+});
+
+test('an inline rowGap takes space.stack steps and keeps the gap where it has no base', () => {
+  const { attrs, vars } = flexLayout({ kind: 'inline', rowGap: 'smMd' });
+  assert.equal(attrs['data-row-gap'], 'smMd');
+  assert.equal(vars['--_kjun-flex-row-gap-base'], 'var(--_kjun-geometry-space-stack-sm-md)');
+  const later = flexLayout({ kind: 'inline', rowGap: { medium: 'md' } });
+  assert.equal(later.attrs['data-row-gap'], '');
+  assert.equal(later.vars['--_kjun-flex-row-gap-base'], 'var(--_kjun-flex-gap)');
+  assert.equal(later.vars['--_kjun-flex-row-gap-medium'], 'var(--_kjun-geometry-space-stack-md)');
+  assert.equal(flexLayout({ kind: 'inline' }).attrs['data-row-gap'], undefined);
+  assert.equal(flexLayout({ kind: 'stack', rowGap: 'md' }).attrs['data-row-gap'], undefined);
+});
+
+test('a clamped text overflows only when its content is taller than the box', () => {
+  assert.ok(clampOverflows({ scrollHeight: 72, clientHeight: 48 }));
+  assert.ok(!clampOverflows({ scrollHeight: 48.5, clientHeight: 48 }));
 });

@@ -154,11 +154,9 @@ export const kjunPropValues = Object.freeze({
     fit: Object.freeze(["contain","cover"] as const),
   }),
   KjunInline: Object.freeze({
-    align: Object.freeze(["baseline","center","end","start","stretch"] as const),
     as: Object.freeze(["article","aside","div","fieldset","footer","form","header","main","nav","ol","section","ul"] as const),
     divider: Object.freeze([false,true,"full","inset","strong"] as const),
     dividerInset: Object.freeze(["none","sm","md","lg"] as const),
-    justify: Object.freeze(["between","center","end","start"] as const),
     responsive: Object.freeze(["container","viewport"] as const),
   }),
   KjunInput: Object.freeze({
@@ -289,11 +287,9 @@ export const kjunPropValues = Object.freeze({
     direction: Object.freeze(["horizontal","vertical"] as const),
   }),
   KjunStack: Object.freeze({
-    align: Object.freeze(["center","end","start","stretch"] as const),
     as: Object.freeze(["article","aside","div","fieldset","footer","form","header","main","nav","ol","section","ul"] as const),
     divider: Object.freeze([false,true,"full","inset","strong"] as const),
     dividerInset: Object.freeze(["none","sm","md","lg"] as const),
-    justify: Object.freeze(["between","center","end","start"] as const),
     responsive: Object.freeze(["container","viewport"] as const),
   }),
   KjunStackedBar: Object.freeze({

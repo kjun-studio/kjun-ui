@@ -73,7 +73,8 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
     case "KjunSpinner":
       return h(name, { size: "md", text: "조회 중" });
     case "KjunText":
-      return h("Stack", {}, [h(name, { variant: "sectionTitle" }, "섹션 제목"), h(name, { tone: "secondary" }, "보조 설명 문구입니다.")]);
+      return h("Stack", {}, [h(name, { variant: "sectionTitle" }, "섹션 제목"), h(name, { tone: "secondary" }, "보조 설명 문구입니다."),
+        h(name, { maxLines: 2, expandable: true }, "주문하신 상품은 평일 오후 2시 이전에 결제하면 당일 출고됩니다. 도서산간 지역은 추가 배송비가 들 수 있고, 교환과 반품은 받은 날부터 7일 안에 신청해 주세요.")]);
     case "KjunStack": {
       // Card content groups title and description tightly (smMd) and keeps the action a step apart (the chosen gap);
       // a settings list shows divider; a fixed height shows Spacer and justify; a product card turns into a row on wide screens.

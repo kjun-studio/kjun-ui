@@ -368,7 +368,9 @@
       "align",
       "maxLines",
       "numeric",
-      "decoration"
+      "decoration",
+      "expandable",
+      "expanded"
     ],
     "react": [
       "variant",
@@ -378,6 +380,9 @@
       "maxLines",
       "numeric",
       "decoration",
+      "expandable",
+      "expanded",
+      "onExpandedChange",
       "title",
       "lang",
       "dir",
@@ -396,6 +401,9 @@
       "maxLines",
       "numeric",
       "decoration",
+      "expandable",
+      "expanded",
+      "onExpandedChange",
       "style",
       "children",
       "id",
@@ -457,6 +465,7 @@
   "KjunInline": {
     "vue3": [
       "gap",
+      "rowGap",
       "align",
       "justify",
       "wrap",
@@ -471,6 +480,7 @@
     ],
     "react": [
       "gap",
+      "rowGap",
       "align",
       "wrap",
       "direction",
@@ -493,6 +503,7 @@
     ],
     "native": [
       "gap",
+      "rowGap",
       "align",
       "justify",
       "wrap",

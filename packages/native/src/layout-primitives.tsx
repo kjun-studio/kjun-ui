@@ -1,21 +1,28 @@
-import { Children, Fragment, cloneElement, isValidElement, useState, type ReactElement, type ReactNode } from "react";
+import { Children, Fragment, cloneElement, isValidElement, useState, type ComponentType, type ReactElement, type ReactNode } from "react";
 import { View, useWindowDimensions, type LayoutChangeEvent, type StyleProp, type TextProps, type TextStyle, type ViewProps, type ViewStyle } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
 import {
-  clampLines, dividerVariant, interleave, isNumericVariant, isResponsive, responsiveSteps, stackGapSteps, stepAt, titleVariants,
-  type DirectionValue, type FlexDirection, type InlineAlign, type InlineGap, type InlineGapValue, type InlineJustify, type InsetStep, type LegacyStackGap,
-  type PaddingValue, type Responsive, type ResponsiveBasis, type StackAlign, type StackBreakpoint, type StackDivider, type StackGap, type StackGapValue,
-  type StackJustify, type TextAlign, type TextDecoration, type TextTone, type TextVariant,
+  clampLines, crossAxisCss, dividerVariant, interleave, isNumericVariant, isResponsive, mainAxisCss, responsiveSteps, stackGapSteps, stepAt, titleVariants,
+  type DirectionValue, type FlexDirection, type InlineAlign, type InlineAlignValue, type InlineGap, type InlineGapValue, type InlineJustify, type InlineRowGap,
+  type InlineRowGapValue, type InsetStep, type JustifyValue, type LegacyStackGap, type PaddingValue, type Responsive, type ResponsiveBasis, type StackAlign,
+  type StackAlignValue, type StackBreakpoint, type StackDivider, type StackGap, type StackGapValue, type StackJustify, type TextAlign, type TextDecoration,
+  type TextTone, type TextVariant,
 } from "../../../shared/package-runtime/layout-primitives";
+import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { KjunFormGroup } from "./input";
 import { KjunButton } from "./button";
-import { KjunBadge } from "./display-primitives";
+import { KjunBadge, KjunSpinner } from "./display-primitives";
 import { KjunChip } from "./chip";
+import { KjunCopyButton, KjunExternalLink } from "./actions";
+import { KjunFilterGroup } from "./selection-groups";
+import { KjunDeviation } from "./financial-display";
+import { KjunAnimatedNumber, KjunPriceCell, KjunSignedValue } from "./number-display";
 import { FontText, KText } from "./internal";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
-export type { DirectionValue, FlexDirection, InlineAlign, InlineGap, InlineGapValue, InlineJustify, InsetStep, LegacyStackGap, PaddingValue, Responsive,
-  ResponsiveBasis, StackAlign, StackBreakpoint, StackDivider, StackGap, StackGapValue, StackJustify, TextAlign, TextDecoration, TextTone, TextVariant };
+export type { DirectionValue, FlexDirection, InlineAlign, InlineAlignValue, InlineGap, InlineGapValue, InlineJustify, InlineRowGap, InlineRowGapValue, InsetStep,
+  JustifyValue, LegacyStackGap, PaddingValue, Responsive, ResponsiveBasis, StackAlign, StackAlignValue, StackBreakpoint, StackDivider, StackGap, StackGapValue,
+  StackJustify, TextAlign, TextDecoration, TextTone, TextVariant };
 
 /** Other React Native Text props (accessibilityLabel, testID, selectable, allowFontScaling, adjustsFontSizeToFit…) pass through.
  * adjustsFontSizeToFit only shrinks: the variant size stays the largest. */
@@ -32,6 +39,12 @@ export interface KjunTextProps extends Omit<TextProps, "style" | "children" | "n
   numeric?: boolean;
   /** "lineThrough" strikes the text, e.g. a price before a discount. */
   decoration?: TextDecoration;
+  /** With maxLines, a "더보기" button under the text opens the rest and turns into "접기". It shows only while the text
+   * overflows (or is open), measured with a hidden full copy. The text and the button sit in a View. */
+  expandable?: boolean;
+  /** Whether the expandable text is open; leave it out to let the text keep it. */
+  expanded?: boolean;
+  onExpandedChange?: (expanded: boolean) => void;
   style?: StyleProp<TextStyle>;
   children?: ReactNode;
 }
@@ -39,31 +52,47 @@ const toneRole = { default: "text", secondary: "textSecondary", tertiary: "textT
   brand: "brand", danger: "danger", success: "success", warning: "warning", info: "info",
   inverse: "onBrand", onBrand: "onBrand", onDanger: "onDanger", onSuccess: "onSuccess", onWarning: "onWarning" } as const;
 const textAlign = { start: "left", center: "center", end: "right" } as const;
-export function KjunText({ variant = "body", tone = "default", align, maxLines, numeric, decoration, style, children, ...rest }: KjunTextProps) {
+export function KjunText({ variant = "body", tone = "default", align, maxLines, numeric, decoration, expandable, expanded: given, onExpandedChange,
+  style, children, ...rest }: KjunTextProps) {
   const { colors, fontFamily, numericFontFamily } = useKjunStyles();
+  const m = useKjunMessages();
   const lines = clampLines(maxLines);
+  const [own, setOwn] = useState(false);
+  const [heights, setHeights] = useState<{ shown?: number; full?: number }>({});
+  const toggle = !!(expandable && lines), open = toggle && (given ?? own);
+  const clamped = open ? undefined : lines;
   const inherit = variant === "inherit";
   // A nested Text inherits its parent's type on Native, so inherit sets no size and, at the default tone, no color.
   const Root = inherit ? FontText : KText;
+  const textStyle = [
+    inherit ? null : typeStyle(variant),
+    inherit && tone === "default" ? null : { color: colors[toneRole[tone]] },
+    isNumericVariant(variant) ? { fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"] } : null,
+    numeric ? { fontVariant: ["tabular-nums"] } : null,
+    decoration === "lineThrough" ? { textDecorationLine: "line-through" } : null,
+    align ? { textAlign: textAlign[align] } : null,
+    style,
+  ] as StyleProp<TextStyle>;
+  // An explicit undefined (cond ? "link" : undefined) keeps the heading role of title variants.
+  const role = rest.accessibilityRole ?? (titleVariants.includes(variant) ? "header" : undefined);
+  if (!toggle) return <Root {...rest} accessibilityRole={role} numberOfLines={lines} ellipsizeMode={lines ? "tail" : undefined} style={textStyle}>{children}</Root>;
+  const measure = (key: "shown" | "full") => (event: LayoutChangeEvent) => {
+    const height = event.nativeEvent.layout.height;
+    setHeights(current => current[key] === height ? current : { ...current, [key]: height });
+  };
+  const overflows = heights.full != null && heights.shown != null && heights.full > heights.shown + 0.5;
+  const change = (next: boolean) => { if (given === undefined) setOwn(next); onExpandedChange?.(next); };
   return (
-    <Root
-      {...rest}
-      // An explicit undefined (cond ? "link" : undefined) keeps the heading role of title variants.
-      accessibilityRole={rest.accessibilityRole ?? (titleVariants.includes(variant) ? "header" : undefined)}
-      numberOfLines={lines}
-      ellipsizeMode={lines ? "tail" : undefined}
-      style={[
-        inherit ? null : typeStyle(variant),
-        inherit && tone === "default" ? null : { color: colors[toneRole[tone]] },
-        isNumericVariant(variant) ? { fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"] } : null,
-        numeric ? { fontVariant: ["tabular-nums"] } : null,
-        decoration === "lineThrough" ? { textDecorationLine: "line-through" } : null,
-        align ? { textAlign: textAlign[align] } : null,
-        style,
-      ]}
-    >
-      {children}
-    </Root>
+    <View style={{ gap: tokens.space.stack.xs }}>
+      <Root {...rest} accessibilityRole={role} numberOfLines={clamped} ellipsizeMode={clamped ? "tail" : undefined} style={textStyle}
+        onLayout={(event: LayoutChangeEvent) => { measure("shown")(event); rest.onLayout?.(event); }}>{children}</Root>
+      {/* The full text at the same width, invisible, tells whether the clamp hides lines. */}
+      {!open && <View pointerEvents="none" aria-hidden={true} importantForAccessibility="no-hide-descendants" style={{ position: "absolute", top: 0, left: 0, right: 0, opacity: 0 }}>
+        <Root style={textStyle} onLayout={measure("full")}>{children}</Root>
+      </View>}
+      {(open || overflows) && <KjunButton variant="link" size="sm" suffixIcon={open ? "chevron-up" : "chevron-down"} accessibilityState={{ expanded: open }}
+        onPress={() => change(!open)}>{open ? m.showLessText : m.showMoreText}</KjunButton>}
+    </View>
   );
 }
 
@@ -79,26 +108,30 @@ function flatten(children: ReactNode, path = ""): [string, ReactNode][] {
       ? flatten(child.props.children, `${key}.`) : [[key, child]];
   });
 }
-// Native buttons, badges and chips sit at flex-start on their own. When the app names an alignment, a direct one
-// takes it as alignSelf (Web already follows the parent); the default and stretch keep flex-start,
-// and the child's own style.alignSelf still wins.
+// Content-width controls sit at flex-start on their own (Web: the `[data-kjun-stack] > .kjun-button…` rule). A direct one
+// takes the stack's alignment as alignSelf: flex-start under stretch, the alignment otherwise (Inline's default center too),
+// and the child's own style.alignSelf still wins. Controls that take a style get it there; the others get a wrapping View.
 type ChildAlign = "flex-start" | "center" | "flex-end" | "baseline";
-function items(children: ReactNode, childAlign?: ChildAlign) {
+const styled = new Set<unknown>([KjunButton, KjunBadge, KjunChip, KjunAnimatedNumber]);
+const wrapped = new Set<unknown>([KjunCopyButton, KjunExternalLink, KjunSpinner, KjunFilterGroup, KjunDeviation, KjunSignedValue, KjunPriceCell]);
+function items(children: ReactNode, childAlign: ChildAlign) {
   return flatten(children).map(([key, child]) => {
     if (typeof child === "string" || typeof child === "number") return <KText key={key}>{child}</KText>;
-    if (isValidElement(child) && child.type === KjunFormGroup) {
+    if (!isValidElement(child)) return child;
+    if (child.type === KjunFormGroup) {
       const group = child as ReactElement<{ style?: StyleProp<ViewStyle> }>;
       return cloneElement(group, { key, style: [{ marginBottom: 0 }, group.props.style] });
     }
-    if (childAlign && isValidElement(child) && (child.type === KjunButton || child.type === KjunBadge || child.type === KjunChip)) {
+    if (styled.has(child.type) && !(child.props as { block?: boolean }).block) {
       const control = child as ReactElement<{ style?: StyleProp<ViewStyle> }>;
       return cloneElement(control, { key, style: [{ alignSelf: childAlign }, control.props.style] });
     }
-    return isValidElement(child) ? cloneElement(child, { key }) : child;
+    // Always wrapped, whatever the alignment, so a change of alignment keeps the control's state.
+    if (wrapped.has(child.type)) return <View key={key} style={{ alignSelf: childAlign, maxWidth: "100%" }}>{cloneElement(child)}</View>;
+    return cloneElement(child, { key });
   });
 }
-const followed = (align: StackAlign | InlineAlign | undefined): ChildAlign | undefined =>
-  align && align !== "stretch" ? crossAxis[align] : undefined;
+const followed = (align: StackAlign | InlineAlign): ChildAlign => align === "stretch" ? "flex-start" : crossAxisCss[align];
 
 const stackGap: Record<StackGap, number> = {
   none: 0, xs: tokens.space.stack.xs, sm: tokens.space.stack.sm, smMd: tokens.space.stack.smMd, md: tokens.space.stack.md, lg: tokens.space.stack.lg,
@@ -108,8 +141,6 @@ const inlineGap: Record<InlineGap, number> = {
   none: 0, xs: tokens.space.inline.xs, sm: tokens.space.inline.sm, md: tokens.space.inline.md, lg: tokens.space.inline.lg,
 };
 const inset: Record<InsetStep, number> = { none: 0, sm: tokens.space.inset.sm, md: tokens.space.inset.md, lg: tokens.space.inset.lg };
-const crossAxis = { stretch: "stretch", start: "flex-start", center: "center", end: "flex-end", baseline: "baseline" } as const;
-const mainAxis = { start: "flex-start", center: "center", end: "flex-end", between: "space-between" } as const;
 const breakpoints: Record<StackBreakpoint, number> = { compact: tokens.responsive.stackCompact, medium: tokens.responsive.stackMedium, wide: tokens.responsive.stackWide };
 
 /** Props both KjunStack and KjunInline take. Other View props (testID, accessibilityRole, accessibilityLabel, nativeID, onLayout,
@@ -128,7 +159,8 @@ interface FlexProps extends Omit<ViewProps, "style" | "children"> {
   dividerInset?: InsetStep;
   /** What the responsive values follow: viewport (default, the window width) or container, the stack's own width from onLayout. */
   responsive?: ResponsiveBasis;
-  justify?: StackJustify;
+  /** Main-axis distribution; takes an object per width like gap. */
+  justify?: JustifyValue;
   style?: StyleProp<ViewStyle>;
   children?: ReactNode;
 }
@@ -136,13 +168,17 @@ export interface KjunStackProps extends FlexProps {
   /** Space between children: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24) or space.section (sectionSm 32 · sectionMd 48 · sectionLg 64).
    * An object changes it with the width, e.g. { base: "sm", medium: "lg" } (compact 640, medium 768, wide 1024 and up). */
   gap?: StackGapValue;
-  /** Cross-axis alignment. Buttons, badges and chips keep their own width under stretch (the default), as on Web. */
-  align?: StackAlign;
+  /** Cross-axis alignment. Buttons, badges, chips and other content-width controls keep their own width under stretch (the default),
+   * as on Web. An object changes it with the width. */
+  align?: StackAlignValue;
 }
 export interface KjunInlineProps extends FlexProps {
   /** Space between children: space.inline (xs·sm·md·lg). An object changes it with the width like Stack's gap. */
   gap?: InlineGapValue;
-  align?: InlineAlign;
+  /** The space between wrapped lines: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24); absent, the lines keep the gap. Takes an object per width. */
+  rowGap?: InlineRowGapValue;
+  /** Cross-axis alignment; an object changes it with the width. */
+  align?: InlineAlignValue;
   /** Wrap onto new lines when the row runs out of width. Default true. */
   wrap?: boolean;
 }
@@ -153,18 +189,23 @@ export function KjunSpacer({ style }: KjunSpacerProps) {
 }
 const isSpacer = (child: ReactNode) => isValidElement(child) && child.type === KjunSpacer;
 
-function Flex({ kind, gap, align, wrap, direction, padding, paddingX, paddingY, divider, dividerInset = "md", responsive = "viewport", justify = "start",
-  style, children, onLayout, ...rest }: FlexProps & { kind: "stack" | "inline"; gap?: StackGapValue | InlineGapValue; align?: StackAlign | InlineAlign; wrap?: boolean }) {
+function Flex({ kind, gap, align, rowGap, wrap, direction, padding, paddingX, paddingY, divider, dividerInset = "md", responsive = "viewport", justify,
+  style, children, onLayout, ...rest }: FlexProps & { kind: "stack" | "inline"; gap?: StackGapValue | InlineGapValue; align?: StackAlignValue | InlineAlignValue;
+  rowGap?: InlineRowGapValue; wrap?: boolean }) {
   const { colors } = useKjunStyles(), window = useWindowDimensions();
-  const container = responsive === "container" && isResponsive(gap, direction, padding, paddingX, paddingY);
+  const container = responsive === "container" && isResponsive(gap, direction, padding, paddingX, paddingY, align, justify, rowGap);
   const [measured, setMeasured] = useState<number>();
+  // Before the first onLayout the container mode draws the base step, as on Web.
   const width = container ? measured ?? 0 : window.width;
   const at = <T,>(value: Responsive<T> | undefined, fallback: T) => stepAt(responsiveSteps(value, fallback), width, breakpoints);
   const stack = kind === "stack";
   const space = stack ? stackGap[stepAt(stackGapSteps(gap as StackGapValue), width, breakpoints)] : inlineGap[at(gap as InlineGapValue, "sm")];
   const row = at<FlexDirection>(direction, stack ? "column" : "row") === "row";
   const all = at<InsetStep>(padding, "none"), px = inset[paddingX == null ? all : at(paddingX, "none")], py = inset[paddingY == null ? all : at(paddingY, "none")];
-  const rows = items(children, followed(align));
+  const crossAlign = at<StackAlign | InlineAlign>(align, stack ? "stretch" : "center");
+  const rowSpace = !stack && rowGap != null ? (() => { const step = at<InlineRowGap | undefined>(rowGap, typeof rowGap === "object" ? rowGap.base : rowGap);
+    return step ? stackGap[step] : space; })() : undefined;
+  const rows = items(children, followed(crossAlign));
   const variant = dividerVariant(divider);
   const content = variant ? interleave(rows, isSpacer, index => {
     // A hairline sits inside the gap (the distance stays the gap, or the line when the gap is thinner); a band adds its thickness.
@@ -174,8 +215,9 @@ function Flex({ kind, gap, align, wrap, direction, padding, paddingX, paddingY, 
       row ? { width: t, marginHorizontal: m, marginTop: start } : { height: t, marginVertical: m, marginStart: start }]} />;
   }) : rows;
   return <View {...rest} onLayout={container ? (event: LayoutChangeEvent) => { setMeasured(event.nativeEvent.layout.width); onLayout?.(event); } : onLayout}
-    style={[{ flexDirection: row ? "row" : "column", flexWrap: !stack && wrap ? "wrap" : "nowrap", alignItems: crossAxis[align ?? (stack ? "stretch" : "center")],
-      justifyContent: mainAxis[justify], gap: space, paddingHorizontal: px, paddingVertical: py, minWidth: 0 }, style]}>{content}</View>;
+    style={[{ flexDirection: row ? "row" : "column", flexWrap: !stack && wrap ? "wrap" : "nowrap", alignItems: crossAxisCss[crossAlign],
+      justifyContent: mainAxisCss[at<StackJustify>(justify, "start")], gap: space, ...(rowSpace != null && row ? { rowGap: rowSpace } : {}),
+      paddingHorizontal: px, paddingVertical: py, minWidth: 0 }, style]}>{content}</View>;
 }
 
 /** Vertical stack (direction turns it into a row). */

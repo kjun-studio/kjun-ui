@@ -1,14 +1,18 @@
-import { Comment, Fragment, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
+import { Comment, Fragment, mergeProps, onBeforeUnmount, onUpdated, ref, useId, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNode, type VNodeChild } from "vue";
 import { tokens } from "@kjun-ui/tokens";
 import { defineComponent } from "./runtime/component";
 import {
-  clampLines, defaultTextTag, dividerVariant, flexLayout, interleave, isResponsive, isStackList, textToneAttribute, textTypeClass,
-  type DirectionValue, type FlexDirection, type InlineAlign, type InlineGap, type InlineGapValue, type InlineJustify, type InsetStep, type LegacyStackGap,
-  type PaddingValue, type Responsive, type ResponsiveBasis, type StackAlign, type StackBreakpoint, type StackDivider, type StackGap, type StackGapValue,
-  type StackJustify, type StackTag, type TextAlign, type TextDecoration, type TextTag, type TextTone, type TextVariant,
+  clampLines, clampOverflows, defaultTextTag, dividerVariant, flexLayout, interleave, isResponsive, isStackList, textToneAttribute, textTypeClass,
+  type DirectionValue, type FlexDirection, type InlineAlign, type InlineAlignValue, type InlineGap, type InlineGapValue, type InlineJustify, type InlineRowGap,
+  type InlineRowGapValue, type InsetStep, type JustifyValue, type LegacyStackGap, type PaddingValue, type Responsive, type ResponsiveBasis, type StackAlign,
+  type StackAlignValue, type StackBreakpoint, type StackDivider, type StackGap, type StackGapValue, type StackJustify, type StackTag, type TextAlign,
+  type TextDecoration, type TextTag, type TextTone, type TextVariant,
 } from "../../../shared/package-runtime/layout-primitives";
-export type { DirectionValue, FlexDirection, InlineAlign, InlineGap, InlineGapValue, InlineJustify, InsetStep, LegacyStackGap, PaddingValue, Responsive,
-  ResponsiveBasis, StackAlign, StackBreakpoint, StackDivider, StackGap, StackGapValue, StackJustify, StackTag, TextAlign, TextDecoration, TextTag, TextTone, TextVariant };
+import { useKjunMessages } from "./runtime/messages";
+import { KjunButton } from "./button";
+export type { DirectionValue, FlexDirection, InlineAlign, InlineAlignValue, InlineGap, InlineGapValue, InlineJustify, InlineRowGap, InlineRowGapValue, InsetStep,
+  JustifyValue, LegacyStackGap, PaddingValue, Responsive, ResponsiveBasis, StackAlign, StackAlignValue, StackBreakpoint, StackDivider, StackGap, StackGapValue,
+  StackJustify, StackTag, TextAlign, TextDecoration, TextTag, TextTone, TextVariant };
 
 // class, style, id, title, lang, dir and aria-* fall through to the root, as in React.
 const defaultSlot = Object as SlotsType<{ default?: () => VNodeChild }>;
@@ -27,23 +31,58 @@ const kjunTextProps = {
   numeric: { type: Boolean, default: false },
   /** "lineThrough" strikes the text, e.g. a price before a discount. */
   decoration: { type: String as PropType<TextDecoration>, default: undefined },
+  /** With maxLines, a "더보기" button under the text opens the rest and turns into "접기". It shows only while the text
+   * overflows (or is open). The text and the button sit in a wrapper div; class, style, id and aria-* stay on the text element. */
+  expandable: { type: Boolean, default: false },
+  /** v-model:expanded: whether the expandable text is open; leave it out to let the text keep it. */
+  expanded: { type: Boolean, default: undefined },
 } as const;
 export type KjunTextProps = ExtractPublicPropTypes<typeof kjunTextProps>;
 export const KjunText = defineComponent({
   name: "KjunText",
+  // Fallthrough attributes go to the text element itself, also when an expandable text adds a wrapper.
+  inheritAttrs: false,
   props: kjunTextProps,
+  emits: { "update:expanded": (_expanded: boolean) => true },
   slots: defaultSlot,
-  setup(props, { slots }) {
+  setup(props, { slots, attrs, emit }) {
+    const own = ref(false), element = ref<HTMLElement>(), overflows = ref(false), autoId = "kjun-text-" + useId().replace(/[^\w-]/g, "");
+    const m = useKjunMessages();
+    let observer: ResizeObserver | undefined;
+    const expanded = () => props.expanded ?? own.value;
+    const toggles = () => props.expandable && !!clampLines(props.maxLines);
+    const clamped = () => toggles() && expanded() ? undefined : clampLines(props.maxLines);
+    const check = () => { if (element.value && clamped()) overflows.value = clampOverflows(element.value); };
+    // The button shows while the clamped text overflows: measured after each render and when the element resizes.
+    watch([element, toggles, clamped], ([node, on, lines]) => {
+      observer?.disconnect();
+      observer = undefined;
+      if (!node || !on || !lines) return;
+      check();
+      if (typeof ResizeObserver !== "undefined") (observer = new ResizeObserver(check)).observe(node);
+    }, { flush: "post" });
+    onUpdated(check);
+    onBeforeUnmount(() => observer?.disconnect());
+    const change = (next: boolean) => { if (props.expanded === undefined) own.value = next; emit("update:expanded", next); };
     return () => {
       const Tag = props.as ?? defaultTextTag(props.variant);
-      const lines = clampLines(props.maxLines);
-      return (
-        <Tag class={["kjun-text", textTypeClass(props.variant)]} data-kjun-content="" data-tone={textToneAttribute(props.tone)}
-          data-align={props.align} data-numeric={props.numeric ? "" : undefined}
-          data-decoration={props.decoration === "lineThrough" ? "line-through" : undefined}
-          data-max-lines={lines} style={lines ? { "--_kjun-text-lines": lines } : undefined}>
+      const lines = clamped(), toggle = toggles(), id = (attrs.id as string | undefined) ?? (toggle ? autoId : undefined);
+      const text = (
+        <Tag {...mergeProps(attrs, { id, ref: toggle ? element : undefined, class: ["kjun-text", textTypeClass(props.variant)], "data-kjun-content": "",
+          "data-tone": textToneAttribute(props.tone), "data-align": props.align, "data-numeric": props.numeric ? "" : undefined,
+          "data-decoration": props.decoration === "lineThrough" ? "line-through" : undefined,
+          "data-max-lines": lines, style: lines ? { "--_kjun-text-lines": lines } : undefined })}>
           {slots.default?.()}
         </Tag>
+      );
+      if (!toggle) return text;
+      const open = expanded();
+      return (
+        <div class="kjun-text-expandable">
+          {text}
+          {(open || overflows.value) && <KjunButton variant="link" size="sm" suffixIcon={open ? "chevron-up" : "chevron-down"} aria-expanded={open ? "true" : "false"}
+            aria-controls={id} onClick={() => change(!open)}>{open ? m.value.showLessText : m.value.showMoreText}</KjunButton>}
+        </div>
       );
     };
   },
@@ -64,8 +103,8 @@ const flexProps = {
   dividerInset: { type: String as PropType<InsetStep>, default: "md" },
   /** What the responsive values follow: viewport (CSS media queries) or container, the element's own width, measured. */
   responsive: { type: String as PropType<ResponsiveBasis>, default: "viewport" },
-  /** How children share the spare length: between puts the first at the start and the last at the end. */
-  justify: { type: String as PropType<StackJustify>, default: "start" },
+  /** How children share the spare length: between puts the first at the start and the last at the end. Takes an object per width. */
+  justify: { type: [String, Object] as PropType<JustifyValue>, default: "start" },
   /** Element to render. ul and ol drop bullets and indent; give them li children. */
   as: { type: String as PropType<StackTag>, default: "div" },
 } as const;
@@ -74,8 +113,8 @@ const kjunStackProps = {
    * An object changes it with the width, e.g. { base: "sm", medium: "lg" } (compact 640, medium 768, wide 1024 and up). */
   gap: { type: [String, Object] as PropType<StackGapValue>, default: "md" },
   /** Cross-axis alignment. With stretch (the default) blocks fill the width while buttons, badges, chips and other
-   * content-width controls keep their own; a full-width button says so with block. */
-  align: { type: String as PropType<StackAlign>, default: "stretch" },
+   * content-width controls keep their own; a full-width button says so with block. An object changes it with the width. */
+  align: { type: [String, Object] as PropType<StackAlignValue>, default: "stretch" },
   ...flexProps,
 } as const;
 // Slot content as the children a reader sees: fragments (v-for) opened, comments (a false v-if) dropped.
@@ -93,13 +132,15 @@ export const KjunSpacer = defineComponent({
 export type KjunSpacerProps = Record<string, never>;
 
 const breakpoints: Record<StackBreakpoint, number> = { compact: tokens.responsive.stackCompact, medium: tokens.responsive.stackMedium, wide: tokens.responsive.stackWide };
-type FlexProps = { gap?: StackGapValue | InlineGapValue; direction?: DirectionValue; padding?: PaddingValue; paddingX?: PaddingValue; paddingY?: PaddingValue;
-  divider: StackDivider; dividerInset: InsetStep; responsive: ResponsiveBasis; justify: StackJustify; as: StackTag };
+type FlexProps = { gap?: StackGapValue | InlineGapValue; align?: StackAlignValue | InlineAlignValue; rowGap?: InlineRowGapValue; direction?: DirectionValue;
+  padding?: PaddingValue; paddingX?: PaddingValue; paddingY?: PaddingValue; divider: StackDivider; dividerInset: InsetStep; responsive: ResponsiveBasis;
+  justify: JustifyValue; as: StackTag };
 /** Renders a Stack or Inline; responsive="container" measures the root while a responsive value needs it. */
 function useFlex(kind: "stack" | "inline", props: FlexProps, slots: { default?: () => VNodeChild }, extra: () => Record<string, string | undefined>) {
   const root = ref<HTMLElement>(), width = ref<number>();
   let observer: ResizeObserver | undefined;
-  const measuring = () => props.responsive === "container" && isResponsive(props.gap, props.direction, props.padding, props.paddingX, props.paddingY);
+  const measuring = () => props.responsive === "container"
+    && isResponsive(props.gap, props.direction, props.padding, props.paddingX, props.paddingY, props.align, props.justify, props.rowGap);
   watch([root, measuring], ([node, on]) => {
     observer?.disconnect();
     observer = undefined;
@@ -111,14 +152,15 @@ function useFlex(kind: "stack" | "inline", props: FlexProps, slots: { default?: 
   onBeforeUnmount(() => observer?.disconnect());
   return () => {
     const measure = measuring();
-    const { attrs, vars } = flexLayout({ kind, gap: props.gap, direction: props.direction, padding: props.padding, paddingX: props.paddingX,
-      paddingY: props.paddingY, dividerInset: props.dividerInset, width: measure ? width.value : undefined, breakpoints });
+    // Before the first measurement the container mode draws the base step (width 0), as on Native.
+    const { attrs, vars } = flexLayout({ kind, gap: props.gap, align: props.align, justify: props.justify, rowGap: props.rowGap, direction: props.direction,
+      padding: props.padding, paddingX: props.paddingX, paddingY: props.paddingY, dividerInset: props.dividerInset, width: measure ? width.value ?? 0 : undefined, breakpoints });
     const Tag = props.as, variant = dividerVariant(props.divider), Line = isStackList(props.as) ? "li" : "div";
     const children = slots.default?.() as VNode[] | undefined;
     // The divider is the stack's own element between children, so no app child is restyled to draw it.
     const content = variant ? interleave(visible(children), node => node.type === KjunSpacer,
       index => <Line key={"kjun-divider-" + index} data-kjun-stack-divider={variant} aria-hidden="true" />) : children;
-    return <Tag ref={root} style={vars} {...attrs} {...extra()} data-justify={props.justify === "start" ? undefined : props.justify}
+    return <Tag ref={root} style={vars} {...attrs} {...extra()}
       data-divider={variant ? "" : undefined} data-responsive={measure ? "container" : undefined}>{content}</Tag>;
   };
 }
@@ -129,14 +171,17 @@ export const KjunStack = defineComponent({
   props: kjunStackProps,
   slots: defaultSlot,
   setup(props, { slots }) {
-    return useFlex("stack", props, slots, () => ({ "data-kjun-stack": "", "data-align": props.align }));
+    return useFlex("stack", props, slots, () => ({ "data-kjun-stack": "" }));
   },
 });
 
 const kjunInlineProps = {
   /** Space between children: space.inline (xs·sm·md·lg). An object changes it with the width like Stack's gap. */
   gap: { type: [String, Object] as PropType<InlineGapValue>, default: "sm" },
-  align: { type: String as PropType<InlineAlign>, default: "center" },
+  /** The space between wrapped lines: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24); absent, the lines keep the gap. Takes an object per width. */
+  rowGap: { type: [String, Object] as PropType<InlineRowGapValue>, default: undefined },
+  /** Cross-axis alignment; an object changes it with the width. */
+  align: { type: [String, Object] as PropType<InlineAlignValue>, default: "center" },
   /** Wrap onto new lines when the row runs out of width. */
   wrap: { type: Boolean, default: true },
   ...flexProps,
@@ -148,6 +193,6 @@ export const KjunInline = defineComponent({
   props: kjunInlineProps,
   slots: defaultSlot,
   setup(props, { slots }) {
-    return useFlex("inline", props, slots, () => ({ "data-kjun-inline": "", "data-align": props.align, "data-wrap": props.wrap ? undefined : "false" }));
+    return useFlex("inline", props, slots, () => ({ "data-kjun-inline": "", "data-wrap": props.wrap ? undefined : "false" }));
   },
 });

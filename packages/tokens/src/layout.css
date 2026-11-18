@@ -54,6 +54,15 @@
   -webkit-line-clamp: var(--_kjun-text-lines);
   overflow: hidden;
 }
+/* expandable: 글과 그 아래 더보기·접기 버튼. 버튼은 제 폭으로 글의 시작에 맞추고, 글은 감싼 블록의 폭을 채운다. */
+.kjun-text-expandable {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--_kjun-geometry-space-stack-xs);
+  min-width: 0;
+}
+.kjun-text-expandable > .kjun-text { align-self: stretch; }
 
 /* KjunStack·KjunInline: 세로·가로 배치. 클래스 대신 data 속성을 써서 KJUN 마크업으로 판정되지 않는다. 그래서 안에
    넣은 앱 요소는 Stack이 없을 때와 같은 스타일을 받고, 몇 겹 겹쳐도 달라지지 않는다.
@@ -94,6 +103,14 @@
 [data-kjun-inline][data-align="end"] { align-items: flex-end; }
 [data-kjun-inline][data-align="baseline"] { align-items: baseline; }
 [data-kjun-inline][data-align="stretch"] { align-items: stretch; }
+/* 내용 폭 컨트롤의 정렬(아래 --_kjun-flex-self 규칙). 화면 폭 단계 규칙이 덮어쓰도록 그보다 앞에 둔다. */
+[data-kjun-stack] { --_kjun-flex-self: auto; }
+[data-kjun-stack][data-align="stretch"] { --_kjun-flex-self: flex-start; }
+/* rowGap: 줄바꿈한 줄 사이 간격. 가로 방향에서만 줄 사이(row-gap)에 쓰고, 세로 방향이면 gap 그대로다. */
+[data-kjun-inline][data-row-gap] {
+  --_kjun-flex-rgap: var(--_kjun-flex-row-gap-base);
+  row-gap: calc(var(--_kjun-flex-row) * var(--_kjun-flex-rgap) + (1 - var(--_kjun-flex-row)) * var(--_kjun-flex-gap));
+}
 /* 화면 폭 단계: 화면이 닿은 가장 넓은 단계의 값이 base를 이긴다(규칙 순서가 compact → medium → wide). */
 @media (width >= token(responsive.stackCompact)) {
   :is([data-kjun-stack], [data-kjun-inline])[data-gap-compact] { --_kjun-flex-gap: var(--_kjun-flex-gap-compact); }
@@ -101,6 +118,9 @@
   :is([data-kjun-stack], [data-kjun-inline])[data-py-compact] { --_kjun-flex-py: var(--_kjun-flex-py-compact); }
   :is([data-kjun-stack], [data-kjun-inline])[data-direction-compact="row"] { flex-direction: row; --_kjun-flex-row: 1; }
   :is([data-kjun-stack], [data-kjun-inline])[data-direction-compact="column"] { flex-direction: column; --_kjun-flex-row: 0; }
+  :is([data-kjun-stack], [data-kjun-inline])[data-align-compact] { align-items: var(--_kjun-flex-align-compact); --_kjun-flex-self: var(--_kjun-flex-self-compact); }
+  :is([data-kjun-stack], [data-kjun-inline])[data-justify-compact] { justify-content: var(--_kjun-flex-justify-compact); }
+  [data-kjun-inline][data-row-gap-compact] { --_kjun-flex-rgap: var(--_kjun-flex-row-gap-compact); }
 }
 @media (width >= token(responsive.stackMedium)) {
   :is([data-kjun-stack], [data-kjun-inline])[data-gap-medium] { --_kjun-flex-gap: var(--_kjun-flex-gap-medium); }
@@ -108,6 +128,9 @@
   :is([data-kjun-stack], [data-kjun-inline])[data-py-medium] { --_kjun-flex-py: var(--_kjun-flex-py-medium); }
   :is([data-kjun-stack], [data-kjun-inline])[data-direction-medium="row"] { flex-direction: row; --_kjun-flex-row: 1; }
   :is([data-kjun-stack], [data-kjun-inline])[data-direction-medium="column"] { flex-direction: column; --_kjun-flex-row: 0; }
+  :is([data-kjun-stack], [data-kjun-inline])[data-align-medium] { align-items: var(--_kjun-flex-align-medium); --_kjun-flex-self: var(--_kjun-flex-self-medium); }
+  :is([data-kjun-stack], [data-kjun-inline])[data-justify-medium] { justify-content: var(--_kjun-flex-justify-medium); }
+  [data-kjun-inline][data-row-gap-medium] { --_kjun-flex-rgap: var(--_kjun-flex-row-gap-medium); }
 }
 @media (width >= token(responsive.stackWide)) {
   :is([data-kjun-stack], [data-kjun-inline])[data-gap-wide] { --_kjun-flex-gap: var(--_kjun-flex-gap-wide); }
@@ -115,12 +138,16 @@
   :is([data-kjun-stack], [data-kjun-inline])[data-py-wide] { --_kjun-flex-py: var(--_kjun-flex-py-wide); }
   :is([data-kjun-stack], [data-kjun-inline])[data-direction-wide="row"] { flex-direction: row; --_kjun-flex-row: 1; }
   :is([data-kjun-stack], [data-kjun-inline])[data-direction-wide="column"] { flex-direction: column; --_kjun-flex-row: 0; }
+  :is([data-kjun-stack], [data-kjun-inline])[data-align-wide] { align-items: var(--_kjun-flex-align-wide); --_kjun-flex-self: var(--_kjun-flex-self-wide); }
+  :is([data-kjun-stack], [data-kjun-inline])[data-justify-wide] { justify-content: var(--_kjun-flex-justify-wide); }
+  [data-kjun-inline][data-row-gap-wide] { --_kjun-flex-rgap: var(--_kjun-flex-row-gap-wide); }
 }
 /* 내용 폭 컨트롤은 stretch에서도 제 폭을 유지한다(Native와 같음). 전체 폭 버튼은 block으로 말하고, 앱이 감싼
-   요소는 data-kjun-intrinsic으로 같은 대접을 받는다. Switch·Checkbox 같은 선택 행은 폭을 채워 누르는 면이 넓다. */
-[data-kjun-stack][data-align="stretch"] > :is(.kjun-button, .kjun-badge, .kjun-chip, .kjun-copy-button, .kjun-external-link,
+   요소는 data-kjun-intrinsic으로 같은 대접을 받는다. Switch·Checkbox 같은 선택 행은 폭을 채워 누르는 면이 넓다.
+   --_kjun-flex-self(정렬 규칙 옆, 화면 폭 단계보다 앞에 둠)가 stretch일 때 flex-start, 다른 정렬이면 auto다. */
+[data-kjun-stack] > :is(.kjun-button, .kjun-badge, .kjun-chip, .kjun-copy-button, .kjun-external-link,
   .kjun-layer-trigger, .kjun-spinner, .kjun-filter-group, .kjun-deviation, .kjun-signed-value, .kjun-price-cell,
-  .kjun-animated-number, [data-kjun-intrinsic]) { align-self: flex-start; }
+  .kjun-animated-number, [data-kjun-intrinsic]) { align-self: var(--_kjun-flex-self); }
 /* A list or fieldset drops the browser's bullets, indent and frame, so only the gap spaces it. */
 :is(ul, ol):is([data-kjun-stack], [data-kjun-inline]) { list-style: none; margin: 0; padding: 0; }
 :is(ul, ol):is([data-kjun-stack], [data-kjun-inline])[data-padding] { padding: var(--_kjun-flex-py) var(--_kjun-flex-px); }
