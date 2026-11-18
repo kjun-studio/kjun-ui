@@ -14,6 +14,7 @@ import { useOptionalKjunFeedback } from "./feedback-context";
 import { KjunTooltip, type KjunTooltipProps } from "./popover";
 import { TopNavigationContext } from "./top-navigation-context";
 import { useCopyFeedback } from "../../../shared/package-runtime/use-copy-feedback";
+import { copyButtonGeometry } from "../../../shared/package-runtime/copy-button";
 import { usePendingAction } from "../../../shared/package-runtime/use-pending-action";
 export interface KjunIconToggleProps {
   active?: boolean;
@@ -155,11 +156,13 @@ export function KjunCopyButton({
   });
   // Clear the region when the success state ends, so the next copy is announced again.
   useEffect(() => { if (!copied) setSaid(""); }, [copied]);
-  // Painted like Web: the button height for the size, no vertical padding; hitSlop reaches the 44pt touch target.
-  const height = tokens.button.heights[size],
-    paddingX = { xs: tokens.dimension.value4, sm: tokens.dimension.value8, md: tokens.dimension.value12 }[size],
-    hitY = Math.max(0, (tokens.native.minimumTouchTarget - height) / 2),
-    hitX = text && !inline ? 0 : Math.max(0, (tokens.native.minimumTouchTarget - tokens.button.iconSizes[size] - 2 * paddingX) / 2);
+  // Painted like Web: ghost-button geometry for the size; hitSlop reaches the 44pt touch target.
+  const geometry = copyButtonGeometry(size, !!text && !inline),
+    hitY = Math.max(0, (tokens.native.minimumTouchTarget - geometry.height) / 2),
+    hitX = geometry.width == null ? 0 : Math.max(0, (tokens.native.minimumTouchTarget - geometry.width) / 2);
+  type State = { pressed: boolean; hovered?: boolean };
+  // Hover and press take the hover fill and the full text ink, as on Web.
+  const active = ({ pressed, hovered }: State) => !disabled && (pressed || !!hovered);
   return (
     <View>
       <Pressable
@@ -168,34 +171,38 @@ export function KjunCopyButton({
         accessibilityRole="button"
         accessibilityLabel={ariaLabel || text || m.copy}
         onPress={() => void copy(value)}
-        style={({ pressed }) => ({
+        style={(state) => ({
           alignSelf: "flex-start",
-          minHeight: height,
+          minHeight: geometry.height,
+          width: geometry.width,
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "row",
-          gap: tokens.dimension.value6,
-          paddingHorizontal: paddingX,
-          borderRadius: tokens.radius.radius6,
-          backgroundColor: pressed && !inline ? colors.hover : undefined,
+          gap: geometry.gap,
+          paddingStart: geometry.paddingStart,
+          paddingEnd: geometry.paddingEnd,
+          borderRadius: geometry.radius,
+          backgroundColor: active(state as State) ? colors.hover : undefined,
           opacity: disabled ? tokens.states.opacity.disabled : 1,
         })}
       >
-        <KjunIcon
-          name={copied ? "check" : "copy"}
-          size={tokens.button.iconSizes[size]}
-          color={copied ? colors.success : colors.textSecondary}
-        />
-        {!!text && !inline && (
-          <KText
-            style={{
-              ...typeStyle(size === "xs" ? "controlSmall" : "control"),
-              color: colors.textSecondary,
-            }}
-          >
-            {copied ? successText : text}
-          </KText>
-        )}
+        {(state: State) => <>
+          <KjunIcon
+            name={copied ? "check" : "copy"}
+            size={tokens.button.iconSizes[size]}
+            color={copied ? colors.success : active(state) ? colors.text : colors.textSecondary}
+          />
+          {!!text && !inline && (
+            <KText
+              style={{
+                ...typeStyle(size === "xs" ? "controlSmall" : "control"),
+                color: active(state) ? colors.text : colors.textSecondary,
+              }}
+            >
+              {copied ? successText : text}
+            </KText>
+          )}
+        </>}
       </Pressable>
       {Platform.OS === "web" ? <View role="status" pointerEvents="none" style={{ position: "absolute", opacity: 0 }}><KText>{said}</KText></View> : null}
     </View>

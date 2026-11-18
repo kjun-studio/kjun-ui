@@ -15,6 +15,7 @@ import { useIconToggleLabel } from "./runtime/icon-toggle-label";
 import { useCopyFeedback } from "./runtime/copy-feedback";
 import { usePendingAction } from "./runtime/pending-action";
 import { browserCopy } from "../../../shared/package-runtime/clipboard";
+import { copyButtonGeometry } from "../../../shared/package-runtime/copy-button";
 
 type Placement = KjunTooltipProps["placement"];
 const kjunIconToggleProps = {
@@ -98,6 +99,7 @@ export const KjunCopyButton = defineComponent({
     const m = useKjunMessages();
     const feedback = useOptionalKjunFeedback();
     const successText = () => props.successText ?? m.value.copied;
+    const geometry = () => copyButtonGeometry(props.size, !!props.text && !props.inline);
     const { copied, failed, copy } = useCopyFeedback(() => props.copyText, {
       onSuccess: (value) => { feedback?.toast.success(successText()); emit("copied", value); },
       onError: (error) => { feedback?.toast.error(m.value.copyFailed); emit("copy-error", error); },
@@ -108,8 +110,8 @@ export const KjunCopyButton = defineComponent({
         data-inline={String(props.inline)}
         style={[css({
           ...typeStyle(props.size === "xs" ? "controlSmall" : "control"),
-          minHeight: tokens.button.heights[props.size], paddingBlock: 0,
-          paddingInline: { xs: tokens.dimension.value4, sm: tokens.dimension.value8, md: tokens.dimension.value12 }[props.size],
+          minHeight: geometry().height, width: geometry().width, gap: geometry().gap, borderRadius: geometry().radius, paddingBlock: 0,
+          paddingInlineStart: geometry().paddingStart, paddingInlineEnd: geometry().paddingEnd,
         }), attrs.style as never]}>
         <KjunIcon name={copied.value ? "check" : "copy"} size={tokens.button.iconSizes[props.size]}
           style={{ color: copied.value ? "var(--_kjun-color-success)" : undefined }} />

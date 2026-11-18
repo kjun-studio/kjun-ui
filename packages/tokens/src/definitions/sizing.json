@@ -63,17 +63,17 @@
       },
       "sizes": {
         "xs": { "$ref": "extensions.iconToggle.compactSize" },
-        "sm": { "$ref": "button.heights.xs" },
-        "md": { "$ref": "button.heights.sm" },
-        "lg": { "$ref": "button.heights.md" },
-        "xl": { "$ref": "button.heights.lg" }
+        "sm": { "$ref": "button.heights.sm" },
+        "md": { "$ref": "button.heights.md" },
+        "lg": { "$ref": "button.heights.lg" },
+        "xl": { "$ref": "button.heights.xl" }
       },
       "radii": {
         "xs": { "$ref": "button.radii.xs" },
-        "sm": { "$ref": "button.radii.xs" },
-        "md": { "$ref": "button.radii.sm" },
-        "lg": { "$ref": "button.radii.md" },
-        "xl": { "$ref": "button.radii.lg" }
+        "sm": { "$ref": "button.radii.sm" },
+        "md": { "$ref": "button.radii.md" },
+        "lg": { "$ref": "button.radii.lg" },
+        "xl": { "$ref": "button.radii.xl" }
       }
     },
     "selection": {

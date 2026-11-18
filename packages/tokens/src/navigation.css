@@ -240,7 +240,7 @@
     display: flex;
   }
 }
-/* Square icon controls follow the button scale one step down. */
+/* Square icon controls take the button height and corner for the same size, so they line up in a row of buttons. */
 .kjun-icon-toggle {
   --_kjun-icon-toggle-size: var(--_kjun-extension-icon-toggle-sizes-md);
   --_kjun-icon-toggle-radius: var(--_kjun-extension-icon-toggle-radii-md);
@@ -282,9 +282,7 @@
 .kjun-icon-toggle[aria-pressed="false"]:hover:not(:disabled) svg:not([data-kjun-color-class]) {
   color: var(--_kjun-color-text-secondary);
 }
-.kjun-icon-toggle:hover:not(:disabled) svg {
-  transform: scale(1.12);
-}
+/* Hover is the fill and the darker ink, as on buttons; only a press scales the icon. */
 .kjun-icon-toggle:active:not(:disabled) svg {
   transform: scale(0.94);
 }
@@ -293,20 +291,18 @@
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
   outline-offset: var(--_kjun-state-focus-offset);
 }
+/* Ghost-button geometry (radius, gap, insets) comes inline per size, so a copy control lines up with buttons. */
 .kjun-copy-button {
   display: inline-flex;
   align-items: center;
-  gap: var(--_kjun-geometry-dimension-value6);
+  justify-content: center;
   border: 0;
-  border-radius: var(--_kjun-geometry-radius-radius6);
   background: transparent;
   color: var(--_kjun-color-text-secondary);
   cursor: pointer;
 }
-.kjun-copy-button:hover {
+.kjun-copy-button:hover:not(:disabled) {
   color: var(--_kjun-color-text);
-}
-.kjun-copy-button:hover:not([data-inline="true"]) {
   background: var(--_kjun-color-hover);
 }
 .kjun-copy-button:disabled {

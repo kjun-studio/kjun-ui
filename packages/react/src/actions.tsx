@@ -24,6 +24,7 @@ import { useReducedMotion } from "./use-reduced-motion";
 import { TopNavigationContext } from "./top-navigation-context";
 import { browserCopy } from "../../../shared/package-runtime/clipboard";
 import { useCopyFeedback } from "../../../shared/package-runtime/use-copy-feedback";
+import { copyButtonGeometry } from "../../../shared/package-runtime/copy-button";
 import { usePendingAction } from "../../../shared/package-runtime/use-pending-action";
 import { trackScrollFade, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
 export interface KjunIconToggleProps
@@ -164,6 +165,7 @@ export function KjunCopyButton({
   const m = useKjunMessages();
   successText ??= m.copied;
   const feedback = useOptionalKjunFeedback();
+  const geometry = copyButtonGeometry(size, !!text && !inline);
   const { copied, failed, copy } = useCopyFeedback(copyText, {
     onSuccess: (copiedValue) => { feedback?.toast.success(successText); onCopied?.(copiedValue); },
     onError: (error) => { feedback?.toast.error(m.copyFailed); onCopyError?.(error); },
@@ -179,9 +181,13 @@ export function KjunCopyButton({
         data-inline={inline}
         style={{
           ...typeStyle(size === "xs" ? "controlSmall" : "control"),
-          minHeight: tokens.button.heights[size],
+          minHeight: geometry.height,
+          width: geometry.width,
+          gap: geometry.gap,
+          borderRadius: geometry.radius,
           paddingBlock: 0,
-          paddingInline: { xs: tokens.dimension.value4, sm: tokens.dimension.value8, md: tokens.dimension.value12 }[size],
+          paddingInlineStart: geometry.paddingStart,
+          paddingInlineEnd: geometry.paddingEnd,
           ...style,
         }}
         onClick={(event) => {
