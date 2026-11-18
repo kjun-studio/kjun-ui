@@ -412,7 +412,13 @@
       "sheetGap": { "$ref": "dimension.value48" },
       "titleActionGap": { "$ref": "modal.titleActionGap" },
       "footerGap": { "$ref": "modal.footerGap" },
-      "bareBodyPaddingTop": { "$ref": "dimension.value8" }
+      "bareBodyPaddingTop": { "$ref": "dimension.value8" },
+      "headerActionGap": { "$ref": "dimension.value4" },
+      "handleWidth": { "$ref": "dimension.value36" },
+      "handleHeight": { "$ref": "dimension.value4" },
+      "handleRadius": { "$ref": "radius.radius9999" },
+      "handleSpace": { "$ref": "dimension.value8" },
+      "dismissDistance": { "$ref": "dimension.value64" }
     },
     "toast": {
       "minWidth": 280,

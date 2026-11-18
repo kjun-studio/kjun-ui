@@ -190,7 +190,10 @@
       "noPadding",
       "ariaLabel",
       "safeArea",
-      "maxHeight"
+      "maxHeight",
+      "ariaDescribedBy",
+      "returnFocus",
+      "handle"
     ],
     "react": [
       "open",
@@ -203,13 +206,17 @@
       "closeOnEsc",
       "noPadding",
       "header",
+      "headerActions",
       "footer",
       "children",
       "onClose",
       "ariaLabel",
       "safeArea",
       "maxHeight",
-      "onAfterClose"
+      "onAfterClose",
+      "ariaDescribedBy",
+      "returnFocus",
+      "handle"
     ],
     "native": [
       "open",
@@ -222,6 +229,7 @@
       "closeOnEsc",
       "noPadding",
       "header",
+      "headerActions",
       "footer",
       "children",
       "onClose",
@@ -230,7 +238,9 @@
       "maxHeight",
       "avoidKeyboard",
       "onAfterClose",
-      "renderScrollView"
+      "renderScrollView",
+      "ariaDescribedBy",
+      "handle"
     ]
   },
   "KjunModal": {

@@ -376,7 +376,9 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
               size: settings.size || "md", confirmText: settings.confirmText || "확인", showFooter: true,
               loading, confirmDisabled: disabled,
               onConfirm: () => { set("open", false); message("저장했습니다"); },
-            } : {}),
+            } : {
+              position: settings.position || "right", handle: settings.position === "bottom" && !!settings.handle,
+            }),
           },
           h("Stack", {}, [
             input(),
@@ -384,7 +386,11 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
             h("KjunButton", { variant: "secondary", ...action(() =>
               feedback.toast.info("열린 레이어의 영역 알림", { duration: 0 })
             ) }, "알림 표시"),
-          ])
+          ]),
+          name === "KjunDrawer" ? {
+            ...(settings.footer === false ? {} : { footer: h("KjunFormActions", { confirmText: "적용", onCancel: () => set("open", false), onConfirm: () => { set("open", false); message("적용했습니다"); } }) }),
+            ...(settings.headerActions ? { headerActions: h("KjunButton", { variant: "ghost", size: "sm", ...action(() => message("초기화했습니다")) }, "초기화") } : {}),
+          } : undefined
         ),
       ]);
     case "KjunBreadcrumb":

@@ -6,10 +6,11 @@ import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer"
 import { directionalShadow } from "../../../shared/package-runtime/elevation";
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
-import { useEffect, useState, type ReactNode } from "react";
-import { Animated, Keyboard, Platform, ScrollView, View, useWindowDimensions, type ScrollViewProps } from "react-native";
+import { Children, Fragment, cloneElement, isValidElement, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Animated, Keyboard, PanResponder, Platform, ScrollView, View, useWindowDimensions, type ScrollViewProps } from "react-native";
 import { drawerFrame, keyboardEvents, keyboardOverlap } from "../../../shared/package-runtime/drawer-geometry";
-import { useNativePresence, motionEmphasized } from "./motion";
+import { sheetDragDismisses, sheetDragOffset } from "../../../shared/package-runtime/sheet-drag";
+import { useNativePresence, motionEmphasized, nativeDriver } from "./motion";
 import { KjunButton, KjunIcon } from "./button";
 import { KText,content } from "./internal";
 import { ScopedNativeModal } from "./overlay-host";
@@ -26,6 +27,8 @@ export interface KjunDrawerProps {
   closeOnEsc?: boolean;
   noPadding?: boolean;
   header?: ReactNode;
+  /** Secondary actions in the title row, before the close button (such as a reset button). */
+  headerActions?: ReactNode;
   footer?: ReactNode;
   children?: ReactNode;
   /** Replaces the body's scroller with the app's own, such as a FlatList that draws only its visible rows or a ScrollView
@@ -37,6 +40,10 @@ export interface KjunDrawerProps {
   /** Called once after the close finishes and the layer has left the screen (not when it mounts closed or reopens during the exit). */
   onAfterClose?: () => void;
   ariaLabel?: string;
+  /** Id of the element that describes the drawer (React Native Web aria-describedby). */
+  ariaDescribedBy?: string;
+  /** Bottom drawers: a grab handle above the header; dragging the handle or header down closes the drawer. */
+  handle?: boolean;
   /** Keeps clear of KjunProvider's safe area (default true): padded inside the panel and kept clear beyond a sheet. */
   safeArea?: boolean;
   /** Height limit for top and bottom drawers; by default they stop a sheet gap short of the opposite edge. */
@@ -59,6 +66,18 @@ function useKeyboardOverlap(enabled: boolean, rootHeight: number) {
   }, [enabled, rootHeight]);
   return overlap;
 }
+// Like the web footer: buttons gather at the end; a phone's bottom sheet shares the width between them, and a single
+// wrapper (the app's own action layout) keeps the full row.
+function footerItems(footer: ReactNode, share: boolean) {
+  // A fragment's children are the row's items.
+  const items = Children.toArray(footer).flatMap(item => isValidElement<{ children?: ReactNode }>(item) && item.type === Fragment ? Children.toArray(item.props.children) : [item]);
+  const own = items.length === 1 && !(isValidElement(items[0]) && items[0].type === KjunButton);
+  if (!share && !own) return items.map(item => content(item));
+  // A shared button fills its share, as on the web.
+  return items.map((item, index) => <View key={index} style={{ flexGrow: 1, flexShrink: 1, flexBasis: own ? "100%" : 0, minWidth: 0 }}>
+    {isValidElement<{ block?: boolean }>(item) && item.type === KjunButton ? cloneElement(item, { block: true }) : content(item)}
+  </View>);
+}
 export function KjunDrawer({
   open,
   onOpenChange,
@@ -70,12 +89,15 @@ export function KjunDrawer({
   closeOnEsc = true,
   noPadding = false,
   header,
+  headerActions,
   footer,
   children,
   renderScrollView,
   onClose,
   onAfterClose,
   ariaLabel,
+  ariaDescribedBy,
+  handle = false,
   safeArea = true,
   maxHeight,
   avoidKeyboard = true,
@@ -94,7 +116,9 @@ export function KjunDrawer({
       : compact ? window.width : Math.min(window.width, geometry.sheetMaxWidth),
     sheetRadius = (edge: "top" | "bottom") => sideways || position === edge ? geometry.radius : geometry.sheetRadius,
     // Without a title or header only the close button remains: no title band, no empty text.
-    titled = !!title || hasContent(header);
+    titled = !!title || hasContent(header),
+    actions = hasContent(headerActions),
+    grab = handle && position === "bottom";
   // The modal root's own height: a resizing Android window shrinks it for the keyboard; elsewhere it equals the window.
   const [rootHeight, setRootHeight] = useState(0);
   const keyboard = useKeyboardOverlap(open && avoidKeyboard, rootHeight || window.height);
@@ -110,6 +134,30 @@ export function KjunDrawer({
     onClose?.();
   };
   const layer = useLayer(open, motion.present, "window", () => { if (closeOnEsc) close(); });
+  // Handle drag: the sheet follows a downward drag of the handle or header and closes past the dismiss distance or on a flick.
+  const drag = useRef(new Animated.Value(0)).current;
+  const [dragging, setDragging] = useState(false);
+  const latest = useRef({ close, panelHeight, enabled: false });
+  latest.current = { close, panelHeight, enabled: grab && open };
+  useEffect(() => { if (open) drag.setValue(0); }, [open, drag]);
+  const pan = useMemo(() => PanResponder.create({
+    onMoveShouldSetPanResponder: (_event, g) => latest.current.enabled && g.dy > 0 && Math.abs(g.dy) > Math.abs(g.dx),
+    onPanResponderGrant: () => setDragging(true),
+    onPanResponderMove: (_event, g) => drag.setValue(sheetDragOffset(g.dy, latest.current.panelHeight)),
+    onPanResponderRelease: (_event, g) => {
+      setDragging(false);
+      const offset = sheetDragOffset(g.dy, latest.current.panelHeight);
+      // Closing keeps the dropped position: the exit continues from there.
+      if (sheetDragDismisses(offset, g.vy, geometry.dismissDistance)) latest.current.close();
+      else Animated.timing(drag, { toValue: 0, duration: tokens.motion.layerEnter, easing: motionEmphasized, useNativeDriver: nativeDriver }).start();
+    },
+    onPanResponderTerminate: () => {
+      setDragging(false);
+      Animated.timing(drag, { toValue: 0, duration: tokens.motion.layerEnter, easing: motionEmphasized, useNativeDriver: nativeDriver }).start();
+    },
+  }), [drag, geometry.dismissDistance]);
+  const dragArea = grab ? pan.panHandlers : {};
+  const dragFade = drag.interpolate({ inputRange: [0, Math.max(panelHeight, 1)], outputRange: [1, 0], extrapolate: "clamp" });
   // iOS keeps dismissing the native window after visible turns false; report once it is gone so the next sheet can open.
   const iosDismiss = Platform.OS === "ios";
   useAfterClose(motion.present, onAfterClose, !iosDismiss);
@@ -142,7 +190,7 @@ export function KjunDrawer({
           alignItems: !sideways ? "center" : position === "right" ? "flex-end" : "flex-start",
         }}
       >
-        <Animated.View pointerEvents={open ? "auto" : "none"} style={{ ...screenCover(), opacity: backdrop.opacity }}>
+        <Animated.View pointerEvents={open ? "auto" : "none"} style={{ ...screenCover(), opacity: grab ? Animated.multiply(backdrop.opacity, dragFade) : backdrop.opacity }}>
         <LayerBackdrop
           onPress={() => {
             if (closeOnOverlay) close();
@@ -163,13 +211,13 @@ export function KjunDrawer({
           accessibilityViewIsModal
           accessibilityLabel={ariaLabel || title || m.panel}
           {...(Platform.OS === "web"
-            ? { role: "dialog", "aria-modal": true }
+            ? { role: "dialog", "aria-modal": true, ...(ariaDescribedBy ? { "aria-describedby": ariaDescribedBy } : {}) }
             : {})}
           onLayout={event => setPanelHeight(event.nativeEvent.layout.height)}
           style={{
             opacity: sideways || panelHeight > 0 ? 1 : 0,
             transform: sideways ? [{ translateX: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [(position === "left" ? -1 : 1) * panelWidth, 0] }) }]
-              : [{ translateY: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [(position === "top" ? -1 : 1) * panelHeight, 0] }) }],
+              : [{ translateY: Animated.add(motion.progress.interpolate({ inputRange: [0, 1], outputRange: [(position === "top" ? -1 : 1) * panelHeight, 0] }), grab ? drag : 0) }],
             width: panelWidth,
             height: frame.height,
             maxHeight: frame.maxHeight,
@@ -185,13 +233,21 @@ export function KjunDrawer({
             backgroundColor: colors.surface,
           }}
         >
-          {(titled || closable) && (
+          {grab && (
+            <View {...dragArea} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
+              style={{ alignItems: "center", paddingTop: geometry.handleSpace }}>
+              <View style={{ width: geometry.handleWidth, height: geometry.handleHeight, borderRadius: geometry.handleRadius,
+                backgroundColor: dragging ? colors.textTertiary : colors.borderStrong }} />
+            </View>
+          )}
+          {(titled || closable || actions) && (
             <View
+              {...dragArea}
               style={{
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: titled ? "space-between" : "flex-end",
-                paddingTop: geometry.paddingY,
+                paddingTop: grab ? geometry.handleSpace : geometry.paddingY,
                 paddingBottom: titled ? geometry.paddingY : 0,
                 paddingHorizontal: geometry.paddingX,
                 borderBottomWidth: titled ? tokens.border.defaultWidth : 0,
@@ -200,19 +256,23 @@ export function KjunDrawer({
             >
               {titled && (
                 <View style={{ flex: 1, paddingRight: geometry.titleActionGap }}>
-                  {hasContent(header) ? content(header) : <KText style={typeStyle('sectionTitle')}>{title}</KText>}
+                  {hasContent(header) ? content(header) : <KText accessibilityRole="header" style={typeStyle('sectionTitle')}>{title}</KText>}
                 </View>
               )}
-              {closable && (
-                <KjunButton
-                  size="sm"
-                  variant="ghost"
-                  ariaLabel={m.close}
-                  onPress={close}
-                  // The glyph sits on the content edge; the button's own inset hangs into the header padding.
-                  style={{ borderRadius: geometry.closeRadius, width: geometry.closeSize, height: geometry.closeSize, paddingHorizontal: 0, paddingVertical: 0,
-                    marginRight: (geometry.closeIconSize - geometry.closeSize) / 2 }}
-                ><KjunIcon name="x" size={tokens.extensions.drawer.closeIconSize} /></KjunButton>
+              {(actions || closable) && (
+                // The last glyph sits on the content edge; its button inset hangs into the header padding.
+                <View style={{ flexDirection: "row", alignItems: "center", gap: geometry.headerActionGap, marginRight: (geometry.closeIconSize - geometry.closeSize) / 2 }}>
+                  {actions && content(headerActions)}
+                  {closable && (
+                    <KjunButton
+                      size="sm"
+                      variant="ghost"
+                      ariaLabel={m.close}
+                      onPress={close}
+                      style={{ borderRadius: geometry.closeRadius, width: geometry.closeSize, height: geometry.closeSize, minWidth: 0, paddingHorizontal: 0, paddingVertical: 0 }}
+                    ><KjunIcon name="x" size={geometry.closeIconSize} /></KjunButton>
+                  )}
+                </View>
               )}
             </View>
           )}
@@ -220,13 +280,17 @@ export function KjunDrawer({
           {hasContent(footer) && (
             <View
               style={{
-                paddingVertical: tokens.extensions.drawer.paddingY,
-                paddingHorizontal: tokens.extensions.drawer.paddingX,
+                flexDirection: "row",
+                flexWrap: "wrap",
+                justifyContent: "flex-end",
+                gap: geometry.footerGap,
+                paddingVertical: geometry.paddingY,
+                paddingHorizontal: geometry.paddingX,
                 borderTopWidth: tokens.border.defaultWidth,
                 borderTopColor: colors.border,
               }}
             >
-              {content(footer)}
+              {footerItems(footer, compact && position === "bottom")}
             </View>
           )}
         </Animated.View>

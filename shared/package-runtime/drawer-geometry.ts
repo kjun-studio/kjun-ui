@@ -1,4 +1,9 @@
 // Drawer frame on Native: what the keyboard covers, the safe areas and the sheet height limit.
+import { tokens } from "@kjun-ui/tokens";
+
+/** The web close button: a 32px square with its own radius. Inline, because the button sets its size and radius inline. */
+export const drawerCloseStyle = { borderRadius: tokens.extensions.drawer.closeRadius, width: tokens.extensions.drawer.closeSize,
+  height: tokens.extensions.drawer.closeSize, padding: 0 };
 export type DrawerPosition = "left" | "right" | "top" | "bottom";
 export interface DrawerFrameInput {
   position: DrawerPosition;

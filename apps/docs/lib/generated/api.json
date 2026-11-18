@@ -7450,6 +7450,27 @@
         "description": ""
       },
       {
+        "name": "ariaDescribedBy",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Id of the element that describes the drawer, read after its name."
+      },
+      {
+        "name": "returnFocus",
+        "type": "FocusReturn",
+        "required": false,
+        "default": "—",
+        "description": "Read after the exit finishes; a missing target falls back to the opener or parent window."
+      },
+      {
+        "name": "handle",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Bottom drawers: a grab handle above the header; dragging the handle or header down closes the drawer."
+      },
+      {
         "name": "safeArea",
         "type": "boolean",
         "required": false,
@@ -7486,6 +7507,11 @@
       },
       {
         "name": "header",
+        "data": [],
+        "source": "packages/vue3/src/drawer.tsx"
+      },
+      {
+        "name": "headerActions",
         "data": [],
         "source": "packages/vue3/src/drawer.tsx"
       },
@@ -7567,6 +7593,13 @@
         "description": ""
       },
       {
+        "name": "headerActions",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Secondary actions in the title row, before the close button (such as a reset button)."
+      },
+      {
         "name": "footer",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
@@ -7600,6 +7633,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "ariaDescribedBy",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Id of the element that describes the drawer, read after its name."
+      },
+      {
+        "name": "returnFocus",
+        "type": "import(\"/workspace/packages/react/src/floating-panel\").FocusReturn | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Read after the exit finishes; a missing target falls back to the opener or parent window."
+      },
+      {
+        "name": "handle",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Bottom drawers: a grab handle above the header; dragging the handle or header down closes the drawer."
       },
       {
         "name": "safeArea",
@@ -7688,6 +7742,13 @@
         "description": ""
       },
       {
+        "name": "headerActions",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "Secondary actions in the title row, before the close button (such as a reset button)."
+      },
+      {
         "name": "footer",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
@@ -7728,6 +7789,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "ariaDescribedBy",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Id of the element that describes the drawer (React Native Web aria-describedby)."
+      },
+      {
+        "name": "handle",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Bottom drawers: a grab handle above the header; dragging the handle or header down closes the drawer."
       },
       {
         "name": "safeArea",

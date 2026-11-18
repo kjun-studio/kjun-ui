@@ -825,7 +825,7 @@
       "title": "Drawer",
       "docs": "/components/drawer",
       "category": "layout",
-      "differences": "Vue v-model:open과 React·Native open·onOpenChange를 사용합니다. 웹은 레이어 포커스·스크롤을, Native는 Modal과 뒤로 가기 경로를 처리합니다.",
+      "differences": "Vue v-model:open과 React·Native open·onOpenChange를 사용합니다. Vue는 headerActions·footer를 슬롯으로 받습니다. 웹은 레이어 포커스·스크롤과 returnFocus를, Native는 Modal과 뒤로 가기 경로를 처리합니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

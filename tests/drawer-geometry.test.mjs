@@ -54,3 +54,19 @@ test('Native Drawer and Modal windows start at the screen top, where keyboard ov
     assert.match(tag, /\bstatusBarTranslucent\b/, file);
   }
 });
+
+test('a dragged sheet follows the pointer only downward and no further than its height', async () => {
+  const { sheetDragOffset, sheetDragDismisses, sheetDragFade } = await import('../shared/package-runtime/sheet-drag.ts');
+  assert.equal(sheetDragOffset(-40, 300), 0);
+  assert.equal(sheetDragOffset(80, 300), 80);
+  assert.equal(sheetDragOffset(500, 300), 300);
+  // Past the dismiss distance, or a quick downward flick, closes; a slow short drag springs back.
+  assert.equal(sheetDragDismisses(64, 0, 64), true);
+  assert.equal(sheetDragDismisses(30, 0.8, 64), true);
+  assert.equal(sheetDragDismisses(30, 0.1, 64), false);
+  assert.equal(sheetDragDismisses(0, 2, 64), false);
+  // The backdrop thins as the sheet goes down.
+  assert.equal(sheetDragFade(0, 300), 1);
+  assert.equal(sheetDragFade(150, 300), 0.5);
+  assert.equal(sheetDragFade(300, 300), 0);
+});

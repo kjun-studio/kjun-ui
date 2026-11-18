@@ -44,9 +44,15 @@ export function generate(input: UsageInput) {
         b.button(name === 'KjunModal' ? '모달 열기' : '패널 열기', b.handler('openDialog', '', b.set('open', 'true'))),
         b.node(name, { open: b.state('open', false), onOpenChange: b.update('open'), title: s.title ?? '작업 확인',
           ...(name === 'KjunModal' ? { size: s.size, confirmText: s.confirmText, showFooter: true, loading: s.loading, confirmDisabled: s.disabled,
-            onConfirm: b.handler('confirm', '', b.set('open', 'false') + '\n' + b.result('"저장했습니다"')) } : {}),
+            onConfirm: b.handler('confirm', '', b.set('open', 'false') + '\n' + b.result('"저장했습니다"')) }
+            : { ...(s.position && s.position !== 'right' ? { position: s.position } : {}), ...(s.position === 'bottom' && s.handle ? { handle: true } : {}) }),
         }, [b.node('KjunInput', { value: b.state('input', ''), onValueChange: b.update('input'), ariaLabel: '입력 예제', clearable: true }),
-          b.button('알림 표시', b.handler('showToast', '', `feedback.toast.info("열린 레이어의 영역 알림", { duration: 0 });`))].join('\n')),
+          b.button('알림 표시', b.handler('showToast', '', `feedback.toast.info("열린 레이어의 영역 알림", { duration: 0 });`))].join('\n'),
+          name === 'KjunDrawer' ? {
+            ...(s.footer === false ? {} : { footer: b.node('KjunFormActions', { confirmText: '적용', onCancel: b.handler('cancel', '', b.set('open', 'false')),
+              onConfirm: b.handler('apply', '', b.set('open', 'false') + '\n' + b.result('"적용했습니다"')) }) }),
+            ...(s.headerActions ? { headerActions: b.button('초기화', b.handler('reset', '', b.result('"초기화했습니다"')), { variant: 'ghost', size: 'sm' }) } : {}),
+          } : undefined),
       ]); break;
     }
     case 'KjunTooltip': content = b.node(name, { content: '이 버튼의 도움말', delay: 100 }, b.button('도움말')); break;

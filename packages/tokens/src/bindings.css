@@ -653,6 +653,12 @@
   --_kjun-extension-drawer-title-action-gap: 12px;
   --_kjun-extension-drawer-footer-gap: 12px;
   --_kjun-extension-drawer-bare-body-padding-top: 8px;
+  --_kjun-extension-drawer-header-action-gap: 4px;
+  --_kjun-extension-drawer-handle-width: 36px;
+  --_kjun-extension-drawer-handle-height: 4px;
+  --_kjun-extension-drawer-handle-radius: 9999px;
+  --_kjun-extension-drawer-handle-space: 8px;
+  --_kjun-extension-drawer-dismiss-distance: 64px;
   --_kjun-extension-drawer-width: 400px;
   --_kjun-extension-drawer-sheet-max-width: 640px;
   --_kjun-extension-drawer-close-size: 32px;

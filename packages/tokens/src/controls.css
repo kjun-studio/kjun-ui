@@ -466,12 +466,36 @@
 .kjun-drawer-header[data-bare] + .kjun-drawer-body:not([data-no-padding]) {
   padding-top: var(--_kjun-extension-drawer-bare-body-padding-top);
 }
-/* The glyph sits on the content edge; the button's own inset hangs into the header padding. */
-.kjun-drawer-header > .kjun-button {
+/* Header actions sit before the close button. The last glyph sits on the content edge; its button inset hangs into the header padding. */
+.kjun-drawer-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--_kjun-extension-drawer-header-action-gap);
+  flex-shrink: 0;
   margin-right: calc((var(--_kjun-extension-drawer-close-icon-size) - var(--_kjun-extension-drawer-close-size)) / 2);
 }
+/* Bottom drawers with handle: a grab bar above the header; the bar and header drag the sheet down. */
+.kjun-drawer-handle {
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  padding-top: var(--_kjun-extension-drawer-handle-space);
+  cursor: grab;
+}
+.kjun-drawer-handle > span {
+  width: var(--_kjun-extension-drawer-handle-width);
+  height: var(--_kjun-extension-drawer-handle-height);
+  border-radius: var(--_kjun-extension-drawer-handle-radius);
+  background: var(--_kjun-color-border-strong);
+}
+.kjun-drawer-handle + .kjun-drawer-header { padding-top: var(--_kjun-extension-drawer-handle-space); }
+.kjun-drawer-dialog > [data-drag] { touch-action: none; }
+.kjun-drawer-overlay[data-dragging] { user-select: none; cursor: grabbing; }
+.kjun-drawer-overlay[data-dragging] .kjun-drawer-handle > span { background: var(--_kjun-color-text-tertiary); }
+/* While dragged the backdrop thins with the sheet's distance (--_kjun-drawer-drag, 1 at rest). */
+.kjun-scope.kjun-drawer-overlay[data-dragging][data-motion-open="true"]::before { opacity: var(--_kjun-drawer-drag, 1); transition: none; }
 @media (pointer: coarse) {
-  .kjun-drawer-header > .kjun-button::after {
+  .kjun-drawer-actions > .kjun-drawer-close::after {
     content: "";
     position: absolute;
     inset: calc((var(--_kjun-extension-drawer-close-size) - var(--_kjun-geometry-native-minimum-touch-target)) / 2);

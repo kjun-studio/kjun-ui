@@ -738,3 +738,10 @@ for (const platform of ["react", "native"]) set("SideNavigationLayout", {
   children: "메뉴 옆에 놓을 페이지 내용입니다.",
 }, platform);
 set("SideNavigationLayout", { style: "레이아웃 바깥 View의 스타일입니다. 레이아웃은 받은 자리를 채우므로 높이·배경은 앱이 정합니다." }, "native");
+set("Drawer", {
+  ariaLabel: "패널의 접근성 이름입니다. 생략하면 제목이나 header 영역을 이름으로 연결하고, 둘 다 없으면 \"패널\"로 읽습니다.",
+  ariaDescribedBy: "패널을 설명하는 요소 id입니다. 이름 다음에 읽습니다. Native는 React Native Web에서만 연결합니다.",
+  returnFocus: "닫힘 애니메이션이 끝난 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받으며 닫힐 때 최신 값을 읽습니다. 대상이 없거나 제거되면 원래 열기 버튼, 남아 있는 상위 창 순서로 복귀합니다. React·Vue 웹 전용입니다.",
+  headerActions: "제목 줄의 보조 행동(초기화·편집 등)입니다. 닫기 버튼 앞에 4px 간격으로 놓이고 제목은 남은 폭에서 줄바꿈합니다. Vue는 headerActions 슬롯입니다.",
+  handle: { default: "false", summary: "아래 Drawer 위쪽에 36×4px 손잡이를 둡니다. 손잡이나 헤더를 아래로 끌면 패널이 따라 내려오고, 64px 넘게 끌거나 빠르게 내리면 닫힙니다. 그보다 적게 끌면 제자리로 돌아갑니다. 닫기 버튼·Esc·뒤 화면 누르기는 그대로입니다. position이 bottom일 때만 그립니다." },
+});
