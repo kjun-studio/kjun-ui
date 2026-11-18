@@ -1,3 +1,4 @@
+import { menuButtonChevron, menuButtonIcon } from "../../../shared/package-runtime/menu-button";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { cloneElement, createContext, isValidElement, useCallback, useContext, useEffect, useId, useRef, useState, type ReactNode, type ReactElement } from "react";
@@ -302,6 +303,10 @@ export interface KjunMenuButtonProps extends Omit<KjunDropdownProps, "trigger"> 
   variant?: KjunButtonProps["variant"];
   /** Show a square dots-vertical button; label remains its accessible name. */
   compact?: boolean;
+  /** Icon before the label, or in place of dots-vertical when compact or unlabelled. */
+  icon?: string;
+  /** Show the chevron after a visible label (default true); false where the icon already says it opens a menu. */
+  chevron?: boolean;
   loading?: boolean;
   tooltip?: string;
   tooltipPlacement?: KjunTooltipProps["placement"];
@@ -313,6 +318,8 @@ export function KjunMenuButton({
   size = "md",
   variant = "secondary",
   compact = false,
+  icon,
+  chevron = true,
   loading = false,
   tooltip,
   tooltipPlacement,
@@ -331,8 +338,8 @@ export function KjunMenuButton({
       variant={variant}
       disabled={props.disabled}
       loading={loading}
-      prefixIcon={compact || !label ? "dots-vertical" : undefined}
-      suffixIcon={!compact && label ? open ? "chevron-up" : "chevron-down" : undefined}
+      prefixIcon={menuButtonIcon(icon, compact, label)}
+      suffixIcon={menuButtonChevron(chevron, compact, label, open)}
       ariaLabel={ariaLabel || label || tooltip || m.menu}
     >
       {compact ? undefined : label}

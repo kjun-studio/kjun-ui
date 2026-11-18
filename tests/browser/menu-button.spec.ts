@@ -134,3 +134,31 @@ for (const platform of ['react', 'vue3', 'native']) {
     await captureReview(page.getByTestId('menu'), { path: `artifacts/menu-button-review/${platform}-fixed-compact.png` });
   });
 }
+
+for (const platform of ['react', 'vue3', 'native']) {
+  test(`${platform}: icon leads the label or replaces the dots, and chevron={false} leaves the icon alone`, async ({ page }) => {
+    await openFixture(page, platform, '', 'menu-button');
+    const paths = () => icon(page).evaluateAll(list => list.map(el => el.innerHTML));
+    await configure(page, { label: '정렬', compact: false, icon: 'arrows-sort', chevron: true });
+    await expect(icon(page)).toHaveCount(2);
+    const [sort, chevron] = await paths();
+    expect(sort).not.toBe(chevron);
+    await configure(page, { chevron: false });
+    await expect(icon(page)).toHaveCount(1);
+    expect((await paths())[0]).toBe(sort);
+    // Without the chevron the menu still opens and closes from the same button.
+    await trigger(page).click();
+    await expect(menu(page, platform)).toBeVisible();
+    await expect(icon(page)).toHaveCount(1);
+    await page.keyboard.press('Escape');
+    await expect(menu(page, platform)).toBeHidden();
+    await expect(page.getByTestId('events')).toHaveText('open,close');
+    // Compact shows the app's icon instead of the dots and keeps the label as its name.
+    await configure(page, { compact: true, chevron: true });
+    await expect(icon(page)).toHaveCount(1);
+    expect((await paths())[0]).toBe(sort);
+    await expect(trigger(page)).toHaveAccessibleName('정렬');
+    await configure(page, { icon: '' });
+    expect((await paths())[0]).not.toBe(sort);
+  });
+}

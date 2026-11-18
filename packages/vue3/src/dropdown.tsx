@@ -1,3 +1,4 @@
+import { menuButtonChevron, menuButtonIcon } from "../../../shared/package-runtime/menu-button";
 import { useKjunMessages } from "./runtime/messages";
 import { cloneVNode, computed, inject, isVNode, mergeProps, onUpdated, provide, ref, shallowRef, watch, nextTick,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
@@ -337,6 +338,10 @@ const kjunMenuButtonProps = {
   variant: { type: String as PropType<ButtonVariant>, default: "secondary" },
   /** Show a square dots-vertical button; label remains its accessible name. */
   compact: { type: Boolean, default: false },
+  /** Icon before the label, or in place of dots-vertical when compact or unlabelled. */
+  icon: { type: String, default: undefined },
+  /** Show the chevron after a visible label (default true); false where the icon already says it opens a menu. */
+  chevron: { type: Boolean, default: true },
   loading: { type: Boolean, default: false },
   tooltip: { type: String, default: undefined },
   tooltipPlacement: { type: String as PropType<"top" | "bottom" | "left" | "right">, default: undefined },
@@ -356,8 +361,8 @@ export const KjunMenuButton = defineComponent({
     return () => {
       const button = () => (
         <KjunButton class="kjun-menu-button" size={props.size} variant={props.variant} disabled={props.disabled} loading={props.loading}
-          prefixIcon={props.compact || !props.label ? "dots-vertical" : undefined}
-          suffixIcon={!props.compact && props.label ? open.value ? "chevron-up" : "chevron-down" : undefined}
+          prefixIcon={menuButtonIcon(props.icon, props.compact, props.label)}
+          suffixIcon={menuButtonChevron(props.chevron, props.compact, props.label, open.value)}
           ariaLabel={props.ariaLabel || props.label || props.tooltip || m.value.menu}>
           {{ default: () => props.compact ? undefined : props.label }}
         </KjunButton>

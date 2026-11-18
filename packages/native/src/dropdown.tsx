@@ -1,3 +1,4 @@
+import { menuButtonChevron, menuButtonIcon } from "../../../shared/package-runtime/menu-button";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import {
@@ -278,6 +279,10 @@ export interface KjunMenuButtonProps extends Omit<KjunDropdownProps, "trigger"> 
   variant?: KjunButtonProps["variant"];
   /** Show a square dots-vertical button; label remains its accessible name. */
   compact?: boolean;
+  /** Icon before the label, or in place of dots-vertical when compact or unlabelled. */
+  icon?: string;
+  /** Show the chevron after a visible label (default true); false where the icon already says it opens a menu. */
+  chevron?: boolean;
   loading?: boolean;
   tooltip?: string;
   tooltipPlacement?: KjunTooltipProps["placement"];
@@ -289,6 +294,8 @@ export function KjunMenuButton({
   size = "md",
   variant = "secondary",
   compact = false,
+  icon,
+  chevron = true,
   loading = false,
   tooltip,
   tooltipPlacement,
@@ -300,30 +307,32 @@ export function KjunMenuButton({
 }: KjunMenuButtonProps) {
   const m = useKjunMessages();
   const [open, setOpen] = useState(false);
+  const button = (
+    <KjunButton
+      size={size}
+      variant={variant}
+      disabled={props.disabled}
+      loading={loading}
+      accessibilityState={{ expanded: open }}
+      prefixIcon={menuButtonIcon(icon, compact, label)}
+      suffixIcon={menuButtonChevron(chevron, compact, label, open)}
+      ariaLabel={ariaLabel || label || tooltip || m.menu}
+    >
+      {compact ? undefined : label}
+    </KjunButton>
+  );
   return (
     <KjunDropdown
       {...props}
       onOpen={() => { setOpen(true); onOpen?.(); }}
       onClose={() => { setOpen(false); onClose?.(); }}
       trigger={
-        <KjunTooltip
-          content={open ? '' : tooltip}
-          placement={tooltipPlacement}
-          delay={tooltipDelay}
-        >
-          <KjunButton
-            size={size}
-            variant={variant}
-            disabled={props.disabled}
-            loading={loading}
-            accessibilityState={{ expanded: open }}
-            prefixIcon={compact || !label ? "dots-vertical" : undefined}
-            suffixIcon={!compact && label ? open ? "chevron-up" : "chevron-down" : undefined}
-            ariaLabel={ariaLabel || label || tooltip || m.menu}
-          >
-            {compact ? undefined : label}
-          </KjunButton>
-        </KjunTooltip>
+        // Like Web, the tooltip wraps the button only when there is one to show.
+        tooltip ? (
+          <KjunTooltip content={open ? "" : tooltip} placement={tooltipPlacement} delay={tooltipDelay}>
+            {button}
+          </KjunTooltip>
+        ) : button
       }
     />
   );
