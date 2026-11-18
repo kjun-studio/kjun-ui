@@ -333,6 +333,9 @@
       "radius": { "$ref": "radius.radius6" },
       "gap": { "$ref": "dimension.value4" },
       "dotSize": 6,
+      "standaloneDotSize": { "$ref": "extensions.navigationBadge.dotSize" },
+      "countRadius": { "$ref": "extensions.navigationBadge.radius" },
+      "countPaddingX": { "xs": { "$ref": "dimension.value4" }, "sm": { "$ref": "dimension.value6" }, "md": { "$ref": "dimension.value6" }, "lg": { "$ref": "dimension.value6" }, "xl": { "$ref": "dimension.value6" } },
       "radii": {
         "xs": { "$ref": "radius.radius4" },
         "sm": { "$ref": "extensions.badge.radius" },

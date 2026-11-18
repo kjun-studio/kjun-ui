@@ -573,6 +573,13 @@
   --_kjun-extension-badge-radius: 6px;
   --_kjun-extension-badge-gap: 4px;
   --_kjun-extension-badge-dot-size: 6px;
+  --_kjun-extension-badge-standalone-dot-size: 8px;
+  --_kjun-extension-badge-count-radius: 9999px;
+  --_kjun-extension-badge-count-padding-x-xs: 4px;
+  --_kjun-extension-badge-count-padding-x-sm: 6px;
+  --_kjun-extension-badge-count-padding-x-md: 6px;
+  --_kjun-extension-badge-count-padding-x-lg: 6px;
+  --_kjun-extension-badge-count-padding-x-xl: 6px;
   --_kjun-extension-badge-radii-xs: 4px;
   --_kjun-extension-badge-radii-sm: 6px;
   --_kjun-extension-badge-radii-md: 6px;

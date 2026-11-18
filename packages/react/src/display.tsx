@@ -15,6 +15,7 @@ import { typeStyle } from "./typography";
 import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { spinnerStacked } from "../../../shared/package-runtime/spinner-geometry";
 import {
+forwardRef,
 useId,
 useRef,
 useState,
@@ -46,7 +47,8 @@ export interface KjunBadgeProps extends HTMLAttributes<HTMLSpanElement> {
   /** What the badge means to a screen reader, e.g. "읽지 않은 알림 3개"; the drawn text is then hidden from it. Give it to a dot-only badge. */
   label?: string;
 }
-export function KjunBadge({
+/** Like Chip, the ref reaches the badge's root span. */
+export const KjunBadge = forwardRef<HTMLSpanElement, KjunBadgeProps>(function KjunBadge({
   variant = "default",
   size = "sm",
   dot = false,
@@ -56,34 +58,41 @@ export function KjunBadge({
   children,
   style,
   ...props
-}: KjunBadgeProps) {
-  const { padding, radius, gap, dotSize, type } = badgeGeometry(size);
+}, ref) {
+  const { padding, radius, gap, dotSize, type, count: pill, standaloneDotSize } = badgeGeometry(size);
   const paint = badgeToneRoles(variant);
   const counted = count === undefined ? undefined : badgeCount(count, max);
   if (counted === null) return null;
+  const body = counted ?? children, dotOnly = dot && !hasContent(body);
   return (
     <span
       {...props}
-      ref={domainColorRef(variant.startsWith('price-'))}
+      ref={(element: HTMLSpanElement | null) => {
+        domainColorRef(variant.startsWith("price-"))?.(element);
+        if (typeof ref === "function") ref(element);
+        else if (ref) ref.current = element;
+      }}
       className={"kjun-badge " + (props.className || "")}
       data-variant={variant}
+      data-dot-only={dotOnly || undefined}
       style={{
-        ["--_kjun-badge-dot" as string]: dotSize + "px",
-        padding: `${padding.y}px ${padding.x}px`,
+        ["--_kjun-badge-dot" as string]: (dotOnly ? standaloneDotSize : dotSize) + "px",
+        padding: dotOnly ? 0 : `${padding.y}px ${counted ? pill.paddingX : padding.x}px`,
         ...typeStyle(type),
         gap,
-        borderRadius: radius,
+        borderRadius: counted ? pill.radius : radius,
+        ...(counted && { minWidth: pill.minWidth, justifyContent: "center", boxSizing: "border-box" as const }),
         // A tinted card sets --_kjun-badge-fill so the badge stays apart from its surface.
-        background: `var(--_kjun-badge-fill, ${role(paint.bg)})`,
+        background: dotOnly ? "transparent" : `var(--_kjun-badge-fill, ${role(paint.bg)})`,
         color: role(paint.text),
         ...style,
       }}
     >
       {dot && <span className="kjun-badge-dot" style={{ background: role(paint.dot) }} />}
-      {label ? <><span className="kjun-sr-only">{label}</span><span aria-hidden="true">{counted ?? children}</span></> : counted ?? children}
+      {label ? <><span className="kjun-sr-only">{label}</span>{!dotOnly && <span aria-hidden="true">{body}</span>}</> : body}
     </span>
   );
-}
+});
 export { KjunCard } from "./card";
 export type { KjunCardProps } from "./card";
 export interface KjunEmptyProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {

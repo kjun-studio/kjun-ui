@@ -45,24 +45,25 @@ export const KjunBadge = defineComponent({
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
   setup(props, { slots }) {
     return () => {
-      const { padding, radius, gap, dotSize, type } = badgeGeometry(props.size);
+      const { padding, radius, gap, dotSize, type, count: pill, standaloneDotSize } = badgeGeometry(props.size);
       const paint = badgeToneRoles(props.variant);
       const counted = props.count === undefined ? undefined : badgeCount(props.count, props.max);
       if (counted === null) return null;
-      const body = counted ?? slots.default?.();
+      const body = counted ?? slots.default?.(), dotOnly = props.dot && !hasContent(body);
       return (
-        <span ref={domainRef(props.variant.startsWith("price-"))} class="kjun-badge" data-variant={props.variant} style={css({
-          ...({ "--_kjun-badge-dot": `${dotSize}px` } as Record<string, string>),
-          padding: `${padding.y}px ${padding.x}px`,
+        <span ref={domainRef(props.variant.startsWith("price-"))} class="kjun-badge" data-variant={props.variant} data-dot-only={dotOnly || undefined} style={css({
+          ...({ "--_kjun-badge-dot": `${dotOnly ? standaloneDotSize : dotSize}px` } as Record<string, string>),
+          padding: dotOnly ? "0" : `${padding.y}px ${counted ? pill.paddingX : padding.x}px`,
           ...typeStyle(type),
           gap: `${gap}px`,
-          borderRadius: `${radius}px`,
+          borderRadius: `${counted ? pill.radius : radius}px`,
+          ...(counted ? { minWidth: `${pill.minWidth}px`, justifyContent: "center", boxSizing: "border-box" } : {}),
           // A tinted card sets --_kjun-badge-fill so the badge stays apart from its surface.
-          background: `var(--_kjun-badge-fill, ${role(paint.bg)})`,
+          background: dotOnly ? "transparent" : `var(--_kjun-badge-fill, ${role(paint.bg)})`,
           color: role(paint.text),
         })}>
           {props.dot && <span class="kjun-badge-dot" style={css({ background: role(paint.dot) })} />}
-          {props.label ? [<span class="kjun-sr-only">{props.label}</span>, <span aria-hidden="true">{body}</span>] : body}
+          {props.label ? [<span class="kjun-sr-only">{props.label}</span>, !dotOnly && <span aria-hidden="true">{body}</span>] : body}
         </span>
       );
     };

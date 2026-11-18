@@ -17,7 +17,11 @@ export function badgeToneRoles(variant: BadgeVariant): BadgeToneRoles {
 
 /** Size geometry shared by every platform: one type step, radius, gap and dot per size. */
 export function badgeGeometry(size: BadgeSize) {
-  const badge = tokens.extensions.badge;
-  return { padding: badge.padding[size], radius: badge.radii[size], gap: badge.gaps[size], dotSize: badge.dotSizes[size],
-    type: { ...badge.typography[size], fontWeight: badge.fontWeight } };
+  const badge = tokens.extensions.badge, padding = badge.padding[size], type = badge.typography[size];
+  return { padding, radius: badge.radii[size], gap: badge.gaps[size], dotSize: badge.dotSizes[size],
+    type: { ...type, fontWeight: badge.fontWeight },
+    // Like the navigation count badges: a pill at least as wide as it is tall, so one digit draws a circle.
+    count: { paddingX: badge.countPaddingX[size], radius: badge.countRadius, minWidth: padding.y * 2 + type.lineHeightPx },
+    // A dot with no text draws as the dot alone: no fill or padding, at the navigation dot size.
+    standaloneDotSize: badge.standaloneDotSize };
 }

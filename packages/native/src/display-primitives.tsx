@@ -90,13 +90,15 @@ export function BadgeView({
   const geometry = badgeGeometry(size);
   const { x, y } = geometry.padding;
   const type = typeStyle(typeRole ?? geometry.type);
-  dotSize ??= geometry.dotSize;
+  const body = counted ?? children, dotOnly = dot && !hasContent(body);
+  // Like Web: a dot with no text is the dot alone, at the navigation dot size.
+  dotSize ??= dotOnly ? geometry.standaloneDotSize : geometry.dotSize;
   // Price roles are domain colors; every other role is a KjunColors key (kebab role → camelCase key).
   const pick = (name: string) => name.startsWith("price-")
     ? domainColor(domainColors, name.replace(/-(\w)/g, (_, c: string) => c.toUpperCase()))
     : colors[name.replace(/-(\w)/g, (_, c: string) => c.toUpperCase()) as keyof typeof colors];
   const tinted = useContext(CardTintContext);
-  const background = tinted ? colors.surface : pick(paint.bg), color = pick(paint.text), dotColor = pick(paint.dot);
+  const background = dotOnly ? "transparent" : tinted ? colors.surface : pick(paint.bg), color = pick(paint.text), dotColor = pick(paint.dot);
   // The transparent row keeps the pill at its own width in a stretching column and at the top of a
   // stretching row, yet follows a row's alignItems (a pill with alignSelf: flex-start sat at the top of
   // centred rows). Layout keys from style place this row; the rest paints the pill.
@@ -115,9 +117,11 @@ export function BadgeView({
           minWidth: 0,
           flexShrink: 1,
           gap: geometry.gap,
-          paddingHorizontal: x,
-          paddingVertical: y,
-          borderRadius: geometry.radius,
+          paddingHorizontal: dotOnly ? 0 : counted ? geometry.count.paddingX : x,
+          paddingVertical: dotOnly ? 0 : y,
+          borderRadius: counted ? geometry.count.radius : geometry.radius,
+          // Like the navigation count badges: one digit draws a circle.
+          ...(counted ? { minWidth: geometry.count.minWidth, justifyContent: "center" as const } : null),
           backgroundColor: background,
         },
         inner,
@@ -127,8 +131,8 @@ export function BadgeView({
         <View
           // Like Web: the dot centres on the first line, so a wrapped label still starts beside it.
           style={{
-            alignSelf: "flex-start",
-            marginTop: (type.lineHeight - dotSize) / 2,
+            alignSelf: dotOnly ? "center" : "flex-start",
+            marginTop: dotOnly ? 0 : (type.lineHeight - dotSize) / 2,
             width: dotSize,
             height: dotSize,
             borderRadius: dotSize / 2,
@@ -136,7 +140,7 @@ export function BadgeView({
           }}
         />
       )}
-      {content(counted ?? children, {
+      {!dotOnly && content(body, {
         flexShrink: 1,
         minWidth: 0,
         color,

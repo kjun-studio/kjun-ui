@@ -142,6 +142,11 @@
   border-radius: 50%;
   background: currentColor;
 }
+/* With no text the dot is the whole badge, so it centres in the line instead of on a first line. */
+.kjun-badge[data-dot-only] .kjun-badge-dot {
+  align-self: center;
+  margin-top: 0;
+}
 .kjun-empty {
   display: flex;
   flex-direction: column;
