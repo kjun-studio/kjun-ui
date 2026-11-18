@@ -30,10 +30,12 @@
   pointer-events:none; z-index:1;
 }
 .kjun-quantity > .kjun-button { flex-shrink:0; }
+/* A held step button repeats; a long touch must not open the callout menu or select text. */
+.kjun-quantity > .kjun-button { -webkit-touch-callout:none; user-select:none; -webkit-user-select:none; }
 /* Segments share one surface: inner edges stay square and only the outer corners follow the field radius,
-   so button and value hovers read as cells of the same control. Buttons set their radius inline. */
-.kjun-quantity > .kjun-button:first-child { border-radius:var(--_kjun-compound-radius) 0 0 var(--_kjun-compound-radius) !important; }
-.kjun-quantity > .kjun-button:last-child { border-radius:0 var(--_kjun-compound-radius) var(--_kjun-compound-radius) 0 !important; }
+   so button and value hovers read as cells of the same control. Buttons set their radius inline. Of-type: a form's hidden input may follow. */
+.kjun-quantity > .kjun-button:first-of-type { border-radius:var(--_kjun-compound-radius) 0 0 var(--_kjun-compound-radius) !important; }
+.kjun-quantity > .kjun-button:last-of-type { border-radius:0 var(--_kjun-compound-radius) var(--_kjun-compound-radius) 0 !important; }
 .kjun-quantity[data-block="true"] { display:flex; width:100%; }
 .kjun-quantity input {
   font:inherit; font-size:var(--_kjun-compound-font-size); color:var(--_kjun-color-text);

@@ -26,7 +26,7 @@ export function NumberInputCases({ K, native = false, providerProps = {} }: { K:
     {section('prefix', <K.KjunNumberInput {...bind('prefix')} prefix="$" decimals={2} ariaLabel="가격" />)}
     {section('grouped-off', <K.KjunNumberInput {...bind('grouped-off')} grouping={false} ariaLabel="번호" />)}
     {section('in-group', <K.KjunFormGroup label="보낼 금액" hint="잔액 3,420,000원">
-      <K.KjunNumberInput {...bind('in-group')} format="amount" suffix="원" readingAid />
+      <K.KjunNumberInput {...bind('in-group')} format="amount" suffix="원" readingAid max={3420000} name="amount" />
     </K.KjunFormGroup>)}
     {section('group-error', <K.KjunFormGroup label="한도" error="직접 오류">
       <K.KjunNumberInput {...bind('group-error')} max={10} />

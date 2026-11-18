@@ -26,6 +26,9 @@ export interface KjunFormActionsProps {
   loading?: boolean;
   variant?: Extract<ButtonVariant, "primary" | "danger" | "success">;
   cancelVariant?: "ghost" | "secondary";
+  /** The buttons fill the row: true gives each the same width, "primary" makes the confirm button twice as wide as cancel.
+   * Stacked rows are full width either way. */
+  fill?: boolean | "primary";
   onCancel?: () => void;
   onConfirm?: () => void;
 }
@@ -41,6 +44,7 @@ export function KjunFormActions({
   loading = false,
   variant = "primary",
   cancelVariant = "ghost",
+  fill = false,
   onCancel,
   onConfirm,
 }: KjunFormActionsProps) {
@@ -52,7 +56,7 @@ export function KjunFormActions({
   const ref = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => observeFormActions(ref.current!), []);
   return (
-    <div className="kjun-form-actions" ref={ref}>
+    <div className="kjun-form-actions" ref={ref} data-fill={fill === "primary" ? "primary" : fill ? "equal" : undefined}>
       {showCancel && (
         <KjunButton
           size={size}

@@ -169,7 +169,7 @@ const numberInputSummaries = platform => ({
   decimals: { summary: "소수 자릿수 상한(0~6의 정수)입니다. 확정할 때 이 자릿수까지 0으로 채웁니다(3.5 → 3.50). 생략하면 format 프리셋(number·amount 0, percent 1)을 씁니다." },
   grouping: { summary: "정수부에 천 단위 쉼표를 보입니다. 값에는 쉼표가 들어가지 않습니다. 생략하면 format 프리셋(percent만 false)을 씁니다." },
   allowNegative: { summary: "음수를 받습니다. 허용하면 텍스트 어디에 -가 있어도 음수로 보고, 허용하지 않으면 -를 무시합니다. 생략하면 format 프리셋(percent만 true)을 씁니다. 음수를 받는 입력은 웹 inputMode가 text, Native 키보드가 iOS는 numbers-and-punctuation, Android는 numeric입니다." },
-  min: detail("허용하는 최솟값입니다.", { "동작": "편집 중에는 그대로 두고, 확정(blur·Enter)할 때 벗어나 있으면 오류 상태와 내장 문구(\"1,000원 이상 입력해 주세요\")를 보입니다. 앱이 value나 min·max를 바꿀 때도 바로 확인합니다. 값을 고치지 않으므로 거부는 앱이 정합니다. 편집 중 값이 범위로 돌아오면 오류를 바로 지웁니다. 오류 prop이나 FormGroup 오류가 있으면 그쪽이 우선합니다." }),
+  min: detail("허용하는 최솟값입니다.", { "동작": "편집 중에는 그대로 두고, 확정(blur·Enter)할 때 벗어나 있으면 오류 상태와 내장 문구(\"1,000원 이상 입력해 주세요\")를 보입니다. 앱이 value나 min·max를 바꿀 때도 바로 확인합니다. 값을 고치지 않으므로 거부는 앱이 정합니다. 편집 중 값이 범위로 돌아오면 오류를 바로 지웁니다. 오류 prop이나 FormGroup 오류가 있으면 그쪽이 우선합니다.", "FormGroup 안": "내장 문구는 FormGroup의 오류 자리에 표시되고, 그동안 도움말을 대신합니다." }),
   max: detail("허용하는 최댓값입니다.", { "동작": "min과 같습니다. 확정할 때 벗어나면 오류 상태와 내장 문구(\"100% 이하로 입력해 주세요\")를 보입니다." }),
   prefix: { summary: platform === "vue3" ? "숫자 앞에 붙는 글자입니다. 노드가 필요하면 prefix 슬롯을 씁니다." : "숫자 앞에 붙는 단위 장식입니다. 문자열이 아니면 화면 장식으로만 쓰고 내장 문구에는 붙지 않습니다." },
   suffix: { summary: platform === "vue3" ? "숫자 뒤에 붙는 글자입니다(예: \"원\", \"kg\"). 생략하면 format 프리셋(percent의 \"%\")을 씁니다. 노드가 필요하면 suffix 슬롯을 씁니다." : "숫자 뒤에 붙는 단위 장식입니다(예: \"원\", \"kg\"). 생략하면 format 프리셋(percent의 \"%\")을 씁니다. 문자열이면 읽기 문구와 범위 문구에도 붙습니다." },
@@ -182,6 +182,7 @@ const numberInputSummaries = platform => ({
   id: { summary: "실제 입력의 ID입니다. 외부 라벨과 명시적으로 연결할 때 사용합니다. FormGroup 안에서는 FormGroup이 정합니다." },
   ariaLabel: { summary: "화면 낭독기가 읽는 이름입니다. 보이는 라벨이 없을 때 필요하며, FormGroup 라벨이 있으면 생략합니다." },
   placeholder: { summary: "값이 비었을 때 보이는 안내 문구입니다. 값을 대신하지 않습니다." },
+  name: { summary: "폼 제출용 숨은 input의 이름입니다. 쉼표 없이 소수 자릿수를 채운 값(\"1250000\", \"12.50\")을 제출하고, 비활성이면 제출하지 않습니다." },
   className: { summary: "루트(kjun-number-input)에 더할 클래스입니다." },
   style: { summary: platform === "native" ? "루트 View에 더할 스타일입니다." : "루트에 더할 인라인 스타일입니다." },
 });
@@ -193,7 +194,7 @@ const valueDescription = {
   KjunRangeSlider: "순서가 있는 [시작 값, 끝 값] 숫자 쌍입니다. 시작 값은 끝 값보다 클 수 없습니다.",
   KjunColorPicker: "대문자 #RRGGBB(alpha면 #RRGGBBAA)이고 색 없음은 null입니다. 짧은 형식·소문자도 받아 정규화합니다.",
   KjunTimePicker: "분 단위는 HH:mm, 초 단위는 HH:mm:ss이며 비어 있으면 null입니다. 날짜·시간대는 포함하지 않습니다.",
-  KjunQuantityStepper: "확정된 숫자 값입니다. 편집 중 문자열과 구분하며 지정한 precision과 범위를 만족해야 합니다.",
+  KjunQuantityStepper: "확정된 숫자 값입니다. 편집 중 문자열과 구분하며 소수 자릿수는 precision 이하여야 합니다. 범위 밖 값(재고가 줄어든 장바구니 수량)은 오류로 표시하되 버튼·입력은 그대로 쓸 수 있고, 누르거나 확정하면 범위 안으로 맞춥니다.",
 };
 const distributionRoot = {
   className: "루트에 더할 클래스입니다. 막대의 높이는 size로 정하세요.",
@@ -363,9 +364,10 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (key === "items") entry = detail("안정적인 key와 이름을 가진 목적지 목록입니다.", { "항목 필드": "key: 고유 문자열, label: 전체 이름, href: 웹 링크 주소, icon?: 아이콘 이름, badge?: 문자열·숫자·true(점), disabled?: 이동 비활성. 99보다 큰 숫자는 99+로 표시하고 접근성 이름에는 실제 값을 읽습니다. 웹에서는 href를 제공하세요.", "권장 사용": "2~5개의 주요 목적지를 권장합니다. 항목 순서와 현재 key는 앱에서 관리합니다." });
     else if (key === "thumbLabels") entry = { default: '["최솟값", "최댓값"]', ...detail("시작·끝 손잡이의 접근성 이름 쌍입니다.", { "키보드": "Tab 순서는 시작→끝으로 고정됩니다. 손잡이는 서로 넘지 않으며 Home/End도 다른 손잡이 값으로 제한됩니다." }) };
     else if (key === "precision") entry = name === "KjunTimePicker" ? detail("minute는 시·분, second는 시·분·초를 제공합니다.", { "값 형태": "정밀도를 바꿀 때 소비자가 value 형식도 함께 바꾸거나 null로 초기화하세요." }) : detail("수량의 소수 자릿수입니다. 0~6의 정수를 받습니다.", { "반올림": "Enter·blur 시 지정 자리로 반올림합니다. 정확히 절반이면 절댓값이 커지는 방향이며 이후 min/max로 제한합니다.", "설정 제약": "value·min·max·step은 precision으로 표현 가능해야 하며 정수 스케일 값은 Number.MAX_SAFE_INTEGER 범위여야 합니다." });
-    else if (["min", "max", "step"].includes(key)) entry = detail(name === "KjunTimePicker" ? (key === "min" ? "선택할 수 있는 가장 이른 시각입니다." : "선택할 수 있는 가장 늦은 시각입니다.") : key === "step" ? (name === "KjunQuantityStepper" ? "버튼과 방향키의 증감 단위입니다. 직접 입력은 배수로 강제하지 않습니다." : "최솟값부터 시작하는 선택 간격입니다. 소수 여섯 자리까지 지원합니다.") : key === "min" ? "허용하는 최솟값입니다." : "허용하는 최댓값입니다.", { "범위": name === "KjunTimePicker" ? "precision과 같은 형식으로 전달하고 min ≤ max여야 합니다. 자정을 넘는 범위는 지원하지 않습니다." : name === "KjunQuantityStepper" ? "min ≤ max이고 step > 0이어야 합니다. 범위를 벗어난 직접 입력은 확정할 때 제한합니다." : "min < max, step > 0이어야 합니다. max가 step에 맞지 않으면 max 이하의 마지막 단계를 사용합니다." });
+    else if (["min", "max", "step"].includes(key)) entry = detail(name === "KjunTimePicker" ? (key === "min" ? "선택할 수 있는 가장 이른 시각입니다." : "선택할 수 있는 가장 늦은 시각입니다.") : key === "step" ? (name === "KjunQuantityStepper" ? "버튼과 방향키의 증감 단위입니다. 버튼을 길게 누르면 0.4초 뒤부터 0.1초마다 반복하고 범위 끝에서 멈춥니다. 직접 입력은 배수로 강제하지 않습니다." : "최솟값부터 시작하는 선택 간격입니다. 소수 여섯 자리까지 지원합니다.") : key === "min" ? "허용하는 최솟값입니다." : "허용하는 최댓값입니다.", { "범위": name === "KjunTimePicker" ? "precision과 같은 형식으로 전달하고 min ≤ max여야 합니다. 자정을 넘는 범위는 지원하지 않습니다." : name === "KjunQuantityStepper" ? "min ≤ max이고 step > 0이어야 합니다. 범위를 벗어난 직접 입력은 확정할 때 제한합니다." : "min < max, step > 0이어야 합니다. max가 step에 맞지 않으면 max 이하의 마지막 단계를 사용합니다." });
     else if (name === "KjunListRow" && key === "expanded") entry = detail("행이 자기 내용을 펼치게 합니다.", { "동작": platform === "vue3" ? "v-model:expanded로 연결합니다. 행 머리가 버튼이 되어 누르면 update:expanded로 반대 값을 알리고, 내용은 expanded 슬롯에 넣습니다." : "행 머리가 버튼이 되어 누르면 onExpandedChange로 반대 값을 알립니다. 내용은 expandedContent에 넣습니다.", "표시": "끝에 아래 방향 꺾쇠가 붙고 펼치면 위로 뒤집힙니다. 내용은 같은 행 안, 제목이 시작하는 선에서 열립니다. hover·누름 배경은 행 머리에만 깔립니다.", "함께 쓰지 않는 것": "href·checked·selected·chevron. 함께 주면 그쪽 역할이 우선하고 개발 모드에서 경고합니다." });
     else if (name === "KjunBottomActionBar" && key === "variant") entry = { type: '"docked" | "floating"', default: '"docked"', ...detail("바의 모양입니다.", { "floating": "화면 가장자리에서 떨어진 알약 모양입니다. KjunFloatingNavigation과 같은 띄움·여백·테두리·그림자를 씁니다. 설명과 작업은 항상 한 줄에 놓이고 긴 설명은 말줄임합니다. 설명이 없으면 글자가 있는 버튼들이 폭을 나눠 채웁니다.", "버튼": "size를 주지 않은 버튼은 lg, 모양은 알약이 되어 바 높이가 60px입니다. 작업은 두세 개까지 권합니다.", "배치": "바는 화면 맨 아래 자리를 그대로 차지하고 둘레만 투명합니다. 내용 위에 겹쳐 띄우려면 앱이 배치합니다. surface는 이 모양에서 효과가 없습니다." }) };
+    else if (name === "KjunQuantityStepper" && key === "name") entry = { summary: "폼 제출용 숨은 input의 이름입니다. 확정된 value를 제출하고, 비활성이면 제출하지 않습니다." };
     else if (summaries[key]) entry = { summary: summaries[key] };
     else throw Error("Missing extension prop description: " + name + "." + key);
     if (name === "KjunQuantityStepper" && key === "block") entry.default = "false";

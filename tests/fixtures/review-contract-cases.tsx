@@ -12,6 +12,7 @@ export const initial = {
   sortMode: "client", sortable: true, rowAction: true,
   searchable: false, show: true, controlledExpansion: false, expanded: [] as (string | number)[], expandSingle: false,
   responsive: "card", maxHeight: undefined as number | undefined,
+  min: 0, max: undefined as number | undefined, name: undefined as string | undefined, labelEnd: false,
 };
 export function ContractCases({ K, native = false }: { K: any; native?: boolean }) {
   const [config, setConfig] = useState(initial);
@@ -41,8 +42,10 @@ export function ContractCases({ K, native = false }: { K: any; native?: boolean 
       <Layer open={config.open} onOpenChange={(open: boolean) => update({ open })} title={config.dialogTitle}
         closeOnEsc={config.closeOnEsc} showHeader={config.showHeader} ariaLabel={config.dialogLabel}
         header={config.customHeader ? text('Custom heading') : undefined}>
-        <K.KjunFormGroup id="quantity-field" label={config.label} hint={config.hint} error={config.error} required={config.required}>
+        <K.KjunFormGroup id="quantity-field" label={config.label} hint={config.hint} error={config.error} required={config.required}
+          labelEnd={config.labelEnd ? text("3/30", "label-end") : undefined}>
           <K.KjunQuantityStepper value={config.value} disabled={config.disabled} id={config.inputId} ariaLabel={config.ariaLabel}
+            min={config.min} max={config.max} name={config.name}
             onValueChange={(value: number) => { emit("value", value); if (config.accept) update({ value }); }}
             onChangeCommit={(value: number) => emit("commit", value)} onInvalidInput={(draft: string) => emit("invalid", draft)} />
         </K.KjunFormGroup>

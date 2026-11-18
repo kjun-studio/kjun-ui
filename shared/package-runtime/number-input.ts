@@ -159,7 +159,8 @@ export function readingAid(raw: string, o: ResolvedNumberInput, scope: KjunMessa
   return (raw.startsWith("-") ? "-" : "") + parts.join(" ") + (o.suffix ? " " + o.suffix : "");
 }
 
-export function numberKeyboard(o: ResolvedNumberInput): { inputMode: "numeric" | "decimal" | "text"; ios: string; android: string } {
+/** Keyboard for a number field. A negative value needs a minus key, which the numeric pads lack (iOS shows none at all). */
+export function numberKeyboard(o: Pick<ResolvedNumberInput, "allowNegative" | "decimals">): { inputMode: "numeric" | "decimal" | "text"; ios: string; android: string } {
   if (o.allowNegative) return { inputMode: "text", ios: "numbers-and-punctuation", android: "numeric" };
   if (o.decimals > 0) return { inputMode: "decimal", ios: "decimal-pad", android: "decimal-pad" };
   return { inputMode: "numeric", ios: "number-pad", android: "number-pad" };

@@ -17,6 +17,8 @@ export interface FieldContextValue {
   required?: boolean;
   /** A control with its own id registers it so the group label points at it. */
   setControlId?: (id: string | undefined) => void;
+  /** A control's own message (NumberInput's range) shown in the group's error slot; "" clears it. The group's error wins. */
+  reportError?: (owner: string, message: string) => void;
 }
 // Internal boundary for composite fields; index.ts exports only public controls.
 export const kjunFieldKey: InjectionKey<Readonly<{ value: FieldContextValue | null }>> = Symbol("kjunField");
@@ -49,40 +51,49 @@ export type KjunFormGroupProps = ExtractPublicPropTypes<typeof kjunFormGroupProp
 export const KjunFormGroup = defineComponent({
   name: "KjunFormGroup",
   props: kjunFormGroupProps,
-  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
+  /** labelEnd: content at the end of the label row (a character count, a small action); it stays put when an error shows. */
+  slots: Object as SlotsType<{ default?: () => VNodeChild; labelEnd?: () => VNodeChild }>,
   setup(props, { slots }) {
     const m = useKjunMessages();
     const uid = useKjunId("kjun-field-");
     const controlId = ref<string>();
     const setControlId = (value: string | undefined) => { controlId.value = value; };
+    const controlErrors = ref<Record<string, string>>({});
+    const reportError = (owner: string, message: string) => {
+      if ((controlErrors.value[owner] ?? "") !== message) controlErrors.value = { ...controlErrors.value, [owner]: message };
+    };
+    // An error takes the hint's slot instead of stacking under it, so the field keeps its height; the control is
+    // then described by the error alone.
+    const shownError = computed(() => props.error || Object.values(controlErrors.value).find(Boolean) || "");
     const field = computed<FieldContextValue>(() => {
       const id = props.id || uid;
       return {
         id, labelId: props.label ? id + "-label" : undefined,
-        // An error takes the hint's slot instead of stacking under it, so the field keeps its height; the control is
-        // then described by the error alone.
-        describedBy: mergeIds(props.hint && !props.error ? id + "-hint" : undefined, props.error ? id + "-error" : undefined),
-        error: props.error, required: props.required, setControlId,
+        describedBy: mergeIds(props.hint && !shownError.value ? id + "-hint" : undefined, shownError.value ? id + "-error" : undefined),
+        error: props.error, required: props.required, setControlId, reportError,
       };
     });
     provide(kjunFieldKey, field);
     return () => {
       const { id, labelId } = field.value;
+      const error = shownError.value;
+      const label = props.label && (
+        <label class={"kjun-form-label" + (props.labelHidden ? " kjun-sr-only" : "")} id={labelId} for={controlId.value || id}>
+          {props.label}
+          {/* The input's required state already says it; the star is only drawn. */}
+          {props.required && <span class="kjun-form-required" aria-hidden="true"> *</span>}
+          {props.optional && !props.required && <span class="kjun-form-optional"> {m.value.optional}</span>}
+        </label>
+      );
       return (
         <div class="kjun-form-group">
-          {props.label && (
-            <label class={"kjun-form-label" + (props.labelHidden ? " kjun-sr-only" : "")} id={labelId} for={controlId.value || id}>
-              {props.label}
-              {props.required && <span style={{ color: "var(--_kjun-color-danger)" }}> *</span>}
-              {props.optional && !props.required && <span class="kjun-form-optional"> {m.value.optional}</span>}
-            </label>
-          )}
+          {slots.labelEnd ? <div class="kjun-form-label-row">{label}<span class="kjun-form-label-end">{slots.labelEnd()}</span></div> : label}
           {slots.default?.()}
-          {props.hint && !props.error && <p id={id + "-hint"} class="kjun-form-hint">{props.hint}</p>}
-          {props.error && (
+          {props.hint && !error && <p id={id + "-hint"} class="kjun-form-hint">{props.hint}</p>}
+          {error && (
             // Text only, like Input's errorMessage: the danger colour and the field border carry the state.
             <p id={id + "-error"} class="kjun-form-error" role="alert">
-              {props.error}
+              {error}
             </p>
           )}
         </div>

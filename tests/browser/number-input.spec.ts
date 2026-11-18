@@ -237,6 +237,25 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(field(page, 'disabled')).toBeDisabled();
     });
 
+    test('range error takes the group error slot', async ({ page }) => {
+      const grouped = page.getByRole('textbox', { name: '보낼 금액' }), section = page.getByTestId('in-group');
+      await grouped.pressSequentially('5000000');
+      await grouped.press('Tab');
+      const message = '3,420,000원 이하로 입력해 주세요';
+      // One message, in the group's slot, in place of the hint.
+      await expect(section.getByText(message)).toHaveCount(1);
+      await expect(section).not.toContainText('잔액 3,420,000원');
+      if (web) await expect(section.locator('.kjun-form-error')).toContainText(message);
+      await expect(grouped).toHaveAttribute('aria-invalid', 'true');
+      expect(await described(page, 'in-group')).toEqual(['500만 원', message]);
+      if (web) await expect(section.locator('input[type="hidden"][name="amount"]')).toHaveValue('5000000');
+      await grouped.fill('1000');
+      await grouped.press('Tab');
+      await expect(section).not.toContainText(message);
+      await expect(section).toContainText('잔액 3,420,000원');
+      await expect(grouped).not.toHaveAttribute('aria-invalid', 'true');
+    });
+
     test('geometry', async ({ page }) => {
       const read = (id: string) => field(page, id).evaluate(el => {
         const s = getComputedStyle(el);

@@ -22,6 +22,8 @@ export interface KjunNumberInputProps extends NumberInputOptions {
   id?: string;
   ariaLabel?: string;
   placeholder?: string;
+  /** Submits the normalized value ("1250000", fraction padded) with a surrounding form under this name; not sent while disabled. */
+  name?: string;
   /** Every edit, unpadded; also the committed value when committing or cancelling changes it. */
   onValueChange?: (value: string) => void;
   /** Blur or Enter, with the fraction padded to `decimals`. */
@@ -35,7 +37,7 @@ type Issue = "min" | "max" | null;
 
 export function KjunNumberInput({
   value, format, decimals, grouping, allowNegative, min, max, prefix, suffix, readingAid = false, align = "start",
-  size = "md", disabled = false, readOnly = false, error = false, id, ariaLabel, placeholder,
+  size = "md", disabled = false, readOnly = false, error = false, id, ariaLabel, placeholder, name,
   onValueChange, onChangeCommit, className, style,
 }: KjunNumberInputProps) {
   const scope = useKjunMessageScope();
@@ -150,9 +152,13 @@ export function KjunNumberInput({
   const aid = readingAid ? readNumber(raw, o, scope) : "";
   // A caller's error or the group's error wins; the built-in range message then stays out of the way.
   const message = issue && !error && !field?.error ? rangeMessage(issue, o, scope) : "";
+  // In a FormGroup the range message takes the group's error slot, in place of the hint.
+  const owner = "kjun-number-" + useId(), toGroup = field?.reportError;
+  useEffect(() => { toGroup?.(owner, message); }, [toGroup, message]);
+  useEffect(() => () => toGroup?.(owner, ""), [toGroup]);
   return <div className={"kjun-number-input" + (className ? " " + className : "")} data-format={o.format} data-align={align} style={style}>
     <KjunInput ref={input} type="text" inputMode={numberKeyboard(o).inputMode} value={view.text} size={size}
-      prefix={prefix} suffix={suffix ?? o.suffix} disabled={disabled} readOnly={readOnly} error={error} errorMessage={message}
+      prefix={prefix} suffix={suffix ?? o.suffix} disabled={disabled} readOnly={readOnly} error={error || (!!toGroup && !!message)} errorMessage={toGroup ? "" : message}
       id={id} ariaLabel={ariaLabel} placeholder={placeholder} aria-describedby={aid ? aidId : undefined}
       onChange={change} onBlur={() => commit()} onEnter={() => commit()} onKeyDown={key}
       onCompositionStart={() => { composing.current = true; composedFrom.current = view.text; }}
@@ -164,5 +170,6 @@ export function KjunNumberInput({
         if (el.ownerDocument.activeElement !== el) commit(el.value);
       }} />
     {aid && <p id={aidId} className="kjun-form-hint kjun-number-input-reading">{aid}</p>}
+    {name && <input type="hidden" name={name} value={commitNumber(raw, o)} disabled={disabled} />}
   </div>;
 }

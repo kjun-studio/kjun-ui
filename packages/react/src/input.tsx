@@ -26,6 +26,8 @@ interface FieldContextValue {
   required?: boolean;
   /** A control with its own id registers it so the group label points at it. */
   setControlId?: (id: string | undefined) => void;
+  /** A control's own message (NumberInput's range) shown in the group's error slot; "" clears it. The group's error wins. */
+  reportError?: (owner: string, message: string) => void;
 }
 // Internal boundary for composite fields; index.ts exports only public controls.
 export const FieldContext = createContext<FieldContextValue | null>(null);
@@ -40,6 +42,8 @@ export interface KjunFormGroupProps {
   hint?: string;
   /** Hides the label visually while it still names the field. */
   labelHidden?: boolean;
+  /** Content at the end of the label row: a character count, or a small action such as "전액". Stays put when an error shows. */
+  labelEnd?: ReactNode;
   /** Extra class on the group root, for placement in the page layout. */
   className?: string;
   children: ReactNode;
@@ -52,6 +56,7 @@ export function KjunFormGroup({
   error = "",
   hint = "",
   labelHidden = false,
+  labelEnd,
   className,
   children,
 }: KjunFormGroupProps) {
@@ -59,36 +64,42 @@ export function KjunFormGroup({
   const uid = useId().replace(/:/g, "");
   const fieldId = id || "kjun-field-" + uid;
   const labelId = label ? fieldId + "-label" : undefined;
+  const [controlErrors, setControlErrors] = useState<Record<string, string>>({});
+  const [reportError] = useState(() => (owner: string, message: string) =>
+    setControlErrors(old => (old[owner] ?? "") === message ? old : { ...old, [owner]: message }));
   // An error takes the hint's slot instead of stacking under it, so the field keeps its height; the control is then
   // described by the error alone.
-  const shownHint = error ? "" : hint;
-  const hintId = shownHint ? fieldId + "-hint" : undefined, errorId = error ? fieldId + "-error" : undefined;
+  const shownError = error || Object.values(controlErrors).find(Boolean) || "";
+  const shownHint = shownError ? "" : hint;
+  const hintId = shownHint ? fieldId + "-hint" : undefined, errorId = shownError ? fieldId + "-error" : undefined;
   const describedBy = mergeIds(hintId, errorId);
   const [controlId, setControlId] = useState<string>();
+  const labelNode = label && (
+    <label className={"kjun-form-label" + (labelHidden ? " kjun-sr-only" : "")} id={labelId} htmlFor={controlId || fieldId}>
+      {label}
+      {/* The input's required state already says it; the star is only drawn. */}
+      {required && <span className="kjun-form-required" aria-hidden="true"> *</span>}
+      {optional && !required && <span className="kjun-form-optional"> {m.optional}</span>}
+    </label>
+  );
   return (
     <FieldContext.Provider
-      value={{ id: fieldId, labelId, describedBy, error, required, setControlId }}
+      value={{ id: fieldId, labelId, describedBy, error, required, setControlId, reportError }}
     >
       <div className={className ? "kjun-form-group " + className : "kjun-form-group"}>
-        {label && (
-          <label className={"kjun-form-label" + (labelHidden ? " kjun-sr-only" : "")} id={labelId} htmlFor={controlId || fieldId}>
-            {label}
-            {required && (
-              <span style={{ color: "var(--_kjun-color-danger)" }}> *</span>
-            )}
-            {optional && !required && <span className="kjun-form-optional"> {m.optional}</span>}
-          </label>
-        )}
+        {labelEnd != null && labelEnd !== false ? (
+          <div className="kjun-form-label-row">{labelNode}<span className="kjun-form-label-end">{labelEnd}</span></div>
+        ) : labelNode}
         {children}
         {shownHint && (
           <p id={hintId} className="kjun-form-hint">
             {shownHint}
           </p>
         )}
-        {error && (
+        {shownError && (
           // Text only, like Input's errorMessage: the danger colour and the field border carry the state.
           <p id={errorId} className="kjun-form-error" role="alert">
-            {error}
+            {shownError}
           </p>
         )}
       </div>

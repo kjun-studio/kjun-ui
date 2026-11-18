@@ -1,11 +1,12 @@
 import { UsageBuilder, expr, literal, type UsageInput } from './builder';
-import { defaultOptions, viewOptions, buttonComparisons, inputComparisons, inputCaseProps, fieldOptions, formActionsComparisons } from '../../previews/catalog/example-tools';
+import { defaultOptions, viewOptions, buttonComparisons, inputComparisons, inputCaseProps, fieldOptions, formActionsComparisons, formActionsFill } from '../../previews/catalog/example-tools';
 import { iconToggleExample } from './icon-toggle';
 
 export function generate(input: UsageInput) {
   const b = new UsageBuilder(input), { name, settings: s } = input;
   const field = (key = 'input', label = '입력 예제') => b.node('KjunInput', {
-    value: b.state(key, ''), onValueChange: b.update(key), ariaLabel: label,
+    // In a FormGroup the group's label names the field, so no ariaLabel repeats it.
+    value: b.state(key, ''), onValueChange: b.update(key), ariaLabel: label || undefined,
     ...b.props('size', 'disabled', 'readOnly'), disabled: s.childDisabled ?? s.disabled ?? false,
     error: !!s.error || !!s.errorMessage, clearable: true, placeholder: '내용을 입력하세요',
   });
@@ -46,10 +47,11 @@ export function generate(input: UsageInput) {
       content = b.node(b.native ? 'View' : 'div', { style: { width: b.native ? 360 : '360px', maxWidth: '100%' } }, b.native ? b.node('KjunFormLayout', { gap: 20 }, fields.join('\n')) : b.node('div', { 'data-kjun-layout': 'form', style: { display: 'flex', flexDirection: 'column', gap: '20px' } }, fields.join('\n'))); break;
     }
     case 'KjunFormGroup':
-      content = b.node(name, { ...b.props('label', 'hint', 'required'), error: s.errorMessage }, field('input', String(s.label))); break;
+      content = b.node(name, { ...b.props('label', 'hint', 'required'), error: s.errorMessage }, field('input', s.label ? '' : '입력 예제'),
+        s.labelEnd ? { labelEnd: b.text(expr(b.read('input') + '.length + "/30"')) } : {}); break;
     case 'KjunFormActions': {
       const wrapper = b.native ? 'View' : 'div';
-      const props = { ...b.props('size', 'variant', 'cancelVariant', 'confirmText', 'cancelText', 'showCancel', 'showConfirm', 'cancelDisabled'), loading: s.loading, confirmDisabled: s.disabled,
+      const props = { ...b.props('size', 'variant', 'cancelVariant', 'confirmText', 'cancelText', 'showCancel', 'showConfirm', 'cancelDisabled'), fill: formActionsFill(s.fill), loading: s.loading, confirmDisabled: s.disabled,
         onConfirm: b.handler('confirm', '', b.result('"확인"')), onCancel: b.handler('cancel', '', b.result('"취소"')) };
       const cases = formActionsComparisons[String(s.comparison)] || [{ caption: '', props: {} }];
       content = b.node(wrapper, { style: { width: b.native ? Number(s.exampleWidth || 360) : `${s.exampleWidth || 360}px`, maxWidth: '100%', display: 'flex', flexDirection: 'column', gap: b.native ? 16 : '16px' } },

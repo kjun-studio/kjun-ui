@@ -169,6 +169,11 @@
   margin-bottom: 0;
 }
 .kjun-form-optional { color: var(--_kjun-color-text-tertiary); font-weight: var(--_kjun-type-caption-weight); }
+.kjun-form-required { color: var(--_kjun-color-danger); }
+/* labelEnd: a count or a small action at the end of the label row; the row keeps the label's gap to the field. */
+.kjun-form-label-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--_kjun-extension-form-message-gap); margin-bottom: var(--_kjun-extension-form-label-gap); }
+.kjun-form-label-row > .kjun-form-label { margin-bottom: 0; min-width: 0; }
+.kjun-form-label-end { flex-shrink: 0; margin-left: auto; font-size: var(--_kjun-type-caption-size); line-height: var(--_kjun-type-caption-line); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking); color: var(--_kjun-color-text-tertiary); font-variant-numeric: tabular-nums; }
 .kjun-form-label {
   display: block;
   font-size: var(--_kjun-type-label-size);
@@ -451,8 +456,16 @@
 .kjun-form-actions > .kjun-button[data-size="md"] { --_kjun-action-height: var(--_kjun-geometry-button-heights-md); }
 .kjun-form-actions > .kjun-button > .kjun-button-label { min-width: 0; }
 /* Full-width rows keep the group's intrinsic row width when its parent grows. */
-.kjun-form-actions[data-stacked] { align-items: stretch; }
+/* Stacked, the confirm button goes on top and cancel under it: a bare ghost cancel above would read as a heading. The DOM and
+   Tab order stay cancel → confirm. wrap-reverse (not a column) keeps the row's intrinsic width, so a content-sized parent
+   (a wide BottomActionBar) can still grow back to a row. */
+.kjun-form-actions[data-stacked] { align-items: stretch; flex-wrap: wrap-reverse; }
 .kjun-form-actions[data-stacked] > .kjun-button { width: 100%; }
+/* fill: the row shares its width; "primary" gives the confirm button twice the cancel button's share. Stacked rows are full width already. */
+.kjun-form-actions[data-fill]:not([data-stacked]) > .kjun-button { flex: 1 1 0; min-width: 0; }
+/* The shares are set as bases that add up to the row less the gap, so button padding does not skew the 1:2 split. */
+.kjun-form-actions[data-fill="primary"]:not([data-stacked]) > .kjun-button { flex: 1 1 calc((100% - var(--_kjun-geometry-modal-actions-gap)) / 3); }
+.kjun-form-actions[data-fill="primary"]:not([data-stacked]) > .kjun-button:is([data-variant=primary],[data-variant=danger],[data-variant=success]) { flex: 2 1 calc((100% - var(--_kjun-geometry-modal-actions-gap)) * 2 / 3); }
 @media (width <= token(responsive.modal)) {
   .kjun-modal:not([data-size="full"]) {
     width: calc(100vw - 2 * var(--_kjun-geometry-modal-mobile-inset)) !important;

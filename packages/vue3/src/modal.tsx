@@ -26,6 +26,9 @@ const kjunFormActionsProps = {
   loading: { type: Boolean, default: false },
   variant: { type: String as PropType<Extract<ButtonVariant, "primary" | "danger" | "success">>, default: "primary" },
   cancelVariant: { type: String as PropType<"ghost" | "secondary">, default: "ghost" },
+  /** The buttons fill the row: true gives each the same width, "primary" makes the confirm button twice as wide as cancel.
+   * Stacked rows are full width either way. */
+  fill: { type: [Boolean, String] as PropType<boolean | "primary">, default: false },
 } as const;
 export type KjunFormActionsProps = ExtractPublicPropTypes<typeof kjunFormActionsProps>;
 export const KjunFormActions = defineComponent({
@@ -41,7 +44,7 @@ export const KjunFormActions = defineComponent({
     onMounted(() => { stop = observeFormActions(root.value!); });
     onBeforeUnmount(() => stop?.());
     return () => (
-      <div class="kjun-form-actions" ref={root}>
+      <div class="kjun-form-actions" ref={root} data-fill={props.fill === "primary" ? "primary" : props.fill ? "equal" : undefined}>
         {props.showCancel && <KjunButton size={size.value} variant={props.cancelVariant} disabled={props.cancelDisabled} onClick={() => emit("cancel")}>{(props.cancelText ?? m.value.cancel)}</KjunButton>}
         {props.showConfirm && <KjunButton size={size.value} variant={props.variant} disabled={props.confirmDisabled} loading={props.loading} type={props.form ? "submit" : "button"} {...{ form: props.form }} onClick={() => emit("confirm")}>{(props.confirmText ?? m.value.save)}</KjunButton>}
       </div>

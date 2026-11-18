@@ -34,6 +34,9 @@ export interface KjunFormActionsProps {
   loading?: boolean;
   variant?: "primary" | "danger" | "success";
   cancelVariant?: "ghost" | "secondary";
+  /** The buttons fill the row: true gives each the same width, "primary" makes the confirm button twice as wide as cancel.
+   * Stacked rows are full width either way. */
+  fill?: boolean | "primary";
   onCancel?: () => void;
   onConfirm?: () => void;
 }
@@ -48,6 +51,7 @@ export function KjunFormActions({
   loading = false,
   variant = "primary",
   cancelVariant = "ghost",
+  fill = false,
   onCancel,
   onConfirm,
 }: KjunFormActionsProps) {
@@ -63,12 +67,18 @@ export function KjunFormActions({
   const widths = labels.map(label => measurements[keyFor(label.text)] === undefined ? 0 :
     Math.max(tokens.button.minWidths[size], measurements[keyFor(label.text)] + tokens.button.paddingX[size] * 2));
   const stacked = formActionsNeedStack(width, widths, tokens.modal.actionsGap);
+  // Like Web [data-fill]: equal shares, or a confirm button twice as wide; a stacked column already stretches them. The shares
+  // are widths that add up to the row less the gap, so button padding does not skew the split; one button fills the row.
+  const parts = fill === "primary" ? [1, 2] : [1, 1], both = showCancel && showConfirm;
+  const share = (index: number) => !fill || stacked ? undefined : !both || !width ? { flexGrow: 1, flexBasis: 0 }
+    : { width: (width - tokens.modal.actionsGap) * parts[index] / (parts[0] + parts[1]), flexShrink: 1 };
   return (
     <FormActionsContext.Provider value={{ stacked }}>
     <View
       onLayout={event => setWidth(event.nativeEvent.layout.width)}
       style={{
-        flexDirection: stacked ? "column" : "row",
+        // Like Web: stacked, the confirm button goes on top and cancel under it; the reading order stays cancel → confirm.
+        flexDirection: stacked ? "column-reverse" : "row",
         flexWrap: "wrap",
         justifyContent: "flex-end",
         alignItems: stacked ? "stretch" : "center",
@@ -87,6 +97,7 @@ export function KjunFormActions({
           size={size}
           variant={cancelVariant}
           disabled={cancelDisabled}
+          style={share(0)}
           onPress={onCancel}
         >
           {cancelText}
@@ -98,6 +109,7 @@ export function KjunFormActions({
           variant={variant}
           disabled={confirmDisabled}
           loading={loading}
+          style={share(1)}
           onPress={onConfirm}
         >
           {confirmText}

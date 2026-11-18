@@ -78,4 +78,71 @@ for (const platform of ["react", "native", "vue3"]) {
     await input.dispatchEvent("keydown", { key: "ArrowUp" });
     await expect(events(page)).toHaveText("[]");
   });
+  test(`${platform} quantity outside its range stays editable, shows invalid and steps back in`, async ({ page }) => {
+    const input = await quantity(page, platform);
+    await configure(page, { max: 1 });
+    await expect(input).toBeEditable();
+    await expect(input).toHaveAttribute("aria-invalid", "true");
+    const decrease = page.getByRole("button", { name: /수량 줄이기|Decrease quantity/ }), increase = page.getByRole("button", { name: /수량 늘리기|Increase quantity/ });
+    await expect(increase).toBeDisabled();
+    await expect(decrease).toBeEnabled();
+    await decrease.click();
+    await expect(events(page)).toHaveText('[["value",1],["commit",1]]');
+    await expect(input).toHaveValue("1");
+    await expect(input).not.toHaveAttribute("aria-invalid", "true");
+  });
+  test(`${platform} quantity with a negative minimum asks for a keyboard with a minus key`, async ({ page }) => {
+    const input = await quantity(page, platform);
+    await expect(input).toHaveAttribute("inputmode", "numeric");
+    await configure(page, { min: -5 });
+    await expect(input).toHaveAttribute("inputmode", "text");
+  });
+  test(`${platform} quantity repeats a held step button up to max without an extra step on release`, async ({ page }) => {
+    const input = await quantity(page, platform);
+    await configure(page, { max: 8 });
+    const increase = page.getByRole("button", { name: /수량 늘리기|Increase quantity/ });
+    await increase.hover();
+    await page.mouse.down();
+    await expect(input).toHaveValue("8", { timeout: 3000 });
+    await page.mouse.up();
+    await page.waitForTimeout(300);
+    await expect(input).toHaveValue("8");
+    await expect(increase).toBeDisabled();
+    const values = JSON.parse(await events(page).textContent() || "[]").filter((e: unknown[]) => e[0] === "value").map((e: unknown[]) => e[1]);
+    expect(values).toEqual([3, 4, 5, 6, 7, 8]);
+    // A short press after the hold still steps once.
+    await reset(page);
+    await page.getByRole("button", { name: /수량 줄이기|Decrease quantity/ }).click();
+    await expect(events(page)).toHaveText('[["value",7],["commit",7]]');
+  });
+  test(`${platform} quantity keeps focus in the input while a step button is pressed`, async ({ page }) => {
+    const input = await quantity(page, platform);
+    await input.click();
+    await page.getByRole("button", { name: /수량 늘리기|Increase quantity/ }).click();
+    await expect(input).toHaveValue("3");
+    await expect(input).toBeFocused();
+  });
+  test(`${platform} quantity group: the required star is not read and labelEnd sits on the label row`, async ({ page }) => {
+    const input = await quantity(page, platform);
+    await expect(input).toHaveAccessibleName("Order quantity");
+    await configure(page, { labelEnd: true });
+    const end = page.getByTestId("label-end");
+    await expect(end).toHaveText("3/30");
+    // A Text node takes the caption size like a string does (Native wraps it in a caption Text it inherits from).
+    await expect(end).toHaveCSS("font-size", "12px");
+    const [endBox, labelBox, inputBox] = [await end.boundingBox(), await page.getByText(/^Order quantity/).first().boundingBox(), await input.boundingBox()];
+    expect(Math.abs(endBox!.y + endBox!.height - (labelBox!.y + labelBox!.height))).toBeLessThan(4);
+    expect(endBox!.x).toBeGreaterThan(labelBox!.x + labelBox!.width);
+    expect(endBox!.y + endBox!.height).toBeLessThanOrEqual(inputBox!.y);
+  });
+  if (platform !== "native") test(`${platform} quantity submits its value under name and not while disabled`, async ({ page }) => {
+    await quantity(page, platform);
+    await configure(page, { name: "qty" });
+    const hidden = page.locator('input[type="hidden"][name="qty"]');
+    await expect(hidden).toHaveValue("2");
+    await configure(page, { value: 5 });
+    await expect(hidden).toHaveValue("5");
+    await configure(page, { disabled: true });
+    await expect(hidden).toBeDisabled();
+  });
 }

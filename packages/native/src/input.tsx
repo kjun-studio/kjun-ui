@@ -41,6 +41,8 @@ interface FieldValue {
   required?: boolean;
   describedBy?: string;
   labelHidden?: boolean;
+  /** A control's own message (NumberInput's range) shown in the group's error slot; "" clears it. The group's error wins. */
+  reportError?: (owner: string, message: string) => void;
 }
 // Internal boundary for composite fields; index.ts exports only public controls.
 export const FieldContext = createContext<FieldValue | null>(null);
@@ -55,7 +57,11 @@ export interface KjunFormGroupProps {
   hint?: string;
   /** Hides the label visually while it still names the field. */
   labelHidden?: boolean;
+  /** Content at the end of the label row: a character count, or a small action such as "전액". Stays put when an error shows. */
+  labelEnd?: ReactNode;
   children: ReactNode;
+  /** The group keeps a bottom gap (form itemGap) even when it is the last child; Stack, Inline and FormLayout remove it, or pass
+   * { marginBottom: 0 } here. */
   style?: StyleProp<ViewStyle>;
 }
 export function KjunFormGroup({
@@ -66,6 +72,7 @@ export function KjunFormGroup({
   error = "",
   hint = "",
   labelHidden = false,
+  labelEnd,
   children,
   style,
 }: KjunFormGroupProps) {
@@ -73,32 +80,44 @@ export function KjunFormGroup({
   const uid = useId().replace(/:/g, "");
   const fieldId = id || "kjun-native-" + uid;
   const { colors: c, fontFamily } = useKjunStyles();
+  const [controlErrors, setControlErrors] = useState<Record<string, string>>({});
+  const [reportError] = useState(() => (owner: string, message: string) =>
+    setControlErrors(old => (old[owner] ?? "") === message ? old : { ...old, [owner]: message }));
   // An error takes the hint's slot instead of stacking under it, so the field keeps its height; the control is then
   // described by the error alone.
-  const shownHint = error ? "" : hint;
+  const shownError = error || Object.values(controlErrors).find(Boolean) || "";
+  const shownHint = shownError ? "" : hint;
+  const showLabel = !!label && !labelHidden, hasEnd = labelEnd != null && labelEnd !== false;
+  const labelText = showLabel && (
+    <FontText
+      nativeID={fieldId + "-label"}
+      style={{ fontFamily, ...typeStyle('label'), color: c.text, marginBottom: hasEnd ? 0 : tokens.extensions.form.labelGap, flexShrink: 1 }}
+    >
+      {label}
+      {/* The input's required state already says it; the star is only drawn. */}
+      {required && <FontText aria-hidden={true} accessibilityElementsHidden importantForAccessibility="no" style={{ color: c.danger }}> *</FontText>}
+      {optional && !required && <FontText style={{ color: c.textTertiary, fontWeight: typeStyle('caption').fontWeight }}> {m.optional}</FontText>}
+    </FontText>
+  );
   return (
     <FieldContext.Provider
-      value={{ id: fieldId, label, error, hint: shownHint, required, labelHidden,
-        describedBy: mergeIds(shownHint ? fieldId + "-hint" : undefined, error ? fieldId + "-error" : undefined) }}
+      value={{ id: fieldId, label, error, hint: shownHint, required, labelHidden, reportError,
+        describedBy: mergeIds(shownHint ? fieldId + "-hint" : undefined, shownError ? fieldId + "-error" : undefined) }}
     >
       <View style={[{ minWidth: 0, marginBottom: tokens.extensions.form.itemGap }, style]}>
-        {!!label && !labelHidden && (
-          <FontText
-            nativeID={fieldId + "-label"}
-            style={{
-              fontFamily,
-              ...typeStyle('label'),
-
-
-              color: c.text,
-              marginBottom: tokens.extensions.form.labelGap,
-            }}
-          >
-            {label}
-            {required && <FontText style={{ color: c.danger }}> *</FontText>}
-            {optional && !required && <FontText style={{ color: c.textTertiary, fontWeight: typeStyle('caption').fontWeight }}> {m.optional}</FontText>}
-          </FontText>
-        )}
+        {hasEnd ? (
+          <View style={{ flexDirection: "row", alignItems: "baseline", justifyContent: showLabel ? "space-between" : "flex-end",
+            gap: tokens.extensions.form.messageGap, marginBottom: tokens.extensions.form.labelGap }}>
+            {labelText}
+            <View style={{ flexShrink: 0 }}>
+              {/* Text (a string, or a Text node that inherits from the Text around it) takes the caption style like Web's
+                  .kjun-form-label-end; a View such as a button is placed as it is. */}
+              {typeof labelEnd === "string" || typeof labelEnd === "number" || (isValidElement(labelEnd) && (labelEnd.type === Text || labelEnd.type === FontText))
+                ? <FontText style={{ fontFamily, ...typeStyle('caption'), color: c.textTertiary, fontVariant: ["tabular-nums"] }}>{labelEnd}</FontText>
+                : labelEnd}
+            </View>
+          </View>
+        ) : labelText}
         {children}
         {!!shownHint && (
           <FontText
@@ -109,13 +128,13 @@ export function KjunFormGroup({
           </FontText>
         )}
         {/* Text only, like Input's errorMessage: the danger colour and the field border carry the state. */}
-        {!!error && (
+        {!!shownError && (
           <FontText
             nativeID={fieldId + "-error"}
             accessibilityRole="alert"
             style={{ fontFamily, ...typeStyle('caption'), marginTop: tokens.extensions.form.messageGap, color: c.danger }}
           >
-            {error}
+            {shownError}
           </FontText>
         )}
       </View>

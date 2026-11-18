@@ -54,7 +54,7 @@ assign("Dropdown", [disabled, toggle("rich", "확장 구성"), menuDensity]);
 assign("DropdownSection DropdownSubmenu", [toggle("rich", "확장 구성", true), menuDensity]);
 assign("DropdownItem", [toggle("itemDisabled", "첫 항목 비활성")]);
 assign("Accordion AccordionItem", [choice("tone", "배경", ["card", "muted"], "muted"), toggle("multiple", "복수 펼침"), toggle("itemDisabled", "첫 항목 비활성"), toggle("divider", "구분선", true), toggle("separated", "항목 분리"), toggle("detail", "아이콘·설명")]);
-assign("FormActions", [choice("comparison", "비교", ["기본", "크기", "변형", "표시"]), choice("size", "크기", ["sm", "md", "lg"], "lg"), choice("variant", "확인 표현", ["primary", "danger", "success"]), choice("cancelVariant", "취소 표현", ["ghost", "secondary"]), field("confirmText", "확인 문구", "저장"), field("cancelText", "취소 문구", "취소"), toggle("showConfirm", "확인 표시", true), toggle("showCancel", "취소 표시", true), choice("exampleWidth", "예제 폭", ["360", "288", "200"]), toggle("cancelDisabled", "취소 비활성"), toggle("disabled", "확인 비활성"), toggle("loading", "확인 로딩")]);
+assign("FormActions", [choice("comparison", "비교", ["기본", "크기", "변형", "표시", "채우기"]), choice("size", "크기", ["sm", "md", "lg"], "lg"), choice("fill", "줄 채우기", ["기본", "같은 폭", "주 버튼 넓게"]), choice("variant", "확인 표현", ["primary", "danger", "success"]), choice("cancelVariant", "취소 표현", ["ghost", "secondary"]), field("confirmText", "확인 문구", "저장"), field("cancelText", "취소 문구", "취소"), toggle("showConfirm", "확인 표시", true), toggle("showCancel", "취소 표시", true), choice("exampleWidth", "예제 폭", ["360", "288", "200"]), toggle("cancelDisabled", "취소 비활성"), toggle("disabled", "확인 비활성"), toggle("loading", "확인 로딩")]);
 assign("Modal", [choice("size", "크기", ["sm", "md", "lg", "xl", "full"], "md"), toggle("disabled", "확인 비활성"), toggle("loading", "확인 로딩")]);
 assign("Button", [choice("comparison", "비교", ["기본", "크기", "변형", "라벨·아이콘", "상태"]), choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "md"), choice("variant", "변형", ["primary", "secondary", "ghost", "danger", "danger-ghost", "success", "warning"]), disabled, loading, toggle("iconOnly", "아이콘 전용"), toggle("block", "전체 너비")]);
 assign("Tabs TabPane", [choice("variant", "표현", ["underline", "pills"]), choice("density", "밀도", ["comfortable", "compact"]), toggle("fullWidth", "전체 너비"), toggle("detail", "아이콘·배지")]);
@@ -78,7 +78,7 @@ assign("PriceCell", [toggle("stale", "오래된 값")]);
 assign("MarketSimpleList MarketTable MarketCards MarketListPanel", [loading, error]);
 assign("Select", [size, toggle("multiple", "복수 선택"), toggle("searchable", "검색", true), toggle("clearable", "지우기", true), disabled, loading, error]);
 assign("SearchInput", [size, number("minChars", "최소 글자 수", 1, 10), number("debounce", "검색 대기 시간(ms)", 0, 2000), toggle("clearable", "지우기", true), disabled, toggle("error", "필드 오류"), choice("response", "검색 응답", ["정상", "빈 결과", "느린 응답", "요청 실패", "긴 결과"])]);
-assign("FormGroup", [field("label", "라벨", "내용"), field("hint", "도움말", "도움말을 입력에 연결합니다."), toggle("required", "필수 입력", true), field("errorMessage", "오류 메시지", ""), toggle("childDisabled", "입력 필드 비활성")]);
+assign("FormGroup", [field("label", "라벨", "내용"), field("hint", "도움말", "도움말을 입력에 연결합니다."), toggle("required", "필수 입력", true), field("errorMessage", "오류 메시지", ""), toggle("labelEnd", "라벨 끝 글자 수"), toggle("childDisabled", "입력 필드 비활성")]);
 assign("Table", [toggle("sortable", "정렬 허용", true), toggle("selectable", "행 선택", true), toggle("expandable", "행 확장", true), toggle("searchable", "검색", true), choice("responsive", "모바일 표현", ["card", "list", "compact", "none"]), loading, error]);
 controls.KjunTable.unshift(...tableControls);
 assign("DataState", [size, toggle("preserveContent", "이전 콘텐츠 유지", true), toggle("skeleton", "스켈레톤", true), toggle("empty", "빈 상태"), choice("queryState", "조회 상태", ["정상", "최초 로딩", "최초 실패", "조건 변경", "동일 조건 갱신", "갱신 실패"]), field("loadingText", "로딩 문구", "로딩 중..."), field("refreshingText", "갱신 문구", "갱신 중..."), field("emptyText", "빈 상태 문구", "데이터가 없습니다"), field("emptyIcon", "빈 상태 아이콘", ""), field("emptyActionText", "빈 상태 행동", ""), field("retryText", "재시도 문구", "다시 시도")]);
@@ -112,6 +112,7 @@ const extras: Record<string, ExamplePreset[]> = {
     preset("sizes", "크기 비교", { comparison: "크기" }),
     preset("variants", "변형 비교", { comparison: "변형" }),
     preset("visibility", "버튼 표시 비교", { comparison: "표시" }),
+    preset("fill", "줄 채우기 비교", { comparison: "채우기" }),
     preset("single", "확인 버튼만", { showCancel: false }),
     { ...preset("narrow", "좁은 폭 · 200px", { exampleWidth: "200", confirmText: "변경 사항 저장" }), narrow: true },
     { ...preset("long", "긴 문구 · 288px", { exampleWidth: "288", cancelText: "Cancel", confirmText: "Save changes and continue to next step" }), narrow: true },
@@ -132,7 +133,7 @@ const extras: Record<string, ExamplePreset[]> = {
   KjunInput: [preset("sizes", "크기 비교", { comparison: "크기" }), preset("states", "상태 비교", { comparison: "상태" }), preset("affixes", "아이콘·단위 비교", { comparison: "아이콘·단위" }), preset("reveal-count", "보기·글자 수 비교", { comparison: "보기·글자 수" }), { ...preset("narrow", "좁은 화면 · 375px"), narrow: true }],
   KjunSelect: [preset("multiple", "복수 선택", { multiple: true }, { select: ["a", "c"] }), preset("long", "긴 옵션", { data: "long" }), preset("empty", "빈 옵션", { data: "empty" }), preset("error", "오류", { error: true })],
   KjunSearchInput: [preset("empty", "빈 결과", { response: "빈 결과" }), preset("slow", "느린 응답", { response: "느린 응답" }), preset("failure", "요청 실패", { response: "요청 실패" }), preset("long", "긴 결과", { response: "긴 결과" })],
-  KjunFormGroup: [preset("required", "필수 입력", { required: true }), preset("long", "긴 라벨·도움말", { label: long, hint: long }), preset("error", "검증 오류", { errorMessage: "내용을 입력해 주세요." })],
+  KjunFormGroup: [preset("required", "필수 입력", { required: true }), preset("long", "긴 라벨·도움말", { label: long, hint: long }), preset("error", "검증 오류", { errorMessage: "내용을 입력해 주세요." }), preset("label-end", "라벨 끝 글자 수", { labelEnd: true })],
   KjunTable: [...tableDesignPresets, preset("selection", "선택·확장", {}, { selected: [], expanded: ["a"] }), preset("long", "긴 셀", { data: "long" }), preset("empty", "빈 데이터", { data: "empty" }), preset("error", "오류", { error: true }), { ...preset("narrow", "좁은 화면"), narrow: true }],
   KjunDataState: [preset("initial", "최초 로딩", { queryState: "최초 로딩" }), preset("spinner", "스피너 로딩", { queryState: "최초 로딩", skeleton: false }), preset("empty", "빈 결과", { empty: true }), preset("empty-action", "빈 결과·행동", { empty: true, emptyIcon: "search", emptyActionText: "조건 초기화" }), preset("changed", "조건 변경", { queryState: "조건 변경" }), preset("refresh", "동일 조건 갱신", { queryState: "동일 조건 갱신" }), preset("failure", "갱신 실패·재시도", { queryState: "갱신 실패" }), { ...preset("long-retry", "긴 재시도·좁은 화면", { queryState: "최초 실패", retryText: "네트워크 연결을 확인한 후 다시 시도하기" }), narrow: true }, { ...preset("long-refresh", "긴 갱신·좁은 화면", { queryState: "동일 조건 갱신", refreshingText: "최신 문서와 세부 정보를 업데이트하고 있습니다" }), narrow: true }],
   KjunFeedbackProvider: [preset("success", "성공 알림", { service: "Toast", duration: 3000 }), preset("persistent", "직접 닫는 알림", { service: "Toast", duration: 0 }), preset("confirm", "확인·취소", { service: "Confirm" }), preset("async", "비동기 확인", { service: "Confirm", confirmAction: "비동기 완료" }), preset("failure", "비동기 실패", { service: "Confirm", confirmAction: "비동기 실패" }), preset("validation", "입력 검증", { service: "Prompt" })],
@@ -177,6 +178,7 @@ export function visibleControls(name: string, settings: Settings, platform: Plat
     if (name === 'KjunFormActions') {
       if (settings.comparison === '변형') ['variant', 'cancelVariant', 'confirmText'].forEach(key => fixed.add(key));
       if (settings.comparison === '표시') ['showCancel', 'showConfirm'].forEach(key => fixed.add(key));
+      if (settings.comparison === '채우기') fixed.add('fill');
     }
     if (settings.comparison === '크기') fixed.add('size');
   }

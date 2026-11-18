@@ -50,7 +50,14 @@ export const formActionsComparisons: Record<string, { caption: string; props: Re
     { caption: '확인만', props: { showCancel: false, showConfirm: true } },
     { caption: '취소만', props: { showCancel: true, showConfirm: false } },
   ],
+  '채우기': [
+    { caption: '기본 · 내용 폭', props: { fill: false } },
+    { caption: 'fill · 같은 폭', props: { fill: true } },
+    { caption: 'fill="primary" · 주 버튼 넓게', props: { fill: 'primary' } },
+  ],
 };
+/** The FormActions fill control's choice as the prop value. */
+export const formActionsFill = (choice: unknown) => choice === '같은 폭' ? true : choice === '주 버튼 넓게' ? 'primary' : undefined;
 export const inputComparisons: Record<string, { caption: string; props?: Record<string, any>; value?: string; suffix?: string }[]> = {
   "크기": ["sm", "md", "lg"].map(size => ({ caption: size, props: { size }, value: "장기 보유 자산" })),
   "상태": [

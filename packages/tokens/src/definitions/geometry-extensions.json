@@ -5,7 +5,9 @@
       "md": { "$ref": "input.md.height" },
       "lg": { "$ref": "input.lg.height" },
       "radius": { "$ref": "input.md.radius" },
-      "valueWidth": 80
+      "valueWidth": 80,
+      "repeatDelay": 400,
+      "repeatInterval": { "$ref": "motion.instant" }
     },
     "timePicker": {
       "segmentMinimumWidth": { "$ref": "native.minimumTouchTarget" },

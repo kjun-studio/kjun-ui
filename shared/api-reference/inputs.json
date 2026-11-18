@@ -275,7 +275,8 @@
       "children",
       "labelHidden",
       "optional",
-      "className"
+      "className",
+      "labelEnd"
     ],
     "native": [
       "label",
@@ -286,7 +287,8 @@
       "children",
       "style",
       "labelHidden",
-      "optional"
+      "optional",
+      "labelEnd"
     ]
   },
   "KjunInput": {

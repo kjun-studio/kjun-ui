@@ -65,10 +65,14 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.mouse.move(0, 0);
     const before = await rect(save(page));
     await configure(page, { loading: true });
-    await expect(save(page)).toBeDisabled(); await expect(save(page)).toHaveAttribute('aria-busy', 'true');
+    // React Native Web's Pressable writes aria-disabled from its own disabled prop only; a busy Native button says so with aria-busy.
+    if (platform !== 'native') await expect(save(page)).toBeDisabled();
+    await expect(save(page)).toHaveAttribute('aria-busy', 'true');
     expect(await rect(save(page))).toEqual(before); await clickAt(page, save(page));
     await expect(page.getByTestId('events')).toBeEmpty();
     await configure(page, { loading: false }); await expect(save(page)).toBeEnabled();
+    // The loading minimum keeps the button busy a moment longer; presses during it are ignored.
+    await expect(save(page)).not.toHaveAttribute('aria-busy', 'true');
     await configure(page, { disabled: true });
     await expect(save(page)).toBeDisabled(); await expect(cancel(page)).toBeDisabled();
     await clickAt(page, save(page)); await clickAt(page, cancel(page)); await expect(page.getByTestId('events')).toBeEmpty();

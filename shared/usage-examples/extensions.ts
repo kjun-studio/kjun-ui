@@ -227,7 +227,7 @@ export function generate(input: UsageInput) {
     }
     case 'KjunQuantityStepper':
       content = b.node(name, { value: b.state('quantity', s.decimal ? 1.25 : 2), onValueChange: b.update('quantity'), min: s.negative ? -10 : 0, max: 10, step: s.decimal ? .1 : 1, precision: s.decimal ? 2 : 0,
-        ...b.props('disabled', 'error', 'size', 'block'), ariaLabel: '주문 수량', onChangeCommit: commit(), onInvalidInput: b.handler('invalid', 'draft', b.result('"잘못된 수량: " + draft')),
+        ...b.props('disabled', 'error', 'size', 'block'), onChangeCommit: commit(), onInvalidInput: b.handler('invalid', 'draft', b.result('"잘못된 수량: " + draft')),
       }); break;
     case 'KjunNumberInput': {
       // The wording follows the format; the value is a normalized string the app owns, and a range is checked when the edit is committed.
@@ -241,7 +241,7 @@ export function generate(input: UsageInput) {
         : { label: '참여 인원', prefix: undefined, suffix: '명', value: '12480', min: 1, max: 100000, error: '100,000명 이하로 입력해 주세요' };
       numberLabel = spec.label; numberError = spec.error;
       content = b.node(name, { value: b.state('amount', spec.value), onValueChange: b.update('amount'), format: format === 'number' ? undefined : format, decimals, prefix: spec.prefix, suffix: spec.suffix, min: spec.min, max: spec.max,
-        readingAid: s.readingAid ? true : undefined, align: s.align === 'end' ? 'end' : undefined, ...b.props('disabled', 'error', 'size'), ariaLabel: spec.label, onChangeCommit: commit() }); break;
+        readingAid: s.readingAid ? true : undefined, align: s.align === 'end' ? 'end' : undefined, ...b.props('disabled', 'error', 'size'), onChangeCommit: commit() }); break;
     }
     default: throw Error('기본 사용 코드 생성기 누락: ' + name);
   }

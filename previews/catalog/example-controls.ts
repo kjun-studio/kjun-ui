@@ -1,6 +1,7 @@
 import {
   buttonComparisons,
   formActionsComparisons,
+  formActionsFill,
   inputComparisons,
   inputCaseProps,
   fieldOptions,
@@ -149,10 +150,13 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
           required: settings.required,
           error: settings.errorMessage,
         },
-        input()
+        input(),
+        // The character count as a string: Vue takes it as the labelEnd slot, React and Native as a prop; each draws it in the
+        // label row's caption style (a preview Text would bring its own size and colour).
+        settings.labelEnd ? { labelEnd: `${String(get("input", "")).length}/30` } : undefined
       );
     case "KjunFormActions": {
-      const props = Object.fromEntries(['size', 'variant', 'cancelVariant', 'confirmText', 'cancelText', 'showCancel', 'showConfirm', 'cancelDisabled'].map(key => [key, settings[key]]));
+      const props = { ...Object.fromEntries(['size', 'variant', 'cancelVariant', 'confirmText', 'cancelText', 'showCancel', 'showConfirm', 'cancelDisabled'].map(key => [key, settings[key]])), fill: formActionsFill(settings.fill) };
       const cases = formActionsComparisons[String(settings.comparison)] || [{ caption: '', props: {} }];
       return h('Box', { width: Number(settings.exampleWidth || 360) },
         h('Stack', {}, cases.map(item => h('Stack', {}, [item.caption ? h('Text', { "data-caption": "" }, item.caption) : null,

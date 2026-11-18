@@ -305,7 +305,8 @@
       "loading",
       "variant",
       "cancelVariant",
-      "form"
+      "form",
+      "fill"
     ],
     "react": [
       "size",
@@ -320,7 +321,8 @@
       "cancelVariant",
       "onCancel",
       "onConfirm",
-      "form"
+      "form",
+      "fill"
     ],
     "native": [
       "size",
@@ -334,7 +336,8 @@
       "variant",
       "cancelVariant",
       "onCancel",
-      "onConfirm"
+      "onConfirm",
+      "fill"
     ]
   },
   "KjunIconToggle": {

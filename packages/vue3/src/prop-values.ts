@@ -135,6 +135,7 @@ export const kjunPropValues = Object.freeze({
   }),
   KjunFormActions: Object.freeze({
     cancelVariant: Object.freeze(["ghost","secondary"] as const),
+    fill: Object.freeze([false,true,"primary"] as const),
     size: Object.freeze(["sm","md","lg"] as const),
     variant: Object.freeze(["danger","primary","success"] as const),
   }),

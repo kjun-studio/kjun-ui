@@ -3,7 +3,9 @@ import { joinHints } from "../../../shared/package-runtime/aria-ids";
 import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { useEffect, useRef, useState } from "react";
-import { Platform, TextInput, View, type DimensionValue } from "react-native";
+import { numberKeyboard } from "../../../shared/package-runtime/number-input";
+import { createPressRepeat } from "../../../shared/package-runtime/press-repeat";
+import { Platform, TextInput, View, type DimensionValue, type KeyboardTypeOptions } from "react-native";
 import { createNumberDomain, quantityKeyAction, tokens, type InputSize, type InputKeyEvent } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
@@ -13,11 +15,11 @@ import { finePointer } from "./internal";
 import { useKjunStyles } from "./provider";
 import { useKjunField } from "./input";
 export interface KjunQuantityStepperProps { value: number; min?: number; max?: number; step?: number; precision?: number; disabled?: boolean; error?: boolean; size?: InputSize; block?: boolean; id?: string; ariaLabel?: string; onValueChange?: (value: number) => void; onChangeCommit?: (value: number) => void; onInvalidInput?: (draft: string) => void }
+const web = Platform.OS === "web";
 export function KjunQuantityStepper({ value, min = 0, max, step = 1, precision = 0, disabled = false, error = false, size = "md", block = false, id, ariaLabel, onValueChange, onChangeCommit, onInvalidInput }: KjunQuantityStepperProps) {
   const m = useKjunMessages();
   const { colors, fontFamily } = useKjunStyles();
   const field = useKjunField();
-  const invalid = error || !!field?.error;
   const labelledBy = !ariaLabel && field?.label && !field.labelHidden ? field.id + "-label" : undefined;
   const geometry = tokens.extensions.compound;
   const buttonStyle = { width: tokens.input[size].height, paddingHorizontal: 0 };
@@ -25,17 +27,47 @@ export function KjunQuantityStepper({ value, min = 0, max, step = 1, precision =
   const outer = tokens.input[size].radius;
   const decreaseStyle = { ...buttonStyle, borderRadius: 0, borderTopLeftRadius: outer, borderBottomLeftRadius: outer };
   const increaseStyle = { ...buttonStyle, borderRadius: 0, borderTopRightRadius: outer, borderBottomRightRadius: outer };
-  const domain = createNumberDomain({ min, max, step, precision }), valid = domain.valid && domain.accepts(value), blocked = disabled || !valid;
+  const domain = createNumberDomain({ min, max, step, precision });
+  // Only a broken setup (range, step, precision) or a value the precision cannot hold locks the field. A value outside the
+  // range (stock fell under the cart quantity) stays editable and shows as invalid; a step or a commit brings it back in range.
+  const usable = domain.fits(value), blocked = disabled || !usable;
+  const invalid = error || !!field?.error || (usable && !domain.inRange(value));
+  const keyboard = numberKeyboard({ allowNegative: min < 0, decimals: precision });
   const surface = useFieldSurface(size, { disabled: blocked, invalid });
   const [draft, setDraft] = useState(String(value));
   const inputRef = useRef<TextInput>(null);
   const composing = useRef(false), dirty = useRef(false), accepted = useRef(value);
   const cancelledEscape = useRef(false);
   useEffect(() => { setDraft(String(value)); accepted.current = value; dirty.current = false; }, [value, precision, min, max, step]);
-  useEffect(() => { if (!valid) console.warn("KJUN QuantityStepper: 범위·step·정밀도·값을 확인하세요."); }, [valid]);
+  useEffect(() => { if (!usable) console.warn("KJUN QuantityStepper: 범위·step·정밀도·값을 확인하세요."); }, [usable]);
   const emit = (next: number) => { setDraft(String(value)); dirty.current = false; if (value !== next) { onValueChange?.(next); onChangeCommit?.(next); } };
   const commit = () => { if (blocked || composing.current || !dirty.current) return; const next = domain.fromDraft(draft); if (next === null) { onInvalidInput?.(draft); setDraft(String(accepted.current)); dirty.current = false; } else emit(next); };
-  const move = (direction: number) => { if (!blocked) emit(domain.move(accepted.current, direction)); };
+  // Returns whether the value moved, so a held button stops at the end of the range.
+  const move = (direction: number) => {
+    if (blocked) return false;
+    const next = domain.move(accepted.current, direction);
+    emit(next);
+    return next !== accepted.current;
+  };
+  const latest = useRef(move);
+  latest.current = move;
+  const [decrease] = useState(() => createPressRepeat(() => latest.current(-1), tokens.extensions.compound.repeatDelay, tokens.extensions.compound.repeatInterval));
+  const [increase] = useState(() => createPressRepeat(() => latest.current(1), tokens.extensions.compound.repeatDelay, tokens.extensions.compound.repeatInterval));
+  useEffect(() => () => { decrease.stop(); increase.stop(); }, []);
+  // Web: a pointer press on a step button takes focus from the input; when it did, focus goes back to the input like Web.
+  // (Keyboard focus that moves to a button with Tab stays there.)
+  const rootRef = useRef<View>(null), pointer = useRef(false), refocus = useRef(false);
+  const leaveInput = (next: unknown) => {
+    refocus.current = web && pointer.current && !!next && !!(rootRef.current as unknown as HTMLElement | null)?.contains(next as Node);
+  };
+  const stepper = (held: typeof increase, direction: number) => ({
+    onPressIn: () => held.start(web ? window : undefined),
+    onPressOut: () => { held.release(); pointer.current = false; },
+    onPress: () => {
+      if (!held.takeRepeated()) move(direction);
+      if (refocus.current) { refocus.current = false; inputRef.current?.focus(); }
+    },
+  });
   const key = (event: InputKeyEvent & { preventDefault?: () => void; stopPropagation?: () => void }) => {
     if (blocked) return;
     const action = quantityKeyAction(event, composing.current, dirty.current);
@@ -73,15 +105,15 @@ export function KjunQuantityStepper({ value, min = 0, max, step = 1, precision =
   const surfaceBox = { position: "absolute" as const, left: 0, right: 0, top: "50%" as const, height: tokens.input[size].height, marginTop: -tokens.input[size].height / 2, borderRadius: surface.spec.radius };
   // The root is the field shape, as on Web. A Web block parent ignores alignSelf, so a non-block field hugs its content there.
   const hug = Platform.OS === "web" && !block ? { width: "fit-content" as DimensionValue } : {};
-  return <IconFallbacks icons={componentIcons}><View style={{ flexDirection: "row", alignItems: "center", alignSelf: block ? "stretch" : "flex-start", maxWidth: "100%", borderRadius: surface.spec.radius, ...hug }}>
+  return <IconFallbacks icons={componentIcons}><View ref={rootRef} {...(web ? { onPointerDown: () => { pointer.current = true; } } : {})} style={{ flexDirection: "row", alignItems: "center", alignSelf: block ? "stretch" : "flex-start", maxWidth: "100%", borderRadius: surface.spec.radius, ...hug }}>
     <View pointerEvents="none" aria-hidden={true} style={{ ...surfaceBox, backgroundColor: colors.inputBg }} />
-    <CompoundTarget square><KjunButton size={size} style={decreaseStyle} variant="ghost" ariaLabel={m.decreaseQuantity} disabled={blocked || value <= min} onPress={() => move(-1)} prefixIcon="minus" /></CompoundTarget>
+    <CompoundTarget square><KjunButton size={size} style={decreaseStyle} variant="ghost" ariaLabel={m.decreaseQuantity} disabled={blocked || value <= min} {...stepper(decrease, -1)} prefixIcon="minus" /></CompoundTarget>
     <View style={{ flex: block ? 1 : undefined, width: block ? undefined : geometry.valueWidth, minWidth: 0, minHeight: finePointer() ? undefined : tokens.native.minimumTouchTarget, justifyContent: "center" }} {...fieldTarget(() => inputRef.current?.focus(), blocked)}>
-    <FieldTextInput {...surface.webHover} onFocus={() => surface.setFocused(true)} ref={inputRef} nativeID={id || field?.id} accessibilityLabel={ariaLabel || field?.label || m.quantity} accessibilityLabelledBy={labelledBy} accessibilityHint={joinHints(field?.hint, field?.error)} role="spinbutton" accessibilityValue={{ min, max, now: value }} accessibilityState={{ disabled: blocked }} value={draft} editable={!blocked} inputMode={precision ? "decimal" : "numeric"} onChangeText={text => { dirty.current = true; setDraft(text); }} onBlur={() => { surface.setFocused(false); commit(); }} onSubmitEditing={Platform.OS === "web" ? undefined : commit}
+    <FieldTextInput {...surface.webHover} onFocus={() => surface.setFocused(true)} ref={inputRef} nativeID={id || field?.id} accessibilityLabel={ariaLabel || field?.label || m.quantity} accessibilityLabelledBy={labelledBy} accessibilityHint={joinHints(field?.hint, field?.error)} role="spinbutton" accessibilityValue={{ min, max, now: value }} accessibilityState={{ disabled: blocked }} value={draft} editable={!blocked} inputMode={web ? keyboard.inputMode : undefined} keyboardType={web ? undefined : Platform.select({ ios: keyboard.ios, default: keyboard.android }) as KeyboardTypeOptions} onChangeText={text => { dirty.current = true; setDraft(text); }} onBlur={event => { surface.setFocused(false); leaveInput((event.nativeEvent as unknown as FocusEvent).relatedTarget); commit(); }} onSubmitEditing={Platform.OS === "web" ? undefined : commit}
       {...(Platform.OS === "web" ? { "aria-valuemin": min, "aria-valuemax": max, "aria-valuenow": value, "aria-labelledby": labelledBy, "aria-describedby": field?.describedBy, "aria-invalid": invalid || undefined, "aria-required": field?.required || undefined } : { onKeyPress: key })}
       style={{ width: "100%", minWidth: 0, ...surface.style, borderRadius: 0, borderTopColor: "transparent", borderBottomColor: "transparent", borderLeftColor: "transparent", borderRightColor: "transparent", backgroundColor: !blocked && (surface.active || surface.hovered) ? colors.hover : "transparent", outlineWidth: 0, color: surface.ink, fontFamily, ...inputTypeStyle(size), textAlign: "center", paddingHorizontal: surface.spec.padding - tokens.border.controlWidth, paddingVertical: 0 }} />
     </View>
-    <CompoundTarget square><KjunButton size={size} style={increaseStyle} variant="ghost" ariaLabel={m.increaseQuantity} disabled={blocked || (max !== undefined && value >= max)} onPress={() => move(1)} prefixIcon="plus" /></CompoundTarget>
+    <CompoundTarget square><KjunButton size={size} style={increaseStyle} variant="ghost" ariaLabel={m.increaseQuantity} disabled={blocked || (max !== undefined && value >= max)} {...stepper(increase, 1)} prefixIcon="plus" /></CompoundTarget>
     {(invalid || surface.active) && <View pointerEvents="none" aria-hidden={true} style={{ ...surfaceBox, borderWidth: invalid ? tokens.border.controlWidth : tokens.states.focus.width, borderColor: invalid ? colors.danger : colors.focusRing }} />}
   </View></IconFallbacks>;
 }

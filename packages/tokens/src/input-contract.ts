@@ -53,7 +53,10 @@ export function createNumberDomain({ min = 0, max, step = 1, precision = 0 }: Nu
     const scaled = scaledDecimal(draft, precision);
     return valid && scaled !== null ? clamp(scaled) / factor : null;
   };
-  const accepts = (value: number) => valid && scaleNumber(value, precision) !== null && value >= min && (max === undefined || value <= max);
+  /** The value can be stepped from: the domain is valid and the value is finite with no more decimals than the precision. */
+  const fits = (value: number) => valid && scaleNumber(value, precision) !== null;
+  const inRange = (value: number) => value >= min && (max === undefined || value <= max);
+  const accepts = (value: number) => fits(value) && inRange(value);
   const move = (value: number, direction: number) => {
     const start = scaleNumber(value, precision);
     if (!valid || start === null || !Number.isFinite(direction)) return value;
@@ -66,7 +69,7 @@ export function createNumberDomain({ min = 0, max, step = 1, precision = 0 }: Nu
     const index = Math.min(Math.floor((high! - low!) / increment!), Math.max(0, Math.round((scaled - low!) / increment!)));
     return (low! + index * increment!) / factor;
   };
-  return { valid, accepts, fromDraft, move, snap, min, max, step, precision };
+  return { valid, fits, inRange, accepts, fromDraft, move, snap, min, max, step, precision };
 }
 export function createSliderDomain(min = 0, max = 100, step = 1) {
   const precision = Math.max(decimalPlaces(min), decimalPlaces(max), decimalPlaces(step));

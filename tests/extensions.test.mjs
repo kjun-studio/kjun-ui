@@ -30,6 +30,17 @@ test("decimal commitment rounds ties away from zero before clamping", () => {
   assert.equal(unbounded.move(-1, 1), 0);
   assert.ok(createSliderDomain(.1, .3, .1).valid);
 });
+test("a value outside the range still fits the domain and steps back into it", () => {
+  const cart = createNumberDomain({ min: 1, max: 3 });
+  assert.equal(cart.fits(5), true);
+  assert.equal(cart.inRange(5), false);
+  assert.equal(cart.accepts(5), false);
+  assert.equal(cart.move(5, -1), 3, "a step down from above the range lands on max");
+  assert.equal(cart.move(0, 1), 1, "a step up from below the range lands on min");
+  assert.equal(cart.fromDraft("9"), 3);
+  assert.equal(cart.fits(1.5), false, "more decimals than the precision cannot be stepped");
+  assert.equal(createNumberDomain({ step: 0 }).fits(1), false);
+});
 test("invalid numeric domains fail closed without unsafe integer arithmetic", () => {
   for (const options of [{ step: 0 }, { step: -1 }, { min: 5, max: 4 }, { precision: 7 }, { precision: -1 }, { precision: 1000 }, { step: .1, precision: 0 }, { min: Infinity }, { max: NaN }, { max: Number.MAX_SAFE_INTEGER, precision: 6 }]) assert.equal(createNumberDomain(options).valid, false, JSON.stringify(options));
   assert.equal(scaledDecimal("9007199254740992", 0), null);

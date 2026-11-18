@@ -13,6 +13,7 @@ const initial = {
   sortMode: 'client', sortable: true, rowAction: true,
   searchable: false, show: true, controlledExpansion: false, expanded: [] as (string | number)[], expandSingle: false,
   responsive: 'card', maxHeight: undefined as number | undefined,
+  min: 0, max: undefined as number | undefined, name: undefined as string | undefined, labelEnd: false,
 };
 const config = reactive({ ...initial });
 const events = ref<unknown[]>([]), selected = ref<object[]>([]);
@@ -44,9 +45,13 @@ const Cases = defineComponent(() => () => {
         {{
           default: () => <>
             <K.KjunFormGroup id="quantity-field" label={config.label} hint={config.hint} error={config.error} required={config.required}>
-              <K.KjunQuantityStepper modelValue={config.value} disabled={config.disabled} id={config.inputId} ariaLabel={config.ariaLabel}
+              {{
+                default: () => <K.KjunQuantityStepper modelValue={config.value} disabled={config.disabled} id={config.inputId} ariaLabel={config.ariaLabel}
+                min={config.min} max={config.max} name={config.name}
                 onUpdate:modelValue={(value: number) => { emit('value', value); if (config.accept) update({ value }); }}
-                onChange={(value: number) => emit('commit', value)} onInvalid-input={(draft: string) => emit('invalid', draft)} />
+                onChange={(value: number) => emit('commit', value)} onInvalid-input={(draft: string) => emit('invalid', draft)} />,
+                ...(config.labelEnd ? { labelEnd: () => text('3/30', 'label-end') } : {}),
+              }}
             </K.KjunFormGroup>
             {button('Other field', () => {})}
           </>,

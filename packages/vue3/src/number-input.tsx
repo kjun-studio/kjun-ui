@@ -1,4 +1,4 @@
-import { computed, nextTick, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { computed, nextTick, onBeforeUnmount, ref, shallowRef, watch, watchEffect, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { isComposingKey, type InputSize } from "@kjun-ui/tokens";
 import {
   addsTooManyDigits, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage,
@@ -29,6 +29,8 @@ const kjunNumberInputProps = {
   id: { type: String, default: undefined },
   ariaLabel: { type: String, default: undefined },
   placeholder: { type: String, default: undefined },
+  /** Submits the normalized value ("1250000", fraction padded) with a surrounding form under this name; not sent while disabled. */
+  name: { type: String, default: undefined },
 } as const;
 export type KjunNumberInputProps = ExtractPublicPropTypes<typeof kjunNumberInputProps>;
 
@@ -60,6 +62,12 @@ export const KjunNumberInput = defineComponent({
     // `emitted` is the last value this field reported; `accepted` the last committed one, which Escape restores.
     let emitted = props.modelValue, accepted = props.modelValue, acceptedIssue: Issue = null;
     const aidId = useKjunId("kjun-number-reading-");
+    // A caller's error or the group's error wins; the built-in range message then stays out of the way. In a FormGroup the
+    // message takes the group's error slot, in place of the hint.
+    const message = computed(() => issue.value && !props.error && !field.value?.error ? rangeMessage(issue.value, o.value, scope.value) : "");
+    const owner = useKjunId("kjun-number-");
+    watchEffect(() => { field.value?.reportError?.(owner, message.value); });
+    onBeforeUnmount(() => field.value?.reportError?.(owner, ""));
 
     // The input is controlled through KjunInput's value, which Vue only patches when the text changes; this puts back
     // the text (a rejected letter) and the caret after the DOM update.
@@ -155,8 +163,7 @@ export const KjunNumberInput = defineComponent({
       const resolved = o.value;
       const raw = sanitizeNumber(view.value.text, resolved);
       const aid = props.readingAid ? readNumber(raw, resolved, scope.value) : "";
-      // A caller's error or the group's error wins; the built-in range message then stays out of the way.
-      const message = issue.value && !props.error && !field.value?.error ? rangeMessage(issue.value, resolved, scope.value) : "";
+      const routed = !!field.value?.reportError;
       // Attributes that reach the <input> through KjunInput's attrs pass-through.
       const attrs = {
         type: "text", inputmode: numberKeyboard(resolved).inputMode, placeholder: props.placeholder,
@@ -173,11 +180,12 @@ export const KjunNumberInput = defineComponent({
       };
       return <div class="kjun-number-input" data-format={resolved.format} data-align={props.align}>
         <KjunInput ref={input} {...attrs} modelValue={view.value.text} size={props.size}
-          prefix={props.prefix} suffix={props.suffix ?? resolved.suffix} disabled={props.disabled} readOnly={props.readOnly} error={props.error}
-          errorMessage={message} id={props.id} ariaLabel={props.ariaLabel} onEnter={() => commit()}>
+          prefix={props.prefix} suffix={props.suffix ?? resolved.suffix} disabled={props.disabled} readOnly={props.readOnly} error={props.error || (routed && !!message.value)}
+          errorMessage={routed ? "" : message.value} id={props.id} ariaLabel={props.ariaLabel} onEnter={() => commit()}>
           {{ prefix: slots.prefix, suffix: slots.suffix }}
         </KjunInput>
         {aid && <p id={aidId} class="kjun-form-hint kjun-number-input-reading">{aid}</p>}
+        {props.name && <input type="hidden" name={props.name} value={commitNumber(raw, resolved)} disabled={props.disabled} />}
       </div>;
     };
   },

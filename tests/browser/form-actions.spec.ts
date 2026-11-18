@@ -37,8 +37,12 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(buttons(page).nth(0)).toHaveCSS('width', '288px');
     await expect(buttons(page).nth(1)).toHaveCSS('width', '288px');
     await expect.poll(async () => (await rect(buttons(page).nth(1))).height).toBeGreaterThan(48);
+    // Stacked, confirm (DOM second) sits on top and cancel under it; the DOM and Tab order stay cancel → confirm.
     const a = await rect(buttons(page).nth(0)), b = await rect(buttons(page).nth(1));
-    expect(b.y - a.y - a.height).toBeCloseTo(8, 0);
+    expect(a.y - b.y - b.height).toBeCloseTo(8, 0);
+    await buttons(page).nth(0).focus();
+    await page.keyboard.press('Tab');
+    await expect(buttons(page).nth(1)).toBeFocused();
     await assertContained(page.getByTestId('container'));
     await configure(page, { width: 800 });
     await expect.poll(async () => (await rect(buttons(page).nth(0))).y === (await rect(buttons(page).nth(1))).y).toBe(true);
@@ -73,7 +77,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(buttons(page).nth(1)).toHaveCSS('width', '288px');
     const before = await rect(buttons(page).nth(1));
     await configure(page, { loading: true });
-    await expect(buttons(page).nth(1)).toBeDisabled();
+    // React Native Web's Pressable writes aria-disabled from its own disabled prop only; a busy Native button says so with aria-busy.
+    const busy = async (on: boolean) => platform === 'native'
+      ? on ? await expect(buttons(page).nth(1)).toHaveAttribute('aria-busy', 'true') : await expect(buttons(page).nth(1)).not.toHaveAttribute('aria-busy', 'true')
+      : on ? await expect(buttons(page).nth(1)).toBeDisabled() : await expect(buttons(page).nth(1)).toBeEnabled();
+    await busy(true);
     await expect(buttons(page).nth(1)).toHaveAccessibleName(long);
     await expect(buttons(page).nth(1)).toHaveCSS('opacity', '1');
     expect(await rect(buttons(page).nth(1))).toEqual(before);
@@ -82,14 +90,17 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.getByTestId('events')).toHaveText('cancel');
     await configure(page, { loading: false });
     await page.clock.runFor(390);
-    await expect(buttons(page).nth(1)).toBeDisabled();
+    await busy(true);
     await page.clock.runFor(20);
-    await expect(buttons(page).nth(1)).toBeEnabled();
+    await busy(false);
     await buttons(page).nth(1).focus();
     await page.keyboard.press('Space');
     await expect(page.getByTestId('events')).toHaveText('cancel,confirm');
     await configure(page, { cancelDisabled: true, confirmDisabled: true });
-    for (const button of await buttons(page).all()) { await expect(button).toBeDisabled(); await expect(button).toHaveCSS('opacity', '1'); }
+    // A bare ghost cancel button also takes the disabled opacity (Button r1); filled buttons keep their full opacity.
+    const [cancel, confirm] = await buttons(page).all();
+    await expect(cancel).toBeDisabled(); await expect(confirm).toBeDisabled();
+    if (platform !== 'native') { await expect(cancel).toHaveCSS('opacity', '0.5'); await expect(confirm).toHaveCSS('opacity', '1'); }
   });
 
   test(`${platform}: FormActions adapts inside BottomActionBar and Modal`, async ({ page }) => {
@@ -160,5 +171,24 @@ for (const platform of ['react', 'vue3']) {
     const modalSave = page.getByRole('dialog').getByRole('button', { name: '저장' });
     await expect(modalSave).toHaveAttribute('type', 'submit');
     await expect(modalSave).toHaveAttribute('form', 'profile-form');
+  });
+  test(`${platform}: FormActions fill shares the row equally or gives the confirm button twice the share`, async ({ page }) => {
+    await openFixture(page, platform, '', 'form-actions');
+    await configure(page, { fill: true });
+    const width = async (index: number) => (await rect(buttons(page).nth(index))).width;
+    // 360px row, 8px gap: 176px each.
+    await expect.poll(() => width(0)).toBeCloseTo(176, 0);
+    expect(await width(1)).toBeCloseTo(176, 0);
+    await configure(page, { fill: 'primary' });
+    await expect.poll(() => width(1)).toBeCloseTo(352 * 2 / 3, 0);
+    expect(await width(0)).toBeCloseTo(352 / 3, 0);
+    const a = await rect(buttons(page).nth(0)), b = await rect(buttons(page).nth(1));
+    expect(a.y).toBe(b.y);
+    // A row that cannot hold both labels stacks, and each button is full width as without fill.
+    await configure(page, { width: 288, cancelText: 'Cancel', confirmText: long });
+    await expect(buttons(page).nth(0)).toHaveCSS('width', '288px');
+    await expect(buttons(page).nth(1)).toHaveCSS('width', '288px');
+    await configure(page, { width: 360, cancelText: '취소', confirmText: '저장', fill: false });
+    await expect.poll(() => width(1)).toBeLessThan(120);
   });
 }

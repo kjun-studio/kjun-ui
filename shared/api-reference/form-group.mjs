@@ -5,11 +5,13 @@ const common = {
     "복합 입력": "QuantityStepper와 NumberInput은 숫자 입력에 라벨·ID·오류·도움말·필수 정보를 연결합니다. TimePicker는 각 부분에 고유한 ID와 시·분·초 이름을 부여하고 도움말·오류를 공유합니다. 웹에서 연결된 라벨은 첫 번째 시 선택 컨트롤을 가리킵니다. Native DatePicker도 필드의 라벨·오류·도움말을 사용하며, Select 팝업의 검색창은 바깥 필드 맥락을 상속하지 않습니다.",
   }),
   required: detail("필수 표시와 자식 필드 맥락을 제공합니다.", {
+    "필수 표시": "라벨 뒤의 *는 그림으로만 그리고 화면 낭독기에서는 숨깁니다. 필수 여부는 입력의 required 상태로 전달됩니다.",
     "입력 연결": "Input·Textarea는 이 상태를 상속합니다. React·Vue 3는 기본 required, Native Web은 aria-required로 필수 입력 의미를 전달합니다. React·Vue 2 입력에 명시한 required 값은 FormGroup보다 우선합니다.",
     "상태 책임":
       "FormGroup은 값이나 검증 결과를 계산하지 않습니다. 값·검증 규칙은 소비자가 관리하고 결과 메시지를 error에 전달합니다. required만으로 모든 플랫폼의 제출 검증을 보장하지 않습니다.",
   }),
   error: detail("오류 메시지입니다. 표시하는 동안 hint 자리를 대신합니다.", {
+    "입력 자체 오류": "NumberInput의 범위 오류처럼 입력이 스스로 만드는 메시지도 이 자리에 표시합니다. error를 주면 error가 우선합니다.",
     "적용 조건":
       "비어 있지 않은 문자열이면 오류 설명을 표시합니다. boolean 오류 여부가 아닌 메시지를 전달하세요.",
     "상태 책임":
@@ -19,6 +21,10 @@ const common = {
     "표시 조건": "error가 있으면 숨기고 그 자리에 오류를 표시해 필드 높이를 유지합니다. 입력의 접근성 설명도 그동안 error만 가리킵니다.",
   }),
 };
+const labelEnd = (type) => ({ type, ...detail("라벨 줄 끝에 둘 보조 내용입니다. 글자 수나 \"전액\" 같은 작은 동작에 씁니다.", {
+  배치: "라벨과 같은 줄 오른쪽 끝에 caption 크기로 둡니다. 오류가 생겨도 자리가 바뀌지 않고 라벨과 입력 사이 간격도 그대로입니다.",
+  "책임": "글자 수 계산이나 동작은 앱이 정합니다. 버튼을 넣으면 그 버튼에 이름을 주세요.",
+}) });
 const ownership = [
   "입력값·검증·요청·비활성 상태: 소비자가 자식 입력과 업무 코드에서 관리합니다. FormGroup에는 value prop이나 값 변경 이벤트가 없습니다.",
   "라벨·도움말·오류 연결: FormGroup이 필드 맥락과 설명 요소를 제공하고 KJUN 입력이 이를 소비합니다.",
@@ -38,6 +44,11 @@ export default {
         "제공 데이터 없음",
         "KjunInput·KjunSelect·KjunTextarea 등은 provide/inject로 필드 맥락을 받습니다. 입력의 v-model은 자식에 연결합니다.",
       ),
+      labelEnd: slot(
+        "라벨 줄 끝에 둘 보조 내용입니다. 글자 수나 \"전액\" 같은 작은 동작에 씁니다.",
+        "제공 데이터 없음",
+        "라벨과 같은 줄 오른쪽 끝에 caption 크기로 둡니다. 오류가 생겨도 자리가 바뀌지 않습니다. 버튼을 넣으면 그 버튼에 이름을 주세요.",
+      ),
     },
   },
   react: {
@@ -51,6 +62,7 @@ export default {
             "생략하면 useId 기반 필드 ID를 생성합니다. KJUN 입력은 Context의 id·labelId·describedBy를 사용합니다.",
         }),
       },
+      labelEnd: labelEnd("ReactNode"),
       children: slot(
         "필드 맥락을 사용할 입력을 배치합니다.",
         "ReactNode",
@@ -68,6 +80,10 @@ export default {
           연결: "생략하면 useId 기반 ID를 생성합니다. 자식 입력은 Context의 label·error·hint를 접근성 속성에 사용합니다. 웹 label의 for와 동일한 클릭 동작을 보장하지 않습니다.",
         }),
       },
+      labelEnd: labelEnd("ReactNode"),
+      style: detail("그룹 바깥 View의 스타일입니다.", {
+        "아래 간격": "그룹은 마지막 자식이어도 아래에 form itemGap 간격을 둡니다(Native는 마지막 자식을 알 수 없습니다). KjunStack·KjunInline·KjunFormLayout 안에서는 이 간격을 지우고, 그 밖에서 마지막 그룹이면 { marginBottom: 0 }을 주세요.",
+      }),
       children: slot(
         "필드 맥락을 사용할 Native 입력을 배치합니다.",
         "ReactNode",

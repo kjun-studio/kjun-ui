@@ -31,7 +31,7 @@ export function forms(b: RecipeBuilder): string | undefined {
       const chip = b.node('KjunChip', { label: expr('tag'), removable: true, onRemove: b.call(remove, 'tag') });
       return b.stack([
         b.node('KjunFormGroup', { label: '알림 시각', hint: '초 단위까지 선택합니다.' }, b.node('KjunTimePicker', { value: b.state('time', '09:30:00'), precision: 'second', ariaLabel: '알림 시각', onValueChange: b.update('time') })),
-        b.node('KjunFormGroup', { label: '요청 수량', hint: '확정된 숫자 값을 상태에 연결합니다.' }, b.node('KjunQuantityStepper', { value: b.state('quantity', 1.25), min: 0, max: 10, step: .1, precision: 2, ariaLabel: '요청 수량', onValueChange: b.update('quantity') })),
+        b.node('KjunFormGroup', { label: '요청 수량', hint: '확정된 숫자 값을 상태에 연결합니다.' }, b.node('KjunQuantityStepper', { value: b.state('quantity', 1.25), min: 0, max: 10, step: .1, precision: 2, onValueChange: b.update('quantity') })),
         b.node('KjunRangeSlider', { label: '알림 범위', value: b.state('range', [20, 80]), onValueChange: b.update('range') }),
         b.row([b.each(tags.code, 'tag', 'tag', b.when('!state.removedTags.includes(tag)', chip))]),
         b.button('분류 초기화', b.handler('restoreTags', '', b.set('removedTags', '[]'))),
@@ -42,7 +42,7 @@ export function forms(b: RecipeBuilder): string | undefined {
       const balance = 3420000;
       const add = (label: string, step: number) => b.button(label, b.handler('add' + step, '', b.set('amount', 'String(Math.min(' + balance + ', (Number(' + b.read('amount') + ') || 0) + ' + step + '))')), { variant: 'secondary', size: 'sm' });
       return b.stack([
-        b.node('KjunFormGroup', { label: '보낼 금액', hint: '잔액 3,420,000원' }, b.node('KjunNumberInput', { value: b.state('amount', ''), onValueChange: b.update('amount'), format: 'amount', suffix: '원', readingAid: true, min: 1000, max: balance, ariaLabel: '보낼 금액', placeholder: '0' })),
+        b.node('KjunFormGroup', { label: '보낼 금액', hint: '잔액 3,420,000원' }, b.node('KjunNumberInput', { value: b.state('amount', ''), onValueChange: b.update('amount'), format: 'amount', suffix: '원', readingAid: true, min: 1000, max: balance, placeholder: '0' })),
         b.row([add('+1만', 10000), add('+5만', 50000), add('+10만', 100000), b.button('전액', b.handler('addAll', '', b.set('amount', 'String(' + balance + ')')), { variant: 'secondary', size: 'sm' })]),
       ]);
     }

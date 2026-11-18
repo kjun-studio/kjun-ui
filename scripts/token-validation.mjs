@@ -11,6 +11,8 @@ export function tokenKind(path) {
   if (/^extensions\.calendar\./.test(path) && /Opacity$/.test(name)) return 'opacity';
   if (path === 'extensions.calendar.swipeRatio') return 'ratio';
   if (/^extensions\.calendar\./.test(path) && /^(slideOut|slideIn|longPressDelay|pressGuard)$/.test(name)) return 'duration';
+  // Hold-to-repeat timing of the step buttons.
+  if (/^extensions\.compound\.repeat(Delay|Interval)$/.test(path)) return 'duration';
   if (name === 'letterSpacingEm') return 'tracking';
   if (name === 'inset' && isShadow(path)) return 'boolean';
   if (name === 'colorRole') return 'colorRole';

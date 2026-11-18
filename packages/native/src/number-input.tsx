@@ -2,6 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "rea
 import { Platform, View, type KeyboardTypeOptions, type NativeSyntheticEvent, type StyleProp, type TextInputKeyPressEventData, type TextInputSelectionChangeEventData, type ViewStyle } from "react-native";
 import { isComposingKey, tokens, type InputSize } from "@kjun-ui/tokens";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
+import { joinHints } from "../../../shared/package-runtime/aria-ids";
 import {
   addsTooManyDigits, caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage,
   readingAid as readNumber, resolveNumberInput, sameNumber, sanitizeNumber, type NumberInputOptions,
@@ -230,11 +231,15 @@ export function KjunNumberInput({
   const aid = readingAid ? readNumber(raw, o, scope) : "";
   // A caller's error or the group's error wins; the built-in range message then stays out of the way.
   const message = issue && !error && !field?.error ? rangeMessage(issue, o, scope) : "";
+  // In a FormGroup the range message takes the group's error slot, in place of the hint.
+  const owner = "kjun-number-" + useId(), toGroup = field?.reportError;
+  useEffect(() => { toGroup?.(owner, message); }, [toGroup, message]);
+  useEffect(() => () => toGroup?.(owner, ""), [toGroup]);
   const keyboard = numberKeyboard(o);
   return <View style={style} {...(web ? { dataSet: { format: o.format, align } } : {})}>
     <KjunInput ref={input} value={view.text} size={size} prefix={prefix} suffix={suffix ?? o.suffix}
-      disabled={disabled} readOnly={readOnly} error={error} errorMessage={message} nativeID={id} ariaLabel={ariaLabel}
-      placeholder={placeholder} accessibilityHint={aid || undefined} selection={view.selection} onSelectionChange={selectionChange}
+      disabled={disabled} readOnly={readOnly} error={error || (!!toGroup && !!message)} errorMessage={toGroup ? "" : message} nativeID={id} ariaLabel={ariaLabel}
+      placeholder={placeholder} accessibilityHint={joinHints(aid, toGroup ? message : "") || undefined} selection={view.selection} onSelectionChange={selectionChange}
       onChangeText={change} onBlur={() => commit()}
       {...(web
         ? { inputMode: keyboard.inputMode, "aria-describedby": aid ? aidId : undefined, blurOnSubmit: false }
