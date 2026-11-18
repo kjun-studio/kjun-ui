@@ -29,7 +29,19 @@ const RecentCase = defineComponent(() => {
     <output data-testid="cp-recent-list">{JSON.stringify(recent.value)}</output>
   </div>;
 });
+/** An inline panel with recent colors: the row moves after a finished pick that did not come from it. */
+const InlineCase = defineComponent(() => {
+  const recent = ref<string[]>(['#0EA5E9']), value = ref<string | null>('#3B82F6');
+  return () => <div data-testid="cp-inline" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <K.KjunColorPicker inline ariaLabel="테마 색" modelValue={value.value} input swatches={cpSwatches} recentColors={recent.value}
+      {...{ 'onUpdate:modelValue': (v: string | null) => { value.value = v; }, 'onUpdate:recentColors': (list: string[]) => { recent.value = list; } }} />
+    <output data-testid="cp-inline-value">{value.value}</output>
+    <output data-testid="cp-inline-recent">{JSON.stringify(recent.value)}</output>
+  </div>;
+});
 const App = defineComponent(() => {
+  // ?variants adds the inline panel and the swatch/tool triggers (color-picker-variants.spec.ts).
+  const extras = location.search.includes('variants');
   const submitted = ref('');
   return () => <K.KjunProvider>{{ default: () => <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '16px', width: '360px', paddingBottom: '480px' }}>
     <Case caseId="cp-full" initial="#3B82F680" options={{ ariaLabel: '라벨 색', custom: true, alpha: true, input: true, clearable: true, swatches: cpSwatches }} />
@@ -54,6 +66,14 @@ const App = defineComponent(() => {
     <div data-testid="cp-custom-trigger"><K.KjunFormGroup label="커스텀 색">{{ default: () =>
       <K.KjunColorPicker defaultValue="#3B82F6" swatches={cpSwatches}>{{ trigger: () => <span>칩 보기</span> }}</K.KjunColorPicker> }}
     </K.KjunFormGroup></div>
+    {extras && <>
+    <InlineCase />
+    <div data-testid="cp-variants" style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
+      <K.KjunColorPicker variant="swatch" size="sm" ariaLabel="채움 색" defaultValue="#3B82F6" swatches={cpSwatches} />
+      <K.KjunColorPicker variant="swatch" icon="typography" size="sm" ariaLabel="글자 색" defaultValue="#EF4444" swatches={cpSwatches} />
+      <K.KjunColorPicker variant="swatch" ariaLabel="비활성 채움" defaultValue="#3B82F6" disabled swatches={cpSwatches} />
+    </div>
+    </>}
     <div data-testid="cp-sizes" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {(['sm', 'md', 'lg'] as const).map(size => <K.KjunColorPicker key={size} size={size} ariaLabel={'크기 ' + size} defaultValue="#3B82F6" swatches={cpSwatches} />)}
     </div>

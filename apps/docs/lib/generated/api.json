@@ -4665,6 +4665,27 @@
         "required": false,
         "default": "—",
         "description": "Submits the value with a form through a hidden input."
+      },
+      {
+        "name": "inline",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draws the panel in the page flow, without a trigger: a filled 240px block for settings screens. open, size, placeholder,\nvariant and the trigger slot do not apply. Recent colors move after each finished pick that did not come from the recent row."
+      },
+      {
+        "name": "variant",
+        "type": "\"field\" | \"swatch\"",
+        "required": false,
+        "default": "\"field\"",
+        "description": "\"swatch\" draws a square color button as tall as the field (for toolbars) instead of the field trigger."
+      },
+      {
+        "name": "icon",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "With variant=\"swatch\": an icon over a bar of the color, on a clear button (a text-color tool)."
       }
     ],
     "events": [
@@ -4858,6 +4879,27 @@
         "description": "Submits the value with a form through a hidden input."
       },
       {
+        "name": "inline",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Draws the panel in the page flow, without a trigger: a filled 240px block for settings screens. open, size, placeholder,\nvariant and renderTrigger do not apply. Recent colors move after each finished pick that did not come from the recent row."
+      },
+      {
+        "name": "variant",
+        "type": "\"field\" | \"swatch\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"swatch\" draws a square color button as tall as the field (for toolbars) instead of the field trigger."
+      },
+      {
+        "name": "icon",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "With variant=\"swatch\": an icon over a bar of the color, on a clear button (a text-color tool)."
+      },
+      {
         "name": "renderTrigger",
         "type": "((state: { value: string | null; open: boolean; }) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
@@ -5026,6 +5068,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "inline",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Draws the panel in the page flow, without a trigger: a filled 240px block for settings screens. open, size, placeholder,\nvariant and renderTrigger do not apply. Recent colors move after each finished pick that did not come from the recent row."
+      },
+      {
+        "name": "variant",
+        "type": "\"field\" | \"swatch\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"swatch\" draws a square color button as tall as the field (for toolbars) instead of the field trigger."
+      },
+      {
+        "name": "icon",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "With variant=\"swatch\": an icon over a bar of the color, on a clear button (a text-color tool)."
       },
       {
         "name": "renderTrigger",
@@ -30324,6 +30387,13 @@
         "description": "Submits the value with a form through a hidden input."
       },
       {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "The first segment's id, for an outside <label for>; defaults to the FormGroup's id."
+      },
+      {
         "name": "block",
         "type": "boolean",
         "required": false,
@@ -30440,6 +30510,13 @@
         "required": false,
         "default": "—",
         "description": "Submits the value with a form through a hidden input."
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The first segment's id, for an outside <label for>; defaults to the FormGroup's id."
       },
       {
         "name": "block",

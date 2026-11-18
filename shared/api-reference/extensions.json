@@ -827,7 +827,8 @@
       "block",
       "hourCycle",
       "readOnly",
-      "name"
+      "name",
+      "id"
     ],
     "react": [
       "value",
@@ -846,7 +847,8 @@
       "onChangeCommit",
       "hourCycle",
       "readOnly",
-      "name"
+      "name",
+      "id"
     ],
     "native": [
       "value",
@@ -887,7 +889,10 @@
       "disabled",
       "readOnly",
       "id",
-      "name"
+      "name",
+      "inline",
+      "variant",
+      "icon"
     ],
     "react": [
       "value",
@@ -913,6 +918,9 @@
       "readOnly",
       "id",
       "name",
+      "inline",
+      "variant",
+      "icon",
       "renderTrigger",
       "className",
       "style"
@@ -939,6 +947,9 @@
       "error",
       "disabled",
       "readOnly",
+      "inline",
+      "variant",
+      "icon",
       "renderTrigger",
       "style",
       "testID"

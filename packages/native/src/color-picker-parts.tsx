@@ -270,7 +270,9 @@ function Affix({ text, side, onWidth }: { text: string; side: "left" | "right"; 
 
 /** The eyedropper button (Native Web only) and the hex and % fields. Typing changes the value once a code is complete;
  * submitting or leaving a field commits it (a short code expands, a bad one reverts). */
-export function ColorInputs({ fields, value, alpha, alphaPercent, clearable, hexLabel, alphaLabel, eyeDropper, onEdit, onCommit, hexRef }: {
+export function ColorInputs({ fields, value, alpha, alphaPercent, clearable, hexLabel, alphaLabel, eyeDropper, onEdit, onCommit, hexRef, surface = false }: {
+  /** On an inline panel's fill the fields take the surface, so they still read as fields. */
+  surface?: boolean;
   fields: boolean; value: string | null; alpha: boolean; alphaPercent: number; clearable: boolean; hexLabel: string; alphaLabel: string;
   eyeDropper: { label: string; onPick: () => void } | null;
   onEdit: (live: string | null) => void; onCommit: (next: string | null | "revert") => void; hexRef: (el: TextInput | null) => void;
@@ -305,7 +307,7 @@ export function ColorInputs({ fields, value, alpha, alphaPercent, clearable, hex
   };
   const field = tokens.input.sm, pad = field.padding - tokens.border.controlWidth, gap = picker.affixGap;
   const [signWidth, setSignWidth] = useState(0), [unitWidth, setUnitWidth] = useState(0);
-  const style = { height: field.height, borderRadius: field.radius, paddingHorizontal: pad, backgroundColor: colors.inputBg,
+  const style = { height: field.height, borderRadius: field.radius, paddingHorizontal: pad, backgroundColor: surface ? colors.surface : colors.inputBg,
     color: colors.text, ...inputTypeStyle("sm"), fontVariant: ["tabular-nums" as const],
     ...(Platform.OS === "web" ? ({ outlineStyle: "none", textTransform: "uppercase" } as object) : null) };
   return (

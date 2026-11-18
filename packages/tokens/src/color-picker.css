@@ -119,3 +119,25 @@
 .kjun-color-swatch[data-selected], .kjun-color-swatch:focus-visible {
   box-shadow: 0 0 0 var(--_kjun-extension-color-picker-ring-gap) var(--_kjun-color-surface), 0 0 0 calc(var(--_kjun-extension-color-picker-ring-gap) + var(--_kjun-extension-color-picker-ring-width)) var(--_kjun-color-brand);
 }
+
+/* variant="swatch": a square color button as tall as the field. With an icon it is a clear tool button: the icon over a bar of the color. */
+.kjun-color-picker[data-variant="swatch"] { display: inline-flex; width: auto; }
+.kjun-color-trigger:is([data-variant="swatch"],[data-variant="tool"]) { flex: none; justify-content: center; }
+.kjun-color-trigger[data-variant="tool"], .kjun-color-trigger[data-variant="tool"]:focus:not([aria-expanded="true"]) { background: transparent; border-color: transparent; }
+.kjun-color-trigger[data-variant="tool"]:hover:not(:disabled):not([aria-expanded="true"]) { background: var(--_kjun-color-hover); }
+.kjun-color-trigger[data-variant="tool"][aria-expanded="true"] { background: var(--_kjun-color-active); border-color: transparent; }
+.kjun-color-trigger[data-variant="tool"]:disabled { background: transparent; }
+.kjun-color-trigger:is([data-variant="swatch"],[data-variant="tool"]):disabled .kjun-color-chip,
+.kjun-color-trigger[data-variant="tool"]:disabled .kjun-color-tool { opacity: var(--_kjun-state-opacity-disabled); }
+.kjun-color-tool { display: inline-flex; flex-direction: column; align-items: center; gap: var(--_kjun-extension-color-picker-indicator-gap); color: var(--_kjun-color-text); }
+.kjun-color-indicator { position: relative; overflow: hidden; width: var(--_kjun-extension-color-picker-indicator-width); height: var(--_kjun-extension-color-picker-indicator-height);
+  border-radius: var(--_kjun-extension-color-picker-indicator-radius); }
+.kjun-color-indicator > span { position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 var(--_kjun-border-default-width) color-mix(in srgb, var(--_kjun-color-text) 12%, transparent); }
+.kjun-color-indicator[data-none] > span { background: var(--_kjun-color-text-tertiary); opacity: var(--_kjun-state-opacity-disabled); box-shadow: none; }
+
+/* inline: the panel sits in the page as a filled block (no border or shadow, which belong to floating layers).
+   Its fields take the surface so they still read as fields on the fill. */
+.kjun-color-inline { max-width: 100%; border-radius: var(--_kjun-geometry-input-md-radius); background: var(--_kjun-color-input-bg);
+  padding: var(--_kjun-extension-color-picker-padding); }
+.kjun-color-inline .kjun-color-inputs .kjun-input:not(:focus) { background: var(--_kjun-color-surface); }
+.kjun-color-inline[data-disabled] { opacity: var(--_kjun-state-opacity-disabled); }

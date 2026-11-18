@@ -228,6 +228,7 @@
     "implementationFiles": [
       "packages/tokens/src/calendar.css",
       "packages/tokens/src/carousel.css",
+      "packages/tokens/src/color-picker.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/event-calendar.css",
@@ -247,6 +248,7 @@
       "packages/native/src/calendar-day.tsx",
       "packages/native/src/calendar.tsx",
       "packages/native/src/chip.tsx",
+      "packages/native/src/color-picker.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/field-clear.tsx",
@@ -278,6 +280,7 @@
       "--bg-active"
     ],
     "implementationFiles": [
+      "packages/tokens/src/color-picker.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/event-calendar.css",
@@ -292,6 +295,7 @@
       "packages/native/src/button.tsx",
       "packages/native/src/calendar-day.tsx",
       "packages/native/src/chip.tsx",
+      "packages/native/src/color-picker.tsx",
       "packages/native/src/display-primitives.tsx",
       "packages/native/src/field-clear.tsx",
       "packages/native/src/file-upload-row.tsx",
@@ -544,6 +548,7 @@
       "packages/native/src/calendar.tsx",
       "packages/native/src/card.tsx",
       "packages/native/src/color-picker-parts.tsx",
+      "packages/native/src/color-picker.tsx",
       "packages/native/src/combobox.tsx",
       "packages/native/src/data-state.tsx",
       "packages/native/src/display-primitives.tsx",
@@ -1000,10 +1005,12 @@
       "--input-bg"
     ],
     "implementationFiles": [
+      "packages/tokens/src/color-picker.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/web.css",
       "packages/native/src/color-picker-parts.tsx",
+      "packages/native/src/color-picker.tsx",
       "packages/native/src/field-surface.ts",
       "packages/native/src/quantity-stepper.tsx",
       "packages/native/src/time-picker.tsx"

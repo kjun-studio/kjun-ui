@@ -183,7 +183,7 @@ export function generate(input: UsageInput) {
     }
     case 'KjunTimePicker':
       content = b.node(name, { value: b.state('time', null), onValueChange: b.update('time'), ...b.props('precision', 'minuteStep', 'secondStep', 'disabled', 'error', 'clearable', 'size', 'block'),
-        min: s.bounded ? s.precision === 'second' ? '09:30:15' : '09:30' : undefined, max: s.bounded ? s.precision === 'second' ? '18:30:45' : '18:30' : undefined, ariaLabel: '알림 시각', onChangeCommit: commit() }); break;
+        min: s.bounded ? s.precision === 'second' ? '09:30:15' : '09:30' : undefined, max: s.bounded ? s.precision === 'second' ? '18:30:45' : '18:30' : undefined, hourCycle: s.hourCycle === '12' ? 12 : undefined, ariaLabel: '알림 시각', onChangeCommit: commit() }); break;
     case 'KjunZoneGauge': {
       // Zone colours are the app's own: KJUN draws them as given.
       if (b.native) b.declare('appColors', 'import { appColors } from "./kjun";');
@@ -216,6 +216,7 @@ export function generate(input: UsageInput) {
     case 'KjunColorPicker':
       content = b.node(name, { value: b.state('color', s.alpha ? '#3B82F6CC' : '#3B82F6'), onValueChange: b.update('color'), swatches: s.swatches ? ['#EF4444', '#F97316', '#EAB308', '#22C55E', '#14B8A6', '#3B82F6', '#8B5CF6', '#EC4899', '#64748B', '#111111'] : undefined,
         ...b.props('custom', 'alpha', 'input', 'clearable', 'eyeDropper', 'disabled', 'error', 'size'),
+        inline: s.layout === 'inline' || undefined, variant: s.layout === 'swatch' || s.layout === 'tool' ? 'swatch' : undefined, icon: s.layout === 'tool' ? 'typography' : undefined,
         recentColors: s.recent ? b.state('recentColors', ['#0EA5E9', '#7C3AED']) : undefined, onRecentColorsChange: s.recent ? b.update('recentColors') : undefined,
         ariaLabel: '라벨 색', onChangeCommit: commit() }); break;
     case 'KjunFileUpload': {

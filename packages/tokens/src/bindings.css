@@ -1062,6 +1062,10 @@
   --_kjun-extension-color-picker-trigger-swatch-sm: 16px;
   --_kjun-extension-color-picker-trigger-swatch-md: 20px;
   --_kjun-extension-color-picker-trigger-swatch-lg: 24px;
+  --_kjun-extension-color-picker-indicator-width: 16px;
+  --_kjun-extension-color-picker-indicator-height: 3px;
+  --_kjun-extension-color-picker-indicator-radius: 9999px;
+  --_kjun-extension-color-picker-indicator-gap: 2px;
   --_kjun-extension-calendar-width: 312px;
   --_kjun-extension-calendar-padding: 12px;
   --_kjun-extension-calendar-header-height: 36px;

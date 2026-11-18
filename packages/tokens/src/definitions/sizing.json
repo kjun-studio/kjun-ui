@@ -314,7 +314,11 @@
         "sm": { "$ref": "dimension.value16" },
         "md": { "$ref": "dimension.value20" },
         "lg": { "$ref": "dimension.value24" }
-      }
+      },
+      "indicatorWidth": { "$ref": "dimension.value16" },
+      "indicatorHeight": { "$ref": "dimension.value3" },
+      "indicatorRadius": { "$ref": "radius.radius9999" },
+      "indicatorGap": { "$ref": "dimension.value2" }
     },
     "calendar": {
       "width": 312,

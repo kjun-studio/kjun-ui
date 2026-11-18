@@ -109,6 +109,9 @@ const colorPickerSummaries = {
   clearable: "견본 맨 앞에 ‘색 없음’ 칸(흐린 사선)을 둡니다. 고르면 값이 null이 됩니다. HEX 칸을 비우고 확정해도 같습니다.",
   recentColors: "앱이 보관하는 최근 사용 색입니다. 문자열 또는 { value, label }이며, 주면 견본 아래 ‘최근 사용 색’ 줄(최대 8칸)을 그립니다. 견본에 이미 있는 색은 줄에서 빼고 그리며(앱 목록에는 남습니다), 남는 색이 없으면 줄을 그리지 않습니다. 두 줄이 함께 보이면 각각 캡션을 붙입니다. 새 값으로 패널을 닫을 때 다음 목록을 알리므로 앱이 저장해서 다시 넘겨 주세요. Vue는 v-model:recentColors입니다.",
   eyeDropper: "HEX 칸 앞에 화면에서 색을 고르는 스포이드 아이콘 버튼(채움 없음)을 둡니다. 브라우저에 EyeDropper가 있을 때(Chromium 데스크톱, Native는 RN Web)만 그리고 다른 곳에서는 그리지 않습니다. 고른 색은 바로 확정하고, alpha면 현재 투명도를 유지합니다.",
+  inline: "트리거 없이 240px 패널을 페이지 흐름에 바로 놓습니다. 설정 화면처럼 늘 펼쳐 둘 때 씁니다. 떠 있는 레이어가 아니므로 테두리·그림자 대신 input 채움과 12px 모서리를 쓰고, 패널 이름은 FormGroup 라벨이나 ariaLabel입니다. open·size·placeholder·variant·renderTrigger는 쓰지 않습니다. 닫히지 않으므로 최근 사용 색은 고르기를 마칠 때마다(견본·손 뗌·HEX 확정) 앞으로 옮기고, 최근 줄에서 고른 색은 줄을 그대로 둡니다.",
+  variant: "\"field\"(기본)는 Input 모양 트리거입니다. \"swatch\"는 툴바용으로 input 높이와 같은 정사각 버튼(sm 32·md 40·lg 48)에 색 칩만 둡니다. 이름은 ariaLabel과 현재 값으로 읽습니다.",
+  icon: "variant=\"swatch\"와 함께 쓰는 아이콘 이름입니다. 주면 채움 없는 버튼에 아이콘과 그 아래 16×3px 색 막대를 그려 글자 색 같은 도구 버튼이 됩니다. hover와 열림 때만 채움이 생깁니다.",
   open: "제어할 때의 패널 열림 상태입니다.",
   defaultOpen: "제어하지 않을 때 처음부터 패널을 열어 둡니다.",
   size: "트리거 크기입니다. Input과 같은 sm·md·lg(32·40·48px)입니다.",
@@ -392,6 +395,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     if (name === "KjunTimePicker" && key === "hourCycle") entry = { type: "12 | 24", default: "24", ...detail("시계 방식입니다. 24는 00~23시, 12는 오전/오후 칸과 1~12시를 보입니다.", { "값 형태": "어느 쪽이든 값은 HH:mm(또는 HH:mm:ss) 24시간 문자열입니다.", "칸 순서": "한국어·일본어·중국어는 오전/오후를 시 앞에, 그 밖의 언어는 뒤에 둡니다." }) };
     if (name === "KjunTimePicker" && key === "readOnly") entry = { default: "false", summary: "시각을 보여 주기만 하고 바꾸지 않습니다. 칸은 초점을 받지만 목록을 열지 않고 지우기 버튼도 숨깁니다." };
     if (name === "KjunTimePicker" && key === "name") entry = { summary: "폼 제출용 숨은 input의 이름입니다. 비어 있으면 빈 문자열을 제출합니다." };
+    if (name === "KjunTimePicker" && key === "id") entry = { summary: "첫 구간 트리거의 id입니다. FormGroup 없이 바깥 <label for>가 첫 구간을 가리킬 때 씁니다. 생략하면 FormGroup의 id를 씁니다." };
     if (name === "KjunQuantityStepper" && (key === "value" || key === "modelValue")) entry = detail(valueDescription[name], {
       "상태 책임": guides[name].interaction,
       "키보드": "Enter·blur는 변경값을 확정합니다. 편집 중 첫 Escape는 초안을 되돌리고 상위 창에 전달하지 않습니다. 편집이 끝난 뒤 Escape는 상위 창이 처리합니다. IME 조합 중 키와 조합 확정 keyCode=229는 수량을 확정하거나 증감하지 않습니다.",

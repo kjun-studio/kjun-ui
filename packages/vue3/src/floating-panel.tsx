@@ -35,6 +35,8 @@ export const FloatingPanel = defineComponent({
     returnFocus: { type: Function as PropType<() => HTMLElement | null | false | undefined>, default: undefined },
     /** The panel is itself the dialog unless its content renders one (Popover). */
     dialog: { type: Boolean, default: true },
+    /** The id of the element that names the panel when it is a dialog. */
+    labelledBy: { type: String, default: undefined },
     /** Changing it places the panel again (an anchor rectangle moved without a scroll or resize). */
     repositionKey: { type: Number, default: 0 },
     /** Another element that counts as inside (an anchored Popover's trigger area): pressing it is not an outside press. */
@@ -118,6 +120,7 @@ export const FloatingPanel = defineComponent({
           <div ref={panel} data-motion="popup" data-motion-open={String(motion.active())} class={["kjun-scope kjun-floating", props.panelClass]}
             data-placement={position.side} inert={!props.open}
             role={props.dialog && !props.nonModal ? "dialog" : undefined} tabindex={props.dialog && !props.nonModal ? -1 : undefined}
+            aria-labelledby={props.dialog && !props.nonModal ? props.labelledBy : undefined}
             style={{
               position: "fixed", zIndex: layer.zIndex.value, top: position.top + "px", left: position.left + "px",
               maxHeight: position.maxHeight != null ? position.maxHeight + "px" : undefined,

@@ -56,7 +56,7 @@ export function ColorArea({ hsv, label, valueText, empty, hint, areaRef, onMove,
 } & DragHandlers<Hsv>) {
   const drag = useDrag((x, y) => onMove({ ...hsv, s: x, v: 1 - y }), onStart, onEnd);
   return (
-    <div ref={areaRef} className="kjun-color-area" role="slider" tabIndex={0} aria-label={label} aria-roledescription={label}
+    <div ref={areaRef} className="kjun-color-area" role="slider" tabIndex={0} aria-label={label}
       aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent(hsv.s)} aria-valuetext={valueText}
       style={{ "--_kjun-color-picker-hue": rgb({ h: hsv.h, s: 1, v: 1 }) } as CSSProperties}
       onKeyDown={(event: KeyboardEvent) => {

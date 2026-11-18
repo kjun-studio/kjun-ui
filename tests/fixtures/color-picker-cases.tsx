@@ -13,6 +13,17 @@ function RecentCase({ K }: { K: any }) {
   </div>;
 }
 
+/** An inline panel with recent colors: the row moves after a finished pick that did not come from it. */
+function InlineCase({ K }: { K: any }) {
+  const [recent, setRecent] = useState<string[]>(['#0EA5E9']);
+  const [value, setValue] = useState<string | null>('#3B82F6');
+  return <div data-testid="cp-inline" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+    <K.KjunColorPicker inline ariaLabel="테마 색" value={value} onValueChange={setValue} input swatches={cpSwatches} recentColors={recent} onRecentColorsChange={setRecent} />
+    <output data-testid="cp-inline-value">{value}</output>
+    <output data-testid="cp-inline-recent">{JSON.stringify(recent)}</output>
+  </div>;
+}
+
 function Case({ K, id, initial, controlled, native, props }: { K: any; id: string; initial: string | null; controlled?: boolean; native?: boolean; props: Record<string, any> }) {
   const [value, setValue] = useState<string | null>(initial);
   const [changes, setChanges] = useState<(string | null)[]>([]);
@@ -29,6 +40,8 @@ function Case({ K, id, initial, controlled, native, props }: { K: any; id: strin
 }
 
 export function ColorPickerCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {
+  // ?variants adds the inline panel and the swatch/tool triggers (color-picker-variants.spec.ts); the other spec keeps one HEX field and swatch group per open panel.
+  const extras = location.search.includes('variants');
   const [submitted, setSubmitted] = useState('');
   return <K.KjunProvider {...providerProps}><div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 16, width: 360, paddingBottom: 480 }}>
     <Case K={K} id="cp-full" initial="#3B82F680" props={{ ariaLabel: '라벨 색', custom: true, alpha: true, input: true, clearable: true, swatches: cpSwatches }} />
@@ -54,6 +67,14 @@ export function ColorPickerCases({ K, native = false, providerProps = {} }: { K:
     <div data-testid="cp-custom-trigger"><K.KjunFormGroup label="커스텀 색">
       <K.KjunColorPicker defaultValue="#3B82F6" swatches={cpSwatches} renderTrigger={() => native ? <K.KjunText>칩 보기</K.KjunText> : <span>칩 보기</span>} />
     </K.KjunFormGroup></div>
+    {extras && <>
+    <InlineCase K={K} />
+    <div data-testid="cp-variants" style={{ display: 'flex', flexDirection: 'row', gap: 8 }}>
+      <K.KjunColorPicker variant="swatch" size="sm" ariaLabel="채움 색" defaultValue="#3B82F6" swatches={cpSwatches} />
+      <K.KjunColorPicker variant="swatch" icon="typography" size="sm" ariaLabel="글자 색" defaultValue="#EF4444" swatches={cpSwatches} />
+      <K.KjunColorPicker variant="swatch" ariaLabel="비활성 채움" defaultValue="#3B82F6" disabled swatches={cpSwatches} />
+    </div>
+    </>}
     <div data-testid="cp-sizes" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       {(['sm', 'md', 'lg'] as const).map(size => <K.KjunColorPicker key={size} size={size} ariaLabel={'크기 ' + size} defaultValue="#3B82F6" swatches={cpSwatches} />)}
     </div>

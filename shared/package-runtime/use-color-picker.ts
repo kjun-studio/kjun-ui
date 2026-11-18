@@ -25,6 +25,8 @@ export interface ColorPickerModelOptions {
   recentColors?: ColorSwatchInput[];
   onRecentColorsChange?: (colors: string[]) => void;
   eyeDropper?: boolean;
+  /** The panel sits in the page: it never opens, and recent colors move after each finished pick instead of on closing. */
+  inline?: boolean;
 }
 
 export function useColorPickerModel(o: ColorPickerModelOptions) {
@@ -38,7 +40,7 @@ export function useColorPickerModel(o: ColorPickerModelOptions) {
   useEffect(() => warn({ raw: controlled ? o.value : o.defaultValue, alpha: o.alpha, swatches: o.swatches, nothing }));
 
   const [openInner, setOpenInner] = useState(o.defaultOpen);
-  const open = (o.open ?? openInner) && !o.disabled && !o.readOnly;
+  const open = !o.inline && (o.open ?? openInner) && !o.disabled && !o.readOnly;
   const setOpen = (next: boolean) => { if (o.open === undefined) setOpenInner(next); o.onOpenChange?.(next); };
 
   const [state, setState] = useState<PickerState>(() => syncHsv(initialPickerState, value, o.alpha));
@@ -54,9 +56,17 @@ export function useColorPickerModel(o: ColorPickerModelOptions) {
     o.onValueChange?.(next);
     return true;
   };
+  /** An inline panel moves recent colors once a pick finishes; a pick from the recent row leaves the row where it is. */
+  const committed = (value: string | null, fromRecent = false) => {
+    o.onChangeCommit?.(value);
+    if (!o.inline || fromRecent || o.recentColors === undefined) return;
+    const next = nextRecentColors(o.recentColors, value, o.alpha);
+    if (next) o.onRecentColorsChange?.(next);
+  };
   /** A whole pick at once: swatch, key, eyedropper. */
-  const pick = (next: string | null) => { if (change(next)) o.onChangeCommit?.(next); };
-  const endSession = () => { if (session.end()) o.onChangeCommit?.(latest.current); };
+  const pick = (next: string | null, fromRecent = false) => { if (change(next)) committed(next, fromRecent); };
+  const pickRecent = (next: string | null) => pick(next, true);
+  const endSession = () => { if (session.end()) committed(latest.current); };
   const moveTo = (next: PickerState) => { setState(next); change(stateToValue(next, o.alpha)); };
   const pickState = (next: PickerState) => { setState(next); pick(stateToValue(next, o.alpha)); };
   /** Drags change on every move and commit once on release. */
@@ -70,8 +80,8 @@ export function useColorPickerModel(o: ColorPickerModelOptions) {
   const [canPickScreen, setCanPickScreen] = useState(false);
   useEffect(() => setCanPickScreen(!!o.eyeDropper && eyeDropperSupported()), [o.eyeDropper]);
   // The eyedropper answers later: pick with the callbacks of the latest render, and not at all once unmounted.
-  const latestPick = useRef(pick), mounted = useRef(true);
-  latestPick.current = pick;
+  const latestPick = useRef((next: string | null) => pick(next)), mounted = useRef(true);
+  latestPick.current = next => pick(next);
   useEffect(() => () => { mounted.current = false; }, []);
   const pickFromScreen = async () => { const next = await pickScreenColor(o.alpha, latest.current); if (next && mounted.current) latestPick.current(next); };
 
@@ -91,6 +101,6 @@ export function useColorPickerModel(o: ColorPickerModelOptions) {
   return {
     value, open, setOpen, state, swatches, recent, nothing, showInput: o.input || nothing,
     selected: selectedSwatchIndex(value, swatches, o.clearable), recentSelected: recent ? recent.findIndex(item => item.value === value) : -1,
-    pick, moveTo, pickState, drag, field, canPickScreen, pickFromScreen,
+    pick: (next: string | null) => pick(next), pickRecent, moveTo, pickState, drag, field, canPickScreen, pickFromScreen,
   };
 }

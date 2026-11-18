@@ -49,6 +49,13 @@ export interface KjunColorPickerProps {
   error?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
+  /** Draws the panel in the page flow, without a trigger: a filled 240px block for settings screens. open, size, placeholder,
+   * variant and renderTrigger do not apply. Recent colors move after each finished pick that did not come from the recent row. */
+  inline?: boolean;
+  /** "swatch" draws a square color button as tall as the field (for toolbars) instead of the field trigger. */
+  variant?: "field" | "swatch";
+  /** With variant="swatch": an icon over a bar of the color, on a clear button (a text-color tool). */
+  icon?: string;
   /** Draws the trigger's content; the trigger and its accessibility stay KJUN's. */
   renderTrigger?: (state: { value: string | null; open: boolean }) => ReactNode;
   style?: StyleProp<ViewStyle>;
@@ -61,12 +68,12 @@ const picker = tokens.extensions.colorPicker;
 export function KjunColorPicker({
   value, defaultValue = null, onValueChange, onChangeCommit, swatches: rawSwatches, custom = false, alpha = false, input = false,
   clearable = false, recentColors, onRecentColorsChange, eyeDropper = false, open: openGiven, defaultOpen = false, onOpenChange, size = "md",
-  placeholder, ariaLabel, error, disabled = false, readOnly = false, renderTrigger, style, testID,
+  placeholder, ariaLabel, error, disabled = false, readOnly = false, inline = false, variant = "field", icon, renderTrigger, style, testID,
 }: KjunColorPickerProps) {
   const scope = useKjunMessageScope(), m = scope.messages, { colors } = useKjunStyles(), field = useKjunField(), spec = tokens.input[size];
   const model = useColorPickerModel({
     value, defaultValue, onValueChange, onChangeCommit, swatches: rawSwatches, custom, alpha, input, clearable,
-    open: openGiven, defaultOpen, onOpenChange, disabled, readOnly, recentColors, onRecentColorsChange, eyeDropper,
+    open: openGiven, defaultOpen, onOpenChange, disabled, readOnly, recentColors, onRecentColorsChange, eyeDropper, inline,
   });
   const { value: current, open, setOpen, state, selected } = model;
   const summary = pickerSummary(current, alpha, m, colorName(current, [model.swatches, model.recent ?? []])), spoken = summary.spoken;
@@ -76,7 +83,7 @@ export function KjunColorPicker({
   const detail = summary.percent !== undefined && summary.percent < 100 ? summary.percent + "%" : "";
   const grid = (model.swatches.length > 0 || clearable) && { items: swatchItems(model.swatches, clearable, m.colorNone), selected, label: m.swatches, onPick: model.pick,
     swatchRef: (index: number, el: View | null) => { targets.current.swatches[index] = el; } };
-  const recent = model.recent && model.recent.length > 0 && { items: model.recent, selected: model.recentSelected, label: m.recentColors, onPick: model.pick };
+  const recent = model.recent && model.recent.length > 0 && { items: model.recent, selected: model.recentSelected, label: m.recentColors, onPick: model.pickRecent };
   const label = ariaLabel || field?.label || placeholder || m.colorPlaceholder;
 
   const ref = useRef<View>(null);
@@ -94,14 +101,68 @@ export function KjunColorPicker({
     return () => cancelAnimationFrame(frame);
   }, [open]);
   const request = (next: boolean) => { if (!readOnly || !next) setOpen(next); };
+  const body = (width: number) => (
+    // Like Web: the panel border sits inside the width, so the content keeps width - 2 × padding.
+    <View style={{ width: width - 2 * tokens.border.defaultWidth, padding: picker.padding - tokens.border.defaultWidth, gap: picker.gap }}>
+      {custom && <ColorArea hsv={state.hsv} label={m.colorArea} valueText={m.colorAreaValue(pct(state.hsv.s), pct(state.hsv.v))} empty={current === null} hint={m.colorAreaHint}
+        actions={colorAreaActions(m)} areaRef={el => { targets.current.area = el; }}
+        onMove={hsv => model.moveTo({ ...state, hsv })} onPick={hsv => model.pickState({ ...state, hsv })} {...model.drag} />}
+      {custom && <ColorChannel channel="hue" value={state.hsv.h} max={360} label={m.hue} valueText={m.hueValue(Math.round(state.hsv.h))}
+        color={stateToValue({ hsv: { h: state.hsv.h, s: 1, v: 1 }, a: 1 }, false)} increase={m.increase} decrease={m.decrease}
+        onMove={h => model.moveTo({ ...state, hsv: { ...state.hsv, h } })} onPick={h => model.pickState({ ...state, hsv: { ...state.hsv, h } })} {...model.drag} />}
+      {alpha && <ColorChannel channel="alpha" value={pct(state.a)} max={100} label={m.alpha} valueText={pct(state.a) + "%"} color={stateToValue(state, false)}
+        increase={m.increase} decrease={m.decrease} spaced={custom}
+        onMove={a => model.moveTo({ ...state, a: a / 100 })} onPick={a => model.pickState({ ...state, a: a / 100 })} {...model.drag} />}
+      {(model.showInput || model.canPickScreen) && <ColorInputs fields={model.showInput} value={current} alpha={alpha} alphaPercent={pct(state.a)} clearable={clearable}
+        hexLabel={m.hex} alphaLabel={m.alpha} eyeDropper={model.canPickScreen ? { label: m.eyeDropper, onPick: model.pickFromScreen } : null}
+        onEdit={model.field.onEdit} onCommit={model.field.onCommit} hexRef={el => { targets.current.hex = el; }} surface={inline} />}
+      {(grid || recent) && <View style={{ gap: picker.gap, marginTop: custom || alpha || model.showInput || model.canPickScreen ? picker.sectionGap - picker.gap : 0 }}>
+        {grid && (recent ? <SwatchGroup caption={m.swatches} {...grid} /> : <SwatchGrid {...grid} />)}
+        {recent && <SwatchGroup caption={m.recentColors} {...recent} />}
+      </View>}
+    </View>
+  );
+
+  // inline: the panel sits in the page as a filled block; no border or shadow, which belong to floating layers.
+  if (inline) return (
+    <View testID={testID} role="group" accessibilityLabel={ariaLabel || field?.label || m.colorPlaceholder} accessibilityHint={field?.error || field?.hint}
+      {...(Platform.OS === "web" ? { "aria-describedby": field?.describedBy, "aria-disabled": disabled || undefined } : {})}
+      pointerEvents={disabled || readOnly ? "none" : "auto"}
+      style={[{ alignSelf: "flex-start", maxWidth: "100%", backgroundColor: colors.inputBg, borderRadius: tokens.input.md.radius, opacity: disabled ? tokens.states.opacity.disabled : 1 }, style]}>
+      {/* The panel padding without a border: body() takes the border back out of the width. */}
+      <View style={{ margin: tokens.border.defaultWidth }}>{body(picker.width)}</View>
+    </View>
+  );
+
+  const swatch = variant === "swatch", tool = swatch && !!icon;
+  const content = renderTrigger ? renderTrigger({ value: current, open })
+    : tool ? <View style={{ alignItems: "center", gap: picker.indicatorGap, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>
+        <KjunIcon name={icon!} size={spec.iconSize} color={colors.text} />
+        <View style={{ width: picker.indicatorWidth, height: picker.indicatorHeight, borderRadius: picker.indicatorRadius, overflow: "hidden",
+          backgroundColor: current ? summary.hex : colors.textTertiary, opacity: current ? summary.opacity : tokens.states.opacity.disabled }} />
+      </View>
+    : swatch ? <View style={{ opacity: disabled ? tokens.states.opacity.disabled : 1 }}><ColorChip value={current ? summary.hex : null} size={tokens.extensions.colorPicker.triggerSwatch[size]} opacity={summary.opacity} /></View>
+    : <>
+      <ColorChip value={current ? summary.hex : null} size={tokens.extensions.colorPicker.triggerSwatch[size]} opacity={summary.opacity} />
+      <KText numberOfLines={1} style={{ flex: 1, ...inputTypeStyle(size), fontVariant: ["tabular-nums"], color: disabled ? colors.textDisabled : current ? colors.text : colors.inputPlaceholder }}>
+        {current ? summary.name ?? summary.hex : placeholder ?? m.colorPlaceholder}
+        {current && (summary.name || detail) ? <KText style={{ color: colors.textSecondary }}>{" " + (summary.name ? summary.hex + (detail && " " + detail) : detail)}</KText> : null}
+      </KText>
+      <KjunIcon name="chevron-down" size={spec.iconSize} color={surface.icon} />
+    </>;
+  // A tool button is clear until hovered or open; a swatch button keeps the field fill. Both are as wide as they are tall.
+  const shape = swatch ? { width: spec.height, paddingHorizontal: 0, justifyContent: "center" as const,
+    ...(tool ? { backgroundColor: open ? colors.active : surface.hovered && !disabled ? colors.hover : "transparent", borderColor: "transparent" } : {}) }
+    : { paddingHorizontal: spec.padding - tokens.border.controlWidth, gap: spec.affixGap };
   return (
     <>
-      <View ref={ref} testID={testID} collapsable={false} {...fieldTarget(() => request(true), disabled)} onLayout={event => setTriggerWidth(event.nativeEvent.layout.width)} style={[{ minHeight: tokens.native.minimumTouchTarget, justifyContent: "center" }, style]}>
+      <View ref={ref} testID={testID} collapsable={false} {...fieldTarget(() => request(true), disabled)} onLayout={event => setTriggerWidth(event.nativeEvent.layout.width)}
+        style={[{ minHeight: tokens.native.minimumTouchTarget, justifyContent: "center", ...(swatch ? { alignSelf: "flex-start" as const } : {}) }, style]}>
         <FieldPressable
           {...surface.hover}
           onFocus={() => surface.setFocused(true)}
           onBlur={() => surface.setFocused(false)}
-          hitSlop={{ top: surface.hit, bottom: surface.hit, left: 0, right: 0 }}
+          hitSlop={{ top: surface.hit, bottom: surface.hit, left: swatch ? surface.hit : 0, right: swatch ? surface.hit : 0 }}
           nativeID={field?.id}
           accessibilityRole="button"
           // Like the web trigger, the name carries the value so a list of pickers reads their colors.
@@ -117,38 +178,13 @@ export function KjunColorPicker({
           } : {})}
           disabled={disabled}
           onPress={() => request(!open)}
-          style={{ ...surface.style, paddingHorizontal: spec.padding - tokens.border.controlWidth, flexDirection: "row", alignItems: "center", gap: spec.affixGap }}
+          style={{ ...surface.style, flexDirection: "row", alignItems: "center", ...shape }}
         >
-          {renderTrigger ? renderTrigger({ value: current, open }) : <>
-            <ColorChip value={current ? summary.hex : null} size={tokens.extensions.colorPicker.triggerSwatch[size]} opacity={summary.opacity} />
-            <KText numberOfLines={1} style={{ flex: 1, ...inputTypeStyle(size), fontVariant: ["tabular-nums"], color: disabled ? colors.textDisabled : current ? colors.text : colors.inputPlaceholder }}>
-              {current ? summary.name ?? summary.hex : placeholder ?? m.colorPlaceholder}
-              {current && (summary.name || detail) ? <KText style={{ color: colors.textSecondary }}>{" " + (summary.name ? summary.hex + (detail && " " + detail) : detail)}</KText> : null}
-            </KText>
-            <KjunIcon name="chevron-down" size={spec.iconSize} color={surface.icon} />
-          </>}
+          {content}
         </FieldPressable>
       </View>
-      <FloatingPanel open={open} onOpenChange={setOpen} triggerRef={ref} placement="bottom-start" minimumWidth={panelWidth} ariaLabel={label}>
-        {/* Like Web: the panel border sits inside the width, so the content keeps width - 2 × padding. */}
-        <View style={{ width: panelWidth - 2 * tokens.border.defaultWidth, padding: picker.padding - tokens.border.defaultWidth, gap: picker.gap }}>
-          {custom && <ColorArea hsv={state.hsv} label={m.colorArea} valueText={m.colorAreaValue(pct(state.hsv.s), pct(state.hsv.v))} empty={current === null} hint={m.colorAreaHint}
-            actions={colorAreaActions(m)} areaRef={el => { targets.current.area = el; }}
-            onMove={hsv => model.moveTo({ ...state, hsv })} onPick={hsv => model.pickState({ ...state, hsv })} {...model.drag} />}
-          {custom && <ColorChannel channel="hue" value={state.hsv.h} max={360} label={m.hue} valueText={m.hueValue(Math.round(state.hsv.h))}
-            color={stateToValue({ hsv: { h: state.hsv.h, s: 1, v: 1 }, a: 1 }, false)} increase={m.increase} decrease={m.decrease}
-            onMove={h => model.moveTo({ ...state, hsv: { ...state.hsv, h } })} onPick={h => model.pickState({ ...state, hsv: { ...state.hsv, h } })} {...model.drag} />}
-          {alpha && <ColorChannel channel="alpha" value={pct(state.a)} max={100} label={m.alpha} valueText={pct(state.a) + "%"} color={stateToValue(state, false)}
-            increase={m.increase} decrease={m.decrease} spaced={custom}
-            onMove={a => model.moveTo({ ...state, a: a / 100 })} onPick={a => model.pickState({ ...state, a: a / 100 })} {...model.drag} />}
-          {(model.showInput || model.canPickScreen) && <ColorInputs fields={model.showInput} value={current} alpha={alpha} alphaPercent={pct(state.a)} clearable={clearable}
-            hexLabel={m.hex} alphaLabel={m.alpha} eyeDropper={model.canPickScreen ? { label: m.eyeDropper, onPick: model.pickFromScreen } : null}
-            onEdit={model.field.onEdit} onCommit={model.field.onCommit} hexRef={el => { targets.current.hex = el; }} />}
-          {(grid || recent) && <View style={{ gap: picker.gap, marginTop: custom || alpha || model.showInput || model.canPickScreen ? picker.sectionGap - picker.gap : 0 }}>
-            {grid && (recent ? <SwatchGroup caption={m.swatches} {...grid} /> : <SwatchGrid {...grid} />)}
-            {recent && <SwatchGroup caption={m.recentColors} {...recent} />}
-          </View>}
-        </View>
+      <FloatingPanel open={open} onOpenChange={setOpen} triggerRef={ref} placement="bottom-start" minimumWidth={swatch ? picker.width : panelWidth} ariaLabel={label}>
+        {body(swatch ? picker.width : panelWidth)}
       </FloatingPanel>
     </>
   );

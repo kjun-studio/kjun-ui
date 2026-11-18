@@ -73,6 +73,7 @@ export const kjunPropValues = Object.freeze({
   }),
   KjunColorPicker: Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),
+    variant: Object.freeze(["field","swatch"] as const),
   }),
   KjunCombobox: Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),

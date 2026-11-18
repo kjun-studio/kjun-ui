@@ -72,7 +72,7 @@ export const ColorArea = defineComponent({
     return () => {
       const hsv = props.hsv;
       return (
-        <div ref={el => props.areaRef(el as HTMLElement | null)} class="kjun-color-area" role="slider" tabindex={0} aria-label={props.label} aria-roledescription={props.label}
+        <div ref={el => props.areaRef(el as HTMLElement | null)} class="kjun-color-area" role="slider" tabindex={0} aria-label={props.label}
           aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent(hsv.s)} aria-valuetext={props.valueText}
           style={{ "--_kjun-color-picker-hue": rgb({ h: hsv.h, s: 1, v: 1 }) }}
           onKeydown={(event: KeyboardEvent) => {
