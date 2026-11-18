@@ -1,6 +1,17 @@
 import { readFileSync } from "node:fs";
 import { detail, event, slot, fields } from "./helpers.mjs";
 import { eventCalendarProp, eventCalendarEvents, eventCalendarTypes } from "./event-calendar.mjs";
+const sliderSummaries = {
+  valueLabel: { type: '"off" | "drag" | "always"', default: '"off"', ...{ summary: "손잡이 위 말풍선에 값을 보여 줄 때를 정합니다.", details: [{ label: "값", text: "drag는 끄는 동안과 키보드 포커스 중에만, always는 늘 보여 줍니다. 세로 슬라이더는 손잡이 오른쪽에 둡니다. formatValue를 따르고, 손잡이가 이미 값을 읽어 주므로 보조기기에는 숨깁니다." }] } },
+  fillOrigin: { type: "number", summary: "채움이 min 대신 이 값에서 시작합니다. −50~50 같은 양방향 값에 쓰며, 기준점에 눈금 점을 함께 그립니다. min과 max 사이일 때만 적용됩니다." },
+  minStepsBetweenThumbs: { type: "number", default: "0", summary: "두 손잡이가 유지할 최소 step 수입니다. 끌기·키보드·트랙 누름 모두 이 간격 앞에서 멈춥니다. 0이면 두 손잡이가 같은 값에 겹칠 수 있습니다." },
+  name: { type: "string", summary: "폼 제출 이름입니다. 숨은 input으로 값을 보내며, RangeSlider는 같은 이름으로 시작·끝 두 값을 보냅니다." },
+  id: { type: "string", summary: "루트 그룹의 id입니다." },
+  className: { type: "string", summary: "루트(kjun-slider)에 더할 클래스입니다. 크기는 size·length로 정하세요." },
+  style: { summary: "루트에 더할 스타일입니다. 폭과 바깥 여백 정도만 바꾸세요." },
+  testID: { type: "string", summary: "테스트에서 루트 View를 찾는 ID입니다." },
+};
+
 const bindings = JSON.parse(readFileSync(new URL("./extensions.json", import.meta.url), "utf8"));
 const guides = JSON.parse(readFileSync(new URL("../component-guides.json", import.meta.url), "utf8"));
 const summaries = {
@@ -323,6 +334,7 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (name.endsWith("Slider") && key === "orientation") entry = { type: '"horizontal" | "vertical"', default: '"horizontal"', ...detail("트랙 방향입니다.", { "세로": "아래가 최솟값, 위가 최댓값이며 위아래 화살표로 조절합니다. 라벨·값은 트랙 위에 가운데 정렬하고, 눈금 라벨은 트랙 오른쪽에 둡니다. 길이는 length(기본 160px)입니다." }) };
     else if (name.endsWith("Slider") && key === "length") entry = { type: "number", default: "160", summary: "세로 슬라이더의 트랙 길이(px)입니다. 가로 슬라이더는 부모 폭을 채우므로 무시합니다." };
     else if (key === "formatRange") entry = { type: "(start: number, end: number) => string", ...detail("범위 전체의 표시 문구를 만듭니다.", { "예": "(s, e) => `${s / 10000}만~${e / 10000}만 원`처럼 단위를 한 번만 쓰거나 최댓값일 때 \"이상\"을 붙입니다.", "접근성": "각 손잡이가 읽는 값은 formatValue(또는 기본 숫자 서식)를 그대로 씁니다." }) };
+    else if (name.endsWith("Slider") && sliderSummaries[key]) entry = { ...sliderSummaries[key] };
     else if (name.endsWith("Slider") && key === "size") entry = { type: '"sm" | "md"', default: '"md"', summary: "sm은 12px 라벨·값, 4px 트랙, 16px 손잡이입니다. 누름 영역은 크기와 상관없이 44px입니다." };
     else if (key === "formatValue") entry = detail("각 손잡이의 숫자를 표시 문자열로 바꿉니다.", { "인자와 반환": "(value: number) => string. RangeSlider는 시작·끝 값에 각각 적용합니다. 생략하면 Provider 언어의 숫자 서식(예: 980,000)에 min·step의 소수 자릿수를 맞춰 씁니다(step 0.5면 1.0·1.5).", "접근성": "화면 출력과 " + (platform === "native" ? "accessibilityValue.text" : "aria-valuetext") + "에 같은 문자열을 사용합니다. showValue=false여도 접근성 값 설명은 유지합니다.", "상태 책임": platform === "vue3" ? "modelValue와 update:modelValue·change 이벤트는 숫자 형식을 유지합니다." : "value와 onValueChange·onChangeCommit 콜백은 숫자 또는 숫자 쌍 형식을 유지합니다." });
     else if (name === "KjunChip" && platform === "native" && chipNative[key]) entry = { ...chipNative[key] };

@@ -1,11 +1,11 @@
 import { useKjunMessageScope, useKjunMessages } from "./runtime/messages";
-import { computed, ref, watch, type PropType } from "vue";
+import { computed, ref, useId, watch, type PropType } from "vue";
 import { defineComponent } from "./runtime/component";
 import { createSliderDomain } from "@kjun-ui/tokens";
 import { useFocusVisible } from "./runtime/focus-visible";
 import {
-  createSliderSession, localeIsRtl, sliderFillBox, sliderFormatter, sliderFractions, sliderFrontThumb, sliderMarks, sliderValueAt, sliderValueText,
-  type KjunSliderMark, type SliderMarks, type SliderOrientation,
+  createSliderSession, localeIsRtl, sliderFillBox, sliderFormatter, sliderFractions, sliderFrontThumb, sliderGap, sliderMarks, sliderOriginFraction,
+  sliderValueAt, sliderValueText, type KjunSliderMark, type SliderMarks, type SliderOrientation, type SliderValueLabel,
 } from "../../../shared/package-runtime/slider-view";
 
 type SliderValue = number | [number, number];
@@ -26,6 +26,10 @@ const sliderProps = {
   /** vertical: the rail runs bottom (min) to top (max), `length` px long. */
   orientation: { type: String as PropType<SliderOrientation>, default: "horizontal" },
   length: { type: Number, default: undefined },
+  /** Like React: the value in a bubble on the thumb, "drag" while dragging or keyboard-focused, or "always". */
+  valueLabel: { type: String as PropType<SliderValueLabel>, default: "off" },
+  /** Submitted with a form; a range submits two values under the name. id, class and style fall through to the root. */
+  name: { type: String, default: undefined },
 } as const;
 const edgeOffset = "calc(var(--_kjun-slider-thumb) / -2)";
 
@@ -43,10 +47,15 @@ function defineRangeInput(name: string, range: boolean) {
         thumbLabels: { type: Array as unknown as PropType<[string, string]>, default: undefined },
         /** The visible text for the whole range, e.g. "20만~80만 원". Each thumb keeps formatValue. */
         formatRange: { type: Function as PropType<(start: number, end: number) => string>, default: undefined },
-      } : {}),
+        /** The fewest steps the two thumbs keep between them; 0 (default) lets them meet. */
+        minStepsBetweenThumbs: { type: Number, default: 0 },
+      } : {
+        /** The fill grows from this value instead of min, for two-way values such as -50…50; a dot marks it. */
+        fillOrigin: { type: Number, default: undefined },
+      }),
     },
     emits: { "update:modelValue": (_value: SliderValue) => true, change: (_value: SliderValue) => true },
-    setup(props, { emit }) {
+    setup(props, { emit, attrs }) {
       const m = useKjunMessages(), scope = useKjunMessageScope();
       const domain = computed(() => createSliderDomain(props.min, props.max, props.step));
       const list = computed(() => (Array.isArray(props.modelValue) ? props.modelValue : [props.modelValue]) as number[]);
@@ -62,9 +71,12 @@ function defineRangeInput(name: string, range: boolean) {
       const focus = useFocusVisible();
       const track = ref<HTMLElement | null>(null);
       const inputs: (HTMLInputElement | null)[] = [];
+      // Like React Aria: the label names the group and every thumb; a range thumb reads its own label first, then the slider's.
+      const labelId = useId().replace(/[^\w-]/g, "") + "-slider-label";
+      const gap = () => sliderGap((props as { minStepsBetweenThumbs?: number }).minStepsBetweenThumbs, props.step);
       const result = (values: number[]) => (range ? values : values[0]) as SliderValue;
       const session = createSliderSession(list.value, {
-        min: () => props.min, max: () => max.value, step: () => props.step, snap: value => domain.value.snap(value), blocked: () => blocked.value,
+        min: () => props.min, max: () => max.value, step: () => props.step, snap: value => domain.value.snap(value), blocked: () => blocked.value, gap,
         emit: values => emit("update:modelValue", result(values)),
         commit: values => emit("change", result(values)),
         focus: index => { dragging.value = index; inputs[index]?.focus({ preventScroll: true }); },
@@ -89,21 +101,25 @@ function defineRangeInput(name: string, range: boolean) {
       return () => {
         const values = list.value, layout = { rtl: rtl.value, vertical: vertical.value };
         const label = props.ariaLabel || props.label || m.value.value;
+        const fillOrigin = (props as { fillOrigin?: number }).fillOrigin;
         const format = sliderFormatter(props.formatValue, scope.value.intl, props.min, props.step);
         const front = valid.value ? sliderFrontThumb(values, props.min, max.value) : null;
-        const dots = valid.value ? sliderMarks(props.marks, props.min, max.value, props.step, values, layout) : [];
+        const dots = valid.value ? sliderMarks(props.marks, props.min, max.value, props.step, values, layout, fillOrigin) : [];
         // Invalid settings keep the app's numbers visible, clamped onto the rail.
         const fractions = sliderFractions(values, props.min, max.value);
-        const fill = sliderFillBox(fractions, layout);
+        const fill = sliderFillBox(fractions, layout, valid.value ? sliderOriginFraction(fillOrigin, props.min, max.value) : undefined);
+        const g = gap(), groupId = (attrs.id as string | undefined) || labelId + "-group";
         const axis = vertical.value ? ["top", "bottom"] as const : ["left", "right"] as const;
         const at = (fraction: number) => ({ [axis[0]]: (layout.vertical || layout.rtl ? 1 - fraction : fraction) * 100 + "%" });
         const formatRange = (props as { formatRange?: (start: number, end: number) => string }).formatRange;
         return (
           <div class="kjun-slider" data-size={props.size} data-orientation={props.orientation} data-disabled={String(blocked.value)}
-            role="group" aria-label={label}
+            role="group" id={groupId} aria-labelledby={props.label ? labelId : undefined} aria-label={props.label ? undefined : label}
+            data-value-label={props.valueLabel === "off" ? undefined : props.valueLabel}
             style={vertical.value && props.length ? { "--_kjun-slider-length": props.length + "px" } : undefined}>
             {(props.label || props.showValue) && <div class="kjun-slider-caption">
-              {props.label && <label class="kjun-slider-label">{props.label}</label>}
+              {/* Like React Aria: pressing the label focuses the first thumb. */}
+              {props.label && <label id={labelId} class="kjun-slider-label" onClick={() => { if (!blocked.value) inputs[0]?.focus(); }}>{props.label}</label>}
               {props.showValue && <output class="kjun-slider-value" aria-live="off">{sliderValueText(values, format, formatRange)}</output>}
             </div>}
             <div ref={track} class="kjun-slider-track" style={{ position: "relative", touchAction: "none" }}
@@ -117,10 +133,12 @@ function defineRangeInput(name: string, range: boolean) {
                   data-dragging={dragging.value === index || undefined} data-front={front === index || undefined}
                   data-focus-visible={(focused.value === index && focus.visible.value) || undefined}>
                   <input ref={el => { inputs[index] = el as HTMLInputElement | null; }} type="range" class="kjun-sr-only"
-                    aria-label={values.length === 2 ? ((props as { thumbLabels?: [string, string] }).thumbLabels ?? [m.value.minimum, m.value.maximum])[index] : label}
+                    id={`${labelId}-${index}`} name={props.name}
+                    aria-labelledby={values.length === 2 ? `${labelId}-${index} ${props.label ? labelId : groupId}` : props.label ? labelId : undefined}
+                    aria-label={values.length === 2 ? ((props as { thumbLabels?: [string, string] }).thumbLabels ?? [m.value.minimum, m.value.maximum])[index] : props.label ? undefined : label}
                     aria-valuetext={format(value)} aria-orientation={props.orientation}
-                    min={values.length === 2 && index === 1 ? values[0] : props.min}
-                    max={values.length === 2 && index === 0 ? values[1] : max.value}
+                    min={values.length === 2 && index === 1 ? values[0] + g : props.min}
+                    max={values.length === 2 && index === 0 ? values[1] - g : max.value}
                     step={valid.value ? props.step : 1} value={value} disabled={blocked.value}
                     onFocus={() => { focused.value = index; focus.onFocus(); }}
                     onBlur={() => { focused.value = null; focus.onBlur(); session.commit(); }}
@@ -134,6 +152,7 @@ function defineRangeInput(name: string, range: boolean) {
                       session.update(index, Number(input.value));
                       input.value = String(session.values[index]);
                     }} />
+                  {props.valueLabel !== "off" && <span class="kjun-tooltip kjun-slider-value-label" aria-hidden="true">{format(value)}</span>}
                 </div>
               ))}
             </div>

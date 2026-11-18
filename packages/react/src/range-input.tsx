@@ -1,9 +1,9 @@
 import { useKjunMessageScope, useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import {
-  createSliderSession, sliderFillBox, sliderFormatter, sliderFractions, sliderFrontThumb, sliderMarks, sliderValueAt, sliderValueText,
-  type SliderMarks, type SliderOrientation,
+  createSliderSession, sliderFillBox, sliderFormatter, sliderFractions, sliderFrontThumb, sliderGap, sliderKeepGap, sliderMarks, sliderOriginFraction,
+  sliderValueAt, sliderValueText, type SliderMarks, type SliderOrientation, type SliderValueLabel,
 } from "../../../shared/package-runtime/slider-view";
-export type { KjunSliderMark } from "../../../shared/package-runtime/slider-view";
+export type { KjunSliderMark, SliderValueLabel as KjunSliderValueLabel } from "../../../shared/package-runtime/slider-view";
 import { useContext, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { Slider, SliderTrack, SliderThumb, Label, SliderOutput, SliderStateContext, useLocale } from "react-aria-components";
 import { createSliderDomain } from "@kjun-ui/tokens";
@@ -26,11 +26,22 @@ export interface KjunSliderProps {
   /** vertical: the rail runs bottom (min) to top (max), `length` px long. */
   orientation?: SliderOrientation;
   length?: number;
+  /** The value in a bubble on the thumb: "drag" while dragging or keyboard-focused, "always", or "off" (default). Follows formatValue. */
+  valueLabel?: SliderValueLabel;
+  /** The fill grows from this value instead of min, for two-way values such as -50…50; a dot marks it. Single slider only. */
+  fillOrigin?: number;
+  /** Submitted with a form through a hidden input; a range submits two values under the name. */
+  name?: string;
+  id?: string;
+  className?: string;
+  style?: CSSProperties;
   onValueChange?: (value: number) => void;
   onChangeCommit?: (value: number) => void;
 }
-export interface KjunRangeSliderProps extends Omit<KjunSliderProps, "value" | "onValueChange" | "onChangeCommit"> {
+export interface KjunRangeSliderProps extends Omit<KjunSliderProps, "value" | "fillOrigin" | "onValueChange" | "onChangeCommit"> {
   value: [number, number];
+  /** The fewest steps the two thumbs keep between them; 0 (default) lets them meet. */
+  minStepsBetweenThumbs?: number;
   thumbLabels?: [string, string];
   /** The visible text for the whole range, e.g. "20만~80만 원". Each thumb keeps formatValue. */
   formatRange?: (start: number, end: number) => string;
@@ -38,20 +49,29 @@ export interface KjunRangeSliderProps extends Omit<KjunSliderProps, "value" | "o
   onChangeCommit?: (value: [number, number]) => void;
 }
 const edge = "calc(var(--_kjun-slider-thumb) / -2)";
-function RangeThumb({ index, label, format, front, dragging, inputs }: { index: number; label: string; format: (value: number) => string; front: boolean; dragging: boolean; inputs: (HTMLInputElement | null)[] }) {
+function RangeThumb({ index, label, name, format, front, dragging, bubble, inputs }: { index: number; label?: string; name?: string; format: (value: number) => string; front: boolean; dragging: boolean; bubble: boolean; inputs: (HTMLInputElement | null)[] }) {
   const state = useContext(SliderStateContext)!;
-  const input = useRef<HTMLInputElement>(null);
+  const input = useRef<HTMLInputElement>(null), thumb = useRef<HTMLDivElement>(null);
   const text = format(state.values[index]);
   // React Aria generates this attribute internally. Its public inputRef lets us
   // update the actual accessible input without replacing its registered state.
   // Run after every render, including formatter removal, before the next paint.
-  useLayoutEffect(() => { input.current?.setAttribute("aria-valuetext", text); inputs[index] = input.current; });
-  // Overlapping thumbs: the one that can still move sits on top. `dragging` marks a drag the collapsed-range handler runs.
-  return <SliderThumb index={index} inputRef={input} className={"kjun-slider-thumb" + (dragging ? " kjun-slider-thumb--dragging" : "")} aria-label={label}
-    style={front ? { zIndex: 1 } : undefined} />;
+  // A drag the collapsed-range handler runs marks the thumb data-dragging too, the attribute React Aria sets for its own drags.
+  useLayoutEffect(() => {
+    input.current?.setAttribute("aria-valuetext", text); inputs[index] = input.current;
+    thumb.current?.toggleAttribute("data-dragging", dragging || state.isThumbDragging(index));
+  });
+  // Overlapping thumbs: the one that can still move sits on top (data-front, as on Vue).
+  // A single thumb takes its name from the slider label through React Aria; only range thumbs add their own after it.
+  return <SliderThumb ref={thumb} index={index} inputRef={input} name={name} className="kjun-slider-thumb" aria-label={label} data-front={front || undefined}>
+    {bubble && <span className="kjun-tooltip kjun-slider-value-label" aria-hidden="true">{text}</span>}
+  </SliderThumb>;
 }
 function RangeInput(props: KjunRangeSliderProps | KjunSliderProps) {
-  const { value, min = 0, max = 100, step = 1, disabled = false, label, ariaLabel, showValue = true, formatValue, marks, size = "md", orientation = "horizontal" } = props;
+  const { value, min = 0, max = 100, step = 1, disabled = false, label, ariaLabel, showValue = true, formatValue, marks, size = "md", orientation = "horizontal",
+    valueLabel = "off", name, id, className, style } = props;
+  const fillOrigin = "fillOrigin" in props ? props.fillOrigin : undefined;
+  const gap = sliderGap("minStepsBetweenThumbs" in props ? props.minStepsBetweenThumbs : undefined, step);
   const m = useKjunMessages(), locale = useKjunMessageScope().intl;
   const { direction } = useLocale();
   const vertical = orientation === "vertical", layout = { rtl: direction === "rtl" && !vertical, vertical };
@@ -71,7 +91,7 @@ function RangeInput(props: KjunRangeSliderProps | KjunSliderProps) {
   const commit = (result: number | [number, number]) => (props.onChangeCommit as ((v: typeof result) => void) | undefined)?.(result);
   const change = (next: number | number[]) => {
     if (!valid || disabled) return;
-    const snapped = (Array.isArray(next) ? next : [next]).map(domain.snap);
+    const snapped = sliderKeepGap(Array.isArray(latest.current) ? latest.current : [latest.current], (Array.isArray(next) ? next : [next]).map(domain.snap), gap);
     const result = Array.isArray(value) ? snapped as [number, number] : snapped[0];
     if (JSON.stringify(result) === JSON.stringify(latest.current)) return;
     latest.current = result; active.current = true;
@@ -80,7 +100,7 @@ function RangeInput(props: KjunRangeSliderProps | KjunSliderProps) {
   const top = valid ? domain.snap(max) : max;
   // A session for the gestures React Aria cannot pick right: a press on overlapping thumbs and a mark label.
   const session = () => createSliderSession(Array.isArray(latest.current) ? latest.current : [latest.current], {
-    min: () => min, max: () => top, step: () => step, snap: domain.snap, blocked: () => disabled || !valid,
+    min: () => min, max: () => top, step: () => step, snap: domain.snap, blocked: () => disabled || !valid, gap: () => gap,
     emit: (next) => { const result = (next.length === 1 ? next[0] : next) as number | [number, number]; latest.current = result; emit(result); },
     commit: (next) => commit((next.length === 1 ? next[0] : next) as number | [number, number]),
     focus: (index) => { setOwnDrag(index); inputs.current[index]?.focus({ preventScroll: true }); },
@@ -111,13 +131,14 @@ function RangeInput(props: KjunRangeSliderProps | KjunSliderProps) {
   // Invalid settings keep the app's numbers visible, clamped onto the rail.
   const fractions = sliderFractions(list, min, top);
   const front = valid ? sliderFrontThumb(list, min, top) : null;
-  const dots = valid ? sliderMarks(marks, min, top, step, list, layout) : [];
-  const fill = sliderFillBox(fractions, layout);
+  const dots = valid ? sliderMarks(marks, min, top, step, list, layout, fillOrigin) : [];
+  const fill = sliderFillBox(fractions, layout, valid ? sliderOriginFraction(fillOrigin, min, top) : undefined);
   const [lead, trail] = vertical ? ["top", "bottom"] as const : ["left", "right"] as const;
-  return <Slider className="kjun-slider" data-size={size} data-orientation={orientation} data-disabled={disabled || !valid} orientation={orientation}
+  return <Slider id={id} className={"kjun-slider" + (className ? " " + className : "")} data-size={size} data-orientation={orientation} data-disabled={disabled || !valid}
+    data-value-label={valueLabel === "off" ? undefined : valueLabel} orientation={orientation}
     // The visible label names the slider through <Label>; aria-label only when there is none.
     aria-label={label ? undefined : ariaLabel || m.value}
-    style={vertical && props.length ? { "--_kjun-slider-length": props.length + "px" } as CSSProperties : undefined}
+    style={vertical && props.length ? { "--_kjun-slider-length": props.length + "px", ...style } as CSSProperties : style}
     value={valid ? value : (Array.isArray(value) ? fractions.map(f => f * 100) : fractions[0] * 100)} minValue={valid ? min : 0} maxValue={valid ? top : 100}
     step={valid ? step : 1} isDisabled={disabled || !valid} onChange={change}
     onChangeEnd={() => { if (valid && !disabled && active.current) { active.current = false; commit(latest.current); } }}>
@@ -127,7 +148,8 @@ function RangeInput(props: KjunRangeSliderProps | KjunSliderProps) {
       {/* A single slider fills from the rail's own end, half a thumb past the track; a range fills between its thumbs. */}
       <div className="kjun-slider-fill" style={{ [lead]: fill.lead === null ? edge : fill.lead + "%", [trail]: fill.trail === null ? edge : fill.trail + "%" }} />
       {dots.filter((dot) => dot.dot).map((dot) => <span key={dot.value} className="kjun-slider-mark" data-active={dot.active || undefined} style={{ [lead]: dot.position * 100 + "%" }} />)}
-      {list.map((_, i) => <RangeThumb key={i} index={i} format={format} front={front === i} dragging={ownDrag === i} inputs={inputs.current} label={list.length === 2 ? thumbLabels[i] : ariaLabel || label || m.value} />)}
+      {list.map((_, i) => <RangeThumb key={i} index={i} format={format} front={front === i} dragging={ownDrag === i} bubble={valueLabel !== "off"} inputs={inputs.current}
+        name={name} label={list.length === 2 ? thumbLabels[i] : undefined} />)}
     </>}</SliderTrack>
     {dots.some((dot) => dot.label) && <div className="kjun-slider-marks" aria-hidden="true">
       {dots.filter((dot) => dot.label).map((dot) => <span key={dot.value} className="kjun-slider-mark-label" data-edge={dot.edge} style={{ [lead]: dot.position * 100 + "%" }}

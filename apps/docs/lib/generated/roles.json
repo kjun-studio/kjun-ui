@@ -1415,7 +1415,8 @@
     "implementationFiles": [
       "packages/tokens/src/controls.css",
       "packages/native/src/floating-panel.tsx",
-      "packages/native/src/popover.tsx"
+      "packages/native/src/popover.tsx",
+      "packages/native/src/range-input.tsx"
     ]
   },
   {
@@ -1429,7 +1430,8 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/controls.css",
-      "packages/native/src/popover.tsx"
+      "packages/native/src/popover.tsx",
+      "packages/native/src/range-input.tsx"
     ]
   },
   {

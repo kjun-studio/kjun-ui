@@ -8,6 +8,8 @@ export interface KjunSliderMark {
 }
 export type SliderMarks = boolean | KjunSliderMark[];
 export type SliderOrientation = "horizontal" | "vertical";
+/** When the value shows on the thumb: "drag" while dragging or keyboard-focused, "always", or "off" (the caption only). */
+export type SliderValueLabel = "off" | "drag" | "always";
 
 const decimals = (value: number) => {
   const text = String(value);
@@ -42,24 +44,33 @@ let warnedMarks = false;
  * marks={true} puts a dot on every step (up to 24 of them); an array places dots, and labels, at the given values.
  * The rail's own ends need no dot, so marks at min and max keep only their labels.
  */
-export function sliderMarks(marks: SliderMarks | undefined, min: number, max: number, step: number, values: readonly number[], layout: SliderLayout = {}) {
-  if (!marks || !(max > min)) return [];
+export function sliderMarks(marks: SliderMarks | undefined, min: number, max: number, step: number, values: readonly number[], layout: SliderLayout = {}, fillOrigin?: number) {
+  if (!(max > min)) return [];
+  // A fill origin inside the rail always gets a dot, so the start of a two-way fill reads.
+  const origin = fillOrigin !== undefined && values.length === 1 && fillOrigin > min && fillOrigin < max ? fillOrigin : undefined;
+  if (!marks && origin === undefined) return [];
   const steps = Math.round((max - min) / step);
   if (marks === true && steps > 24 && !warnedMarks) {
     warnedMarks = true;
     console.warn(`KJUN Slider: marks={true}는 step이 24개 이하일 때만 점을 그립니다(지금 ${steps}개). 값 배열로 원하는 위치만 넘기세요.`);
   }
-  const list: KjunSliderMark[] = marks === true
+  const list: KjunSliderMark[] = !marks ? [] : marks === true
     ? steps <= 24 ? Array.from({ length: steps + 1 }, (_, i) => ({ value: min + i * step })) : []
     : marks.filter(mark => mark.value >= min && mark.value <= max);
+  if (origin !== undefined && !list.some(mark => mark.value === origin)) {
+    list.push({ value: origin });
+    list.sort((a, b) => a.value - b.value);
+  }
   const high = values[values.length - 1];
+  // The filled stretch: between the thumbs, from the origin to the thumb, or from min.
+  const [from, to] = values.length === 2 ? [values[0], high] : origin !== undefined ? [Math.min(origin, high), Math.max(origin, high)] : [min, high];
   return list.map(mark => ({
     ...mark,
     fraction: (mark.value - min) / (max - min),
     /** Offset from the left (or the top when vertical), like the thumbs. */
     position: sliderAxis((mark.value - min) / (max - min), layout),
     // On the fill the dot turns light: a single slider fills from min, a range between its thumbs.
-    active: values.length === 2 ? mark.value > values[0] && mark.value < high : mark.value < high,
+    active: from === min && values.length === 1 ? mark.value < to : mark.value > from && mark.value < to,
     dot: mark.value !== min && mark.value !== max,
     // Which rail end an end label aligns to: the visual left or right (vertical labels sit beside the rail and need none).
     edge: layout.vertical || (mark.value !== min && mark.value !== max) ? undefined
@@ -83,8 +94,8 @@ export function sliderAxis(fraction: number, { rtl = false, vertical = false }: 
  * The fill as leading and trailing offsets (percent of the track, from the left/top and from the right/bottom). null is
  * the rail's own end, half a thumb past the track: a single slider fills from there, a range between its thumbs.
  */
-export function sliderFillBox(fractions: readonly number[], layout: SliderLayout = {}): { lead: number | null; trail: number | null } {
-  const ends = fractions.map(fraction => sliderAxis(fraction, layout) * 100);
+export function sliderFillBox(fractions: readonly number[], layout: SliderLayout = {}, originFraction?: number): { lead: number | null; trail: number | null } {
+  const ends = (originFraction !== undefined && fractions.length === 1 ? [originFraction, fractions[0]] : fractions).map(fraction => sliderAxis(fraction, layout) * 100);
   if (ends.length === 2) return { lead: Math.min(...ends), trail: 100 - Math.max(...ends) };
   // The fill grows from min: the left, or the right in right-to-left layouts, or the bottom when vertical.
   return layout.vertical || layout.rtl ? { lead: ends[0], trail: null } : { lead: null, trail: 100 - ends[0] };
@@ -117,6 +128,25 @@ export function sliderFractions(values: readonly number[], min: number, max: num
   return values.map(value => max > min ? Math.max(0, Math.min(1, (value - min) / (max - min))) : 0);
 }
 
+/** The fill origin as a fraction of the rail, when it lies inside it; else the fill grows from min. */
+export function sliderOriginFraction(fillOrigin: number | undefined, min: number, max: number) {
+  return fillOrigin !== undefined && max > min && fillOrigin > min && fillOrigin < max ? (fillOrigin - min) / (max - min) : undefined;
+}
+
+/** The smallest distance range thumbs keep: minStepsBetweenThumbs steps, never negative. */
+export function sliderGap(minStepsBetweenThumbs: number | undefined, step: number) {
+  return Math.max(0, Math.floor(minStepsBetweenThumbs ?? 0)) * step;
+}
+/**
+ * A range change that keeps the gap: the thumb that moved stops `gap` short of the other. Values that already break the
+ * gap (the app's own) are left as they are until a thumb moves.
+ */
+export function sliderKeepGap(previous: readonly number[], next: readonly number[], gap: number): number[] {
+  if (next.length !== 2 || gap <= 0 || next[1] - next[0] >= gap) return [...next];
+  const moved = next[0] !== previous[0] ? 0 : 1;
+  return moved === 0 ? [Math.min(next[0], next[1] - gap), next[1]] : [next[0], Math.max(next[1], next[0] + gap)];
+}
+
 /** Overlapping range thumbs: the one that can still move goes on top (the start thumb near the top end, the end thumb elsewhere). */
 export function sliderFrontThumb(values: readonly number[], min: number, max: number): 0 | 1 | null {
   if (values.length !== 2 || values[0] !== values[1]) return null;
@@ -141,6 +171,8 @@ export interface SliderSessionOptions {
   blocked(): boolean;
   emit(values: number[]): void;
   commit(values: number[]): void;
+  /** The distance range thumbs keep (sliderGap). */
+  gap?(): number;
   /** Moves keyboard focus to the thumb a press or a direction choice picked. */
   focus?(index: number): void;
 }
@@ -152,9 +184,11 @@ export function createSliderSession(initial: readonly number[], options: SliderS
   let latest = [...initial], dirty = false, pending = false, active: number | null = null;
   const update = (index: number, number: number) => {
     if (options.blocked()) return;
-    const next = [...latest];
-    next[index] = Math.min(index === 0 && next.length === 2 ? next[1] : options.max(),
-      Math.max(index === 1 ? next[0] : options.min(), options.snap(number)));
+    const next = [...latest], gap = options.gap?.() ?? 0;
+    next[index] = Math.min(index === 0 && next.length === 2 ? next[1] - gap : options.max(),
+      Math.max(index === 1 ? next[0] + gap : options.min(), options.snap(number)));
+    // With values that already break the gap, the clamp could push the thumb against the gesture: stay put instead.
+    if ((next[index] - latest[index]) * (options.snap(number) - latest[index]) < 0) return;
     if (next[index] === latest[index]) return;
     latest = next; dirty = true;
     options.emit([...next]);

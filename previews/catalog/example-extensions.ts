@@ -131,10 +131,21 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
     }
     case "KjunChip":
       return h("Group", {}, [get("removed", false) ? button("태그 복원", () => set("removed", false)) : h(name, { label: settings.long ? "팀에서 함께 사용하는 프로젝트 분류" : "프로젝트", icon: "folder", removable: settings.removable, disabled, size: settings.size, onRemove: () => set("removed", true) })]);
-    case "KjunSlider":
-      return h(name, { value: get("slider", settings.decimal ? .5 : 40), min: 0, max: settings.decimal ? 1 : 100, step: settings.decimal ? .1 : 1, disabled, label: "알림 음량", onValueChange: change("slider"), onChangeCommit: (value: number) => set("message", "확정: " + value) });
-    case "KjunRangeSlider":
-      return h(name, { value: get("range", settings.decimal ? [.2, .8] : [20, 80]), min: 0, max: settings.decimal ? 1 : 100, step: settings.decimal ? .1 : 1, disabled, label: "조회 범위", thumbLabels: ["시작 값", "끝 값"], onValueChange: change("range"), onChangeCommit: (value: number[]) => set("message", "확정: " + value.join(" ~ ")) });
+    case "KjunSlider": case "KjunRangeSlider": {
+      // One builder for both: the controls add size, marks, valueLabel, vertical, units and the two-way or gap settings.
+      const range = name === "KjunRangeSlider", twoWay = !range && settings.twoWay;
+      const min = twoWay ? -50 : 0, max = twoWay ? 50 : settings.decimal ? 1 : 100, step = settings.decimal && !twoWay ? .1 : 1;
+      const unit = settings.unit ? (value: number) => settings.decimal ? Math.round(value * 100) + "%" : range ? value + "만" : (twoWay && value > 0 ? "+" : "") + value + "%" : undefined;
+      const marks = settings.marks === "없음" ? undefined : [0, .25, .5, .75, 1].map(f => { const value = Math.round((min + f * (max - min)) * 100) / 100;
+        return settings.marks === "라벨" && f % .5 === 0 ? { value, label: unit ? unit(value) : String(value) } : { value }; });
+      const common = { min, max, step, disabled, size: settings.size, marks, valueLabel: settings.valueLabel, orientation: settings.vertical ? "vertical" : undefined, formatValue: unit };
+      return range
+        ? h(name, { ...common, value: get("range", settings.decimal ? [.2, .8] : [20, 80]), label: settings.unit ? "가격" : "조회 범위", thumbLabels: ["시작 값", "끝 값"],
+          minStepsBetweenThumbs: settings.minSteps || undefined, formatRange: settings.unit && !settings.decimal ? (start: number, end: number) => `${start}만~${end}만 원` : undefined,
+          onValueChange: change("range"), onChangeCommit: (value: number[]) => set("message", "확정: " + value.join(" ~ ")) })
+        : h(name, { ...common, value: get("slider", settings.decimal && !twoWay ? .5 : twoWay ? 20 : 40), label: twoWay ? "밝기 보정" : "알림 음량", fillOrigin: twoWay ? 0 : undefined,
+          onValueChange: change("slider"), onChangeCommit: (value: number) => set("message", "확정: " + value) });
+    }
     case "KjunTimePicker":
       return h("Box", { width: 360 }, h("KjunFormGroup", { label: "알림 시각", error: error ? "알림 시각을 선택해 주세요." : "" }, h(name, { value: get("time", null), precision: settings.precision, minuteStep: settings.minuteStep, secondStep: settings.secondStep, min: settings.bounded ? (settings.precision === "second" ? "09:30:15" : "09:30") : undefined, max: settings.bounded ? (settings.precision === "second" ? "18:30:45" : "18:30") : undefined, disabled, error, clearable: settings.clearable, size: settings.size, block: settings.block, ariaLabel: "알림 시각", onValueChange: change("time"), onChangeCommit: (value: string | null) => set("message", "선택: " + value) })));
     case "KjunZoneGauge": {

@@ -161,9 +161,19 @@ export function generate(input: UsageInput) {
       content = b.vue ? b.group([`<template v-if="!state.removed">\n${chip}\n</template>`, `<template v-else>\n${restore}\n</template>`]) : b.group([`{state.removed ? (\n${restore}\n) : (\n${chip}\n)}`]); break;
     }
     case 'KjunSlider': case 'KjunRangeSlider': {
-      const range = name === 'KjunRangeSlider', key = range ? 'range' : 'slider';
-      content = b.node(name, { value: b.state(key, range ? (s.decimal ? [.2, .8] : [20, 80]) : s.decimal ? .5 : 40), onValueChange: b.update(key),
-        min: 0, max: s.decimal ? 1 : 100, step: s.decimal ? .1 : 1, disabled: s.disabled, label: range ? '조회 범위' : '알림 음량', ...(range ? { thumbLabels: ['시작 값', '끝 값'] } : {}), onChangeCommit: commit(),
+      const range = name === 'KjunRangeSlider', key = range ? 'range' : 'slider', twoWay = !range && s.twoWay;
+      const min = twoWay ? -50 : 0, max = twoWay ? 50 : s.decimal ? 1 : 100, step = s.decimal && !twoWay ? .1 : 1;
+      const unitCode = !s.unit ? undefined : s.decimal ? '(value) => Math.round(value * 100) + "%"' : range ? '(value) => value + "만"' : twoWay ? '(value) => (value > 0 ? "+" : "") + value + "%"' : '(value) => value + "%"';
+      if (unitCode) b.declare('formatUnit', `const formatUnit = ${unitCode};`);
+      if (unitCode && range && !s.decimal) b.declare('formatPrice', 'const formatPrice = (start, end) => `${start}만~${end}만 원`;');
+      const unit = (value: number) => !s.unit ? String(value) : s.decimal ? Math.round(value * 100) + '%' : range ? value + '만' : (twoWay && value > 0 ? '+' : '') + value + '%';
+      const marks = !s.marks || s.marks === '없음' ? undefined : [0, .25, .5, .75, 1].map(f => { const value = Math.round((min + f * (max - min)) * 100) / 100;
+        return s.marks === '라벨' && f % .5 === 0 ? { value, label: unit(value) } : { value }; });
+      content = b.node(name, { value: b.state(key, range ? (s.decimal ? [.2, .8] : [20, 80]) : twoWay ? 20 : s.decimal ? .5 : 40), onValueChange: b.update(key),
+        min, max, step, disabled: s.disabled, label: range ? (s.unit ? '가격' : '조회 범위') : twoWay ? '밝기 보정' : '알림 음량', ...(range ? { thumbLabels: ['시작 값', '끝 값'] } : {}),
+        size: s.size === 'sm' ? 'sm' : undefined, marks, valueLabel: s.valueLabel && s.valueLabel !== 'off' ? s.valueLabel : undefined, orientation: s.vertical ? 'vertical' : undefined,
+        formatValue: unitCode ? expr('formatUnit') : undefined, formatRange: unitCode && range && !s.decimal ? expr('formatPrice') : undefined,
+        fillOrigin: twoWay ? 0 : undefined, minStepsBetweenThumbs: range && s.minSteps ? Number(s.minSteps) : undefined, onChangeCommit: commit(),
       }); break;
     }
     case 'KjunTimePicker':

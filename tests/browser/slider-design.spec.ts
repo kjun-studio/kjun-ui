@@ -319,3 +319,85 @@ for (const platform of ['react', 'vue3']) {
     await expect.poll(() => valueOf(page)).toBe(39);
   });
 }
+
+for (const platform of ['react', 'vue3', 'native']) {
+  test(`${platform}: thumbs read the slider label once, range thumbs add their own before it, and a press focuses the thumb`, async ({ page }) => {
+    await openFixture(page, platform, '', 'slider-design');
+    await expect(page.getByTestId('single').getByRole('slider')).toHaveAccessibleName('알림 음량');
+    const range = page.getByTestId('range').getByRole('slider');
+    // React Aria's order: the thumb's own label, then the slider's.
+    await expect(range.nth(0)).toHaveAccessibleName('시작 조회 범위');
+    await expect(range.nth(1)).toHaveAccessibleName('끝 조회 범위');
+    const a = await appearance(page, platform);
+    await page.mouse.click(a.track.x + a.track.width * .7, a.rail.y + a.rail.height / 2);
+    await expect.poll(() => valueOf(page)).toBe(70);
+    await expect(page.getByTestId('single').getByRole('slider')).toBeFocused();
+    await page.keyboard.press('ArrowRight');
+    await expect.poll(() => valueOf(page)).toBe(71);
+  });
+
+  test(`${platform}: valueLabel shows the value above the thumb while dragged or keyboard-focused, or always`, async ({ page }) => {
+    await openFixture(page, platform, '', 'slider-design');
+    await configure(page, { showValue: false, valueLabel: 'drag', format: true });
+    const single = page.getByTestId('single'), bubble = single.getByText('40%', { exact: true });
+    await expect(bubble).toBeHidden();
+    await page.mouse.click(1, 1);
+    await page.keyboard.press('Tab');
+    await expect(bubble).toBeVisible();
+    await page.keyboard.press('ArrowRight');
+    const shown = single.getByText('41%', { exact: true });
+    await expect(shown).toBeVisible();
+    // Native draws the padded bubble as a View around the text.
+    const thumb = (await appearance(page, platform)).thumbs[0], box = (await (platform === 'native' ? shown.locator('..') : shown).boundingBox())!;
+    // 8px above the thumb, centered on it.
+    expect(thumb.y - (box.y + box.height)).toBeCloseTo(8, 0);
+    expect(box.x + box.width / 2).toBeCloseTo(thumb.x + thumb.width / 2, 0);
+    await page.keyboard.press('Tab');
+    await expect(shown).toBeHidden();
+    await configure(page, { valueLabel: 'always' });
+    await expect(page.getByTestId('range').getByText('$20', { exact: true })).toBeVisible();
+    await expect(page.getByTestId('range').getByText('$80', { exact: true })).toBeVisible();
+  });
+
+  test(`${platform}: fillOrigin fills from the origin to the thumb on either side`, async ({ page }) => {
+    await openFixture(page, platform, '', 'slider-design');
+    for (const value of [20, -30]) {
+      await configure(page, { min: -50, max: 50, value, fillOrigin: 0 });
+      await expect.poll(() => valueOf(page)).toBe(value);
+      const a = await appearance(page, platform), center = a.thumbs[0].x + a.thumbs[0].width / 2, origin = a.track.x + a.track.width / 2;
+      expect(a.fill.x).toBeCloseTo(Math.min(origin, center), 0);
+      expect(a.fill.x + a.fill.width).toBeCloseTo(Math.max(origin, center), 0);
+    }
+  });
+
+  test(`${platform}: minStepsBetweenThumbs stops each range thumb short of the other`, async ({ page }) => {
+    await openFixture(page, platform, '', 'slider-design');
+    await configure(page, { minSteps: 10, range: [20, 80] });
+    const range = page.getByTestId('range').getByRole('slider');
+    await range.nth(0).focus(); await range.nth(0).press('End');
+    await expect.poll(() => valueOf(page, 'range')).toBe(70);
+    await range.nth(1).focus(); await range.nth(1).press('Home');
+    await expect.poll(() => valueOf(page, 'range', 1)).toBe(80);
+    const a = await appearance(page, platform, 'range');
+    // Presses inside the gap move the nearer thumb only as far as the gap allows: here not at all.
+    await page.mouse.click(a.track.x + a.track.width * .78, a.rail.y + a.rail.height / 2);
+    await page.mouse.click(a.track.x + a.track.width * .72, a.rail.y + a.rail.height / 2);
+    await page.mouse.click(a.track.x + a.track.width * .9, a.rail.y + a.rail.height / 2);
+    await expect.poll(() => valueOf(page, 'range', 1)).toBe(90);
+    await expect.poll(() => valueOf(page, 'range')).toBe(70);
+  });
+}
+
+for (const platform of ['react', 'vue3']) {
+  test(`${platform}: name submits the values, the front thumb carries data-front and the label focuses the first thumb`, async ({ page }) => {
+    await openFixture(page, platform, '', 'slider-design');
+    await configure(page, { name: 'level', range: [50, 50] });
+    await expect(page.getByTestId('single').locator('input[name="level"]')).toHaveCount(1);
+    await expect(page.getByTestId('range').locator('input[name="level"]')).toHaveCount(2);
+    const thumbs = page.getByTestId('range').locator('.kjun-slider-thumb');
+    await expect(thumbs.nth(0)).toHaveAttribute('data-front', /.*/);
+    await expect(thumbs.nth(1)).not.toHaveAttribute('data-front', /.*/);
+    await page.getByTestId('single').getByText('알림 음량', { exact: true }).click();
+    await expect(page.getByTestId('single').getByRole('slider')).toBeFocused();
+  });
+}

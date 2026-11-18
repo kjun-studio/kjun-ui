@@ -242,6 +242,7 @@ export const kjunPropValues = Object.freeze({
   KjunRangeSlider: Object.freeze({
     orientation: Object.freeze(["horizontal","vertical"] as const),
     size: Object.freeze(["sm","md"] as const),
+    valueLabel: Object.freeze(["always","drag","off"] as const),
   }),
   KjunRefreshButton: Object.freeze({
     mode: Object.freeze(["icon","text"] as const),
@@ -279,6 +280,7 @@ export const kjunPropValues = Object.freeze({
   KjunSlider: Object.freeze({
     orientation: Object.freeze(["horizontal","vertical"] as const),
     size: Object.freeze(["sm","md"] as const),
+    valueLabel: Object.freeze(["always","drag","off"] as const),
   }),
   KjunSparkline: Object.freeze({
     semantic: Object.freeze(["price","status"] as const),

@@ -271,6 +271,7 @@
       "pressedThumb": 22,
       "markSize": 4,
       "markLabelGap": { "$ref": "dimension.value2" },
+      "valueLabelGap": { "$ref": "dimension.value8" },
       "verticalLength": 160,
       "small": { "track": { "$ref": "extensions.progress.heights.sm" }, "thumb": 16, "pressedThumb": 18, "trackHeight": 24 }
     },

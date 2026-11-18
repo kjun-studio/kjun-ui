@@ -59,3 +59,35 @@ test('a slider session picks the overlapping thumb by the first move, clamps aga
   assert.equal(session.key(1, 'End'), true);
   assert.deepEqual(emitted.at(-1), [50, 100]);
 });
+
+test('slider fillOrigin fills between the origin and the thumb and marks the origin with a dot', () => {
+  assert.deepEqual(view.sliderFillBox([0.7], {}, 0.5), { lead: 50, trail: 30 });
+  assert.deepEqual(view.sliderFillBox([0.2], {}, 0.5), { lead: 20, trail: 50 });
+  assert.deepEqual(view.sliderFillBox([0.2], { rtl: true }, 0.5), { lead: 50, trail: 20 });
+  assert.equal(view.sliderOriginFraction(0, -50, 50), 0.5);
+  assert.equal(view.sliderOriginFraction(-50, -50, 50), undefined, 'an origin at min is the plain fill');
+  const marks = view.sliderMarks(undefined, -50, 50, 1, [20], {}, 0);
+  assert.deepEqual(marks.map(mark => [mark.value, mark.dot, mark.active]), [[0, true, false]]);
+  const listed = view.sliderMarks([{ value: -25 }, { value: 10 }, { value: 0, label: '0' }], -50, 50, 1, [20], {}, 0);
+  assert.deepEqual(listed.map(mark => [mark.value, mark.active]), [[-25, false], [10, true], [0, false]], 'no duplicate origin; dots light only on the fill');
+  assert.deepEqual(view.sliderMarks(undefined, -50, 50, 1, [20, 30], {}, 0), [], 'ranges ignore fillOrigin');
+});
+
+test('range sliders keep minStepsBetweenThumbs on React changes and in the shared session', () => {
+  assert.equal(view.sliderGap(3, 0.5), 1.5);
+  assert.equal(view.sliderGap(-2, 1), 0);
+  assert.deepEqual(view.sliderKeepGap([20, 80], [78, 80], 5), [75, 80]);
+  assert.deepEqual(view.sliderKeepGap([20, 80], [20, 22], 5), [20, 25]);
+  assert.deepEqual(view.sliderKeepGap([20, 80], [30, 80], 5), [30, 80]);
+  const emitted = [];
+  const session = view.createSliderSession([20, 80], { min: () => 0, max: () => 100, step: () => 1, snap: Math.round, blocked: () => false, gap: () => 10, emit: v => emitted.push(v), commit() {} });
+  session.update(0, 95);
+  assert.deepEqual(session.values, [70, 80], 'the start thumb stops a gap short of the end');
+  session.key(1, 'Home');
+  assert.deepEqual(session.values, [70, 80], 'Home on the end thumb stops at start + gap');
+  const tight = view.createSliderSession([40, 42], { min: () => 0, max: () => 100, step: () => 1, snap: Math.round, blocked: () => false, gap: () => 10, emit() {}, commit() {} });
+  tight.update(0, 45);
+  assert.deepEqual(tight.values, [40, 42], 'values that already break the gap never push a thumb against the gesture');
+  tight.update(0, 20);
+  assert.deepEqual(tight.values, [20, 42]);
+});

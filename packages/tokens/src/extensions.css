@@ -124,11 +124,23 @@ button.kjun-avatar-group:disabled{cursor:not-allowed;opacity:var(--_kjun-state-o
     box-shadow:0 0 0 var(--_kjun-extension-slider-halo-size) color-mix(in srgb, var(--_kjun-color-brand) calc(var(--_kjun-state-opacity-tint-control) * 100%), transparent), var(--_kjun-slider-thumb-shadow);
   }
 }
-.kjun-slider:not([data-disabled=true]) .kjun-slider-thumb:is([data-dragging], .kjun-slider-thumb--dragging) {
+.kjun-slider:not([data-disabled=true]) .kjun-slider-thumb[data-dragging] {
   box-shadow:0 0 0 var(--_kjun-extension-slider-halo-size) color-mix(in srgb, var(--_kjun-color-brand) calc(var(--_kjun-state-opacity-tint-active) * 100%), transparent), var(--_kjun-slider-thumb-shadow);
   width:var(--_kjun-slider-pressed); height:var(--_kjun-slider-pressed); cursor:grabbing;
 }
 .kjun-slider-thumb[data-focus-visible] { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-choice-offset); z-index:2; }
+/* valueLabel: the value in a tooltip-styled bubble above the thumb (beside it when vertical), shown while the thumb is
+   dragged or keyboard-focused, or always. It is the thumb's own aria-valuetext, so it stays hidden from assistive technology. */
+.kjun-slider-value-label {
+  position:absolute; bottom:calc(100% + var(--_kjun-extension-slider-value-label-gap)); left:50%; transform:translateX(-50%);
+  white-space:nowrap; pointer-events:none; font-family:var(--_kjun-font-numeric); font-variant-numeric:tabular-nums; visibility:hidden;
+}
+.kjun-slider[data-orientation=vertical] .kjun-slider-value-label {
+  bottom:auto; top:50%; left:calc(100% + var(--_kjun-extension-slider-value-label-gap)); transform:translateY(-50%);
+}
+.kjun-slider:not([data-disabled=true]) :is(.kjun-slider-thumb[data-dragging], .kjun-slider-thumb[data-focus-visible]) .kjun-slider-value-label,
+.kjun-slider[data-value-label=always] .kjun-slider-value-label { visibility:visible; }
+.kjun-slider-thumb:is([data-dragging], [data-focus-visible]) { z-index:2; }
 /* One disabled rule, as Button and fields: no fading; the fill, the thumb edge and the text take the disabled-text role
    and the thumb loses its lift, so it no longer reads as draggable. */
 .kjun-slider[data-disabled=true] {

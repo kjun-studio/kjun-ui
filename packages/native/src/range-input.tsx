@@ -1,17 +1,17 @@
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import {
-  createSliderSession, sliderFormatter, sliderFractions, sliderFrontThumb, sliderMarks, sliderValueAt, sliderValueText,
-  type SliderMarks, type SliderOrientation,
+  createSliderSession, sliderFormatter, sliderFractions, sliderFrontThumb, sliderGap, sliderMarks, sliderOriginFraction, sliderValueAt, sliderValueText,
+  type SliderMarks, type SliderOrientation, type SliderValueLabel,
 } from "../../../shared/package-runtime/slider-view";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { I18nManager, PanResponder, Platform, Pressable, View, type ViewStyle } from "react-native";
+import { I18nManager, PanResponder, Platform, Pressable, View, type StyleProp, type ViewStyle } from "react-native";
 import { tokens, createSliderDomain } from "@kjun-ui/tokens";
 import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
 import { focusVisible } from "./a11y";
-export type { KjunSliderMark } from "../../../shared/package-runtime/slider-view";
+export type { KjunSliderMark, SliderValueLabel as KjunSliderValueLabel } from "../../../shared/package-runtime/slider-view";
 const slider = tokens.extensions.slider;
 const targetSize = tokens.native.minimumTouchTarget;
 const captionLine = tokens.typography.caption.lineHeightPx;
@@ -34,23 +34,30 @@ export interface KjunSliderProps {
   /** vertical: the rail runs bottom (min) to top (max), `length` pt long. */
   orientation?: SliderOrientation;
   length?: number;
+  /** Like Web: the value in a bubble on the thumb, "drag" while dragging or keyboard-focused, "always", or "off" (default). */
+  valueLabel?: SliderValueLabel;
+  /** The fill grows from this value instead of min, for two-way values such as -50…50; a dot marks it. Single slider only. */
+  fillOrigin?: number;
+  style?: StyleProp<ViewStyle>;
+  testID?: string;
   onValueChange?: (value: number) => void;
   onChangeCommit?: (value: number) => void;
 }
-export interface KjunRangeSliderProps extends Omit<KjunSliderProps, "value" | "onValueChange" | "onChangeCommit"> {
+export interface KjunRangeSliderProps extends Omit<KjunSliderProps, "value" | "fillOrigin" | "onValueChange" | "onChangeCommit"> {
   value: [number, number];
+  /** The fewest steps the two thumbs keep between them; 0 (default) lets them meet. */
+  minStepsBetweenThumbs?: number;
   thumbLabels?: [string, string];
   /** The visible text for the whole range, e.g. "20만~80만 원". Each thumb keeps formatValue. */
   formatRange?: (start: number, end: number) => string;
   onValueChange?: (value: [number, number]) => void;
   onChangeCommit?: (value: [number, number]) => void;
 }
-// Pointer-only track; keyboard focus belongs to the slider thumbs.
-// On Native Web, Pressable ignores focusable and reads tabIndex instead.
-const trackFocus = { tabIndex: -1 } as object;
 function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
   const { value, min = 0, max = 100, step = 1, disabled = false, label, ariaLabel, showValue = true, formatValue: formatter, marks,
-    size = "md", orientation = "horizontal" } = props;
+    size = "md", orientation = "horizontal", valueLabel = "off", style, testID } = props;
+  const fillOrigin = "fillOrigin" in props ? props.fillOrigin : undefined;
+  const gap = sliderGap("minStepsBetweenThumbs" in props ? props.minStepsBetweenThumbs : undefined, step);
   const scope = useKjunMessageScope(), m = scope.messages;
   const formatValue = sliderFormatter(formatter, scope.intl, min, step);
   const { colors, numericFontFamily, fontFamily } = useKjunStyles();
@@ -68,14 +75,20 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
   const [focused, setFocused] = useState<number | null>(null);
   const [labelWidths, setLabelWidths] = useState<Record<number, number>>({});
   const track = useRef<View>(null);
-  const current = useRef({ props, min, effectiveMax, step, domain, blocked, rtl, vertical });
-  current.current = { props, min, effectiveMax, step, domain, blocked, rtl, vertical };
+  const current = useRef({ props, min, effectiveMax, step, domain, blocked, rtl, vertical, gap });
+  current.current = { props, min, effectiveMax, step, domain, blocked, rtl, vertical, gap };
+  const thumbRefs = useRef<(View | null)[]>([]);
   const session = useMemo(() => createSliderSession(values, {
     min: () => current.current.min, max: () => current.current.effectiveMax, step: () => current.current.step,
-    snap: (number) => current.current.domain.snap(number), blocked: () => current.current.blocked,
+    snap: (number) => current.current.domain.snap(number), blocked: () => current.current.blocked, gap: () => current.current.gap,
     emit: (next) => (current.current.props.onValueChange as ((value: number | number[]) => void) | undefined)?.(next.length === 1 ? next[0] : next),
     commit: (next) => (current.current.props.onChangeCommit as ((value: number | number[]) => void) | undefined)?.(next.length === 1 ? next[0] : next),
-    focus: (index) => setDragging(index),
+    // Like Web: the pressed thumb takes keyboard focus, so arrow keys continue from it on Native Web. The focus waits for the
+    // browser's own mousedown handling, which would otherwise move focus back to the page.
+    focus: (index) => {
+      setDragging(index);
+      if (Platform.OS === "web") setTimeout(() => (thumbRefs.current[index] as unknown as HTMLElement | null)?.focus?.({ preventScroll: true }));
+    },
   }), []);
   session.sync(values);
   useEffect(() => {
@@ -144,13 +157,15 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
   const formatRange = "formatRange" in props ? props.formatRange : undefined;
   const fractions = sliderFractions(values, min, effectiveMax);
   const front = valid ? sliderFrontThumb(values, min, effectiveMax) : null;
-  const dots = valid ? sliderMarks(marks, min, effectiveMax, step, values, { vertical }) : [];
+  const dots = valid ? sliderMarks(marks, min, effectiveMax, step, values, { vertical }, fillOrigin) : [];
+  const origin = valid ? sliderOriginFraction(fillOrigin, min, effectiveMax) : undefined;
   const half = geometry.thumb / 2, captioned = !!label || showValue;
   const pct = (n: number): `${number}%` => `${n}%`;
   // Logical positions: horizontal from the start edge (mirrored in right-to-left), vertical from the top (max).
   const along = (fraction: number) => vertical ? { top: pct((1 - fraction) * 100) } : { start: pct(fraction * 100) };
-  const fill = values.length === 2
-    ? vertical ? { top: pct((1 - fractions[1]) * 100), bottom: pct(fractions[0] * 100) } : { start: pct(fractions[0] * 100), end: pct((1 - fractions[1]) * 100) }
+  const [low, high] = origin === undefined ? [fractions[0], fractions[1]] : [Math.min(origin, fractions[0]), Math.max(origin, fractions[0])];
+  const fill = values.length === 2 || origin !== undefined
+    ? vertical ? { top: pct((1 - high) * 100), bottom: pct(low * 100) } : { start: pct(low * 100), end: pct((1 - high) * 100) }
     : vertical ? { top: pct((1 - fractions[0]) * 100), bottom: -half } : { start: -half, end: pct((1 - fractions[0]) * 100) };
   // Like Web: the touch area stays 44pt while the visible band sits captionGap under the caption.
   const pull = (targetSize - geometry.trackHeight) / 2;
@@ -163,9 +178,10 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
   };
   const markLabels = dots.filter((dot) => dot.label);
   return (
-    <View style={{ minWidth: vertical ? undefined : slider.minimumWidth, width: vertical ? undefined : "100%", alignItems: vertical ? "center" : undefined,
+    // Like Web: one group named by the label (or ariaLabel).
+    <View testID={testID} role="group" accessibilityLabel={label || ariaLabel || m.value} style={[{ minWidth: vertical ? undefined : slider.minimumWidth, width: vertical ? undefined : "100%", alignItems: vertical ? "center" : undefined,
       // A mouse drag must not select the caption: RN Web ends the gesture when the text selection changes.
-      ...(Platform.OS === "web" ? ({ userSelect: "none" } as ViewStyle) : null) }}>
+      ...(Platform.OS === "web" ? ({ userSelect: "none" } as ViewStyle) : null) }, style]}>
       {captioned ? (
         <View style={vertical ? { alignItems: "center" } : { flexDirection: "row", alignItems: "baseline", justifyContent: "space-between", gap: tokens.dimension.value12, minWidth: 0 }}>
           {label ? (
@@ -186,16 +202,9 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
           {...responder.panHandlers}
           style={vertical ? { width: targetSize, height: length } : { height: targetSize, marginHorizontal: half, marginTop: captioned ? slider.captionGap - pull : 0 }}
         >
-          {/* The rail reaches half a thumb past the track at both ends, so it lines up with the caption. */}
-          <Pressable
-            accessible={false}
-            focusable={false}
-            {...trackFocus}
-            disabled={blocked}
-            onPress={(event) => {
-              const { pageX, pageY } = event.nativeEvent;
-              withBox(pageX, pageY, (number) => { session.press(number); session.release(); setDragging(null); });
-            }}
+          {/* The rail reaches half a thumb past the track at both ends, so it lines up with the caption. Presses on it go to
+              the track's pan responder, which captures every touch: a tap is a press and an immediate release. */}
+          <View
             style={vertical
               ? { position: "absolute", left: 0, right: 0, top: -half, bottom: -half, alignItems: "center" }
               : { position: "absolute", top: 0, bottom: 0, start: -half, end: -half, justifyContent: "center" }}
@@ -203,7 +212,7 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
             {/* One empty-rail role for Slider, RangeSlider and Progress, like Web: the switch-track role. */}
             <View style={{ [vertical ? "width" : "height"]: geometry.track, ...(vertical ? { flex: 1 } : null), borderRadius: tokens.radius.radius9999,
               backgroundColor: colors.switchTrack ?? colors.border }} />
-          </Pressable>
+          </View>
           <View
             pointerEvents="none"
             style={{
@@ -225,11 +234,13 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
             <Pressable
               key={index}
               accessibilityRole="adjustable"
-              accessibilityLabel={values.length === 2 ? thumbs[index] : ariaLabel || label || m.value}
+              ref={(node) => { thumbRefs.current[index] = node; }}
+              // Like Web (React Aria): a range thumb reads its own label, then the slider's.
+              accessibilityLabel={values.length === 2 ? [thumbs[index], label || ariaLabel].filter(Boolean).join(" ") : label || ariaLabel || m.value}
               accessibilityState={{ disabled: blocked }}
               accessibilityValue={{
-                min: index === 1 ? values[0] : min,
-                max: values.length === 2 && index === 0 ? values[1] : max,
+                min: index === 1 ? values[0] + gap : min,
+                max: values.length === 2 && index === 0 ? values[1] - gap : effectiveMax,
                 now: number,
                 text: formatValue(number),
               }}
@@ -254,8 +265,8 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
               {...(Platform.OS === "web"
                 ? {
                     "aria-valuenow": number,
-                    "aria-valuemin": index === 1 ? values[0] : min,
-                    "aria-valuemax": values.length === 2 && index === 0 ? values[1] : effectiveMax,
+                    "aria-valuemin": index === 1 ? values[0] + gap : min,
+                    "aria-valuemax": values.length === 2 && index === 0 ? values[1] - gap : effectiveMax,
                     "aria-valuetext": formatValue(number),
                     "aria-orientation": orientation,
                     "aria-disabled": blocked,
@@ -303,6 +314,17 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
                 <View pointerEvents="none" style={{ position: "absolute", zIndex: -1, width: geometry.thumb + slider.haloSize * 2, height: geometry.thumb + slider.haloSize * 2,
                   borderRadius: tokens.radius.radius9999, backgroundColor: colors.brand,
                   opacity: dragging === index ? tokens.states.opacity.tintActive : tokens.states.opacity.tintControl }} />
+              ) : null}
+              {/* Like Web .kjun-slider-value-label: the value in a tooltip-styled bubble above the thumb (beside it when vertical). */}
+              {valueLabel === "always" || (valueLabel === "drag" && !blocked && (dragging === index || focused === index)) ? (
+                <View aria-hidden pointerEvents="none" style={{ position: "absolute",
+                  ...(vertical ? { start: targetSize / 2 + geometry.thumb / 2 + slider.valueLabelGap } : { bottom: targetSize / 2 + geometry.thumb / 2 + slider.valueLabelGap }),
+                  paddingVertical: tokens.extensions.tooltip.paddingY, paddingHorizontal: tokens.extensions.tooltip.paddingX,
+                  borderRadius: tokens.radius.radius6, backgroundColor: colors.chartTooltipBg }}>
+                  <KText numberOfLines={1} style={{ ...typeStyle("caption"), fontFamily: numericFontFamily ?? fontFamily, fontVariant: ["tabular-nums"], color: colors.chartTooltipText }}>
+                    {formatValue(number)}
+                  </KText>
+                </View>
               ) : null}
             </Pressable>
           ))}
