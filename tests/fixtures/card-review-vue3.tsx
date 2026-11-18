@@ -14,6 +14,12 @@ createApp(defineComponent(() => () => <KjunProvider><div style={{ padding: '16px
     headerActions: () => <KjunButton size="sm" onClick={() => { state.actions++; }}>상세 보기</KjunButton>,
   }}</KjunCard></div>
   <span data-testid="card-actions">{String(state.actions)}</span>
+  <div data-testid="brand-actions"><KjunCard surface="brand" title="브랜드 제목">{{
+    default: () => <KjunCard title="내부 카드">{{ footer: () => <KjunButton>내부 행동</KjunButton> }}</KjunCard>,
+    footer: () => <KjunButton>브랜드 행동</KjunButton>,
+  }}</KjunCard></div>
+  <div data-testid="link-card" style={{ width: '480px', maxWidth: '100%' }}><KjunCard href="#guide" title="링크 제목" subtitle="링크 설명">링크 본문</KjunCard></div>
+  <div data-testid="beside-card" style={{ width: '480px', maxWidth: '100%' }}><KjunCard>{{ default: () => '옆 본문', headerActions: () => <KjunButton size="sm">옆 행동</KjunButton> }}</KjunCard></div>
   {(['sm', 'md', 'lg'] as const).map(size => <div key={'alert-' + size} data-testid={'alert-' + size}><KjunAlert size={size} title="알림 제목" closable>알림 설명</KjunAlert></div>)}
   {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map(size => <div key={'icon-' + size} data-testid={'icon-' + size}><KjunIconToggle size={size} activeIcon="heart" ariaLabel={'아이콘 ' + size} active={state.active} onToggle={() => { state.active = !state.active; }} /></div>)}
   {(['xs', 'sm', 'md'] as const).map(size => <div key={'copy-' + size} data-testid={'copy-' + size}><KjunCopyButton value="복사 값" size={size} ariaLabel={'복사 ' + size} copyText={async () => {}} /></div>)}

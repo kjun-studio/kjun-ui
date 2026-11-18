@@ -5,6 +5,7 @@ import { TopNavigationContext } from "./top-navigation-context";
 import { BottomActionBarContext } from "./bottom-action-bar-context";
 import { FormActionsContext } from "./form-actions-context";
 import { CardActionsContext } from "./card-actions-context";
+import { CardBrandContext } from "./card-surface-context";
 import { AlertActionsContext } from "./alert-actions-context";
 import { textTint } from "./text-tint";
 import { useActionPill, useActionSize } from "../../../shared/package-runtime/action-size";
@@ -182,6 +183,8 @@ export function KjunButton(input: KjunButtonProps) {
   const compactActionBar = useContext(BottomActionBarContext);
   const formActions = useContext(FormActionsContext);
   const cardActions = useContext(CardActionsContext);
+  // On a brand card a primary or link action uses the brand-action roles, so it does not take the card's own colour.
+  const brandCard = useContext(CardBrandContext);
   const stateContent = useContext(DataStateContentContext);
   const multiline = wrap || !!formActions || cardActions || !!stateContent;
   const height = Math.max(tokens.button.heights[size], navigation?.controlSize ?? 0);
@@ -199,14 +202,14 @@ export function KjunButton(input: KjunButtonProps) {
     variant
   );
   const link = variant === "link";
-  const ink = link ? c.brand : variant === "danger-ghost" ? c.danger : positive
+  const ink = link ? brandCard ? c.onBrand : c.brand : variant === "danger-ghost" ? c.danger : variant === "primary" && brandCard ? c.brandActionText : positive
     ? ({ primary: c.onBrand, danger: c.onDanger, success: c.onSuccess, warning: c.onWarning } as Record<string, typeof c.inverse>)[variant]
     : variant === "secondary"
     ? c.text
     : c.textSecondary;
   const base =
     variant === "primary"
-      ? c.brand
+      ? brandCard ? c.brandAction : c.brand
       : variant === "secondary"
       ? alertActions ? textTint(c.text, "tintControl", c.surface) : c.buttonSecondary
       : variant === "danger"
@@ -226,10 +229,10 @@ export function KjunButton(input: KjunButtonProps) {
     const expanded = props.accessibilityState?.expanded;
     // Disabled actions share one neutral paint so no variant reads as a paler tone of itself.
     if (disabled) return { background: variant === "ghost" || variant === "danger-ghost" || link ? "transparent" : c.buttonSecondary, ink: c.textDisabled };
-    if (link) return { background: "transparent", ink: pressed ? c.brandActive : c.brand };
+    if (link) return { background: "transparent", ink: brandCard ? c.onBrand : pressed ? c.brandActive : c.brand };
     if (busy || (!pressed && !hovered && !expanded)) return { background: base, ink };
     pressed = pressed || !!expanded;
-    const background = variant === "primary" ? pressed ? c.brandActive : c.brandHover
+    const background = variant === "primary" ? brandCard ? pressed ? c.brandActionActive : c.brandActionHover : pressed ? c.brandActive : c.brandHover
       : variant === "secondary" && alertActions ? textTint(c.text, pressed ? "tintActive" : "tintHover", pressed ? c.active : c.hover)
       : variant === "secondary" ? pressed ? c.buttonSecondaryActive : c.buttonSecondaryHover
       : variant === "ghost" ? pressed ? c.active : c.hover

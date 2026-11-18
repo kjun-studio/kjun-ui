@@ -6,6 +6,7 @@ import { tokens, type CardElevation, type CardPadding, type CardRadius, type Car
 import { hasContent } from "./runtime/slots";
 import { kjunCardActionsKey } from "./runtime/keys";
 import { linkRel } from "../../../shared/package-runtime/list-row";
+import { KjunIcon } from "./button";
 
 /** Internal: wraps the header actions so buttons there wrap long labels. */
 const CardActions = defineComponent({
@@ -104,7 +105,7 @@ export const KjunCard = defineComponent({
       const title = hasContent(titleNode) ? titleNode : props.title;
       const parts = { header: hasContent(header), title: hasContent(titleNode) || !!props.title, subtitle: !!props.subtitle, actions: hasContent(headerActions),
         body: hasContent(children), footer: hasContent(footer), media: hasContent(media) };
-      const layout = cardLayout(parts, { pressable: props.pressable || link, headingLevel: props.headingLevel, surface: props.surface, padding: props.padding, mediaPosition: props.mediaPosition });
+      const layout = cardLayout(parts, { pressable: props.pressable || link, link, headingLevel: props.headingLevel, surface: props.surface, padding: props.padding, mediaPosition: props.mediaPosition });
       // Typed as "div" so JSX accepts the tag variable; an a element takes the same attributes.
       const Root = (link ? "a" : "div") as "div";
       // Typed as "p" so JSX accepts the tag variable; h2–h6 take the same attributes.
@@ -117,7 +118,7 @@ export const KjunCard = defineComponent({
             emit("click", event);
           },
           class: "kjun-card", "data-surface": props.surface, "data-padding": props.padding, "data-body-padding": bodyPadding,
-          "data-border": String(props.border), "data-dividers": String(props.dividers), "data-elevation": props.elevation, "data-media": layout.sideMedia ? "start" : undefined,
+          "data-border": String(props.border), "data-dividers": String(props.dividers), "data-elevation": props.elevation, "data-media": layout.sideMedia ? "start" : undefined, "data-actions-beside": layout.actionsBeside || undefined,
           style: {
             "--_kjun-card-padding": `var(--_kjun-geometry-card-padding-${props.padding})`,
             "--_kjun-card-body-padding": `var(--_kjun-geometry-card-padding-${bodyPadding})`,
@@ -140,6 +141,7 @@ export const KjunCard = defineComponent({
                 </div>
               )}
               {parts.actions && <CardActions>{{ default: () => headerActions }}</CardActions>}
+              {layout.linkMark && <span class="kjun-card-link-mark" aria-hidden="true"><KjunIcon name="chevron-right" size={tokens.iconSizes.large} /></span>}
             </div>
           )}
           {parts.body && <div class="kjun-card-body">{children}</div>}

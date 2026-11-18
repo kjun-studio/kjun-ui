@@ -7,7 +7,8 @@ import { KText, content } from "./internal";
 import { useKjunStyles } from "./provider";
 import { hasContent as present } from "../../../shared/package-runtime/content-presence";
 import { CardActionsContext } from "./card-actions-context";
-import { CardTintContext } from "./card-surface-context";
+import { KjunIcon } from "./button";
+import { CardBrandContext, CardTintContext } from "./card-surface-context";
 import { TileCellContext } from "./tiles-context";
 import { linkRel } from "../../../shared/package-runtime/list-row";
 import { cardLayout, warnCardDeviceLink, type CardHeadingLevel, type CardMediaAspect, type CardMediaPosition } from "../../../shared/package-runtime/card-layout";
@@ -76,7 +77,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
   const link = href !== undefined, interactive = pressable || link;
   const deviceLink = Platform.OS !== "web" && link && !onPress;
   useEffect(() => warnCardDeviceLink(deviceLink), [deviceLink]);
-  const layout = cardLayout(has, { pressable: interactive, headingLevel, surface, padding, mediaPosition });
+  const layout = cardLayout(has, { pressable: interactive, link, headingLevel, surface, padding, mediaPosition });
   const heading = layout.titleLevel ? { accessibilityRole: "header" as const, ...(Platform.OS === "web" ? { "aria-level": layout.titleLevel } : {}) } : {};
   const base: StyleProp<ViewStyle> = [
     {
@@ -97,7 +98,13 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
     : <View style={{ overflow: "hidden", borderTopLeftRadius: corner, borderTopRightRadius: corner,
         ...(!layout.header && !has.body && !has.footer ? { borderBottomLeftRadius: corner, borderBottomRightRadius: corner } : {}), ...frame,
       }}>{content(media)}</View>);
-  const sections = <>
+  const actions = <CardActionsContext.Provider value={true}><View style={{ flexDirection: "row", flexWrap: "wrap", minWidth: 0, maxWidth: "100%", marginStart: layout.heading ? 0 : "auto", alignItems: "center", justifyContent: "flex-end", gap: tokens.card.titleGap }}>{content(headerActions, { color: foreground })}</View></CardActionsContext.Provider>;
+  // Header actions without a title sit at the end of the body's row; too narrow for the body's minimum width, they wrap above it.
+  const beside = layout.actionsBeside && <View style={{ flexDirection: "row", flexWrap: "wrap-reverse", alignItems: "center" }}>
+    <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: tokens.card.titleMinWidth, minWidth: 0, padding: bodyInset }}>{content(children, { color: foreground, ...words })}</View>
+    <View style={{ flexShrink: 1, minWidth: 0, marginStart: "auto", padding: inset, paddingStart: 0 }}>{actions}</View>
+  </View>;
+  const sections = beside || <>
     {!!layout.header && <View style={{
       // Without a divider the header sits a step closer to the body than to the card edge.
       padding: inset, paddingBottom: !dividers && has.body ? layout.headerGap : inset, flexDirection: "row", flexWrap: "wrap", gap: tokens.card.titleGap,
@@ -114,10 +121,13 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
           {!!has.subtitle && <KText {...wordProps} style={{ ...typeStyle("body"), marginTop: tokens.card.subtitleGap, color: colors[paint.description], ...words }}>{subtitle}</KText>}
         </>}
       </View>}
-      {!!has.actions && <CardActionsContext.Provider value={true}><View style={{ flexDirection: "row", flexWrap: "wrap", minWidth: 0, maxWidth: "100%", marginStart: layout.heading ? 0 : "auto", alignItems: "center", justifyContent: "flex-end", gap: tokens.card.titleGap }}>{content(headerActions, { color: foreground })}</View></CardActionsContext.Provider>}
+      {!!has.actions && actions}
+      {/* A link card ends its header with a chevron, centred on the title block, so it reads as a link before it is pressed. */}
+      {layout.linkMark && <View aria-hidden={true} style={{ alignSelf: "center", marginStart: "auto" }}>
+        <KjunIcon name="chevron-right" size={tokens.iconSizes.large} color={colors.textTertiary} /></View>}
     </View>}
     {has.body && <View style={{ minWidth: 0, padding: bodyInset, paddingTop: layout.header && !dividers ? 0 : bodyInset }}>
-      {content(children, { color: foreground })}
+      {content(children, { color: foreground, ...words })}
     </View>}
     {!!has.footer && <View style={{
       padding: inset, paddingTop: !dividers && (has.body ? bodyPadding !== "none" : layout.header) ? 0 : inset,
@@ -136,7 +146,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
   </>;
   // Always provided, so a plain card nested in a tinted one drops the tint again.
   // A card inside this one is not in a tile cell, so it keeps its own size.
-  const painted = <CardTintContext.Provider value={layout.tinted}><TileCellContext.Provider value={false}>{parts}</TileCellContext.Provider></CardTintContext.Provider>;
+  const painted = <CardTintContext.Provider value={layout.tinted}><CardBrandContext.Provider value={surface === "brand"}><TileCellContext.Provider value={false}>{parts}</TileCellContext.Provider></CardBrandContext.Provider></CardTintContext.Provider>;
   const ids = { testID, nativeID };
   // A pressable or link card presses in slightly, like a button, lifts one step on hover (Web) and dims when disabled.
   const lift = (hovered?: boolean) => hovered && !disabled

@@ -7,11 +7,13 @@ export function generateCard(input: UsageInput) {
   const copy = (value: string) => b.native ? `{${literal(value)}}` : b.text(value);
   const view = b.handler('viewProject', '', b.result('"프로젝트 상세를 확인했습니다."'));
   let content: string;
-  if (design === '통계') content = b.node('KjunCard', props, b.group([
-    b.node(b.native ? 'Text' : 'p', {}, b.text('이번 달 완료 작업')),
-    b.node('KjunAnimatedNumber', { value: 128, animated: false }),
-    b.node(b.native ? 'Text' : 'p', {}, b.text('목표 160건 중 80%')), b.node('KjunProgressCell', { value: 80 }),
-  ]));
+  if (design === '통계') content = b.node('KjunCard', props, b.node('KjunStack', { gap: 'smMd' }, [
+    b.node('KjunStack', { gap: 'xs' }, [
+      b.node('KjunText', { variant: 'label', tone: 'secondary' }, b.text('이번 달 완료 작업')),
+      b.node('KjunText', { variant: 'numberLg' }, b.text('128건')),
+      b.node('KjunText', { variant: 'caption', tone: 'tertiary' }, b.text('목표 160건 중 80%')),
+    ].join('\n')), b.node('KjunProgressCell', { value: 80 }),
+  ].join('\n')));
   else if (design === '테이블') content = b.node('KjunCard', { ...props, title: '팀 문서', subtitle: '최근 수정한 문서 3개' },
     b.node('KjunTable', { data: b.data('rows', cardTableRows), columns: b.data('columns', cardTableColumns), rowKey: 'id', compact: true, responsive: 'none' }),
     { footer: b.button('전체 문서 보기', b.handler('viewDocuments', '', b.result('"전체 문서를 확인했습니다."'))) });

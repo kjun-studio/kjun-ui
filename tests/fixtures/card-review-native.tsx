@@ -15,6 +15,9 @@ function App() {
     <div data-testid="glass-card"><KjunCard surface="glass" title="유리 제목" subtitle="유리 설명">유리 본문</KjunCard></div>
     <div data-testid="narrow-card" style={{ width: 240, maxWidth: '100%' }}><KjunCard title={longCardTitle} headerActions={<KjunButton size="sm" onPress={()=>setActions(value=>value+1)}>상세 보기</KjunButton>}>긴 카드 본문</KjunCard></div>
     <span data-testid="card-actions">{actions}</span>
+    <div data-testid="brand-actions"><KjunCard surface="brand" title="브랜드 제목" footer={<KjunButton onPress={()=>{}}>브랜드 행동</KjunButton>}><KjunCard title="내부 카드" footer={<KjunButton onPress={()=>{}}>내부 행동</KjunButton>} /></KjunCard></div>
+    <div data-testid="link-card" style={{ width: 480, maxWidth: '100%' }}><KjunCard href="#guide" title="링크 제목" subtitle="링크 설명">링크 본문</KjunCard></div>
+    <div data-testid="beside-card" style={{ width: 480, maxWidth: '100%' }}><KjunCard headerActions={<KjunButton size="sm" onPress={()=>{}}>옆 행동</KjunButton>}>옆 본문</KjunCard></div>
     {(['sm','md','lg'] as const).map(size=><div key={'alert-'+size} data-testid={'alert-'+size}><KjunAlert size={size} title="알림 제목" closable>알림 설명</KjunAlert></div>)}
     {(['xs','sm','md','lg','xl'] as const).map(size=><div key={'icon-'+size} data-testid={'icon-'+size}><KjunIconToggle size={size} activeIcon="heart" ariaLabel={'아이콘 '+size} active={active} onToggle={()=>setActive(value=>!value)}/></div>)}
     {(['xs','sm','md'] as const).map(size=><div key={'copy-'+size} data-testid={'copy-'+size}><KjunCopyButton value="복사 값" size={size} ariaLabel={'복사 '+size} copyText={async()=>{}}/></div>)}

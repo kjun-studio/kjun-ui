@@ -5,6 +5,7 @@ import { useEffect, useRef, type CSSProperties, type HTMLAttributes, type Keyboa
 import { hasContent as present } from "../../../shared/package-runtime/content-presence";
 import { linkRel } from "../../../shared/package-runtime/list-row";
 import { CardActionsContext } from "./card-actions-context";
+import { KjunIcon } from "./button";
 
 export interface KjunCardProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
   /** The card title; a node can carry an icon or an emphasised number. Give a pressable card with a node title an ariaLabel. */
@@ -56,7 +57,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
   });
   const parts = { header: present(header), title: present(title), subtitle: present(subtitle), actions: present(headerActions),
     body: present(children), footer: present(footer), media: present(media) };
-  const layout = cardLayout(parts, { pressable: pressable || link, headingLevel, surface, padding, mediaPosition });
+  const layout = cardLayout(parts, { pressable: pressable || link, link, headingLevel, surface, padding, mediaPosition });
   // Like a native button: Enter presses once on keydown (a held key does not repeat), Space presses on release.
   const name = ariaLabel ?? (typeof title === "string" ? title : undefined);
   // A link card is an a element: the browser handles Enter; a disabled one keeps the link role without an href.
@@ -88,7 +89,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
   const Root = (link ? "a" : "div") as "div";
   return <Root {...props} {...press} ref={root as RefObject<HTMLDivElement>} className={["kjun-card", className].filter(Boolean).join(" ")}
     data-surface={surface} data-padding={padding} data-body-padding={bodyPadding}
-    data-border={border} data-dividers={dividers} data-elevation={elevation} data-media={layout.sideMedia ? "start" : undefined}
+    data-border={border} data-dividers={dividers} data-elevation={elevation} data-media={layout.sideMedia ? "start" : undefined} data-actions-beside={layout.actionsBeside || undefined}
     style={{
       "--_kjun-card-padding": `var(--_kjun-geometry-card-padding-${padding})`,
       "--_kjun-card-body-padding": `var(--_kjun-geometry-card-padding-${bodyPadding})`,
@@ -107,6 +108,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
         </>}
       </div>}
       {parts.actions && <div className="kjun-card-actions"><CardActionsContext.Provider value={true}>{headerActions}</CardActionsContext.Provider></div>}
+      {layout.linkMark && <span className="kjun-card-link-mark" aria-hidden="true"><KjunIcon name="chevron-right" size={tokens.iconSizes.large} /></span>}
     </div>}
     {parts.body && <div className="kjun-card-body">{children}</div>}
     {parts.footer && <div className="kjun-card-footer" data-align={footerAlign}>{footer}</div>}

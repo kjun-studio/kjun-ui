@@ -84,6 +84,14 @@
 /* Side media is a column, not a part above the footer: a footer alone beside it draws no line (as on Native). */
 .kjun-card[data-dividers="true"]:not([data-media="start"]) > .kjun-card-footer:not(:first-child),
 .kjun-card[data-dividers="true"][data-media="start"] > .kjun-card-footer:not(.kjun-card-media + *) { border-top: var(--_kjun-border-default-width) solid var(--_kjun-card-border); }
+/* A link card ends its header with a chevron, centred on the title block, so it reads as a link before hover or focus. */
+.kjun-card-link-mark { flex: none; align-self: center; display: flex; margin-inline-start: auto; color: var(--_kjun-color-text-tertiary); }
+.kjun-card[data-pressable]:hover:not([aria-disabled="true"]) .kjun-card-link-mark { color: var(--_kjun-color-text-secondary); }
+/* Header actions without a title sit at the end of the body's row. When the row is too narrow for the body's minimum width
+   they wrap above it (wrap-reverse), as in a header row of their own. */
+.kjun-card[data-actions-beside] { display: flex; flex-wrap: wrap-reverse; align-items: center; }
+.kjun-card[data-actions-beside][data-dividers] > .kjun-card-body { flex: 1 1 var(--_kjun-geometry-card-title-min-width); padding: var(--_kjun-card-body-padding); }
+.kjun-card[data-actions-beside][data-dividers] > .kjun-card-header { order: 1; flex: 0 1 auto; margin-inline-start: auto; padding: var(--_kjun-card-padding); padding-inline-start: 0; border-bottom: 0; }
 /* A pressable card is one button and a link card (href) one link: it lifts on hover, presses in on activation and shows the focus ring. */
 a.kjun-card { display: block; color: var(--_kjun-card-text); text-decoration: none; }
 .kjun-card[data-pressable] { box-shadow: var(--_kjun-card-shadow); cursor: pointer; transition: box-shadow var(--_kjun-motion-control) var(--_kjun-ease-out), transform var(--_kjun-motion-control) var(--_kjun-ease-out); }
@@ -99,3 +107,18 @@ a.kjun-card { display: block; color: var(--_kjun-card-text); text-decoration: no
 /* A plain card nested in a tinted one, and parts painted on the plain surface (list sections, expanded table cards), drop it again. */
 .kjun-card:is([data-surface="default"], [data-surface="glass"]),
 .kjun-card :is(.kjun-list-section:not([data-surface="false"]), .kjun-list-panel:not([data-surface="false"]), .kjun-table-card-expand-content) { --_kjun-badge-fill: initial; }
+/* On the brand surface a primary or link action would take the card's own colour; it uses the brand-action roles
+   (by default an onBrand fill with a brand label), which an app can set, e.g. to a translucent onBrand fill. */
+.kjun-card[data-surface="brand"] {
+  --_kjun-button-primary: var(--_kjun-color-brand-action);
+  --_kjun-button-primary-hover: var(--_kjun-color-brand-action-hover);
+  --_kjun-button-primary-active: var(--_kjun-color-brand-action-active);
+  --_kjun-button-primary-text: var(--_kjun-color-brand-action-text);
+  --_kjun-button-link: var(--_kjun-color-on-brand);
+  --_kjun-button-link-active: var(--_kjun-color-on-brand);
+}
+.kjun-card:not([data-surface="brand"]),
+.kjun-card :is(.kjun-list-section:not([data-surface="false"]), .kjun-list-panel:not([data-surface="false"]), .kjun-table-card-expand-content) {
+  --_kjun-button-primary: initial; --_kjun-button-primary-hover: initial; --_kjun-button-primary-active: initial;
+  --_kjun-button-primary-text: initial; --_kjun-button-link: initial; --_kjun-button-link-active: initial;
+}

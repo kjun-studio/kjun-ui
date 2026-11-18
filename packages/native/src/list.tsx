@@ -1,7 +1,7 @@
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { nodeText } from "../../../shared/package-runtime/node-text";
 import { KjunSpinnerGlyph } from "./spinner-glyph";
-import { CardTintContext } from "./card-surface-context";
+import { CardBrandContext, CardTintContext } from "./card-surface-context";
 import { typeStyle } from "./typography";
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { Children, Fragment, cloneElement, createContext, isValidElement, useContext, useEffect, useId, useLayoutEffect, useMemo, useState, type ReactElement, type ReactNode } from "react";
@@ -357,10 +357,10 @@ export function KjunListSection({ title, description, badge, style, testID, acti
     </View>
     : hasContent(empty) ? <View style={{ minHeight: compact ? list.compactMinimumHeight : list.minimumHeight, justifyContent: "center", paddingHorizontal: list.padding }}><ListEmptyContext.Provider value={density}>{content(empty)}</ListEmptyContext.Provider></View> : null;
   const heading = <KText {...wordProps} accessibilityRole="header" {...(Platform.OS === "web" ? { "aria-level": headingLevel } : {})} style={{ flexShrink: 1, ...(bare ? { ...typeStyle('controlSmall'), color: colors.textSecondary } : typeStyle('cardTitle')), ...words }}>{title}</KText>;
-  const tint = useContext(CardTintContext);
+  const tint = useContext(CardTintContext), brand = useContext(CardBrandContext);
   const card = { backgroundColor: surface ? colors.surface : "transparent", ...(radiusValue === undefined ? {} : { borderRadius: radiusValue, overflow: "hidden" as const }) };
   // A section on the plain surface drops a tinted card's badge fill, so its badges keep their own tone.
-  return <CardTintContext.Provider value={surface ? false : tint}><ListShapeContext.Provider value={shape}><View testID={testID} style={[{ minWidth: 0, ...(outside ? {} : card) }, style]}>
+  return <CardTintContext.Provider value={surface ? false : tint}><CardBrandContext.Provider value={surface ? false : brand}><ListShapeContext.Provider value={shape}><View testID={testID} style={[{ minWidth: 0, ...(outside ? {} : card) }, style]}>
     {!!(title || description || hasContent(actions)) && <View style={{ flexDirection: "row", alignItems: "flex-start", gap: list.gap, padding: list.padding,
       // A title without a description is a small group header that sits close to its rows; outside a card it starts at the top.
       // Like Web: 8px under a heading (4px under a small group header), so it reads with its rows.
@@ -376,7 +376,7 @@ export function KjunListSection({ title, description, badge, style, testID, acti
     {!!noteText && <View nativeID={id + "-reorder"} style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside || hasFooter ? 0 : list.padding }}><KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{noteText}</KText></View>}
     {reorder.status}
     {hasFooter && <View nativeID={id + "-footer"} style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside ? 0 : list.padding }}>{typeof footer === "string" ? <KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{String(footer)}</KText> : content(footer, { ...typeStyle("caption"), color: colors.textTertiary })}</View>}
-  </View></ListShapeContext.Provider></CardTintContext.Provider>;
+  </View></ListShapeContext.Provider></CardBrandContext.Provider></CardTintContext.Provider>;
 }
 export interface KjunListGroupProps {
   /** Style of the root View (outer spacing, width); testID finds it in tests. */

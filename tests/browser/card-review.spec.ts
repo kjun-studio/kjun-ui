@@ -51,6 +51,41 @@ for (const platform of platforms) {
     await expect(page.getByTestId('card-actions')).toHaveText('2');
   });
 
+  test(`${platform}: brand card actions, link chevron and actions beside the body`, async ({ page }) => {
+    await openFixture(page, platform, '', 'card-review');
+    await page.setViewportSize({ width: 1000, height: 1200 });
+    const paint = (node: Locator) => node.evaluate(el => getComputedStyle(el).backgroundColor);
+    // A primary action on the brand surface takes the brand-action roles (onBrand fill, brand label), not the card's colour.
+    const brand = page.getByTestId('brand-actions');
+    const surface = await paint(brand.locator(':scope > *').first());
+    const action = brand.getByRole('button', { name: '브랜드 행동' });
+    // The fixture palette is resolved, so the roles carry their own values rather than following brand and onBrand.
+    const role = (name: string) => page.evaluate(name => {
+      const probe = document.body.appendChild(document.createElement('i'));
+      probe.style.color = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      const value = getComputedStyle(probe).color; probe.remove(); return value;
+    }, name);
+    expect(await paint(action)).not.toBe(surface);
+    expect(await paint(action)).toBe(await role('--kjun-brand-action'));
+    expect((await textStyle(action)).color).toBe(await role('--kjun-brand-action-text'));
+    // A plain card nested in the brand card paints its primary action with the brand colour again.
+    expect(await paint(brand.getByRole('button', { name: '내부 행동' }))).toBe(surface);
+    // A link card ends its header with a chevron after the title.
+    const link = page.getByTestId('link-card');
+    const title = await link.getByText('링크 제목', { exact: true }).boundingBox();
+    const mark = await link.locator('svg').last().boundingBox();
+    expect(mark!.width).toBe(tokens.iconSizes.large);
+    expect(mark!.x).toBeGreaterThan(title!.x + title!.width);
+    // Header actions without a title share the body's row, centred on it.
+    const beside = page.getByTestId('beside-card');
+    const body = await beside.getByText('옆 본문', { exact: true }).boundingBox();
+    const button = await beside.getByRole('button', { name: '옆 행동' }).boundingBox();
+    const card = await beside.locator(':scope > *').first().boundingBox();
+    expect(button!.x).toBeGreaterThanOrEqual(body!.x + body!.width - 1);
+    expect(Math.abs((button!.y + button!.height / 2) - (body!.y + body!.height / 2))).toBeLessThanOrEqual(1);
+    expect(card!.height).toBeCloseTo(button!.height + 2 * tokens.card.padding.md, 0);
+  });
+
   test(`${platform}: alert roles and action icon geometry agree across sizes`, async ({ page }) => {
     await openFixture(page, platform, '', 'card-review');
     for (const size of ['sm', 'md', 'lg']) {

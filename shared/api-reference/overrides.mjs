@@ -210,7 +210,7 @@ set("Dropdown", { onClose: { summary: "실제 닫힘 전이에 한 번 호출합
   { label: "선택 순서", text: "항목 action → onClose 한 번 순서입니다. 같은 이벤트의 중복 닫힘 요청과 퇴장 애니메이션 완료는 추가 통지를 만들지 않습니다." },
 ] } }, "react");
 set("Card", {
-  surface: "표면의 배경·전경·테두리 색상 역할을 선택합니다. 모두 단색 채움이고 glass만 반투명입니다. default가 아닌 색 표면(muted·accent·success·warning·danger·subtle·brand) 안의 배지는 surface 색 바탕으로 그려 표면과 구분합니다. muted는 흰(surface) 영역 안에 놓을 때 쓰고, 페이지 바탕 위에는 default를 씁니다. border·elevation은 독립적으로 적용됩니다.",
+  surface: "표면의 배경·전경·테두리 색상 역할을 선택합니다. 모두 단색 채움이고 glass만 반투명입니다. default가 아닌 색 표면(muted·accent·success·warning·danger·subtle·brand) 안의 배지는 surface 색 바탕으로 그려 표면과 구분합니다. brand 표면 안의 primary·link 버튼은 brand 색 대신 brandAction 역할(기본: onBrand 바탕·brand 글자, link는 onBrand 글자)로 그려 표면에 묻히지 않게 합니다. muted는 흰(surface) 영역 안에 놓을 때 쓰고, 페이지 바탕 위에는 default를 씁니다. border·elevation은 독립적으로 적용됩니다.",
   padding: "헤더·본문·푸터의 기본 여백입니다. none/sm/md/lg이며 기본값은 md입니다. 화면 폭에 따라 자동 변경되지 않습니다.",
   bodyPadding: { default: "padding 상속", summary: "본문 여백만 바꿉니다. none이면 표나 목록을 카드 가장자리까지 채우면서 헤더·푸터 여백을 유지합니다." },
   radius: "공통 모서리 스케일 none/sm/md/lg/xl(0·8·12·16·24)을 선택합니다. 기본값은 md이며 미디어 상단 모서리에도 적용됩니다.",
@@ -219,13 +219,13 @@ set("Card", {
 });
 set("Card", {
   header: "제목·설명 영역을 교체합니다. headerActions와 함께 사용할 수 있습니다.",
-  headerActions: "헤더 오른쪽 행동입니다. 제목 첫 줄에 맞춰 놓이고(제목이 두 줄이어도), 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
+  headerActions: "헤더 오른쪽 행동입니다. 제목 첫 줄에 맞춰 놓이고(제목이 두 줄이어도), 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 본문과 같은 줄 끝에 세로 가운데로 두고(본문과 16px), 본문이 160px보다 좁아지면 본문 위 줄 끝으로 올립니다. 미디어나 footer가 있으면 헤더 줄 끝에 둡니다.",
   media: "헤더 위(mediaPosition start면 내용 옆)에 표시하는 미디어입니다. 미디어만 있을 때는 아래 모서리까지 카드 반경에 맞춰 자릅니다.",
   title: "카드 제목입니다. 아이콘이나 강조한 숫자가 필요하면 노드를 넣습니다. pressable 카드에 노드 제목을 쓰면 ariaLabel을 함께 줍니다.",
 }, "react");
 set("Card", {
   header: "제목·설명 영역을 교체합니다. headerActions와 함께 사용할 수 있습니다.",
-  headerActions: "헤더 오른쪽 행동입니다. 제목 첫 줄에 맞춰 놓이고(제목이 두 줄이어도), 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 줄 끝에 둡니다.",
+  headerActions: "헤더 오른쪽 행동입니다. 제목 첫 줄에 맞춰 놓이고(제목이 두 줄이어도), 제목이 160px 이상 남으면 배지 같은 짧은 표시는 제목 줄에 그대로 두고, 그보다 넓은 행동은 다음 줄 시작으로 내려가며 긴 Button 문구는 카드 안에서 줄바꿈합니다. 제목이나 header가 없으면 본문과 같은 줄 끝에 세로 가운데로 두고(본문과 16px), 본문이 160px보다 좁아지면 본문 위 줄 끝으로 올립니다. 미디어나 footer가 있으면 헤더 줄 끝에 둡니다.",
   media: "헤더 위(mediaPosition start면 내용 옆)에 표시하는 미디어입니다. 미디어만 있을 때는 아래 모서리까지 카드 반경에 맞춰 자릅니다.",
   title: "카드 제목입니다. 아이콘이나 강조한 숫자가 필요하면 노드를 넣습니다. pressable 카드에 노드 제목을 쓰면 ariaLabel을 함께 줍니다.",
 }, "native");
@@ -550,7 +550,7 @@ set("Card", {
 });
 set("Card", { onPress: "pressable 카드를 누를 때 호출합니다. 비활성 카드에서는 호출하지 않습니다." }, "native");
 set("Card", {
-  href: "카드 전체를 하나의 링크(a 요소)로 만듭니다. 다른 페이지로 가는 카드에 씁니다. pressable처럼 hover 상승·누름·초점 링이 생기며, 안에 버튼·링크를 넣지 마세요. 라우터를 쓰면 클릭 처리에서 기본 이동을 막고 라우터로 이동하세요.",
+  href: "카드 전체를 하나의 링크(a 요소)로 만듭니다. 다른 페이지로 가는 카드에 씁니다. pressable처럼 hover 상승·누름·초점 링이 생기고, 제목이 있고 headerActions가 없으면 헤더 끝에 20px 오른쪽 화살표(text-tertiary, hover에서 text-secondary)를 그려 링크임을 보여 줍니다. 안에 버튼·링크를 넣지 마세요. 라우터를 쓰면 클릭 처리에서 기본 이동을 막고 라우터로 이동하세요.",
   target: "링크 카드를 열 대상입니다(예: _blank). _blank면 rel을 주지 않을 때 noopener noreferrer를 붙입니다.",
   rel: "링크 카드의 rel입니다. 생략하면 target이 _blank일 때 noopener noreferrer입니다.",
 });

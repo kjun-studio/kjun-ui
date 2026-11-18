@@ -324,10 +324,23 @@ export async function removeItem(id: string) {
 | --- | --- |
 | `accent` | `cardAccentStart` |
 | `subtle` | `cardSubtleStart` / `cardSubtleBorder` |
-| `brand` | 배경은 `brand` / `brandHover`, 전경은 `onBrand` |
+| `brand` | 배경은 `brand` / `brandHover`, 전경은 `onBrand`, 안쪽 primary·link 버튼은 `brandAction` 계열 |
 | `brandSoft` | `brandSubtleBg` (달력 범위 띠·표 선택 도구 모음과 같은 역할) |
 | `success` · `warning` · `danger` · `info` | `successLight` · `warningLight` · `dangerLight` · `infoLight` |
 | `glass` | `glassBg` / `glassBorder` |
+
+`surface="brand"` 카드 안의 primary 버튼은 카드와 같은 `brand` 색이 되지 않도록 `brandAction`(바탕, 기본 `onBrand`)·`brandActionText`(글자, 기본 `brand`)·`brandActionHover`(기본 `hover`)·`brandActionActive`(기본 `active`)로 그립니다. link 버튼은 `onBrand` 글자입니다. 기본값은 흰 바탕에 브랜드 글자인 반전 버튼이고, 표면과 같은 톤의 반투명 버튼을 원하면 역할 값만 바꿉니다.
+
+```css
+:root {
+  --kjun-brand-action: rgba(255, 255, 255, 0.16);
+  --kjun-brand-action-hover: rgba(255, 255, 255, 0.24);
+  --kjun-brand-action-active: rgba(255, 255, 255, 0.32);
+  --kjun-brand-action-text: var(--kjun-on-brand);
+}
+```
+
+Native는 `colors`에 `brandAction`·`brandActionText`·`brandActionHover`·`brandActionActive`를 같은 값으로 넘깁니다.
 
 테두리는 모든 표면에서 `border`로 선택하고, 그림자는 `elevation="flat"` 또는 `"raised"`로 선택합니다. 배경 선택과 테두리·그림자는 독립적입니다.
 

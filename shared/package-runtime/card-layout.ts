@@ -8,7 +8,7 @@ export type CardMediaAspect = keyof typeof tokens.card.mediaAspects;
 export interface CardParts { header: boolean; title: boolean; subtitle: boolean; actions: boolean; body: boolean; footer: boolean; media: boolean }
 
 /** Layout decisions every platform makes the same way. */
-export function cardLayout(parts: CardParts, options: { pressable: boolean; headingLevel: CardHeadingLevel; surface: CardSurface; padding: CardPadding; mediaPosition: CardMediaPosition }) {
+export function cardLayout(parts: CardParts, options: { pressable: boolean; link?: boolean; headingLevel: CardHeadingLevel; surface: CardSurface; padding: CardPadding; mediaPosition: CardMediaPosition }) {
   const heading = parts.header || parts.title || parts.subtitle;
   return {
     heading,
@@ -22,6 +22,11 @@ export function cardLayout(parts: CardParts, options: { pressable: boolean; head
     /** Without a divider the header sits a step closer to the body than to the card edge. */
     headerGap: tokens.card.headerGaps[options.padding],
     sideMedia: parts.media && options.mediaPosition === "start",
+    /** A link card with a title and no header actions ends its header with a chevron, so it reads as one before hover or focus. */
+    linkMark: !!options.link && heading && !parts.actions,
+    /** Header actions without a title share the body's row (actions at the end) instead of a header row of their own;
+     * with media or a footer the card keeps its rows. */
+    actionsBeside: parts.actions && !heading && parts.body && !parts.footer && !parts.media,
   };
 }
 

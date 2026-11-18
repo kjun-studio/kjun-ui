@@ -229,7 +229,7 @@
   background: var(--_kjun-color-active);
   color: var(--_kjun-color-text);
 }
-.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="primary"]:not(:disabled, [aria-busy="true"]), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="primary"]:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-brand-active); }
+.kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="primary"]:not(:disabled, [aria-busy="true"]), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="primary"]:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-button-primary-active, var(--_kjun-color-brand-active)); }
 .kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="danger"]:not(:disabled, [aria-busy="true"]), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="danger"]:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-danger-active); }
 .kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="success"]:not(:disabled, [aria-busy="true"]), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="success"]:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-success-active); }
 .kjun-button.kjun-menu-button[aria-expanded="true"][data-variant="warning"]:not(:disabled, [aria-busy="true"]), .kjun-button[aria-haspopup="dialog"][aria-expanded="true"][data-variant="warning"]:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-color-warning-active); }

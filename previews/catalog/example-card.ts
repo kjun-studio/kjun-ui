@@ -7,8 +7,12 @@ export function renderCardExample(name: string, tools: ExampleTools): any {
       const props = { surface: settings.surface, padding: settings.padding, bodyPadding: settings.bodyPadding === 'inherit' ? undefined : settings.bodyPadding,
         radius: settings.radius, elevation: settings.elevation, border: settings.border, dividers: settings.dividers };
       const view = () => message('프로젝트 상세를 확인했습니다.');
-      if (design === '통계') return h(name, props, h('Stack', {}, [
-        h('Text', {}, '이번 달 완료 작업'), h('KjunAnimatedNumber', { value: 128, animated: false }), h('Text', {}, '목표 160건 중 80%'), h('KjunProgressCell', { value: 80 }),
+      // Label, figure and note read in that order: a secondary label, the figure in a number style, a tertiary note.
+      if (design === '통계') return h(name, props, h('KjunStack', { gap: 'smMd' }, [
+        h('KjunStack', { gap: 'xs' }, [
+          h('KjunText', { variant: 'label', tone: 'secondary' }, '이번 달 완료 작업'), h('KjunText', { variant: 'numberLg' }, '128건'),
+          h('KjunText', { variant: 'caption', tone: 'tertiary' }, '목표 160건 중 80%'),
+        ]), h('KjunProgressCell', { value: 80 }),
       ]));
       if (design === '테이블') return h(name, { ...props, title: '팀 문서', subtitle: '최근 수정한 문서 3개' },
         h('KjunTable', { data: cardTableRows, columns: cardTableColumns, rowKey: 'id', compact: true, responsive: 'none' }),

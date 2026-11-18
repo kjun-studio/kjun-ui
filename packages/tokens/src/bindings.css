@@ -73,6 +73,10 @@
   --_kjun-color-brand-light: var(--kjun-brand-light, var(--kjun-border));
   --_kjun-color-selected-bg: var(--kjun-selected-bg, var(--kjun-active));
   --_kjun-color-on-brand: var(--kjun-on-brand, var(--kjun-inverse));
+  --_kjun-color-brand-action: var(--kjun-brand-action, var(--kjun-on-brand, var(--kjun-inverse)));
+  --_kjun-color-brand-action-hover: var(--kjun-brand-action-hover, var(--kjun-hover));
+  --_kjun-color-brand-action-active: var(--kjun-brand-action-active, var(--kjun-active));
+  --_kjun-color-brand-action-text: var(--kjun-brand-action-text, var(--kjun-brand));
   --_kjun-color-switch-thumb-on: var(--kjun-switch-thumb-on, var(--kjun-on-brand, var(--kjun-inverse)));
   --_kjun-color-switch-thumb: var(--kjun-switch-thumb, var(--kjun-switch-thumb-on, var(--kjun-on-brand, var(--kjun-inverse))));
   --_kjun-color-switch-track: var(--kjun-switch-track, var(--kjun-border));

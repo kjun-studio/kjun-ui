@@ -430,6 +430,7 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/calendar.css",
+      "packages/tokens/src/cards.css",
       "packages/tokens/src/carousel.css",
       "packages/tokens/src/color-picker.css",
       "packages/tokens/src/compound-controls.css",
@@ -507,6 +508,7 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/calendar.css",
+      "packages/tokens/src/cards.css",
       "packages/tokens/src/color-picker.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
@@ -541,6 +543,7 @@
       "packages/react/src/select-control.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/calendar.tsx",
+      "packages/native/src/card.tsx",
       "packages/native/src/color-picker-parts.tsx",
       "packages/native/src/combobox.tsx",
       "packages/native/src/data-state.tsx",
@@ -1551,6 +1554,7 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/calendar.css",
+      "packages/tokens/src/cards.css",
       "packages/tokens/src/event-calendar.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/layout.css",
@@ -1568,6 +1572,54 @@
       "packages/native/src/list.tsx",
       "packages/native/src/market-cards.tsx",
       "packages/native/src/steps.tsx"
+    ]
+  },
+  {
+    "role": "brandAction",
+    "contract": "common",
+    "required": false,
+    "fallback": "onBrand",
+    "variable": "--kjun-brand-action",
+    "upstreamAliases": [],
+    "implementationFiles": [
+      "packages/tokens/src/cards.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "brandActionHover",
+    "contract": "common",
+    "required": false,
+    "fallback": "hover",
+    "variable": "--kjun-brand-action-hover",
+    "upstreamAliases": [],
+    "implementationFiles": [
+      "packages/tokens/src/cards.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "brandActionActive",
+    "contract": "common",
+    "required": false,
+    "fallback": "active",
+    "variable": "--kjun-brand-action-active",
+    "upstreamAliases": [],
+    "implementationFiles": [
+      "packages/tokens/src/cards.css",
+      "packages/native/src/button.tsx"
+    ]
+  },
+  {
+    "role": "brandActionText",
+    "contract": "common",
+    "required": false,
+    "fallback": "brand",
+    "variable": "--kjun-brand-action-text",
+    "upstreamAliases": [],
+    "implementationFiles": [
+      "packages/tokens/src/cards.css",
+      "packages/native/src/button.tsx"
     ]
   },
   {

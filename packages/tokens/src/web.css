@@ -29,15 +29,16 @@
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
   outline-offset: var(--_kjun-state-focus-offset);
 }
+/* A container painted with the brand colour (KjunCard surface="brand") swaps these for its brand-action roles. */
 .kjun-button[data-variant="primary"] {
-  background: var(--_kjun-color-brand);
-  color: var(--_kjun-color-on-brand);
+  background: var(--_kjun-button-primary, var(--_kjun-color-brand));
+  color: var(--_kjun-button-primary-text, var(--_kjun-color-on-brand));
 }
 .kjun-button[data-variant="primary"]:hover:not(:disabled, [aria-busy="true"]) {
-  background: var(--_kjun-color-brand-hover);
+  background: var(--_kjun-button-primary-hover, var(--_kjun-color-brand-hover));
 }
 .kjun-button[data-variant="primary"]:active:not(:disabled, [aria-busy="true"]) {
-  background: var(--_kjun-color-brand-active);
+  background: var(--_kjun-button-primary-active, var(--_kjun-color-brand-active));
 }
 .kjun-button[data-variant="secondary"] {
   background: var(--_kjun-color-button-secondary);
@@ -53,12 +54,12 @@
 /* A link is underlined at rest, like KjunExternalLink, so it reads as one even when the brand colour is the text colour;
    hover and keyboard focus thicken the line. */
 .kjun-button[data-variant="link"] {
-  background: transparent; color: var(--_kjun-color-brand);
+  background: transparent; color: var(--_kjun-button-link, var(--_kjun-color-brand));
   text-decoration: underline; text-decoration-thickness: var(--_kjun-border-default-width);
   text-underline-offset: var(--_kjun-geometry-dimension-value2);
 }
 .kjun-button[data-variant="link"]:is(:hover, [data-focus-visible], :focus-visible):not(:disabled, [aria-busy="true"]) { text-decoration-thickness: var(--_kjun-geometry-dimension-value2); }
-.kjun-button[data-variant="link"]:active:not(:disabled, [aria-busy="true"]) { color: var(--_kjun-color-brand-active); }
+.kjun-button[data-variant="link"]:active:not(:disabled, [aria-busy="true"]) { color: var(--_kjun-button-link-active, var(--_kjun-color-brand-active)); }
 .kjun-button[data-variant="ghost"],
 .kjun-button[data-variant="danger-ghost"] {
   background: transparent;
@@ -487,7 +488,7 @@
     touch-action: manipulation;
   }
   .kjun-button[data-variant="primary"]:hover:not(:disabled, [aria-busy="true"]):not(:active) {
-    background: var(--_kjun-color-brand);
+    background: var(--_kjun-button-primary, var(--_kjun-color-brand));
   }
   .kjun-button[data-variant="secondary"]:hover:not(:disabled, [aria-busy="true"]):not(:active) {
     background: var(--_kjun-color-button-secondary);
