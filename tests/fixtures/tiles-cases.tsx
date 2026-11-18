@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { appBox, body, nested, projects, widths } from './tiles-values';
 // Same sections and DOM as tiles-vue3.tsx.
 export function TilesCases({ K, native = false }: { K: any; native?: boolean }) {
-  const [wide, setWide] = useState(true);
+  const [wide, setWide] = useState(true), [keepWide, setKeepWide] = useState(true);
   const press = native ? { onPress: () => {} } : { onClick: () => {} };
   const cards = (count: number, pressable = false) => projects.slice(0, count).map((name, i) =>
     <K.KjunCard key={name} title={name} pressable={pressable} {...(pressable ? press : {})}><K.KjunText>{body(i)}</K.KjunText></K.KjunCard>);
@@ -25,6 +25,13 @@ export function TilesCases({ K, native = false }: { K: any; native?: boolean }) 
     {box('mixed', 800, <K.KjunTiles>{null}{cards(1)[0]}{'메모'}</K.KjunTiles>)}
     {box('nested', 800, <K.KjunTiles maxColumns={2}><K.KjunCard title="묶음"><K.KjunInline>{nested.map(title => <K.KjunCard key={title} title={title} />)}</K.KjunInline></K.KjunCard></K.KjunTiles>)}
     {box('string-max', 1100, <K.KjunTiles minItem="sm" maxColumns={3}>{cards(5)}</K.KjunTiles>)}
+    {box('blank', 800, <K.KjunTiles>{' '}{cards(1)}{'  '}</K.KjunTiles>)}
+    <div key="keep" data-testid="keep" style={{ width: keepWide ? 1100 : 360 }}>
+      <button type="button" data-testid="keep-button" onClick={() => setKeepWide(false)}>좁게</button>
+      <K.KjunTiles {...(native ? { testID: 'keep-list' } : { 'data-testid': 'keep-list' })}>
+        {[0, 1, 2].map(i => <input key={i} aria-label={'메모 ' + i} defaultValue="" />)}
+      </K.KjunTiles>
+    </div>
     {box('labelled', 800, <K.KjunTiles {...(native ? { ariaLabel: '프로젝트' } : { 'aria-label': '프로젝트', id: 'tiles-id', className: 'app-tiles' })}>{cards(2)}</K.KjunTiles>)}
     <div key="resize" data-testid="resize" style={{ width: wide ? 1100 : 360 }}>
       <button type="button" data-testid="resize-button" onClick={() => setWide(false)}>좁게</button>

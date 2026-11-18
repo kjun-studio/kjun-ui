@@ -4,7 +4,7 @@ import { applyDemoColors } from '../../shared/demo-colors';
 import { appBox, body, nested, projects, widths } from './tiles-values';
 applyDemoColors('default');
 // Same sections and DOM as tiles-cases.tsx (React/Native).
-const wide = ref(true);
+const wide = ref(true), keepWide = ref(true);
 const press = { onClick: () => {} };
 const cards = (count: number, pressable = false) => projects.slice(0, count).map((name, i) =>
   <K.KjunCard key={name} title={name} pressable={pressable} {...(pressable ? press : {})}><K.KjunText>{body(i)}</K.KjunText></K.KjunCard>);
@@ -28,6 +28,11 @@ createApp(() => <K.KjunProvider><div style={{ display: 'flex', flexDirection: 'c
   {box('nested', 800, <K.KjunTiles maxColumns={2}><K.KjunCard title="묶음"><K.KjunInline>{nested.map(title => <K.KjunCard key={title} title={title} />)}</K.KjunInline></K.KjunCard></K.KjunTiles>)}
   {/* A template writes max-columns="3": the prop arrives as a string. */}
   {box('string-max', 1100, <K.KjunTiles minItem="sm" {...{ maxColumns: '3' as any }}>{cards(5)}</K.KjunTiles>)}
+  {box('blank', 800, <K.KjunTiles>{' '}{cards(1)}{'  '}</K.KjunTiles>)}
+  <div key="keep" data-testid="keep" style={{ width: keepWide.value ? '1100px' : '360px' }}>
+    <button type="button" data-testid="keep-button" onClick={() => { keepWide.value = false; }}>좁게</button>
+    <K.KjunTiles data-testid="keep-list">{[0, 1, 2].map(i => <input key={i} aria-label={'메모 ' + i} />)}</K.KjunTiles>
+  </div>
   {box('labelled', 800, <K.KjunTiles aria-label="프로젝트" id="tiles-id" class="app-tiles">{cards(2)}</K.KjunTiles>)}
   <div key="resize" data-testid="resize" style={{ width: wide.value ? '1100px' : '360px' }}>
     <button type="button" data-testid="resize-button" onClick={() => { wide.value = false; }}>좁게</button>

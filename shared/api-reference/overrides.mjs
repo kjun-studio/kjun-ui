@@ -535,6 +535,7 @@ set("Text", {
   tabIndex: "포커스 순서입니다. -1이면 Tab으로는 닿지 않고 코드로만 포커스를 줄 수 있습니다.",
   role: "요소의 접근성 역할입니다. 상태 문구라면 status처럼 내용의 뜻에 맞는 역할을 줍니다.",
 }, "react");
+set("Tiles", { ref: "목록 루트(div)의 ref입니다. 다른 div 속성(data-*·aria-*·이벤트)도 루트에 그대로 전달됩니다." }, "react");
 set("Pressable", {
   pressEffect: { default: '"overlay"', summary: "눌림 표시 방식입니다. overlay는 마우스를 올리거나 누를 때 내용 위에 글자색 막을 덮어(0.08, 0.16) 사진과 글 위 어디서나 보입니다. none은 막을 그리지 않으며, 내용이 스스로 눌림을 그릴 때만 씁니다." },
   focusRingInset: { default: "false", summary: "키보드 포커스 링을 영역 안쪽에 그립니다. 화면 끝까지 닿는 영역이나 넘침을 자르는 부모 안에서 바깥 링이 잘릴 때 씁니다." },

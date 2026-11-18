@@ -137,6 +137,20 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(errors.filter(text => /same key|duplicate key/i.test(text))).toEqual([]);
     });
 
+    test('blank strings add no cell', async ({ page }) => {
+      await expect(page.getByTestId('blank').getByRole('listitem')).toHaveCount(1);
+    });
+
+    test('a change of column count keeps each cell mounted, and other attributes reach the root', async ({ page }) => {
+      await expect(page.getByTestId('keep-list')).toHaveAttribute('role', 'list');
+      expect(await columns(page, 'keep')).toBe(3);
+      const input = page.getByTestId('keep').getByRole('textbox', { name: '메모 2' });
+      await input.fill('남는 글');
+      await page.getByTestId('keep-button').click();
+      await expect.poll(() => columns(page, 'keep')).toBe(1);
+      await expect(input).toHaveValue('남는 글');
+    });
+
     test('cards inside a tile card keep their own widths', async ({ page }) => {
       const widths = await page.getByTestId('nested').evaluate(root => {
         const tile = root.querySelector('[role="listitem"]')!;

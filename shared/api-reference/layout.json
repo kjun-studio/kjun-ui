@@ -542,10 +542,15 @@
       "gap",
       "minItem",
       "maxColumns",
-      "className",
-      "style",
+      "ref",
       "children",
-      "id"
+      "autoFocus",
+      "className",
+      "id",
+      "style",
+      "onChange",
+      "onKeyDown",
+      "onClick"
     ],
     "native": [
       "gap",
@@ -553,7 +558,8 @@
       "maxColumns",
       "ariaLabel",
       "style",
-      "children"
+      "children",
+      "id"
     ]
   }
 }
