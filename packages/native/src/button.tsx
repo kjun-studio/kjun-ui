@@ -153,6 +153,11 @@ export interface KjunButtonProps
   spinOnLoading?: boolean;
   style?: StyleProp<ViewStyle>;
 }
+/**
+ * Package-internal: a show/hide toggle (a table row or group) reports expanded without the open-menu fill. The web fills
+ * only menu and dialog triggers (aria-haspopup), and its disclosure toggles stay flat.
+ */
+export const disclosureButton = { "data-kjun-disclosure": true } as unknown as Partial<KjunButtonProps>;
 export function KjunButton(input: KjunButtonProps) {
   const {
   children,
@@ -173,8 +178,9 @@ export function KjunButton(input: KjunButtonProps) {
   spinOnLoading,
   style,
   onPress,
-  ...props
+  ...rest
   } = input;
+  const { "data-kjun-disclosure": disclosure, ...props } = rest as typeof rest & { "data-kjun-disclosure"?: boolean };
   const size = useActionSize(input.size, declaredSize), pill = useActionPill(shape);
   const alertActions = useContext(AlertActionsContext);
   const { colors: c, fontFamily } = useKjunStyles();
@@ -226,7 +232,7 @@ export function KjunButton(input: KjunButtonProps) {
     alignItems: "center", justifyContent: "center", opacity: hidden ? 0 : disabled ? tokens.states.opacity.disabled : 1 }}>{node}</View>;
   const overlayLoading = busy && !prefixIcon && !suffixIcon;
   const paint = (pressed: boolean, hovered: boolean) => {
-    const expanded = props.accessibilityState?.expanded;
+    const expanded = !disclosure && props.accessibilityState?.expanded;
     // Disabled actions share one neutral paint so no variant reads as a paler tone of itself.
     if (disabled) return { background: variant === "ghost" || variant === "danger-ghost" || link ? "transparent" : c.buttonSecondary, ink: c.textDisabled };
     if (link) return { background: "transparent", ink: brandCard ? c.onBrand : pressed ? c.brandActive : c.brand };

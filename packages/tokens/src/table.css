@@ -61,6 +61,8 @@
 .kjun-table thead {
   background: var(--_kjun-color-table-header-bg);
 }
+/* stickyHeader: rows pass under the header; its top (0, or stickyOffset under the page scroll) is set inline. */
+.kjun-table thead[data-sticky] { position: sticky; z-index: 2; }
 .kjun-table th {
   font-size: var(--_kjun-type-control-small-size);
   text-align: left;
@@ -290,6 +292,13 @@
 .kjun-table-expanded > td {
   padding: var(--_kjun-geometry-table-expanded-padding-y) var(--_kjun-geometry-table-expanded-padding-x);
   white-space: normal;
+}
+/* Behind a selection column the panel's text starts where the row's text starts: past the checkbox column, at the cell inset. */
+.kjun-table-expanded[data-after-selection] > td {
+  padding-inline-start: calc(var(--_kjun-geometry-table-action-column-width) + var(--_kjun-geometry-table-cell-padding-regular-x));
+}
+.kjun-table[data-compact="true"] .kjun-table-expanded[data-after-selection] > td {
+  padding-inline-start: calc(var(--_kjun-geometry-table-action-column-width) + var(--_kjun-geometry-table-cell-padding-compact-x));
 }
 .kjun-table-expanded {
   background: var(--_kjun-color-secondary);

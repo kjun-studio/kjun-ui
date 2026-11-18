@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useKjunMessageScope, useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { tableRowLabel } from "../../../shared/package-runtime/table-model";
+import { tableGroupText, tableRowLabel, tableTitleKey } from "../../../shared/package-runtime/table-model";
 import { typeStyle } from "./typography";
 import { tableOpenerRole, tablePresentation, tableCellValue, tableSortFromValue, tableSortOptions, tableSortValue, tableSummaryValue, tableTotals, type TableCellRole } from "../../../shared/package-runtime/table-presentation";
 import { groupTableRows, type TableRowGroup } from "../../../shared/package-runtime/table-groups";
@@ -12,7 +12,7 @@ import {
 View,
 useWindowDimensions
 } from "react-native";
-import { KjunButton } from "./button";
+import { KjunButton, disclosureButton } from "./button";
 import { KjunCheckbox } from "./controls";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import { KjunDataState,useQueryDisplay } from "./data-state";
@@ -50,7 +50,6 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     ariaLabel = m.dataTable,
     expandable = false,
     selectable = false,
-    selected = [],
     toolbar,
     emptyContent,
     renderExpand,
@@ -71,7 +70,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
   const grouping = {
     groups,
     ...expansion,
-    groupLabel: (group: TableRowGroup<Row>) => props.renderGroupLabel ? props.renderGroupLabel(group.value, group.rows) : group.value == null || group.value === "" ? "-" : String(group.value),
+    groupLabel: (group: TableRowGroup<Row>) => props.renderGroupLabel ? props.renderGroupLabel(group.value, group.rows) : tableGroupText(group.value),
     summary: props.summary ? (col: TableColumn<Row>, rows: Row[]) => tableSummaryValue(props, col, rows, locale) : null,
   };
   const { card, visible } = layout;
@@ -128,48 +127,47 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     const { body } = tableCellValue(props, col, row, index, locale);
     return typeof body === "string" || typeof body === "number" ? String(body) : undefined;
   };
-  const checkbox = (row: Row, i: number) => (
-    <KjunCheckbox
-      value={state.selectedRow(row)}
-      ariaLabel={m.selectRow(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))}
-      size="sm"
-      onValueChange={() => state.toggleRow(row)}
-    />
-  );
-  const expand = (row: Row, i: number) => (
-    <KjunButton
-      variant="ghost"
-      size="xs"
-      prefixIcon={
-        state.expanded.includes(state.key(row, i))
-          ? "chevron-down"
-          : "chevron-right"
-      }
-      ariaLabel={m.expandRow}
-      accessibilityState={{ expanded: state.expanded.includes(state.key(row, i)) }}
-      onPress={() => state.toggleExpand(row, i)}
-    >
-      {card
-        ? state.expanded.includes(state.key(row, i))
-          ? m.collapse
-          : m.showDetails
-        : undefined}
-    </KjunButton>
-  );
+  const rowName = (row: Row, i: number) => tableRowLabel(row, tableTitleKey(props), i);
+  // Like Web's table box: a row that cannot be selected keeps its box, faded to the disabled opacity.
+  const checkbox = (row: Row, i: number) => {
+    const locked = !state.selectableRow(row);
+    return (
+      <View style={locked ? { opacity: tokens.states.opacity.disabled } : undefined}>
+        <KjunCheckbox value={state.selectedRow(row)} ariaLabel={m.selectRow(rowName(row, i))} size="sm" disabled={locked} onValueChange={() => state.toggleRow(row)} />
+      </View>
+    );
+  };
+  // Like Web: named by what it shows (or "행 확장" as an icon) and by its row.
+  const expand = (row: Row, i: number) => {
+    const open = state.expanded.includes(state.key(row, i)), text = card ? open ? m.collapse : m.showDetails : undefined;
+    return (
+      <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} ariaLabel={`${text ?? m.expandRow} ${rowName(row, i)}`}
+        // A show/hide toggle, not a menu: it reports expanded without the open-menu fill, as on the web.
+        accessibilityState={{ expanded: open }} {...disclosureButton} onPress={() => state.toggleExpand(row, i)}>
+        {text}
+      </KjunButton>
+    );
+  };
   // Like Web: the app keeps the order and passes data in it; moving is off while sorted by a column or grouped.
   const reorderable = !!props.reorderable, locked = !!state.sort.key || !!props.groupBy, reorderOff = !!props.reorderDisabled || locked;
   const reorderNote = reorderable && reorderOff ? props.reorderDisabledText ?? (locked ? m.tableReorderLocked : undefined) : undefined;
-  const shown = useMemo(() => reorderable ? new Set(state.rows.map((row, i) => state.key(row, i))) : undefined, [reorderable, state.rows]);
+  // state.key reads rowKey, so a new rowKey rebuilds the set.
+  const shown = useMemo(() => reorderable ? new Set(state.rows.map((row, i) => state.key(row, i))) : undefined, [reorderable, state.rows, props.rowKey]);
   const reorder = useReorder({ reorderable, order: props.order, shown, disabled: reorderOff, onOrderChange: props.onOrderChange, onReorder: props.onReorder });
-  const mover = reorderable ? (row: Row, i: number) => <ReorderControls value={state.key(row, i)} name={String(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))} /> : undefined;
+  const mover = reorderable ? (row: Row, i: number) => <ReorderControls value={state.key(row, i)} name={String(rowName(row, i))} /> : undefined;
+  // Like Web: what every layout takes; cards and the list add their layout, name, groups and totals.
+  const rows = { initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell,
+    expandable, expand, renderExpand, emptyContent, emptyText, mover };
+  const narrow = { ...rows, layout, ariaLabel, groups: grouping.groups, collapsed: grouping.collapsed, toggleGroup: grouping.toggleGroup, groupLabel: grouping.groupLabel,
+    groupTotals: (list: Row[]) => tableTotals(props, list, locale), totals: tableTotals(props, state.rows, locale) };
   return (
     <ReorderContext.Provider value={reorder.context}>
     <View
       accessibilityLabel={ariaLabel}
       accessibilityState={{ busy: !!props.loading }}
     >
-      <TableToolbar {...{ selectable, selected, renderSelectionToolbar, searchable, searchPlaceholder, toolbar }} allSelected={state.all}
-        toggleAll={state.toggleAll} clearSelection={() => props.onSelectionChange?.([])}
+      <TableToolbar {...{ selectable, renderSelectionToolbar, searchable, searchPlaceholder, toolbar }} selected={state.selected} allSelected={state.all || !state.selectableCount}
+        toggleAll={state.toggleAll} clearSelection={state.clearSelection}
         search={state.search} searchChange={state.searchChange}
         sortOptions={card || layout.list ? tableSortOptions(props, m) : undefined} sortValue={tableSortValue(state.sort)} sortChange={(value) => state.sortTo(tableSortFromValue(value))} />
       <KjunDataState
@@ -190,12 +188,9 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         loadingText={loadingText}
         loadingDelay={skeleton ? 0 : loadingDelay}
       >
-        {card ? (
-          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, cellText, mover }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
-        ) : layout.list ? (
-          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, mover }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
-        ) : (
-          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, columnGroups: props.columnGroups, cellSpan: props.cellSpan, mover, maxHeight, stickyHeader, compact, striped, hoverable, edgeInset: props.edgeInset, ...grouping }} sortable={props.sortable} />
+        {card ? <TableCards {...narrow} cellText={cellText} /> : layout.list ? <TableList {...narrow} /> : (
+          <TableGrid {...rows} visible={visible} columnGroups={props.columnGroups} cellSpan={props.cellSpan} maxHeight={maxHeight} stickyHeader={stickyHeader}
+            compact={compact} striped={striped} hoverable={hoverable} edgeInset={props.edgeInset} {...grouping} sortable={props.sortable} />
         )}
         {pagination && (
           <KjunPagination

@@ -1,10 +1,10 @@
 import { useKjunMessageScope, useKjunMessages } from "./runtime/messages";
-import { getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, type AllowedComponentProps, type ComponentCustomProps, type ExtractPublicPropTypes, type PropType, type VNodeChild, type VNodeProps, type SlotsType } from "vue";
+import { Text, computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, type AllowedComponentProps, type ComponentCustomProps, type ExtractPublicPropTypes, type PropType, type VNodeChild, type VNodeProps, type SlotsType } from "vue";
 import { defineComponent } from "./runtime/component";
 import { isComposingKey, nextTableSort, tokens, type TableSort } from "@kjun-ui/tokens";
-import { getValue, sortTableRows, stickyHeaderStuck, tableRowIndex, tableRowKey, tableRowLabel, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
-import { columnFormat, tableOpenerRole, tablePresentation, tableSortFromValue, type TableCellRole, tableSortOptions, tableSortValue } from "../../../shared/package-runtime/table-presentation";
-import { formatSummary, tableGroupExpansion, groupTableRows, summarizeColumn, type TableRowGroup, type TableSummaryKind } from "../../../shared/package-runtime/table-groups";
+import { filterTableRows, getValue, sortTableRows, stickyHeaderStuck, tableGroupText, tableRowIndex, tableRowKey, tableRowLabel, tableSelection, tableTitleKey, toggleAllRows, toggleExpandedRow, toggleSelectedRow } from "../../../shared/package-runtime/table-model";
+import { tableCellValue, tableOpenerRole, tablePresentation, tableSortFromValue, type TableCellRole, tableSortOptions, tableSortValue, tableSummaryValue, tableTotals as summaryTotals } from "../../../shared/package-runtime/table-presentation";
+import { tableGroupExpansion, groupTableRows, type TableRowGroup, type TableSummaryKind } from "../../../shared/package-runtime/table-groups";
 import { KjunButton } from "./button";
 import { KjunDataState, useQueryDisplay } from "./data-state";
 import { KjunInput } from "./input";
@@ -13,7 +13,7 @@ import { KjunPagination } from "./navigation";
 import { domainRef } from "./runtime/refs";
 import { useLoadingReveal } from "./runtime/loading-reveal";
 import { hasContent } from "./runtime/slots";
-import { TableCheck, tableGrid, type TableLayout, type TableRenderState } from "./table-parts";
+import { TableCheck, tableGrid, type TableLayout, type TableRenderState, type TableTotal } from "./table-parts";
 import { tableCards, tableList } from "./table-narrow";
 import type { TableCardSection, TableColumn, TablePagination } from "./table-types";
 import type { TableColumnGroup } from "../../../shared/package-runtime/table-columns";
@@ -57,6 +57,10 @@ const kjunTableProps = {
   hoverable: { type: Boolean, default: true },
   searchable: { type: Boolean, default: false },
   searchPlaceholder: { type: String, default: undefined },
+  /** "client" filters data by the search box itself (searchKeys, or every column); "server" only emits search. */
+  searchMode: { type: String as PropType<"client" | "server">, default: "server" },
+  /** Row fields (dot paths) a client search looks in. Default: every column's key. */
+  searchKeys: { type: Array as PropType<string[]>, default: undefined },
   stickyHeader: { type: Boolean, default: false },
   /** Without maxHeight a sticky header sticks under the page scroll; this is its distance from the viewport top (px). */
   stickyOffset: { type: Number, default: 0 },
@@ -92,8 +96,10 @@ const kjunTableProps = {
   expandSingle: { type: Boolean, default: false },
   rowClass: { type: [String, Function] as PropType<string | ((row: any, index: number) => string)>, default: undefined },
   selectable: { type: Boolean, default: false },
-  /** v-model:selected. */
-  selected: { type: Array as PropType<object[]>, default: () => [] },
+  /** v-model:selected; leave unset for internal selection (update:selected still reports each change). */
+  selected: { type: Array as PropType<object[]>, default: undefined },
+  /** Rows that can be selected: the others keep a disabled checkbox and are skipped by select all. */
+  rowSelectable: { type: Function as PropType<(row: any) => boolean>, default: undefined },
   /** Row field (dot path) whose values split the rows into collapsible groups. */
   groupBy: { type: String, default: undefined },
   /** Original groupBy values; undefined uses internal expansion, [] closes all groups. */
@@ -108,11 +114,12 @@ const kjunTableProps = {
   onRetry: { type: Function as PropType<() => void>, default: undefined },
 } as const;
 export type KjunTableProps<R extends object = Record<string, unknown>> =
-  Omit<ExtractPublicPropTypes<typeof kjunTableProps>, "columns" | "data" | "selected" | "rowClass" | "formatValue" | "onRowClick" | "summary"> & {
+  Omit<ExtractPublicPropTypes<typeof kjunTableProps>, "columns" | "data" | "selected" | "rowSelectable" | "rowClass" | "formatValue" | "onRowClick" | "summary"> & {
     columns: TableColumn<R>[];
     summary?: Partial<Record<string, TableSummaryKind | ((rows: NoInfer<R>[], column: TableColumn<NoInfer<R>>) => VNodeChild)>>;
     data?: R[];
     selected?: NoInfer<R>[];
+    rowSelectable?: (row: NoInfer<R>) => boolean;
     rowClass?: string | ((row: NoInfer<R>, index: number) => string);
     formatValue?: (value: unknown, column: TableColumn<NoInfer<R>>, row: NoInfer<R>) => VNodeChild;
     onRowClick?: (row: NoInfer<R>, index: number) => void;
@@ -143,7 +150,10 @@ const KjunTableComponent = defineComponent({
   setup(props, { slots, emit }) {
     const m = useKjunMessages(), scope = useKjunMessageScope();
     const internalSort = ref<TableSort>({ key: "", order: "asc" }), internalExpanded = ref<(string | number)[]>([]), search = ref("");
-    const mobile = ref(false), stuck = ref(false), collapsed = ref<string[]>([]);
+    // Like React: read the screen at once on the client, so a phone never draws the grid first.
+    const narrowQuery = `(width < ${tokens.table.mobileBreakpoint}px)`;
+    const mobile = ref(typeof matchMedia === "function" && matchMedia(narrowQuery).matches), stuck = ref(false), collapsed = ref<string[]>([]);
+    const internalSelected = ref<object[]>([]);
     watch(() => props.groupBy, () => { collapsed.value = []; }, { flush: "sync" });
     // Like React: the app keeps the order and passes data in it; moving is off while sorted by a column or grouped.
     const root = ref<HTMLElement | null>(null), reorderNoteId = useKjunId("kjun-table-reorder-");
@@ -155,7 +165,7 @@ const KjunTableComponent = defineComponent({
       onOrderChange: order => emit("update:order", order), onReorder: move => emit("reorder", move) });
     let timer: ReturnType<typeof setTimeout> | undefined, media: MediaQueryList | undefined;
     const updateMobile = () => { mobile.value = !!media?.matches; };
-    onMounted(() => { media = matchMedia(`(width < ${tokens.table.mobileBreakpoint}px)`); updateMobile(); media.addEventListener("change", updateMobile); });
+    onMounted(() => { media = matchMedia(narrowQuery); updateMobile(); media.addEventListener("change", updateMobile); });
     // Like React: under the page's own scroll, the sticky header marks itself once the table passes under it.
     const instance = getCurrentInstance();
     const updateStuck = () => {
@@ -165,29 +175,42 @@ const KjunTableComponent = defineComponent({
     };
     // Like React, a table that mounts already scrolled under its header marks itself at once.
     onMounted(() => { addEventListener("scroll", updateStuck, { passive: true, capture: true }); updateStuck(); });
+    // Like React: a new offset, or turning the sticky header on, measures again without waiting for a scroll.
+    watch(() => [props.stickyOffset, props.stickyHeader, props.maxHeight], () => updateStuck(), { flush: "post" });
     onBeforeUnmount(() => { clearTimeout(timer); media?.removeEventListener("change", updateMobile); removeEventListener("scroll", updateStuck, { capture: true }); });
     const query = useQueryDisplay(() => props);
     // Skeleton rows wait out loadingDelay here; the spinner waits inside KjunDataState.
     const revealed = useLoadingReveal(() => query().initialLoading, () => props.skeleton ? props.loadingDelay : 0);
 
+    // Like React: sorting runs when the data or the sort changes, not on every keystroke in the search box.
+    const currentSort = computed(() => props.sort === undefined ? internalSort.value : props.sort ?? { key: "", order: "asc" as const });
+    const sorted = computed(() => {
+      const sort = currentSort.value, compare = props.columns.find(column => column.key === sort.key)?.compare;
+      return sortTableRows(props.data, sort, { sortable: props.sortable, sortMode: props.sortMode, compare, locale: scope.value.intl }) as object[];
+    });
+    const shownRows = computed(() => props.searchMode === "client"
+      ? filterTableRows(sorted.value, search.value, props.searchKeys ?? props.columns.map(column => column.key), scope.value.intl) as object[] : sorted.value);
+    const rowIndex = computed(() => tableRowIndex(shownRows.value));
+    const selected = () => props.selected ?? internalSelected.value;
+    const select = (next: object[]) => {
+      if (props.selected === undefined) internalSelected.value = next;
+      emit("update:selected", next);
+    };
     const model = (): TableRenderState & { toggleRow: (row: object) => void; toggleExpand: (row: object, index: number) => void } => {
-      const sort = props.sort === undefined ? internalSort.value : props.sort ?? { key: "", order: "asc" as const };
-      const compare = props.columns.find(column => column.key === sort.key)?.compare;
-      const rows = sortTableRows(props.data, sort, { sortable: props.sortable, sortMode: props.sortMode, compare, locale: scope.value.intl }) as object[];
-      const rowIndex = tableRowIndex(rows);
+      const sort = currentSort.value, rows = shownRows.value;
       const key = (row: object, index = 0) => tableRowKey(row, props.rowKey, index);
-      const { isSelected, all, some } = tableSelection(rows, props.selected, props.rowKey);
+      const { isSelected, isSelectable, all, some, selectableCount } = tableSelection(rows, selected(), props.rowKey, props.rowSelectable);
       const expanded = props.expandedRows ?? internalExpanded.value;
       return {
-        rows, rowIndex, key, sort, all, some, selectedRow: isSelected, expanded,
+        rows, rowIndex: rowIndex.value, key, sort, all, some, selectableCount, selectedRow: isSelected, selectableRow: isSelectable, expanded,
         sortColumn: column => {
           if (!props.sortable || !column.sortable) return;
           const next = nextTableSort(sort, column.key);
           if (props.sort === undefined) internalSort.value = next;
           emit("update:sort", next);
         },
-        toggleRow: row => emit("update:selected", toggleSelectedRow(props.selected, row, props.rowKey)),
-        toggleAll: () => emit("update:selected", toggleAllRows(rows, props.selected, props.rowKey, all)),
+        toggleRow: row => { if (isSelectable(row)) select(toggleSelectedRow(selected(), row, props.rowKey)); },
+        toggleAll: () => select(toggleAllRows(rows, selected(), props.rowKey, all, props.rowSelectable)),
         toggleExpand: (row, index) => {
           const next = toggleExpandedRow(expanded, key(row, index), props.expandSingle);
           internalExpanded.value = next;
@@ -215,44 +238,40 @@ const KjunTableComponent = defineComponent({
             onClick={(event: MouseEvent) => { event.stopPropagation(); col.onCellPress!(row, index); }}>{content}</button>
         ) : content;
       };
+      // Like React's renderCell: a column slot (cell-<key>) wins over the shared cell slot, which wins over column render functions.
+      const cellProps = {
+        formatValue: props.formatValue,
+        renderCell: (value: unknown, column: TableColumn<any>, row: object, index: number) => (slots[`cell-${column.key}`] ?? slots.cell)!({ value, column, row, index }),
+      };
       const cellContent = (col: TableColumn<any>, row: any, index: number): VNodeChild => {
-        const value = getValue(row, col.key);
-        // A column slot (cell-<key>) wins over the shared cell slot, which wins over column render functions.
-        const slot = slots[`cell-${col.key}`] ?? slots.cell;
-        const body = slot ? slot({ value, column: col, row, index }) : col.render ? col.render(value, row, index) : columnFormat(col) ? columnFormat(col)!(value, row)
-          : props.formatValue ? props.formatValue(value, col, row) : value == null ? "-"
-          : typeof value === "number" && col.type === "number" ? new Intl.NumberFormat(scope.value.intl).format(value) : String(value);
+        const slotted = !!(slots[`cell-${col.key}`] ?? slots.cell);
+        const { value, body } = tableCellValue((slotted ? cellProps : { formatValue: props.formatValue }) as never, col as never, row, index, scope.value.intl);
         return col.pill
-          ? <span class={"kjun-table-pill " + (Number(value) > 0 ? "kjun-table-pill-up" : Number(value) < 0 ? "kjun-table-pill-down" : "")}>{body}</span>
-          : body;
+          ? <span class={"kjun-table-pill " + (Number(value) > 0 ? "kjun-table-pill-up" : Number(value) < 0 ? "kjun-table-pill-down" : "")}>{body as VNodeChild}</span>
+          : body as VNodeChild;
       };
       const customClass = (row: object, i: number) => typeof props.rowClass === "function" ? props.rowClass(row, i) : props.rowClass || "";
       const rowKeyDown = (event: KeyboardEvent, row: object, index: number) => {
         if (!props.onRowClick || event.target !== event.currentTarget || event.defaultPrevented || isComposingKey(event)) return;
         if (event.key === "Enter" || event.key === " ") { event.preventDefault(); props.onRowClick(row, index); }
       };
+      const rowName = (row: object, i: number) => tableRowLabel(row, tableTitleKey(props), i);
       const checkbox = (row: object, i: number) => (
-        <TableCheck aria-label={m.value.selectRow(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))} checked={state.selectedRow(row)} {...{ onClick: (event: MouseEvent) => event.stopPropagation() }}
+        <TableCheck aria-label={m.value.selectRow(rowName(row, i))} checked={state.selectedRow(row)} disabled={!state.selectableRow(row)} {...{ onClick: (event: MouseEvent) => event.stopPropagation() }}
           onChange={() => state.toggleRow(row)} />
       );
+      // Like React: named by what it shows (or "행 확장" as an icon) and by its row.
       const expand = (row: object, i: number) => {
-        const open = state.expanded.includes(state.key(row, i));
+        const open = state.expanded.includes(state.key(row, i)), text = card ? open ? m.value.collapse : m.value.showDetails : undefined;
         return (
-          <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} ariaLabel={m.value.expandRow} aria-expanded={open}
+          <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} ariaLabel={`${text ?? m.value.expandRow} ${rowName(row, i)}`} aria-expanded={open}
             onClick={() => state.toggleExpand(row, i)}>
-            {card ? open ? m.value.collapse : m.value.showDetails : undefined}
+            {text}
           </KjunButton>
         );
       };
-      // Like React: the app's function, or the kind computed and shown through the column's format.
-      const summaryValue = (col: TableColumn<any>, rows: object[]): VNodeChild => {
-        const spec = props.summary?.[col.key];
-        if (!spec) return null;
-        if (typeof spec === "function") return spec(rows, col);
-        const value = summarizeColumn(rows, col.key, spec), format = columnFormat(col);
-        if (props.summaryFormat) return props.summaryFormat(value, col, spec);
-        return value != null && format && spec !== "count" && rows[0] ? format(value, rows[0]) : formatSummary(value, spec, scope.value.intl);
-      };
+      // Like React: the shared summary rules (the app's function, or the kind shown through the column's format).
+      const summaryValue = (col: TableColumn<any>, rows: object[]) => tableSummaryValue(props as never, col as never, rows, scope.value.intl) as VNodeChild;
       const groups = groupTableRows(state.rows, props.groupBy);
       const expansion = tableGroupExpansion(groups, props.expandedGroups, collapsed.value);
       const groupExpansion = {
@@ -264,8 +283,9 @@ const KjunTableComponent = defineComponent({
           emit("update:expandedGroups", next.expanded);
         },
       };
-      const groupLabel = (group: TableRowGroup<object>) => slots.group ? slots.group({ value: group.value, rows: group.rows }) : group.value == null || group.value === "" ? "-" : String(group.value);
-      const groupTotals = (rows: object[]) => props.summary ? props.columns.filter(col => props.summary?.[col.key]).map(col => ({ key: col.key, label: col.label, value: summaryValue(col, rows) })) : [];
+      // A group slot that gives only text stays text, so the toggle is named by it as on React ("상태: 진행 중 묶음 접기").
+      const groupLabel = (group: TableRowGroup<object>) => slots.group ? plainText(slots.group({ value: group.value, rows: group.rows })) : tableGroupText(group.value);
+      const groupTotals = (rows: object[]) => summaryTotals(props as never, rows, scope.value.intl) as TableTotal[];
       const totals = groupTotals(state.rows);
       // Narrow layouts have no header row to sort by; the toolbar offers each sortable column in both orders.
       const sortOptions = card || layout.list ? tableSortOptions(props as never, m.value) : [];
@@ -284,10 +304,11 @@ const KjunTableComponent = defineComponent({
         empty: () => hasContent(empty) ? empty : (props.emptyText ?? m.value.noData), ariaLabel: (props.ariaLabel ?? m.value.dataTable), customClass, rowKeyDown,
         mover: reorder.context.value ? (row: object, index: number) => {
           const moves = reorder.context.value!, key = state.key(row, index), place = reorderPlaceAmong(moves.order, key, shown);
-          return place ? renderReorderControls(moves, place, key, String(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, index)), m.value) : null;
+          return place ? renderReorderControls(moves, place, key, String(rowName(row, index)), m.value) : null;
         } : undefined,
       };
-      const selectionToolbar = props.selectable && props.selected.length > 0 ? slots.selectionToolbar?.({ selected: props.selected }) : undefined;
+      const chosen = selected();
+      const selectionToolbar = props.selectable && chosen.length > 0 ? slots.selectionToolbar?.({ selected: chosen }) : undefined;
       const toolbar = slots.toolbar?.();
       const pagination = props.pagination;
       const paint = domainRef(!status.initialLoading && state.rows.length > 0 && props.columns.some(column => column.pill)), note = reorderNote();
@@ -295,11 +316,11 @@ const KjunTableComponent = defineComponent({
         <div class="kjun-table-state" aria-busy={props.loading}
           ref={(el: unknown) => { root.value = el instanceof HTMLElement ? el : null; paint?.(el); }}>
           {/* The selection bar takes the toolbar's place at the same height, so selecting never moves the table. */}
-          {props.selectable && props.selected.length > 0 ? (
+          {props.selectable && chosen.length > 0 ? (
             <div role="group" aria-label={m.value.selectionActions} class="kjun-table-selection">
-              <KjunButton size="sm" variant="ghost" prefixIcon="x" ariaLabel={m.value.deselectAll} onClick={() => emit("update:selected", [])} />
-              <strong>{m.value.selectedItems(props.selected.length)}</strong>
-              {!state.all && <KjunButton size="sm" variant="ghost" onClick={state.toggleAll}>{m.value.selectAll}</KjunButton>}
+              <KjunButton size="sm" variant="ghost" prefixIcon="x" ariaLabel={m.value.deselectAll} onClick={() => select([])} />
+              <strong>{m.value.selectedItems(chosen.length)}</strong>
+              {!state.all && state.selectableCount > 0 && <KjunButton size="sm" variant="ghost" onClick={state.toggleAll}>{m.value.selectAll}</KjunButton>}
               {selectionToolbar}
             </div>
           ) : (props.searchable || sortOptions.length > 0 || hasContent(toolbar)) && (
@@ -336,6 +357,14 @@ const KjunTableComponent = defineComponent({
     };
   },
 });
+
+/** Slot output made only of text nodes, as one string; anything else is returned as it is. */
+function plainText(nodes: VNodeChild): VNodeChild {
+  const list = Array.isArray(nodes) ? nodes : [nodes];
+  const texts = list.map(node => typeof node === "string" || typeof node === "number" ? String(node)
+    : node && typeof node === "object" && !Array.isArray(node) && node.type === Text && typeof node.children === "string" ? node.children : null);
+  return texts.every(text => text != null) ? texts.join("") : nodes;
+}
 
 /** Keep the row type through Vue templates, TSX, template refs, slots and update:selected. */
 export const KjunTable = KjunTableComponent as Omit<typeof KjunTableComponent, never> & {

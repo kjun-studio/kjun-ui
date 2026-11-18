@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { getValue } from "./table-model";
+import { getValue, tableGroupText } from "./table-model";
 import type { TableColumn, TableCardSection, TableProps, TableSort, useTableModel } from "./table";
 import { formatSummary, summarizeColumn, type TableRowGroup } from "./table-groups";
 import { tableSpans } from "./table-columns";
@@ -132,7 +132,7 @@ export function tableTotals<Row extends object>(props: TableProps<Row, unknown>,
 
 /** A group's accessible name: its label when that is text, else the grouped value. */
 export function tableGroupName<Row extends object>(label: unknown, group: TableRowGroup<Row>) {
-  return typeof label === "string" || typeof label === "number" ? String(label) : group.value == null || group.value === "" ? "-" : String(group.value);
+  return typeof label === "string" || typeof label === "number" ? String(label) : tableGroupText(group.value);
 }
 
 export interface TableGroupingProps<Row extends object> {
@@ -153,7 +153,7 @@ export interface TableRowsProps<Row extends object> {
   skeletonRows: number;
   /** A loadingDelay is still running: the skeleton keeps its space but stays out of sight. */
   skeletonHidden?: boolean;
-  state: Pick<ReturnType<typeof useTableModel<Row>>, "rows" | "rowIndex" | "key" | "expanded" | "selectedRow">;
+  state: Pick<ReturnType<typeof useTableModel<Row>>, "rows" | "rowIndex" | "key" | "expanded" | "selectedRow" | "selectableRow">;
   onRowClick: TableProps<Row>["onRowClick"];
   selectable: boolean;
   expandable: boolean;
@@ -176,15 +176,23 @@ export interface TableCardsProps<Row extends object> extends TableRowsProps<Row>
   toggleGroup?: (key: string) => void;
   groupLabel?: (group: TableRowGroup<Row>) => ReactNode;
   groupTotals?: (rows: Row[]) => TableTotal[];
+  /** Native: the list's name (the web layouts take it with TableViewParts). */
+  ariaLabel?: string;
   /** The cell's plain text, for a value read out with its label where the label is not drawn (tile highlight on Native). */
   cellText?: (column: TableColumn<Row>, row: Row, index: number) => string | undefined;
+}
+/** The view's own parts that every layout takes: its name, a row's custom class and the row key handler. */
+export interface TableViewParts<Row extends object, KeyEvent> {
+  ariaLabel: string;
+  customClass: (row: Row, index: number) => string;
+  rowKeyDown: (event: KeyEvent, row: Row, index: number) => void;
 }
 export interface TableGridProps<Row extends object, Height> extends TableRowsProps<Row>, TableGroupingProps<Row> {
   /** Labels over runs of columns (TableProps.columnGroups). */
   columnGroups?: TableProps<Row>["columnGroups"];
   /** How many columns a row's cell covers (TableProps.cellSpan). */
   cellSpan?: TableProps<Row>["cellSpan"];
-  state: TableRowsProps<Row>["state"] & Pick<ReturnType<typeof useTableModel<Row>>, "all" | "some" | "toggleAll" | "sort" | "sortColumn">;
+  state: TableRowsProps<Row>["state"] & Pick<ReturnType<typeof useTableModel<Row>>, "all" | "some" | "selectableCount" | "toggleAll" | "sort" | "sortColumn">;
   visible: TableColumn<Row>[];
   maxHeight?: Height;
   stickyHeader: boolean;

@@ -17,7 +17,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(var(--_kjun-extension-table-card-tile-min-width), calc(50% - var(--_kjun-extension-table-card-card-gap) / 2)), 1fr));
 }
-.kjun-table-cards[data-layout="tiles"] > :is(.kjun-table-card-empty, .kjun-table-totals) { grid-column: 1 / -1; }
+.kjun-table-cards[data-layout="tiles"] > .kjun-table-card-empty { grid-column: 1 / -1; }
 /* A list group stacks its header and rows without the card gap; its header starts at the rows' text. */
 .kjun-table-list-group { gap: 0; }
 .kjun-table-list-group > .kjun-table-card-group { padding: var(--_kjun-geometry-dimension-value8) var(--_kjun-geometry-table-list-padding-x) var(--_kjun-geometry-dimension-value4); }
@@ -274,7 +274,12 @@
   border-radius: var(--_kjun-geometry-table-list-radius);
   background: var(--_kjun-color-secondary);
 }
-/* The summary on narrow layouts: a closing block under a strong text-colored rule. */
+/* The summary on narrow layouts: a closing block under a strong text-colored rule. It follows the list rather than
+   sitting in it, so after cards it takes back their list padding: the same inset and the card gap above it. */
+.kjun-table-cards + .kjun-table-totals {
+  margin: calc(var(--_kjun-extension-table-card-card-gap) - var(--_kjun-extension-table-card-list-padding) + var(--_kjun-geometry-table-list-meta-gap))
+    var(--_kjun-extension-table-card-list-padding) var(--_kjun-extension-table-card-list-padding);
+}
 .kjun-table-totals {
   display: flex;
   flex-direction: column;

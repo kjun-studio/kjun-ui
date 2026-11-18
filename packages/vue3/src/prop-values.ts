@@ -325,6 +325,7 @@ export const kjunPropValues = Object.freeze({
     cardLayout: Object.freeze(["rows","stacked","tiles"] as const),
     edgeInset: Object.freeze(["default","none"] as const),
     responsive: Object.freeze(["card","compact","list","none"] as const),
+    searchMode: Object.freeze(["client","server"] as const),
     sortMode: Object.freeze(["client","server"] as const),
   }),
   KjunTabPane: Object.freeze({

@@ -165,6 +165,8 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           sortable: settings.sortable,
           selected: get("selected", []),
           onSelectionChange: change("selected"),
+          // A finished project cannot be picked for bulk actions; its checkbox stays off.
+          rowSelectable: settings.lockDone && example.project ? (row: any) => row.status !== '완료' : undefined,
           expandable: settings.expandable,
           expandedRows: get("expanded", []),
           onExpandedRowsChange: change("expanded"),
@@ -192,6 +194,9 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           error: error ? "조회 오류" : null,
           hasLoadedOnce: true,
           searchable: settings.searchable,
+          // The table filters the projects itself as the query is typed.
+          searchMode: settings.clientSearch ? 'client' : undefined,
+          searchKeys: settings.clientSearch ? ['name', 'owner'] : undefined,
           onSearch: (q: string) => message("프로젝트 검색: " + q),
           onSortChange: (s: any) => message("정렬 " + s.key + " " + s.order),
         },

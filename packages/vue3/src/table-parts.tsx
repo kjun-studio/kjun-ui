@@ -11,13 +11,14 @@ import { KjunSkeleton } from "./display";
 import { provideFallbackIcons } from "./runtime/icons";
 import { css } from "./runtime/style";
 import { tableHeaderRows, tableSpans, type TableColumnGroup } from "../../../shared/package-runtime/table-columns";
+import { tableGroupName } from "../../../shared/package-runtime/table-presentation";
 
 type Row = object;
 /** A native checkbox (role, indeterminate, row click isolation) drawn like KjunCheckbox sm. */
 export const TableCheck = defineComponent({
   name: "KjunTableCheck",
   inheritAttrs: false,
-  props: { checked: { type: Boolean, default: false }, indeterminate: { type: Boolean, default: false } },
+  props: { checked: { type: Boolean, default: false }, indeterminate: { type: Boolean, default: false }, disabled: { type: Boolean, default: false } },
   emits: { change: () => true },
   setup(props, { attrs, emit }) {
     provideFallbackIcons(componentIcons);
@@ -25,7 +26,7 @@ export const TableCheck = defineComponent({
       const size = tokens.extensions.checkbox.iconSizes.sm;
       return (
         <span class="kjun-table-check">
-          <input {...attrs} type="checkbox" checked={props.checked} indeterminate={props.indeterminate} onChange={() => emit("change")} />
+          <input {...attrs} type="checkbox" checked={props.checked} indeterminate={props.indeterminate} disabled={props.disabled} onChange={() => emit("change")} />
           <KjunIcon name="check" size={size} class="kjun-table-check-mark" />
           <KjunIcon name="minus" size={size} class="kjun-table-check-dash" />
         </span>
@@ -71,7 +72,11 @@ export interface TableRenderState {
   key: (row: Row, index?: number) => string | number;
   expanded: (string | number)[];
   selectedRow: (row: Row) => boolean;
+  /** rowSelectable: whether the row's checkbox is enabled. */
+  selectableRow: (row: Row) => boolean;
   all: boolean;
+  /** Rows on screen that can be selected; none leaves the header checkbox off. */
+  selectableCount: number;
   some: boolean;
   toggleAll: () => void;
   sort: { key: string; order: "asc" | "desc" };
@@ -134,7 +139,7 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; c
         {mover && <td class="kjun-table-action-cell kjun-table-reorder-cell" onClick={(event: MouseEvent) => event.stopPropagation()}>{mover(row, i)}</td>}
       </tr>
       {expandable && state.expanded.includes(state.key(row, i)) && (
-        <tr class="kjun-table-expanded"><td colspan={span - 1}>{c.renderExpand(row, i)}</td></tr>
+        <tr class="kjun-table-expanded" data-after-selection={selectable || undefined}><td colspan={span}>{c.renderExpand(row, i)}</td></tr>
       )}
     </Fragment>
     );
@@ -155,15 +160,15 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; c
   );
   // Like React: each group is its own row group with a rowgroup header, its rows and (two or more rows) a subtotal.
   const groupBodies = () => c.groups!.map(group => {
-    const open = !c.collapsed.includes(group.key);
+    const open = !c.collapsed.includes(group.key), label = c.groupLabel(group);
     return (
       <tbody key={"group:" + group.key}>
         <tr class="kjun-table-group">
           <th scope="rowgroup" colspan={span}>
             <span class="kjun-table-group-label">
               <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} aria-expanded={open}
-                ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} onClick={() => c.toggleGroup(group.key)} />
-              <span class="kjun-table-group-name">{c.groupLabel(group)}</span>
+                ariaLabel={m.toggleGroup(tableGroupName(label, group), open)} onClick={() => c.toggleGroup(group.key)} />
+              <span class="kjun-table-group-name">{label}</span>
               <span class="kjun-table-group-count">{m.groupCount(group.rows.length)}</span>
             </span>
           </th>
@@ -188,22 +193,23 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; c
   );
   return (
     <div class="kjun-table-scroll" style={css({ maxHeight: c.maxHeight, visibility: c.skeletonHidden ? "hidden" : undefined })} aria-hidden={c.skeletonHidden ? "true" : undefined}
-      data-stuck={c.stickyHeader && c.stuck.value ? "" : undefined} data-page-sticky={pageSticky ? "" : undefined}
+      data-stuck={c.stickyHeader && c.stuck.value ? "true" : undefined} data-page-sticky={pageSticky ? "true" : undefined}
       onScroll={c.stickyHeader && !pageSticky ? (event: Event) => { c.stuck.value = (event.currentTarget as HTMLElement).scrollTop > 0; } : undefined}>
       <table class="kjun-table" aria-label={c.ariaLabel} data-compact={String(c.compact)} data-hoverable={String(c.hoverable)} data-striped={String(c.striped)} data-edge-inset={c.edgeInset === "none" ? "none" : undefined}>
-        <thead style={c.stickyHeader ? { position: "sticky", top: (pageSticky ? c.stickyOffset : 0) + "px", zIndex: 2 } : undefined}>
+        <thead data-sticky={c.stickyHeader || undefined} style={c.stickyHeader ? { top: (pageSticky ? c.stickyOffset : 0) + "px" } : undefined}>
           <tr>
             {selectable && (
               <th scope="col" class="kjun-table-action-cell" rowspan={lone}>
-                <TableCheck aria-label={c.messages.selectAll} checked={state.all} indeterminate={state.some} onChange={state.toggleAll} />
+                <TableCheck aria-label={c.messages.selectAll} checked={state.all} indeterminate={state.some} disabled={c.initialLoading || !state.selectableCount} onChange={state.toggleAll} />
               </th>
             )}
             {headerRows ? headerRows.map(cell => cell.kind === "column" ? columnHeader(cell.column, lone)
               : <th key={cell.key} scope="colgroup" colspan={cell.span} class="kjun-table-column-group">{cell.label}</th>)
               : visible.map(col => columnHeader(col))}
             {/* Expansion sits at the row's end, so the checkbox is the only leading utility column. */}
-            {expandable && <th scope="col" class="kjun-table-action-cell" rowspan={lone} />}
-            {mover && <th scope="col" class="kjun-table-action-cell kjun-table-reorder-cell" rowspan={lone} />}
+            {/* Like React: the utility headers draw nothing but still say what their column holds. */}
+            {expandable && <th scope="col" class="kjun-table-action-cell" rowspan={lone}><span class="kjun-sr-only">{m.showDetails}</span></th>}
+            {mover && <th scope="col" class="kjun-table-action-cell kjun-table-reorder-cell" rowspan={lone}><span class="kjun-sr-only">{m.tableReorderColumn}</span></th>}
           </tr>
           {headerRows && <tr>{headerRows.flatMap(cell => cell.kind === "group" ? cell.columns.map(col => columnHeader(col)) : [])}</tr>}
         </thead>

@@ -18,6 +18,7 @@ export const tableDesignExamples: GuideCase[] = [
   { id: 'table-projects', label: '상태·진행률·행별 작업', description: '프로젝트 상태는 배지, 진행률은 막대, 예산은 우측 정렬 숫자로 표시합니다. 보기 버튼으로 해당 행을 확인하세요.', settings: { ...base, design: '프로젝트' } },
   { id: 'table-metrics', label: '수치 비교', description: '주문 수와 매출, 증감률과 목표 달성을 한눈에 비교합니다. 열 제목을 누르면 수치 순서로 정렬됩니다.', settings: { ...base, design: '수치 비교', striped: true } },
   { id: 'table-selection', label: '일괄 선택', description: '선택한 행에 대한 작업을 표 위에 모읍니다. 체크박스로 항목을 추가하거나 선택을 해제해 보세요.', settings: { ...base, design: '프로젝트', selectable: true }, values: { selected: [tableProjectRows[0]] } },
+  { id: 'table-locked-search', label: '선택 잠금과 표 안 검색', description: '완료된 프로젝트는 고를 수 없어 전체 선택도 진행 중인 행만 담습니다. 검색어를 넣으면 표가 프로젝트 이름과 담당자에서 바로 거릅니다.', settings: { ...base, design: '프로젝트', selectable: true, searchable: true, lockDone: true, clientSearch: true } },
   { id: 'table-expansion', label: '행 안에서 상세 펼치기', description: '요약은 표에 남기고 일정과 작업 메모를 펼쳐 봅니다. 첫 번째 행을 펼친 상태로 시작합니다.', settings: { ...base, design: '프로젝트', expandable: true }, values: { expanded: ['p1'] } },
   { id: 'table-sticky', label: '고정 헤더와 긴 목록', description: '높이가 정해진 영역에서 목록만 스크롤합니다. 열 제목은 위에 남아 각 값의 의미를 확인할 수 있습니다.', settings: { ...base, design: '문서 목록', compact: true, striped: true, stickyHeader: true } },
   { id: 'table-groups', label: '상태별 묶음과 합계', description: 'expandedGroups로 진행 중 그룹만 펼쳐 시작합니다. 전체 펼치기·접기와 묶음 머리의 화살표가 같은 상태를 갱신하며, 소계·합계는 유지합니다.', settings: { ...base, design: '프로젝트', grouped: true }, values: { expandedGroups: ['진행 중'] } },

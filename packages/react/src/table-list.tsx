@@ -1,17 +1,11 @@
 import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import { tokens } from "@kjun-ui/tokens";
-import type { KeyboardEvent } from "react";
-import type { TableCardsProps } from "../../../shared/package-runtime/table-presentation";
 import { KjunSkeleton } from "./display";
-import { useTableGroups } from "./table-cards";
+import type { TableNarrowProps } from "./table-cards";
+import { useTableGroups } from "./table-groups";
 import { TableTotals } from "./table-totals";
-interface Props<Row extends object> extends TableCardsProps<Row> {
-  ariaLabel: string;
-  customClass: (row: Row, index: number) => string;
-  rowKeyDown: (event: KeyboardEvent<HTMLElement>, row: Row, index: number) => void;
-}
 /** responsive="list": no header row; each row is a title over one meta line with its value and badges at the end. */
-export function TableList<Row extends object>(props: Props<Row>) {
+export function TableList<Row extends object>(props: TableNarrowProps<Row>) {
   const { mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand,
     emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown, totals, groups } = props;
   const { title, listMeta, listValue, badges } = layout;
@@ -44,25 +38,27 @@ export function TableList<Row extends object>(props: Props<Row>) {
     </div>
   );
   const groupSections = useTableGroups(props, "kjun-table-list-group", undefined, item);
-  const grouped = !!groups && !initialLoading && state.rows.length > 0;
+  const grouped = !!groups && !initialLoading && state.rows.length > 0, listed = !initialLoading && !grouped && state.rows.length > 0;
+  // Like cards: only loaded rows make a list; the totals follow it.
   return (
-    <div className="kjun-table-list" role={grouped ? "group" : "list"} aria-label={ariaLabel}
-      style={skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={skeletonHidden || undefined}>
-      {initialLoading
-        ? Array.from({ length: skeletonRows }, (_, i) => (
-            // A title over one meta line with a value at the end, like the loaded row.
-            <div key={i} className="kjun-table-list-item">
-              <div className="kjun-table-list-main">
-                <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
-                <KjunSkeleton type="line" role="caption" width="30%" />
+    <>
+      <div className="kjun-table-list" role={listed ? "list" : "group"} aria-label={ariaLabel}
+        style={skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={skeletonHidden || undefined}>
+        {initialLoading
+          ? Array.from({ length: skeletonRows }, (_, i) => (
+              // A title over one meta line with a value at the end, like the loaded row.
+              <div key={i} className="kjun-table-list-item" aria-hidden="true">
+                <div className="kjun-table-list-main">
+                  <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
+                  <KjunSkeleton type="line" role="caption" width="30%" />
+                </div>
+                <div className="kjun-table-list-side"><KjunSkeleton type="line" role="control" width={tokens.extensions.skeleton.detailWidth} /></div>
               </div>
-              <div className="kjun-table-list-side"><KjunSkeleton type="line" role="control" width={tokens.extensions.skeleton.detailWidth} /></div>
-            </div>
-          ))
-        : grouped ? groupSections(groups!) : state.rows.map((row, i) => item(row, i))}
-      {!initialLoading && !state.rows.length && <div className="kjun-table-card-empty">{emptyContent || emptyText}</div>}
+            ))
+          : grouped ? groupSections(groups!) : state.rows.map((row, i) => item(row, i))}
+        {!initialLoading && !state.rows.length && <div className="kjun-table-card-empty">{emptyContent || emptyText}</div>}
+      </div>
       {!initialLoading && state.rows.length > 0 && <TableTotals totals={totals} />}
-    </div>
+    </>
   );
 }
-

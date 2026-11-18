@@ -101,11 +101,24 @@ for (const platform of ['vue3', 'react', 'native'] as const) {
           await page.getByRole('button', { name: '선택 해제', exact: true }).click();
           await expect(page.getByRole('button', { name: '선택 항목 확인', exact: true })).toHaveCount(0);
         }
+        if (scenario.id === 'table-locked-search') {
+          // rowSelectable: the finished project keeps a disabled box, and select all takes only the open rows.
+          await expect(page.getByRole('checkbox', { name: '행 선택 결제 화면 개선', exact: true })).toBeDisabled();
+          await page.getByRole('checkbox', { name: '전체 선택', exact: true }).click();
+          await expect(page.getByText('2개 선택', { exact: true })).toBeVisible();
+          await expect(page.getByRole('checkbox', { name: '전체 선택', exact: true })).toBeChecked();
+          await page.getByRole('button', { name: '선택 해제', exact: true }).click();
+          // searchMode="client": the table filters by name and owner as the query is typed.
+          await page.getByRole('textbox', { name: '표 검색', exact: true }).fill('박하린');
+          await expect(page.getByText('결제 화면 개선', { exact: true })).toBeVisible();
+          await expect(page.getByText('브랜드 웹사이트', { exact: true })).toHaveCount(0);
+        }
         if (scenario.id === 'table-expansion') {
           await expect(page.getByText(/메인 화면 검토를 마쳤습니다/)).toBeVisible();
-          await page.getByRole('button', { name: '행 확장', exact: true }).first().click();
+          // Each toggle is named by its row ("행 확장 브랜드 웹사이트").
+          await page.getByRole('button', { name: '행 확장 브랜드 웹사이트', exact: true }).click();
           await expect(page.getByText(/메인 화면 검토를 마쳤습니다/)).toHaveCount(0);
-          await page.getByRole('button', { name: '행 확장', exact: true }).nth(1).click();
+          await page.getByRole('button', { name: '행 확장 고객센터 개편', exact: true }).click();
           await expect(page.getByText(/문의 분류와 검색 화면/)).toBeVisible();
         }
         if (scenario.id === 'table-cards') {

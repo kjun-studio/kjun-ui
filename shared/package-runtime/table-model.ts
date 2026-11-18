@@ -72,15 +72,20 @@ function warnMissingKey(rows: readonly object[], rowKey: string) {
   console.warn(`KJUN Table: rows have no "${rowKey}"; selection and expansion fall back to the row objects. Pass rowKey.`);
 }
 
-export function tableSelection<Row extends object>(rows: readonly Row[], selected: readonly Row[], rowKey: string) {
+/** Rows the app lets the user select (rowSelectable); without the rule every row can be. */
+export type TableRowSelectable<Row extends object> = ((row: Row) => boolean) | undefined;
+const canSelect = <Row extends object>(rule: TableRowSelectable<Row>, row: Row) => !rule || rule(row);
+
+/** all and some count only the rows that can be selected, so a locked row never keeps the header box from filling. */
+export function tableSelection<Row extends object>(rows: readonly Row[], selected: readonly Row[], rowKey: string, selectable?: TableRowSelectable<Row>) {
   warnMissingKey(rows, rowKey);
   // One set per render instead of scanning the selection for every row.
   const chosen = new Set(selected.map(row => tableRowIdentity(row, rowKey)));
   const isSelected = (row: Row) => chosen.has(tableRowIdentity(row, rowKey));
-  let count = 0;
-  for (const row of rows) if (isSelected(row)) count++;
-  const all = rows.length > 0 && count === rows.length;
-  return { isSelected, all, some: count > 0 && !all };
+  let count = 0, open = 0;
+  for (const row of rows) if (canSelect(selectable, row)) { open++; if (isSelected(row)) count++; }
+  const all = open > 0 && count === open;
+  return { isSelected, isSelectable: (row: Row) => canSelect(selectable, row), all, some: count > 0 && !all, selectableCount: open };
 }
 
 export const toggleSelectedRow = <Row extends object>(selected: readonly Row[], row: Row, rowKey: string): Row[] => {
@@ -92,13 +97,28 @@ export const toggleSelectedRow = <Row extends object>(selected: readonly Row[], 
 
 /**
  * The header checkbox: with every shown row selected it clears just those rows, otherwise it adds the shown rows
- * that are missing. Rows selected on other pages or outside the current search stay selected.
+ * that are missing. Rows selected on other pages or outside the current search stay selected, and a row that cannot
+ * be selected is neither added nor removed.
  */
-export function toggleAllRows<Row extends object>(rows: readonly Row[], selected: readonly Row[], rowKey: string, all: boolean): Row[] {
-  const shown = new Set(rows.map(row => tableRowIdentity(row, rowKey)));
+export function toggleAllRows<Row extends object>(rows: readonly Row[], selected: readonly Row[], rowKey: string, all: boolean, selectable?: TableRowSelectable<Row>): Row[] {
+  const open = rows.filter(row => canSelect(selectable, row));
+  const shown = new Set(open.map(row => tableRowIdentity(row, rowKey)));
   if (all) return selected.filter(row => !shown.has(tableRowIdentity(row, rowKey)));
   const chosen = new Set(selected.map(row => tableRowIdentity(row, rowKey)));
-  return [...selected, ...rows.filter(row => !chosen.has(tableRowIdentity(row, rowKey)))];
+  return [...selected, ...open.filter(row => !chosen.has(tableRowIdentity(row, rowKey)))];
+}
+
+/**
+ * searchMode="client": the rows whose searched fields contain the query, ignoring case. Fields are searchKeys, or every
+ * column's key; a blank query keeps every row.
+ */
+export function filterTableRows<Row extends object>(rows: readonly Row[], query: string, keys: readonly string[], locale?: string): readonly Row[] {
+  const needle = query.trim().toLocaleLowerCase(locale);
+  if (!needle) return rows;
+  return rows.filter(row => keys.some(key => {
+    const value = getValue(row, key);
+    return value != null && typeof value !== "object" && String(value).toLocaleLowerCase(locale).includes(needle);
+  }));
 }
 
 /** Each row's position in the sorted rows, so grouped bodies need not search for it. */
@@ -116,6 +136,12 @@ export function tableRowLabel(row: object, titleKey: string | undefined, index: 
   const value = titleKey ? getValue(row, titleKey) : undefined;
   return typeof value === "string" && value.trim() ? value : typeof value === "number" ? value : index + 1;
 }
+
+/** The column that names a row: the card title, or the first column. */
+export const tableTitleKey = (props: { cardTitle?: string | null; columns: readonly { key: string }[] }) => props.cardTitle || props.columns[0]?.key;
+
+/** A group's drawn name without renderGroupLabel: its value, or "-" for an empty one. */
+export const tableGroupText = (value: unknown) => value == null || value === "" ? "-" : String(value);
 
 /** The scroller a page-level sticky header sticks under: the nearest scrolling ancestor, or the viewport (null). */
 export function stickyScroller(element: Element | null): Element | null {

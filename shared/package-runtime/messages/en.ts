@@ -190,6 +190,7 @@ export const kjunMessagesEn: KjunMessages = {
   reorderGrabbed: (name: string) => `${name} grabbed. Use the up and down arrows to move it and Enter to drop it. Escape cancels.`,
   reorderDropped: (name: string, position: number, total: number) => `${name} dropped at ${position} of ${total}`,
   reorderCancelled: (name: string) => `${name} move cancelled`,
+  tableReorderColumn: "Reorder",
   tableReorderLocked: "Rows cannot be moved while the table is sorted or grouped.",
   // Color picker
   colorPlaceholder: "Choose color",

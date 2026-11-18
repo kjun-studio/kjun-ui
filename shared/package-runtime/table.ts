@@ -5,7 +5,7 @@ import type { TableSummaryKind } from "./table-groups";
 import type { TableColumnGroup } from "./table-columns";
 export type { TableColumnGroup } from "./table-columns";
 export type { TableSummaryKind } from "./table-groups";
-import { sortTableRows, tableRowIndex, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow, type TableCompare } from "./table-model";
+import { filterTableRows, sortTableRows, tableRowIndex, tableRowKey, tableSelection, toggleAllRows, toggleExpandedRow, toggleSelectedRow, type TableCompare } from "./table-model";
 import { useMemo } from "react";
 export { getValue } from "./table-model";
 
@@ -82,6 +82,10 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   hoverable?: boolean;
   searchable?: boolean;
   searchPlaceholder?: string;
+  /** "client" filters data by the search box itself (searchKeys, or every column); "server" (default) only reports the query through onSearch. */
+  searchMode?: "client" | "server";
+  /** Row fields (dot paths) a client search looks in. Default: every column's key. */
+  searchKeys?: string[];
   stickyHeader?: boolean;
   /** Without maxHeight a sticky header sticks under the page scroll; this is its distance from the viewport top (px). */
   stickyOffset?: number;
@@ -106,7 +110,10 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   expandSingle?: boolean;
   rowClass?: string | ((row: Row, index: number) => string);
   selectable?: boolean;
+  /** The selected rows. Leave unset for internal selection; onSelectionChange still reports each change. */
   selected?: Row[];
+  /** Rows that can be selected: the others keep a disabled checkbox and are skipped by select all. Row clicks and expansion stay. */
+  rowSelectable?: (row: Row) => boolean;
   /** Row field (dot path) whose values split the rows into collapsible groups. */
   groupBy?: string;
   /** Original groupBy values of open groups. undefined: internal state, initially all open; []: all closed. */
@@ -147,7 +154,6 @@ export function useTableModel<Row extends object>(props: TableProps<Row, unknown
     rowKey = "id",
     sortable = true,
     sortMode = "client",
-    selected = [],
     onSelectionChange,
     expandedRows,
     expandSingle = false,
@@ -158,16 +164,27 @@ export function useTableModel<Row extends object>(props: TableProps<Row, unknown
       order: "asc",
     }),
     [internalExpanded, setExpanded] = useState<(string | number)[]>([]),
+    [internalSelected, setInternalSelected] = useState<Row[]>([]),
     [search, setSearch] = useState(""),
     timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
   const sort = props.sort === undefined ? internalSort : props.sort ?? { key: "", order: "asc" as const };
   const compare = props.columns.find(column => column.key === sort.key)?.compare;
   // Sorting runs when the data or the sort changes, not on every keystroke in the search box.
-  const rows = useMemo(() => sortTableRows(data, sort, { sortable, sortMode, compare, locale }) as Row[], [data, sort.key, sort.order, sortable, sortMode, compare, locale]);
+  const sorted = useMemo(() => sortTableRows(data, sort, { sortable, sortMode, compare, locale }) as Row[], [data, sort.key, sort.order, sortable, sortMode, compare, locale]);
+  // A client search narrows the sorted rows as the query changes; a server search leaves them to the app.
+  const client = props.searchMode === "client", searchKeys = props.searchKeys, columns = props.columns;
+  const rows = useMemo(() => client ? filterTableRows(sorted, search, searchKeys ?? columns.map(column => column.key), locale) as Row[] : sorted,
+    [client, sorted, search, searchKeys, columns, locale]);
   const rowIndex = useMemo(() => tableRowIndex(rows), [rows]);
   const key = (row: Row, index = 0) => tableRowKey(row, rowKey, index);
-  const { isSelected: selectedRow, all, some } = tableSelection(rows, selected, rowKey),
+  // Without a selected prop the table keeps the selection itself, as it does the sort and the expanded rows.
+  const selected = props.selected ?? internalSelected;
+  const select = (next: Row[]) => {
+    if (props.selected === undefined) setInternalSelected(next);
+    onSelectionChange?.(next);
+  };
+  const { isSelected: selectedRow, isSelectable: selectableRow, all, some, selectableCount } = tableSelection(rows, selected, rowKey, props.rowSelectable),
     expanded = expandedRows ?? internalExpanded;
   return {
     rows,
@@ -175,9 +192,12 @@ export function useTableModel<Row extends object>(props: TableProps<Row, unknown
     key,
     sort,
     search,
+    selected,
     all,
     some,
+    selectableCount,
     selectedRow,
+    selectableRow,
     expanded,
     searchChange: (q: string) => {
       setSearch(q);
@@ -196,8 +216,9 @@ export function useTableModel<Row extends object>(props: TableProps<Row, unknown
       if (props.sort === undefined) setSort(next);
       props.onSortChange?.(next);
     },
-    toggleRow: (row: Row) => onSelectionChange?.(toggleSelectedRow(selected, row, rowKey)),
-    toggleAll: () => onSelectionChange?.(toggleAllRows(rows, selected, rowKey, all)),
+    toggleRow: (row: Row) => { if (selectableRow(row)) select(toggleSelectedRow(selected, row, rowKey)); },
+    toggleAll: () => select(toggleAllRows(rows, selected, rowKey, all, props.rowSelectable)),
+    clearSelection: () => select([]),
     toggleExpand: (row: Row, index: number) => {
       const next = toggleExpandedRow(expanded, key(row, index), expandSingle);
       setExpanded(next);

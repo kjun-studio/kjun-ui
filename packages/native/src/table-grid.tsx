@@ -2,12 +2,12 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { tableRowLabel } from "../../../shared/package-runtime/table-model";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
-import { Fragment, useId, useState } from "react";
+import { Fragment, useId, useState, type ReactNode } from "react";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
-import type { TableGridProps } from "../../../shared/package-runtime/table-presentation";
-import { KjunButton, KjunIcon } from "./button";
+import { tableGroupName, type TableGridProps } from "../../../shared/package-runtime/table-presentation";
+import { KjunButton, KjunIcon, disclosureButton } from "./button";
 import { KjunSkeleton } from "./display";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, type TextStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunCheckbox } from "./controls";
 import { KText, content } from "./internal";
@@ -121,6 +121,8 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
             style={{
               paddingVertical: geometry.expandedPadding.y,
               ...sides(geometry.expandedPadding.x, true, true),
+              // Like Web: behind a selection column the panel's text starts where the row's text starts.
+              ...(selectable ? { paddingLeft: geometry.actionColumnWidth + cellPadding.x } : null),
               backgroundColor: colors.secondary,
             }}
           >
@@ -130,6 +132,13 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
     </Fragment>
     );
   };
+  const summaryCell = (value: ReactNode, name: string | null, style: TextStyle) => {
+    const shown = value !== null && value !== undefined && value !== "" && value !== false;
+    if (!name) return shown ? content(value, style) : null;
+    return shown && (typeof value === "string" || typeof value === "number")
+      ? content(name + " " + value, style)
+      : shown ? <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.dimension.value4 }}>{content(name, style)}{content(value, style)}</View> : content(name, style);
+  };
   // Like Web: subtotals read quieter than rows, and the total closes the table under a strong text-colored rule.
   const summaryRow = (rows: Row[], kind: "subtotal" | "total", key: string) => summary && (
     <View key={key} style={{ flexDirection: "row", ...(kind === "total" ? { borderTopWidth: tokens.border.controlWidth, borderTopColor: colors.text } : null) }}>
@@ -137,7 +146,8 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
       {visible.map((col, c) => (
         <View key={col.key} style={{ width: width(col), paddingVertical: cellPadding.y, ...sides(cellPadding.x, firstColumn(c), lastColumn(c)), justifyContent: "center",
           alignItems: col.align === "right" ? "flex-end" : col.align === "center" ? "center" : "flex-start" }}>
-          {content(summary(col, rows) ?? (c === 0 ? (kind === "total" ? m.tableTotal : m.tableSubtotal) : null),
+          {/* Like Web: the first cell always names the row, and a first column with a value of its own shows both. */}
+          {summaryCell(summary(col, rows), c === 0 ? (kind === "total" ? m.tableTotal : m.tableSubtotal) : null,
             kind === "total" ? { ...typeStyle("control"), color: colors.text } : { ...typeStyle("caption"), color: colors.textSecondary })}
         </View>
       ))}
@@ -148,21 +158,20 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
   // Like Web: with column groups the header has two rows; a group's label sits over its columns, lone columns span both rows.
   const headerRows = tableHeaderRows(visible, columnGroups);
   // A lone column beside a group stretches to the header's full height, as the row stretches its children.
-  const columnHeader = (col: TableColumn<Row>) => (
-                  <Pressable
+  // Like Web's th: every column header is read. A sortable one is a button (its order read as a hint); the others are
+  // plain header cells, since a disabled button would be read as dimmed.
+  const columnHeader = (col: TableColumn<Row>) => {
+    const sorts = !!col.sortable && sortable !== false;
+    const Header = (sorts ? Pressable : View) as typeof View;
+    return (
+                  <Header
                     key={col.key}
-                    accessible={!!col.sortable && sortable !== false}
-                    accessibilityRole={col.sortable && sortable !== false ? "button" : undefined}
-                    accessibilityLabel={col.sortable && sortable !== false ? col.label : undefined}
-                    accessibilityHint={
-                      col.sortable && sortable !== false && state.sort.key === col.key
-                        ? state.sort.order === "asc"
-                          ? m.ascending
-                          : m.descending
-                        : undefined
-                    }
-                    disabled={!col.sortable || sortable === false}
-                    onPress={() => state.sortColumn(col)}
+                    accessible
+                    role={sorts ? "button" : "columnheader"}
+                    accessibilityLabel={col.label}
+                    // The order is read after the name, so the button keeps the column's name.
+                    accessibilityHint={sorts && state.sort.key === col.key ? state.sort.order === "asc" ? m.ascending : m.descending : undefined}
+                    {...(sorts ? { onPress: () => state.sortColumn(col) } : null)}
                     style={{
                       width: width(col),
                       minHeight: tokens.native.minimumTouchTarget,
@@ -202,17 +211,18 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
                         color={state.sort.key === col.key ? colors.text : colors.textTertiary}
                       />
                     )}
-                  </Pressable>
-  );
+                  </Header>
+    );
+  };
   const body = () => [
     ...(groups ? groups.flatMap((group) => {
-      const open = !collapsed.includes(group.key);
+      const open = !collapsed.includes(group.key), label = groupLabel(group);
       return [
         <View key={"group:" + group.key} role="heading" style={{ flexDirection: "row", alignItems: "center", gap: geometry.groupGap, width: totalWidth,
           paddingVertical: geometry.groupPadding.y, ...sides(geometry.groupPadding.x, true, true), backgroundColor: colors.secondary }}>
           <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"}
-            ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} accessibilityState={{ expanded: open }} onPress={() => toggleGroup(group.key)} />
-          {content(groupLabel(group), { ...typeStyle("control"), color: colors.text })}
+            ariaLabel={m.toggleGroup(tableGroupName(label, group), open)} accessibilityState={{ expanded: open }} {...disclosureButton} onPress={() => toggleGroup(group.key)} />
+          {content(label, { ...typeStyle("control"), color: colors.text })}
           <KText style={{ ...typeStyle("body"), color: colors.textTertiary }}>{m.groupCount(group.rows.length)}</KText>
         </View>,
         ...(open ? group.rows.map((row) => bodyRow(row, state.rowIndex(row))) : []),
@@ -242,16 +252,18 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
                 }}
               >
                 {selectable && (
-                  <View style={{ width: geometry.actionColumnWidth, alignItems: "center" }}>
-                    <KjunCheckbox
+                  // Placed like the rows' boxes: centred in the same column width, on the header's middle line.
+                  <View style={{ width: geometry.actionColumnWidth, alignItems: "center", justifyContent: "center" }}>
+                    {/* The box pins itself to its start edge, so a wrapper as wide as the box is what the column centres. */}
+                    <View><KjunCheckbox
                       size="sm"
                       value={state.all}
                       indeterminate={state.some}
-                      ariaLabel={
-                        state.some ? m.selectAllPartial : m.selectAll
-                      }
+                      // Like Web: the checkbox's mixed state says some are selected.
+                      ariaLabel={m.selectAll}
+                      disabled={initialLoading || !state.selectableCount}
                       onValueChange={state.toggleAll}
-                    />
+                    /></View>
                   </View>
                 )}
                 {headerRows ? headerRows.map((cell) => cell.kind === "column" ? columnHeader(cell.column) : (
@@ -268,8 +280,13 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
               </View>
               {initialLoading ? (
                 Array.from({ length: skeletonRows }, (_, i) => (
-                  <View key={i} style={{ flexDirection: "row" }}>
-                    {selectable && <View style={{ width: geometry.actionColumnWidth }} />}
+                  <View key={i} aria-hidden style={{ flexDirection: "row" }}>
+                    {/* Like Web: the selection column shows a box-sized block while rows load. */}
+                    {selectable && (
+                      <View style={{ width: geometry.actionColumnWidth, alignItems: "center", justifyContent: "center" }}>
+                        <KjunSkeleton type="block" height={geometry.selectionSize} width={geometry.selectionSize} />
+                      </View>
+                    )}
                     {visible.map((col, c) => (
                       <View
                         key={col.key}

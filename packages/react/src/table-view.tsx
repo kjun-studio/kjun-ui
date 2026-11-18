@@ -1,5 +1,5 @@
 import { useKjunMessageScope, useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { tableRowLabel } from "../../../shared/package-runtime/table-model";
+import { tableGroupText, tableRowLabel, tableTitleKey } from "../../../shared/package-runtime/table-model";
 import { tableOpenerRole, tablePresentation, tableCellValue, tableSortFromValue, type TableCellRole, tableSortOptions, tableSortValue, tableSummaryValue, tableTotals } from "../../../shared/package-runtime/table-presentation";
 import { groupTableRows, type TableRowGroup } from "../../../shared/package-runtime/table-groups";
 import { useTableGroupExpansion } from "../../../shared/package-runtime/use-table-group-expansion";
@@ -7,7 +7,7 @@ import { TableToolbar } from "./table-toolbar";
 import { TableGrid } from "./table-grid";
 import { TableCards } from "./table-cards";
 import { TableList } from "./table-list";
-import { useCallback, useEffect, useId, useMemo, useState, type KeyboardEvent } from "react";
+import { useCallback, useId, useMemo, useState, useSyncExternalStore, type KeyboardEvent } from "react";
 import { ReorderContext, ReorderControls, useReorder } from "./reorder-controls";
 import { isComposingKey, tokens } from "@kjun-ui/tokens";
 import { KjunButton } from "./button";
@@ -38,7 +38,6 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     expandable = false,
     rowClass,
     selectable = false,
-    selected = [],
     toolbar,
     emptyContent,
     renderExpand,
@@ -50,21 +49,14 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     query = useQueryDisplay(props),
     // Skeleton rows wait out loadingDelay here; the spinner waits inside KjunDataState.
     revealed = useLoadingReveal(query.initialLoading, skeleton ? loadingDelay : 0),
-    [mobile, setMobile] = useState(false);
+    mobile = useNarrowScreen();
   const groups = groupTableRows(state.rows, props.groupBy);
   const expansion = useTableGroupExpansion(groups, props.groupBy, props.expandedGroups, props.onExpandedGroupsChange);
-  useEffect(() => {
-    const media = matchMedia(`(width < ${tokens.table.mobileBreakpoint}px)`);
-    const update = () => setMobile(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
   const layout = tablePresentation(props, mobile);
   const grouping = {
     groups,
     ...expansion,
-    groupLabel: (group: TableRowGroup<Row>) => props.renderGroupLabel ? props.renderGroupLabel(group.value, group.rows) : group.value == null || group.value === "" ? "-" : String(group.value),
+    groupLabel: (group: TableRowGroup<Row>) => props.renderGroupLabel ? props.renderGroupLabel(group.value, group.rows) : tableGroupText(group.value),
     summary: props.summary ? (col: TableColumn<Row>, rows: Row[]) => tableSummaryValue(props, col, rows, locale) : null,
   };
   const { card, visible } = layout;
@@ -104,53 +96,51 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
       onRowClick(row, index);
     }
   };
+  const rowName = (row: Row, i: number) => tableRowLabel(row, tableTitleKey(props), i);
   const checkbox = (row: Row, i: number) => (
     <TableCheck
-      aria-label={m.selectRow(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))}
+      aria-label={m.selectRow(rowName(row, i))}
       checked={state.selectedRow(row)}
+      disabled={!state.selectableRow(row)}
       onClick={(e) => e.stopPropagation()}
       onChange={() => state.toggleRow(row)}
     />
   );
-  const expand = (row: Row, i: number) => (
-    <KjunButton
-      variant="ghost"
-      size="xs"
-      prefixIcon={
-        state.expanded.includes(state.key(row, i))
-          ? "chevron-down"
-          : "chevron-right"
-      }
-      ariaLabel={m.expandRow}
-      aria-expanded={state.expanded.includes(state.key(row, i))}
-      onClick={() => state.toggleExpand(row, i)}
-    >
-      {card
-        ? state.expanded.includes(state.key(row, i))
-          ? m.collapse
-          : m.showDetails
-        : undefined}
-    </KjunButton>
-  );
+  // The toggle is named by what it shows (or "행 확장" when it is an icon) and by its row, so each row's toggle differs.
+  const expand = (row: Row, i: number) => {
+    const open = state.expanded.includes(state.key(row, i)), text = card ? open ? m.collapse : m.showDetails : undefined;
+    return (
+      <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"}
+        ariaLabel={`${text ?? m.expandRow} ${rowName(row, i)}`} aria-expanded={open} onClick={() => state.toggleExpand(row, i)}>
+        {text}
+      </KjunButton>
+    );
+  };
   // A reorderable table: the app keeps the order and passes data in it, like a reorderable KjunListSection. Moving is off
   // while the rows are sorted by a column or grouped, since their order on screen is then not the app's.
   const [root, setRoot] = useState<HTMLDivElement | null>(null), noteId = "kjun-table-reorder-" + useId().replace(/:/g, "");
   const reorderable = !!props.reorderable, locked = !!state.sort.key || !!props.groupBy;
   const reorderOff = !!props.reorderDisabled || locked, reorderNote = reorderable && reorderOff ? props.reorderDisabledText ?? (locked ? m.tableReorderLocked : undefined) : undefined;
   // The rows on screen may be one page or a search result of the order: a move never passes a row that is not shown.
-  const shown = useMemo(() => reorderable ? new Set(state.rows.map((row, i) => state.key(row, i))) : undefined, [reorderable, state.rows]);
+  // state.key reads rowKey, so a new rowKey rebuilds the set.
+  const shown = useMemo(() => reorderable ? new Set(state.rows.map((row, i) => state.key(row, i))) : undefined, [reorderable, state.rows, props.rowKey]);
   const reorder = useReorder({ reorderable, order: props.order, shown, disabled: reorderOff, controls: "buttons", noteId: reorderNote ? noteId : undefined,
     list: root, selector: ":scope [data-reorder-index]", owner: ".kjun-table-state", onOrderChange: props.onOrderChange, onReorder: props.onReorder });
-  const mover = reorderable ? (row: Row, i: number) => <ReorderControls value={state.key(row, i)} name={String(tableRowLabel(row, props.cardTitle || props.columns[0]?.key, i))} /> : undefined;
+  const mover = reorderable ? (row: Row, i: number) => <ReorderControls value={state.key(row, i)} name={String(rowName(row, i))} /> : undefined;
   // One stable ref: the root for the move controls, and the domain colour check when cells paint price colours.
   const painted = !query.initialLoading && state.rows.length > 0 && props.columns.some(column => column.pill);
   const rootRef = useCallback((node: HTMLDivElement | null) => { setRoot(node); domainColorRef(painted)?.(node); }, [painted]);
+  // What every layout takes; cards and the list add their layout, groups and totals.
+  const rows = { initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell,
+    expandable, expand, renderExpand, emptyContent, emptyText, ariaLabel, customClass, rowKeyDown, mover };
+  const narrow = { ...rows, layout, groups: grouping.groups, collapsed: grouping.collapsed, toggleGroup: grouping.toggleGroup, groupLabel: grouping.groupLabel,
+    groupTotals: (list: Row[]) => tableTotals(props, list, locale), totals: tableTotals(props, state.rows, locale) };
   return (
     <ReorderContext.Provider value={reorder.context}>
     <div className="kjun-table-state" aria-busy={!!props.loading}
       ref={rootRef}>
-      <TableToolbar {...{ selectable, selected, renderSelectionToolbar, searchable, searchPlaceholder, toolbar }} allSelected={state.all}
-        toggleAll={state.toggleAll} clearSelection={() => props.onSelectionChange?.([])}
+      <TableToolbar {...{ selectable, renderSelectionToolbar, searchable, searchPlaceholder, toolbar }} selected={state.selected} allSelected={state.all || !state.selectableCount}
+        toggleAll={state.toggleAll} clearSelection={state.clearSelection}
         search={state.search} searchChange={state.searchChange}
         sortOptions={card || layout.list ? tableSortOptions(props, m) : undefined} sortValue={tableSortValue(state.sort)} sortChange={(value) => state.sortTo(tableSortFromValue(value))} />
       <KjunDataState
@@ -171,12 +161,9 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
         loadingText={loadingText}
         loadingDelay={skeleton ? 0 : loadingDelay}
       >
-        {card ? (
-          <TableCards {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown, mover }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
-        ) : layout.list ? (
-          <TableList {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown, mover }} groups={grouping.groups} collapsed={grouping.collapsed} toggleGroup={grouping.toggleGroup} groupLabel={grouping.groupLabel} groupTotals={(rows: Row[]) => tableTotals(props, rows, locale)} totals={tableTotals(props, state.rows, locale)} />
-        ) : (
-          <TableGrid {...{ initialLoading: query.initialLoading, skeletonRows, skeletonHidden: query.initialLoading && !revealed, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, columnGroups: props.columnGroups, cellSpan: props.cellSpan, mover, maxHeight, stickyHeader, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, ...grouping }} edgeInset={props.edgeInset} stickyOffset={props.stickyOffset} sortable={props.sortable} />
+        {card ? <TableCards {...narrow} /> : layout.list ? <TableList {...narrow} /> : (
+          <TableGrid {...rows} visible={visible} columnGroups={props.columnGroups} cellSpan={props.cellSpan} maxHeight={maxHeight} stickyHeader={stickyHeader}
+            compact={compact} striped={striped} hoverable={hoverable} {...grouping} edgeInset={props.edgeInset} stickyOffset={props.stickyOffset} sortable={props.sortable} />
         )}
         {pagination && (
           <KjunPagination
@@ -199,3 +186,13 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
   );
 }
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
+
+// Narrow screens swap the grid for cards or rows. Read on the first client render, so a phone never draws the grid
+// first; the server (and hydration) assume a wide screen.
+const narrowQuery = () => `(width < ${tokens.table.mobileBreakpoint}px)`;
+const subscribeNarrow = (change: () => void) => {
+  const media = matchMedia(narrowQuery());
+  media.addEventListener("change", change);
+  return () => media.removeEventListener("change", change);
+};
+const useNarrowScreen = () => useSyncExternalStore(subscribeNarrow, () => matchMedia(narrowQuery()).matches, () => false);

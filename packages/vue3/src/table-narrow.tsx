@@ -22,13 +22,13 @@ export interface TableNarrowContext extends TableRowsContext {
 /** Like React: each group is a labelled group, a header line (name, count, subtotals with two or more rows) over its own list. */
 function groupSections(c: TableNarrowContext, className: string, itemsClass: string | undefined, item: (row: Row, index: number) => VNodeChild) {
   return c.groups!.map(group => {
-    const label = c.groupLabel(group), totals = group.rows.length > 1 ? c.groupTotals(group.rows) : [];
+    const label = c.groupLabel(group), name = tableGroupName(label, group), totals = group.rows.length > 1 ? c.groupTotals(group.rows) : [];
     const open = !c.collapsed.includes(group.key);
     return (
-      <div key={group.key} role="group" aria-label={tableGroupName(label, group)} class={className}>
+      <div key={group.key} role="group" aria-label={name} class={className}>
         <div class="kjun-table-card-group">
           <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} aria-expanded={open}
-            ariaLabel={c.messages.toggleGroup(String(group.value ?? ""), open)} onClick={() => c.toggleGroup(group.key)} />
+            ariaLabel={c.messages.toggleGroup(name, open)} onClick={() => c.toggleGroup(group.key)} />
           <span>{label}</span>
           <span class="kjun-table-card-group-count">{c.messages.groupCount(group.rows.length)}</span>
           {totals.length > 0 && (
@@ -47,7 +47,7 @@ function groupSections(c: TableNarrowContext, className: string, itemsClass: str
 function cardSkeleton(layout: TableLayout, key: number) {
   const { tiles, subtitle, highlight, badges, cardLayout } = layout, rows = cardLayout === "rows";
   if (tiles) return (
-    <div key={key} class="kjun-table-card">
+    <div key={key} class="kjun-table-card" aria-hidden="true">
       {badges.length > 0 && <div class="kjun-table-card-header"><KjunSkeleton type="line" role="caption" width={tokens.extensions.tableCard.badgeSkeletonWidth} /></div>}
       <div class="kjun-table-card-title"><KjunSkeleton type="line" role="control" width="70%" /></div>
       {subtitle && <div class="kjun-table-card-subtitle"><KjunSkeleton type="line" role="caption" width="45%" /></div>}
@@ -55,7 +55,7 @@ function cardSkeleton(layout: TableLayout, key: number) {
     </div>
   );
   return (
-    <div key={key} class="kjun-table-card">
+    <div key={key} class="kjun-table-card" aria-hidden="true">
       <div class="kjun-table-card-header">
         <div class="kjun-table-card-header-left">
           <KjunSkeleton type="line" role="cardTitle" width={tokens.extensions.tableCard.titleSkeletonWidth} />
@@ -151,17 +151,18 @@ export function tableCards(c: TableNarrowContext) {
       ]}
     </div>
   );
-  const grouped = !!c.groups && !c.initialLoading && state.rows.length > 0;
-  return (
-    <div class="kjun-table-cards" data-layout={cardLayout} data-grouped={grouped || undefined} role={grouped ? "group" : "list"} aria-label={c.ariaLabel}
+  const grouped = !!c.groups && !c.initialLoading && state.rows.length > 0, listed = !c.initialLoading && !grouped && state.rows.length > 0;
+  // Like React: a list holds only its cards; the totals follow it.
+  return [
+    <div class="kjun-table-cards" data-layout={cardLayout} data-grouped={grouped || undefined} role={listed ? "list" : "group"} aria-label={c.ariaLabel}
       style={c.skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={c.skeletonHidden ? "true" : undefined}>
       {c.initialLoading
         ? Array.from({ length: c.skeletonRows }, (_, i) => cardSkeleton(c.layout, i))
         : grouped ? groupSections(c, "kjun-table-card-group-section", "kjun-table-card-items", card) : state.rows.map(card)}
       {!c.initialLoading && !state.rows.length && <div class="kjun-table-card-empty">{c.empty()}</div>}
-      {!c.initialLoading && state.rows.length > 0 && tableTotals(c.totals, c.messages.tableTotal)}
-    </div>
-  );
+    </div>,
+    !c.initialLoading && state.rows.length > 0 && tableTotals(c.totals, c.messages.tableTotal),
+  ];
 }
 
 /** Like React: responsive="list" rows are a title over one meta line with the value and badges at the end. */
@@ -189,13 +190,13 @@ export function tableList(c: TableNarrowContext) {
       {c.expandable && state.expanded.includes(state.key(row, i)) && <div class="kjun-table-list-expand">{c.renderExpand(row, i)}</div>}
     </div>
   );
-  const grouped = !!c.groups && !c.initialLoading && state.rows.length > 0;
-  return (
-    <div class="kjun-table-list" role={grouped ? "group" : "list"} aria-label={c.ariaLabel}
+  const grouped = !!c.groups && !c.initialLoading && state.rows.length > 0, listed = !c.initialLoading && !grouped && state.rows.length > 0;
+  return [
+    <div class="kjun-table-list" role={listed ? "list" : "group"} aria-label={c.ariaLabel}
       style={c.skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={c.skeletonHidden ? "true" : undefined}>
       {c.initialLoading
         ? Array.from({ length: c.skeletonRows }, (_, i) => (
-          <div key={i} class="kjun-table-list-item">
+          <div key={i} class="kjun-table-list-item" aria-hidden="true">
             <div class="kjun-table-list-main">
               <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
               <KjunSkeleton type="line" role="caption" width="30%" />
@@ -205,7 +206,7 @@ export function tableList(c: TableNarrowContext) {
         ))
         : grouped ? groupSections(c, "kjun-table-list-group", undefined, item) : state.rows.map(item)}
       {!c.initialLoading && !state.rows.length && <div class="kjun-table-card-empty">{c.empty()}</div>}
-      {!c.initialLoading && state.rows.length > 0 && tableTotals(c.totals, c.messages.tableTotal)}
-    </div>
-  );
+    </div>,
+    !c.initialLoading && state.rows.length > 0 && tableTotals(c.totals, c.messages.tableTotal),
+  ];
 }

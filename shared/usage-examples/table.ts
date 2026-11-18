@@ -41,6 +41,9 @@ export function tableUsageExample(input: UsageInput) {
     ...b.props('selectable', 'sortable', 'expandable', 'responsive', 'loading', 'searchable', 'compact', 'striped', 'hoverable', 'stickyHeader'), ...(s.edgeInset ? { edgeInset: 'none' } : {}),
     maxHeight: s.stickyHeader ? 240 : undefined,
     selected, onSelectionChange: b.update('selected'), expandedRows: expanded, onExpandedRowsChange: b.update('expanded'),
+    // A finished project cannot be picked; the table filters by name and owner itself.
+    rowSelectable: s.lockDone && example.project ? expr('(row) => row.status !== "완료"') : undefined,
+    searchMode: s.clientSearch ? 'client' : undefined, searchKeys: s.clientSearch ? ['name', 'owner'] : undefined,
     groupBy: grouped ? 'status' : undefined, expandedGroups, onExpandedGroupsChange: grouped ? b.update('expandedGroups') : undefined,
     summary: grouped ? { budget: 'sum' } : undefined,
     summaryFormat: grouped ? expr('(value) => value == null ? "" : formatPrice(value)') : undefined,

@@ -203,6 +203,7 @@ export const kjunMessagesKo = {
   reorderGrabbed: (name: string) => `${name} 잡음. 위아래 화살표로 옮기고 Enter로 놓습니다. Escape는 취소합니다.`,
   reorderDropped: (name: string, position: number, total: number) => `${name}, ${total}개 중 ${position}번째에 놓음`,
   reorderCancelled: (name: string) => `${name} 이동 취소`,
+  tableReorderColumn: "순서 바꾸기",
   tableReorderLocked: "정렬하거나 묶은 동안에는 순서를 바꿀 수 없습니다.",
   // Color picker
   colorPlaceholder: "색 선택",

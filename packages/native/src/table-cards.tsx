@@ -16,7 +16,7 @@ const titleLine = tokens.typography.cardTitle.lineHeightPx;
 /** Like Web: "stacked" field grid, "rows" label-value lines, "tiles" small cards (two a row, more where each keeps tileMinWidth). */
 export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
   const { mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, cellText, expandable, expand, renderExpand,
-    emptyContent, emptyText, layout, totals, groups } = props;
+    emptyContent, emptyText, layout, totals, groups, ariaLabel } = props;
   const { colors } = useKjunStyles();
   const { title, subtitle, highlight, badges, inline, sections, cardFields, tiles, footerActions, cardFooter, headerMover, cardBody } = layout;
   // Like Web's auto-fill grid: as many tiles a row as keep tileMinWidth, never fewer than two.
@@ -131,6 +131,7 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
       <Pressable
         key={state.key(row, i)}
         accessible={false}
+        role="listitem"
         // No disabled here: on RN Web it would also disable the checkbox and buttons inside the card.
         onPress={onRowClick ? () => onRowClick(row, i) : undefined}
         style={({ pressed }) => ({ ...frame, backgroundColor: selected ? colors.selectedBg : pressed && onRowClick ? colors.active : colors.secondary,
@@ -152,19 +153,23 @@ export function TableCards<Row extends object>(props: TableCardsProps<Row>) {
         );
       })}</>
     : <>{rows.map(({ row, i }) => item(row, i))}</>;
-  const groupSections = useTableGroups(props, tokens.dimension.value4, list);
-  const grouped = !!groups && !initialLoading && state.rows.length > 0;
+  // Like Web: each group's cards are a list of their own.
+  const groupSections = useTableGroups(props, tokens.dimension.value4, (rows) => <View role="list" style={{ gap: card.cardGap }}>{list(rows)}</View>);
+  const grouped = !!groups && !initialLoading && state.rows.length > 0, listed = !initialLoading && !grouped && state.rows.length > 0;
+  // Like Web: the list holds only its cards (a labelled group while loading, empty or grouped); the totals follow it.
   return (
     <View style={{ gap: card.cardGap, padding: card.listPadding, opacity: skeletonHidden ? 0 : undefined }}
       aria-hidden={skeletonHidden || undefined} onLayout={tiles ? (event) => setWidth(event.nativeEvent.layout.width) : undefined}>
-      {initialLoading
-        ? Array.from({ length: skeletonRows }, (_, i) => <CardSkeleton key={i} layout={layout} />)
-        : grouped ? groupSections(groups!) : list(state.rows.map((row, i) => ({ row, i })))}
-      {!initialLoading && !state.rows.length ? (
-        <View style={{ padding: card.emptyPadding, alignItems: "center" }}>
-          {content(emptyContent || emptyText, { color: colors.textTertiary })}
-        </View>
-      ) : null}
+      <View role={listed ? "list" : "group"} accessibilityLabel={ariaLabel} style={{ gap: card.cardGap }}>
+        {initialLoading
+          ? Array.from({ length: skeletonRows }, (_, i) => <CardSkeleton key={i} layout={layout} />)
+          : grouped ? groupSections(groups!) : list(state.rows.map((row, i) => ({ row, i })))}
+        {!initialLoading && !state.rows.length ? (
+          <View style={{ padding: card.emptyPadding, alignItems: "center" }}>
+            {content(emptyContent || emptyText, { color: colors.textTertiary })}
+          </View>
+        ) : null}
+      </View>
       {!initialLoading && state.rows.length > 0 ? <TableTotals totals={totals} /> : null}
     </View>
   );
@@ -177,7 +182,7 @@ function CardSkeleton<Row extends object>({ layout }: { layout: TableCardsProps<
   const rows = cardLayout === "rows";
   const frame = { padding: tiles ? card.tilePadding : card.padding, borderRadius: card.radius, backgroundColor: colors.secondary };
   if (tiles) return (
-    <View style={frame}>
+    <View style={frame} aria-hidden>
       {badges.length > 0 ? <View style={{ marginBottom: card.gap }}><KjunSkeleton type="line" role="caption" width={card.badgeSkeletonWidth} /></View> : null}
       <KjunSkeleton type="line" role="control" width="70%" />
       {subtitle ? <View style={{ marginTop: card.valueGap }}><KjunSkeleton type="line" role="caption" width="45%" /></View> : null}
@@ -185,7 +190,7 @@ function CardSkeleton<Row extends object>({ layout }: { layout: TableCardsProps<
     </View>
   );
   return (
-    <View style={frame}>
+    <View style={frame} aria-hidden>
       <KjunSkeleton type="line" role="cardTitle" width={card.titleSkeletonWidth} />
       {subtitle ? <View style={{ marginTop: card.valueGap }}><KjunSkeleton type="line" role="caption" width="30%" /></View> : null}
       {highlight ? (

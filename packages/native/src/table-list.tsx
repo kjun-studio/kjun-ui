@@ -10,12 +10,13 @@ import { TableTotals, useTableGroups } from "./table-narrow-parts";
 /** Like Web responsive="list": a title over one meta line with the value and badges at the end, no header row. */
 export function TableList<Row extends object>(props: TableCardsProps<Row>) {
   const { mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand,
-    emptyContent, emptyText, layout, totals, groups } = props;
+    emptyContent, emptyText, layout, totals, groups, ariaLabel } = props;
   const { colors } = useKjunStyles();
   const geometry = tokens.table.list;
   const { title, listMeta, listValue, badges } = layout;
-  // A row with a pressable cell keeps its parts separate, so that button stays reachable on a device.
-  const merged = !!onRowClick && !mover && ![listMeta, listValue, ...badges].some((col) => col?.onCellPress);
+  // A row with a checkbox, an expand toggle, move buttons or a pressable cell keeps its parts separate, so those
+  // controls stay reachable on a device (one accessible row would swallow them), as in the grid.
+  const merged = !!onRowClick && !selectable && !expandable && !mover && ![listMeta, listValue, ...badges].some((col) => col?.onCellPress);
   const item = (row: Row, i: number) => (
     <View key={state.key(row, i)} role="listitem">
       <Pressable
@@ -56,26 +57,29 @@ export function TableList<Row extends object>(props: TableCardsProps<Row>) {
     </View>
   );
   const groupSections = useTableGroups(props, geometry.paddingX, (items) => <View role="list">{items.map(({ row, i }) => item(row, i))}</View>);
-  const grouped = !!groups && !initialLoading && state.rows.length > 0;
+  const grouped = !!groups && !initialLoading && state.rows.length > 0, listed = !initialLoading && !grouped && state.rows.length > 0;
+  // Like Web: only loaded rows make a list (a group otherwise), and the totals follow it.
   return (
-    <View role={grouped ? undefined : "list"} style={{ opacity: skeletonHidden ? 0 : undefined }} aria-hidden={skeletonHidden || undefined}>
-      {initialLoading
-        ? Array.from({ length: skeletonRows }, (_, i) => (
-            // Like Web: a title over one meta line with a value at the end, like the loaded row.
-            <View key={i} style={{ flexDirection: "row", alignItems: "center", gap: geometry.gap, paddingVertical: geometry.paddingY, paddingHorizontal: geometry.paddingX }}>
-              <View style={{ flex: 1, minWidth: 0, gap: geometry.metaGap }}>
-                <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
-                <KjunSkeleton type="line" role="caption" width="30%" />
+    <View style={{ opacity: skeletonHidden ? 0 : undefined }} aria-hidden={skeletonHidden || undefined}>
+      <View role={listed ? "list" : "group"} accessibilityLabel={ariaLabel}>
+        {initialLoading
+          ? Array.from({ length: skeletonRows }, (_, i) => (
+              // Like Web: a title over one meta line with a value at the end, like the loaded row.
+              <View key={i} aria-hidden style={{ flexDirection: "row", alignItems: "center", gap: geometry.gap, paddingVertical: geometry.paddingY, paddingHorizontal: geometry.paddingX }}>
+                <View style={{ flex: 1, minWidth: 0, gap: geometry.metaGap }}>
+                  <KjunSkeleton type="line" role="control" width={i % 2 ? "55%" : "40%"} />
+                  <KjunSkeleton type="line" role="caption" width="30%" />
+                </View>
+                <KjunSkeleton type="line" role="control" width={tokens.extensions.skeleton.detailWidth} />
               </View>
-              <KjunSkeleton type="line" role="control" width={tokens.extensions.skeleton.detailWidth} />
-            </View>
-          ))
-        : grouped ? groupSections(groups!) : state.rows.map((row, i) => item(row, i))}
-      {!initialLoading && !state.rows.length && (
-        <View style={{ padding: tokens.extensions.tableCard.emptyPadding, alignItems: "center" }}>
-          {content(emptyContent || emptyText, { color: colors.textSecondary })}
-        </View>
-      )}
+            ))
+          : grouped ? groupSections(groups!) : state.rows.map((row, i) => item(row, i))}
+        {!initialLoading && !state.rows.length && (
+          <View style={{ padding: tokens.extensions.tableCard.emptyPadding, alignItems: "center" }}>
+            {content(emptyContent || emptyText, { color: colors.textSecondary })}
+          </View>
+        )}
+      </View>
       {!initialLoading && state.rows.length > 0 && <TableTotals totals={totals} />}
     </View>
   );

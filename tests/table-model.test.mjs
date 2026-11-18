@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { compareTableValues, sortTableRows, tableRowIndex, tableSelection, toggleAllRows, toggleSelectedRow } from '../shared/package-runtime/table-model.ts';
+import { compareTableValues, filterTableRows, sortTableRows, tableRowIndex, tableSelection, toggleAllRows, toggleSelectedRow } from '../shared/package-runtime/table-model.ts';
 
 const sorted = (data, key, order = 'asc', extra = {}) => sortTableRows(data, { key, order }, extra).map(r => r[key]);
 
@@ -41,4 +41,29 @@ test('the header checkbox keeps selections from other pages', () => {
   const index = tableRowIndex(page2);
   assert.equal(index(page2[1]), 1);
   assert.equal(index({ id: 9 }), -1);
+});
+
+test('rowSelectable: locked rows are skipped by the header checkbox and do not keep it from filling', () => {
+  const rows = [{ id: 1 }, { id: 2, locked: true }, { id: 3 }];
+  const open = (row) => !row.locked;
+  const none = tableSelection(rows, [], 'id', open);
+  assert.equal(none.selectableCount, 2);
+  assert.equal(none.isSelectable(rows[1]), false);
+  const added = toggleAllRows(rows, [], 'id', none.all, open);
+  assert.deepEqual(added.map(r => r.id), [1, 3]);
+  const full = tableSelection(rows, added, 'id', open);
+  assert.equal(full.all, true);
+  assert.equal(full.some, false);
+  // A locked row selected by the app stays when the header box clears the open rows.
+  assert.deepEqual(toggleAllRows(rows, [...added, rows[1]], 'id', true, open).map(r => r.id), [2]);
+  assert.equal(tableSelection(rows, [], 'id', () => false).all, false);
+});
+
+test('a client search keeps rows whose searched fields contain the query, ignoring case', () => {
+  const rows = [{ name: 'Alpha', city: { name: '서울' }, n: 12 }, { name: 'beta', city: { name: '부산' }, n: 7 }];
+  assert.deepEqual(filterTableRows(rows, ' ALP ', ['name']).map(r => r.name), ['Alpha']);
+  assert.deepEqual(filterTableRows(rows, '부산', ['name', 'city.name']).map(r => r.name), ['beta']);
+  assert.deepEqual(filterTableRows(rows, '12', ['n']).map(r => r.name), ['Alpha']);
+  assert.equal(filterTableRows(rows, '  ', ['name']), rows);
+  assert.deepEqual(filterTableRows(rows, 'object', ['city']), []);
 });

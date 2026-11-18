@@ -1,7 +1,7 @@
 import { detail, event, slot, fields } from "./helpers.mjs";
 const ownership = [
-  "data·selected·페이지 데이터: 소비자가 소유합니다. selected는 행 객체 배열이며 rowKey로 선택을 비교합니다.",
-  "정렬: sort를 생략하면 내부 상태, 객체 또는 null을 전달하면 소비자 제어 상태입니다. sortMode=client는 받은 data를 정렬하고 server는 소비자가 전달한 순서를 유지합니다. 검색어는 내부 상태이며 검색 결과는 소비자가 제공합니다.",
+  "data·페이지 데이터: 소비자가 소유합니다. selected는 행 객체 배열이며 rowKey로 선택을 비교합니다. selected를 생략하면 선택을 내부에서 관리하고 변경만 통지합니다.",
+  "정렬: sort를 생략하면 내부 상태, 객체 또는 null을 전달하면 소비자 제어 상태입니다. sortMode=client는 받은 data를 정렬하고 server는 소비자가 전달한 순서를 유지합니다. 검색어는 내부 상태입니다. searchMode=server(기본)이면 검색 결과는 소비자가 제공하고, client이면 표가 data를 직접 거릅니다.",
   "행 확장: expandedRows를 제공하면 소비자가 제어하고, 생략하면 내부에서 관리합니다. 선택 배열과 달리 행의 키 배열을 사용합니다.",
   "그룹 확장: expandedGroups는 groupBy 필드의 원래 값 배열입니다. 행 상세용 expandedRows와 독립적이며 표·카드·list에서 같은 상태를 사용합니다.",
 ];
@@ -12,12 +12,19 @@ const common = {
     렌더링:
       "사용자 셀 렌더링은 아래 TableColumn·renderCell 계약을 참고하세요. 객체 데이터의 정렬·필터링 목적과 표시 형식을 구분합니다.",
   }),
-  selected: detail("현재 선택된 행 객체 배열입니다.", {
+  selected: { default: "undefined", ...detail("현재 선택된 행 객체 배열입니다.", {
     전달값:
       "selection-change 또는 onSelectionChange는 다음 행 객체 배열 전체를 전달합니다. 키 배열이 아닙니다.",
+    "제어 방식":
+      "생략하면 표가 선택을 내부에서 관리하고 변경만 통지합니다(정렬·행 확장과 같은 방식). 배열을 전달하면 제어 상태이므로 다음 배열을 selected에 반영하세요. 반영하지 않으면 표시가 바뀌지 않습니다.",
     "상태 책임":
-      "다음 배열을 selected에 반영하세요. 전체 선택은 현재 표시 데이터 범위를 사용합니다. 재조회 후 객체가 달라도 rowKey가 같으면 선택으로 판정합니다.",
-  }),
+      "전체 선택은 현재 표시 데이터 범위를 사용합니다. 재조회 후 객체가 달라도 rowKey가 같으면 선택으로 판정합니다.",
+  }) },
+  rowSelectable: { type: "(row: Row) => boolean", default: "undefined", ...detail("행마다 선택할 수 있는지 정합니다.", {
+    표시: "false인 행은 체크박스를 끈 채 그립니다. 행 클릭·펼치기·셀 버튼은 그대로 동작합니다.",
+    "전체 선택": "머리 체크박스와 선택 줄의 전체 선택은 선택할 수 있는 행만 더하고 뺍니다. 선택할 수 있는 행이 모두 골라지면 머리 체크박스가 찹니다. 선택할 수 있는 행이 없으면 머리 체크박스가 꺼집니다.",
+    "이미 선택된 행": "앱이 selected로 넘긴 잠긴 행은 선택으로 표시하고, 전체 해제에서도 그대로 둡니다.",
+  }) },
   rowKey: detail("행 선택·확장에 사용할 안정된 식별 필드입니다.", {
     조건: "모든 행에 고유하고 안정된 값을 제공하세요. 누락된 키·중복 키는 선택 구분을 깨뜨릴 수 있습니다.",
     "플랫폼 차이":
@@ -39,9 +46,16 @@ const common = {
   }) },
   searchable: detail("검색어 입력과 통지를 제공합니다.", {
     "상태 책임":
-      "검색어는 내부에 보관하지만 data를 자동 필터링하지 않습니다. 통지받은 검색어로 소비자가 요청 또는 필터링을 수행합니다.",
+      "검색어는 내부에 보관합니다. searchMode=server(기본)이면 data를 거르지 않으므로 통지받은 검색어로 소비자가 요청 또는 필터링을 수행합니다. client이면 표가 입력하는 대로 data를 거릅니다.",
     시점: "세 플랫폼 모두 일반 입력과 지우기를 300ms 뒤 통지합니다. 새 입력은 예약된 통지를 대체하고 종료 시 예약된 검색은 취소됩니다.",
   }),
+  searchMode: { default: '"server"', ...detail("검색어로 행을 거르는 위치를 고릅니다.", {
+    server: "기본값입니다. 표는 거르지 않고 검색어만 통지합니다. 서버 검색이나 앱의 필터에 씁니다.",
+    client: "표가 받은 data에서 searchKeys(생략하면 모든 열 key)의 값에 검색어가 들어 있는 행만 보입니다. 대소문자를 가리지 않고 앞뒤 공백을 무시하며, 입력하는 대로 바로 거릅니다. 통지는 그대로 300ms 뒤에 옵니다. 정렬·전체 선택·순서 이동은 걸러진 행을 기준으로 합니다.",
+  }) },
+  searchKeys: { type: "string[]", default: "모든 열 key", summary: "searchMode=client에서 검색할 행 필드(점 경로) 목록입니다. 화면에 없는 필드도 넣을 수 있습니다. 문자열·숫자·불리언 값만 비교합니다." },
+  stickyOffset: { type: "number", default: "0", summary: "maxHeight 없이 페이지 스크롤에 고정할 때 화면 위에서 띄울 거리(px)입니다. 웹 전용이며 Native는 표 안 스크롤에서만 고정하므로 쓰지 않습니다." },
+  mobileColumns: { type: "string[]", summary: "responsive=\"compact\"일 때 좁은 화면에 남길 열 key 목록입니다. card·list 형태에서는 쓰지 않습니다." },
   stickyHeader: detail("머리 행을 고정합니다.", {
     "고정 기준": "maxHeight가 있으면 표 안 스크롤 영역 위에, 없으면 페이지 스크롤에서 화면 위 stickyOffset(px, 기본 0) 위치에 고정합니다. 페이지 고정에서는 표 바깥 래퍼가 스크롤 영역이 되지 않으므로 넓은 표의 가로 스크롤은 앱이 감싸야 합니다.",
     "표시": "행이 머리 아래로 지나가면 그림자 대신 머리 아래 선이 border-strong으로 진해집니다. Native는 표 안 스크롤에서만 고정하며, 화면 스크롤 고정은 앱의 ScrollView stickyHeaderIndices를 사용하세요.",
@@ -82,9 +96,11 @@ const common = {
   }) },
   pagination: detail("페이지 표시와 이동 통지를 연결합니다.", {
     전달값:
-      "{ page, total, pageSize? }. total은 전체 행 수이며 pageSize로 전체 페이지 수를 계산합니다. 이동 시 다음 페이지 번호를 통지하며 서버 요청과 data 교체는 소비자가 합니다.",
+      "{ page, total, pageSize? }. total은 전체 행 수이며 pageSize(기본 20)로 전체 페이지 수를 계산합니다. 이동 시 다음 페이지 번호를 통지하며 서버 요청과 data 교체는 소비자가 합니다.",
   }),
   responsive: detail("좁은 화면에서 card·list·compact 또는 전환 없음을 선택합니다.", {
+    "생략": "생략(null)하면 열이 4개 이상일 때 card, 3개 이하일 때 표를 그대로 씁니다. none은 열 수와 관계없이 항상 표입니다.",
+    compact: "표를 유지하고 mobileColumns에 적은 열만 남깁니다. mobileColumns가 비면 모든 열을 그립니다.",
     list: "머리 행 없이 행마다 제목(cardTitle, 기본 첫 열)과 한 줄 보조 정보(cardSubtitle, 없으면 다음 일반 열)를 두 줄로 쓰고, 첫 오른쪽 정렬·숫자 열 값과 badge 열을 끝에 둡니다. 선택 체크박스는 앞, 펼침 버튼은 끝에 둡니다.",
     "적용 조건":
       "세 플랫폼 모두 화면 너비가 768px 미만일 때 모바일 표현으로 전환하고, 768px부터 표를 표시합니다. card에서는 cardLayout·cardTitle·cardSubtitle·cardHighlight·cardSections와 열별 카드 표시 규칙을 적용합니다. mobileColumns는 compact 모드에서 표시할 열을 고릅니다. 전환 시 선택·확장 상태를 유지합니다.",
@@ -135,7 +151,7 @@ const search = event(
   "입력 변경 또는 지우기 후 300ms",
   "string",
   "반환값은 사용하지 않습니다.",
-  "소비자가 data를 필터링하거나 재조회하세요.",
+  "searchMode=server(기본)이면 소비자가 data를 필터링하거나 재조회하세요. client이면 표가 이미 걸렀으므로 기록·분석에만 씁니다.",
 );
 const expanded = event(
   "다음 확장 행 키 배열을 전달합니다.",
@@ -180,10 +196,14 @@ const types = [
   fields("TableColumn<Row>", "열의 값과 표시·모바일 배치를 구성합니다.", [
     ["key / label", "string", "행 값 경로와 헤더 라벨"],
     ["sortable", "boolean", "표 sortable과 함께 허용해야 정렬 가능"],
+    ["type", '"number" | "date" | "datetime" | "text"', "number는 숫자 칸으로 오른쪽 정렬 스타일을 쓰고, format·render가 없으면 KjunProvider 언어로 자릿수를 묶어 표시합니다. 날짜 형식은 칸 스타일에만 씁니다"],
+    ["compare", "(a, b) → number", "이 열의 오름차순 비교. 생략하면 날짜는 시간, 숫자는 크기, 글자는 언어 순서로 비교합니다. 빈 값은 방향과 관계없이 맨 끝입니다"],
+    ["pill / badge", "boolean", "pill은 값의 부호로 상승·하락 색 알약을 그립니다. badge는 좁은 화면 카드·list에서 제목 줄 끝 배지 자리에 둡니다"],
+    ["className / headerClass", "string", "웹 본문 셀과 머리 칸에 더할 클래스"],
     ["width / align", "number | string / left | center | right", "열 너비와 기본 셀 정렬. 비율(\"30%\")은 표 전체 폭에 대한 몫입니다. Native는 숫자·px·비율을 받고, 그 밖의 단위는 기본 폭으로 표시합니다"],
     ["render", "(value, row, index) → ReactNode", "React·Native의 해당 열 셀 표시"],
     ["format", "(value, row) → ReactNode", "React·Vue·Native의 열별 기본 포맷. 함수만 받으며, 문자열 등 함수가 아닌 값은 무시하고 경고합니다"],
-    ["hideInCard / inlineInCard / fullWidthInCard", "boolean", "모바일 카드의 열 배치"],
+    ["hideInCard / inlineInCard / fullWidthInCard", "boolean", "모바일 카드의 열 배치. key가 \"actions\"인 열은 카드 필드에서 빠져 맨 아래 줄(inlineInCard면 제목 줄)에 놓이고, list 값 자리에도 쓰지 않습니다"],
     ["hideEmptyInCard / secondary", "boolean", "빈 값 숨김과 보조 값 표시"],
     ["onCellPress", "(row, index) → void", "셀을 버튼으로 만들어 이 동작을 실행합니다. 행 클릭·키보드는 실행하지 않습니다. onRowClick이 있으면 좁은 화면의 카드·list 제목은 행을 여는 버튼이므로 셀 버튼으로 만들지 않습니다"],
     ["cellLabel", "(row, index) → string", "셀 버튼의 접근성 이름. 내용만으로 동작이 드러나지 않을 때(예: 목표가 82,000원, 근거 보기)"],

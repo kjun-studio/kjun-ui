@@ -2,18 +2,14 @@ import { fromNestedControl } from "../../../shared/package-runtime/nested-contro
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
-import type { TableGridProps } from "../../../shared/package-runtime/table-presentation";
+import { tableGroupName, type TableGridProps, type TableViewParts } from "../../../shared/package-runtime/table-presentation";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunSkeleton } from "./display";
 import { TableCheck } from "./table-check";
 import { stickyHeaderStuck } from "../../../shared/package-runtime/table-model";
 import { tableHeaderRows, tableSpans } from "../../../shared/package-runtime/table-columns";
 import type { TableColumn } from "./table-model";
-interface Props<Row extends object> extends TableGridProps<Row, CSSProperties["maxHeight"]> {
-  ariaLabel: string;
-  customClass: (row: Row, index: number) => string;
-  rowKeyDown: (event: KeyboardEvent<HTMLElement>, row: Row, index: number) => void;
-}
+type Props<Row extends object> = TableGridProps<Row, CSSProperties["maxHeight"]> & TableViewParts<Row, KeyboardEvent<HTMLElement>>;
 export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, groups, collapsed, toggleGroup, groupLabel, summary, edgeInset, stickyOffset = 0 }: Props<Row>) {
   const m = useKjunMessages();
   // A reorderable table ends each row with its move buttons, after the expand toggle.
@@ -60,10 +56,8 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
       </tr>
       {expandable &&
         state.expanded.includes(state.key(row, i)) && (
-          <tr className="kjun-table-expanded">
-            <td
-              colSpan={span - 1}
-            >
+          <tr className="kjun-table-expanded" data-after-selection={selectable || undefined}>
+            <td colSpan={span}>
               {renderExpand?.(row, i)}
             </td>
           </tr>
@@ -118,15 +112,15 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
   );
   // Each group is its own row group: a rowgroup header, its rows and (with two or more rows) a subtotal.
   const groupBodies = () => groups!.map((group) => {
-    const open = !collapsed.includes(group.key);
+    const open = !collapsed.includes(group.key), label = groupLabel(group);
     return (
       <tbody key={"group:" + group.key}>
         <tr className="kjun-table-group">
           <th scope="rowgroup" colSpan={span}>
             <span className="kjun-table-group-label">
               <KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} aria-expanded={open}
-                ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} onClick={() => toggleGroup(group.key)} />
-              <span className="kjun-table-group-name">{groupLabel(group)}</span>
+                ariaLabel={m.toggleGroup(tableGroupName(label, group), open)} onClick={() => toggleGroup(group.key)} />
+              <span className="kjun-table-group-name">{label}</span>
               <span className="kjun-table-group-count">{m.groupCount(group.rows.length)}</span>
             </span>
           </th>
@@ -161,19 +155,15 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
               data-striped={striped}
               data-edge-inset={edgeInset === "none" ? "none" : undefined}
             >
-              <thead
-                style={
-                  stickyHeader
-                    ? { position: "sticky", top: pageSticky ? stickyOffset : 0, zIndex: 2 }
-                    : undefined
-                }
-              >
+              <thead data-sticky={stickyHeader || undefined} style={stickyHeader ? { top: pageSticky ? stickyOffset : 0 } : undefined}>
                 <tr>
                   {selectable && (
                     <th scope="col" className="kjun-table-action-cell" rowSpan={lone}>
                       <TableCheck
                         aria-label={m.selectAll}
                         checked={state.all}
+                        // Nothing to select yet (first load, no rows, or every row locked by rowSelectable).
+                        disabled={initialLoading || !state.selectableCount}
                         ref={(node) => {
                           if (node) node.indeterminate = state.some;
                         }}
@@ -185,8 +175,9 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
                     : <th key={cell.key} scope="colgroup" colSpan={cell.span} className="kjun-table-column-group">{cell.label}</th>)
                     : visible.map((col) => columnHeader(col))}
                   {/* Expansion sits at the row's end, so the checkbox is the only leading utility column. */}
-                  {expandable && <th scope="col" className="kjun-table-action-cell" rowSpan={lone} />}
-                  {mover && <th scope="col" className="kjun-table-action-cell kjun-table-reorder-cell" rowSpan={lone} />}
+                  {/* The utility headers draw nothing but still say what their column holds. */}
+                  {expandable && <th scope="col" className="kjun-table-action-cell" rowSpan={lone}><span className="kjun-sr-only">{m.showDetails}</span></th>}
+                  {mover && <th scope="col" className="kjun-table-action-cell kjun-table-reorder-cell" rowSpan={lone}><span className="kjun-sr-only">{m.tableReorderColumn}</span></th>}
                 </tr>
                 {headerRows && <tr>{headerRows.flatMap((cell) => cell.kind === "group" ? cell.columns.map((col) => columnHeader(col)) : [])}</tr>}
               </thead>

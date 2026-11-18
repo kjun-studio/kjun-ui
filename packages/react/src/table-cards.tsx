@@ -1,54 +1,14 @@
 import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import { tokens } from "@kjun-ui/tokens";
-import type { KeyboardEvent, ReactNode } from "react";
+import type { KeyboardEvent } from "react";
 import type { TableCardSection } from "./table-model";
-import { tableGroupName, type TableCardsProps, type TableTotal } from "../../../shared/package-runtime/table-presentation";
-import type { TableRowGroup } from "../../../shared/package-runtime/table-groups";
-import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import type { TableCardsProps, TableViewParts } from "../../../shared/package-runtime/table-presentation";
 import { KjunSkeleton } from "./display";
 import { TableTotals } from "./table-totals";
-import { KjunButton } from "./button";
-interface Props<Row extends object> extends TableCardsProps<Row> {
-  ariaLabel: string;
-  customClass: (row: Row, index: number) => string;
-  rowKeyDown: (event: KeyboardEvent<HTMLElement>, row: Row, index: number) => void;
-}
+import { useTableGroups } from "./table-groups";
+export type TableNarrowProps<Row extends object> = TableCardsProps<Row> & TableViewParts<Row, KeyboardEvent<HTMLElement>>;
 
-/** A group's header line: its name, row count and, with two or more rows, its subtotals. Cards and list rows share it. */
-function TableGroupHeader({ label, count, totals, toggle }: { label: ReactNode; count: string; totals: TableTotal[]; toggle: ReactNode }) {
-  return (
-    <div className="kjun-table-card-group">
-      {toggle}
-      <span>{label}</span>
-      <span className="kjun-table-card-group-count">{count}</span>
-      {totals.length > 0 && (
-        <span className="kjun-table-card-group-total">
-          {totals.map((total) => <span key={total.key}>{totals.length > 1 ? <>{total.label} {total.value}</> : total.value}</span>)}
-        </span>
-      )}
-    </div>
-  );
-}
-
-/** Groups as labelled groups, each a header line over its own list; ungrouped rows stay one list. */
-export function useTableGroups<Row extends object>({ groupLabel, groupTotals, state, collapsed, toggleGroup }: Pick<TableCardsProps<Row>, "groupLabel" | "groupTotals" | "state" | "collapsed" | "toggleGroup">,
-  className: string, itemsClass: string | undefined, item: (row: Row, index: number) => ReactNode) {
-  const m = useKjunMessages();
-  return (list: TableRowGroup<Row>[]) => list.map((group) => {
-    const label = groupLabel?.(group);
-    const open = !collapsed?.includes(group.key);
-    return (
-      <div key={group.key} role="group" aria-label={tableGroupName(label, group)} className={className}>
-        <TableGroupHeader label={label} count={m.groupCount(group.rows.length)} totals={group.rows.length > 1 ? groupTotals?.(group.rows) ?? [] : []}
-          toggle={<KjunButton variant="ghost" size="xs" prefixIcon={open ? "chevron-down" : "chevron-right"} aria-expanded={open}
-            ariaLabel={m.toggleGroup(String(group.value ?? ""), open)} onClick={() => toggleGroup?.(group.key)} />} />
-        {open && <div className={itemsClass} role="list">{group.rows.map((row) => item(row, state.rowIndex(row)))}</div>}
-      </div>
-    );
-  });
-}
-
-export function TableCards<Row extends object>(props: Props<Row>) {
+export function TableCards<Row extends object>(props: TableNarrowProps<Row>) {
   const { mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand,
     emptyContent, emptyText, layout, ariaLabel, customClass, rowKeyDown, totals, groups } = props;
   const { title, subtitle, highlight, badges, inline, sections, cardFields, cardLayout, tiles, footerActions, cardFooter, headerMover, cardBody } = layout;
@@ -147,18 +107,21 @@ export function TableCards<Row extends object>(props: Props<Row>) {
     );
   };
   const groupSections = useTableGroups(props, "kjun-table-card-group-section", "kjun-table-card-items", card);
-  const grouped = !!groups && !initialLoading && state.rows.length > 0;
+  const grouped = !!groups && !initialLoading && state.rows.length > 0, listed = !initialLoading && !grouped && state.rows.length > 0;
+  // A list holds only its cards: loading, the empty message and groups make it a labelled group, and the totals follow it.
   return (
-    <div className="kjun-table-cards" data-layout={cardLayout} data-grouped={grouped || undefined} role={grouped ? "group" : "list"} aria-label={ariaLabel}
-      style={skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={skeletonHidden || undefined}>
-      {initialLoading
-        ? Array.from({ length: skeletonRows }, (_, i) => <CardSkeleton key={i} layout={layout} />)
-        : grouped ? groupSections(groups!) : state.rows.map((row, i) => card(row, i))}
-      {!initialLoading && !state.rows.length && (
-        <div className="kjun-table-card-empty">{emptyContent || emptyText}</div>
-      )}
+    <>
+      <div className="kjun-table-cards" data-layout={cardLayout} data-grouped={grouped || undefined} role={listed ? "list" : "group"} aria-label={ariaLabel}
+        style={skeletonHidden ? { visibility: "hidden" } : undefined} aria-hidden={skeletonHidden || undefined}>
+        {initialLoading
+          ? Array.from({ length: skeletonRows }, (_, i) => <CardSkeleton key={i} layout={layout} />)
+          : grouped ? groupSections(groups!) : state.rows.map((row, i) => card(row, i))}
+        {!initialLoading && !state.rows.length && (
+          <div className="kjun-table-card-empty">{emptyContent || emptyText}</div>
+        )}
+      </div>
       {!initialLoading && state.rows.length > 0 && <TableTotals totals={totals} />}
-    </div>
+    </>
   );
 }
 
@@ -167,7 +130,7 @@ function CardSkeleton<Row extends object>({ layout }: { layout: TableCardsProps<
   const { tiles, subtitle, highlight, badges, cardLayout } = layout;
   const rows = cardLayout === "rows";
   if (tiles) return (
-    <div className="kjun-table-card">
+    <div className="kjun-table-card" aria-hidden="true">
       {badges.length > 0 && <div className="kjun-table-card-header"><KjunSkeleton type="line" role="caption" width={tokens.extensions.tableCard.badgeSkeletonWidth} /></div>}
       <div className="kjun-table-card-title"><KjunSkeleton type="line" role="control" width="70%" /></div>
       {subtitle && <div className="kjun-table-card-subtitle"><KjunSkeleton type="line" role="caption" width="45%" /></div>}
@@ -175,7 +138,7 @@ function CardSkeleton<Row extends object>({ layout }: { layout: TableCardsProps<
     </div>
   );
   return (
-    <div className="kjun-table-card">
+    <div className="kjun-table-card" aria-hidden="true">
       <div className="kjun-table-card-header">
         <div className="kjun-table-card-header-left">
           <KjunSkeleton type="line" role="cardTitle" width={tokens.extensions.tableCard.titleSkeletonWidth} />
