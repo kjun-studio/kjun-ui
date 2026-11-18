@@ -21,7 +21,9 @@ export const KjunChip: ForwardRefExoticComponent<KjunChipProps & RefAttributes<K
   const { colors } = useKjunStyles(), spec = tokens.extensions.chip;
   // The chip keeps its own height; hitSlop reaches the 44px touch target around the drawn removal circle.
   const slop = (spec.nativeRemoveSize - spec.removeSize) / 2;
-  return <View testID={testID} style={[{ alignSelf: "flex-start", maxWidth: "100%", minWidth: 0, flexShrink: 1, flexDirection: "row", alignItems: "center", gap: spec.gaps[size], minHeight: spec[size], paddingVertical: spec.paddingY, paddingLeft: spec.paddingX[size],
+  // Without a removal button nothing else says the chip is disabled, so the label carries the state (Web: aria-disabled).
+  const quiet = disabled && !removable;
+  return <View testID={testID} accessible={quiet || undefined} accessibilityState={quiet ? { disabled: true } : undefined} aria-disabled={quiet || undefined} style={[{ alignSelf: "flex-start", maxWidth: "100%", minWidth: 0, flexShrink: 1, flexDirection: "row", alignItems: "center", gap: spec.gaps[size], minHeight: spec[size], paddingVertical: spec.paddingY, paddingLeft: spec.paddingX[size],
     // The trailing padding trims until the x glyph's outer inset matches the leading padding.
     paddingRight: removable ? spec.paddingX[size] - (spec.removeSize - spec.removeIconSizes[size]) / 2 : spec.paddingX[size],
     borderRadius: spec.radius, backgroundColor: colors.secondary, opacity: disabled ? tokens.states.opacity.disabled : 1 }, style]}>

@@ -26,7 +26,8 @@ const KjunChipComponent = defineComponent({
     return () => {
       const size = chipSize(props.size);
       return (
-      <span class="kjun-chip" data-size={size} data-disabled={String(props.disabled)} data-removable={String(props.removable)}>
+      <span class="kjun-chip" data-size={size} data-disabled={String(props.disabled)} data-removable={String(props.removable)}
+        aria-disabled={props.disabled && !props.removable ? "true" : undefined}>
         {props.icon && <KjunIcon name={props.icon} size={tokens.extensions.chip.iconSizes[size]} />}
         <span title={props.label}>{props.label}</span>
         {props.removable && (
