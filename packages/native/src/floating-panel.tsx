@@ -354,7 +354,8 @@ export function FloatingPanel({
               setScrolled(nativeEvent.contentOffset.y > 0);
               if (footer != null) measureMore({ offset: nativeEvent.contentOffset.y });
             } } : {})}
-            style={{ maxHeight: available - (header != null ? headerHeight : 0) - (footer != null ? footerHeight : 0) - frame, flexShrink: 1 }}
+            // RN Web's Modal may focus the scroller itself on open; like the web dialog it draws no ring (controls inside keep theirs).
+            style={{ maxHeight: available - (header != null ? headerHeight : 0) - (footer != null ? footerHeight : 0) - frame, flexShrink: 1, ...(Platform.OS === "web" ? { outlineStyle: "none" } as unknown as ViewStyle : {}) }}
             contentContainerStyle={{ padding: menu || field ? tokens.extensions.menu.padding : 0 }}
             onContentSizeChange={(width, height) => {
               if (footer != null) measureMore({ content: height });

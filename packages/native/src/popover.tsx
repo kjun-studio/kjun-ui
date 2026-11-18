@@ -128,6 +128,8 @@ export interface KjunTooltipProps
   onOpenChange?: (open: boolean) => void;
   children: ReactNode;
 }
+// Like the web tooltip: Korean breaks between words, long paths anywhere.
+const tooltipWrap = (Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } : {}) as TextStyle;
 export function KjunTooltip({
   content: body = "",
   title,
@@ -255,11 +257,11 @@ export function KjunTooltip({
             backgroundColor: colors.chartTooltipBg,
           }}
         >
-          {!!title && <KText style={{ ...typeStyle('controlSmall'), color: colors.chartTooltipText, ...(align ? { textAlign: align === "center" ? "center" : "left" } : {}) }}>{title}</KText>}
+          {!!title && <KText style={{ ...typeStyle('controlSmall'), ...tooltipWrap, color: colors.chartTooltipText, ...(align ? { textAlign: align === "center" ? "center" : "left" } : {}) }}>{title}</KText>}
           {!!body && <KText
             style={{
               ...typeStyle('caption'),
-
+              ...tooltipWrap,
               color: colors.chartTooltipText,
               ...(align ? { textAlign: align === "center" ? "center" : "left" } : {}),
             }}
