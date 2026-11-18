@@ -86,11 +86,15 @@ export function generate(input: UsageInput) {
     case 'KjunInline':
       content = b.node(name, { gap: 'sm', justify: 'end' }, [b.button('취소', undefined, { variant: 'secondary' }), b.button('저장', notify('save', '저장했습니다'))].join('\n')); break;
     case 'KjunSpacer':
-      content = b.node('KjunStack', { gap: 'xs', style: { height: b.vue ? '240px' : 240 } }, [...['홈', '자산', '혜택'].map(label => b.node('KjunText', {}, b.text(label))),
-        b.node(name), b.node('KjunText', {}, b.text('프로필')), b.node('KjunText', {}, b.text('설정'))].join('\n')); break;
+      content = b.node('KjunStack', { gap: 'md' }, [
+        b.node('KjunCard', { surface: 'muted', style: { width: b.vue ? '240px' : 240 } }, b.node('KjunStack', { gap: 'xs', style: { height: b.vue ? '168px' : 168 } },
+          [...['홈', '자산', '혜택'].map(label => b.node('KjunText', {}, b.text(label))), b.node(name), b.node('KjunText', {}, b.text('프로필')), b.node('KjunText', {}, b.text('설정'))].join('\n'))),
+        b.node('KjunCard', { surface: 'muted' }, b.node('KjunInline', { gap: 'sm' }, [b.node('KjunText', { variant: 'cardTitle' }, b.text('프로젝트')), b.node(name),
+          b.button('취소', undefined, { variant: 'secondary' }), b.button('저장', notify('save', '저장했습니다'))].join('\n')))].join('\n')); break;
     case 'KjunTiles':
-      content = b.node(name, { minItem: 'md' }, ['모바일 앱 리뉴얼', '파트너 대시보드', '온보딩 개선'].map(title =>
-        b.node('KjunCard', { title }, b.node('KjunText', { tone: 'secondary' }, b.text('진행 중')))).join('\n')); break;
+      content = b.node(name, { minItem: 'md' }, [['모바일 앱 리뉴얼', '진행 중 · 11월 30일 마감'], ['파트너 대시보드', '검토 중 · 디자인 시안 3건과 API 문서 정리가 남았습니다'],
+        ['온보딩 개선', '진행 중'], ['결제 화면 정리', '완료 · 12월 배포']].map(([title, body]) =>
+        b.node('KjunCard', { title, surface: 'muted' }, b.node('KjunText', { tone: 'secondary' }, b.text(body)))).join('\n')); break;
     case 'KjunScrollFade':
       content = b.node(name, {}, b.group(Array.from({ length: 12 }, (_, i) => b.button('항목 ' + (i + 1), undefined, { variant: 'secondary', size: 'sm' })))); break;
     case 'KjunErrorBoundary':

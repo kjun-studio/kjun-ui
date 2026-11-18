@@ -97,11 +97,18 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
     case "KjunInline":
       return h(name, { gap: "sm", justify: "end" }, [h("KjunButton", { variant: "secondary" }, "취소"), h("KjunButton", {}, "저장")]);
     case "KjunSpacer":
-      return h("Box", { width: 240, height: 240 }, h("KjunStack", { gap: "xs", style: { height: "100%" } }, [
-        ...["홈", "자산", "혜택"].map(label => h("KjunText", {}, label)), h(name, {}), h("KjunText", {}, "프로필"), h("KjunText", {}, "설정")]));
+      // A filled panel shows where the far end is: a side menu with the profile at its foot, and a toolbar with its actions at the right.
+      return h("KjunStack", { gap: "md" }, [
+        h("Box", { width: 240 }, h("KjunCard", { surface: "muted" }, h("KjunStack", { gap: "xs", style: { height: platform === "vue3" ? "168px" : 168 } }, [
+          ...["홈", "자산", "혜택"].map(label => h("KjunText", {}, label)), h(name, {}), h("KjunText", {}, "프로필"), h("KjunText", {}, "설정")]))),
+        h("KjunCard", { surface: "muted" }, h("KjunInline", { gap: "sm" }, [h("KjunText", { variant: "cardTitle" }, "프로젝트"), h(name, {}),
+          h("KjunButton", { variant: "secondary" }, "취소"), h("KjunButton", {}, "저장")])),
+      ]);
     case "KjunTiles":
-      return h(name, { minItem: "md" }, ["모바일 앱 리뉴얼", "파트너 대시보드", "온보딩 개선"].map((title) =>
-        h("KjunCard", { title }, [h("KjunText", { tone: "secondary" }, "진행 중")])));
+      // Filled cards with different lengths show the shared row height and a last row that keeps the cell width.
+      return h(name, { minItem: "md" }, [["모바일 앱 리뉴얼", "진행 중 · 11월 30일 마감"], ["파트너 대시보드", "검토 중 · 디자인 시안 3건과 API 문서 정리가 남았습니다"],
+        ["온보딩 개선", "진행 중"], ["결제 화면 정리", "완료 · 12월 배포"]].map(([title, body]) =>
+        h("KjunCard", { title, surface: "muted" }, [h("KjunText", { tone: "secondary" }, body)])));
     case "KjunAlert":
       return h(name, {
         variant: settings.tone, size: settings.size, title: settings.title,
