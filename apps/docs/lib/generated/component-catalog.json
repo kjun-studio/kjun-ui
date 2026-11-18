@@ -1254,7 +1254,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
       "vue3": "packages/vue3/src/controls.tsx",
-      "react": "packages/react/src/controls.tsx",
+      "react": "packages/react/src/choice-controls.tsx",
       "native": "packages/native/src/choice-controls.tsx"
     }
   },
@@ -1471,8 +1471,8 @@
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
       "vue3": "packages/vue3/src/controls.tsx",
-      "react": "packages/react/src/controls.tsx",
-      "native": "packages/native/src/choice-controls.tsx"
+      "react": "packages/react/src/choice-controls.tsx",
+      "native": "packages/native/src/choice-radio.tsx"
     }
   },
   {
@@ -1507,8 +1507,8 @@
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
       "vue3": "packages/vue3/src/controls.tsx",
-      "react": "packages/react/src/controls.tsx",
-      "native": "packages/native/src/choice-controls.tsx"
+      "react": "packages/react/src/choice-controls.tsx",
+      "native": "packages/native/src/choice-radio.tsx"
     }
   },
   {
@@ -1579,7 +1579,7 @@
     "verificationEvidence": "docs/verification-v0.3.0.md",
     "sources": {
       "vue3": "packages/vue3/src/controls.tsx",
-      "react": "packages/react/src/controls.tsx",
+      "react": "packages/react/src/choice-controls.tsx",
       "native": "packages/native/src/choice-controls.tsx"
     }
   },

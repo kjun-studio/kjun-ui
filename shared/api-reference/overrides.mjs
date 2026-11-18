@@ -488,6 +488,20 @@ set("Radio", {
   id: "라디오 입력의 id입니다. 바깥 <label for>와 연결할 때 씁니다.",
   inputRef: { type: "Ref<HTMLInputElement>", summary: "라디오 입력 요소입니다. 코드에서 초점을 옮길 때 씁니다." },
 }, "react");
+set("Checkbox Radio Switch", { id: "입력 요소의 id입니다. 바깥 <label for>와 연결할 때 씁니다. 초점은 컴포넌트 ref의 focus()로 옮깁니다." }, "vue3");
+set("Checkbox Radio", { description: { summary: "라벨 아래 보조 설명입니다. Switch와 같은 구조로 라벨 시작 위치에 맞추고, 컨트롤은 두 줄 묶음의 세로 가운데에 둡니다. 웹은 aria-describedby, Native는 accessibilityHint로 컨트롤을 설명합니다." } });
+for (const platform of ["vue3", "react"]) set("Checkbox", {
+  name: "폼 제출 이름입니다. 체크된 동안 formValue를 제출합니다.",
+  formValue: { default: '"on"', summary: "체크된 동안 폼이 제출할 값입니다." },
+}, platform);
+set("Radio", { size: { type: '"sm" | "md" | "lg"', default: '"md"', summary: "라디오 크기입니다. Checkbox와 같은 바깥 크기(20·24·28)를 쓰고 점은 8·10·12로 커집니다. RadioGroup 안에서는 그룹의 size를 따르고, 이 값을 주면 그 항목만 바꿉니다." } });
+set("RadioGroup", {
+  size: { type: '"sm" | "md" | "lg"', default: '"md"', summary: "그룹 안 모든 Radio의 크기입니다. 각 Radio의 size가 우선합니다." },
+  disabled: { default: "false", summary: "그룹 안 모든 Radio를 비활성화합니다. 각 option·Radio의 disabled와 함께 쓸 수 있습니다." },
+});
+for (const platform of ["vue3", "react"]) set("RadioGroup", { name: { default: "자동 생성", summary: "선택한 Radio가 폼에 제출될 이름입니다. 각 Radio는 자기 val을 문자열로 제출합니다." } }, platform);
+set("RadioGroup", { name: "웹 폼 제출 이름입니다. Native에는 폼이 없어 쓰이지 않습니다." }, "native");
+set("Radio", { name: "웹 폼 제출 이름입니다. Native에는 폼이 없어 쓰이지 않습니다." }, "native");
 for (const platform of ["vue3", "react"]) set("Textarea", {
   submitOn: { type: '"mod-enter" | "enter"', default: '"mod-enter"', summary: "보내기 키입니다. mod-enter는 Ctrl/⌘+Enter, enter는 Enter로 보내고 Shift+Enter로 줄을 바꿉니다. 한글처럼 조합 중인 Enter로는 보내지 않습니다. submit을 받으면 보내기 버튼이 없어도 동작합니다." },
 }, platform);

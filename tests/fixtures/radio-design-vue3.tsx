@@ -18,6 +18,19 @@ createApp(defineComponent(() => () => {
         <K.KjunRadio modelValue={c.standalone} val={true} label="개별 항목" disabled={c.disabled} onUpdate:modelValue={(value: any) => { c.standalone = value; }} />
       </div>
       <div data-testid="checkbox"><K.KjunCheckbox modelValue={false} label="체크박스" /></div>
+      <form data-testid="form" onSubmit={(event: Event) => event.preventDefault()}>
+        <K.KjunFormGroup label="배송 방법" hint="도착일이 달라집니다." error={c.error ? '배송 방법을 골라 주세요.' : ''}>{{ default: () => (
+          <K.KjunRadioGroup modelValue={c.shipping} name="shipping" size={c.size} disabled={c.groupDisabled} direction="vertical"
+            onUpdate:modelValue={(value: any) => { c.shipping = value; }}>{{ default: () => [
+            <K.KjunRadio val="normal" label="일반 배송" description="2~3일 · 무료" />,
+            <K.KjunRadio val="fast" label="빠른 배송" description="내일 도착" />,
+          ] }}</K.KjunRadioGroup>
+        ) }}</K.KjunFormGroup>
+        <K.KjunFormGroup label="수신 동의" error={c.error ? '동의해 주세요.' : ''}>{{ default: () => (
+          <K.KjunCheckbox modelValue={c.agree} label="마케팅 수신" description="이벤트 소식을 받습니다" name="agree" formValue="yes"
+            onUpdate:modelValue={(value: any) => { c.agree = value; }} />
+        ) }}</K.KjunFormGroup>
+      </form>
       <output data-testid="events">{state.events.join('|')}</output>
     </div>
   ) }}</K.KjunProvider>;

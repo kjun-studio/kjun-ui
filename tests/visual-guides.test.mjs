@@ -36,8 +36,9 @@ test("visual definitions cover public components plus feedback on every platform
   assert.equal(guides.KjunFeedbackProvider.platforms.native.figures.length, 3);
 });
 test("visual state and size differences reflect public APIs rather than shared guesses", () => {
-  assert.ok(!guides.KjunRadioGroup.platforms.vue3.states.some((s) => s.id === "disabled"));
-  assert.ok(!guides.KjunRadioGroup.platforms.react.states.some((s) => s.id === "disabled"));
+  // RadioGroup disables every radio through its own public disabled prop.
+  assert.ok(guides.KjunRadioGroup.platforms.vue3.states.some((s) => s.id === "disabled"));
+  assert.ok(guides.KjunRadioGroup.platforms.native.sizes.some((s) => s.label === "lg"));
   assert.equal(guides.KjunDrawer.platforms.react.sizes.length, 0);
   assert.ok(!guides.KjunDrawer.platforms.react.states.some((s) => s.id === "loading"));
   assert.ok(guides.KjunFormGroup.platforms.native.states.some((s) => s.id === "child-disabled"));

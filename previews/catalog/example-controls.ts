@@ -159,13 +159,18 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
             onConfirm: () => message('확인'), onCancel: () => message('취소') }),
         ]))));
     }
-    case "KjunCheckbox":
-      return h(name, {
+    case "KjunCheckbox": {
+      // The error state comes from an enclosing FormGroup, as in a real form.
+      const box = h(name, {
         value: get("checked", false),
         onValueChange: change("checked"),
         label: "알림 받기",
+        description: settings.description ? "새 활동이 있으면 이메일로 알려드립니다." : undefined,
+        size: settings.size,
         disabled,
       });
+      return error ? h("KjunFormGroup", { label: "알림", error: "알림 받기에 동의해 주세요." }, box) : box;
+    }
     case "KjunSwitch":
       return h(name, {
         value: get("switch", false),
@@ -176,22 +181,28 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
         loading: settings.loading,
         disabled,
       });
-    case "KjunRadio":
-      return h(
+    case "KjunRadio": {
+      const group = h(
         "KjunRadioGroup",
-        { value: get("radio", "a"), onValueChange: change("radio") },
+        { value: get("radio", error ? null : "a"), onValueChange: change("radio"), direction: settings.description ? "vertical" : "horizontal", size: settings.size },
         [
-          h(name, { val: "a", label: "첫 선택", disabled }),
-          h(name, { val: "c", label: "다음 선택" }),
+          h(name, { val: "a", label: "일반 배송", description: settings.description ? "2~3일 · 무료" : undefined, disabled }),
+          h(name, { val: "c", label: "빠른 배송", description: settings.description ? "내일 도착 · 3,000원" : undefined }),
         ]
       );
-    case "KjunRadioGroup":
-      return h(name, {
-        value: get("radio", "a"),
+      return error ? h("KjunFormGroup", { label: "배송 방법", error: "배송 방법을 골라 주세요." }, group) : group;
+    }
+    case "KjunRadioGroup": {
+      const group = h(name, {
+        value: get("radio", error ? null : "a"),
         options,
-        ariaLabel: "과일 라디오",
+        size: settings.size,
+        disabled,
+        ariaLabel: error ? undefined : "과일 라디오",
         onValueChange: change("radio"),
       });
+      return error ? h("KjunFormGroup", { label: "과일", error: "과일을 하나 골라 주세요." }, group) : group;
+    }
     case "KjunTextarea":
       return singleField("목록 설명", "목록의 목적을 간단히 설명해 주세요.", h(name, {
         value: get("textarea", ""),

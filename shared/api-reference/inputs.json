@@ -7,7 +7,11 @@
       "label",
       "ariaLabel",
       "disabled",
-      "size"
+      "size",
+      "description",
+      "name",
+      "formValue",
+      "id"
     ],
     "react": [
       "value",
@@ -21,7 +25,10 @@
       "onValueChange",
       "onChange",
       "id",
-      "inputRef"
+      "inputRef",
+      "description",
+      "name",
+      "formValue"
     ],
     "native": [
       "value",
@@ -33,7 +40,8 @@
       "size",
       "children",
       "onValueChange",
-      "onChange"
+      "onChange",
+      "description"
     ]
   },
   "KjunCombobox": {
@@ -363,7 +371,10 @@
       "label",
       "disabled",
       "name",
-      "ariaLabel"
+      "ariaLabel",
+      "size",
+      "description",
+      "id"
     ],
     "react": [
       "value",
@@ -376,7 +387,9 @@
       "onValueChange",
       "onChange",
       "id",
-      "inputRef"
+      "inputRef",
+      "size",
+      "description"
     ],
     "native": [
       "value",
@@ -387,7 +400,9 @@
       "ariaLabel",
       "children",
       "onValueChange",
-      "onChange"
+      "onChange",
+      "size",
+      "description"
     ]
   },
   "KjunRadioGroup": {
@@ -395,7 +410,10 @@
       "modelValue",
       "options",
       "direction",
-      "ariaLabel"
+      "ariaLabel",
+      "size",
+      "disabled",
+      "name"
     ],
     "react": [
       "value",
@@ -404,7 +422,10 @@
       "ariaLabel",
       "children",
       "onValueChange",
-      "onChange"
+      "onChange",
+      "size",
+      "disabled",
+      "name"
     ],
     "native": [
       "value",
@@ -413,7 +434,10 @@
       "ariaLabel",
       "children",
       "onValueChange",
-      "onChange"
+      "onChange",
+      "size",
+      "disabled",
+      "name"
     ]
   },
   "KjunSearchInput": {
@@ -575,7 +599,8 @@
       "description",
       "loading",
       "name",
-      "formValue"
+      "formValue",
+      "id"
     ],
     "react": [
       "value",

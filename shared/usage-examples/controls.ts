@@ -57,17 +57,26 @@ export function generate(input: UsageInput) {
           [item.caption ? b.text(item.caption) : '', b.node(name, { ...props, ...item.props })].join('\n'))).join('\n'));
       break;
     }
-    case 'KjunCheckbox': case 'KjunSwitch': {
-      const key = name === 'KjunCheckbox' ? 'checked' : 'switch';
-      content = b.node(name, { value: b.state(key, false), onValueChange: b.update(key), disabled: s.disabled, label: name === 'KjunCheckbox' ? '알림 받기' : '자동 갱신',
-        ...(name === 'KjunSwitch' ? { ...b.props('size', 'loading'), ...(s.description ? { description: '새 데이터가 있으면 바로 보여줍니다.' } : {}) } : {}) }); break;
+    case 'KjunSwitch':
+      content = b.node(name, { value: b.state('switch', false), onValueChange: b.update('switch'), disabled: s.disabled, label: '자동 갱신',
+        ...b.props('size', 'loading'), ...(s.description ? { description: '새 데이터가 있으면 바로 보여줍니다.' } : {}) }); break;
+    case 'KjunCheckbox': {
+      // The error state comes from an enclosing FormGroup, as in a real form.
+      const box = b.node(name, { value: b.state('checked', false), onValueChange: b.update('checked'), label: '알림 받기',
+        ...(s.description ? { description: '새 활동이 있으면 이메일로 알려드립니다.' } : {}), ...b.props('size'), disabled: s.disabled });
+      content = s.error ? b.node('KjunFormGroup', { label: '알림', error: '알림 받기에 동의해 주세요.' }, box) : box; break;
     }
-    case 'KjunRadio':
-      content = b.node('KjunRadioGroup', { value: b.state('radio', 'a'), onValueChange: b.update('radio') }, [
-        b.node(name, { val: 'a', label: '첫 선택', disabled: s.disabled }), b.node(name, { val: 'c', label: '다음 선택' }),
-      ].join('\n')); break;
-    case 'KjunRadioGroup':
-      content = b.node(name, { value: b.state('radio', 'a'), onValueChange: b.update('radio'), options: options(), ariaLabel: '과일 라디오', }); break;
+    case 'KjunRadio': {
+      const group = b.node('KjunRadioGroup', { value: b.state('radio', s.error ? null : 'a'), onValueChange: b.update('radio'), ...(s.description ? { direction: 'vertical' } : {}), ...b.props('size') }, [
+        b.node(name, { val: 'a', label: '일반 배송', ...(s.description ? { description: '2~3일 · 무료' } : {}), disabled: s.disabled }),
+        b.node(name, { val: 'c', label: '빠른 배송', ...(s.description ? { description: '내일 도착 · 3,000원' } : {}) }),
+      ].join('\n'));
+      content = s.error ? b.node('KjunFormGroup', { label: '배송 방법', error: '배송 방법을 골라 주세요.' }, group) : group; break;
+    }
+    case 'KjunRadioGroup': {
+      const group = b.node(name, { value: b.state('radio', s.error ? null : 'a'), onValueChange: b.update('radio'), options: options(), ...b.props('size', 'disabled'), ...(s.error ? {} : { ariaLabel: '과일 라디오' }) });
+      content = s.error ? b.node('KjunFormGroup', { label: '과일', error: '과일을 하나 골라 주세요.' }, group) : group; break;
+    }
     case 'KjunTextarea':
       content = b.node(name, { value: b.state('textarea', ''), onValueChange: b.update('textarea'), placeholder: '목록의 목적과 공유할 내용을 입력하세요.', ariaLabel: '목록 설명', rows: 3, maxRows: Number(s.maxRows), ...(s.plain ? { variant: 'plain' } : {}), ...b.props('size', 'disabled', 'error', 'readOnly'),
         ...(s.showCount || s.composer ? { maxLength: 200, showCount: true } : {}),

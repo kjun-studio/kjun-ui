@@ -45,6 +45,8 @@ assign("RefreshButton", [choice("mode", "표현", ["icon", "text"], "icon"), cho
 assign("Textarea DatePicker Combobox", [size, disabled, error]);
 assign("DatePicker DateRangePicker", [size, disabled, error, toggle("clearable", "지우기")]);
 assign("Switch", [size, disabled, loading, toggle("description", "설명")]);
+assign("Checkbox Radio", [size, disabled, toggle("description", "설명"), error]);
+assign("RadioGroup", [size, disabled, error]);
 assign("Textarea", [size, disabled, error, toggle("readOnly", "읽기 전용"), toggle("showCount", "글자 수"), toggle("composer", "작성기형"), choice("maxRows", "최대 행", ["6", "3", "10"]), toggle("plain", "배경 없음")]);
 assign("Progress", [toggle("marker", "기준 눈금")]);
 const menuDensity = choice("density", "밀도", ["comfortable", "compact"]);
@@ -178,7 +180,7 @@ export function visibleControls(name: string, settings: Settings, platform: Plat
     }
     if (settings.comparison === '크기') fixed.add('size');
   }
-  return exampleDefinition(name).controls.filter(c => !fixed.has(c.key) && !(name === "KjunRadioGroup" && c.key === "disabled") && (!c.when || Object.entries(c.when).every(([key, values]) => values.includes(settings[key]))));
+  return exampleDefinition(name).controls.filter(c => !fixed.has(c.key) && (!c.when || Object.entries(c.when).every(([key, values]) => values.includes(settings[key]))));
 }
 export function validateSettings(name: string, settings: unknown): Settings {
   if (!settings || typeof settings !== "object" || Array.isArray(settings)) throw Error("설정은 객체여야 합니다.");

@@ -3,7 +3,7 @@ import { openFixture } from './packed-fixture';
 
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureRadio(next), next);
 const radio = (page: Page, name = '사과') => page.getByRole('radio', { name, exact: true });
-const control = (item: Locator, platform: string) => platform === 'native' ? item.locator(':scope > div').first() : item.locator('..').locator('.kjun-choice-control');
+const control = (item: Locator, platform: string) => platform === 'native' ? item.locator(':scope > div').first() : item.locator('xpath=ancestor::label[1]').locator('.kjun-choice-control');
 async function geometry(item: Locator, platform: string) {
   return item.evaluate((el, platform) => {
     const wrapper = platform === 'native' ? el : el.closest('label')!;
@@ -25,7 +25,7 @@ async function roles(page: Page) {
       probe.style.color = `var(--kjun-${name})`; root.appendChild(probe);
       const value = getComputedStyle(probe).color; probe.remove(); return value;
     };
-    return { brand: role('brand'), hover: role('brand-hover'), active: role('brand-active'), border: role('border-strong'), disabled: role('text-disabled'), surface: role('surface') };
+    return { brand: role('brand'), hover: role('brand-hover'), active: role('brand-active'), border: role('border-strong'), disabled: role('text-disabled'), surface: role('surface'), danger: role('danger') };
   });
 }
 for (const platform of ['react', 'vue3', 'native']) {
@@ -51,7 +51,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.getByText('개별 항목', { exact: true }).click();
       await expect(standalone).toBeChecked();
       expect((await geometry(standalone, platform)).dot!.width).toBe(10);
-      const checkbox = page.getByRole('checkbox');
+      const checkbox = page.getByRole('checkbox', { name: '체크박스' });
       const check = await geometry(checkbox, platform);
       // Checkbox and Radio share the 8px label gap so mixed choice lists align their labels.
       expect(check.circle.width).toBe(24); expect(check.gap).toBe(8);
@@ -94,13 +94,67 @@ for (const platform of ['react', 'vue3', 'native']) {
     await first.focus();
     await first.press('ArrowRight'); await expect(last).toBeFocused();
     await expect(last).toBeChecked(); await expect(radio(page, '배')).not.toBeChecked();
-    const focus = platform === 'native' ? last : control(last, platform);
+    // Every platform rings the control, not the whole label row.
+    const focus = control(last, platform);
     await expect(focus).toHaveCSS('outline-style', 'solid'); await expect(focus).toHaveCSS('outline-width', '2px');
-    await expect(page.getByRole('radiogroup')).toHaveCSS('gap', '16px');
+    if (platform === 'native') await expect(last).not.toHaveCSS('outline-style', 'solid');
+    await expect(page.getByRole('radiogroup', { name: '과일' })).toHaveCSS('gap', '16px');
     await configure(page, { direction: 'vertical', width: 180 });
-    await expect(page.getByRole('radiogroup')).toHaveCSS('gap', '8px');
+    await expect(page.getByRole('radiogroup', { name: '과일' })).toHaveCSS('gap', '8px');
     const a = await geometry(first, platform), b = await geometry(radio(page, '배'), platform);
     expect(a.circle.x).toBe(b.circle.x);
     expect(b.wrapper.y - a.wrapper.y - a.wrapper.height).toBe(8);
+  });
+}
+
+for (const platform of ['react', 'vue3', 'native']) {
+  test(`${platform}: a RadioGroup and a Checkbox in FormGroups take the group's name, hint and error`, async ({ page }) => {
+    await openFixture(page, platform, '', 'radio-design');
+    const colors = await roles(page);
+    const group = page.getByRole('radiogroup', { name: '배송 방법' });
+    await expect(group).toHaveAccessibleDescription('도착일이 달라집니다.');
+    const normal = radio(page, '일반 배송'), fast = radio(page, '빠른 배송'), agree = page.getByRole('checkbox', { name: '마케팅 수신' });
+    // Supporting text under the label describes each control.
+    await expect(normal).toHaveAccessibleDescription('2~3일 · 무료');
+    await expect(agree).toHaveAccessibleDescription('이벤트 소식을 받습니다');
+    await configure(page, { error: true });
+    await expect(group).toHaveAttribute('aria-invalid', 'true');
+    await expect(group).toHaveAccessibleDescription('배송 방법을 골라 주세요.');
+    await expect(agree).toHaveAttribute('aria-invalid', 'true');
+    // Boxes still to be chosen take the danger boundary; a chosen one keeps the brand.
+    await page.mouse.move(0, 0);
+    await expect(control(normal, platform)).toHaveCSS('border-top-color', colors.danger);
+    await expect(control(agree, platform)).toHaveCSS('border-top-color', colors.danger);
+    await page.getByText('빠른 배송', { exact: true }).click();
+    await expect(fast).toBeChecked(); await page.mouse.move(0, 0);
+    await expect(control(fast, platform)).toHaveCSS('border-top-color', colors.brand);
+    await expect(control(normal, platform)).toHaveCSS('border-top-color', colors.danger);
+  });
+
+  test(`${platform}: RadioGroup size and disabled reach every radio`, async ({ page }) => {
+    await openFixture(page, platform, '', 'radio-design');
+    const fast = radio(page, '빠른 배송');
+    await page.getByText('빠른 배송', { exact: true }).click(); await expect(fast).toBeChecked();
+    for (const [size, ring, dot] of [['sm', 20, 8], ['md', 24, 10], ['lg', 28, 12]] as const) {
+      await configure(page, { size });
+      const g = await geometry(fast, platform);
+      expect([g.circle.width, g.dot!.width, g.gap]).toEqual([ring, dot, 8]);
+      expect(g.dot!.x + dot / 2).toBeCloseTo(g.circle.x + ring / 2);
+    }
+    await configure(page, { groupDisabled: true });
+    await expect(fast).toBeDisabled(); await expect(radio(page, '일반 배송')).toBeDisabled();
+    await page.getByText('일반 배송', { exact: true }).click({ force: true });
+    await expect(fast).toBeChecked();
+  });
+
+  test(`${platform}: the chosen radio and a checked box submit their own values`, async ({ page }) => {
+    test.skip(platform === 'native', 'Native has no forms; name is Web only');
+    await openFixture(page, platform, '', 'radio-design');
+    const data = () => page.getByTestId('form').evaluate(form => [...new FormData(form as HTMLFormElement)].map(([k, v]) => k + '=' + v).join('&'));
+    expect(await data()).toBe('');
+    await page.getByText('빠른 배송', { exact: true }).click();
+    await page.getByText('마케팅 수신', { exact: true }).click();
+    await expect(page.getByRole('checkbox', { name: '마케팅 수신' })).toBeChecked();
+    expect(await data()).toBe('shipping=fast&agree=yes');
   });
 }

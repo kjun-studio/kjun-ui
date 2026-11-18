@@ -4922,7 +4922,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "선택·해제·일부 선택·비활성 상태를 표시합니다. indeterminate의 기본값은 false이며 true이면 빼기 표시와 접근성 mixed 상태를 제공합니다. 전체 선택에서는 선택값과 indeterminate를 소비자가 함께 갱신합니다."
+        "note": "선택·해제·일부 선택·비활성 상태를 표시합니다. indeterminate의 기본값은 false이며 true이면 빼기 표시와 접근성 mixed 상태를 제공합니다. 전체 선택에서는 선택값과 indeterminate를 소비자가 함께 갱신합니다. 호버·누름은 테두리(선택된 상자는 채움까지)를 한 단계씩 진하게 합니다. FormGroup에 error가 있으면 아직 고르지 않은 상자의 테두리가 danger로 바뀌고, 고른 상자는 강조색을 유지합니다. description은 라벨 아래 보조 설명이며 화면 낭독기에도 설명으로 전달됩니다."
       },
       "react": {
         "figures": [
@@ -4996,7 +4996,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "선택·해제·일부 선택·비활성 상태를 표시합니다. indeterminate의 기본값은 false이며 true이면 빼기 표시와 접근성 mixed 상태를 제공합니다. 전체 선택에서는 선택값과 indeterminate를 소비자가 함께 갱신합니다."
+        "note": "선택·해제·일부 선택·비활성 상태를 표시합니다. indeterminate의 기본값은 false이며 true이면 빼기 표시와 접근성 mixed 상태를 제공합니다. 전체 선택에서는 선택값과 indeterminate를 소비자가 함께 갱신합니다. 호버·누름은 테두리(선택된 상자는 채움까지)를 한 단계씩 진하게 합니다. FormGroup에 error가 있으면 아직 고르지 않은 상자의 테두리가 danger로 바뀌고, 고른 상자는 강조색을 유지합니다. description은 라벨 아래 보조 설명이며 화면 낭독기에도 설명으로 전달됩니다."
       },
       "native": {
         "figures": [
@@ -5070,7 +5070,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "선택·해제·일부 선택·비활성 상태를 표시합니다. indeterminate의 기본값은 false이며 true이면 빼기 표시와 접근성 mixed 상태를 제공합니다. 전체 선택에서는 선택값과 indeterminate를 소비자가 함께 갱신합니다."
+        "note": "선택·해제·일부 선택·비활성 상태를 표시합니다. indeterminate의 기본값은 false이며 true이면 빼기 표시와 접근성 mixed 상태를 제공합니다. 전체 선택에서는 선택값과 indeterminate를 소비자가 함께 갱신합니다. 호버·누름은 테두리(선택된 상자는 채움까지)를 한 단계씩 진하게 합니다. FormGroup에 error가 있으면 아직 고르지 않은 상자의 테두리가 danger로 바뀌고, 고른 상자는 강조색을 유지합니다. description은 라벨 아래 보조 설명이며 화면 낭독기에도 설명으로 전달됩니다."
       }
     }
   },
@@ -6395,9 +6395,34 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
-        "note": "20px 원과 8px 선택 점, 8px 라벨 간격을 사용합니다. 선택·미선택·비활성을 구분하고 호버·누름은 테두리 색으로 표시합니다. 그룹 내 단일 선택 값은 RadioGroup 또는 프로젝트 상태로 관리합니다."
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadio\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadio\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadio\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "Checkbox와 같은 바깥 크기(sm 20·md 24·lg 28)와 크기에 비례하는 선택 점(8·10·12), 8px 라벨 간격을 사용합니다. 선택·미선택·비활성을 구분하고 호버·누름은 테두리 색으로 표시합니다. 오류인 그룹에서는 고르지 않은 항목의 테두리가 danger로 바뀝니다. 그룹 내 단일 선택 값은 RadioGroup 또는 프로젝트 상태로 관리합니다."
       },
       "react": {
         "figures": [
@@ -6444,9 +6469,34 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
-        "note": "20px 원과 8px 선택 점, 8px 라벨 간격을 사용합니다. 선택·미선택·비활성을 구분하고 호버·누름은 테두리 색으로 표시합니다. 그룹 내 단일 선택 값은 RadioGroup 또는 프로젝트 상태로 관리합니다."
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadio\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadio\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadio\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "Checkbox와 같은 바깥 크기(sm 20·md 24·lg 28)와 크기에 비례하는 선택 점(8·10·12), 8px 라벨 간격을 사용합니다. 선택·미선택·비활성을 구분하고 호버·누름은 테두리 색으로 표시합니다. 오류인 그룹에서는 고르지 않은 항목의 테두리가 danger로 바뀝니다. 그룹 내 단일 선택 값은 RadioGroup 또는 프로젝트 상태로 관리합니다."
       },
       "native": {
         "figures": [
@@ -6493,9 +6543,34 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
-        "note": "20px 원과 8px 선택 점, 8px 라벨 간격을 사용합니다. 선택·미선택·비활성을 구분하고 호버·누름은 테두리 색으로 표시합니다. 그룹 내 단일 선택 값은 RadioGroup 또는 프로젝트 상태로 관리합니다."
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadio\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadio\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadio\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "Checkbox와 같은 바깥 크기(sm 20·md 24·lg 28)와 크기에 비례하는 선택 점(8·10·12), 8px 라벨 간격을 사용합니다. 선택·미선택·비활성을 구분하고 호버·누름은 테두리 색으로 표시합니다. 오류인 그룹에서는 고르지 않은 항목의 테두리가 danger로 바뀝니다. 그룹 내 단일 선택 값은 RadioGroup 또는 프로젝트 상태로 관리합니다."
       }
     }
   },
@@ -6534,6 +6609,14 @@
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
           },
           {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
             "id": "selected",
             "label": "선택 상태",
             "description": "소비자가 관리하는 값을 예제의 초기 상태로 제공합니다.",
@@ -6542,9 +6625,34 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
-        "note": "현재 단일 선택과 옵션별 disabled를 구분합니다."
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "현재 단일 선택, 그룹·옵션별 disabled를 구분합니다. FormGroup 안에서는 그룹 라벨로 이름을 받고 hint·error·필수 여부를 그룹에 전달하며, error가 있으면 고르지 않은 항목의 테두리가 danger로 바뀝니다."
       },
       "react": {
         "figures": [
@@ -6575,6 +6683,14 @@
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
           },
           {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
             "id": "selected",
             "label": "선택 상태",
             "description": "소비자가 관리하는 값을 예제의 초기 상태로 제공합니다.",
@@ -6583,9 +6699,34 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
-        "note": "현재 단일 선택과 옵션별 disabled를 구분합니다."
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "현재 단일 선택, 그룹·옵션별 disabled를 구분합니다. FormGroup 안에서는 그룹 라벨로 이름을 받고 hint·error·필수 여부를 그룹에 전달하며, error가 있으면 고르지 않은 항목의 테두리가 danger로 바뀝니다."
       },
       "native": {
         "figures": [
@@ -6616,6 +6757,14 @@
             "description": "사용 예제의 초기 설정입니다. 패키지 기본값은 API 표에서 확인하세요."
           },
           {
+            "id": "disabled",
+            "label": "비활성",
+            "description": "이 컴포넌트의 입력 또는 행동을 비활성화합니다.",
+            "settings": {
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"disabled\":true}}}"
+            }
+          },
+          {
             "id": "selected",
             "label": "선택 상태",
             "description": "소비자가 관리하는 값을 예제의 초기 상태로 제공합니다.",
@@ -6624,9 +6773,34 @@
             }
           }
         ],
-        "sizes": [],
-        "sizeDefault": "—",
-        "note": "현재 단일 선택과 옵션별 disabled를 구분합니다."
+        "sizes": [
+          {
+            "id": "size-sm",
+            "label": "sm",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"size\":\"sm\"}}}"
+            }
+          },
+          {
+            "id": "size-md",
+            "label": "md",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"size\":\"md\"}}}"
+            }
+          },
+          {
+            "id": "size-lg",
+            "label": "lg",
+            "description": "공개 size 속성의 비교 설정입니다.",
+            "settings": {
+              "visual": "{\"KjunRadioGroup\":{\"props\":{\"size\":\"lg\"}}}"
+            }
+          }
+        ],
+        "sizeDefault": "\"md\"",
+        "note": "현재 단일 선택, 그룹·옵션별 disabled를 구분합니다. FormGroup 안에서는 그룹 라벨로 이름을 받고 hint·error·필수 여부를 그룹에 전달하며, error가 있으면 고르지 않은 항목의 테두리가 danger로 바뀝니다."
       }
     }
   },
@@ -7150,7 +7324,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "켜짐·꺼짐·비활성·저장 중 상태를 제공합니다. 꺼짐은 테두리 없는 옅은 트랙, 켜짐은 강조색 트랙이며, 손잡이는 두 상태 모두 같은 크기로 얕은 그림자를 두고 위치만 바뀝니다. 마우스를 올리면 트랙 색이 한 단계 진해집니다. 비활성은 스위치 전체를 40%로 흐립니다. 비동기 저장 중에는 loading으로 손잡이 안에 스피너를 돌리고 누름을 무시합니다. 변경 이벤트를 받은 프로젝트가 value를 갱신합니다. 손잡이 색은 switch-thumb(꺼짐)·switch-thumb-on(켜짐) 색 역할이며, switch-thumb을 정하지 않으면 두 상태가 같은 색입니다."
+        "note": "켜짐·꺼짐·비활성·저장 중 상태를 제공합니다. 꺼짐은 테두리 없는 옅은 트랙, 켜짐은 강조색 트랙이며, 손잡이는 두 상태 모두 같은 크기로 얕은 그림자를 두고 위치만 바뀝니다. 마우스를 올리면 트랙 색이 한 단계 진해집니다. 비활성은 흐리지 않고, 라벨과 켜진 트랙을 비활성 글자 역할 색으로 칠합니다. 비동기 저장 중에는 loading으로 손잡이 안에 스피너를 돌리고 누름을 무시합니다. 변경 이벤트를 받은 프로젝트가 value를 갱신합니다. 손잡이 색은 switch-thumb(꺼짐)·switch-thumb-on(켜짐) 색 역할이며, switch-thumb을 정하지 않으면 두 상태가 같은 색입니다."
       },
       "react": {
         "figures": [
@@ -7232,7 +7406,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "켜짐·꺼짐·비활성·저장 중 상태를 제공합니다. 꺼짐은 테두리 없는 옅은 트랙, 켜짐은 강조색 트랙이며, 손잡이는 두 상태 모두 같은 크기로 얕은 그림자를 두고 위치만 바뀝니다. 마우스를 올리면 트랙 색이 한 단계 진해집니다. 비활성은 스위치 전체를 40%로 흐립니다. 비동기 저장 중에는 loading으로 손잡이 안에 스피너를 돌리고 누름을 무시합니다. 변경 이벤트를 받은 프로젝트가 value를 갱신합니다. 손잡이 색은 switch-thumb(꺼짐)·switch-thumb-on(켜짐) 색 역할이며, switch-thumb을 정하지 않으면 두 상태가 같은 색입니다."
+        "note": "켜짐·꺼짐·비활성·저장 중 상태를 제공합니다. 꺼짐은 테두리 없는 옅은 트랙, 켜짐은 강조색 트랙이며, 손잡이는 두 상태 모두 같은 크기로 얕은 그림자를 두고 위치만 바뀝니다. 마우스를 올리면 트랙 색이 한 단계 진해집니다. 비활성은 흐리지 않고, 라벨과 켜진 트랙을 비활성 글자 역할 색으로 칠합니다. 비동기 저장 중에는 loading으로 손잡이 안에 스피너를 돌리고 누름을 무시합니다. 변경 이벤트를 받은 프로젝트가 value를 갱신합니다. 손잡이 색은 switch-thumb(꺼짐)·switch-thumb-on(켜짐) 색 역할이며, switch-thumb을 정하지 않으면 두 상태가 같은 색입니다."
       },
       "native": {
         "figures": [
@@ -7314,7 +7488,7 @@
           }
         ],
         "sizeDefault": "\"md\"",
-        "note": "켜짐·꺼짐·비활성·저장 중 상태를 제공합니다. 꺼짐은 테두리 없는 옅은 트랙, 켜짐은 강조색 트랙이며, 손잡이는 두 상태 모두 같은 크기로 얕은 그림자를 두고 위치만 바뀝니다. 마우스를 올리면 트랙 색이 한 단계 진해집니다. 비활성은 스위치 전체를 40%로 흐립니다. 비동기 저장 중에는 loading으로 손잡이 안에 스피너를 돌리고 누름을 무시합니다. 변경 이벤트를 받은 프로젝트가 value를 갱신합니다. 손잡이 색은 switch-thumb(꺼짐)·switch-thumb-on(켜짐) 색 역할이며, switch-thumb을 정하지 않으면 두 상태가 같은 색입니다."
+        "note": "켜짐·꺼짐·비활성·저장 중 상태를 제공합니다. 꺼짐은 테두리 없는 옅은 트랙, 켜짐은 강조색 트랙이며, 손잡이는 두 상태 모두 같은 크기로 얕은 그림자를 두고 위치만 바뀝니다. 마우스를 올리면 트랙 색이 한 단계 진해집니다. 비활성은 흐리지 않고, 라벨과 켜진 트랙을 비활성 글자 역할 색으로 칠합니다. 비동기 저장 중에는 loading으로 손잡이 안에 스피너를 돌리고 누름을 무시합니다. 변경 이벤트를 받은 프로젝트가 value를 갱신합니다. 손잡이 색은 switch-thumb(꺼짐)·switch-thumb-on(켜짐) 색 역할이며, switch-thumb을 정하지 않으면 두 상태가 같은 색입니다."
       }
     }
   },

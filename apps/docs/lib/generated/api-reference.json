@@ -15593,6 +15593,42 @@
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
             "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Supporting text under the label; it also describes the checkbox to screen readers.",
+            "summary": "라벨 아래 보조 설명입니다. Switch와 같은 구조로 라벨 시작 위치에 맞추고, 컨트롤은 두 줄 묶음의 세로 가운데에 둡니다. 웹은 aria-describedby, Native는 accessibilityHint로 컨트롤을 설명합니다.",
+            "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Submits with a form under this name while checked.",
+            "summary": "폼 제출 이름입니다. 체크된 동안 formValue를 제출합니다.",
+            "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "formValue",
+            "type": "string",
+            "required": false,
+            "default": "\"on\"",
+            "description": "The value a form submits while checked (default \"on\").",
+            "summary": "체크된 동안 폼이 제출할 값입니다.",
+            "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The checkbox input's id, e.g. to reach it from an outside <label for>.",
+            "summary": "입력 요소의 id입니다. 바깥 <label for>와 연결할 때 씁니다. 초점은 컴포넌트 ref의 focus()로 옮깁니다.",
+            "source": "packages/vue3/src/controls.tsx"
           }
         ],
         "events": [
@@ -15630,7 +15666,7 @@
             "default": "—",
             "description": "",
             "summary": "현재 선택값입니다. Checkbox는 boolean 또는 선택값 배열, Radio는 그룹의 선택값을 사용합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "indeterminate",
@@ -15639,7 +15675,7 @@
             "default": "false",
             "description": "Mixed selection display; value and change callbacks keep their boolean/array shape.",
             "summary": "일부 선택 상태를 빼기 표시와 실제 체크박스의 mixed 상태로 전달합니다. value(Vue v-model)와 콜백은 boolean 또는 배열을 유지합니다. 누르면 전체 선택(true)을 요청합니다. 전체 선택에서는 value=모두 선택됨, indeterminate=일부만 선택됨으로 설정하고 변경 요청을 반영할 때 함께 갱신하세요.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "val",
@@ -15648,7 +15684,7 @@
             "default": "—",
             "description": "",
             "summary": "이 항목이 나타내는 값입니다. 현재 그룹 선택값인 value와 구분합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "label",
@@ -15657,7 +15693,7 @@
             "default": "—",
             "description": "",
             "summary": "사용자에게 표시할 주된 라벨입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "ariaLabel",
@@ -15666,7 +15702,7 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "disabled",
@@ -15675,7 +15711,7 @@
             "default": "false",
             "description": "",
             "summary": "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "size",
@@ -15684,7 +15720,16 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Supporting text under the label; it also describes the checkbox to screen readers.",
+            "summary": "라벨 아래 보조 설명입니다. Switch와 같은 구조로 라벨 시작 위치에 맞추고, 컨트롤은 두 줄 묶음의 세로 가운데에 둡니다. 웹은 aria-describedby, Native는 accessibilityHint로 컨트롤을 설명합니다.",
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "children",
@@ -15693,7 +15738,25 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
+          },
+          {
+            "name": "name",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Submits with a form under this name while checked.",
+            "summary": "폼 제출 이름입니다. 체크된 동안 formValue를 제출합니다.",
+            "source": "packages/react/src/choice-controls.tsx"
+          },
+          {
+            "name": "formValue",
+            "type": "string | undefined",
+            "required": false,
+            "default": "\"on\"",
+            "description": "The value a form submits while checked (default \"on\").",
+            "summary": "체크된 동안 폼이 제출할 값입니다.",
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "id",
@@ -15702,7 +15765,7 @@
             "default": "—",
             "description": "The checkbox input's id, e.g. to reach it from an outside <label for>.",
             "summary": "체크박스 입력의 id입니다. 바깥 <label for>와 연결할 때 씁니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "inputRef",
@@ -15711,7 +15774,7 @@
             "default": "—",
             "description": "The checkbox's input, e.g. to move focus to the first box of a group that failed validation.",
             "summary": "체크박스 입력 요소입니다. 검증에 실패한 묶음의 첫 항목으로 초점을 옮길 때 씁니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "onValueChange",
@@ -15720,7 +15783,7 @@
             "default": "—",
             "description": "",
             "summary": "다음 입력·선택값을 전달합니다. 제어값에 반영해야 화면 값이 유지됩니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "onChange",
@@ -15729,7 +15792,7 @@
             "default": "—",
             "description": "",
             "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           }
         ],
         "events": [],
@@ -15800,6 +15863,15 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
+            "source": "packages/native/src/choice-controls.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Supporting text under the label; screen readers hear it as the hint.",
+            "summary": "라벨 아래 보조 설명입니다. Switch와 같은 구조로 라벨 시작 위치에 맞추고, 컨트롤은 두 줄 묶음의 세로 가운데에 둡니다. 웹은 aria-describedby, Native는 accessibilityHint로 컨트롤을 설명합니다.",
             "source": "packages/native/src/choice-controls.tsx"
           },
           {
@@ -18222,6 +18294,33 @@
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\" | \"lg\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Inside a RadioGroup the group's size applies unless this is set.",
+            "summary": "라디오 크기입니다. Checkbox와 같은 바깥 크기(20·24·28)를 쓰고 점은 8·10·12로 커집니다. RadioGroup 안에서는 그룹의 size를 따르고, 이 값을 주면 그 항목만 바꿉니다.",
+            "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Supporting text under the label; it also describes the radio to screen readers.",
+            "summary": "라벨 아래 보조 설명입니다. Switch와 같은 구조로 라벨 시작 위치에 맞추고, 컨트롤은 두 줄 묶음의 세로 가운데에 둡니다. 웹은 aria-describedby, Native는 accessibilityHint로 컨트롤을 설명합니다.",
+            "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The radio input's id, e.g. to reach it from an outside <label for>.",
+            "summary": "입력 요소의 id입니다. 바깥 <label for>와 연결할 때 씁니다. 초점은 컴포넌트 ref의 focus()로 옮깁니다.",
+            "source": "packages/vue3/src/controls.tsx"
           }
         ],
         "events": [
@@ -18259,7 +18358,7 @@
             "default": "—",
             "description": "",
             "summary": "현재 그룹의 선택값입니다. val과 같으면 이 항목을 선택 상태로 표시합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "val",
@@ -18268,7 +18367,7 @@
             "default": "—",
             "description": "",
             "summary": "이 항목이 나타내는 값입니다. 현재 그룹 선택값인 value와 구분합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "label",
@@ -18277,7 +18376,7 @@
             "default": "—",
             "description": "",
             "summary": "사용자에게 표시할 주된 라벨입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "disabled",
@@ -18286,7 +18385,7 @@
             "default": "false",
             "description": "",
             "summary": "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "name",
@@ -18295,7 +18394,7 @@
             "default": "—",
             "description": "",
             "summary": "폼 제출 또는 항목 식별에 사용하는 이름입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "ariaLabel",
@@ -18304,7 +18403,25 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\" | \"lg\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Inside a RadioGroup the group's size applies unless this is set.",
+            "summary": "라디오 크기입니다. Checkbox와 같은 바깥 크기(20·24·28)를 쓰고 점은 8·10·12로 커집니다. RadioGroup 안에서는 그룹의 size를 따르고, 이 값을 주면 그 항목만 바꿉니다.",
+            "source": "packages/react/src/choice-controls.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Supporting text under the label; it also describes the radio to screen readers.",
+            "summary": "라벨 아래 보조 설명입니다. Switch와 같은 구조로 라벨 시작 위치에 맞추고, 컨트롤은 두 줄 묶음의 세로 가운데에 둡니다. 웹은 aria-describedby, Native는 accessibilityHint로 컨트롤을 설명합니다.",
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "children",
@@ -18313,7 +18430,7 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "id",
@@ -18322,7 +18439,7 @@
             "default": "—",
             "description": "The radio input's id, e.g. to reach it from an outside <label for>.",
             "summary": "라디오 입력의 id입니다. 바깥 <label for>와 연결할 때 씁니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "inputRef",
@@ -18331,7 +18448,7 @@
             "default": "—",
             "description": "The radio's input, e.g. to move focus to it from code.",
             "summary": "라디오 입력 요소입니다. 코드에서 초점을 옮길 때 씁니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "onValueChange",
@@ -18340,7 +18457,7 @@
             "default": "—",
             "description": "",
             "summary": "다음 입력·선택값을 전달합니다. 제어값에 반영해야 화면 값이 유지됩니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "onChange",
@@ -18349,7 +18466,7 @@
             "default": "—",
             "description": "",
             "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           }
         ],
         "events": [],
@@ -18366,7 +18483,7 @@
             "default": "—",
             "description": "",
             "summary": "현재 그룹의 선택값입니다. val과 같으면 이 항목을 선택 상태로 표시합니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "val",
@@ -18375,7 +18492,7 @@
             "default": "—",
             "description": "",
             "summary": "이 항목이 나타내는 값입니다. 현재 그룹 선택값인 value와 구분합니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "label",
@@ -18384,7 +18501,7 @@
             "default": "—",
             "description": "",
             "summary": "사용자에게 표시할 주된 라벨입니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "disabled",
@@ -18393,16 +18510,16 @@
             "default": "false",
             "description": "",
             "summary": "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "name",
             "type": "string | undefined",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "폼 제출 또는 항목 식별에 사용하는 이름입니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "description": "Web form field name; Native has no forms and ignores it.",
+            "summary": "웹 폼 제출 이름입니다. Native에는 폼이 없어 쓰이지 않습니다.",
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "ariaLabel",
@@ -18411,7 +18528,25 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\" | \"lg\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Inside a RadioGroup the group's size applies unless this is set.",
+            "summary": "라디오 크기입니다. Checkbox와 같은 바깥 크기(20·24·28)를 쓰고 점은 8·10·12로 커집니다. RadioGroup 안에서는 그룹의 size를 따르고, 이 값을 주면 그 항목만 바꿉니다.",
+            "source": "packages/native/src/choice-radio.tsx"
+          },
+          {
+            "name": "description",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Supporting text under the label; screen readers hear it as the hint.",
+            "summary": "라벨 아래 보조 설명입니다. Switch와 같은 구조로 라벨 시작 위치에 맞추고, 컨트롤은 두 줄 묶음의 세로 가운데에 둡니다. 웹은 aria-describedby, Native는 accessibilityHint로 컨트롤을 설명합니다.",
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "children",
@@ -18420,7 +18555,7 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "onValueChange",
@@ -18429,7 +18564,7 @@
             "default": "—",
             "description": "",
             "summary": "다음 입력·선택값을 전달합니다. 제어값에 반영해야 화면 값이 유지됩니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "onChange",
@@ -18438,7 +18573,7 @@
             "default": "—",
             "description": "",
             "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           }
         ],
         "events": [],
@@ -18485,6 +18620,33 @@
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
             "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\" | \"lg\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Size of every radio in the group.",
+            "summary": "그룹 안 모든 Radio의 크기입니다. 각 Radio의 size가 우선합니다.",
+            "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Disables every radio in the group.",
+            "summary": "그룹 안 모든 Radio를 비활성화합니다. 각 option·Radio의 disabled와 함께 쓸 수 있습니다.",
+            "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": false,
+            "default": "자동 생성",
+            "description": "The form field name the chosen radio submits under (default: a generated name).",
+            "summary": "선택한 Radio가 폼에 제출될 이름입니다. 각 Radio는 자기 val을 문자열로 제출합니다.",
+            "source": "packages/vue3/src/controls.tsx"
           }
         ],
         "events": [
@@ -18522,7 +18684,7 @@
             "default": "—",
             "description": "",
             "summary": "현재 선택한 옵션의 값입니다. 변경 결과를 소비자 상태에 반영합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "options",
@@ -18531,7 +18693,7 @@
             "default": "[]",
             "description": "",
             "summary": "선택할 수 있는 옵션 배열입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "direction",
@@ -18540,7 +18702,7 @@
             "default": "\"horizontal\"",
             "description": "",
             "summary": "항목을 가로 또는 세로로 배치합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "ariaLabel",
@@ -18549,7 +18711,34 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\" | \"lg\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Size of every radio in the group.",
+            "summary": "그룹 안 모든 Radio의 크기입니다. 각 Radio의 size가 우선합니다.",
+            "source": "packages/react/src/choice-controls.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Disables every radio in the group.",
+            "summary": "그룹 안 모든 Radio를 비활성화합니다. 각 option·Radio의 disabled와 함께 쓸 수 있습니다.",
+            "source": "packages/react/src/choice-controls.tsx"
+          },
+          {
+            "name": "name",
+            "type": "string | undefined",
+            "required": false,
+            "default": "자동 생성",
+            "description": "The form field name the chosen radio submits under (default: a generated name).",
+            "summary": "선택한 Radio가 폼에 제출될 이름입니다. 각 Radio는 자기 val을 문자열로 제출합니다.",
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "children",
@@ -18558,7 +18747,7 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "onValueChange",
@@ -18567,7 +18756,7 @@
             "default": "—",
             "description": "",
             "summary": "다음 입력·선택값을 전달합니다. 제어값에 반영해야 화면 값이 유지됩니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "onChange",
@@ -18576,7 +18765,7 @@
             "default": "—",
             "description": "",
             "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           }
         ],
         "events": [],
@@ -18593,7 +18782,7 @@
             "default": "—",
             "description": "",
             "summary": "현재 선택한 옵션의 값입니다. 변경 결과를 소비자 상태에 반영합니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "options",
@@ -18602,7 +18791,7 @@
             "default": "[]",
             "description": "",
             "summary": "선택할 수 있는 옵션 배열입니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "direction",
@@ -18611,7 +18800,7 @@
             "default": "\"horizontal\"",
             "description": "",
             "summary": "항목을 가로 또는 세로로 배치합니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "ariaLabel",
@@ -18620,7 +18809,34 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
+          },
+          {
+            "name": "size",
+            "type": "\"sm\" | \"md\" | \"lg\"",
+            "required": false,
+            "default": "\"md\"",
+            "description": "Size of every radio in the group.",
+            "summary": "그룹 안 모든 Radio의 크기입니다. 각 Radio의 size가 우선합니다.",
+            "source": "packages/native/src/choice-radio.tsx"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Disables every radio in the group.",
+            "summary": "그룹 안 모든 Radio를 비활성화합니다. 각 option·Radio의 disabled와 함께 쓸 수 있습니다.",
+            "source": "packages/native/src/choice-radio.tsx"
+          },
+          {
+            "name": "name",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Web form field name; Native has no forms and ignores it.",
+            "summary": "웹 폼 제출 이름입니다. Native에는 폼이 없어 쓰이지 않습니다.",
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "children",
@@ -18629,7 +18845,7 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "onValueChange",
@@ -18638,7 +18854,7 @@
             "default": "—",
             "description": "",
             "summary": "다음 입력·선택값을 전달합니다. 제어값에 반영해야 화면 값이 유지됩니다.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           },
           {
             "name": "onChange",
@@ -18647,7 +18863,7 @@
             "default": "—",
             "description": "",
             "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
-            "source": "packages/native/src/choice-controls.tsx"
+            "source": "packages/native/src/choice-radio.tsx"
           }
         ],
         "events": [],
@@ -20161,6 +20377,15 @@
             "description": "The value a form submits while on (default \"on\").",
             "summary": "켜져 있을 때 폼이 제출할 값입니다.",
             "source": "packages/vue3/src/controls.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The switch input's id, e.g. to reach it from an outside <label for>.",
+            "summary": "입력 요소의 id입니다. 바깥 <label for>와 연결할 때 씁니다. 초점은 컴포넌트 ref의 focus()로 옮깁니다.",
+            "source": "packages/vue3/src/controls.tsx"
           }
         ],
         "events": [
@@ -20198,7 +20423,7 @@
             "default": "—",
             "description": "",
             "summary": "현재 켜짐 여부입니다. 변경 통지 결과를 boolean 값으로 반영합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "label",
@@ -20207,7 +20432,7 @@
             "default": "—",
             "description": "",
             "summary": "사용자에게 표시할 주된 라벨입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "ariaLabel",
@@ -20216,7 +20441,7 @@
             "default": "—",
             "description": "",
             "summary": "시각적 라벨과 별도로 접근성 이름을 제공합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "disabled",
@@ -20225,7 +20450,7 @@
             "default": "false",
             "description": "",
             "summary": "사용자 입력·선택·실행을 막는 비활성 상태입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "size",
@@ -20234,7 +20459,7 @@
             "default": "\"md\"",
             "description": "",
             "summary": "이 컴포넌트의 크기 규격을 선택합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "description",
@@ -20243,7 +20468,7 @@
             "default": "—",
             "description": "Supporting text under the label; it also describes the switch to screen readers.",
             "summary": "라벨 아래 보조 설명입니다. 시작 위치는 라벨과 같고, 웹은 aria-describedby, Native는 accessibilityHint로 스위치를 설명합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "loading",
@@ -20252,7 +20477,7 @@
             "default": "false",
             "description": "Saving: a spinner turns in the thumb and presses are ignored, without dimming the switch like disabled.",
             "summary": "저장 중 상태입니다. 손잡이 안에 작은 스피너를 돌리고 누름을 무시하며, disabled와 달리 흐리게 하지 않습니다. 화면 낭독기에는 \"저장 중\"(KjunProvider 문구 saving)을 설명으로 알리고, 웹은 aria-busy, Native는 accessibilityState.busy도 둡니다. 동작 줄이기에서는 스피너가 멈춥니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "children",
@@ -20261,7 +20486,7 @@
             "default": "—",
             "description": "",
             "summary": "기본 콘텐츠 영역에 배치할 요소입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "name",
@@ -20270,7 +20495,7 @@
             "default": "—",
             "description": "Submits with a form under this name while the switch is on.",
             "summary": "폼 제출 이름입니다. 켜져 있을 때 formValue를 제출합니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "formValue",
@@ -20279,7 +20504,7 @@
             "default": "\"on\"",
             "description": "The value a form submits while on (default \"on\").",
             "summary": "켜져 있을 때 폼이 제출할 값입니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "id",
@@ -20288,7 +20513,7 @@
             "default": "—",
             "description": "",
             "summary": "스위치 입력의 id입니다. 바깥 <label for>와 연결할 때 씁니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "autoFocus",
@@ -20297,7 +20522,7 @@
             "default": "—",
             "description": "",
             "summary": "처음 그릴 때 스위치에 초점을 둡니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "onFocus",
@@ -20306,7 +20531,7 @@
             "default": "—",
             "description": "",
             "summary": "스위치가 초점을 받을 때 알립니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "onBlur",
@@ -20315,7 +20540,7 @@
             "default": "—",
             "description": "",
             "summary": "스위치가 초점을 잃을 때 알립니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "inputRef",
@@ -20324,7 +20549,7 @@
             "default": "—",
             "description": "The switch's input, e.g. to move focus back after a failed save.",
             "summary": "스위치 입력 요소입니다. 저장이 실패한 뒤 초점을 되돌릴 때 씁니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "onValueChange",
@@ -20333,7 +20558,7 @@
             "default": "—",
             "description": "",
             "summary": "다음 입력·선택값을 전달합니다. 제어값에 반영해야 화면 값이 유지됩니다.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           },
           {
             "name": "onChange",
@@ -20342,7 +20567,7 @@
             "default": "—",
             "description": "",
             "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
-            "source": "packages/react/src/controls.tsx"
+            "source": "packages/react/src/choice-controls.tsx"
           }
         ],
         "events": [],

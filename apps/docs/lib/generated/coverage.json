@@ -2282,7 +2282,7 @@
       "title": "RadioGroup",
       "docs": "/components/radio-group",
       "category": "inputs",
-      "differences": "세 플랫폼 모두 options의 disabled 또는 자식 Radio의 disabled로 선택을 막습니다. 그룹 전체 disabled prop은 없습니다.",
+      "differences": "세 플랫폼 모두 disabled로 그룹 전체를, options나 자식 Radio의 disabled로 항목 하나를 막습니다. size는 그룹 안 모든 Radio에 전달됩니다. name은 웹 폼 제출 이름이며 Native에서는 쓰이지 않습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",
