@@ -6,9 +6,11 @@ const scroller = (page: Page) => page.getByTestId('vertical').locator('div').fil
 // The element that scrolls: the matched box, one inside it (Native wraps its ScrollView for the fades) or an ancestor.
 const box = (page: Page) => scroller(page).evaluate(el => {
   const node = (function find(start: Element) {
-    const inside = [start, ...start.querySelectorAll('*')].find(n => n.scrollHeight > n.clientHeight + 1) as HTMLElement | undefined;
+    // Only a box that clips: the ScrollFade's ring room reaches past Native's wrapper without making it a scroller.
+    const scrolls = (n: Element) => n.scrollHeight > n.clientHeight + 1 && getComputedStyle(n).overflowY !== 'visible';
+    const inside = [start, ...start.querySelectorAll('*')].find(scrolls) as HTMLElement | undefined;
     let up = start as HTMLElement;
-    while (!inside && up && up.scrollHeight <= up.clientHeight) up = up.parentElement as HTMLElement;
+    while (!inside && up && !scrolls(up)) up = up.parentElement as HTMLElement;
     return inside ?? up;
   })(el);
   const style = getComputedStyle(node);
@@ -42,7 +44,8 @@ for (const platform of ['react', 'vue3', 'native']) {
 
     test('a vertical ScrollFade scrolls up and down inside its height', async ({ page }) => {
       const first = await box(page);
-      expect(first.height).toBe(120);
+      // The app's 120px is the layout slot; the scroller reaches 4px past it on each side for the items' focus rings.
+      expect(first.height).toBe(128);
       expect(first.content).toBeGreaterThan(first.height * 1.5);
       expect(first.overflowY).not.toBe('visible');
       // Native draws its fades as gradients over the scroller: only the far edge at the top.

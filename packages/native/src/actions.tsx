@@ -335,6 +335,7 @@ export interface KjunScrollFadeProps {
 export function KjunScrollFade({ children, direction = "horizontal", fadeColor, ariaLabel, style }: KjunScrollFadeProps) {
   const { colors } = useKjunStyles(), color = fadeColor ?? colors.surface;
   const horizontal = direction === "horizontal", width = tokens.extensions.scrollFade.width;
+  const ringRoom = tokens.states.focus.width + tokens.states.focus.offset;
   const box = useRef({ scrollLeft: 0, scrollTop: 0, clientWidth: 0, clientHeight: 0, scrollWidth: 0, scrollHeight: 0 });
   const [edges, setEdges] = useState<ScrollEdges>({ start: false, end: false });
   const id = "kjun-scroll-fade-" + useId().replace(/:/g, "");
@@ -362,7 +363,9 @@ export function KjunScrollFade({ children, direction = "horizontal", fadeColor, 
       <ScrollView
         horizontal={horizontal}
         // Shrinks to the wrapper's max size (the app's style), so it scrolls inside it instead of growing past it.
-        style={{ flexGrow: 0, flexShrink: 1 }}
+        // Room for an item's focus ring, which the scroller would clip; the negative margin keeps the items on the page's lines, as on Web.
+        style={{ flexGrow: 0, flexShrink: 1, margin: -ringRoom }}
+        contentContainerStyle={{ padding: ringRoom }}
         // The fade shows where content continues, so the bars stay hidden as on Web.
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}

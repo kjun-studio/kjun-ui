@@ -333,9 +333,15 @@
 }
 .kjun-scroll-fade {
   --_kjun-fade-to: to right;
+  /* Room for an item's focus ring, which the scroller would clip. The size the app gives stays the layout slot (content-box):
+     the room reaches past it on every side and the negative margin keeps the items on the page's lines, as on Native. */
+  --_kjun-scroll-fade-ring-room: calc(var(--_kjun-state-focus-width) + var(--_kjun-state-focus-offset));
+  box-sizing: content-box;
   overflow-x: auto;
   min-width: 0;
   max-width: 100%;
+  padding: var(--_kjun-scroll-fade-ring-room);
+  margin: calc(-1 * var(--_kjun-scroll-fade-ring-room));
   scrollbar-width: none;
 }
 .kjun-scroll-fade[data-direction="vertical"] {
