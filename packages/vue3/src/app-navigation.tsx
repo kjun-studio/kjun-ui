@@ -1,7 +1,8 @@
 import { webSafeBottom, webSafeTop } from "../../../shared/package-runtime/safe-area";
 import { useKjunMessages } from "./runtime/messages";
 import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
-import { bottomNavigationLayout, navigationIconFilled, type NavigationIconStyle } from "../../../shared/package-runtime/bottom-navigation";
+import { bottomNavigationLayout, navigationIconFilled, revealDelta, type NavigationIconStyle } from "../../../shared/package-runtime/bottom-navigation";
+import { isPlainNavigationClick } from "../../../shared/package-runtime/side-navigation";
 export type { NavigationIconStyle };
 import type { KjunMessages } from "../../../shared/package-runtime/messages";
 import { provide, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
@@ -70,7 +71,8 @@ const kjunBottomNavigationProps = {
   showLabels: { type: Boolean, default: true },
 } as const;
 export type KjunBottomNavigationProps = ExtractPublicPropTypes<typeof kjunBottomNavigationProps>;
-/** One destination link's attributes, shared by the bottom and floating bars. Event reselect: the current destination was pressed again. */
+/** One destination link's attributes, shared by the bottom and floating bars. Events (plain clicks only): navigate(key, event),
+ * prevent the event to route in the app; reselect, the current destination was pressed again. */
 function destination(item: NavigationDestination, selected: boolean, m: KjunMessages,
   emit: { (event: "navigate", key: string, mouse: MouseEvent): void; (event: "reselect", key: string, mouse: MouseEvent): void }) {
   // A disabled destination keeps its link role and name (an <a> without href has neither) but leaves the tab order.
@@ -79,13 +81,14 @@ function destination(item: NavigationDestination, selected: boolean, m: KjunMess
     "aria-label": navigationLabel(item.label, item.badge, m.newContent, m.newCount), "aria-disabled": item.disabled || undefined, "aria-current": selected ? ("page" as const) : undefined,
     onClick: (event: MouseEvent) => {
       if (item.disabled) { event.preventDefault(); return; }
+      // A modified click opens a new tab or window, which the browser handles; only a plain click is the app's to route.
+      if (!isPlainNavigationClick(event)) return;
       emit("navigate", item.key, event);
       if (selected) emit("reselect", item.key, event);
     },
   };
 }
-/** Event: navigate(key, event); prevent the event to route in the app. */
-/** A docked bottom bar reports its height to the provider scope, so KjunFab sits above it. */
+/** A bottom bar reports its height to the provider scope, so KjunFab sits above it. */
 function useBottomBar() {
   const bar = shallowRef<HTMLElement | null>(null);
   watch(bar, (element, _previous, onCleanup) => onCleanup(trackBottomBar(element)), { flush: "post" });
@@ -135,12 +138,21 @@ export const KjunFloatingNavigation = defineComponent({
   props: kjunFloatingNavigationProps,
   emits: { navigate: (_key: string, _event: MouseEvent) => true, reselect: (_key: string, _event: MouseEvent) => true },
   setup(props, { emit }) {
-    const m = useKjunMessages();
+    const m = useKjunMessages(), bar = useBottomBar();
+    // A capsule with more destinations than fit scrolls inside; the current one is brought into view.
+    // Only a new current destination or a new set of destinations moves it, so a re-render keeps where the user scrolled.
+    watch([bar, () => props.value, () => props.items.map(item => item.key).join("\n")], ([nav]) => {
+      const current = nav?.querySelector<HTMLElement>("a[aria-current]");
+      if (!nav || !current) return;
+      const view = nav.getBoundingClientRect(), item = current.getBoundingClientRect(), padding = parseFloat(getComputedStyle(nav).paddingInlineStart) || 0;
+      const delta = revealDelta(item.left, item.right, view.left + padding, view.right - padding);
+      if (delta) nav.scrollLeft += delta;
+    }, { flush: "post" });
     return () => {
       const geometry = tokens.extensions.floatingNavigation;
       if (props.keyboardVisible && props.hideOnKeyboard) return null;
       return (
-        <nav class="kjun-floating-navigation" aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ marginBottom: `calc(${geometry.offset}px + ${webSafeBottom(props.safeArea)})` }}>
+        <nav ref={bar} class="kjun-floating-navigation" aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ marginBottom: `calc(${geometry.offset}px + ${webSafeBottom(props.safeArea)})` }}>
           {props.items.map(item => {
             const selected = props.value === item.key;
             const badge = badgeMark(item.badge);
@@ -168,6 +180,8 @@ const kjunBottomActionBarProps = {
   surface: { type: Boolean, default: true },
   /** "floating" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills. */
   variant: { type: String as PropType<"docked" | "floating">, default: "docked" },
+  /** Names the bar as a region (landmark) that screen readers can jump to, e.g. "Order summary". */
+  ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunBottomActionBarProps = ExtractPublicPropTypes<typeof kjunBottomActionBarProps>;
 export const KjunBottomActionBar = defineComponent({
@@ -181,7 +195,7 @@ export const KjunBottomActionBar = defineComponent({
       const floating = props.variant === "floating", inset = floating ? tokens.extensions.floatingNavigation.offset : tokens.extensions.navigation.padding;
       const actions = <div class="kjun-navigation-actions">{slots.default?.()}</div>;
       return (
-        <div ref={bar} class="kjun-bottom-action-bar" data-variant={floating ? "floating" : undefined} data-surface={props.surface ? undefined : "false"} style={{ paddingBottom: `calc(${inset}px + ${webSafeBottom(props.safeArea)})` }}>
+        <div ref={bar} class="kjun-bottom-action-bar" role={props.ariaLabel ? "region" : undefined} aria-label={props.ariaLabel} data-variant={floating ? "floating" : undefined} data-surface={props.surface ? undefined : "false"} style={{ paddingBottom: `calc(${inset}px + ${webSafeBottom(props.safeArea)})` }}>
           <div class="kjun-bottom-action-content">{props.description && <p>{props.description}</p>}{floating ? <KjunActionSize size="lg" shape="pill">{actions}</KjunActionSize> : actions}</div>
         </div>
       );

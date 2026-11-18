@@ -33,7 +33,7 @@ interface KjunStyles {
   safeArea?: ResolvedSafeArea;
 }
 const StylesContext = createContext<KjunStyles | null>(null);
-// One store per outermost provider: docked bottom bars report their height, floating edge components read the total.
+// One store per outermost provider: bottom bars report their height, floating edge components read the total.
 const BottomBarContext = createContext<BottomBarStore | null>(null);
 export function useKjunStyles(): KjunStyles {
   const value = useContext(StylesContext);
@@ -107,7 +107,7 @@ export function useKjunSafeArea(): ResolvedSafeArea {
   return useContext(StylesContext)?.safeArea ?? { top: 0, bottom: 0 };
 }
 
-/** Internal: a docked bottom bar reports its height through the returned onLayout; a hidden bar reports nothing. */
+/** Internal: a bottom bar reports its height through the returned onLayout; a hidden bar reports nothing. */
 export function useKjunBottomBar(visible = true) {
   const store = useContext(BottomBarContext), key = useRef({}).current;
   useEffect(() => { if (!visible) store?.remove(key); }, [store, key, visible]);
@@ -115,7 +115,7 @@ export function useKjunBottomBar(visible = true) {
   return (event: LayoutChangeEvent) => store?.set(key, event.nativeEvent.layout.height);
 }
 const noBars = { subscribe: () => () => {}, total: () => 0 };
-/** Internal: the height of the docked bottom bars mounted under the outermost KjunProvider. */
+/** Internal: the height of the bottom bars mounted under the outermost KjunProvider. */
 export function useKjunBottomBarHeight(): number {
   const store = useContext(BottomBarContext) ?? noBars;
   return useSyncExternalStore(store.subscribe, store.total, store.total);

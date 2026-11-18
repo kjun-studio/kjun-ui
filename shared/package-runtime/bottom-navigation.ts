@@ -25,3 +25,13 @@ export function bottomNavigationLayout(items: readonly { icon?: string }[], show
     },
   };
 }
+
+/**
+ * How far a scrolling bar moves so one item is in view: 0 when it already is, otherwise the shortest move that brings it
+ * in (its start first when it is wider than the view). Positions share one axis; a negative result scrolls back.
+ */
+export function revealDelta(itemStart: number, itemEnd: number, viewStart: number, viewEnd: number) {
+  if (itemStart < viewStart || itemEnd - itemStart > viewEnd - viewStart) return itemStart - viewStart;
+  if (itemEnd > viewEnd) return itemEnd - viewEnd;
+  return 0;
+}

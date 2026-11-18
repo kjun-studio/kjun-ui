@@ -2,11 +2,13 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
 import { shadowLayers } from "../../../shared/package-runtime/elevation";
-import { bottomNavigationLayout, navigationIconFilled, type NavigationIconStyle } from "../../../shared/package-runtime/bottom-navigation";
+import { bottomNavigationLayout, navigationIconFilled, revealDelta, type NavigationIconStyle } from "../../../shared/package-runtime/bottom-navigation";
+import { isPlainNavigationClick } from "../../../shared/package-runtime/side-navigation";
+import { useKeyboardShown } from "./keyboard-shown";
 export type { NavigationIconStyle };
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
-import { Children, Fragment, isValidElement, useState, type ReactNode } from "react";
+import { Children, Fragment, isValidElement, useEffect, useRef, useState, type ReactNode } from "react";
 import { ScrollView, View, Platform, type ColorValue, type TextStyle, type GestureResponderEvent, type LayoutChangeEvent } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { IconBase, KjunIcon } from "./button";
@@ -84,12 +86,15 @@ type PressState = { pressed: boolean; hovered?: boolean };
 type Navigate = (key: string, event: GestureResponderEvent) => void;
 /** Pressing a destination navigates, and pressing the current one again also reports a reselect. */
 const pressDestination = (item: NavigationDestination, selected: boolean, onNavigate?: Navigate, onReselect?: Navigate) => (event: GestureResponderEvent) => {
+  // On Native Web a modified click on a link opens a new tab, which the browser handles; only a plain press is the app's.
+  if (Platform.OS === "web" && item.href && !isPlainNavigationClick(event.nativeEvent as never)) return;
   onNavigate?.(item.key, event);
   if (selected) onReselect?.(item.key, event);
 };
 export interface KjunBottomNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string;
   /** Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it. */
   safeArea?: boolean;
+  /** Whether the on-screen keyboard is up. Leave it out to follow the device's keyboard events (iOS, Android); Native Web has none, so pass it there. */
   keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: Navigate;
   /** The current destination was pressed again, e.g. to scroll its page back to the top. */
   onReselect?: Navigate;
@@ -99,12 +104,13 @@ export interface KjunBottomNavigationProps { items: NavigationDestination[]; val
   iconStyle?: NavigationIconStyle;
   /** Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels. */
   showLabels?: boolean }
-export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible = false, hideOnKeyboard = true, onNavigate, onReselect, surface = true, iconStyle = "auto", showLabels = true }: KjunBottomNavigationProps) {
+export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible: keyboardGiven, hideOnKeyboard = true, onNavigate, onReselect, surface = true, iconStyle = "auto", showLabels = true }: KjunBottomNavigationProps) {
   const m = useKjunMessages();
   ariaLabel ??= m.mainNavigation;
   const { colors } = useKjunStyles(), insets = useKjunSafeArea();
   const geometry = tokens.extensions.bottomNavigation;
   const layout = bottomNavigationLayout(items, showLabels);
+  const keyboardVisible = useKeyboardShown(keyboardGiven, hideOnKeyboard);
   const reportHeight = useKjunBottomBar(!(keyboardVisible && hideOnKeyboard));
   if (keyboardVisible && hideOnKeyboard) return null;
   // Like Web: a square bar with a hairline shadow along its top edge, apart from the content above it.
@@ -156,31 +162,47 @@ function BottomDestination({ item, selected, parts, iconOnly, hasIcons, iconStyl
 export interface KjunFloatingNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string;
   /** Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it. */
   safeArea?: boolean;
+  /** Whether the on-screen keyboard is up. Leave it out to follow the device's keyboard events (iOS, Android); Native Web has none, so pass it there. */
   keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: Navigate;
   /** The current destination was pressed again, e.g. to scroll its page back to the top. */
   onReselect?: Navigate }
 /** A capsule detached from the screen edge. Destinations with an icon show only the icon; the label stays their accessible name. */
-export function KjunFloatingNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible = false, hideOnKeyboard = true, onNavigate, onReselect }: KjunFloatingNavigationProps) {
+export function KjunFloatingNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible: keyboardGiven, hideOnKeyboard = true, onNavigate, onReselect }: KjunFloatingNavigationProps) {
   const m = useKjunMessages();
   ariaLabel ??= m.mainNavigation;
   const { colors } = useKjunStyles(), insets = useKjunSafeArea();
   const geometry = tokens.extensions.floatingNavigation;
   const border = tokens.border.defaultWidth;
+  const keyboardVisible = useKeyboardShown(keyboardGiven, hideOnKeyboard);
+  // Reports the capsule with its offset, so KjunFab sits above it.
+  const reportHeight = useKjunBottomBar(!(keyboardVisible && hideOnKeyboard));
+  // More destinations than fit scroll inside the capsule; the current one is brought into view.
+  const scroller = useRef<ScrollView>(null), view = useRef({ x: 0, width: 0 }), spots = useRef(new Map<string, { x: number; width: number }>());
+  const reveal = () => {
+    const spot = spots.current.get(value), { x, width } = view.current;
+    if (!spot || !width) return;
+    const inset = geometry.padding - border, delta = revealDelta(spot.x, spot.x + spot.width, x + inset, x + width - inset);
+    if (delta) scroller.current?.scrollTo({ x: Math.max(0, x + delta), animated: false });
+  };
+  useEffect(reveal, [value]);
   if (keyboardVisible && hideOnKeyboard) return null;
   // The capsule keeps the edge offset on both sides, as on Web; destinations that do not fit scroll inside it.
   // The outline is a border inside the box (a ring outside it on Web), so the padding gives it back.
-  return <View style={{ flexShrink: 0, alignSelf: "stretch", alignItems: "center", paddingHorizontal: geometry.offset }}>
+  return <View onLayout={reportHeight} style={{ flexShrink: 0, alignSelf: "stretch", alignItems: "center", paddingHorizontal: geometry.offset }}>
     <View role="navigation" accessibilityLabel={ariaLabel} style={{
       maxWidth: "100%", marginBottom: geometry.offset + (safeArea ? insets.bottom : 0), borderRadius: geometry.radius, borderWidth: border, borderColor: colors.border,
       backgroundColor: colors.surface, boxShadow: shadowLayers(geometry.elevation, colors),
     }}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0, borderRadius: geometry.radius }}
+      <ScrollView ref={scroller} horizontal showsHorizontalScrollIndicator={false} scrollEventThrottle={16}
+        onScroll={event => { view.current.x = event.nativeEvent.contentOffset.x; }}
+        onLayout={event => { view.current.width = event.nativeEvent.layout.width; reveal(); }} style={{ flexGrow: 0, borderRadius: geometry.radius }}
         contentContainerStyle={{ padding: geometry.padding - border, gap: geometry.gap }}>
         {items.map(item => {
           const selected = item.key === value;
           const ink = selected ? colors.surface : colors.textSecondary;
           const fill = ({ pressed, hovered }: PressState) => selected ? colors.text : !item.disabled && pressed ? colors.active : !item.disabled && hovered ? colors.hover : "transparent";
           return <Pressable key={item.key}
+            onLayout={event => { const { x, width } = event.nativeEvent.layout; spots.current.set(item.key, { x, width }); if (selected) reveal(); }}
             {...(Platform.OS === "web" ? { href: item.disabled ? undefined : item.href, "aria-current": selected ? "page" : undefined } : {})}
             accessibilityRole={Platform.OS === "web" && item.href ? "link" : "button"}
             accessibilityLabel={navigationLabel(item.label, item.badge, m.newContent, m.newCount)}
@@ -205,25 +227,30 @@ export function KjunFloatingNavigation({ items, value, ariaLabel, safeArea = tru
 export interface KjunBottomActionBarProps { description?: string; children: ReactNode;
   /** Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it. */
   safeArea?: boolean;
+  /** Whether the on-screen keyboard is up. Leave it out to follow the device's keyboard events (iOS, Android); Native Web has none, so pass it there. */
   keyboardVisible?: boolean; hideOnKeyboard?: boolean;
   /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
   surface?: boolean;
   /** "floating" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills. */
-  variant?: "docked" | "floating" }
-export function KjunBottomActionBar({ description, children, safeArea = true, keyboardVisible = false, hideOnKeyboard = false, surface = true, variant = "docked" }: KjunBottomActionBarProps) {
+  variant?: "docked" | "floating";
+  /** Names the bar as a region (landmark) that screen readers can jump to, e.g. "Order summary". */
+  ariaLabel?: string }
+export function KjunBottomActionBar({ description, children, safeArea = true, keyboardVisible: keyboardGiven, hideOnKeyboard = false, surface = true, variant = "docked", ariaLabel }: KjunBottomActionBarProps) {
   const { colors } = useKjunStyles(), insets = useKjunSafeArea();
   const [width, setWidth] = useState(0);
   const geometry = tokens.extensions.navigation;
   const wide = width >= tokens.responsive.bottomAction + geometry.padding * 2;
   const wrapping = Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } as TextStyle : {};
+  const keyboardVisible = useKeyboardShown(keyboardGiven, hideOnKeyboard);
   const reportHeight = useKjunBottomBar(!(keyboardVisible && hideOnKeyboard));
+  const region = ariaLabel ? { role: "region" as const, accessibilityLabel: ariaLabel } : {};
   if (keyboardVisible && hideOnKeyboard) return null;
   if (variant === "floating") {
     // Like Web: a capsule with KjunFloatingNavigation's offset, padding, outline and elevation. The bar keeps its place
     // at the bottom and paints nothing around the capsule; the description and the actions always share one line.
     const capsule = tokens.extensions.floatingNavigation, border = tokens.border.defaultWidth;
     return <BottomActionBarContext.Provider value={description ? false : "fill"}>
-      <View onLayout={reportHeight} style={{ flexShrink: 0, minWidth: 0, maxWidth: "100%", paddingHorizontal: capsule.offset, paddingBottom: capsule.offset + (safeArea ? insets.bottom : 0) }}>
+      <View {...region} onLayout={reportHeight} style={{ flexShrink: 0, minWidth: 0, maxWidth: "100%", paddingHorizontal: capsule.offset, paddingBottom: capsule.offset + (safeArea ? insets.bottom : 0) }}>
         {/* The outline is a border inside the box (a ring outside it on Web), so the padding gives it back. */}
         <View style={{ flexDirection: "row", alignItems: "center", gap: geometry.actionsGap, padding: capsule.padding - border, borderRadius: capsule.radius,
           borderWidth: border, borderColor: colors.border, backgroundColor: colors.surface, boxShadow: shadowLayers(capsule.elevation, colors) }}>
@@ -236,7 +263,7 @@ export function KjunBottomActionBar({ description, children, safeArea = true, ke
     </BottomActionBarContext.Provider>;
   }
   return <BottomActionBarContext.Provider value={!wide}>
-    <View onLayout={event => { setWidth(event.nativeEvent.layout.width); reportHeight(event); }} style={{
+    <View {...region} onLayout={event => { setWidth(event.nativeEvent.layout.width); reportHeight(event); }} style={{
       flexShrink: 0, minWidth: 0, maxWidth: "100%", backgroundColor: surface ? colors.surface : "transparent",
       padding: geometry.padding, paddingBottom: geometry.padding + (safeArea ? insets.bottom : 0),
       gap: geometry.actionGap, flexDirection: wide ? "row" : "column", alignItems: wide ? "center" : "stretch",

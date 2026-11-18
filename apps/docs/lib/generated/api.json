@@ -1746,6 +1746,13 @@
         "required": false,
         "default": "\"docked\"",
         "description": "\"floating\" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Names the bar as a region (landmark) that screen readers can jump to, e.g. \"Order summary\"."
       }
     ],
     "events": [],
@@ -1805,6 +1812,13 @@
         "required": false,
         "default": "—",
         "description": "\"floating\" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Names the bar as a region (landmark) that screen readers can jump to, e.g. \"Order summary\"."
       }
     ],
     "native": [
@@ -1834,7 +1848,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Whether the on-screen keyboard is up. Leave it out to follow the device's keyboard events (iOS, Android); Native Web has none, so pass it there."
       },
       {
         "name": "hideOnKeyboard",
@@ -1856,6 +1870,13 @@
         "required": false,
         "default": "—",
         "description": "\"floating\" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills."
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Names the bar as a region (landmark) that screen readers can jump to, e.g. \"Order summary\"."
       }
     ]
   },
@@ -2049,7 +2070,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Whether the on-screen keyboard is up. Leave it out to follow the device's keyboard events (iOS, Android); Native Web has none, so pass it there."
       },
       {
         "name": "hideOnKeyboard",
@@ -10672,7 +10693,7 @@
         "type": "boolean | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Whether the on-screen keyboard is up. Leave it out to follow the device's keyboard events (iOS, Android); Native Web has none, so pass it there."
       },
       {
         "name": "hideOnKeyboard",

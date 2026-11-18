@@ -286,7 +286,8 @@
       "keyboardVisible",
       "hideOnKeyboard",
       "surface",
-      "variant"
+      "variant",
+      "ariaLabel"
     ],
     "react": [
       "description",
@@ -295,7 +296,8 @@
       "keyboardVisible",
       "hideOnKeyboard",
       "surface",
-      "variant"
+      "variant",
+      "ariaLabel"
     ],
     "native": [
       "description",
@@ -304,7 +306,8 @@
       "keyboardVisible",
       "hideOnKeyboard",
       "surface",
-      "variant"
+      "variant",
+      "ariaLabel"
     ]
   },
   "KjunImage": {

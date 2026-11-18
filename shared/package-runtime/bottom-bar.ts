@@ -1,4 +1,4 @@
-// Docked bottom bars (KjunBottomNavigation, KjunBottomActionBar) report their height so floating edge components
+// Bottom bars (KjunBottomNavigation, KjunFloatingNavigation, KjunBottomActionBar) report their height so floating edge components
 // such as KjunFab sit above them without the app passing the height by hand.
 
 /** Heights by bar; the total is what a floating component must clear. Native keeps one per outermost KjunProvider. */
@@ -28,7 +28,7 @@ export function createBottomBarStore(): BottomBarStore {
 
 const webStores = new WeakMap<HTMLElement, BottomBarStore>();
 /**
- * Web: writes the bar's height as --_kjun-bottom-bar on the outermost KjunProvider scope while the bar is mounted.
+ * Web: writes the bar's height (with its bottom margin) as --_kjun-bottom-bar on the outermost KjunProvider scope while the bar is mounted.
  * A bar the app hides (display: none) measures 0. Returns the cleanup.
  */
 export function trackBottomBar(element: HTMLElement | null): () => void {
@@ -46,7 +46,9 @@ export function trackBottomBar(element: HTMLElement | null): () => void {
       else host.style.removeProperty("--_kjun-bottom-bar");
     });
   }
-  const bars = store, observer = new ResizeObserver(() => bars.set(element, element.getBoundingClientRect().height));
+  // A floating bar stands off the bottom edge by its margin, which a component above it must clear as well.
+  const measure = () => element.getBoundingClientRect().height + (parseFloat(getComputedStyle(element).marginBottom) || 0);
+  const bars = store, observer = new ResizeObserver(() => bars.set(element, measure()));
   observer.observe(element);
   return () => { observer.disconnect(); bars.remove(element); };
 }

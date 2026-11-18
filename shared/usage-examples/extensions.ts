@@ -73,13 +73,13 @@ export function generate(input: UsageInput) {
     case 'KjunBottomNavigation':
       content = b.group([b.node(name, { value: b.state('destination', 'home'), ...b.props('iconStyle', 'showLabels', 'keyboardVisible', 'hideOnKeyboard'),
         items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'activity', label: s.long ? '모든 프로젝트 활동 내역' : '활동', href: '#activity', icon: 'list', badge: 3 }, { key: 'settings', label: '설정', href: '#settings', icon: 'settings' }]),
-        onNavigate: b.handler('navigate', 'key, event', 'if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;\nevent.preventDefault();\n' + b.set('destination', 'key')),
+        onNavigate: b.handler('navigate', 'key, event', (b.native ? '' : 'event.preventDefault();\n') + b.set('destination', 'key')),
       }), b.text(expr('"현재 위치: " + state.destination'))]);
       break;
     case 'KjunFloatingNavigation':
       content = b.group([b.node(name, { value: b.state('destination', 'home'), ...b.props('keyboardVisible', 'hideOnKeyboard'),
         items: b.data('items', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'search', label: '검색', href: '#search', icon: 'search', ...(s.badges ? { badge: true } : {}) }, { key: 'activity', label: '알림', href: '#activity', icon: 'bell', ...(s.badges ? { badge: 3 } : {}) }, { key: 'profile', label: '내 정보', href: '#profile', icon: 'user' }]),
-        onNavigate: b.handler('navigate', 'key, event', 'if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;\nevent.preventDefault();\n' + b.set('destination', 'key')),
+        onNavigate: b.handler('navigate', 'key, event', (b.native ? '' : 'event.preventDefault();\n') + b.set('destination', 'key')),
       }), b.text(expr('"현재 위치: " + state.destination'))]);
       break;
     case 'KjunSideNavigation': {

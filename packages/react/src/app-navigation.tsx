@@ -1,7 +1,8 @@
 import { webSafeBottom, webSafeTop } from "../../../shared/package-runtime/safe-area";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
-import { bottomNavigationLayout, navigationIconFilled, type NavigationIconStyle } from "../../../shared/package-runtime/bottom-navigation";
+import { bottomNavigationLayout, navigationIconFilled, revealDelta, type NavigationIconStyle } from "../../../shared/package-runtime/bottom-navigation";
+import { isPlainNavigationClick } from "../../../shared/package-runtime/side-navigation";
 export type { NavigationIconStyle };
 import { tokens } from "@kjun-ui/tokens";
 import { useLayoutEffect, useState, type MouseEvent, type ReactNode } from "react";
@@ -41,17 +42,19 @@ function Destination({ item, selected, onNavigate, onReselect, children }: { ite
     aria-label={navigationLabel(item.label, item.badge, m.newContent, m.newCount)} aria-disabled={item.disabled || undefined} aria-current={selected ? "page" : undefined}
     onClick={event => {
       if (item.disabled) { event.preventDefault(); return; }
+      // A modified click opens a new tab or window, which the browser handles; only a plain click is the app's to route.
+      if (!isPlainNavigationClick(event)) return;
       onNavigate?.(item.key, event);
       if (selected) onReselect?.(item.key, event);
     }}>
     {children}
   </a>;
 }
-/** A docked bottom bar reports its height to the provider scope, so KjunFab sits above it. */
+/** A bottom bar reports its height to the provider scope, so KjunFab sits above it. */
 function useBottomBar() {
   const [bar, setBar] = useState<HTMLElement | null>(null);
   useLayoutEffect(() => trackBottomBar(bar), [bar]);
-  return setBar;
+  return [setBar, bar] as const;
 }
 export interface KjunBottomNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string;
   /** Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it. */
@@ -68,7 +71,7 @@ export interface KjunBottomNavigationProps { items: NavigationDestination[]; val
 export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible = false, hideOnKeyboard = true, onNavigate, onReselect, surface = true, iconStyle = "auto", showLabels = true }: KjunBottomNavigationProps) {
   const m = useKjunMessages();
   ariaLabel ??= m.mainNavigation;
-  const layout = bottomNavigationLayout(items, showLabels), bar = useBottomBar();
+  const layout = bottomNavigationLayout(items, showLabels), [bar] = useBottomBar();
   if (keyboardVisible && hideOnKeyboard) return null;
   return <nav ref={bar} className="kjun-bottom-navigation" data-icons={layout.hasIcons || undefined} data-icon-style={iconStyle} data-labels={layout.iconOnly ? "false" : undefined} data-surface={surface ? undefined : "false"} aria-label={ariaLabel} style={{ paddingBottom: webSafeBottom(safeArea) }}>
     {items.map(item => {
@@ -92,8 +95,18 @@ export function KjunFloatingNavigation({ items, value, ariaLabel, safeArea = tru
   const m = useKjunMessages();
   ariaLabel ??= m.mainNavigation;
   const geometry = tokens.extensions.floatingNavigation;
+  const [bar, nav] = useBottomBar();
+  // A capsule with more destinations than fit scrolls inside; the current one is brought into view.
+  useLayoutEffect(() => {
+    const current = nav?.querySelector<HTMLElement>("a[aria-current]");
+    if (!nav || !current) return;
+    const view = nav.getBoundingClientRect(), item = current.getBoundingClientRect(), padding = parseFloat(getComputedStyle(nav).paddingInlineStart) || 0;
+    const delta = revealDelta(item.left, item.right, view.left + padding, view.right - padding);
+    if (delta) nav.scrollLeft += delta;
+    // Only a new current destination or a new set of destinations moves it, so a re-render keeps where the user scrolled.
+  }, [nav, value, items.map(item => item.key).join("\n")]);
   if (keyboardVisible && hideOnKeyboard) return null;
-  return <nav className="kjun-floating-navigation" aria-label={ariaLabel} style={{ marginBottom: `calc(${geometry.offset}px + ${webSafeBottom(safeArea)})` }}>
+  return <nav ref={bar} className="kjun-floating-navigation" aria-label={ariaLabel} style={{ marginBottom: `calc(${geometry.offset}px + ${webSafeBottom(safeArea)})` }}>
     {items.map(item => {
       const selected = value === item.key;
       const badge = <NavigationBadgeMark badge={item.badge} />;
@@ -112,11 +125,13 @@ export interface KjunBottomActionBarProps { description?: string; children: Reac
   /** Paints the surface background (default true); false lets the page background show through, so the bar does not read as a separate band. */
   surface?: boolean;
   /** "floating" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills. */
-  variant?: "docked" | "floating" }
-export function KjunBottomActionBar({ description, children, safeArea = true, keyboardVisible = false, hideOnKeyboard = false, surface = true, variant = "docked" }: KjunBottomActionBarProps) {
-  const bar = useBottomBar();
+  variant?: "docked" | "floating";
+  /** Names the bar as a region (landmark) that screen readers can jump to, e.g. "Order summary". */
+  ariaLabel?: string }
+export function KjunBottomActionBar({ description, children, safeArea = true, keyboardVisible = false, hideOnKeyboard = false, surface = true, variant = "docked", ariaLabel }: KjunBottomActionBarProps) {
+  const [bar] = useBottomBar();
   if (keyboardVisible && hideOnKeyboard) return null;
   const floating = variant === "floating", inset = floating ? tokens.extensions.floatingNavigation.offset : tokens.extensions.navigation.padding;
   const actions = <div className="kjun-navigation-actions">{children}</div>;
-  return <div ref={bar} className="kjun-bottom-action-bar" data-variant={floating ? "floating" : undefined} data-surface={surface ? undefined : "false"} style={{ paddingBottom: `calc(${inset}px + ${webSafeBottom(safeArea)})` }}><div className="kjun-bottom-action-content">{description && <p>{description}</p>}{floating ? <ActionSizeContext.Provider value="lg"><ActionShapeContext.Provider value="pill">{actions}</ActionShapeContext.Provider></ActionSizeContext.Provider> : actions}</div></div>;
+  return <div ref={bar} className="kjun-bottom-action-bar" role={ariaLabel ? "region" : undefined} aria-label={ariaLabel} data-variant={floating ? "floating" : undefined} data-surface={surface ? undefined : "false"} style={{ paddingBottom: `calc(${inset}px + ${webSafeBottom(safeArea)})` }}><div className="kjun-bottom-action-content">{description && <p>{description}</p>}{floating ? <ActionSizeContext.Provider value="lg"><ActionShapeContext.Provider value="pill">{actions}</ActionShapeContext.Provider></ActionSizeContext.Provider> : actions}</div></div>;
 }
