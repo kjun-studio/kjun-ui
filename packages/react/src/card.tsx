@@ -1,8 +1,9 @@
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import { cardLayout, type CardHeadingLevel, type CardMediaAspect, type CardMediaPosition } from "../../../shared/package-runtime/card-layout";
 import { tokens, type CardElevation, type CardPadding, type CardRadius, type CardSurface } from "@kjun-ui/tokens";
-import { useEffect, useRef, type CSSProperties, type HTMLAttributes, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
+import { useEffect, useRef, type CSSProperties, type HTMLAttributes, type KeyboardEvent, type MouseEvent, type ReactNode, type RefObject } from "react";
 import { hasContent as present } from "../../../shared/package-runtime/content-presence";
+import { linkRel } from "../../../shared/package-runtime/list-row";
 import { CardActionsContext } from "./card-actions-context";
 
 export interface KjunCardProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
@@ -26,9 +27,16 @@ export interface KjunCardProps extends Omit<HTMLAttributes<HTMLDivElement>, "tit
   dividers?: boolean;
   /** Makes the whole card one button (onClick). Do not put buttons or links inside a pressable card. */
   pressable?: boolean;
-  /** Blocks a pressable card and dims it. */
+  /** Makes the whole card one link (an a element), such as a card that opens a page. Like pressable, no buttons or links inside.
+   * A router can take onClick: call event.preventDefault() and navigate. */
+  href?: string;
+  /** Where a link card opens, e.g. "_blank"; a new tab gets rel="noopener noreferrer" unless rel is given. */
+  target?: string;
+  /** The link's rel; by default "noopener noreferrer" for target="_blank". */
+  rel?: string;
+  /** Blocks a pressable or link card and dims it. */
   disabled?: boolean;
-  /** Button name of a pressable card; defaults to a text title. */
+  /** Name of a pressable or link card; defaults to a text title. */
   ariaLabel?: string;
   /** Title level in the page outline (h2–h6, default 3); false keeps plain text. A pressable card's title is never a heading. */
   headingLevel?: CardHeadingLevel;
@@ -37,21 +45,29 @@ export interface KjunCardProps extends Omit<HTMLAttributes<HTMLDivElement>, "tit
 }
 export function KjunCard({ title, subtitle, header, headerActions, media, mediaPosition = "top", mediaAspect, footer,
   padding = "md", bodyPadding = padding, radius = "md", surface = "default",
-  elevation = "flat", border = false, dividers = false, pressable = false, disabled = false, ariaLabel, headingLevel = 3, footerAlign = "start",
+  elevation = "flat", border = false, dividers = false, pressable = false, href, target, rel, disabled = false, ariaLabel, headingLevel = 3, footerAlign = "start",
   children, style, className = "", onClick, onKeyDown, onKeyUp, ...props
 }: KjunCardProps) {
-  const root = useRef<HTMLDivElement>(null);
+  const root = useRef<HTMLElement>(null);
+  const link = href !== undefined;
   // Checked after every render, so a control added later still warns.
   useEffect(() => {
-    if (pressable) warnNestedControls(root.current, "KJUN Card: a pressable card contains buttons or links; move them out or drop pressable.");
+    if (pressable || link) warnNestedControls(root.current, "KJUN Card: a pressable or link card contains buttons or links; move them out or drop pressable/href.");
   });
   const parts = { header: present(header), title: present(title), subtitle: present(subtitle), actions: present(headerActions),
     body: present(children), footer: present(footer), media: present(media) };
-  const layout = cardLayout(parts, { pressable, headingLevel, surface, padding, mediaPosition });
+  const layout = cardLayout(parts, { pressable: pressable || link, headingLevel, surface, padding, mediaPosition });
   // Like a native button: Enter presses once on keydown (a held key does not repeat), Space presses on release.
-  const press = pressable ? {
+  const name = ariaLabel ?? (typeof title === "string" ? title : undefined);
+  // A link card is an a element: the browser handles Enter; a disabled one keeps the link role without an href.
+  const press = link ? {
+    href: disabled ? undefined : href, target, rel: linkRel(target, rel), role: disabled ? "link" : undefined,
+    "aria-disabled": disabled || undefined, "aria-label": name, "data-pressable": "",
+    onClick: (event: MouseEvent<HTMLElement>) => { if (disabled) event.preventDefault(); else onClick?.(event as MouseEvent<HTMLDivElement>); },
+    onKeyDown, onKeyUp,
+  } : pressable ? {
     role: "button", tabIndex: disabled ? -1 : 0, "aria-disabled": disabled || undefined,
-    "aria-label": ariaLabel ?? (typeof title === "string" ? title : undefined), "data-pressable": "",
+    "aria-label": name, "data-pressable": "",
     onClick: (event: MouseEvent<HTMLDivElement>) => { if (!disabled) onClick?.(event); },
     onKeyDown: (event: KeyboardEvent<HTMLDivElement>) => {
       onKeyDown?.(event);
@@ -68,7 +84,9 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
   } : { onClick, onKeyDown, onKeyUp };
   const Title = layout.titleLevel ? (`h${layout.titleLevel}` as const) : "p";
   const rows = [layout.header, parts.body, parts.footer].filter(Boolean).length;
-  return <div {...props} {...press} ref={root} className={["kjun-card", className].filter(Boolean).join(" ")}
+  // Typed as div so the HTML attributes apply; an a element takes the same ones.
+  const Root = (link ? "a" : "div") as "div";
+  return <Root {...props} {...press} ref={root as RefObject<HTMLDivElement>} className={["kjun-card", className].filter(Boolean).join(" ")}
     data-surface={surface} data-padding={padding} data-body-padding={bodyPadding}
     data-border={border} data-dividers={dividers} data-elevation={elevation} data-media={layout.sideMedia ? "start" : undefined}
     style={{
@@ -77,7 +95,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
       "--_kjun-card-header-gap": `${layout.headerGap}px`,
       borderRadius: `var(--_kjun-geometry-card-radii-${radius})`,
       // A pressable card's shadow comes from CSS so its hover lift can replace it.
-      [pressable ? "--_kjun-card-shadow" : "boxShadow"]: `var(--_kjun-card-elevation-${elevation})`, ...style,
+      [pressable || link ? "--_kjun-card-shadow" : "boxShadow"]: `var(--_kjun-card-elevation-${elevation})`, ...style,
     } as CSSProperties}>
     {parts.media && <div className="kjun-card-media" data-side={layout.sideMedia || undefined} data-aspect={mediaAspect}
       style={{ ...(mediaAspect ? { aspectRatio: tokens.card.mediaAspects[mediaAspect] } : {}), ...(layout.sideMedia ? { gridRow: `1 / span ${Math.max(rows, 1)}` } : {}) }}>{media}</div>}
@@ -92,5 +110,5 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
     </div>}
     {parts.body && <div className="kjun-card-body">{children}</div>}
     {parts.footer && <div className="kjun-card-footer" data-align={footerAlign}>{footer}</div>}
-  </div>;
+  </Root>;
 }

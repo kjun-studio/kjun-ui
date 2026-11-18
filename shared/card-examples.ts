@@ -18,7 +18,7 @@ export function cardPreviewStyle(component: string, surface: unknown, palette: P
   return { background: surface === 'muted' ? colors.surface : palette === 'dark' ? colors.background : colors.secondary, minHeight: '100vh' };
 }
 export const cardControls: ExampleControl[] = [
-  { key: 'design', label: '콘텐츠 구성', kind: 'choice', default: '정보', options: ['정보', '통계', '이미지', '테이블', '입력 폼', '액션만', '사용자 헤더'] },
+  { key: 'design', label: '콘텐츠 구성', kind: 'choice', default: '정보', options: ['정보', '통계', '이미지', '테이블', '입력 폼', '액션만', '사용자 헤더', '링크'] },
   { key: 'surface', label: '표면', kind: 'choice', default: 'default', options: ['default', 'muted', 'accent', 'success', 'warning', 'danger', 'info', 'subtle', 'brand', 'brandSoft', 'glass'] },
   { key: 'padding', label: '영역 여백', kind: 'choice', default: 'md', options: ['none', 'sm', 'md', 'lg'] },
   { key: 'bodyPadding', label: '본문 여백', kind: 'choice', default: 'inherit', options: ['inherit', 'none', 'sm', 'md', 'lg'] },

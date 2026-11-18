@@ -23,6 +23,8 @@ export function renderCardExample(name: string, tools: ExampleTools): any {
       if (design === '이미지') return h(name, { ...props, title: '작업 공간 가이드', subtitle: '팀의 첫 프로젝트를 시작하는 방법' }, '자료를 정리하고 함께 작업할 공간을 만들어 보세요.', {
         media: h('KjunImage', { aspectRatio: 2.5, src: cardMediaSource, alt: '정리된 문서와 작업 보드를 그린 일러스트' }), footer: button('가이드 보기', view),
       });
+      // A link card is one link: the whole card opens the page, so it holds no buttons.
+      if (design === '링크') return h(name, { ...props, href: '#guide', title: '작업 공간 가이드', subtitle: '팀의 첫 프로젝트를 시작하는 방법' }, '카드 전체가 하나의 링크입니다. 눌러 가이드를 엽니다.');
       return h(name, { ...props, title: '카드 제목', subtitle: '프로젝트의 문서와 활동' }, '본문과 헤더·푸터 간격을 확인하세요.', {
         headerActions: h('KjunBadge', { variant: 'success' }, '진행 중'), footer: button('프로젝트 보기', view),
       });

@@ -24,3 +24,13 @@ export function cardLayout(parts: CardParts, options: { pressable: boolean; head
     sideMedia: parts.media && options.mediaPosition === "start",
   };
 }
+
+let deviceLinkWarned = false;
+/** Development only, once: Native on a device does not follow href, so a link card there needs onPress. */
+export function warnCardDeviceLink(deviceLink: boolean) {
+  let development = false;
+  try { development = !!process.env.NODE_ENV && process.env.NODE_ENV !== "production"; } catch { /* no process */ }
+  if (!development || !deviceLink || deviceLinkWarned) return;
+  deviceLinkWarned = true;
+  console.warn("KJUN Card: href only navigates on the web; on a device pass onPress and navigate with the app's router.");
+}

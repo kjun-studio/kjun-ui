@@ -1,5 +1,5 @@
 import { tokens, type CardElevation, type CardPadding, type CardRadius, type CardSurface, type ColorRole } from "@kjun-ui/tokens";
-import { useContext, type ReactNode } from "react";
+import { useContext, useEffect, type ReactNode } from "react";
 import { Platform, View, type GestureResponderEvent, type StyleProp, type TextStyle, type ViewStyle } from "react-native";
 import { AccessiblePressable } from "./a11y";
 import { typeStyle } from "./typography";
@@ -9,7 +9,8 @@ import { hasContent as present } from "../../../shared/package-runtime/content-p
 import { CardActionsContext } from "./card-actions-context";
 import { CardTintContext } from "./card-surface-context";
 import { TileCellContext } from "./tiles-context";
-import { cardLayout, type CardHeadingLevel, type CardMediaAspect, type CardMediaPosition } from "../../../shared/package-runtime/card-layout";
+import { linkRel } from "../../../shared/package-runtime/list-row";
+import { cardLayout, warnCardDeviceLink, type CardHeadingLevel, type CardMediaAspect, type CardMediaPosition } from "../../../shared/package-runtime/card-layout";
 
 // Like Web's keep-all: Korean wraps between words (iOS through its Hangul word strategy, a Text prop).
 const words = (Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } : {}) as unknown as TextStyle;
@@ -38,10 +39,20 @@ export interface KjunCardProps {
   style?: StyleProp<ViewStyle>;
   /** Makes the whole card one button (onPress). Do not put buttons or links inside a pressable card. */
   pressable?: boolean;
-  /** Blocks a pressable card and dims it. */
+  /** Makes the whole card one link: on the web an a element. On a device href does not navigate; pass onPress and use the app's router. */
+  href?: string;
+  /** Where a link card opens on the web, e.g. "_blank"; a new tab gets rel="noopener noreferrer" unless rel is given. */
+  target?: string;
+  /** The link's rel on the web; by default "noopener noreferrer" for target="_blank". */
+  rel?: string;
+  /** Blocks a pressable or link card and dims it. */
   disabled?: boolean;
-  /** Button name of a pressable card; defaults to the title. */
+  /** Name of a pressable or link card; defaults to the title. */
   ariaLabel?: string;
+  /** Test identifier on the card's root view. */
+  testID?: string;
+  /** Native id of the card's root view (an element id on the web), e.g. for aria-labelledby. */
+  nativeID?: string;
   onPress?: (event: GestureResponderEvent) => void;
   /** Marks the title as a header (aria-level on the web; default 3); false keeps plain text. A pressable card's title is never a header. */
   headingLevel?: CardHeadingLevel;
@@ -51,7 +62,7 @@ export interface KjunCardProps {
 export function KjunCard({ title, subtitle, header, headerActions, media, mediaPosition = "top", mediaAspect, footer,
   padding = "md", bodyPadding = padding, radius = "md", surface = "default",
   elevation = "flat", border = false, dividers = false, children, style,
-  pressable = false, disabled = false, ariaLabel, onPress, headingLevel = 3, footerAlign = "start",
+  pressable = false, href, target, rel, disabled = false, ariaLabel, onPress, headingLevel = 3, footerAlign = "start", testID, nativeID,
 }: KjunCardProps) {
   const { colors } = useKjunStyles();
   // In a KjunTiles cell the card fills the cell, so cards in a row share the tallest height (Web: the cell grid).
@@ -62,7 +73,10 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
   const foreground = colors[paint.text], borderColor = colors[paint.border];
   const has = { header: present(header), title: present(title), subtitle: present(subtitle), actions: present(headerActions),
     body: present(children), footer: present(footer), media: present(media) };
-  const layout = cardLayout(has, { pressable, headingLevel, surface, padding, mediaPosition });
+  const link = href !== undefined, interactive = pressable || link;
+  const deviceLink = Platform.OS !== "web" && link && !onPress;
+  useEffect(() => warnCardDeviceLink(deviceLink), [deviceLink]);
+  const layout = cardLayout(has, { pressable: interactive, headingLevel, surface, padding, mediaPosition });
   const heading = layout.titleLevel ? { accessibilityRole: "header" as const, ...(Platform.OS === "web" ? { "aria-level": layout.titleLevel } : {}) } : {};
   const base: StyleProp<ViewStyle> = [
     {
@@ -123,9 +137,13 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
   // Always provided, so a plain card nested in a tinted one drops the tint again.
   // A card inside this one is not in a tile cell, so it keeps its own size.
   const painted = <CardTintContext.Provider value={layout.tinted}><TileCellContext.Provider value={false}>{parts}</TileCellContext.Provider></CardTintContext.Provider>;
-  // A pressable card presses in slightly, like a button, and dims when disabled.
-  return pressable
-    ? <AccessiblePressable accessibilityRole="button" accessibilityLabel={ariaLabel ?? (typeof title === "string" ? title : undefined)} accessibilityState={{ disabled }} disabled={disabled}
-        onPress={onPress} style={({ pressed }: { pressed: boolean }) => [base, pressed ? { transform: [{ scale: 0.99 }] } : null, disabled ? { opacity: tokens.states.opacity.disabled } : null]}>{painted}</AccessiblePressable>
-    : <View style={base}>{painted}</View>;
+  const ids = { testID, nativeID };
+  // A pressable or link card presses in slightly, like a button, lifts one step on hover (Web) and dims when disabled.
+  const lift = (hovered?: boolean) => hovered && !disabled
+    ? { boxShadow: tokens.elevation[elevation === "raised" ? "lifted" : "raised"].map(({ colorRole, ...layer }) => ({ ...layer, color: colors[colorRole] })) } : null;
+  return interactive
+    ? <AccessiblePressable {...ids} accessibilityRole={link ? "link" : "button"} accessibilityLabel={ariaLabel ?? (typeof title === "string" ? title : undefined)} accessibilityState={{ disabled }} disabled={disabled}
+        {...(Platform.OS === "web" && link && !disabled ? { href, hrefAttrs: { target, rel: linkRel(target, rel) } } : {})}
+        onPress={onPress} style={({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => [base, lift(hovered), pressed && !disabled ? { transform: [{ scale: tokens.states.scale.surfacePressed }] } : null, disabled ? { opacity: tokens.states.opacity.disabled } : null]}>{painted}</AccessiblePressable>
+    : <View {...ids} style={base}>{painted}</View>;
 }

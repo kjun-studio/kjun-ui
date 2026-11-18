@@ -25,6 +25,8 @@ export function generateCard(input: UsageInput) {
   else if (design === '이미지') content = b.node('KjunCard', { ...props, title: '작업 공간 가이드', subtitle: '팀의 첫 프로젝트를 시작하는 방법' }, copy('자료를 정리하고 함께 작업할 공간을 만들어 보세요.'), {
     media: b.node('KjunImage', { src: cardMediaSource, alt: '정리된 문서와 작업 보드를 그린 일러스트', aspectRatio: 2.5 }), footer: b.button('가이드 보기', view),
   });
+  // A link card is one link: the whole card opens the page, so it holds no buttons.
+  else if (design === '링크') content = b.node('KjunCard', { ...props, href: '/guide', title: '작업 공간 가이드', subtitle: '팀의 첫 프로젝트를 시작하는 방법' }, copy('카드 전체가 하나의 링크입니다. 눌러 가이드를 엽니다.'));
   else content = b.node('KjunCard', { ...props, title: '카드 제목', subtitle: '프로젝트의 문서와 활동' }, copy('본문과 헤더·푸터 간격을 확인하세요.'), {
     headerActions: b.node('KjunBadge', { variant: 'success' }, b.text('진행 중')), footer: b.button('프로젝트 보기', view),
   });

@@ -7,25 +7,35 @@ import { KjunButton, KjunIcon } from "./button";
 import { KjunCollapse } from "./collapse";
 import { useKjunId } from "./input";
 import { hasContent } from "./runtime/slots";
-import { accordionKeyTarget, registerOpened, toggleOpened, trimToSingle, unregisterOpened } from "../../../shared/package-runtime/accordion-state";
+import { accordionKeyTarget, openedFromValue, registerOpened, toggleOpened, trimToSingle, unregisterOpened } from "../../../shared/package-runtime/accordion-state";
 import { breadcrumbCurrent, collapseBreadcrumb, type BreadcrumbItem } from "../../../shared/package-runtime/breadcrumb";
 import { KjunDropdown, KjunDropdownItem } from "./dropdown";
 import { KjunSelect } from "./select-control";
 
-interface AccordionContext { opened: () => ReadonlySet<string>; toggle: (id: string) => void; register: (id: string, defaultOpen: boolean) => () => void }
+interface AccordionContext { opened: () => ReadonlySet<string>; controlled: () => boolean; toggle: (id: string) => void; register: (id: string, defaultOpen: boolean) => () => void }
 const kjunAccordionKey: InjectionKey<AccordionContext> = Symbol("kjunAccordion");
 export type AccordionHeadingLevel = 2 | 3 | 4 | 5 | 6 | false;
 const kjunAccordionLayoutKey: InjectionKey<{ headingLevel: () => AccordionHeadingLevel; region: () => boolean }> = Symbol("kjunAccordionLayout");
 
-function useAccordionState(multiple: () => boolean): AccordionContext {
-  const opened = shallowRef<ReadonlySet<string>>(new Set<string>());
-  watch(multiple, value => { if (!value) opened.value = trimToSingle(opened.value); });
+/** The Vue form of the shared useAccordionState: with modelValue the group is controlled and update:modelValue requests
+ * each change; without it the group keeps its own set (from defaultValue and the items' defaultOpen) and reports changes. */
+function useAccordionState(multiple: () => boolean, value: () => readonly string[] | undefined, defaultValue: readonly string[] | undefined, change: (value: string[]) => void): AccordionContext {
+  const own = shallowRef<ReadonlySet<string>>(openedFromValue(defaultValue, multiple()));
+  const controlled = () => value() !== undefined;
+  const opened = () => controlled() ? openedFromValue(value(), multiple()) : own.value;
+  watch(multiple, single => { if (!single && !controlled()) own.value = trimToSingle(own.value); });
   return {
-    opened: () => opened.value,
-    toggle: id => { opened.value = toggleOpened(opened.value, id, multiple()); },
+    opened,
+    controlled,
+    toggle: id => {
+      const next = toggleOpened(opened(), id, multiple());
+      if (!controlled()) own.value = next;
+      change([...next]);
+    },
     register: (id, defaultOpen) => {
-      opened.value = registerOpened(opened.value, id, defaultOpen, multiple());
-      return () => { opened.value = unregisterOpened(opened.value, id); };
+      // A controlled group shows its value only, so an item's defaultOpen does not apply there.
+      if (!controlled()) own.value = registerOpened(own.value, id, defaultOpen, multiple());
+      return () => { if (!controlled()) own.value = unregisterOpened(own.value, id); };
     },
   };
 }
@@ -41,14 +51,20 @@ const kjunAccordionProps = {
   headingLevel: { type: [Number, Boolean] as PropType<AccordionHeadingLevel>, default: 3 },
   /** Open panels are labelled regions (default true). Turn off for long lists, where many landmarks crowd a screen reader. */
   region: { type: Boolean, default: true },
+  /** v-model: the open items, by each item's value (give the items a value). A single-open Accordion shows the last one. */
+  modelValue: { type: Array as PropType<string[]>, default: undefined },
+  /** The items open at first, by value, without v-model. */
+  defaultValue: { type: Array as PropType<string[]>, default: undefined },
 } as const;
 export type KjunAccordionProps = ExtractPublicPropTypes<typeof kjunAccordionProps>;
 export const KjunAccordion = defineComponent({
   name: "KjunAccordion",
   props: kjunAccordionProps,
+  /** update:modelValue requests a change with v-model and reports every change otherwise; items without a value report an internal id. */
+  emits: { "update:modelValue": (_value: string[]) => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
-  setup(props, { slots }) {
-    provide(kjunAccordionKey, useAccordionState(() => props.multiple));
+  setup(props, { slots, emit }) {
+    provide(kjunAccordionKey, useAccordionState(() => props.multiple, () => props.modelValue, props.defaultValue, value => emit("update:modelValue", value)));
     provide(kjunAccordionLayoutKey, { headingLevel: () => props.headingLevel, region: () => props.region });
     // ↑↓ Home End move between headers, as in the WAI-ARIA accordion pattern.
     const keydown = (event: KeyboardEvent) => {
@@ -77,9 +93,12 @@ const kjunAccordionItemProps = {
   keepMounted: { type: Boolean, default: false },
   /** The header's accessible name when the header slot is not plain text. */
   ariaLabel: { type: String, default: undefined },
+  /** Names the item in the Accordion's v-model and defaultValue. */
+  value: { type: String, default: undefined },
 } as const;
 export type KjunAccordionItemProps = ExtractPublicPropTypes<typeof kjunAccordionItemProps>;
-/** Slots: default (panel), header (replaces the title). Events: update:open (a request when controlled, a report otherwise),
+/** Slots: default (panel), header (replaces the title), trailing (information at the end of the header before the chevron,
+ * such as a status badge, an amount or a count; part of the header button, so no buttons or links). Events: update:open (a request when controlled, a report otherwise),
  * after-open and after-close (the item has finished opening or closing, after its height motion). */
 export const KjunAccordionItem = defineComponent({
   name: "KjunAccordionItem",
@@ -88,6 +107,7 @@ export const KjunAccordionItem = defineComponent({
   slots: Object as SlotsType<{
     default?: () => VNodeChild;
     header?: () => VNodeChild;
+    trailing?: () => VNodeChild;
   }>,
   setup(props, { slots, emit }) {
     // Decided on each render like React; registration with the Accordion still happens once at mount.
@@ -97,23 +117,26 @@ export const KjunAccordionItem = defineComponent({
     const group = () => controlled() ? null : context;
     const id = useKjunId("kjun-");
     const own = ref(props.defaultOpen);
+    // The group knows the item by its value, or by its own id without one.
+    const key = props.value ?? id;
     let unregister: (() => void) | undefined;
-    onMounted(() => { unregister = group()?.register(id, props.defaultOpen); });
+    onMounted(() => { unregister = group()?.register(key, props.defaultOpen); });
     onBeforeUnmount(() => unregister?.());
-    const isOpen = () => { const g = group(); return controlled() ? !!props.open : g ? g.opened().has(id) : own.value; };
+    const isOpen = () => { const g = group(); return controlled() ? !!props.open : g ? g.opened().has(key) : own.value; };
     // Uncontrolled items report each real change, including a sibling closing them. A defaultOpen item in an
     // Accordion opens once it registers after mount; that is its starting state, not a change.
-    let registering = !!group() && props.defaultOpen;
+    let registering = !!group() && !context?.controlled() && props.defaultOpen;
     watch(isOpen, open => { if (controlled()) return; if (registering) { if (open) registering = false; return; } emit("update:open", open); });
     return () => {
       const open = isOpen();
-      const header = slots.header?.();
+      const header = slots.header?.(), trailing = slots.trailing?.();
       const level = layout.headingLevel(), region = layout.region();
       const trigger = (
           <button type="button" id={id + "-heading"} disabled={props.disabled} aria-expanded={open} aria-controls={id + "-panel"} aria-label={props.ariaLabel}
-            class="kjun-accordion-trigger" onClick={() => { registering = false; const g = group(); controlled() ? emit("update:open", !open) : g ? g.toggle(id) : (own.value = !own.value); }}>
+            class="kjun-accordion-trigger" onClick={() => { registering = false; const g = group(); controlled() ? emit("update:open", !open) : g ? g.toggle(key) : (own.value = !own.value); }}>
             {props.icon && <span class="kjun-accordion-leading"><KjunIcon name={props.icon} size={tokens.extensions.accordion.leadingIconSize} /></span>}
             <span class="kjun-accordion-heading">{hasContent(header) ? header : props.title}{props.description && <span class="kjun-accordion-description">{props.description}</span>}</span>
+            {hasContent(trailing) && <span class="kjun-accordion-trailing">{trailing}</span>}
             <KjunIcon name="chevron-down" class="kjun-accordion-chevron" size={tokens.extensions.accordion.iconSize}
               style={{ transform: open ? "rotate(180deg)" : undefined }} />
           </button>

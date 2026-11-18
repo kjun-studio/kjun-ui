@@ -4,8 +4,9 @@ import { demoPalettes } from '../../shared/demo-colors';
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureAccordion(next), next);
 const headers = (page: Page) => page.getByTestId('frame').locator('button[aria-expanded], [role="button"][aria-expanded]');
 const box = async (node: Locator) => (await node.boundingBox())!;
-// The item around a header: on the web the header sits inside its heading (h3), on Native directly in the item.
-const itemOf = (header: Locator, platform: string) => platform === 'native' ? header.locator('..') : header.locator('xpath=ancestor::*[contains(concat(" ", @class, " "), " kjun-accordion-item ")][1]');
+// The item around a header: on the web the header sits inside its heading (h3); on Native Web too, unless headingLevel is false.
+const nativeItem = 'xpath=ancestor::*[not(@role="heading") and not(self::h2 or self::h3 or self::h4 or self::h5 or self::h6)][1]';
+const itemOf = (header: Locator, platform: string) => platform === 'native' ? header.locator(nativeItem) : header.locator('xpath=ancestor::*[contains(concat(" ", @class, " "), " kjun-accordion-item ")][1]');
 const bodyText = '이 계정에서 사용할 기본 정보를 확인하고 변경할 수 있습니다.';
 const rgb = (hex: string) => 'rgb(' + [1, 3, 5].map(n => parseInt(hex.slice(n, n + 2), 16)).join(', ') + ')';
 
@@ -58,7 +59,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.setViewportSize({ width: 390, height: 800 });
     await openFixture(page, platform, '', 'accordion-design');
     const frame = page.getByTestId('frame'), group = frame.locator(':scope > *').first();
-    const items = () => platform === 'native' ? headers(page).locator('..') : page.getByTestId('frame').locator('.kjun-accordion-item');
+    const items = () => platform === 'native' ? headers(page).locator(nativeItem) : page.getByTestId('frame').locator('.kjun-accordion-item');
     const line = (index: number) => platform === 'native'
       ? items().nth(index).evaluate(el => { const last = el.lastElementChild as HTMLElement; const r = last.getBoundingClientRect(); return r.height <= 1.5 ? { left: r.left - el.getBoundingClientRect().left, height: r.height } : null; })
       : items().nth(index).evaluate(el => { const s = getComputedStyle(el, '::after'); return s.content === 'none' || s.content === 'normal' ? null : { left: parseFloat(s.left), height: parseFloat(s.height) }; });
@@ -85,6 +86,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(Math.round(second.y - first.y - first.height)).toBe(8);
     await expect(group).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
     await expect(items().first()).toHaveCSS('border-top-left-radius', '12px');
+    // Items inside a fragment still know which one is last.
+    await configure(page, { separated: false, extra: true });
+    expect(await line(1)).toEqual({ left: 16, height: 1 });
+    expect(await line(2)).toEqual({ left: 16, height: 1 });
+    expect(await line(3)).toBeNull();
   });
 
   test(`${platform}: headers sit in headings, arrows move between them, regions can be turned off and a custom header keeps a name`, async ({ page }) => {
@@ -94,7 +100,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     if (platform === 'native') {
       await page.getByRole('button', { name: '계정 설정 열기' }).click();
       await expect(page.getByRole('region', { name: '계정 설정 열기' })).toBeVisible();
-      return;
+      await page.getByRole('button', { name: '계정 설정 열기' }).click();
     }
     await configure(page, { custom: false });
     await expect(page.getByRole('heading', { level: 3, name: '계정 설정' }).getByRole('button')).toHaveCount(1);
@@ -153,5 +159,39 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(trigger).toHaveAttribute('aria-expanded', 'false');
     await page.waitForTimeout(600);
     expect(await events()).toEqual(['open', 'close']);
+  });
+}
+
+for (const platform of ['react', 'vue3', 'native']) {
+  test(`${platform}: trailing sits before the chevron on the row's centre and joins the header's name`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 800 });
+    await openFixture(page, platform, '', 'accordion-design');
+    await configure(page, { trailing: '32,900원' });
+    const header = headers(page).first(), trailing = header.getByText('32,900원', { exact: true });
+    await expect(page.getByRole('button', { name: /계정 설정.*32,900원/ })).toBeVisible();
+    const [h, t, chevron] = [await box(header), await box(trailing), await box(header.locator('svg').last())];
+    expect(Math.round(chevron.x - (t.x + t.width))).toBe(12);
+    expect(Math.abs((t.y + t.height / 2) - (h.y + h.height / 2))).toBeLessThanOrEqual(1);
+    await expect(trailing).toHaveCSS('font-size', '14px');
+  });
+
+  test(`${platform}: a controlled Accordion shows its value and requests changes by item value`, async ({ page }) => {
+    await openFixture(page, platform, '', 'accordion-design');
+    const values = () => page.evaluate(() => (window as any).accordionValues ?? []);
+    const [account, notify] = [page.getByRole('button', { name: '계정 설정' }), page.getByRole('button', { name: '알림 설정' })];
+    // Uncontrolled: each change is reported by value.
+    await account.click();
+    await expect.poll(values).toEqual([['account']]);
+    await configure(page, { value: ['notify'] });
+    await expect(notify).toHaveAttribute('aria-expanded', 'true');
+    await expect(account).toHaveAttribute('aria-expanded', 'false');
+    // Controlled without following: the click is a request only.
+    await account.click();
+    await expect.poll(values).toEqual([['account'], ['account']]);
+    await expect(account).toHaveAttribute('aria-expanded', 'false');
+    await configure(page, { follow: true });
+    await account.click();
+    await expect(account).toHaveAttribute('aria-expanded', 'true');
+    await expect(notify).toHaveAttribute('aria-expanded', 'false');
   });
 }

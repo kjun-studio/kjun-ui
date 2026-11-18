@@ -30,6 +30,10 @@ export function renderCardDesign(K: any, native = false) {
         <div data-case="side-media" style={{ width: 420 }}><Card mediaPosition="start" media={<div data-testid="side-media" style={{ background: '#7ba796' }} />} title="가로 카드" footer={button('열기')}>썸네일 옆 본문</Card></div>
         <div data-case="aspect" style={{ width: 320 }}><Card mediaAspect="wide" media={<div data-testid="aspect-media" style={{ background: '#7ba796' }} />} title="비율 카드">본문</Card></div>
         <div data-case="node-title" style={{ width: 300 }}><Card title={<Text>노드 제목 12</Text>}>본문</Card></div>
+        <div data-case="link" style={{ width: 300 }}><Card title="링크 카드" href="#card-link" {...press}>본문</Card></div>
+        <div data-case="link-disabled" style={{ width: 300 }}><Card title="막힌 링크 카드" href="#card-link" disabled {...press}>본문</Card></div>
+        {!native && <div data-case="guarded" style={{ width: 300 }}><Card title="막는 카드" pressable {...press} onKeyDown={(event: { key: string; preventDefault(): void }) => { if (event.key === 'Enter') event.preventDefault(); }}>본문</Card></div>}
+        <div data-case="side-footer" style={{ width: 420 }}><Card mediaPosition="start" dividers media={<div style={{ background: '#7ba796' }} />} footer={<span>푸터만</span>} /></div>
       </main>
       <output data-testid="presses">{presses}</output>
     </KjunProvider>;

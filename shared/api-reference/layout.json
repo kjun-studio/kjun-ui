@@ -6,7 +6,9 @@
       "divider",
       "separated",
       "headingLevel",
-      "region"
+      "region",
+      "modelValue",
+      "defaultValue"
     ],
     "react": [
       "multiple",
@@ -15,14 +17,27 @@
       "separated",
       "children",
       "headingLevel",
-      "region"
+      "region",
+      "value",
+      "defaultValue",
+      "onValueChange",
+      "className",
+      "style",
+      "id"
     ],
     "native": [
       "multiple",
       "tone",
       "divider",
       "separated",
-      "children"
+      "children",
+      "headingLevel",
+      "region",
+      "value",
+      "defaultValue",
+      "onValueChange",
+      "style",
+      "testID"
     ]
   },
   "KjunAccordionItem": {
@@ -34,7 +49,8 @@
       "disabled",
       "open",
       "keepMounted",
-      "ariaLabel"
+      "ariaLabel",
+      "value"
     ],
     "react": [
       "title",
@@ -49,7 +65,12 @@
       "keepMounted",
       "ariaLabel",
       "onAfterOpen",
-      "onAfterClose"
+      "onAfterClose",
+      "value",
+      "trailing",
+      "className",
+      "style",
+      "id"
     ],
     "native": [
       "title",
@@ -64,7 +85,11 @@
       "keepMounted",
       "ariaLabel",
       "onAfterOpen",
-      "onAfterClose"
+      "onAfterClose",
+      "value",
+      "trailing",
+      "style",
+      "testID"
     ]
   },
   "KjunCard": {
@@ -84,7 +109,10 @@
       "headingLevel",
       "footerAlign",
       "mediaPosition",
-      "mediaAspect"
+      "mediaAspect",
+      "href",
+      "target",
+      "rel"
     ],
     "react": [
       "dividers",
@@ -114,7 +142,10 @@
       "disabled",
       "ariaLabel",
       "headingLevel",
-      "footerAlign"
+      "footerAlign",
+      "href",
+      "target",
+      "rel"
     ],
     "native": [
       "dividers",
@@ -139,7 +170,12 @@
       "ariaLabel",
       "onPress",
       "headingLevel",
-      "footerAlign"
+      "footerAlign",
+      "href",
+      "target",
+      "rel",
+      "testID",
+      "nativeID"
     ]
   },
   "KjunDrawer": {

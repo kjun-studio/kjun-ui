@@ -3,6 +3,7 @@ import { tokens } from '@kjun-ui/tokens';
 import { Collapse } from "./collapse";
 import { useInitialTab, useAccordionState } from "../../../shared/package-runtime/navigation";
 import { accordionKeyTarget } from "../../../shared/package-runtime/accordion-state";
+import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { breadcrumbCurrent, collapseBreadcrumb, type BreadcrumbItem } from "../../../shared/package-runtime/breadcrumb";
 import { useSelectionIndicator } from "./use-selection-indicator";
 import { manageTabList } from "../../../shared/package-runtime/tab-keyboard";
@@ -17,6 +18,7 @@ useLayoutEffect,
 useId,
 useRef,
 useState,
+type CSSProperties,
 type ReactElement,
 type ReactNode,
 } from "react";
@@ -28,6 +30,7 @@ import { KjunSelect } from "./select";
 export * from "./tabs";
 const AccordionContext = createContext<{
   opened: ReadonlySet<string>;
+  controlled: boolean;
   toggle: (id: string) => void;
   register: (id: string, defaultOpen: boolean) => () => void;
 } | null>(null);
@@ -43,6 +46,15 @@ export interface KjunAccordionProps {
   headingLevel?: AccordionHeadingLevel;
   /** Open panels are labelled regions (default true). Turn off for long lists, where many landmarks crowd a screen reader. */
   region?: boolean;
+  /** Controlled open items, by each item's value (give the items a value). A single-open Accordion shows the last one. */
+  value?: string[];
+  /** The items open at first, by value, when value is not given. */
+  defaultValue?: string[];
+  /** Requests a change when controlled; reports every change otherwise. Items without a value report an internal id. */
+  onValueChange?: (value: string[]) => void;
+  className?: string;
+  style?: CSSProperties;
+  id?: string;
   children: ReactNode;
 }
 export type AccordionHeadingLevel = 2 | 3 | 4 | 5 | 6 | false;
@@ -54,15 +66,21 @@ export function KjunAccordion({
   separated = false,
   headingLevel = 3,
   region = true,
+  value,
+  defaultValue,
+  onValueChange,
+  className,
+  style,
+  id,
   children,
 }: KjunAccordionProps) {
-  const state = useAccordionState(multiple);
+  const state = useAccordionState(multiple, { value, defaultValue, onValueChange });
   return (
     <AccordionContext.Provider
       value={state}
     >
       <AccordionLayoutContext.Provider value={{ headingLevel, region }}>
-      <div className="kjun-accordion" data-tone={tone} data-divider={divider || undefined} data-separated={separated || undefined}
+      <div id={id} style={style} className={["kjun-accordion", className].filter(Boolean).join(" ")} data-tone={tone} data-divider={divider || undefined} data-separated={separated || undefined}
         // ↑↓ Home End move between headers, as in the WAI-ARIA accordion pattern.
         onKeyDown={event => {
           const triggers = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>(":scope > .kjun-accordion-item > .kjun-accordion-trigger:not(:disabled), :scope > .kjun-accordion-item > .kjun-accordion-title > .kjun-accordion-trigger:not(:disabled)"));
@@ -99,6 +117,14 @@ export interface KjunAccordionItemProps {
   header?: ReactNode;
   /** The header's accessible name when header is not plain text. */
   ariaLabel?: string;
+  /** Names the item in the Accordion's value, defaultValue and onValueChange. */
+  value?: string;
+  /** Information at the end of the header, before the chevron, such as a status badge, an amount or a count.
+   * It is part of the header button, so no buttons or links. */
+  trailing?: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+  id?: string;
   children: ReactNode;
 }
 export function KjunAccordionItem({
@@ -114,6 +140,11 @@ export function KjunAccordionItem({
   onAfterOpen,
   onAfterClose,
   keepMounted = false,
+  value,
+  trailing,
+  className,
+  style,
+  id: rootId,
   children,
 }: KjunAccordionItemProps) {
   const layout = useContext(AccordionLayoutContext);
@@ -122,14 +153,16 @@ export function KjunAccordionItem({
     context = useContext(AccordionContext),
     group = controlled ? null : context,
     id = "kjun-" + useId(),
+    // The group knows the item by its value, or by its own id without one.
+    key = value ?? id,
     [own, setOwn] = useState(defaultOpen),
-    open = controlled ? openProp : group ? group.opened.has(id) : own;
+    open = controlled ? openProp : group ? group.opened.has(key) : own;
   useEffect(() => {
-    return group?.register(id, defaultOpen);
+    return group?.register(key, defaultOpen);
   }, []);
   // Uncontrolled items report each real change, including a sibling closing them. A defaultOpen item in an
   // Accordion opens once it registers after mount; that is its starting state, not a change.
-  const reported = useRef(open), notify = useRef(onOpenChange), registering = useRef(!!group && defaultOpen);
+  const reported = useRef(open), notify = useRef(onOpenChange), registering = useRef(!!group && !group.controlled && defaultOpen);
   notify.current = onOpenChange;
   useEffect(() => {
     if (registering.current) { if (open) { registering.current = false; reported.current = open; } return; }
@@ -138,7 +171,7 @@ export function KjunAccordionItem({
     notify.current?.(open);
   }, [open, controlled]);
   return (
-    <div className="kjun-accordion-item" data-leading={icon ? "" : undefined}>
+    <div id={rootId} style={style} className={["kjun-accordion-item", className].filter(Boolean).join(" ")} data-leading={icon ? "" : undefined}>
       <Heading {...(layout.headingLevel ? { className: "kjun-accordion-title" } : {})}>
       <button
         type="button"
@@ -148,10 +181,11 @@ export function KjunAccordionItem({
         aria-controls={id + "-panel"}
         aria-label={ariaLabel}
         className="kjun-accordion-trigger"
-        onClick={() => { registering.current = false; controlled ? onOpenChange?.(!open) : group ? group.toggle(id) : setOwn(!own); }}
+        onClick={() => { registering.current = false; controlled ? onOpenChange?.(!open) : group ? group.toggle(key) : setOwn(!own); }}
       >
         {icon && <span className="kjun-accordion-leading"><KjunIcon name={icon} size={tokens.extensions.accordion.leadingIconSize} /></span>}
         <span className="kjun-accordion-heading">{header || title}{description && <span className="kjun-accordion-description">{description}</span>}</span>
+        {hasContent(trailing) && <span className="kjun-accordion-trailing">{trailing}</span>}
         <KjunIcon
           name="chevron-down"
           className="kjun-accordion-chevron"

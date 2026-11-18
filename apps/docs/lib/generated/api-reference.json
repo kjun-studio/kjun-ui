@@ -21669,9 +21669,34 @@
             "description": "Open panels are labelled regions (default true). Turn off for long lists, where many landmarks crowd a screen reader.",
             "summary": "펼친 본문을 헤더 이름의 영역(region)으로 알립니다. 항목이 많아 영역 목록이 길어지면 false로 끄세요.",
             "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "modelValue",
+            "type": "string[]",
+            "required": false,
+            "default": "—",
+            "description": "v-model: the open items, by each item's value (give the items a value). A single-open Accordion shows the last one.",
+            "summary": "열린 항목을 앱이 제어합니다(각 항목의 value로 지정, Vue v-model). 하나만 펼침이면 마지막 값만 엽니다. 제어하면 항목의 defaultOpen은 적용하지 않습니다.",
+            "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "defaultValue",
+            "type": "string[]",
+            "required": false,
+            "default": "—",
+            "description": "The items open at first, by value, without v-model.",
+            "summary": "value 없이 처음 열어 둘 항목들의 value입니다.",
+            "source": "packages/vue3/src/navigation.tsx"
           }
         ],
-        "events": [],
+        "events": [
+          {
+            "name": "update:modelValue",
+            "source": "packages/vue3/src/navigation.tsx",
+            "type": "이벤트",
+            "summary": "update:modelValue 이벤트를 통지합니다."
+          }
+        ],
         "slots": [
           {
             "name": "default",
@@ -21752,6 +21777,60 @@
             "source": "packages/react/src/navigation.tsx"
           },
           {
+            "name": "value",
+            "type": "string[]",
+            "required": false,
+            "default": "—",
+            "description": "Controlled open items, by each item's value (give the items a value). A single-open Accordion shows the last one.",
+            "summary": "열린 항목을 앱이 제어합니다(각 항목의 value로 지정, Vue v-model). 하나만 펼침이면 마지막 값만 엽니다. 제어하면 항목의 defaultOpen은 적용하지 않습니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "defaultValue",
+            "type": "string[]",
+            "required": false,
+            "default": "—",
+            "description": "The items open at first, by value, when value is not given.",
+            "summary": "value 없이 처음 열어 둘 항목들의 value입니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: string[]) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Requests a change when controlled; reports every change otherwise. Items without a value report an internal id.",
+            "summary": "제어할 때는 헤더를 누르면 바뀔 값을 요청하고, 제어하지 않을 때는 열린 항목이 바뀔 때마다 알립니다. value가 없는 항목은 내부 id로 들어갑니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 class입니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 style입니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 id입니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
             "name": "children",
             "type": "ReactNode",
             "required": true,
@@ -21813,6 +21892,69 @@
             "default": "false",
             "description": "Gives every item its own rounded surface with a gap between them; divider has no effect then.",
             "summary": "항목마다 따로 둥근 면으로 나누고 사이를 8px 띄웁니다. 면 색은 tone을 따르며(기본 muted), divider는 적용되지 않습니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "headingLevel",
+            "type": "2 | 3 | 4 | 5 | 6 | false",
+            "required": false,
+            "default": "3",
+            "description": "The heading level wrapping each header on the web (default 3), or false for none, so headers join the page's outline.\nOn a device a header is one button, which cannot also be a heading.",
+            "summary": "Native Web에서 각 헤더를 감쌀 제목 수준(aria-level)입니다. 기기에서는 헤더가 하나의 버튼이라 제목 역할을 함께 줄 수 없습니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "region",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "true",
+            "description": "Open panels are labelled regions on the web (default true). Turn off for long lists, where many landmarks crowd a screen reader.",
+            "summary": "Native Web에서 펼친 본문을 헤더 이름의 영역(region)으로 알립니다. 항목이 많으면 false로 끄세요.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "value",
+            "type": "string[]",
+            "required": false,
+            "default": "—",
+            "description": "Controlled open items, by each item's value (give the items a value). A single-open Accordion shows the last one.",
+            "summary": "열린 항목을 앱이 제어합니다(각 항목의 value로 지정, Vue v-model). 하나만 펼침이면 마지막 값만 엽니다. 제어하면 항목의 defaultOpen은 적용하지 않습니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "defaultValue",
+            "type": "string[]",
+            "required": false,
+            "default": "—",
+            "description": "The items open at first, by value, when value is not given.",
+            "summary": "value 없이 처음 열어 둘 항목들의 value입니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "onValueChange",
+            "type": "((value: string[]) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Requests a change when controlled; reports every change otherwise. Items without a value report an internal id.",
+            "summary": "제어할 때는 헤더를 누르면 바뀔 값을 요청하고, 제어하지 않을 때는 열린 항목이 바뀔 때마다 알립니다. value가 없는 항목은 내부 id로 들어갑니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 View의 style입니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "testID",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 View의 testID입니다.",
             "source": "packages/native/src/navigation.tsx"
           },
           {
@@ -21905,6 +22047,15 @@
             "description": "The header's accessible name when the header slot is not plain text.",
             "summary": "헤더의 접근성 이름입니다. header에 글자가 아닌 내용을 넣을 때 주세요. 생략하면 보이는 헤더를 읽습니다.",
             "source": "packages/vue3/src/navigation.tsx"
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Names the item in the Accordion's v-model and defaultValue.",
+            "summary": "Accordion의 value·defaultValue·onValueChange에서 이 항목을 가리키는 이름입니다.",
+            "source": "packages/vue3/src/navigation.tsx"
           }
         ],
         "events": [
@@ -21941,6 +22092,13 @@
             "source": "packages/vue3/src/navigation.tsx",
             "type": "제공 데이터 없음",
             "summary": "header 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "trailing",
+            "data": [],
+            "source": "packages/vue3/src/navigation.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "trailing 영역의 기본 내용을 교체합니다."
           }
         ],
         "ownership": [],
@@ -22054,6 +22212,51 @@
             "default": "—",
             "description": "The header's accessible name when header is not plain text.",
             "summary": "헤더의 접근성 이름입니다. header에 글자가 아닌 내용을 넣을 때 주세요. 생략하면 보이는 헤더를 읽습니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "value",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Names the item in the Accordion's value, defaultValue and onValueChange.",
+            "summary": "Accordion의 value·defaultValue·onValueChange에서 이 항목을 가리키는 이름입니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "trailing",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Information at the end of the header, before the chevron, such as a status badge, an amount or a count.\nIt is part of the header button, so no buttons or links.",
+            "summary": "헤더 끝, 셰브론 앞에 두는 정보입니다(상태 배지·금액·건수). 행 세로 가운데에 보조 글자색 label로 그리고 최대 폭은 35%입니다. 헤더 버튼의 일부이므로 버튼·링크는 넣지 말고, 글자는 헤더 이름에 함께 읽힙니다(Vue는 trailing 슬롯).",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "항목 바깥 요소의 class입니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "항목 바깥 요소의 style입니다.",
+            "source": "packages/react/src/navigation.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "항목 바깥 요소의 id입니다.",
             "source": "packages/react/src/navigation.tsx"
           },
           {
@@ -22179,6 +22382,42 @@
             "default": "—",
             "description": "The header's accessible name when header is not plain text.",
             "summary": "헤더의 접근성 이름입니다. header에 글자가 아닌 내용을 넣을 때 주세요. 생략하면 보이는 헤더를 읽습니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "value",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Names the item in the Accordion's value, defaultValue and onValueChange.",
+            "summary": "Accordion의 value·defaultValue·onValueChange에서 이 항목을 가리키는 이름입니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "trailing",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "Information at the end of the header, before the chevron, such as a status badge, an amount or a count.\nIt is part of the header button, so no buttons or links.",
+            "summary": "헤더 끝, 셰브론 앞에 두는 정보입니다(상태 배지·금액·건수). 행 세로 가운데에 보조 글자색 label로 그리고 최대 폭은 35%입니다. 헤더 버튼의 일부이므로 버튼·링크는 넣지 말고, 글자는 헤더 이름에 함께 읽힙니다(Vue는 trailing 슬롯).",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "항목 바깥 View의 style입니다.",
+            "source": "packages/native/src/navigation.tsx"
+          },
+          {
+            "name": "testID",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "항목 바깥 View의 testID입니다.",
             "source": "packages/native/src/navigation.tsx"
           },
           {
@@ -22316,12 +22555,39 @@
             "source": "packages/vue3/src/card.tsx"
           },
           {
+            "name": "href",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Makes the whole card one link (an a element), such as a card that opens a page. Like pressable, no buttons or links inside.\nA router can take",
+            "summary": "카드 전체를 하나의 링크(a 요소)로 만듭니다. 다른 페이지로 가는 카드에 씁니다. pressable처럼 hover 상승·누름·초점 링이 생기며, 안에 버튼·링크를 넣지 마세요. 라우터를 쓰면 클릭 처리에서 기본 이동을 막고 라우터로 이동하세요.",
+            "source": "packages/vue3/src/card.tsx"
+          },
+          {
+            "name": "target",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Where a link card opens, e.g. \"_blank\"; a new tab gets rel=\"noopener noreferrer\" unless rel is given.",
+            "summary": "링크 카드를 열 대상입니다(예: _blank). _blank면 rel을 주지 않을 때 noopener noreferrer를 붙입니다.",
+            "source": "packages/vue3/src/card.tsx"
+          },
+          {
+            "name": "rel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The link's rel; by default \"noopener noreferrer\" for target=\"_blank\".",
+            "summary": "링크 카드의 rel입니다. 생략하면 target이 _blank일 때 noopener noreferrer입니다.",
+            "source": "packages/vue3/src/card.tsx"
+          },
+          {
             "name": "disabled",
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Blocks a pressable card and dims it.",
-            "summary": "pressable 카드의 누름을 막고 흐리게 표시합니다. pressable이 아니면 의미가 없습니다.",
+            "description": "Blocks a pressable or link card and dims it.",
+            "summary": "pressable·링크 카드의 누름을 막고 흐리게 표시합니다. 링크 카드는 주소 없이 link 역할만 남습니다.",
             "source": "packages/vue3/src/card.tsx"
           },
           {
@@ -22329,8 +22595,8 @@
             "type": "string",
             "required": false,
             "default": "—",
-            "description": "Button name of a pressable card; defaults to the title prop.",
-            "summary": "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
+            "description": "Name of a pressable or link card; defaults to the title prop.",
+            "summary": "pressable·링크 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
             "source": "packages/vue3/src/card.tsx"
           },
           {
@@ -22561,12 +22827,39 @@
             "source": "packages/react/src/card.tsx"
           },
           {
+            "name": "href",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Makes the whole card one link (an a element), such as a card that opens a page. Like pressable, no buttons or links inside.\nA router can take onClick: call event.preventDefault() and navigate.",
+            "summary": "카드 전체를 하나의 링크(a 요소)로 만듭니다. 다른 페이지로 가는 카드에 씁니다. pressable처럼 hover 상승·누름·초점 링이 생기며, 안에 버튼·링크를 넣지 마세요. 라우터를 쓰면 클릭 처리에서 기본 이동을 막고 라우터로 이동하세요.",
+            "source": "packages/react/src/card.tsx"
+          },
+          {
+            "name": "target",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Where a link card opens, e.g. \"_blank\"; a new tab gets rel=\"noopener noreferrer\" unless rel is given.",
+            "summary": "링크 카드를 열 대상입니다(예: _blank). _blank면 rel을 주지 않을 때 noopener noreferrer를 붙입니다.",
+            "source": "packages/react/src/card.tsx"
+          },
+          {
+            "name": "rel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The link's rel; by default \"noopener noreferrer\" for target=\"_blank\".",
+            "summary": "링크 카드의 rel입니다. 생략하면 target이 _blank일 때 noopener noreferrer입니다.",
+            "source": "packages/react/src/card.tsx"
+          },
+          {
             "name": "disabled",
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
-            "description": "Blocks a pressable card and dims it.",
-            "summary": "pressable 카드의 누름을 막고 흐리게 표시합니다. pressable이 아니면 의미가 없습니다.",
+            "description": "Blocks a pressable or link card and dims it.",
+            "summary": "pressable·링크 카드의 누름을 막고 흐리게 표시합니다. 링크 카드는 주소 없이 link 역할만 남습니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -22574,8 +22867,8 @@
             "type": "string | undefined",
             "required": false,
             "default": "—",
-            "description": "Button name of a pressable card; defaults to a text title.",
-            "summary": "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
+            "description": "Name of a pressable or link card; defaults to a text title.",
+            "summary": "pressable·링크 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -22846,12 +23139,39 @@
             "source": "packages/native/src/card.tsx"
           },
           {
+            "name": "href",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Makes the whole card one link: on the web an a element. On a device href does not navigate; pass onPress and use the app's router.",
+            "summary": "카드 전체를 하나의 링크로 만듭니다. Native Web에서는 a 요소로 그리고, 기기에서는 주소로 이동하지 않으므로 onPress에서 앱 라우터로 이동하세요(개발 모드 경고).",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "target",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Where a link card opens on the web, e.g. \"_blank\"; a new tab gets rel=\"noopener noreferrer\" unless rel is given.",
+            "summary": "Native Web에서 링크 카드를 열 대상입니다(예: _blank).",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "rel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The link's rel on the web; by default \"noopener noreferrer\" for target=\"_blank\".",
+            "summary": "Native Web 링크 카드의 rel입니다. 생략하면 target이 _blank일 때 noopener noreferrer입니다.",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
             "name": "disabled",
             "type": "boolean | undefined",
             "required": false,
             "default": "false",
-            "description": "Blocks a pressable card and dims it.",
-            "summary": "pressable 카드의 누름을 막고 흐리게 표시합니다. pressable이 아니면 의미가 없습니다.",
+            "description": "Blocks a pressable or link card and dims it.",
+            "summary": "pressable·링크 카드의 누름을 막고 흐리게 표시합니다. 링크 카드는 주소 없이 link 역할만 남습니다.",
             "source": "packages/native/src/card.tsx"
           },
           {
@@ -22859,8 +23179,26 @@
             "type": "string | undefined",
             "required": false,
             "default": "—",
-            "description": "Button name of a pressable card; defaults to the title.",
-            "summary": "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
+            "description": "Name of a pressable or link card; defaults to the title.",
+            "summary": "pressable·링크 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "testID",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Test identifier on the card's root view.",
+            "summary": "카드 바깥 View의 testID입니다.",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "nativeID",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Native id of the card's root view (an element id on the web), e.g. for aria-labelledby.",
+            "summary": "카드 바깥 View의 nativeID입니다(웹에서는 요소 id). aria-labelledby 등에 씁니다.",
             "source": "packages/native/src/card.tsx"
           },
           {

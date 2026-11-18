@@ -3,12 +3,14 @@ import { tokens, type ButtonSize } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { Collapse } from "./collapse";
 import { useAccordionState } from "../../../shared/package-runtime/navigation";
+import { accordionKeyTarget } from "../../../shared/package-runtime/accordion-state";
+import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { breadcrumbCurrent, collapseBreadcrumb, type BreadcrumbItem } from "../../../shared/package-runtime/breadcrumb";
 import { KjunDropdown, KjunDropdownItem } from "./dropdown";
 import { useMotionValue } from "./motion";
 import { useButtonGroupMotion } from "./button-group-motion";
 import {
-Children, Fragment, createContext,
+Children, Fragment, createContext, isValidElement,
 useContext,
 useEffect,
 useId,
@@ -17,7 +19,7 @@ useState,
 type ReactElement,
 type ReactNode,
 } from "react";
-import { Animated,ScrollView,View,useWindowDimensions,Platform,type TextStyle } from "react-native";
+import { Animated,ScrollView,View,useWindowDimensions,Platform,type StyleProp,type TextStyle,type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunButton,KjunIcon } from "./button";
 import { KText,content } from "./internal";
@@ -26,6 +28,7 @@ import { KjunSelect } from "./select";
 export { KjunTabs, KjunTabPane, type TabItem, type KjunTabsProps, type KjunTabPaneProps } from "./tabs";
 const AccordionContext = createContext<{
   opened: ReadonlySet<string>;
+  controlled: boolean;
   toggle: (id: string) => void;
   register: (id: string, defaultOpen: boolean) => () => void;
 } | null>(null);
@@ -37,34 +40,78 @@ export interface KjunAccordionProps {
   divider?: boolean;
   /** Gives every item its own rounded surface with a gap between them; divider has no effect then. */
   separated?: boolean;
+  /** The heading level wrapping each header on the web (default 3), or false for none, so headers join the page's outline.
+   * On a device a header is one button, which cannot also be a heading. */
+  headingLevel?: AccordionHeadingLevel;
+  /** Open panels are labelled regions on the web (default true). Turn off for long lists, where many landmarks crowd a screen reader. */
+  region?: boolean;
+  /** Controlled open items, by each item's value (give the items a value). A single-open Accordion shows the last one. */
+  value?: string[];
+  /** The items open at first, by value, when value is not given. */
+  defaultValue?: string[];
+  /** Requests a change when controlled; reports every change otherwise. Items without a value report an internal id. */
+  onValueChange?: (value: string[]) => void;
+  style?: StyleProp<ViewStyle>;
+  testID?: string;
   children: ReactNode;
 }
+export type AccordionHeadingLevel = 2 | 3 | 4 | 5 | 6 | false;
 // The container tells each item how it is laid out, like ListSection tells its rows (no line after the last).
-const AccordionLayoutContext = createContext({ divider: false, separated: false, background: undefined as string | undefined });
+const AccordionLayoutContext = createContext({ divider: false, separated: false, background: undefined as string | undefined, headingLevel: 3 as AccordionHeadingLevel, region: true });
+/** Children with fragments opened, so an item inside a fragment still knows whether it is the last. */
+const flatten = (children: ReactNode): ReactNode[] => Children.toArray(children).flatMap(child =>
+  isValidElement<{ children?: ReactNode }>(child) && child.type === Fragment ? flatten(child.props.children) : [child]);
 export function KjunAccordion({
   multiple = false,
   tone = "muted",
   divider = true,
   separated = false,
+  headingLevel = 3,
+  region = true,
+  value,
+  defaultValue,
+  onValueChange,
+  style,
+  testID,
   children,
 }: KjunAccordionProps) {
   const { colors } = useKjunStyles(),
-    state = useAccordionState(multiple);
+    state = useAccordionState(multiple, { value, defaultValue, onValueChange });
   const background = (tone === "muted" ? colors.secondary : colors.surface) as string;
-  const items = Children.toArray(children);
+  const items = flatten(children);
+  const root = useRef<View>(null);
+  // On the web ↑↓ Home End move between this Accordion's headers, as in the WAI-ARIA accordion pattern (Web does the same).
+  useEffect(() => {
+    if (Platform.OS !== "web") return;
+    const node = root.current as unknown as HTMLElement | null;
+    if (!node?.addEventListener) return;
+    const keydown = (event: KeyboardEvent) => {
+      const triggers = Array.from(node.querySelectorAll<HTMLElement>("[data-kjun-accordion-trigger]"))
+        .filter(trigger => trigger.closest("[data-kjun-accordion]") === node && trigger.getAttribute("aria-disabled") !== "true");
+      const next = accordionKeyTarget(event.key, triggers.indexOf(event.target as HTMLElement), triggers.length);
+      if (next === null) return;
+      event.preventDefault();
+      triggers[next].focus();
+    };
+    node.addEventListener("keydown", keydown);
+    return () => node.removeEventListener("keydown", keydown);
+  }, []);
   return (
     <AccordionContext.Provider
       value={state}
     >
       <View
-        style={separated ? { gap: tokens.extensions.accordion.itemGap } : {
+        ref={root}
+        testID={testID}
+        {...(Platform.OS === "web" ? { dataSet: { kjunAccordion: "" } } : {})}
+        style={[separated ? { gap: tokens.extensions.accordion.itemGap } : {
           borderRadius: tokens.extensions.accordion.radius,
           overflow: "hidden",
           backgroundColor: background,
-        }}
+        }, style]}
       >
         {items.map((item, i) => (
-          <AccordionLayoutContext.Provider key={i} value={{ divider: divider && !separated && i < items.length - 1, separated, background: separated ? background : undefined }}>
+          <AccordionLayoutContext.Provider key={i} value={{ divider: divider && !separated && i < items.length - 1, separated, background: separated ? background : undefined, headingLevel, region }}>
             {item}
           </AccordionLayoutContext.Provider>
         ))}
@@ -94,6 +141,13 @@ export interface KjunAccordionItemProps {
   header?: ReactNode;
   /** The header's accessible name when header is not plain text. */
   ariaLabel?: string;
+  /** Names the item in the Accordion's value, defaultValue and onValueChange. */
+  value?: string;
+  /** Information at the end of the header, before the chevron, such as a status badge, an amount or a count.
+   * It is part of the header button, so no buttons or links. */
+  trailing?: ReactNode;
+  style?: StyleProp<ViewStyle>;
+  testID?: string;
   children: ReactNode;
 }
 export function KjunAccordionItem({
@@ -109,6 +163,10 @@ export function KjunAccordionItem({
   onAfterOpen,
   onAfterClose,
   keepMounted = false,
+  value,
+  trailing,
+  style,
+  testID,
   children,
 }: KjunAccordionItemProps) {
   const controlled = openProp !== undefined,
@@ -116,11 +174,13 @@ export function KjunAccordionItem({
     { colors } = useKjunStyles(),
     group = controlled ? null : context,
     id = "kjun-" + useId(),
+    // The group knows the item by its value, or by its own id without one.
+    key = value ?? id,
     [own, setOwn] = useState(defaultOpen),
-    open = controlled ? openProp : group ? group.opened.has(id) : own;
+    open = controlled ? openProp : group ? group.opened.has(key) : own;
   // Uncontrolled items report each real change, including a sibling closing them. A defaultOpen item in an
   // Accordion opens once it registers after mount; that is its starting state, not a change.
-  const reported = useRef(open), notify = useRef(onOpenChange), registering = useRef(!!group && defaultOpen);
+  const reported = useRef(open), notify = useRef(onOpenChange), registering = useRef(!!group && !group.controlled && defaultOpen);
   notify.current = onOpenChange;
   useEffect(() => {
     if (registering.current) { if (open) { registering.current = false; reported.current = open; } return; }
@@ -136,24 +196,30 @@ export function KjunAccordionItem({
   const inset = geometry.paddingX + (icon ? geometry.leadingWidth + geometry.headerGap : 0);
   const wrapping = Platform.OS === 'web' ? { wordBreak: 'keep-all', overflowWrap: 'anywhere' } as TextStyle : {};
   useEffect(() => {
-    return group?.register(id, defaultOpen);
+    return group?.register(key, defaultOpen);
   }, []);
+  const plainTrailing = typeof trailing === "string" || typeof trailing === "number" ? String(trailing) : "";
+  const web = Platform.OS === "web";
+  // On the web the header button sits in a heading of the Accordion's level, as on Web; a device has no heading inside a button.
+  const heading = (node: ReactNode) => web && layout.headingLevel
+    ? <View role="heading" aria-level={layout.headingLevel}>{node}</View> : node;
   return (
     // Hover and press paint the whole item, header and open body together, like Web.
-    <View style={{ backgroundColor: !disabled && (pressed || hovered) ? colors.hover : layout.background,
-      ...(layout.separated ? { borderRadius: geometry.radius, overflow: "hidden" as const } : {}) }}>
-      <Pressable
+    <View testID={testID} style={[{ backgroundColor: !disabled && (pressed || hovered) ? colors.hover : layout.background,
+      ...(layout.separated ? { borderRadius: geometry.radius, overflow: "hidden" as const } : {}) }, style]}>
+      {heading(<Pressable
+        {...(web ? { dataSet: { kjunAccordionTrigger: "" } } : {})}
         nativeID={id + "-heading"}
         accessibilityRole="button"
         // The accordion clips its items to rounded corners; an inset ring with the same radius stays whole.
         focusRingInset
         focusRingRadius={tokens.extensions.accordion.radius}
         // A custom header is read as rendered unless ariaLabel names it; the title stands in only without one.
-        accessibilityLabel={ariaLabel ?? (header ? undefined : description ? title + ", " + description : title)}
+        accessibilityLabel={ariaLabel ?? (header ? undefined : [title, description, plainTrailing].filter(Boolean).join(", "))}
         {...(Platform.OS === "web" ? { "aria-controls": id + "-panel" } : {})}
         accessibilityState={{ expanded: open, disabled }}
         disabled={disabled}
-        onPress={() => { registering.current = false; controlled ? onOpenChange?.(!open) : group ? group.toggle(id) : setOwn(!own); }}
+        onPress={() => { registering.current = false; controlled ? onOpenChange?.(!open) : group ? group.toggle(key) : setOwn(!own); }}
         onPressIn={() => setPressed(true)}
         onPressOut={() => setPressed(false)}
         onHoverIn={() => setHovered(true)}
@@ -176,15 +242,18 @@ export function KjunAccordionItem({
           {content(header || title, { ...typeStyle("control"), ...wrapping })}
           {!!description && <KText style={{ ...typeStyle("caption"), ...wrapping, marginTop: geometry.descriptionGap, color: colors.textSecondary }}>{description}</KText>}
         </View>
+        {hasContent(trailing) && <View style={{ flexShrink: 0, maxWidth: `${geometry.trailingMaxPercent}%`, flexDirection: "row", alignItems: "center", justifyContent: "flex-end" }}>
+          {content(trailing, { ...typeStyle("label"), ...wrapping, color: colors.textSecondary, textAlign: "right" })}
+        </View>}
         <Animated.View style={{ flexShrink: 0, transform: [{ rotate: rotation.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "180deg"] }) }] }}>
           <KjunIcon name="chevron-down" size={geometry.iconSize} color={colors.textTertiary} />
         </Animated.View>
-      </Pressable>
+      </Pressable>)}
       <Collapse open={open} keepMounted={keepMounted} onSettled={settled => (settled ? onAfterOpen : onAfterClose)?.()}>
         <View
           nativeID={id + "-panel"}
           // On Native Web the open body is a region named by its header, as on Web.
-          {...(Platform.OS === "web" ? { role: "region" as const, "aria-labelledby": id + "-heading" } : {})}
+          {...(web && layout.region ? { role: "region" as const, "aria-labelledby": id + "-heading" } : {})}
           style={{ paddingLeft: inset, paddingRight: geometry.paddingX, paddingBottom: geometry.contentPaddingBottom }}
         >
           {content(children, { ...typeStyle("body"), ...wrapping, color: colors.text })}

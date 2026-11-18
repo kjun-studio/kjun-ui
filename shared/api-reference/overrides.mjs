@@ -549,6 +549,41 @@ set("Card", {
   footerAlign: { default: "start", summary: "푸터 내용의 정렬입니다. end는 확인·취소처럼 오른쪽 끝에 두는 행동에 씁니다(8px 간격, 넘치면 줄바꿈). 카드 안 행동은 secondary 버튼을 기본으로 권장합니다." },
 });
 set("Card", { onPress: "pressable 카드를 누를 때 호출합니다. 비활성 카드에서는 호출하지 않습니다." }, "native");
+set("Card", {
+  href: "카드 전체를 하나의 링크(a 요소)로 만듭니다. 다른 페이지로 가는 카드에 씁니다. pressable처럼 hover 상승·누름·초점 링이 생기며, 안에 버튼·링크를 넣지 마세요. 라우터를 쓰면 클릭 처리에서 기본 이동을 막고 라우터로 이동하세요.",
+  target: "링크 카드를 열 대상입니다(예: _blank). _blank면 rel을 주지 않을 때 noopener noreferrer를 붙입니다.",
+  rel: "링크 카드의 rel입니다. 생략하면 target이 _blank일 때 noopener noreferrer입니다.",
+});
+set("Card", {
+  disabled: { default: "false", summary: "pressable·링크 카드의 누름을 막고 흐리게 표시합니다. 링크 카드는 주소 없이 link 역할만 남습니다." },
+  ariaLabel: "pressable·링크 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
+});
+set("Card", {
+  href: "카드 전체를 하나의 링크로 만듭니다. Native Web에서는 a 요소로 그리고, 기기에서는 주소로 이동하지 않으므로 onPress에서 앱 라우터로 이동하세요(개발 모드 경고).",
+  target: "Native Web에서 링크 카드를 열 대상입니다(예: _blank).",
+  rel: "Native Web 링크 카드의 rel입니다. 생략하면 target이 _blank일 때 noopener noreferrer입니다.",
+  testID: "카드 바깥 View의 testID입니다.",
+  nativeID: "카드 바깥 View의 nativeID입니다(웹에서는 요소 id). aria-labelledby 등에 씁니다.",
+}, "native");
+set("Accordion", {
+  value: { type: "string[]", summary: "열린 항목을 앱이 제어합니다(각 항목의 value로 지정, Vue v-model). 하나만 펼침이면 마지막 값만 엽니다. 제어하면 항목의 defaultOpen은 적용하지 않습니다." },
+  defaultValue: { type: "string[]", summary: "value 없이 처음 열어 둘 항목들의 value입니다." },
+  onValueChange: "제어할 때는 헤더를 누르면 바뀔 값을 요청하고, 제어하지 않을 때는 열린 항목이 바뀔 때마다 알립니다. value가 없는 항목은 내부 id로 들어갑니다.",
+});
+set("Accordion", { className: "바깥 요소의 class입니다.", style: "바깥 요소의 style입니다.", id: "바깥 요소의 id입니다." }, "react");
+set("Accordion", {
+  headingLevel: { type: "2 | 3 | 4 | 5 | 6 | false", default: "3", summary: "Native Web에서 각 헤더를 감쌀 제목 수준(aria-level)입니다. 기기에서는 헤더가 하나의 버튼이라 제목 역할을 함께 줄 수 없습니다." },
+  region: { default: "true", summary: "Native Web에서 펼친 본문을 헤더 이름의 영역(region)으로 알립니다. 항목이 많으면 false로 끄세요." },
+  style: "바깥 View의 style입니다.",
+  testID: "바깥 View의 testID입니다.",
+}, "native");
+set("AccordionItem", {
+  value: "Accordion의 value·defaultValue·onValueChange에서 이 항목을 가리키는 이름입니다.",
+  trailing: "헤더 끝, 셰브론 앞에 두는 정보입니다(상태 배지·금액·건수). 행 세로 가운데에 보조 글자색 label로 그리고 최대 폭은 35%입니다. 헤더 버튼의 일부이므로 버튼·링크는 넣지 말고, 글자는 헤더 이름에 함께 읽힙니다(Vue는 trailing 슬롯).",
+});
+set("AccordionItem", { className: "항목 바깥 요소의 class입니다.", style: "항목 바깥 요소의 style입니다.", id: "항목 바깥 요소의 id입니다." }, "react");
+set("AccordionItem", { style: "항목 바깥 View의 style입니다.", testID: "항목 바깥 View의 testID입니다." }, "native");
+
 set("Progress", {
   shape: { default: "bar", summary: "bar는 막대, circle은 원형입니다. 원형 지름·선 굵기는 progress.circle 토큰(sm 24·md 48·lg 64)이고, label·subLabel은 원 아래 가운데에 둡니다. showLabel 퍼센트는 md 이상에서 원 가운데에만 표시합니다." },
 });

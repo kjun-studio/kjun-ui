@@ -351,6 +351,7 @@
   --_kjun-extension-accordion-leading-icon-size: 20px;
   --_kjun-extension-accordion-description-gap: 4px;
   --_kjun-extension-accordion-item-gap: 8px;
+  --_kjun-extension-accordion-trailing-max-percent: 35%;
   --_kjun-extension-tabs-height: 44px;
   --_kjun-extension-tabs-compact-height: 32px;
   --_kjun-extension-tabs-padding-x: 10px;
@@ -1136,6 +1137,7 @@
   --_kjun-state-opacity-selected-within: 0.5;
   --_kjun-state-opacity-muted: 0.55;
   --_kjun-state-scale-pressed: 0.98;
+  --_kjun-state-scale-surface-pressed: 0.99;
   --_kjun-state-focus-width: 2px;
   --_kjun-state-focus-offset: 2px;
   --_kjun-state-focus-choice-offset: 3px;

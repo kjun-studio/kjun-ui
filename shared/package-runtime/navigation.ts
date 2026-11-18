@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { registerOpened, toggleOpened, trimToSingle, unregisterOpened } from "./accordion-state";
+import { openedFromValue, registerOpened, toggleOpened, trimToSingle, unregisterOpened } from "./accordion-state";
 
 export function useInitialTab(value: string, candidate: string | undefined, change: (name: string) => void) {
   const requested = useRef(new Set<string>());
@@ -11,17 +11,29 @@ export function useInitialTab(value: string, candidate: string | undefined, chan
   }, [value, candidate, change]);
 }
 
-export function useAccordionState(multiple: boolean) {
-  const [opened, setOpened] = useState<ReadonlySet<string>>(new Set<string>());
+/** Which items of an Accordion are open. With value the group is controlled: it shows value only and onValueChange
+ * requests each change; without it the group keeps its own set (from defaultValue and the items' defaultOpen) and reports changes. */
+export function useAccordionState(multiple: boolean, control: { value?: readonly string[]; defaultValue?: readonly string[]; onValueChange?: (value: string[]) => void } = {}) {
+  const controlled = control.value !== undefined;
+  const [own, setOwn] = useState<ReadonlySet<string>>(() => openedFromValue(control.defaultValue, multiple));
+  const opened = controlled ? openedFromValue(control.value, multiple) : own;
+  const latest = useRef({ opened, multiple, controlled, onValueChange: control.onValueChange });
+  latest.current = { opened, multiple, controlled, onValueChange: control.onValueChange };
   useEffect(() => {
-    if (!multiple) setOpened(trimToSingle);
+    if (!multiple && !controlled) setOwn(trimToSingle);
   }, [multiple]);
   return {
     opened,
-    toggle: (id: string) => setOpened(previous => toggleOpened(previous, id, multiple)),
+    controlled,
+    toggle: (id: string) => {
+      const current = latest.current, next = toggleOpened(current.opened, id, current.multiple);
+      if (!current.controlled) setOwn(next);
+      current.onValueChange?.([...next]);
+    },
     register: (id: string, defaultOpen: boolean) => {
-      setOpened(previous => registerOpened(previous, id, defaultOpen, multiple));
-      return () => setOpened(previous => unregisterOpened(previous, id));
+      // A controlled group shows its value only, so an item's defaultOpen does not apply there.
+      if (!latest.current.controlled) setOwn(previous => registerOpened(previous, id, defaultOpen, latest.current.multiple));
+      return () => { if (!latest.current.controlled) setOwn(previous => unregisterOpened(previous, id)); };
     },
   };
 }

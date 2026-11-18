@@ -29,6 +29,10 @@ createApp(defineComponent(() => () => (
       {box('side-media', 420, { mediaPosition: 'start', title: '가로 카드' }, { media: () => <div data-testid="side-media" style={{ background: '#7ba796' }} />, footer: () => button('열기'), default: () => '썸네일 옆 본문' })}
       {box('aspect', 320, { mediaAspect: 'wide', title: '비율 카드' }, { media: () => <div data-testid="aspect-media" style={{ background: '#7ba796' }} /> })}
       {box('node-title', 300, {}, { title: () => <KjunText>{{ default: () => '노드 제목 12' }}</KjunText> })}
+      {box('link', 300, { title: '링크 카드', href: '#card-link', onClick: press })}
+      {box('link-disabled', 300, { title: '막힌 링크 카드', href: '#card-link', disabled: true, onClick: press })}
+      {box('guarded', 300, { title: '막는 카드', pressable: true, onClick: press, onKeydown: (event: KeyboardEvent) => { if (event.key === 'Enter') event.preventDefault(); } })}
+      <div data-case="side-footer" style={{ width: '420px' }}><KjunCard mediaPosition="start" dividers>{{ media: () => <div style={{ background: '#7ba796' }} />, footer: () => <span>푸터만</span> }}</KjunCard></div>
     </main>,
     <output data-testid="presses">{String(presses.value)}</output>,
   ] }}</KjunProvider>

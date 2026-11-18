@@ -81,13 +81,16 @@
 .kjun-card[data-dividers="false"]:not([data-body-padding="none"]) > .kjun-card-body + .kjun-card-footer,
 .kjun-card[data-dividers="false"] > .kjun-card-header + .kjun-card-footer { padding-top: 0; }
 .kjun-card[data-dividers="true"] > .kjun-card-header:has(+ .kjun-card-body) { border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-card-border); }
-.kjun-card[data-dividers="true"] > .kjun-card-footer:not(:first-child) { border-top: var(--_kjun-border-default-width) solid var(--_kjun-card-border); }
-/* A pressable card is one button: it lifts on hover, presses in on activation and shows the focus ring. */
+/* Side media is a column, not a part above the footer: a footer alone beside it draws no line (as on Native). */
+.kjun-card[data-dividers="true"]:not([data-media="start"]) > .kjun-card-footer:not(:first-child),
+.kjun-card[data-dividers="true"][data-media="start"] > .kjun-card-footer:not(.kjun-card-media + *) { border-top: var(--_kjun-border-default-width) solid var(--_kjun-card-border); }
+/* A pressable card is one button and a link card (href) one link: it lifts on hover, presses in on activation and shows the focus ring. */
+a.kjun-card { display: block; color: var(--_kjun-card-text); text-decoration: none; }
 .kjun-card[data-pressable] { box-shadow: var(--_kjun-card-shadow); cursor: pointer; transition: box-shadow var(--_kjun-motion-control) var(--_kjun-ease-out), transform var(--_kjun-motion-control) var(--_kjun-ease-out); }
-/* Hover lifts one step: flat to raised, raised to floating. */
+/* Hover lifts one step: flat to raised, raised to lifted. */
 .kjun-card[data-pressable]:hover:not([aria-disabled="true"]) { box-shadow: var(--_kjun-elevation-raised); }
 .kjun-card[data-pressable][data-elevation="raised"]:hover:not([aria-disabled="true"]) { box-shadow: var(--_kjun-elevation-lifted); }
-.kjun-card[data-pressable]:active:not([aria-disabled="true"]) { transform: scale(0.99); }
+.kjun-card[data-pressable]:active:not([aria-disabled="true"]) { transform: scale(var(--_kjun-state-scale-surface-pressed)); }
 .kjun-card[data-pressable]:focus-visible { outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset: var(--_kjun-state-focus-offset); }
 .kjun-card[data-pressable][aria-disabled="true"] { cursor: not-allowed; opacity: var(--_kjun-state-opacity-disabled); }
 @media (prefers-reduced-motion: reduce) { .kjun-card[data-pressable] { transition: none; } .kjun-card[data-pressable]:active { transform: none; } }

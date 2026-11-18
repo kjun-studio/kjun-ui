@@ -34,3 +34,9 @@ export function accordionKeyTarget(key: string, index: number, count: number): n
     default: return null;
   }
 }
+
+/** The open set an Accordion's value or defaultValue names; a single-open Accordion keeps only the last one. */
+export function openedFromValue(value: readonly string[] | undefined, multiple: boolean): OpenedItems {
+  const opened = new Set(value ?? []);
+  return multiple ? opened : trimToSingle(opened);
+}

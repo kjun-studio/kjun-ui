@@ -120,7 +120,8 @@
       "leadingWidth": { "$ref": "extensions.list.leadingWidth" },
       "leadingIconSize": { "$ref": "extensions.list.iconSize" },
       "descriptionGap": { "$ref": "extensions.list.descriptionGap" },
-      "itemGap": { "$ref": "dimension.value8" }
+      "itemGap": { "$ref": "dimension.value8" },
+      "trailingMaxPercent": { "$ref": "extensions.list.trailingMaxPercent" }
     },
     "tabs": {
       "height": 44,

@@ -350,7 +350,8 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
     case "KjunAccordionItem":
       return h("KjunAccordion", { tone: settings.tone, multiple: settings.multiple, divider: !!settings.divider, separated: !!settings.separated }, [
         h("KjunAccordionItem", { title: "첫 항목", disabled: !!settings.itemDisabled, ...(settings.detail ? { icon: "cash", description: "카드 2개 등록됨" } : {}) }, "첫 내용"),
-        h("KjunAccordionItem", { title: "둘째 항목", ...(settings.detail ? { icon: "bell", description: "푸시와 이메일" } : {}) }, "둘째 내용"),
+        h("KjunAccordionItem", { title: "둘째 항목", ...(settings.detail ? { icon: "bell", description: "푸시와 이메일" } : {}) }, "둘째 내용",
+          settings.trailing ? { trailing: h("KjunBadge", { variant: "info" }, "새 알림 2") } : undefined),
       ]);
     case "KjunModal":
     case "KjunDrawer":

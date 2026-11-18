@@ -152,7 +152,41 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(at(page, 'node-title').getByRole('heading', { level: 3 })).toContainText('노드 제목 12');
     });
 
+    test('href makes the whole card one link with no heading; disabled keeps the link role without an address', async ({ page }) => {
+      const link = at(page, 'link').getByRole('link', { name: '링크 카드' });
+      await expect(link).toHaveAttribute('href', '#card-link');
+      await expect(at(page, 'link').getByRole('heading')).toHaveCount(0);
+      await link.click();
+      await expect(page.getByTestId('presses')).toHaveText('1');
+      const blocked = at(page, 'link-disabled').getByRole('link', { name: '막힌 링크 카드' });
+      await expect(blocked).toHaveAttribute('aria-disabled', 'true');
+      await expect(blocked).not.toHaveAttribute('href', /.*/);
+      await blocked.click({ force: true });
+      await expect(page.getByTestId('presses')).toHaveText('1');
+    });
+
+    test('a link card lifts on hover like a pressable card', async ({ page }) => {
+      const link = root(page, 'link');
+      const before = await link.evaluate(el => getComputedStyle(el).boxShadow);
+      await link.hover();
+      await expect.poll(() => link.evaluate(el => getComputedStyle(el).boxShadow)).not.toBe(before);
+    });
+
     if (platform !== 'native') {
+      test('a footer alone beside side media draws no divider, as on Native', async ({ page }) => {
+        await expect(at(page, 'side-footer').locator('.kjun-card-footer')).toHaveCSS('border-top-width', '0px');
+      });
+
+      test('a keydown listener runs first and can stop the press', async ({ page }) => {
+        const guarded = root(page, 'guarded');
+        await guarded.focus();
+        await guarded.dispatchEvent('keydown', { key: 'Enter' });
+        await expect(page.getByTestId('presses')).toHaveText('0');
+        await guarded.dispatchEvent('keydown', { key: ' ' });
+        await guarded.dispatchEvent('keyup', { key: ' ' });
+        await expect(page.getByTestId('presses')).toHaveText('1');
+      });
+
       test('header buttons wrap through the button wrap contract', async ({ page }) => {
         await expect(at(page, 'narrow-button').getByRole('button')).toHaveAttribute('data-wrap', /.*/);
       });
@@ -176,7 +210,7 @@ for (const platform of ['react', 'vue3', 'native']) {
         await openFixture(page, platform, '', 'card-design', 'development');
         await page.evaluate(() => (window as any).addNestedControl());
         await expect(at(page, 'pressable').getByText('안쪽 링크')).toBeVisible();
-        await expect.poll(() => warnings.some(text => text.includes('pressable card contains buttons or links'))).toBe(true);
+        await expect.poll(() => warnings.some(text => text.includes('pressable or link card contains buttons or links'))).toBe(true);
       });
     }
   });

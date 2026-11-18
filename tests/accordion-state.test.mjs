@@ -24,3 +24,10 @@ test('arrow keys wrap between headers and Home/End jump to the ends', () => {
   assert.equal(accordionKeyTarget('End', 0, 3), 2);
   assert.equal(accordionKeyTarget('Tab', 0, 3), null);
 });
+
+test('a value names the open items and a single-open accordion keeps the last one', async () => {
+  const { openedFromValue } = await import('../shared/package-runtime/accordion-state.ts');
+  assert.deepEqual([...openedFromValue(['a', 'b'], true)], ['a', 'b']);
+  assert.deepEqual([...openedFromValue(['a', 'b'], false)], ['b']);
+  assert.deepEqual([...openedFromValue(undefined, false)], []);
+});
