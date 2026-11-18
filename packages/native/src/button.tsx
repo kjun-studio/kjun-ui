@@ -287,6 +287,8 @@ export function KjunButton(input: KjunButtonProps) {
               navigation && (prefixIcon || suffixIcon || !hasContent) ? iconSize : 0)) / 2),
             ...(formActions?.stacked ? { width: '100%' as const, alignSelf: 'stretch' as const } : {}),
           } : {}),
+          // Bare ghost actions read only by their ink, so disabled ones also take the disabled opacity, as on the web.
+          ...(disabled && (variant === "ghost" || variant === "danger-ghost") ? { opacity: tokens.states.opacity.disabled } : {}),
           ...(link ? { height: undefined, minHeight: 0, minWidth: undefined, width: undefined, paddingHorizontal: 0, paddingLeft: 0, paddingRight: 0, borderRadius: 0 } : {}),
         },
         style,
@@ -301,6 +303,8 @@ export function KjunButton(input: KjunButtonProps) {
           {hasContent && <FontText numberOfLines={navigation?.slot ? 1 : undefined} ellipsizeMode="tail" style={{ fontFamily,
             ...typeStyle(tokens.button.typography[size]),
             color, opacity: overlayLoading ? 0 : 1,
+            // A link is underlined at rest, like KjunExternalLink, so it reads as one in body text of the same colour.
+            ...(link ? { textDecorationLine: 'underline' as const } : {}),
             ...(multiline || navigation ? { flexShrink: 1, minWidth: 0, textAlign: 'center' as const } : {}),
           }}>{children}</FontText>}
           {!!suffixIcon && <View style={{ opacity: busy && prefixIcon ? 0 : 1 }}>

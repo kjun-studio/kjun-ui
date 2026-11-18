@@ -21,7 +21,7 @@ export interface ExampleContext {
 }
 export const buttonComparisons: Record<string, { caption: string; label?: string; props?: Record<string, any>; prefixNode?: Record<string, any> }[]> = {
   "크기": ["xs", "sm", "md", "lg", "xl"].map(size => ({ caption: size, label: "저장", props: { size } })),
-  "변형": ["primary", "secondary", "ghost", "danger", "danger-ghost", "success", "warning"].map(variant => ({ caption: variant, label: variant.includes("danger") ? "삭제" : "계속하기", props: { variant } })),
+  "변형": ["primary", "secondary", "ghost", "danger", "danger-ghost", "success", "warning", "link"].map(variant => ({ caption: variant, label: variant.includes("danger") ? "삭제" : variant === "link" ? "자세히 보기" : "계속하기", props: { variant } })),
   "라벨·아이콘": [
     { caption: "짧은 문구", label: "저장" }, { caption: "한글", label: "변경 사항 저장" },
     { caption: "영문", label: "Save changes" },

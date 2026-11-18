@@ -99,10 +99,11 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.mouse.up();
       await page.mouse.move(0, 0);
     }
-    // A disabled link stays a bare line of text: no neutral fill behind it.
+    // A disabled link stays a bare line of text: no neutral fill behind it. Bare ghost actions also take the disabled
+    // opacity, so they sit clearly apart from an enabled ghost.
     for (const variant of ['primary', 'secondary', 'danger', 'success', 'warning', 'ghost', 'danger-ghost', 'link']) {
       await configure(page, { variant, disabled: true, loading: false });
-      await expect(button(page)).toHaveCSS('opacity', '1');
+      await expect(button(page)).toHaveCSS('opacity', variant.includes('ghost') ? '0.5' : '1');
       await paint(variant.includes('ghost') || variant === 'link' ? 'rgba(0, 0, 0, 0)' : 'rgb(216, 224, 232)');
       await expect.poll(() => ink(page)).toBe('rgb(136, 153, 170)');
     }
@@ -186,5 +187,18 @@ for (const platform of ['react', 'vue3', 'native']) {
     await configure(page, { loading: false, disabled: true });
     await expect(node).toHaveCount(1);
     await expect.poll(() => node.locator('..').evaluate(el => Number(getComputedStyle(el).opacity))).toBeLessThan(1);
+  });
+
+  test(`${platform}: a link button is underlined at rest and keeps no shape`, async ({ page }) => {
+    await openFixture(page, platform, '', 'button-design');
+    await configure(page, { variant: 'link', disabled: false, loading: false });
+    // The line belongs to the label text on Native (Text) and to the button on the web.
+    const line = () => button(page).evaluate((el, native) => {
+      const text = native ? el.querySelector('[dir="auto"]') || el : el;
+      return getComputedStyle(text).textDecorationLine;
+    }, platform === 'native');
+    await expect.poll(line).toBe('underline');
+    await expect(button(page)).toHaveCSS('border-radius', '0px');
+    await expect(button(page)).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   });
 }

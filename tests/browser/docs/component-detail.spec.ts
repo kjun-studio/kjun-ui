@@ -169,10 +169,11 @@ for (const platform of ['react', 'vue3', 'native']) test(`${platform}: button do
   const buttons = demo.getByRole('button');
   await expect(buttons).toHaveCount(1);
   expect((await buttons.first().boundingBox())!.width).toBeLessThan(150);
-  for (const [preset, count] of [['크기 비교', 5], ['변형 비교', 7], ['라벨·아이콘 비교', 7], ['상태 비교', 3]] as const) {
+  for (const [preset, count] of [['크기 비교', 5], ['변형 비교', 8], ['라벨·아이콘 비교', 8], ['상태 비교', 3]] as const) {
     await choose('프리셋', preset);
     await expect(buttons).toHaveCount(count);
-    const radii = preset === '크기 비교' ? [8, 10, 12, 14, 16] : Array(count).fill(12);
+    // A link button has no shape of its own (radius 0); it closes the variant row.
+    const radii = preset === '크기 비교' ? [8, 10, 12, 14, 16] : preset === '변형 비교' ? [...Array(7).fill(12), 0] : Array(count).fill(12);
     for (const [index, btn] of (await buttons.all()).entries()) await expect(btn).toHaveCSS('border-radius', `${radii[index]}px`);
     if (preset === '크기 비교') {
       await expect.poll(() => buttons.evaluateAll(items => items.map(el => el.getBoundingClientRect().height))).toEqual([24, 32, 40, 48, 56]);
@@ -182,13 +183,14 @@ for (const platform of ['react', 'vue3', 'native']) test(`${platform}: button do
     if (preset === '상태 비교') {
       const widths = await buttons.evaluateAll(items => items.map(el => el.getBoundingClientRect().width));
       expect(new Set(widths).size).toBe(1);
-      await expect(buttons.nth(1)).toBeDisabled();
+      // Loading keeps focus: aria-disabled on the web, aria-busy alone on React Native Web.
+      await (platform === 'native' ? expect(buttons.nth(1)).toHaveAttribute('aria-busy', 'true') : expect(buttons.nth(1)).toBeDisabled());
       await expect(buttons.nth(2)).toBeDisabled();
     }
   }
   await choose('색상 예제', '어두운 배경 예제');
   await choose('프리셋', '라벨·아이콘 비교');
-  await expect(buttons).toHaveCount(7);
+  await expect(buttons).toHaveCount(8);
   await captureReview(preview, { path: `artifacts/button-design-${platform}-dark.png` });
   await choose('프리셋', '전체 너비 · 375px');
   await expect(buttons).toHaveCount(1);

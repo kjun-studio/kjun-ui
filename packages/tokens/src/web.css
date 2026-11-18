@@ -50,8 +50,14 @@
   background: var(--_kjun-color-button-secondary-active);
 }
 /* A link button hugs its text: no fill, no inset, the brand ink, underlined on hover and keyboard focus. */
-.kjun-button[data-variant="link"] { background: transparent; color: var(--_kjun-color-brand); }
-.kjun-button[data-variant="link"]:is(:hover, [data-focus-visible], :focus-visible):not(:disabled, [aria-busy="true"]) { text-decoration: underline; }
+/* A link is underlined at rest, like KjunExternalLink, so it reads as one even when the brand colour is the text colour;
+   hover and keyboard focus thicken the line. */
+.kjun-button[data-variant="link"] {
+  background: transparent; color: var(--_kjun-color-brand);
+  text-decoration: underline; text-decoration-thickness: var(--_kjun-border-default-width);
+  text-underline-offset: var(--_kjun-geometry-dimension-value2);
+}
+.kjun-button[data-variant="link"]:is(:hover, [data-focus-visible], :focus-visible):not(:disabled, [aria-busy="true"]) { text-decoration-thickness: var(--_kjun-geometry-dimension-value2); }
 .kjun-button[data-variant="link"]:active:not(:disabled, [aria-busy="true"]) { color: var(--_kjun-color-brand-active); }
 .kjun-button[data-variant="ghost"],
 .kjun-button[data-variant="danger-ghost"] {
@@ -104,6 +110,11 @@
 }
 .kjun-button[data-disabled="true"]:is([data-variant="ghost"], [data-variant="danger-ghost"], [data-variant="link"]) {
   background: transparent;
+}
+/* Bare ghost actions read only by their ink, so disabled ones also take the disabled opacity to sit clearly apart
+   from an enabled ghost (text-secondary ink). */
+.kjun-button[data-disabled="true"]:is([data-variant="ghost"], [data-variant="danger-ghost"]) {
+  opacity: var(--_kjun-state-opacity-disabled);
 }
 .kjun-button-label { display: inline-flex; align-items: center; }
 /* prefix/suffix nodes sit in the size's icon box; a larger node is clipped, not allowed to change the button's geometry. */
