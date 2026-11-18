@@ -7,6 +7,7 @@ export function PopoverDesignCases({ K }: { K: any }) {
   return <main>
     <div data-testid="anchor" style={{ position: 'absolute', left: config.left, top: config.top, width: config.width }}>
       <K.KjunPopover open={open} onOpenChange={setOpen} ariaLabel={config.noLabel ? undefined : "팝오버 디자인"} placement={config.placement} noPadding={config.noPadding} matchTriggerWidth={config.matchTriggerWidth} width={config.panelWidth} maxHeight={config.maxHeight} focusOnOpen header={config.header ? '팝오버 제목' : undefined}
+        footer={config.footer ? <K.KjunFormActions confirmText="적용" cancelText="초기화" /> : undefined}
         trigger={<K.KjunButton block variant="ghost">팝오버 열기</K.KjunButton>}>{config.lines ? Array.from({ length: config.lines }, (_, i) => <K.KjunText key={i}>{`줄 ${i + 1}`}</K.KjunText>)
           : config.formActions ? <>{config.text}<K.KjunFormActions confirmText="확인" cancelText="취소" /></>
           : config.action ? <>{config.text}<K.KjunButton>실행</K.KjunButton></> : config.text}</K.KjunPopover>

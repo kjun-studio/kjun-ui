@@ -355,6 +355,7 @@
       "children",
       "returnFocus",
       "header",
+      "footer",
       "modal",
       "anchorRect"
     ],
@@ -373,6 +374,7 @@
       "trigger",
       "children",
       "header",
+      "footer",
       "modal"
     ]
   },

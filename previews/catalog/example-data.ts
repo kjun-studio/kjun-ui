@@ -66,12 +66,13 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
     case "KjunPopover":
       return h(
         name,
-        { noPadding:settings.noPadding, manualTrigger: true, ariaLabel: "추가 정보", open: get("popoverOpen", false), onOpenChange: change("popoverOpen") },
-        [
-          h("Text", { style: { lineHeight: platform === "native" ? 20 : "20px" } }, "팝오버 내용"),
-          h("KjunFormActions", { showCancel: false, confirmText: "실행", onConfirm: () => message("팝오버 실행") }),
-        ],
-        { trigger: h("KjunButton", { variant: "ghost", ...action(() => set("popoverOpen", !get("popoverOpen", false))) }, "추가 정보") }
+        // The trigger opens and closes it on its own; the actions sit in the fixed footer.
+        { noPadding:settings.noPadding, ariaLabel: "추가 정보", open: get("popoverOpen", false), onOpenChange: change("popoverOpen") },
+        h("Text", { style: { lineHeight: platform === "native" ? 20 : "20px" } }, "팝오버 내용"),
+        {
+          trigger: h("KjunButton", { variant: "ghost" }, "추가 정보"),
+          footer: h("KjunFormActions", { showCancel: false, confirmText: "실행", onConfirm: () => message("팝오버 실행") }),
+        }
       );
     case "KjunDataState":
       return h("Stack", {}, [

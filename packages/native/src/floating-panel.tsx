@@ -12,6 +12,7 @@ isValidElement,
 useEffect,
 useLayoutEffect,
 useRef,
+useId,
 useState,
 type ReactElement,
 type ReactNode,
@@ -30,7 +31,7 @@ type ViewStyle
 import { AccessiblePressable as Pressable } from "./a11y";
 import { content } from "./internal";
 import { ScopedNativeModal } from "./overlay-host";
-import Svg, { Path } from "react-native-svg";
+import Svg, { Defs, LinearGradient, Path, Rect, Stop } from "react-native-svg";
 import { useKjunSafeArea, useKjunStyles } from "./provider";
 
 export function LayerTrigger({
@@ -103,7 +104,9 @@ export function FloatingPanel({
   focusOnOpen = false,
   reveal,
   header,
+  footer,
   popoverWidth = tokens.extensions.popover.width,
+  tooltipMaxWidth = tokens.extensions.tooltip.maxWidth,
   nonModal = false,
   optionsWidth,
 }: {
@@ -127,6 +130,10 @@ export function FloatingPanel({
   reveal?: RefObject<{ y: number; height: number } | null>;
   /** Popover header drawn above the scroll view, so only the body scrolls. */
   header?: ReactNode;
+  /** Popover footer drawn below the scroll view; the body fades out above it while more remains. */
+  footer?: ReactNode;
+  /** Tooltip width step (tooltip.maxWidths). */
+  tooltipMaxWidth?: number;
   /** Popover width step (popover.widths); matchTriggerWidth wins. */
   popoverWidth?: number;
   /** Popover modal={false}: screen readers are not confined to the panel. */
@@ -137,6 +144,14 @@ export function FloatingPanel({
   const m = useKjunMessages();
   ariaLabel ??= m.select;
   const [headerHeight, setHeaderHeight] = useState(0), [scrolled, setScrolled] = useState(false);
+  const [footerHeight, setFooterHeight] = useState(0), [more, setMore] = useState(false);
+  const scrollBox = useRef({ offset: 0, viewport: 0, content: 0 });
+  // Like Web's data-more: the body fades out above a footer while content remains below.
+  const measureMore = (next: Partial<typeof scrollBox.current>) => {
+    const box = scrollBox.current = { ...scrollBox.current, ...next };
+    setMore(box.content - box.viewport - box.offset > tokens.border.defaultWidth);
+  };
+  const fadeId = "kjun-popover-fade-" + useId().replace(/:/g, "");
   const panelRef = useRef<View>(null);
   const scroll = useRef<ScrollView>(null), viewport = useRef(0);
   const { colors } = useKjunStyles(),
@@ -180,7 +195,7 @@ export function FloatingPanel({
   const gap = field ? tokens.extensions.floating.fieldGap : tokens.extensions.floating.anchorGap;
   const contentSizedMenu = menu && !matchTriggerWidth;
   // Tooltips hug their text up to the maximum width, like Web.
-  const tooltipWidth = Math.min(Math.max(0, window.width - 2 * tokens.extensions.floating.viewportInset), tokens.extensions.tooltip.maxWidth);
+  const tooltipWidth = Math.min(Math.max(0, window.width - 2 * tokens.extensions.floating.viewportInset), tooltipMaxWidth);
   const maximumWidth = Math.max(0, window.width - 2 * tokens.extensions.floating.viewportInset);
   const minimumPanelWidth = Math.min(maximumWidth,
     Math.max(minimumWidth, optionsWidth ?? (menu || field ? tokens.extensions.menu.minimumWidth : 0)));
@@ -195,7 +210,7 @@ export function FloatingPanel({
   const available = Math.min(maxHeight ?? (field ? tokens.extensions.menu.listMaxHeight : tokens.extensions.floating.maxHeight), Math.max(0, window.height - edgeTop - edgeBottom)),
     // The scroll content leaves out the header and the panel border; both still take room when choosing a side.
     frame = tooltip || contentSizedMenu ? 0 : 2 * tokens.border.defaultWidth,
-    height = Math.min(panel.height + (header != null ? headerHeight : 0) + frame, available),
+    height = Math.min(panel.height + (header != null ? headerHeight : 0) + (footer != null ? footerHeight : 0) + frame, available),
     roomAbove = anchor.y - gap - edgeTop,
     roomBelow = window.height - anchor.y - anchor.height - gap - edgeBottom,
     // Either side flips when the panel does not fit and the other side has more room, like Web.
@@ -333,12 +348,16 @@ export function FloatingPanel({
           )}
           <ScrollView
             ref={scroll}
-            onLayout={(event) => { viewport.current = event.nativeEvent.layout.height; }}
+            onLayout={(event) => { viewport.current = event.nativeEvent.layout.height; if (footer != null) measureMore({ viewport: event.nativeEvent.layout.height }); }}
             keyboardShouldPersistTaps="handled"
-            {...(header != null ? { scrollEventThrottle: 16, onScroll: ({ nativeEvent }: { nativeEvent: { contentOffset: { y: number } } }) => setScrolled(nativeEvent.contentOffset.y > 0) } : {})}
-            style={{ maxHeight: available - (header != null ? headerHeight : 0) - frame, flexShrink: 1 }}
+            {...(header != null || footer != null ? { scrollEventThrottle: 16, onScroll: ({ nativeEvent }: { nativeEvent: { contentOffset: { y: number } } }) => {
+              setScrolled(nativeEvent.contentOffset.y > 0);
+              if (footer != null) measureMore({ offset: nativeEvent.contentOffset.y });
+            } } : {})}
+            style={{ maxHeight: available - (header != null ? headerHeight : 0) - (footer != null ? footerHeight : 0) - frame, flexShrink: 1 }}
             contentContainerStyle={{ padding: menu || field ? tokens.extensions.menu.padding : 0 }}
             onContentSizeChange={(width, height) => {
+              if (footer != null) measureMore({ content: height });
               if (contentSizedMenu) return;
               setSized(true);
               setPanel((previous) =>
@@ -350,6 +369,30 @@ export function FloatingPanel({
           >
             {children}
           </ScrollView>
+          {footer != null && more && (
+            <View pointerEvents="none" style={{ position: "absolute", left: 0, right: 0, bottom: footerHeight, height: tokens.extensions.scrollFade.width }}>
+              <Svg width="100%" height="100%">
+                <Defs><LinearGradient id={fadeId} x1="0%" y1="0%" x2="0%" y2="100%">
+                  <Stop offset="0" stopColor={colors.surface} stopOpacity={0} />
+                  <Stop offset="1" stopColor={colors.surface} stopOpacity={1} />
+                </LinearGradient></Defs>
+                <Rect width="100%" height="100%" fill={`url(#${fadeId})`} />
+              </Svg>
+            </View>
+          )}
+          {footer != null && (
+            <View
+              onLayout={({ nativeEvent: { layout } }) => setFooterHeight(layout.height)}
+              style={{
+                paddingTop: tokens.extensions.popover.gap,
+                paddingHorizontal: tokens.extensions.popover.padding,
+                paddingBottom: tokens.extensions.popover.padding,
+                gap: tokens.extensions.popover.gap,
+              }}
+            >
+              {content(footer)}
+            </View>
+          )}
         </Animated.View>
       </KeyboardAvoidingView>
     </ScopedNativeModal>

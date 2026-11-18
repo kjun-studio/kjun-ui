@@ -154,4 +154,33 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(await body.evaluate(el => getComputedStyle(el).maskImage)).toBe('none');
     }
   });
+
+  test(`${platform}: a footer stays below the scrolling body with the small actions, 12px under the body and 16px inside the edges`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.setViewportSize({ width: 1024, height: 768 });
+    await openFixture(page, platform, '', 'popover-design');
+    await configure(page, { footer: true, lines: 12, maxHeight: 200 });
+    await trigger(page).click();
+    const popup = panel(page, platform), apply = popup.getByRole('button', { name: '적용', exact: true });
+    await expect(apply).toBeVisible();
+    expect(Math.round((await rect(apply)).height)).toBe(32);
+    const p = await rect(popup), b = await rect(apply);
+    // 16px padding inside the 1px border, at the bottom and the end.
+    expect(b.y + b.height).toBeCloseTo(p.y + p.height - 17, 0);
+    expect(b.x + b.width).toBeCloseTo(p.x + p.width - 17, 0);
+    expect(Math.round(p.height)).toBe(200);
+    if (platform !== 'native') {
+      const body = page.locator('.kjun-popover-body'), footer = page.locator('.kjun-popover-footer');
+      await expect(footer).toHaveCSS('padding-top', '12px');
+      await expect(footer).toHaveCSS('box-shadow', 'none');
+      await expect(body).toHaveAttribute('data-more', '');
+      await body.evaluate(el => { el.scrollTop = el.scrollHeight; });
+      await expect(body).not.toHaveAttribute('data-more', '');
+      // The last line sits one body gap above the footer actions.
+      const last = await rect(page.getByText('줄 12', { exact: true })), footerBox = await rect(footer);
+      expect(Math.round(footerBox.y - (last.y + last.height))).toBe(0);
+    }
+    // The button still sits at the same place after scrolling.
+    expect(Math.round((await rect(apply)).y)).toBe(Math.round(b.y));
+  });
 }

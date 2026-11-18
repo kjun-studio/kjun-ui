@@ -32,7 +32,7 @@ const componentGroups = {
   drawer: [...layers, ...files('component-motion', 'size-contracts', 'native-layout', 'drawer-scroll')],
   popover: [...layers, ...files('popover-design', 'expanded', 'react-popover-trigger')],
   dropdown: [...layers, ...files('dropdown-design', 'dropdown-structure', 'dropdown-regressions', 'menu-button', 'controlled-state', 'expanded')],
-  tooltip: [...layers, ...files('expanded', 'size-contracts', 'accessibility-controls', 'refresh-button', 'menu-button', 'tooltip-lifecycle', 'dropdown-regressions')],
+  tooltip: [...layers, ...files('expanded', 'size-contracts', 'accessibility-controls', 'refresh-button', 'menu-button', 'tooltip-lifecycle', 'tooltip-behavior', 'dropdown-regressions')],
   icons: [...files('icon-render', 'icon-registry', 'icon-toggle', 'menu-button', 'button-design'), ...contracts, ...visuals],
   typography: files('typography', 'layout-primitives', 'color-font', 'geometry-tokens', 'card-layout'),
   i18n: files('i18n'),

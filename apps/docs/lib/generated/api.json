@@ -19642,6 +19642,13 @@
           "close"
         ],
         "source": "packages/vue3/src/popover.tsx"
+      },
+      {
+        "name": "footer",
+        "data": [
+          "close"
+        ],
+        "source": "packages/vue3/src/popover.tsx"
       }
     ],
     "react": [
@@ -19735,6 +19742,13 @@
         "required": false,
         "default": "—",
         "description": "Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel.\nA function receives close, for a close button in the header."
+      },
+      {
+        "name": "footer",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((close: () => void) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
+        "required": false,
+        "default": "—",
+        "description": "Fixed footer below the body (actions such as FormActions); only the body scrolls and fades above it.\nA function receives close."
       },
       {
         "name": "modal",
@@ -19842,6 +19856,13 @@
         "required": false,
         "default": "—",
         "description": "Fixed header above the body; only the body scrolls and maxHeight covers both. A function receives close."
+      },
+      {
+        "name": "footer",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((close: () => void) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
+        "required": false,
+        "default": "—",
+        "description": "Fixed footer below the body (actions such as FormActions); only the body scrolls and fades above it. A function receives close."
       },
       {
         "name": "width",

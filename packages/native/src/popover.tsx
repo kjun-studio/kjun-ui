@@ -22,6 +22,8 @@ import { KText,content } from "./internal";
 import { tokens } from "@kjun-ui/tokens";
 import { useKjunStyles } from "./provider";
 import { ActionSizeContext, popoverActionSize } from "../../../shared/package-runtime/action-size";
+import { installFocusVisible, isFocusVisible } from "../../../shared/package-runtime/focus-visible";
+import { isTooltipWarm, tooltipClosed, tooltipOpened } from "../../../shared/package-runtime/tooltip-warmup";
 export interface KjunPopoverProps {
   noPadding?: boolean;
   open?: boolean;
@@ -36,6 +38,8 @@ export interface KjunPopoverProps {
   placement?: "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end";
   /** Fixed header above the body; only the body scrolls and maxHeight covers both. A function receives close. */
   header?: ReactNode | ((close: () => void) => ReactNode);
+  /** Fixed footer below the body (actions such as FormActions); only the body scrolls and fades above it. A function receives close. */
+  footer?: ReactNode | ((close: () => void) => ReactNode);
   /** Width step (popover.widths): sm 192, md 240 (default), lg 320. matchTriggerWidth takes the trigger's width instead. */
   width?: "sm" | "md" | "lg";
   /** false stops confining screen readers to the panel; Native has no Tab order to release. */
@@ -55,6 +59,7 @@ export function KjunPopover({
   ariaLabel,
   placement = "bottom",
   header,
+  footer,
   width = "md",
   modal = true,
   trigger,
@@ -93,11 +98,12 @@ export function KjunPopover({
         // Named like the web dialog: the label, else a text header, else "details" (never the select default).
         ariaLabel={ariaLabel ?? (typeof header === "string" ? header : m.details)}
         header={header != null ? content(typeof header === "function" ? header(() => change(false)) : header, { ...typeStyle("control"), color: colors.text }) : undefined}
+        footer={footer != null ? <ActionSizeContext.Provider value={popoverActionSize}>{typeof footer === "function" ? footer(() => change(false)) : footer}</ActionSizeContext.Provider> : undefined}
         popoverWidth={tokens.extensions.popover.widths[width]}
         nonModal={!modal}
       >
         {/* Under a header the body starts right after the header's short gap, like Web. */}
-        <View style={{ padding: noPadding ? 0 : tokens.extensions.popover.padding, ...(header != null && !noPadding ? { paddingTop: 0 } : {}), gap: noPadding ? 0 : tokens.extensions.popover.gap }}>
+        <View style={{ padding: noPadding ? 0 : tokens.extensions.popover.padding, ...(header != null && !noPadding ? { paddingTop: 0 } : {}), ...(footer != null && !noPadding ? { paddingBottom: 0 } : {}), gap: noPadding ? 0 : tokens.extensions.popover.gap }}>
           <ActionSizeContext.Provider value={popoverActionSize}>
             {content(typeof children === "function" ? children(() => change(false)) : children,
               Platform.OS === "web" ? { wordBreak: "keep-all", overflowWrap: "anywhere" } as TextStyle : undefined)}
@@ -155,11 +161,21 @@ export function KjunTooltip({
     clearTimeout(timer.current);
     setOpen(false);
   };
-  const show = () => {
+  const show = (immediate = false) => {
     if (!scopeActive) return;
     clearTimeout(timer.current);
-    timer.current = setTimeout(() => setOpen(true), delay);
+    // Like react-aria, a delay waits only until one tooltip has opened (the warm-up).
+    if (immediate || delay <= 0 || isTooltipWarm()) setOpen(true);
+    else timer.current = setTimeout(() => setOpen(true), delay);
   };
+  const shown = open && !!message;
+  useEffect(() => {
+    if (!shown) return;
+    tooltipOpened();
+    return tooltipClosed;
+  }, [shown]);
+  // Web shows the hint on keyboard focus only; a pointer press focuses too and must not flash it.
+  useEffect(() => Platform.OS === "web" ? installFocusVisible(document) : undefined, []);
   useEffect(() => { if (!scopeActive) hide(); }, [scopeActive]);
   useEffect(() => () => clearTimeout(timer.current), []);
   useEffect(() => {
@@ -186,7 +202,8 @@ export function KjunTooltip({
     },
     onLongPress: (event) => {
       child?.props.onLongPress?.(event);
-      show();
+      // The long press already waited; it opens at once.
+      show(true);
     },
     delayLongPress: 500,
     onHoverIn: (event) => {
@@ -199,7 +216,7 @@ export function KjunTooltip({
     },
     onFocus: (event) => {
       child?.props.onFocus?.(event);
-      show();
+      if (Platform.OS !== "web" || isFocusVisible()) show(true);
     },
     onBlur: (event) => {
       child?.props.onBlur?.(event);
@@ -228,6 +245,7 @@ export function KjunTooltip({
         triggerRef={ref}
         placement={placement}
         ariaLabel={message}
+        tooltipMaxWidth={width ? tokens.extensions.tooltip.maxWidths[width] : tokens.extensions.tooltip.maxWidth}
       >
         <View
           style={{

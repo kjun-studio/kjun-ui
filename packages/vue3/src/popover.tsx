@@ -17,6 +17,7 @@ import { useLayer, usePopupExpanded } from "./runtime/layers";
 import { usePresence, useReducedMotion } from "./runtime/presence";
 import { KjunActionSize } from "./runtime/action-size";
 import { popoverActionSize } from "../../../shared/package-runtime/alert-action-size";
+import { isTooltipWarm, tooltipClosed, tooltipOpened } from "../../../shared/package-runtime/tooltip-warmup";
 
 const kjunPopoverProps = {
   /** Class/style for the dialog content; ordinary attrs belong to the trigger wrapper. */
@@ -43,7 +44,7 @@ const kjunPopoverProps = {
   anchorRect: { type: [Object, Function] as PropType<AnchorSource>, default: undefined },
 } as const;
 export type KjunPopoverProps = ExtractPublicPropTypes<typeof kjunPopoverProps>;
-/** v-model:open (optional). Slots: trigger({ open }), default({ close }). */
+/** v-model:open (optional). Slots: trigger({ open }), default({ close }), header({ close }), footer({ close }). */
 export const KjunPopover = defineComponent({
   name: "KjunPopover",
   inheritAttrs: false,
@@ -54,6 +55,8 @@ export const KjunPopover = defineComponent({
     default?: (scope: { close: () => void }) => VNodeChild;
     /** Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel. */
     header?: (scope: { close: () => void }) => VNodeChild;
+    /** Fixed footer below the body (actions such as FormActions); only the body scrolls and fades above it. */
+    footer?: (scope: { close: () => void }) => VNodeChild;
   }>,
   setup(props, { attrs, slots, emit }) {
     const m = useKjunMessages();
@@ -140,7 +143,7 @@ export const KjunPopover = defineComponent({
           {slots.trigger?.({ open: open.value })}
         </div>}
         <FloatingPanel open={open.value} onOpenChange={change} trigger={() => props.anchorRect !== undefined ? anchor.value : trigger.value} repositionKey={reposition.value}
-          inside={props.anchorRect !== undefined ? () => trigger.value : undefined} panelClass={"kjun-content-popover kjun-popover-width-" + props.width + (slots.header ? " kjun-popover-has-header" : "")} dialog={false}
+          inside={props.anchorRect !== undefined ? () => trigger.value : undefined} panelClass={"kjun-content-popover kjun-popover-width-" + props.width + (slots.header ? " kjun-popover-has-header" : "") + (slots.footer ? " kjun-popover-has-footer" : "")} dialog={false}
           placement={props.placement} matchTriggerWidth={props.matchTriggerWidth} maxHeight={props.maxHeight} flip={props.flip}
           nonModal={!props.modal}
           returnFocus={() => {
@@ -158,12 +161,13 @@ export const KjunPopover = defineComponent({
               class={["kjun-popover-dialog", props.panelClass, props.anchorRect !== undefined && !slots.trigger ? attrs.class : undefined]} role="dialog" tabindex={-1}
               aria-label={slots.header && !props.ariaLabel ? undefined : props.ariaLabel || m.value.details}
               aria-labelledby={slots.header && !props.ariaLabel ? id + "-header" : undefined}
-              style={[{ maxHeight: `calc(${typeof props.maxHeight === "number" ? props.maxHeight + "px" : props.maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`} - 2 * var(--_kjun-border-default-width))`, overflowY: slots.header ? undefined : "auto" },
+              style={[{ maxHeight: `calc(${typeof props.maxHeight === "number" ? props.maxHeight + "px" : props.maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`} - 2 * var(--_kjun-border-default-width))`, overflowY: slots.header || slots.footer ? undefined : "auto" },
                 props.panelStyle, props.anchorRect !== undefined && !slots.trigger ? attrs.style as StyleValue : undefined]}>
               {slots.header && <div id={id + "-header"} class="kjun-popover-header">{slots.header({ close: () => change(false) })}</div>}
-              {slots.header
+              {slots.header || slots.footer
                 ? <div class="kjun-popover-body" ref={trackBody as never}><div class="kjun-popover-content" data-no-padding={String(props.noPadding)}><KjunActionSize size={popoverActionSize}>{slots.default?.({ close: () => change(false) })}</KjunActionSize></div></div>
                 : <div class="kjun-popover-content" data-no-padding={String(props.noPadding)}><KjunActionSize size={popoverActionSize}>{slots.default?.({ close: () => change(false) })}</KjunActionSize></div>}
+              {slots.footer && <div class="kjun-popover-footer"><KjunActionSize size={popoverActionSize}>{slots.footer({ close: () => change(false) })}</KjunActionSize></div>}
               <FeedbackLayerOutlet />
             </section>
           ) }}
@@ -218,17 +222,34 @@ export const KjunTooltip = defineComponent({
     const show = (immediate: boolean) => {
       if (disabled()) return;
       clearTimeout(timer);
-      if (immediate || !props.delay) open.value = true;
+      // Like react-aria, a delay waits only until one tooltip has opened (the warm-up).
+      if (immediate || !props.delay || isTooltipWarm()) open.value = true;
       else timer = setTimeout(() => { open.value = true; }, props.delay);
     };
     const hide = () => { clearTimeout(timer); open.value = false; };
     const closeNow = () => { openTooltips.delete(closeNow); hide(); motion.skipExit(); };
+    let counted = false;
+    const count = (value: boolean) => {
+      if (value === counted) return;
+      counted = value;
+      if (value) tooltipOpened(); else tooltipClosed();
+    };
     watch(open, value => {
+      count(value);
       if (!value) return;
       for (const close of openTooltips) if (close !== closeNow) close();
       openTooltips.add(closeNow);
     }, { flush: "sync" });
-    onBeforeUnmount(() => openTooltips.delete(closeNow));
+    onBeforeUnmount(() => { openTooltips.delete(closeNow); count(false); });
+    // Like react-aria, scrolling anything that holds the trigger closes the tooltip at once.
+    const closeOnScroll = (event: Event) => {
+      if (anchor.value && event.target instanceof Node && event.target.contains(anchor.value)) closeNow();
+    };
+    watch(open, value => {
+      if (value) window.addEventListener("scroll", closeOnScroll, true);
+      else window.removeEventListener("scroll", closeOnScroll, true);
+    }, { flush: "sync" });
+    onBeforeUnmount(() => window.removeEventListener("scroll", closeOnScroll, true));
     watch(disabled, value => { if (value) hide(); });
     let uninstall: (() => void) | undefined;
     onMounted(() => { uninstall = installFocusVisible(document); });
@@ -244,8 +265,9 @@ export const KjunTooltip = defineComponent({
     watch(tip, element => { if (element) update(); }, { flush: "post" });
     onUpdated(update);
     const handlers = {
-      onMouseenter: () => show(false),
-      onMouseleave: hide,
+      // Pointer hover only: a touch tap is a press, and the mouse events a browser emulates after it must not open the tooltip.
+      onPointerenter: (event: PointerEvent) => { if (event.pointerType !== "touch") show(false); },
+      onPointerleave: (event: PointerEvent) => { if (event.pointerType !== "touch") hide(); },
       // A layer returning keyboard focus is not a new request for its trigger's tooltip.
       onFocus: (event: FocusEvent) => { if (isFocusVisible() && !layer.state.isRestoredFocus(event.target as HTMLElement)) show(true); },
       // Keep suppression for this focus visit only; a later Tab visit may show the hint again.

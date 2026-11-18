@@ -258,11 +258,14 @@
 .kjun-content-popover.kjun-popover-width-lg { width:var(--_kjun-extension-popover-widths-lg); }
 .kjun-popover-dialog { outline:none; }
 /* With a header only the body scrolls: the panel and dialog become clipping flex columns. */
-.kjun-popover-has-header { display:flex; flex-direction:column; overflow:hidden; }
-.kjun-popover-has-header .kjun-popover-dialog { display:flex; flex-direction:column; flex:1 1 auto; min-height:0; }
+.kjun-popover-has-header, .kjun-popover-has-footer { display:flex; flex-direction:column; overflow:hidden; }
+:is(.kjun-popover-has-header, .kjun-popover-has-footer) .kjun-popover-dialog { display:flex; flex-direction:column; flex:1 1 auto; min-height:0; }
 /* A light title on the panel itself: control type, the body follows after a short gap. The divider appears only over a scrolled body. */
 .kjun-popover-header { flex:none; padding:var(--_kjun-extension-popover-padding) var(--_kjun-extension-popover-padding) var(--_kjun-extension-popover-header-padding-bottom); font-size:var(--_kjun-type-control-size); line-height:var(--_kjun-type-control-line); font-weight:var(--_kjun-type-control-weight); letter-spacing:var(--_kjun-type-control-tracking); word-break:keep-all; overflow-wrap:anywhere; }
 .kjun-popover-has-header .kjun-popover-content:not([data-no-padding="true"]) { padding-top:0; }
+/* A fixed footer for actions: the body above it scrolls and fades out; the footer keeps the body's gap above it, no divider. */
+.kjun-popover-footer { flex:none; display:flex; flex-direction:column; gap:var(--_kjun-extension-popover-gap); padding:var(--_kjun-extension-popover-gap) var(--_kjun-extension-popover-padding) var(--_kjun-extension-popover-padding); }
+.kjun-popover-has-footer .kjun-popover-content:not([data-no-padding="true"]) { padding-bottom:0; }
 .kjun-popover-body { flex:1 1 auto; min-height:0; overflow-y:auto; }
 /* Once the body has scrolled, the fixed header draws a divider over it; while more remains below, the body fades out. */
 .kjun-popover-header:has(+ .kjun-popover-body[data-scrolled]) { box-shadow:0 var(--_kjun-border-default-width) 0 var(--_kjun-color-divider); }

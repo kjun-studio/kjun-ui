@@ -50,10 +50,10 @@ export function generate(input: UsageInput) {
     }
     case 'KjunTooltip': content = b.node(name, { content: '이 버튼의 도움말', delay: 100 }, b.button('도움말')); break;
     case 'KjunPopover':
-      content = b.node(name, { noPadding:s.noPadding, manualTrigger: true, ariaLabel: '추가 정보', open: b.state('popoverOpen', false), onOpenChange: b.update('popoverOpen') },
-        [b.native ? b.node('Text', { style: { fontSize: 14, lineHeight: 20 } }, '{"팝오버 내용"}') : b.text('팝오버 내용'),
-          b.node('KjunFormActions', { showCancel: false, confirmText: '실행', onConfirm: notify('run', '팝오버 실행') })].join('\n'), {
-          trigger: b.button('추가 정보', b.handler('togglePopover', '', b.set('popoverOpen', '!' + b.read('popoverOpen'))), { variant: 'ghost' }),
+      content = b.node(name, { noPadding:s.noPadding, ariaLabel: '추가 정보', open: b.state('popoverOpen', false), onOpenChange: b.update('popoverOpen') },
+        b.native ? b.node('Text', { style: { fontSize: 14, lineHeight: 20 } }, '{"팝오버 내용"}') : b.text('팝오버 내용'), {
+          trigger: b.button('추가 정보', undefined, { variant: 'ghost' }),
+          footer: b.node('KjunFormActions', { showCancel: false, confirmText: '실행', onConfirm: notify('run', '팝오버 실행') }),
         }); break;
     case 'KjunBreadcrumb':
       content = b.node(name, { items: b.data('items', [{ label: '홈', href: '#home', to: '#home' }, { label: '목록', href: '#list', to: '#list' }, { label: '현재 위치' }]), onNavigate: notify('navigate', '탐색') }); break;

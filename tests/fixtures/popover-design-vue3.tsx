@@ -17,6 +17,7 @@ createApp(defineComponent(() => () => {
               : c.formActions ? [c.text, <K.KjunFormActions confirmText="확인" cancelText="취소" />]
               : c.action ? [c.text, <K.KjunButton>실행</K.KjunButton>] : c.text,
             ...(c.header ? { header: () => '팝오버 제목' } : {}),
+            ...(c.footer ? { footer: () => <K.KjunFormActions confirmText="적용" cancelText="초기화" /> } : {}),
           }}
         </K.KjunPopover>
       </div>

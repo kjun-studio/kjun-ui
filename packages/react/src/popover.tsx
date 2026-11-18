@@ -30,6 +30,9 @@ export interface KjunPopoverProps {
   /** Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel.
    * A function receives close, for a close button in the header. */
   header?: ReactNode | ((close: () => void) => ReactNode);
+  /** Fixed footer below the body (actions such as FormActions); only the body scrolls and fades above it.
+   * A function receives close. */
+  footer?: ReactNode | ((close: () => void) => ReactNode);
   /** false keeps the page usable: Tab can leave, and an outside press or focus move closes without returning focus. */
   modal?: boolean;
   /** Attach to this screen rectangle (or a function read every frame while open) instead of the trigger. Web only.
@@ -65,6 +68,7 @@ export function KjunPopover({
   placement = "bottom",
   returnFocus,
   header,
+  footer,
   modal = true,
   anchorRect,
   trigger,
@@ -108,15 +112,18 @@ export function KjunPopover({
   };
   // A non-modal Popover closed by an outside press or focus move leaves focus where the user put it.
   const skipReturn = useRef(false);
+  // Installed once per opening; the close reads the latest handler.
+  const latestChange = useRef(change);
+  latestChange.current = change;
   useEffect(() => {
     if (!open || modal) return;
     skipReturn.current = false;
     return installNonModalPopover({
       panel: () => document.getElementById(id)?.closest<HTMLElement>(".kjun-floating") ?? null,
       trigger: () => ref.current,
-      close: () => { skipReturn.current = true; change(false); },
+      close: () => { skipReturn.current = true; latestChange.current(false); },
     });
-  });
+  }, [open, modal, id]);
   const content = (
     <div className="kjun-popover-content" data-no-padding={noPadding}>
       <ActionSizeContext.Provider value={popoverActionSize}>
@@ -156,7 +163,7 @@ export function KjunPopover({
         triggerRef={anchored ? anchor : ref}
         inside={anchored ? ref : undefined}
         repositionKey={reposition}
-        className={"kjun-content-popover kjun-popover-width-" + width + (header != null ? " kjun-popover-has-header" : "")}
+        className={"kjun-content-popover kjun-popover-width-" + width + (header != null ? " kjun-popover-has-header" : "") + (footer != null ? " kjun-popover-has-footer" : "")}
         placement={placement}
         matchTriggerWidth={matchTriggerWidth}
         maxHeight={maxHeight}
@@ -172,12 +179,13 @@ export function KjunPopover({
             "aria-labelledby": header != null && !ariaLabel ? id + "-header" : undefined,
             className: "kjun-popover-dialog",
             // maxHeight covers the whole panel, so the dialog inside its border gets that height less the border.
-            style: { maxHeight: `calc(${typeof maxHeight === "number" ? maxHeight + "px" : maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`} - 2 * var(--_kjun-border-default-width))`, overflowY: header != null ? undefined : "auto" } as CSSProperties,
+            style: { maxHeight: `calc(${typeof maxHeight === "number" ? maxHeight + "px" : maxHeight ?? `min(60vh, ${tokens.extensions.floating.maxHeight}px)`} - 2 * var(--_kjun-border-default-width))`, overflowY: header != null || footer != null ? undefined : "auto" } as CSSProperties,
           };
           const body = (
             <>
               {header != null && <div id={id + "-header"} className="kjun-popover-header">{typeof header === "function" ? header(() => change(false)) : header}</div>}
-              {header != null ? <div className="kjun-popover-body" ref={trackBody}>{content}</div> : content}
+              {header != null || footer != null ? <div className="kjun-popover-body" ref={trackBody}>{content}</div> : content}
+              {footer != null && <div className="kjun-popover-footer"><ActionSizeContext.Provider value={popoverActionSize}>{typeof footer === "function" ? footer(() => change(false)) : footer}</ActionSizeContext.Provider></div>}
               <FeedbackLayerOutlet />
             </>
           );

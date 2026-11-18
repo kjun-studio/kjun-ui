@@ -6527,6 +6527,15 @@
             "source": "packages/vue3/src/popover.tsx",
             "type": "{ close }",
             "summary": "header 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "footer",
+            "data": [
+              "close"
+            ],
+            "source": "packages/vue3/src/popover.tsx",
+            "type": "{ close }",
+            "summary": "footer 영역의 기본 내용을 교체합니다."
           }
         ],
         "ownership": [],
@@ -6649,6 +6658,15 @@
             "default": "—",
             "description": "Fixed header above the body; only the body scrolls and maxHeight covers both. Names the dialog without ariaLabel.\nA function receives close, for a close button in the header.",
             "summary": "고정 머리글입니다. 본문만 스크롤하며 maxHeight는 머리글을 포함한 높이입니다. 웹에서는 ariaLabel이 없으면 대화상자 이름이 되고, Native는 ariaLabel을 지정해야 합니다. Vue는 header 슬롯을 씁니다.",
+            "source": "packages/react/src/popover.tsx"
+          },
+          {
+            "name": "footer",
+            "type": "ReactNode | ((close: () => void) => ReactNode)",
+            "required": false,
+            "default": "—",
+            "description": "Fixed footer below the body (actions such as FormActions); only the body scrolls and fades above it.\nA function receives close.",
+            "summary": "본문 아래 고정 바닥글입니다. 적용·초기화 같은 동작 버튼(KjunFormActions 등)을 두며, 본문만 스크롤하고 아래에 더 있으면 본문 끝이 흐려집니다. 구분선은 그리지 않습니다. 함수로 넘기면 close를 받습니다. Vue는 footer 슬롯을 씁니다.",
             "source": "packages/react/src/popover.tsx"
           },
           {
@@ -6792,6 +6810,15 @@
             "default": "—",
             "description": "Fixed header above the body; only the body scrolls and maxHeight covers both. A function receives close.",
             "summary": "고정 머리글입니다. 본문만 스크롤하며 maxHeight는 머리글을 포함한 높이입니다. 웹에서는 ariaLabel이 없으면 대화상자 이름이 되고, Native는 ariaLabel을 지정해야 합니다. Vue는 header 슬롯을 씁니다.",
+            "source": "packages/native/src/popover.tsx"
+          },
+          {
+            "name": "footer",
+            "type": "ReactNode | ((close: () => void) => ReactNode)",
+            "required": false,
+            "default": "—",
+            "description": "Fixed footer below the body (actions such as FormActions); only the body scrolls and fades above it. A function receives close.",
+            "summary": "본문 아래 고정 바닥글입니다. 적용·초기화 같은 동작 버튼(KjunFormActions 등)을 두며, 본문만 스크롤하고 아래에 더 있으면 본문 끝이 흐려집니다. 구분선은 그리지 않습니다. 함수로 넘기면 close를 받습니다. Vue는 footer 슬롯을 씁니다.",
             "source": "packages/native/src/popover.tsx"
           },
           {
@@ -12005,7 +12032,7 @@
             "required": false,
             "default": "0",
             "description": "",
-            "summary": "도움말이 표시되기까지의 지연 시간(ms)입니다.",
+            "summary": "마우스를 올린 뒤 열리기까지의 지연 시간(ms)입니다. 툴팁 하나가 열린 뒤에는 다음 툴팁이 지연 없이 열리고, 모두 닫힌 채 0.5초가 지나면 다시 지연을 기다립니다. 키보드 포커스는 바로 열고, 터치 탭으로는 열지 않습니다(Native 기기는 길게 누르기).",
             "source": "packages/vue3/src/popover.tsx"
           },
           {
@@ -12091,7 +12118,7 @@
             "required": false,
             "default": "0",
             "description": "",
-            "summary": "도움말이 표시되기까지의 지연 시간(ms)입니다.",
+            "summary": "마우스를 올린 뒤 열리기까지의 지연 시간(ms)입니다. 툴팁 하나가 열린 뒤에는 다음 툴팁이 지연 없이 열리고, 모두 닫힌 채 0.5초가 지나면 다시 지연을 기다립니다. 키보드 포커스는 바로 열고, 터치 탭으로는 열지 않습니다(Native 기기는 길게 누르기).",
             "source": "packages/react/src/popover.tsx"
           },
           {
@@ -12180,7 +12207,7 @@
             "required": false,
             "default": "0",
             "description": "",
-            "summary": "도움말이 표시되기까지의 지연 시간(ms)입니다.",
+            "summary": "마우스를 올린 뒤 열리기까지의 지연 시간(ms)입니다. 툴팁 하나가 열린 뒤에는 다음 툴팁이 지연 없이 열리고, 모두 닫힌 채 0.5초가 지나면 다시 지연을 기다립니다. 키보드 포커스는 바로 열고, 터치 탭으로는 열지 않습니다(Native 기기는 길게 누르기).",
             "source": "packages/native/src/popover.tsx"
           },
           {
