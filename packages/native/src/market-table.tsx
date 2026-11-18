@@ -160,6 +160,9 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
             >
               {showActions && (
                 <View
+                  // Like Web's header cell: the marks are drawings, so the column carries its own name.
+                  accessible
+                  accessibilityLabel={m.collectionMarks}
                   style={{
                     width: marketGeometry.actionsWidth,
                     paddingVertical: tokens.dimension.value12,

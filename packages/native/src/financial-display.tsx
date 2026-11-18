@@ -289,12 +289,16 @@ export interface KjunCollectionMarkProps {
   kind: "favorite" | "interest";
   active?: boolean;
   size?: "sm" | "md" | "lg";
+  /** What an active mark says to a screen reader (default "즐겨찾기" or "관심"). An inactive mark stays hidden. */
+  label?: string;
 }
 export function KjunCollectionMark({
   kind,
   active = false,
   size = "md",
+  label,
 }: KjunCollectionMarkProps) {
+  const m = useKjunMessages();
   const { colors, domainColors } = useKjunStyles();
   // Like Web: the heart draws one icon step larger within the same box to match the star optically.
   const box = tokens.extensions.financial.markSizes[size],
@@ -305,6 +309,7 @@ export function KjunCollectionMark({
         name={kind === "favorite" ? "star" : "heart"}
         filled={active}
         size={glyph}
+        ariaLabel={active ? label || (kind === "favorite" ? m.favoriteMark : m.interestMark) : undefined}
         color={active ? domainColor(domainColors, kind) : colors.textTertiary}
       />
     </View>

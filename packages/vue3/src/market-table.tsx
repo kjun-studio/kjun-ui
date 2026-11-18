@@ -90,6 +90,8 @@ export const KjunMarketTable = defineComponent({
                       <tr>
                         {showActions && (
                           <th class="kjun-market-actions">
+                            {/* The marks are drawings; the header column still needs a name. */}
+                            <span class="kjun-sr-only">{m.value.collectionMarks}</span>
                             <span class="kjun-market-actions-mark"><KjunCollectionMark kind="interest" size="md" /></span>
                             <span class="kjun-market-actions-mark"><KjunCollectionMark kind="favorite" size="md" /></span>
                           </th>

@@ -212,6 +212,10 @@ export const kjunMessagesKo = {
   metrics: "표시 지표",
   watchToggle: (name: string, active: boolean) => [name, "관심", active ? "해제" : "등록"].filter(Boolean).join(" "),
   favoriteToggle: (name: string, active: boolean) => [name, "즐겨찾기", active ? "해제" : "등록"].filter(Boolean).join(" "),
+  /** CollectionMark names: an active mark, and the market header column that holds both marks. */
+  interestMark: "관심",
+  favoriteMark: "즐겨찾기",
+  collectionMarks: "관심·즐겨찾기",
   lastUpdated: "마지막 업데이트: ",
   unitLabel: "개",
   totalCount: (count: number, unit: string) => `총 ${count}${unit}`,

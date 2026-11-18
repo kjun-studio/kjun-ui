@@ -1,8 +1,8 @@
 {
   "KjunCollectionMark": {
-    "vue3": ["kind", "active", "size"],
-    "react": ["kind", "active", "size"],
-    "native": ["kind", "active", "size"]
+    "vue3": ["kind", "active", "size", "label"],
+    "react": ["kind", "active", "size", "label"],
+    "native": ["kind", "active", "size", "label"]
   },
   "KjunDeviation": {
     "vue3": ["value", "variant", "signalThreshold", "decimals", "formatter"],

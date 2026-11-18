@@ -133,6 +133,8 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
               <tr>
                 {showActions && (
                   <th className="kjun-market-actions">
+                    {/* The marks are drawings; the header column still needs a name. */}
+                    <span className="kjun-sr-only">{m.collectionMarks}</span>
                     <span className="kjun-market-actions-mark"><KjunCollectionMark kind="interest" size="md" /></span>
                     <span className="kjun-market-actions-mark"><KjunCollectionMark kind="favorite" size="md" /></span>
                   </th>

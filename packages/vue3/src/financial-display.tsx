@@ -139,12 +139,15 @@ const kjunCollectionMarkProps = {
   kind: { type: String as PropType<"favorite" | "interest">, required: true },
   active: { type: Boolean, default: false },
   size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
+  /** What an active mark says to a screen reader (default "즐겨찾기" or "관심"). An inactive mark stays hidden. */
+  label: { type: String, default: undefined },
 } as const;
 export type KjunCollectionMarkProps = ExtractPublicPropTypes<typeof kjunCollectionMarkProps>;
 export const KjunCollectionMark = defineComponent({
   name: "KjunCollectionMark",
   props: kjunCollectionMarkProps,
   setup(props) {
+    const m = useKjunMessages();
     return () => {
       // The heart glyph carries more inner space than the star, so it draws one icon step larger within the same box.
       const box = tokens.extensions.financial.markSizes[props.size];
@@ -153,6 +156,7 @@ export const KjunCollectionMark = defineComponent({
       return (
         <KjunIcon ref={check ? (node: unknown) => check((node as { $el?: unknown } | null)?.$el ?? node) : undefined}
           name={props.kind === "favorite" ? "star" : "heart"} filled={props.active} size={glyph}
+          ariaLabel={props.active ? props.label || (props.kind === "favorite" ? m.value.favoriteMark : m.value.interestMark) : undefined}
           style={css({ color: props.active ? `var(--_kjun-color-${props.kind})` : "var(--_kjun-color-text-tertiary)", margin: (box - glyph) / 2 })} />
       );
     };
