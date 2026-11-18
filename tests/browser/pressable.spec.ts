@@ -105,4 +105,15 @@ for (const platform of ['react', 'vue3']) {
     await expect(full).toBeFocused();
     expect(parseFloat(await full.evaluate(el => getComputedStyle(el).outlineOffset))).toBeLessThan(0);
   });
+
+  test(`${platform}: the app's own key listener runs first and disabled wins over its tabindex`, async ({ page }) => {
+    await openFixture(page, platform, '', 'pressable');
+    const blocked = page.getByRole('button', { name: '앱이 막은 영역' });
+    await blocked.focus();
+    await page.keyboard.press('Enter');
+    await expect(page.getByTestId('presses')).toHaveText('0');
+    await page.keyboard.press('Space');
+    await expect(page.getByTestId('presses')).toHaveText('1');
+    await expect(page.getByRole('button', { name: '탭 순서를 준 비활성 영역' })).toHaveAttribute('tabindex', '-1');
+  });
 }

@@ -134,13 +134,15 @@
       "name",
       "size",
       "spin",
-      "filled"
+      "filled",
+      "ariaLabel"
     ],
     "react": [
       "name",
       "size",
       "spin",
       "filled",
+      "ariaLabel",
       "className",
       "id",
       "max",
@@ -157,7 +159,8 @@
       "size",
       "color",
       "spin",
-      "filled"
+      "filled",
+      "ariaLabel"
     ]
   },
   "KjunKpiHero": {

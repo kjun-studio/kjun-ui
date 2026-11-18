@@ -3,11 +3,14 @@ import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { typeStyle } from "./typography";
 import { tokens,type ButtonSize } from "@kjun-ui/tokens";
 import {
+forwardRef,
 useContext,
 useEffect,
+useImperativeHandle,
 useRef,
 useState,
 type CSSProperties,
+type HTMLAttributes,
 type ReactNode,
 } from "react";
 import { KjunButton,KjunIcon,type KjunButtonProps } from "./button";
@@ -284,7 +287,9 @@ export function KjunExternalLink({
     <span aria-label={name}>{body}</span>
   );
 }
-export interface KjunScrollFadeProps {
+// Other div attributes (id, data-*, onScroll) reach the scroller, as Vue's fallthrough attributes do.
+// A scroller takes no value and no initial focus of its own, so those two are left out.
+export interface KjunScrollFadeProps extends Omit<HTMLAttributes<HTMLDivElement>, "children" | "className" | "style" | "onChange" | "autoFocus"> {
   children?: ReactNode;
   /** Which way the content scrolls; vertical needs a height (style or class) to scroll within. */
   direction?: ScrollFadeDirection;
@@ -293,10 +298,12 @@ export interface KjunScrollFadeProps {
   className?: string;
   style?: CSSProperties;
 }
-/** Fades whichever edge along `direction` still has content to scroll to. */
-export function KjunScrollFade({ children, direction = "horizontal", ariaLabel, className, style }: KjunScrollFadeProps) {
+/** Fades whichever edge along `direction` still has content to scroll to. The ref is the scrolling element. */
+export const KjunScrollFade = forwardRef<HTMLDivElement, KjunScrollFadeProps>(function KjunScrollFade(
+  { children, direction = "horizontal", ariaLabel, className, style, ...props }, forwarded) {
   const ref = useRef<HTMLDivElement>(null),
     [edges, setEdges] = useState<ScrollEdges>({ start: false, end: false });
+  useImperativeHandle(forwarded, () => ref.current!, []);
   // One tracker for the scroller's life; it watches size, children, late images and fonts itself.
   const latest = useRef(direction);
   latest.current = direction;
@@ -309,6 +316,7 @@ export function KjunScrollFade({ children, direction = "horizontal", ariaLabel, 
   useEffect(() => tracker.current?.update(), [direction]);
   return (
     <div
+      {...props}
       ref={ref}
       className={className ? `kjun-scroll-fade ${className}` : "kjun-scroll-fade"}
       data-direction={direction}
@@ -321,4 +329,4 @@ export function KjunScrollFade({ children, direction = "horizontal", ariaLabel, 
       {children}
     </div>
   );
-}
+});

@@ -359,6 +359,8 @@ button.kjun-avatar-group:disabled{cursor:not-allowed;opacity:var(--_kjun-state-o
 .kjun-scope .kjun-pressable:focus-visible{outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);outline-offset:var(--_kjun-state-focus-offset)}
 .kjun-scope .kjun-pressable[data-focus-inset]:focus-visible{outline-offset:var(--_kjun-state-focus-inset-offset)}
 @media (prefers-reduced-motion: reduce){.kjun-pressable::after{transition:none}}
+/* Like Native's hitSlop: on touch, a small area still takes taps across the minimum target, centred on it. */
+@media (pointer:coarse){.kjun-pressable::before{content:"";position:absolute;top:50%;left:50%;width:max(100%,var(--_kjun-geometry-native-minimum-touch-target));height:max(100%,var(--_kjun-geometry-native-minimum-touch-target));transform:translate(-50%,-50%)}}
 
 
 /* variant="floating": a capsule detached from the screen edge, with KjunFloatingNavigation's offset, padding, outline

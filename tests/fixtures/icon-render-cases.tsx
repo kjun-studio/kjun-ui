@@ -11,5 +11,6 @@ export function IconRenderCases({ K, native = false }: { K: any; native?: boolea
         <K.KjunIcon name={name} filled={filled} size={24} />
       </div>)}
     </div>
+    <div data-testid="icon-names"><K.KjunIcon name="star" ariaLabel="즐겨찾기" /><K.KjunIcon name="check" /><K.KjunIcon name="loader-2" spin /></div>
   </K.KjunProvider>;
 }

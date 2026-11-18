@@ -357,6 +357,8 @@
 .kjun-scroll-fade[data-fade-end] { --_kjun-fade-end: transparent; }
 /* A named scroller is a focusable region, so keyboard users can scroll it even when nothing inside takes focus. */
 .kjun-scroll-fade[tabindex]:focus-visible { outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset: var(--_kjun-state-focus-offset); }
+/* The fade mask would clip the ring away entirely (it lies outside the masked box), so keyboard focus lifts the fade. */
+.kjun-scroll-fade[tabindex]:focus-visible { -webkit-mask-image: none; mask-image: none; }
 @media (prefers-reduced-motion: reduce) {
   .kjun-icon-toggle svg {
     transition: none;

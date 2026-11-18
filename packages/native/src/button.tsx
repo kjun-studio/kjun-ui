@@ -1,4 +1,4 @@
-import { FontText } from "./internal";
+import { FontText, useReducedMotion } from "./internal";
 import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { typeStyle } from "./typography";
 import { TopNavigationContext } from "./top-navigation-context";
@@ -13,7 +13,6 @@ import { tokens,type ButtonSize,type ButtonVariant } from "@kjun-ui/tokens";
 import { useIcon } from "../../../shared/package-runtime/icon-context";
 import { useContext,useEffect,useRef,useState,type ReactNode } from "react";
 import {
-AccessibilityInfo,
 Animated,
 Easing,
 Platform,
@@ -42,39 +41,18 @@ interface KjunIconProps {
   color?: ColorValue;
   spin?: boolean;
   filled?: boolean;
+  /** Names an icon that carries meaning on its own; screen readers then read it as an image. Without it the icon is decorative and hidden. */
+  ariaLabel?: string;
 }
 export function KjunIcon(props: KjunIconProps) {
   return <IconBase {...props} />;
 }
-/** Internal: KjunIcon with a stroke width in viewBox units, for parts that paint one fixed line weight. */
-export function IconBase({
-  name,
-  size = tokens.iconSizes.default,
-  color,
-  spin = false,
-  filled = false,
-  strokeWidth: stroke,
-}: KjunIconProps & { strokeWidth?: number }) {
-  const { colors } = useKjunStyles();
-  const { nodes, filled: renderFilled } = useIcon(name, filled), strokeWidth = stroke ?? 2;
+/** Turns its content while mounted, unless the device asks for reduced motion. Only a spinning icon mounts it. */
+function Spinning({ size, children }: { size: number; children: ReactNode }) {
+  const reduced = useReducedMotion();
   const angle = useRef(new Animated.Value(0)).current;
-  const [reduced, setReduced] = useState(true);
   useEffect(() => {
-    let mounted = true;
-    AccessibilityInfo.isReduceMotionEnabled().then((v) => {
-      if (mounted) setReduced(v);
-    });
-    const sub = AccessibilityInfo.addEventListener(
-      "reduceMotionChanged",
-      setReduced
-    );
-    return () => {
-      mounted = false;
-      sub.remove();
-    };
-  }, []);
-  useEffect(() => {
-    if (!spin || reduced) return;
+    if (reduced) return;
     const loop = Animated.loop(
       Animated.timing(angle, {
         toValue: 1,
@@ -88,7 +66,26 @@ export function IconBase({
       loop.stop();
       angle.setValue(0);
     };
-  }, [spin, reduced, angle]);
+  }, [reduced, angle]);
+  return (
+    <Animated.View accessible={false} style={{ width: size, height: size,
+      transform: [{ rotate: angle.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "360deg"] }) }] }}>
+      {children}
+    </Animated.View>
+  );
+}
+/** Internal: KjunIcon with a stroke width in viewBox units, for parts that paint one fixed line weight. */
+export function IconBase({
+  name,
+  size = tokens.iconSizes.default,
+  color,
+  spin = false,
+  filled = false,
+  ariaLabel,
+  strokeWidth: stroke,
+}: KjunIconProps & { strokeWidth?: number }) {
+  const { colors } = useKjunStyles();
+  const { nodes, filled: renderFilled } = useIcon(name, filled), strokeWidth = stroke ?? 2;
   const parts: Record<string, React.ComponentType<any>> = {
     path: Path,
     circle: Circle,
@@ -99,41 +96,36 @@ export function IconBase({
     ellipse: Ellipse,
     g: G,
   };
-  return (
-    <Animated.View
-      accessible={false}
-      style={{
-        width: size,
-        height: size,
-        transform: [
-          {
-            rotate: angle.interpolate({
-              inputRange: [0, 1],
-              outputRange: ["0deg", "360deg"],
-            }),
-          },
-        ],
-      }}
+  const svg = (
+    <Svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      color={color || colors.text}
+      fill={renderFilled ? color || colors.text : "none"}
+      stroke={renderFilled ? "none" : color || colors.text}
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
-      <Svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        color={color || colors.text}
-        fill={renderFilled ? color || colors.text : "none"}
-        stroke={renderFilled ? "none" : color || colors.text}
-        strokeWidth={strokeWidth}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        {nodes.map(([tag, attrs], i) => {
-          const Part = parts[tag];
-          return Part ? <Part key={i} {...attrs} /> : null;
-        })}
-      </Svg>
-    </Animated.View>
+      {nodes.map(([tag, attrs], i) => {
+        const Part = parts[tag];
+        return Part ? <Part key={i} {...attrs} /> : null;
+      })}
+    </Svg>
+  );
+  const drawn = spin ? <Spinning size={size}>{svg}</Spinning> : svg;
+  const box = { width: size, height: size };
+  // The drawing never speaks for itself (Native Web would read each SVG as an image). A named icon wraps it as one image.
+  return ariaLabel ? (
+    <View accessible accessibilityRole="image" accessibilityLabel={ariaLabel} style={box}>
+      <View {...hiddenDrawing} style={box}>{drawn}</View>
+    </View>
+  ) : (
+    <View {...hiddenDrawing} style={box}>{drawn}</View>
   );
 }
+const hiddenDrawing = { accessible: false, accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants" as const, "aria-hidden": true };
 export function useMinimumLoading(loading: boolean) {
   const [active, setActive] = useState(loading);
   const began = useRef(loading ? Date.now() : 0);

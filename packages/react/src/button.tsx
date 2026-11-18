@@ -20,16 +20,21 @@ export interface KjunIconProps extends SVGProps<SVGSVGElement> {
   size?: number | string;
   spin?: boolean;
   filled?: boolean;
+  /** Names an icon that carries meaning on its own; screen readers then read it as an image. Without it the icon is decorative and hidden. */
+  ariaLabel?: string;
 }
 export function KjunIcon({
   name,
   size = "1em",
   spin = false,
   filled = false,
+  ariaLabel,
   className = "",
   ...props
 }: KjunIconProps) {
   const { nodes, filled: renderFilled } = useIcon(name, filled);
+  // ariaLabel, or the aria-label attribute it stands for, makes the icon an image; otherwise it is hidden.
+  const label = ariaLabel ?? props["aria-label"];
   return (
     <svg
       width={size}
@@ -40,10 +45,11 @@ export function KjunIcon({
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      aria-hidden={props["aria-label"] ? undefined : true}
-      role={props["aria-label"] ? "img" : undefined}
+      aria-hidden={label ? undefined : true}
+      role={label ? "img" : undefined}
       className={"kjun-icon " + (spin ? "kjun-spin " : "") + className}
       {...props}
+      aria-label={label}
     >
       {nodes.map(([tag, attrs], i) => createElement(tag, { ...attrs, key: i }))}
     </svg>

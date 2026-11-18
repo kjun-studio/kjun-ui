@@ -213,10 +213,12 @@ set("Select FilterGroup", { multiple: "복수 선택을 사용합니다. value�
 set("Icon", {
   name: "패키지에 포함된 아이콘 이름입니다.",
   size: "아이콘의 표시 크기입니다. 웹 CSS 길이와 Native 숫자 크기를 구분합니다.",
+  ariaLabel: "혼자서 뜻을 전하는 아이콘의 이름입니다. 주면 화면 낭독기가 이미지로 읽고, 생략하면 장식으로 숨깁니다. 웹은 aria-label 속성도 같은 뜻으로 받습니다.",
   min: "SVG 기본 요소에 전달되는 min 속성입니다. 아이콘 크기를 제한하지 않습니다.",
   max: "SVG 기본 요소에 전달되는 max 속성입니다. 아이콘 크기를 제한하지 않습니다.",
   type: "SVG 기본 요소에 전달되는 type 속성입니다. 아이콘 종류는 name으로 선택합니다.",
 });
+set("ScrollFade", { direction: "내용이 스크롤되는 방향입니다. horizontal(기본)은 좌우, vertical은 위아래로 스크롤하며 그 방향의 양 끝을 흐리게 합니다. vertical은 높이(style·class)가 있어야 스크롤됩니다." });
 set("FormSkeleton", {
   columns: "폼 스켈레톤을 배치할 열 수입니다.",
   size: { default: "md", summary: "대상 Input과 같은 크기입니다. sm 32px, md 40px, lg 48px이며 모서리도 공유합니다." },

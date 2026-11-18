@@ -10,6 +10,8 @@ const Page = defineComponent({ setup() {
     <K.KjunPressable onClick={press} pressEffect="none" style={{ padding: '12px' }}>표시 없는 영역</K.KjunPressable>
     <K.KjunPressable ariaLabel="잠긴 영역" onClick={press} disabled style={{ padding: '12px' }}>잠긴 영역</K.KjunPressable>
     <K.KjunPressable ariaLabel="꽉 찬 영역" onClick={press} focusRingInset style={{ padding: '12px' }}>꽉 찬 영역</K.KjunPressable>
+    <K.KjunPressable ariaLabel="앱이 막은 영역" onClick={press} tabindex={0} onKeydown={(event: KeyboardEvent) => { if (event.key === 'Enter') event.preventDefault(); }} style={{ padding: '12px' }}>앱이 막은 영역</K.KjunPressable>
+    <K.KjunPressable ariaLabel="탭 순서를 준 비활성 영역" onClick={press} disabled tabindex={0} style={{ padding: '12px' }}>탭 순서를 준 비활성 영역</K.KjunPressable>
     <div data-testid="presses">{presses.value}</div>
   </div>;
 } });

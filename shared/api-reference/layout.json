@@ -350,7 +350,10 @@
       "direction",
       "className",
       "style",
-      "ariaLabel"
+      "ariaLabel",
+      "id",
+      "onKeyDown",
+      "onClick"
     ],
     "native": [
       "children",

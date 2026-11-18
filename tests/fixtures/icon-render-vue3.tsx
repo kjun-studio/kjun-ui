@@ -7,11 +7,12 @@ const cases = Object.entries(allIcons).flatMap(([name, icon]) => [{ name, filled
 const offset = ref(0);
 Object.assign(window, { renderIconBatch: (next: number) => { offset.value = next; } });
 createApp(defineComponent(() => () => (
-  <K.KjunProvider icons={allIcons}>{{ default: () => (
+  <K.KjunProvider icons={allIcons}>{{ default: () => [
     <div data-testid="icon-batch" data-offset={offset.value} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
       {cases.slice(offset.value, offset.value + 120).map(({ name, filled }) => (
         <div key={name + filled} data-icon={name} data-filled={String(filled)}><K.KjunIcon name={name} filled={filled} size="24px" /></div>
       ))}
-    </div>
-  ) }}</K.KjunProvider>
+    </div>,
+    <div data-testid="icon-names"><K.KjunIcon name="star" ariaLabel="즐겨찾기" /><K.KjunIcon name="check" /><K.KjunIcon name="loader-2" spin /></div>,
+  ] }}</K.KjunProvider>
 ))).mount('#root');

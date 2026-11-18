@@ -29,3 +29,12 @@ for (const platform of ['react', 'vue3', 'native']) test(`${platform}: all 6,220
   }
   expect(errors).toEqual([]);
 });
+
+// ariaLabel makes an icon one named image; without it the icon is decorative and hidden, spinning or not.
+for (const platform of ['react', 'vue3', 'native']) test(`${platform}: a named KjunIcon is an image and an unnamed one is hidden`, async ({ page }) => {
+  await openFixture(page, platform, '', 'icon-render');
+  const names = page.getByTestId('icon-names');
+  await expect(names.getByRole('img', { name: '즐겨찾기' })).toBeVisible();
+  await expect(names.getByRole('img')).toHaveCount(1);
+  expect(await names.locator('svg').count()).toBe(3);
+});

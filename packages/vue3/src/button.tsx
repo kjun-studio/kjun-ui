@@ -13,6 +13,8 @@ const kjunIconProps = {
   size: { type: [Number, String] as PropType<number | string>, default: "1em" },
   spin: { type: Boolean, default: false },
   filled: { type: Boolean, default: false },
+  /** Names an icon that carries meaning on its own; screen readers then read it as an image. Without it the icon is decorative and hidden. */
+  ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunIconProps = ExtractPublicPropTypes<typeof kjunIconProps>;
 
@@ -23,7 +25,8 @@ export const KjunIcon = defineComponent({
     const icon = useIcon(() => props.name, () => props.filled);
     return () => {
       const { nodes, filled } = icon.value;
-      const label = attrs["aria-label"];
+      // ariaLabel, or the aria-label attribute it stands for, makes the icon an image; otherwise it is hidden.
+      const label = props.ariaLabel ?? (attrs["aria-label"] as string | undefined);
       return (
         <svg
           width={props.size}
@@ -36,6 +39,7 @@ export const KjunIcon = defineComponent({
           stroke-linejoin="round"
           aria-hidden={label ? undefined : "true"}
           role={label ? "img" : undefined}
+          aria-label={label}
           class={"kjun-icon " + (props.spin ? "kjun-spin" : "")}
         >
           {nodes.map(([tag, nodeAttrs], i) => h(tag, { ...nodeAttrs, key: i }))}

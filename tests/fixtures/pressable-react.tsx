@@ -12,6 +12,8 @@ function Page() {
     <KjunPressable onClick={press} pressEffect="none" style={{ padding: 12 }}>표시 없는 영역</KjunPressable>
     <KjunPressable ariaLabel="잠긴 영역" onClick={press} disabled style={{ padding: 12 }}>잠긴 영역</KjunPressable>
     <KjunPressable ariaLabel="꽉 찬 영역" onClick={press} focusRingInset style={{ padding: 12 }}>꽉 찬 영역</KjunPressable>
+    <KjunPressable ariaLabel="앱이 막은 영역" onClick={press} tabIndex={0} onKeyDown={event => { if (event.key === 'Enter') event.preventDefault(); }} style={{ padding: 12 }}>앱이 막은 영역</KjunPressable>
+    <KjunPressable ariaLabel="탭 순서를 준 비활성 영역" onClick={press} disabled tabIndex={0} style={{ padding: 12 }}>탭 순서를 준 비활성 영역</KjunPressable>
     <div data-testid="presses">{presses}</div>
   </div>;
 }

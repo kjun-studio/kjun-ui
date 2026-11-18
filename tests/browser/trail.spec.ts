@@ -77,8 +77,10 @@ for (const platform of ['react', 'vue3', 'native']) {
       if (platform === 'native') return;
       await expect(region).toHaveAttribute('data-fade-end', 'true');
       await expect(region).not.toHaveAttribute('data-fade-start');
+      // Keyboard focus lifts the fade mask, which would otherwise clip the whole ring away.
       await region.focus();
       await expect(region).toBeFocused();
+      await expect(region).toHaveCSS('mask-image', 'none');
       for (let i = 0; i < 12; i++) await page.keyboard.press('ArrowRight');
       await expect(region).toHaveAttribute('data-fade-start', 'true');
       await expect(region).not.toHaveAttribute('data-fade-end');
