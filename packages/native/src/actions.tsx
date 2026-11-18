@@ -5,7 +5,8 @@ import { tokens,type ButtonSize } from "@kjun-ui/tokens";
 import { useContext,useEffect,useId,useRef,useState,type ReactNode } from "react";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import { sameEdges, scrollEdges, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
-import { AccessibilityInfo,Platform,ScrollView,View,type ColorValue,type StyleProp,type ViewStyle } from "react-native";
+import { AccessibilityInfo,Platform,ScrollView,View,type GestureResponderEvent,type ColorValue,type StyleProp,type ViewStyle } from "react-native";
+import { externalLinkIconName, safeExternalUrl } from "../../../shared/package-runtime/external-link";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunButton,KjunIcon,type KjunButtonProps } from "./button";
 import { KText,content,useReducedMotion } from "./internal";
@@ -261,57 +262,62 @@ export function KjunRefreshButton({
   );
   return props.block ? <View style={{ alignSelf: "stretch", width: "100%" }}>{button}</View> : button;
 }
-export function safeExternalUrl(href: string) {
-  try {
-    const url = new URL(href);
-    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
-  } catch {
-    return "";
-  }
-}
 export interface KjunExternalLinkProps {
   href?: string;
   mode?: "icon" | "text";
+  /** The icon link's name (default "External link"); a text link shows it when it has no children. */
   label?: string;
   children?: ReactNode;
   openUrl: (url: string) => void | Promise<void>;
+  /** Called when the link is pressed, before openUrl (e.g. for analytics). */
+  onPress?: (event: GestureResponderEvent) => void;
 }
+/** Opens only http(s) URLs through openUrl; anything else renders as plain text. */
 export function KjunExternalLink({
   href = "",
   mode = "text",
   label,
   children,
   openUrl,
+  onPress,
 }: KjunExternalLinkProps) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles(),
-    url = safeExternalUrl(href),
-    name = label || (mode === "icon" ? m.externalLink : undefined),
-    body =
-      mode === "icon" ? (
-        <KjunIcon name="external-link" color={colors.text} />
-      ) : (
-        // Like Web, text links are underlined so they read as links within body text.
-        content(children, { textDecorationLine: "underline" })
-      );
+    url = safeExternalUrl(href), icon = mode === "icon",
+    name = icon ? externalLinkIconName(label, m.externalLink) : undefined,
+    text = children ?? label,
+    body = icon ? (
+      <KjunIcon name="external-link" color={colors.text} />
+    ) : (
+      // Like Web, text links are underlined so they read as links within body text. Native cannot offset a text
+      // underline, so a 1px line is drawn under the text, which overhangs it by the line box's spare room below the
+      // glyphs; that leaves Web's gap under the glyphs on every platform.
+      <View style={{ borderBottomWidth: tokens.border.defaultWidth, borderColor: colors.text }}>{content(text, { marginBottom: -tokens.dimension.value3 })}</View>
+    );
+  // Like Web: an icon link is named by its label, a text link by its own text, and both say they open elsewhere.
+  const plain = typeof text === "string" || typeof text === "number" ? String(text) : undefined;
+  const linkName = name ? name + m.newWindow : (plain !== undefined ? plain + m.newWindow : undefined);
   return url ? (
     <Pressable
       accessibilityRole="link"
-      accessibilityLabel={name ? name + m.newWindow : undefined}
-      onPress={() => openUrl(url)}
+      accessibilityLabel={linkName}
+      // Text that is not a plain string keeps its own reading; the new-window cue becomes a hint.
+      accessibilityHint={linkName === undefined ? m.newWindow.trim() : undefined}
+      onPress={(event: GestureResponderEvent) => { onPress?.(event); void openUrl(url); }}
       // Content width like Web; a column parent would otherwise stretch the hit area and focus ring.
       style={{ alignSelf: "flex-start", minHeight: tokens.native.minimumTouchTarget, justifyContent: "center" }}
     >
-      {mode === "text" ? (
+      {icon ? body : (
         // Like Web, text links show the new-window cue after the text.
         <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.dimension.value4 }}>
           {body}
           <KjunIcon name="external-link" size={tokens.iconSizes.small} color={colors.text} />
         </View>
-      ) : body}
+      )}
     </Pressable>
   ) : (
-    <View>{body}</View>
+    // Not a link: the text stays, and an icon keeps its name for screen readers.
+    <View {...(name ? { accessible: true, accessibilityLabel: name } : {})}>{body}</View>
   );
 }
 export interface KjunScrollFadeProps {

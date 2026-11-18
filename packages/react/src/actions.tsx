@@ -11,8 +11,10 @@ useImperativeHandle,
 useLayoutEffect,
 useRef,
 useState,
+type AnchorHTMLAttributes,
 type ButtonHTMLAttributes,
 type CSSProperties,
+type MouseEvent,
 type RefObject,
 type HTMLAttributes,
 type ReactNode,
@@ -26,6 +28,7 @@ import { browserCopy } from "../../../shared/package-runtime/clipboard";
 import { useCopyFeedback } from "../../../shared/package-runtime/use-copy-feedback";
 import { copyButtonGeometry } from "../../../shared/package-runtime/copy-button";
 import { usePendingAction } from "../../../shared/package-runtime/use-pending-action";
+import { externalLinkIconName, safeExternalUrl } from "../../../shared/package-runtime/external-link";
 import { trackScrollFade, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
 export interface KjunIconToggleProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type" | "disabled" | "children" | "color"> {
@@ -262,46 +265,50 @@ export function KjunRefreshButton({
     </KjunTooltip>
   );
 }
-export function safeExternalUrl(href: string) {
-  try {
-    const url = new URL(href);
-    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
-  } catch {
-    return "";
-  }
-}
-export interface KjunExternalLinkProps {
+// Other anchor attributes (id, className, data-*) reach the link, as Vue's fallthrough attributes do;
+// the URL, target and rel stay KJUN's so the link always opens safely in a new window.
+export interface KjunExternalLinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href" | "target" | "rel" | "type" | "children" | "onClick" | "onChange" | "autoFocus"> {
   href?: string;
   mode?: "icon" | "text";
+  /** The icon link's name (default "External link"); a text link shows it when it has no children. */
   label?: string;
   children?: ReactNode;
+  /** Called when the link is opened (e.g. for analytics); the click does not reach the parent. */
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 }
+/** Opens only http(s) URLs in a new window; anything else renders as plain text. */
 export function KjunExternalLink({
   href = "",
   mode = "text",
   label,
   children,
+  onClick,
+  className,
+  ...rest
 }: KjunExternalLinkProps) {
   const m = useKjunMessages();
-  const url = safeExternalUrl(href),
-    name = label || (mode === "icon" ? m.externalLink : undefined),
-    body = mode === "icon" ? <KjunIcon name="external-link" /> : children;
+  const url = safeExternalUrl(href), icon = mode === "icon",
+    name = icon ? externalLinkIconName(label, m.externalLink) : undefined,
+    body = icon ? <KjunIcon name="external-link" /> : children ?? label;
+  // An icon link is named by aria-label; a text link by its own text plus the new-window cue.
   return url ? (
     <a
+      {...rest}
       href={url}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={name ? name + m.newWindow : undefined}
       title={name}
-      className="kjun-external-link"
-      onClick={(e) => e.stopPropagation()}
+      className={className ? "kjun-external-link " + className : "kjun-external-link"}
+      onClick={(event) => { event.stopPropagation(); onClick?.(event); }}
     >
       {body}
-      {mode === "text" && <KjunIcon name="external-link" size={tokens.iconSizes.small} className="kjun-external-link-icon" />}
-      {!name && <span className="kjun-sr-only">{m.newWindow}</span>}
+      {!icon && <KjunIcon name="external-link" size={tokens.iconSizes.small} className="kjun-external-link-icon" />}
+      {!icon && <span className="kjun-sr-only">{m.newWindow}</span>}
     </a>
   ) : (
-    <span aria-label={name}>{body}</span>
+    // Not a link: the text stays, and an icon keeps its name as text a screen reader reads.
+    <span id={rest.id} className={className}>{body}{name && <span className="kjun-sr-only">{name}</span>}</span>
   );
 }
 // Other div attributes (id, data-*, onScroll) reach the scroller, as Vue's fallthrough attributes do.

@@ -6,6 +6,7 @@ import { tokens, type ButtonSize, type ButtonVariant } from "@kjun-ui/tokens";
 import { typeStyle } from "../../../shared/package-runtime/typography";
 import { KjunButton, KjunIcon } from "./button";
 import { useOptionalKjunFeedback } from "./feedback";
+import { externalLinkIconName, safeExternalUrl } from "../../../shared/package-runtime/external-link";
 import { trackScrollFade, type ScrollEdges, type ScrollFadeDirection } from "../../../shared/package-runtime/scroll-fade";
 import { KjunTooltip, type KjunTooltipProps } from "./popover";
 import { kjunTopNavigationKey } from "./runtime/keys";
@@ -175,38 +176,35 @@ export const KjunRefreshButton = defineComponent({
   },
 });
 
-export function safeExternalUrl(href: string) {
-  try {
-    const url = new URL(href);
-    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
-  } catch {
-    return "";
-  }
-}
+export { safeExternalUrl };
 const kjunExternalLinkProps = {
   href: { type: String, default: "" },
   mode: { type: String as PropType<"icon" | "text">, default: "text" },
+  /** The icon link's name (default "External link"); a text link shows it when the default slot is empty. */
   label: { type: String, default: undefined },
 } as const;
 export type KjunExternalLinkProps = ExtractPublicPropTypes<typeof kjunExternalLinkProps>;
-/** Opens only http(s) URLs in a new window; anything else renders as plain text. */
+/** Opens only http(s) URLs in a new window; anything else renders as plain text. Emits click when opened. */
 export const KjunExternalLink = defineComponent({
   name: "KjunExternalLink",
   props: kjunExternalLinkProps,
+  emits: { click: (_event: MouseEvent) => true },
   slots: Object as SlotsType<{ default?: () => VNodeChild }>,
-  setup(props, { slots }) {
+  setup(props, { slots, emit }) {
     const m = useKjunMessages();
     return () => {
-      const url = safeExternalUrl(props.href), name = props.label || (props.mode === "icon" ? m.value.externalLink : undefined);
-      const body = props.mode === "icon" ? <KjunIcon name="external-link" /> : slots.default?.();
+      const url = safeExternalUrl(props.href), icon = props.mode === "icon";
+      const name = icon ? externalLinkIconName(props.label, m.value.externalLink) : undefined;
+      const body = icon ? <KjunIcon name="external-link" /> : slots.default?.() ?? props.label;
+      // An icon link is named by aria-label; a text link by its own text plus the new-window cue.
       return url ? (
         <a href={url} target="_blank" rel="noopener noreferrer" aria-label={name ? name + m.value.newWindow : undefined} title={name}
-          class="kjun-external-link" onClick={(event: MouseEvent) => event.stopPropagation()}>
+          class="kjun-external-link" onClick={(event: MouseEvent) => { event.stopPropagation(); emit("click", event); }}>
           {body}
-          {props.mode === "text" && <KjunIcon name="external-link" size={tokens.iconSizes.small} class="kjun-external-link-icon" />}
-          {!name && <span class="kjun-sr-only">{m.value.newWindow}</span>}
+          {!icon && <KjunIcon name="external-link" size={tokens.iconSizes.small} class="kjun-external-link-icon" />}
+          {!icon && <span class="kjun-sr-only">{m.value.newWindow}</span>}
         </a>
-      ) : <span aria-label={name}>{body}</span>;
+      ) : <span>{body}{name && <span class="kjun-sr-only">{name}</span>}</span>;
     };
   },
 });
