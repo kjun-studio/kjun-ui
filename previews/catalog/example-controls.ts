@@ -400,10 +400,11 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
           },
           h("Stack", {}, [
             input(),
-            // A secondary body action leaves the footer's confirm as the layer's one primary action.
-            h("KjunButton", { variant: "secondary", ...action(() =>
+            // A secondary body action leaves the footer's confirm as the layer's one primary action; in a row it keeps its own
+            // width on every platform, so only the footer spans the window.
+            h("Group", {}, h("KjunButton", { variant: "secondary", ...action(() =>
               feedback.toast.info("열린 레이어의 영역 알림", { duration: 0 })
-            ) }, "알림 표시"),
+            ) }, "알림 표시")),
           ]),
           name === "KjunDrawer" ? {
             ...(settings.footer === false ? {} : { footer: h("KjunFormActions", { confirmText: "적용", onCancel: () => set("open", false), onConfirm: () => { set("open", false); message("적용했습니다"); } }) }),
