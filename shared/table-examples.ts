@@ -10,6 +10,8 @@ export const tableControls: ExampleControl[] = [
   { key: 'hoverable', label: '행 강조', kind: 'boolean', default: true },
   { key: 'stickyHeader', label: '고정 헤더', kind: 'boolean', default: false },
   { key: 'grouped', label: '묶음·합계', kind: 'boolean', default: false },
+  { key: 'lockDone', label: '완료 행 선택 잠금', kind: 'boolean', default: false, when: { design: ['프로젝트'] } },
+  { key: 'clientSearch', label: '표 안 검색', kind: 'boolean', default: false, when: { searchable: [true] } },
 ];
 const base: Settings = { selectable: false, expandable: false, searchable: false, responsive: 'none' };
 export const tableDesignExamples: GuideCase[] = [

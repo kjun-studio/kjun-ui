@@ -98,11 +98,11 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
     : <View style={{ overflow: "hidden", borderTopLeftRadius: corner, borderTopRightRadius: corner,
         ...(!layout.header && !has.body && !has.footer ? { borderBottomLeftRadius: corner, borderBottomRightRadius: corner } : {}), ...frame,
       }}>{content(media)}</View>);
-  const actions = <CardActionsContext.Provider value={true}><View style={{ flexDirection: "row", flexWrap: "wrap", minWidth: 0, maxWidth: "100%", marginStart: layout.heading ? 0 : "auto", alignItems: "center", justifyContent: "flex-end", gap: tokens.card.titleGap }}>{content(headerActions, { color: foreground })}</View></CardActionsContext.Provider>;
+  const actionRow = <CardActionsContext.Provider value={true}><View style={{ flexDirection: "row", flexWrap: "wrap", minWidth: 0, maxWidth: "100%", marginStart: layout.heading ? 0 : "auto", alignItems: "center", justifyContent: "flex-end", gap: tokens.card.titleGap }}>{content(headerActions, { color: foreground })}</View></CardActionsContext.Provider>;
   // Header actions without a title sit at the end of the body's row; too narrow for the body's minimum width, they wrap above it.
   const beside = layout.actionsBeside && <View style={{ flexDirection: "row", flexWrap: "wrap-reverse", alignItems: "center" }}>
     <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: tokens.card.titleMinWidth, minWidth: 0, padding: bodyInset }}>{content(children, { color: foreground, ...words })}</View>
-    <View style={{ flexShrink: 1, minWidth: 0, marginStart: "auto", padding: inset, paddingStart: 0 }}>{actions}</View>
+    <View style={{ flexShrink: 1, minWidth: 0, marginStart: "auto", padding: inset, paddingStart: 0 }}>{actionRow}</View>
   </View>;
   const sections = beside || <>
     {!!layout.header && <View style={{
@@ -121,7 +121,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
           {!!has.subtitle && <KText {...wordProps} style={{ ...typeStyle("body"), marginTop: tokens.card.subtitleGap, color: colors[paint.description], ...words }}>{subtitle}</KText>}
         </>}
       </View>}
-      {!!has.actions && actions}
+      {!!has.actions && actionRow}
       {/* A link card ends its header with a chevron, centred on the title block, so it reads as a link before it is pressed. */}
       {layout.linkMark && <View aria-hidden={true} style={{ alignSelf: "center", marginStart: "auto" }}>
         <KjunIcon name="chevron-right" size={tokens.iconSizes.large} color={colors.textTertiary} /></View>}

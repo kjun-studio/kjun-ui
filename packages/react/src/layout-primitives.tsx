@@ -59,7 +59,7 @@ export function KjunText({ variant = "body", tone = "default", as, align, maxLin
   const expanded = given ?? own;
   const toggle = expandable && lines ? { expanded, change: (next: boolean) => { if (given === undefined) setOwn(next); onExpandedChange?.(next); } } : undefined;
   const clamped = toggle?.expanded ? undefined : lines;
-  const autoId = useId(), id = toggle ? rest.id ?? autoId : rest.id;
+  const autoId = "kjun-text-" + useId().replace(/[^\w-]/g, ""), id = toggle ? rest.id ?? autoId : rest.id;
   const [element, setElement] = useState<HTMLElement | null>(null);
   const forward = rest.ref;
   const ref = useCallback((node: HTMLElement | null) => {

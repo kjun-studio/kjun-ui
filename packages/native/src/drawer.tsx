@@ -106,7 +106,7 @@ export function KjunDrawer({
     sheetRadius = (edge: "top" | "bottom") => sideways || position === edge ? geometry.radius : geometry.sheetRadius,
     // Without a title or header only the close button remains: no title band, no empty text.
     titled = !!title || hasContent(header),
-    actions = hasContent(headerActions),
+    hasActions = hasContent(headerActions),
     grab = handle && position === "bottom";
   // The modal root's own height: a resizing Android window shrinks it for the keyboard; elsewhere it equals the window.
   const [rootHeight, setRootHeight] = useState(0);
@@ -231,7 +231,7 @@ export function KjunDrawer({
                 backgroundColor: dragging ? colors.textTertiary : colors.borderStrong }} />
             </View>
           )}
-          {(titled || closable || actions) && (
+          {(titled || closable || hasActions) && (
             <View
               {...dragArea}
               style={{
@@ -248,10 +248,10 @@ export function KjunDrawer({
                   {hasContent(header) ? content(header) : <KText accessibilityRole="header" style={typeStyle('sectionTitle')}>{title}</KText>}
                 </View>
               )}
-              {(actions || closable) && (
+              {(hasActions || closable) && (
                 // The last glyph sits on the content edge; its button inset hangs into the header padding.
                 <View style={{ flexDirection: "row", alignItems: "center", gap: geometry.headerActionGap, marginRight: (geometry.closeIconSize - geometry.closeSize) / 2 }}>
-                  {actions && content(headerActions)}
+                  {hasActions && content(headerActions)}
                   {closable && (
                     <KjunButton
                       size="sm"

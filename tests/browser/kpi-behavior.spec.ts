@@ -120,6 +120,4 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(Math.abs(alone.x - left.x)).toBeLessThanOrEqual(1);
     expect(head.y).toBeLessThan(left.y);
   });
-    expect(aloneCell).toBeGreaterThan(rowBox.width * 0.75);
-  });
 }
