@@ -701,8 +701,6 @@
       "packages/native/src/kpi-hero.tsx",
       "packages/native/src/kpi-row.tsx",
       "packages/native/src/list.tsx",
-      "packages/native/src/market-panel.tsx",
-      "packages/native/src/market-parts.tsx",
       "packages/native/src/market-skeleton.tsx",
       "packages/native/src/market-table.tsx",
       "packages/native/src/modal.tsx",

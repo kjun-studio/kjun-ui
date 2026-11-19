@@ -97,7 +97,6 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
             }
           >
             <div>
-              {state.pill && <div className="kjun-market-column-label">{state.pill.label}</div>}
               {rows.map((row, i) => (
                 <MarketRow
                   key={String(getValue(row, rowKey) ?? i)}

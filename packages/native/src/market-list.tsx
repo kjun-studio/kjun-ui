@@ -49,7 +49,7 @@ export function KjunMarketSimpleList<
           <KjunEmpty size="sm" text={emptyMessage} description={emptySubMessage} />
         }
       >
-        <View>
+        <View style={{ gap: tokens.dimension.value2 }}>
           {rows.map((row, i) => {
             const price = priceValue(row),
               change = changeValue(row),
@@ -65,7 +65,7 @@ export function KjunMarketSimpleList<
                   alignItems: "center",
                   justifyContent: "space-between",
                   paddingVertical: mobile ? tokens.dimension.value14 : tokens.dimension.value16,
-                  paddingHorizontal: mobile ? tokens.dimension.value20 : tokens.dimension.value16,
+                  paddingHorizontal: mobile ? tokens.dimension.value12 : tokens.dimension.value8,
                   // Like Web, the minimum height belongs to the narrow layout only.
                   minHeight: mobile ? tokens.extensions.marketList.minimumHeight : undefined,
                 }}

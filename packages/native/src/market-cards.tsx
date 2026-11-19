@@ -148,8 +148,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
               <KjunEmpty size="sm" text={emptyMessage} description={emptySubMessage} />
             }
           >
-            <View>
-              {state.pill && <KText style={{ textAlign:"right", paddingHorizontal:tokens.dimension.value16, paddingVertical:tokens.dimension.value8, ...typeStyle('caption'),  color:colors.textSecondary }}>{state.pill.label}</KText>}
+            <View style={{ gap: tokens.dimension.value2 }}>
               {rows.map((row, i) => (
                 <MarketRow
                   key={String(getValue(row, rowKey) ?? i)}
@@ -161,7 +160,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
                     alignItems: "center",
                     justifyContent: "space-between",
                     paddingVertical: tokens.dimension.value10,
-                    paddingHorizontal: tokens.dimension.value16,
+                    paddingHorizontal: tokens.dimension.value8,
                   }}
                 >
                   <MarketIdentity row={row} props={props} compact />

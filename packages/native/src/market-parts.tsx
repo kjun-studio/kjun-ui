@@ -1,5 +1,5 @@
 import { isSelectedMarketRow, marketBlockingError, marketTotal } from "../../../shared/package-runtime/market-query";
-import { type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
@@ -97,6 +97,9 @@ export function MarketIdentity<Row extends object>({
     </View>
   );
 }
+/** Set by MarketListPanel: the card's inset, so row text and the footer line up with the panel's controls. */
+export const MarketPanelInset = createContext<number | undefined>(undefined);
+
 /**
  * Like Web MarketRow: a button only when the app listens for presses (reached by screen readers and the keyboard),
  * otherwise a plain row with no press fill; the selected row keeps the secondary fill and reads as current.
@@ -116,7 +119,10 @@ export function MarketRow<Row extends object>({
 }) {
   const { colors } = useKjunStyles(),
     selected = isSelectedMarketRow(getValue(row, props.rowKey || "id"), selectedKey),
-    rest = { ...style, borderBottomWidth: tokens.border.defaultWidth, borderBottomColor: colors.border };
+    inset = useContext(MarketPanelInset),
+    // Like Web: no dividers; the fill is a rounded block 8px in from the list's edges, the text still where it was.
+    rest: ViewStyle = { ...style, marginHorizontal: tokens.dimension.value8, borderRadius: tokens.radius.radius12,
+      ...(inset != null ? { paddingHorizontal: inset - tokens.dimension.value8 } : {}) };
   // A button's selected state reads as pressed, so the web gets aria-current and devices the selected state.
   const current = Platform.OS === "web" ? { "aria-current": selected || undefined } : {};
   if (!props.onRowClick)
@@ -146,6 +152,7 @@ export function MarketFooter<Row extends object>({
 }) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles(),
+    inset = useContext(MarketPanelInset),
     state = useQueryDisplay(props),
     // A blocking error replaces the rows, so their count, update time and pages go with them.
     hidden = marketBlockingError(props, state),
@@ -178,7 +185,7 @@ export function MarketFooter<Row extends object>({
             justifyContent: "space-between",
             gap: tokens.dimension.value8,
             paddingVertical: tokens.dimension.value12,
-            paddingHorizontal: tokens.dimension.value16,
+            paddingHorizontal: inset ?? tokens.dimension.value16,
           }}
         >
           <KText style={{ ...typeStyle('caption'), color: colors.textTertiary }}>

@@ -2,8 +2,9 @@ import { tokens } from "@kjun-ui/tokens";
 import { type ReactNode } from "react";
 import { View } from "react-native";
 import { KjunCard } from "./display";
-import { useKjunStyles } from "./provider";
+import { MarketPanelInset } from "./market-parts";
 
+/** Like Web .kjun-market-list-panel-list: the list runs to the card's edges, its rows' text lines up with the controls, no divider. */
 export function KjunMarketListPanel({
   controls,
   children,
@@ -11,18 +12,12 @@ export function KjunMarketListPanel({
   controls?: ReactNode;
   children: ReactNode;
 }) {
-  const { colors } = useKjunStyles();
+  const inset = tokens.card.padding.md;
   return (
     <KjunCard>
       <View>{controls}</View>
-      <View
-        style={{
-          marginTop: tokens.dimension.value16,
-          borderTopWidth: tokens.border.defaultWidth,
-          borderTopColor: colors.border,
-        }}
-      >
-        {children}
+      <View style={{ marginTop: tokens.dimension.value12, marginHorizontal: -inset }}>
+        <MarketPanelInset.Provider value={inset}>{children}</MarketPanelInset.Provider>
       </View>
     </KjunCard>
   );

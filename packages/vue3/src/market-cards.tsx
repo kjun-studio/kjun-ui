@@ -90,7 +90,6 @@ export const KjunMarketCards = defineComponent({
                 loading: props.skeleton ? () => <KjunListSkeleton variant="compact" /> : undefined,
                 empty: () => <KjunEmpty size="sm" text={(props.emptyMessage ?? m.value.noItems)} description={props.emptySubMessage} />,
                 default: () => <div>
-                  {state.pill && <div class="kjun-market-column-label">{state.pill.label}</div>}
                   {rows.map((row: any, i) => {
                     const value = getValue(row, state.key);
                     return (

@@ -1,10 +1,16 @@
+/* Rows carry no dividers: height and fill set them apart. Each row's fill is a rounded block 8px in from the list's
+   edges, its text still 16px in, and rows keep 2px apart so a hovered row and the selected one never touch. */
 .kjun-market-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--_kjun-geometry-dimension-value16);
-  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  margin-inline: var(--_kjun-geometry-dimension-value8);
+  padding: var(--_kjun-geometry-dimension-value16) var(--_kjun-geometry-dimension-value8);
+  border-radius: var(--_kjun-geometry-radius-radius12);
   color: var(--_kjun-color-text);
+}
+.kjun-market-row + .kjun-market-row {
+  margin-top: var(--_kjun-geometry-dimension-value2);
 }
 .kjun-market-row[role="button"] {
   cursor: pointer;
@@ -23,7 +29,7 @@
   outline-offset: calc(-1 * var(--_kjun-state-focus-width));
 }
 .kjun-market-row-compact {
-  padding: var(--_kjun-geometry-dimension-value10) var(--_kjun-geometry-dimension-value16);
+  padding-block: var(--_kjun-geometry-dimension-value10);
 }
 .kjun-market-identity {
   display: flex;
@@ -277,10 +283,16 @@
 .kjun-metric-label::after { font-weight: var(--_kjun-type-number-lg-weight); }
 .kjun-metric-label > span { grid-area: 1 / 1; }
 .kjun-metric-sort[data-visible="false"] { visibility: hidden; }
-/* The panel's list sits under its controls, set off by one divider. */
+/* The panel's list runs to the card's edges, so its row text starts where the controls do; no divider between them. */
 .kjun-market-list-panel-list {
-  margin-top: var(--_kjun-geometry-dimension-value16);
-  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+  margin: var(--_kjun-geometry-dimension-value12) calc(-1 * var(--_kjun-card-body-padding)) 0;
+}
+/* Doubled class: it outranks the narrow-screen list padding below. */
+.kjun-market-list-panel-list .kjun-market-row.kjun-market-row {
+  padding-inline: calc(var(--_kjun-card-body-padding) - var(--_kjun-geometry-dimension-value8));
+}
+.kjun-market-list-panel-list .kjun-market-footer.kjun-market-footer {
+  padding-inline: var(--_kjun-card-body-padding);
 }
 .kjun-metric-sort {
   font-size: var(--_kjun-type-caption-size);
@@ -300,9 +312,10 @@
   letter-spacing: var(--_kjun-type-control-tracking);
 }
 @media (width < token(responsive.market)) {
+  /* Text 20px in: 8px to the fill, 12px inside it. */
   .kjun-market-simple-list .kjun-market-row {
     min-height: var(--_kjun-extension-market-list-minimum-height);
-    padding: var(--_kjun-geometry-dimension-value14) var(--_kjun-geometry-dimension-value20);
+    padding: var(--_kjun-geometry-dimension-value14) var(--_kjun-geometry-dimension-value12);
   }
   .kjun-market-simple-list .kjun-market-name {
     font-size: var(--_kjun-type-input-size);
@@ -359,7 +372,6 @@
   }
 }
 
-.kjun-market-column-label { padding:var(--_kjun-geometry-dimension-value8) var(--_kjun-geometry-dimension-value16); text-align:right; font-size:var(--_kjun-type-caption-size); color:var(--_kjun-color-text-secondary); word-break:keep-all; overflow-wrap:break-word; line-height: var(--_kjun-type-caption-line); font-weight: var(--_kjun-type-caption-weight); letter-spacing: var(--_kjun-type-caption-tracking); }
 
 .kjun-market-table-grid .kjun-market-name {
   font-size: var(--_kjun-type-body-size);
