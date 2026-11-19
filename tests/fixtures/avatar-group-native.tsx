@@ -11,6 +11,7 @@ function Page() {
   return <View style={{ padding: 24, width: 420, gap: 16, alignItems: 'flex-start' }}>
     <View testID="five"><KjunAvatarGroup items={people} max={4} ariaLabel="참여자 5명" /></View>
     <View testID="total"><KjunAvatarGroup items={people.slice(0, 3)} max={3} total={128} /></View>
+    <View testID="small"><KjunAvatarGroup items={[...people.slice(0, 2), { key: "c", name: "색", color: "#E6F1FB" }]} max={3} total={128} size="xs" ariaLabel="작은 그룹" /></View>
     <View testID="square"><KjunAvatarGroup items={people.slice(0, 4)} shape="square" ariaLabel="팀 4명" /></View>
     <View testID="press"><KjunAvatarGroup items={people.slice(0, 3)} total={9} pressable onPress={press} ariaLabel="참여자 목록 열기" /></View>
     <View testID="disabled"><KjunAvatarGroup items={people.slice(0, 2)} pressable disabled onPress={press} ariaLabel="잠긴 목록" /></View>

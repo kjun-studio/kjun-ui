@@ -57,6 +57,20 @@ for (const platform of platforms) {
       expect(isolation === 'isolate' || zIndex === '0').toBe(true);
     });
 
+    test(`${platform}: at xs "+99" drops its "+" to fit, and initials and the chip sit on tertiary`, async ({ page }) => {
+      const small = group(page, 'small'), chip = items(small).last();
+      await expect(chip).toHaveText('99');
+      await expect(small).toHaveAccessibleName('작은 그룹');
+      // The number fits the part of the 24px chip the avatar in front leaves visible (24 - 6 overlap).
+      const width = await chip.evaluate(el => { const r = document.createRange(); r.selectNodeContents(document.createTreeWalker(el, NodeFilter.SHOW_TEXT).nextNode()!); return r.getBoundingClientRect().width; });
+      expect(width).toBeLessThanOrEqual(18);
+      // Demo palette: tertiary #ECECEC; an item's own colour still wins.
+      const fill = (el: Locator) => el.evaluate(e => { for (const n of [e, ...e.querySelectorAll('*')]) { const c = getComputedStyle(n).backgroundColor; if (c !== 'rgba(0, 0, 0, 0)' && c !== 'rgb(255, 255, 255)') return c; } return ''; });
+      expect(await fill(items(small).nth(1))).toBe('rgb(236, 236, 236)');
+      expect(await fill(items(small).nth(2))).toBe('rgb(230, 241, 251)');
+      expect(await fill(chip)).toBe('rgb(236, 236, 236)');
+    });
+
     test(`${platform}: squares sit apart`, async ({ page }) => {
       const centres = await xs(group(page, 'square'));
       for (let i = 1; i < centres.length; i++) expect(centres[i] - centres[i - 1]).toBeCloseTo(40 + 4, 0);

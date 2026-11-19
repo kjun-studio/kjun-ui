@@ -24,6 +24,15 @@ test('past 99 only the chip text stops at +99; the real overflow stays', () => {
   assert.equal(avatarGroupModel({ count: 3, max: 3, total: 101 }).overflowText, '+98');
 });
 
+test('at xs and sm a two-digit count drops its "+" to fit the circle; md and larger keep it', () => {
+  assert.equal(avatarGroupModel({ count: 3, max: 3, total: 128, size: 'xs' }).overflowText, '99');
+  assert.equal(avatarGroupModel({ count: 3, max: 3, total: 128, size: 'sm' }).overflowText, '99');
+  assert.equal(avatarGroupModel({ count: 3, max: 3, total: 128, size: 'md' }).overflowText, '+99');
+  assert.equal(avatarGroupModel({ count: 3, max: 3, total: 12, size: 'xs' }).overflowText, '+9');
+  assert.equal(avatarGroupModel({ count: 3, max: 3, total: 50, size: 'sm' }).overflowText, '47');
+  assert.equal(avatarGroupModel({ count: 3, max: 3, total: 128, size: 'xs' }).overflow, 125);
+});
+
 test('max becomes a whole number of at least 1', () => {
   assert.equal(avatarGroupModel({ count: 5, max: 0 }).visible, 1);
   assert.equal(avatarGroupModel({ count: 5, max: -3 }).visible, 1);

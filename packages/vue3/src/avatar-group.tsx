@@ -40,7 +40,7 @@ export const KjunAvatarGroup = defineComponent({
   setup(props, { emit }) {
     const m = useKjunMessages();
     return () => {
-      const { visible, overflowText, totalCount } = avatarGroupModel({ count: props.items.length, max: props.max, total: props.total });
+      const { visible, overflowText, totalCount } = avatarGroupModel({ count: props.items.length, max: props.max, total: props.total, size: props.size });
       const label = props.ariaLabel ?? m.value.avatarGroupCount(totalCount);
       const style = props.ringColor === undefined ? undefined : css({ "--_kjun-avatar-group-ring": props.ringColor });
       const content = [

@@ -1207,7 +1207,8 @@
       "markSaturday",
       "swipeable",
       "className",
-      "style"
+      "style",
+      "id"
     ],
     "native": [
       "view",

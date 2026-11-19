@@ -132,8 +132,10 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
     case "KjunAvatar":
       return h(name, { name: "김하늘", src: settings.imageState === "사진" ? sampleImage(0) : settings.imageState === "실패" ? "data:image/png;base64,invalid" : undefined, size: settings.size, shape: settings.shape, decorative: settings.decorative });
     case "KjunAvatarGroup": {
+      // Each person's colour is the app's own; the soft tone roles keep it right in dark mode too.
       const many = settings.people === "128명", count = settings.people === "3명" ? 3 : 5;
-      return h(name, { items: ["김하늘", "이서준", "박지우", "최민서", "정도윤"].slice(0, count).map((name, i) => ({ key: "p" + i, name })), max: 3, total: many ? 128 : undefined, ariaLabel: `참여자 ${many ? 128 : count}명`,
+      const tone = (role: string) => platform === "native" ? colors[role] : `var(--kjun-${role.replace(/[A-Z]/g, c => "-" + c.toLowerCase())})`;
+      return h(name, { items: ["김하늘", "이서준", "박지우", "최민서", "정도윤"].slice(0, count).map((name, i) => ({ key: "p" + i, name, color: tone(["infoBg", "warningBg", "successBg", "dangerBg", "selectedBg"][i]) })), max: 3, total: many ? 128 : undefined, ariaLabel: `참여자 ${many ? 128 : count}명`,
         size: settings.size, shape: settings.shape, pressable: settings.pressable, disabled, ...action(() => set("message", "참여자 목록 열기")) });
     }
     case "KjunChip":

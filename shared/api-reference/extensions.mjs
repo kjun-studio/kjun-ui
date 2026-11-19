@@ -324,9 +324,9 @@ const callback = (name, key, platform) => {
   throw Error("Missing extension callback: " + name + "." + key);
 };
 const avatarGroupProps = platform => ({
-  items: { type: "KjunAvatarGroupItem[]", ...detail("앞에서부터 그릴 사람 목록입니다.", { "항목 필드": "key: 고유 문자열, src?: 사진 주소, name?: 이름(첫 글자를 대신 그림), color?·textColor?: 첫 글자 바탕·글자 색, fallback?: 첫 글자 대신 그릴 내용, onLoad?·onError?: 사진 로드 완료·실패 알림" + (platform === "vue3" ? "(KjunAvatar의 fallback slot과 load·error 이벤트에 연결)." : ", 그 밖의 KjunAvatar 속성. size·shape·alt·decorative는 그룹이 정합니다."), "읽기": "각 아바타는 낭독되지 않고 그룹 이름 하나로 읽힙니다." }) },
+  items: { type: "KjunAvatarGroupItem[]", ...detail("앞에서부터 그릴 사람 목록입니다.", { "항목 필드": "key: 고유 문자열, src?: 사진 주소, name?: 이름(첫 글자를 대신 그림), color?·textColor?: 첫 글자 바탕·글자 색(바탕 기본은 tertiary로, 그룹 뒤 secondary 카드와 한 단계 다름), fallback?: 첫 글자 대신 그릴 내용, onLoad?·onError?: 사진 로드 완료·실패 알림" + (platform === "vue3" ? "(KjunAvatar의 fallback slot과 load·error 이벤트에 연결)." : ", 그 밖의 KjunAvatar 속성. size·shape·alt·decorative는 그룹이 정합니다."), "읽기": "각 아바타는 낭독되지 않고 그룹 이름 하나로 읽힙니다." }) },
   max: { default: "4", summary: "그릴 아바타의 최대 수입니다. 넘는 사람은 \"+N\" 칩으로 모으며, 칩은 이 수에 들어가지 않습니다. 1보다 작은 값은 1로 봅니다." },
-  total: detail("전체 인원입니다. 서버가 일부 사람만 보낼 때 줍니다.", { "기본": "생략하면 items의 수입니다. items보다 작으면 items의 수를 씁니다.", "+N": "total에서 그린 수를 뺀 값이 \"+N\"이 되고, 100 이상은 \"+99\"로 줄여 보이며 그룹 이름에는 실제 인원을 읽습니다." }),
+  total: detail("전체 인원입니다. 서버가 일부 사람만 보낼 때 줍니다.", { "기본": "생략하면 items의 수입니다. items보다 작으면 items의 수를 씁니다.", "+N": "total에서 그린 수를 뺀 값이 \"+N\"이 되고, 100 이상은 \"+99\"로 줄여 보이며 그룹 이름에는 실제 인원을 읽습니다. xs·sm은 세 글자가 원에 들어가지 않아 \"+\" 없이 \"99\"로 표시합니다." }),
   size: { type: '"xs" | "sm" | "md" | "lg" | "xl"', default: '"md"', summary: "KjunAvatar와 같은 크기입니다. 원형이 겹치는 폭은 xs 6, sm 8, md 12, lg 16, xl 20px입니다." },
   shape: { type: '"circle" | "square"', default: '"circle"', summary: "circle은 겹쳐 놓고 배경색 링으로 경계를 오립니다. square는 겹치지 않고 크기별 2·4·4·6·8px 간격을 둡니다." },
   ariaLabel: { summary: "그룹을 읽는 하나의 이름입니다(예: \"참여자 128명\"). 생략하면 인원 수(\"3명\")를 읽습니다." },

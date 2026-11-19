@@ -32,7 +32,9 @@
 .kjun-avatar-group[data-size=xl] .kjun-avatar-group-overflow{font-size:var(--_kjun-type-page-title-size);line-height:var(--_kjun-type-page-title-line)}.kjun-avatar-group[data-size=xl] .kjun-avatar-group-overflow[data-digits="2"]{font-size:var(--_kjun-type-section-title-size);line-height:var(--_kjun-type-section-title-line)}
 .kjun-avatar-group-item{position:relative;display:inline-flex;flex-shrink:0;border-radius:var(--_kjun-geometry-radius-radius9999);box-shadow:0 0 0 var(--_kjun-border-control-width) var(--_kjun-avatar-group-ring,var(--_kjun-color-surface))}
 .kjun-avatar-group-item+.kjun-avatar-group-item{margin-inline-start:calc(0px - var(--_kjun-avatar-group-overlap))}
-.kjun-avatar-group-overflow{box-sizing:border-box;width:var(--_kjun-avatar-group-size);height:var(--_kjun-avatar-group-size);align-items:center;justify-content:center;padding-inline-start:var(--_kjun-avatar-group-overlap);background:var(--_kjun-color-secondary);color:var(--_kjun-color-text-secondary);font-family:var(--_kjun-font-numeric);font-variant-numeric:tabular-nums;font-weight:var(--_kjun-type-control-weight);white-space:nowrap}
+/* Inside a group, initials without their own colour and the "+N" chip sit on tertiary, one step from a secondary card behind the group. */
+.kjun-avatar-group-item>.kjun-avatar{--_kjun-avatar-color:var(--_kjun-color-tertiary)}
+.kjun-avatar-group-overflow{box-sizing:border-box;width:var(--_kjun-avatar-group-size);height:var(--_kjun-avatar-group-size);align-items:center;justify-content:center;padding-inline-start:var(--_kjun-avatar-group-overlap);background:var(--_kjun-color-tertiary);color:var(--_kjun-color-text-secondary);font-family:var(--_kjun-font-numeric);font-variant-numeric:tabular-nums;font-weight:var(--_kjun-type-control-weight);white-space:nowrap}
 .kjun-avatar-group-overflow:first-child{padding-inline-start:0}
 /* Squares do not overlap: a tenth of the side apart, no ring. */
 .kjun-avatar-group[data-shape=square] .kjun-avatar-group-item{border-radius:var(--_kjun-geometry-radius-radius8);box-shadow:none}

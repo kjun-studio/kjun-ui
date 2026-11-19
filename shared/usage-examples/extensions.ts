@@ -1,4 +1,4 @@
-import { UsageBuilder, expr, type UsageInput } from './builder';
+import { UsageBuilder, expr, literal, type UsageInput } from './builder';
 import { sampleImage } from '../../previews/catalog/example-tools';
 import { eventCalendar } from './event-calendar';
 
@@ -157,8 +157,12 @@ export function generate(input: UsageInput) {
     case 'KjunAvatar':
       content = b.node(name, { name: '김하늘', src: s.imageState === '사진' ? b.data('avatarUrl', sampleImage(0)) : s.imageState === '실패' ? 'data:image/png;base64,invalid' : undefined, ...b.props('size', 'shape', 'decorative') }); break;
     case 'KjunAvatarGroup': {
-      const many = s.people === '128명', count = s.people === '3명' ? 3 : 5;
-      content = b.node(name, { items: b.data('people', ['김하늘', '이서준', '박지우', '최민서', '정도윤'].slice(0, count).map((name, i) => ({ key: 'p' + i, name }))), max: 3,
+      // Each person's colour is the app's own; these reuse the palette's soft tone roles so dark mode follows.
+      if (b.native) b.declare('appColors', 'import { appColors } from "./kjun";');
+      const many = s.people === '128명', count = s.people === '3명' ? 3 : 5, tones = ['infoBg', 'warningBg', 'successBg', 'dangerBg', 'selectedBg'];
+      const tone = (role: string) => b.native ? `appColors.${role}` : `"var(--kjun-${role.replace(/[A-Z]/g, c => '-' + c.toLowerCase())})"`;
+      b.declare('tones', `const tones = [${tones.slice(0, count).map(tone).join(', ')}];`);
+      content = b.node(name, { items: b.declare('people', `const people = ${literal(['김하늘', '이서준', '박지우', '최민서', '정도윤'].slice(0, count))}.map((name, i) => ({ key: "p" + i, name, color: tones[i] }));`), max: 3,
         total: many ? 128 : undefined, ariaLabel: `참여자 ${many ? 128 : count}명`, ...b.props('size', 'shape', 'pressable', 'disabled'),
         ...(s.pressable ? { [action]: notify('openPeople', '참여자 목록 열기') } : {}) }); break;
     }

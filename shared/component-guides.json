@@ -585,7 +585,7 @@
     "description": "여러 사람을 겹친 아바타와 \"+N\"으로 한 자리에 보여 줍니다.",
     "interaction": "pressable이면 그룹 전체가 버튼 하나가 되어 참여자 목록 같은 화면을 엽니다. 목록은 소비자가 onClick에서 KjunPopover나 KjunDrawer로 엽니다. 사람마다 따로 눌러야 하면 겹치지 않는 KjunInline과 KjunAvatar를 사용합니다.",
     "differences": "웹은 바탕색 링을 box-shadow로, Native는 링 색으로 칠한 감싸기 View로 그리며 원 중심 간격은 같습니다. 클릭 이벤트는 React onClick, Vue click, Native onPress입니다.",
-    "states": "max를 넘는 사람은 \"+N\"으로 접고 99를 넘으면 \"+99\"로 표시합니다. total로 서버가 준 전체 인원을 받습니다. 원형은 지름의 약 4분의 1씩 겹치고, 사각형은 겹치지 않고 간격을 둡니다. 바탕이 surface가 아니면 ringColor에 바탕색을 넘깁니다."
+    "states": "max를 넘는 사람은 \"+N\"으로 접고 99를 넘으면 \"+99\"로 표시합니다(xs·sm은 \"99\"). 색을 주지 않은 첫 글자와 \"+N\"은 tertiary 바탕이라 secondary 카드 위에서도 원이 보입니다. total로 서버가 준 전체 인원을 받습니다. 원형은 지름의 약 4분의 1씩 겹치고, 사각형은 겹치지 않고 간격을 둡니다. 바탕이 surface가 아니면 ringColor에 바탕색을 넘깁니다."
   },
   "KjunChip": {
     "slug": "chip",

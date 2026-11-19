@@ -10,6 +10,7 @@ const Page = defineComponent({ setup() {
   return () => <div style={{ padding: '24px', width: '420px', display: 'grid', gap: '16px', justifyItems: 'start' }}>
     <div data-testid="five"><K.KjunAvatarGroup items={people} max={4} ariaLabel="참여자 5명" /></div>
     <div data-testid="total"><K.KjunAvatarGroup items={people.slice(0, 3)} max={3} total={128} /></div>
+    <div data-testid="small"><K.KjunAvatarGroup items={[...people.slice(0, 2), { key: 'c', name: '색', color: '#E6F1FB' }]} max={3} total={128} size="xs" ariaLabel="작은 그룹" /></div>
     <div data-testid="square"><K.KjunAvatarGroup items={people.slice(0, 4)} shape="square" ariaLabel="팀 4명" /></div>
     <div data-testid="press"><K.KjunAvatarGroup items={people.slice(0, 3)} total={9} pressable onClick={press} ariaLabel="참여자 목록 열기" /></div>
     <div data-testid="disabled"><K.KjunAvatarGroup items={people.slice(0, 2)} pressable disabled onClick={press} ariaLabel="잠긴 목록" /></div>

@@ -37,7 +37,7 @@ export interface KjunAvatarGroupProps {
  */
 export const KjunAvatarGroup = forwardRef<HTMLElement, KjunAvatarGroupProps>(function KjunAvatarGroup({ items, max, total, size = "md", shape = "circle", ariaLabel, ringColor, pressable = false, disabled = false, onClick, className, style, id, "aria-describedby": describedBy }, ref) {
   const m = useKjunMessages();
-  const { visible, overflowText, totalCount } = avatarGroupModel({ count: items.length, max, total });
+  const { visible, overflowText, totalCount } = avatarGroupModel({ count: items.length, max, total, size });
   const label = ariaLabel ?? m.avatarGroupCount(totalCount);
   const rootStyle = ringColor === undefined ? style : { ...style, ["--_kjun-avatar-group-ring" as string]: ringColor };
   const content = <>

@@ -195,7 +195,6 @@
       "packages/tokens/src/web.css",
       "packages/vue3/src/financial-display.tsx",
       "packages/react/src/financial-display.tsx",
-      "packages/native/src/avatar-group.tsx",
       "packages/native/src/calendar.tsx",
       "packages/native/src/chip.tsx",
       "packages/native/src/display-primitives.tsx",
@@ -977,8 +976,10 @@
       "--bg-tertiary"
     ],
     "implementationFiles": [
+      "packages/tokens/src/extensions.css",
       "packages/tokens/src/financial.css",
       "packages/tokens/src/side-navigation.css",
+      "packages/native/src/avatar-group.tsx",
       "packages/native/src/financial-display.tsx",
       "packages/native/src/side-navigation-parts.tsx"
     ]

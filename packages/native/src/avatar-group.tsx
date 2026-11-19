@@ -35,6 +35,7 @@ export interface KjunAvatarGroupProps {
   style?: StyleProp<ViewStyle>;
 }
 
+// Like Web: initials without their own colour and the chip sit on tertiary, one step from a secondary card behind the group.
 // Like Web: the chip's number uses the avatar's initial type, one step smaller for three characters ("+99").
 
 /**
@@ -45,7 +46,7 @@ export interface KjunAvatarGroupProps {
 export function KjunAvatarGroup({ items, max, total, size = "md", shape = "circle", ariaLabel, ringColor, pressable = false, disabled = false, onPress, style }: KjunAvatarGroupProps) {
   const m = useKjunMessages();
   const { colors, fontFamily, numericFontFamily } = useKjunStyles();
-  const { visible, overflowText, totalCount } = avatarGroupModel({ count: items.length, max, total });
+  const { visible, overflowText, totalCount } = avatarGroupModel({ count: items.length, max, total, size });
   const label = ariaLabel ?? m.avatarGroupCount(totalCount);
   const circle = shape === "circle", side = tokens.extensions.avatar[size];
   const ring = circle ? tokens.border.controlWidth : 0, overlap = tokens.extensions.avatarGroup.overlap[size];
@@ -61,9 +62,9 @@ export function KjunAvatarGroup({ items, max, total, size = "md", shape = "circl
     marginStart: index === 0 ? 0 : circle ? -(overlap + ring * 2) : tokens.extensions.avatarGroup.squareGap[size],
   });
   const people = items.slice(0, visible).map(({ key, ...item }, index) =>
-    <View key={key} {...hidden} style={slot(index, visible + 1 - index)}><KjunAvatar {...item} size={size} shape={shape} decorative />{overlay}</View>);
+    <View key={key} {...hidden} style={slot(index, visible + 1 - index)}><KjunAvatar {...item} color={item.color ?? colors.tertiary} size={size} shape={shape} decorative />{overlay}</View>);
   const chip = overflowText ? <View key="overflow" {...hidden} style={slot(visible, 0)}>
-    <View style={{ width: side, height: side, borderRadius: radius, backgroundColor: colors.secondary, alignItems: "center", justifyContent: "center", paddingStart: circle && visible > 0 ? overlap : 0 }}>
+    <View style={{ width: side, height: side, borderRadius: radius, backgroundColor: colors.tertiary, alignItems: "center", justifyContent: "center", paddingStart: circle && visible > 0 ? overlap : 0 }}>
       <KText numberOfLines={1} style={{ ...typeStyle((overflowText.length > 2 ? avatarCompactType : avatarType)[size]), fontWeight: typeStyle("control").fontWeight,
         fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"], color: colors.textSecondary }}>{overflowText}</KText>
     </View>
