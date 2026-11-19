@@ -3074,12 +3074,12 @@
             "source": "packages/vue3/src/market-cards.tsx"
           },
           {
-            "name": "selectedRowKey",
+            "name": "activeKey",
             "type": "undefined",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다.",
+            "description": "The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable.",
+            "summary": "앱이 열어 둔 행의 rowKey 값입니다(목록 옆 상세·차트 등). MarketTable처럼 그 행을 선택 배경(selectedBg)으로 채우고 hover 중에도 유지하며, 웹은 aria-current=\"true\", 기기는 선택 상태로 알립니다.",
             "source": "packages/vue3/src/market-cards.tsx"
           },
           {
@@ -3281,12 +3281,12 @@
       "react": {
         "props": [
           {
-            "name": "selectedRowKey",
+            "name": "activeKey",
             "type": "unknown",
             "required": false,
             "default": "—",
-            "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current.",
-            "summary": "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다.",
+            "description": "The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable.",
+            "summary": "앱이 열어 둔 행의 rowKey 값입니다(목록 옆 상세·차트 등). MarketTable처럼 그 행을 선택 배경(selectedBg)으로 채우고 hover 중에도 유지하며, 웹은 aria-current=\"true\", 기기는 선택 상태로 알립니다.",
             "source": "packages/react/src/market-cards.tsx"
           },
           {
@@ -3712,12 +3712,12 @@
       "native": {
         "props": [
           {
-            "name": "selectedRowKey",
+            "name": "activeKey",
             "type": "unknown",
             "required": false,
             "default": "—",
-            "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and the current state.",
-            "summary": "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다.",
+            "description": "The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable.",
+            "summary": "앱이 열어 둔 행의 rowKey 값입니다(목록 옆 상세·차트 등). MarketTable처럼 그 행을 선택 배경(selectedBg)으로 채우고 hover 중에도 유지하며, 웹은 aria-current=\"true\", 기기는 선택 상태로 알립니다.",
             "source": "packages/native/src/market-cards.tsx"
           },
           {
@@ -4370,12 +4370,12 @@
             "source": "packages/vue3/src/market-list.tsx"
           },
           {
-            "name": "selectedRowKey",
+            "name": "activeKey",
             "type": "undefined",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다.",
+            "description": "The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable.",
+            "summary": "앱이 열어 둔 행의 rowKey 값입니다(목록 옆 상세·차트 등). MarketTable처럼 그 행을 선택 배경(selectedBg)으로 채우고 hover 중에도 유지하며, 웹은 aria-current=\"true\", 기기는 선택 상태로 알립니다.",
             "source": "packages/vue3/src/market-list.tsx"
           },
           {
@@ -4486,12 +4486,12 @@
       "react": {
         "props": [
           {
-            "name": "selectedRowKey",
+            "name": "activeKey",
             "type": "unknown",
             "required": false,
             "default": "—",
-            "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current.",
-            "summary": "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다.",
+            "description": "The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable.",
+            "summary": "앱이 열어 둔 행의 rowKey 값입니다(목록 옆 상세·차트 등). MarketTable처럼 그 행을 선택 배경(selectedBg)으로 채우고 hover 중에도 유지하며, 웹은 aria-current=\"true\", 기기는 선택 상태로 알립니다.",
             "source": "packages/react/src/market-list.tsx"
           },
           {
@@ -4827,12 +4827,12 @@
       "native": {
         "props": [
           {
-            "name": "selectedRowKey",
+            "name": "activeKey",
             "type": "unknown",
             "required": false,
             "default": "—",
-            "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and the current state.",
-            "summary": "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다.",
+            "description": "The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable.",
+            "summary": "앱이 열어 둔 행의 rowKey 값입니다(목록 옆 상세·차트 등). MarketTable처럼 그 행을 선택 배경(selectedBg)으로 채우고 hover 중에도 유지하며, 웹은 aria-current=\"true\", 기기는 선택 상태로 알립니다.",
             "source": "packages/native/src/market-list.tsx"
           },
           {

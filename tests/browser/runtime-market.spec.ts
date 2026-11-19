@@ -34,7 +34,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await selected(page, 'Change'); await expect(events(page)).toHaveText('[]');
     await pill(page, 'Change').click(); await expect(events(page)).toHaveText('["change"]');
   });
-  test(`${platform} market rows: buttons only with onRowClick, selectedRowKey, footer count, sort read as a word`, async ({ page }) => {
+  test(`${platform} market rows: buttons only with onRowClick, activeKey, footer count, sort read as a word`, async ({ page }) => {
     await openFixture(page, platform, '?rows&silent&sort=change', 'runtime-market');
     const cards = page.getByTestId('cards'), list = page.getByTestId('list');
     const cardRow = cards.getByRole('button', { name: /Alpha/ });

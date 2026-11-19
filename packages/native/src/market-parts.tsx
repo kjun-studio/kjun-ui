@@ -102,7 +102,7 @@ export const MarketPanelInset = createContext<number | undefined>(undefined);
 
 /**
  * Like Web MarketRow: a button only when the app listens for presses (reached by screen readers and the keyboard),
- * otherwise a plain row with no press fill; the selected row keeps the secondary fill and reads as current.
+ * otherwise a plain row with no press fill; the open row (activeKey) keeps the selected fill, pressed too, and reads as current.
  */
 export function MarketRow<Row extends object>({
   row,
@@ -128,7 +128,7 @@ export function MarketRow<Row extends object>({
   if (!props.onRowClick)
     return (
       <View {...current} accessibilityState={Platform.OS === "web" ? undefined : { selected }}
-        style={{ ...rest, backgroundColor: selected ? colors.secondary : undefined }}>
+        style={{ ...rest, backgroundColor: selected ? colors.selectedBg : undefined }}>
         {children}
       </View>
     );
@@ -139,7 +139,7 @@ export function MarketRow<Row extends object>({
       accessibilityState={Platform.OS === "web" ? undefined : { selected }}
       focusRingInset
       onPress={() => props.onRowClick?.(row)}
-      style={({ pressed }) => ({ ...rest, backgroundColor: pressed ? colors.hover : selected ? colors.secondary : undefined })}
+      style={({ pressed }) => ({ ...rest, backgroundColor: selected ? colors.selectedBg : pressed ? colors.hover : undefined })}
     >
       {children}
     </Pressable>

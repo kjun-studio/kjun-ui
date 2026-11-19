@@ -15696,11 +15696,11 @@
         "description": ""
       },
       {
-        "name": "selectedRowKey",
-        "type": "string | number | null",
+        "name": "activeKey",
+        "type": "undefined",
         "required": false,
         "default": "—",
-        "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current."
+        "description": "The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable."
       },
       {
         "name": "columns",
@@ -15855,11 +15855,11 @@
     ],
     "react": [
       {
-        "name": "selectedRowKey",
-        "type": "string | number | null | undefined",
+        "name": "activeKey",
+        "type": "unknown",
         "required": false,
         "default": "—",
-        "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current."
+        "description": "The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable."
       },
       {
         "name": "columns",
@@ -16186,11 +16186,11 @@
     ],
     "native": [
       {
-        "name": "selectedRowKey",
-        "type": "string | number | null | undefined",
+        "name": "activeKey",
+        "type": "unknown",
         "required": false,
         "default": "—",
-        "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and the current state."
+        "description": "The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable."
       },
       {
         "name": "columns",
@@ -16742,11 +16742,11 @@
         "description": ""
       },
       {
-        "name": "selectedRowKey",
-        "type": "string | number | null",
+        "name": "activeKey",
+        "type": "undefined",
         "required": false,
         "default": "—",
-        "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current."
+        "description": "The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable."
       },
       {
         "name": "priceValue",
@@ -16830,11 +16830,11 @@
     ],
     "react": [
       {
-        "name": "selectedRowKey",
-        "type": "string | number | null | undefined",
+        "name": "activeKey",
+        "type": "unknown",
         "required": false,
         "default": "—",
-        "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current."
+        "description": "The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable."
       },
       {
         "name": "priceValue",
@@ -17091,11 +17091,11 @@
     ],
     "native": [
       {
-        "name": "selectedRowKey",
-        "type": "string | number | null | undefined",
+        "name": "activeKey",
+        "type": "unknown",
         "required": false,
         "default": "—",
-        "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and the current state."
+        "description": "The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable."
       },
       {
         "name": "priceValue",

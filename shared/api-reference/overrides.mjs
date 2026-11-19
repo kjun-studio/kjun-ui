@@ -452,7 +452,7 @@ set("ProgressCell", {
   ariaLabel: "막대의 접근성 이름입니다(예: \"A팀 진척\"). 표 행마다 무엇의 진행률인지 화면 낭독기가 읽도록 줍니다.",
   color: { default: '"auto"', summary: "막대 색입니다. auto는 30% 미만 danger, 70% 미만 warning, 그 이상 success입니다. custom은 customColor를 쓰고, customColor만 주어도(color가 auto일 때) custom으로 봅니다. custom인데 customColor가 없으면 auto 색을 씁니다." },
 });
-set("MarketCards MarketSimpleList", { selectedRowKey: "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다." });
+set("MarketCards MarketSimpleList", { activeKey: "앱이 열어 둔 행의 rowKey 값입니다(목록 옆 상세·차트 등). MarketTable처럼 그 행을 선택 배경(selectedBg)으로 채우고 hover 중에도 유지하며, 웹은 aria-current=\"true\", 기기는 선택 상태로 알립니다." });
 set("MarketCards MarketSimpleList MarketTable", { totalCount: { default: "pagination.total ?? 행 수", summary: "푸터에 보이는 전체 개수입니다. 주지 않으면 pagination.total을, 그것도 없으면 표시한 행 수를 셉니다." } });
 set("MarketSimpleList MarketTable", { renderStatus: "행의 시세 상태(종가·지연 등)를 반환합니다. 목록은 등락률 앞, 표는 가격 칸 값 뒤에 둡니다. 문구와 배지 색은 앱이 정합니다." });
 set("MarketTable", {

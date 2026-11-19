@@ -19,8 +19,8 @@ import { KjunListSkeleton } from "./skeletons";
 type MarketPill = ReturnType<ReturnType<typeof useMarketCardsModel>>["pill"];
 const kjunMarketCardsProps = {
   ...marketBaseProps,
-  /** The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current. */
-  selectedRowKey: { type: [String, Number, null] as PropType<string | number | null>, default: undefined },
+  /** The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable. */
+  activeKey: { type: null as unknown as PropType<unknown>, default: undefined },
   columns: { type: Array as PropType<MarketColumn[]>, required: true },
   metricConfig: { type: Object as PropType<Record<string, MarketMetric>>, required: true },
   excludeKeys: { type: Array as PropType<string[]>, default: () => [] },
@@ -93,7 +93,7 @@ export const KjunMarketCards = defineComponent({
                   {rows.map((row: any, i) => {
                     const value = getValue(row, state.key);
                     return (
-                      <div key={String(getValue(row, props.rowKey) ?? i)} class="kjun-market-row kjun-market-row-compact" {...marketRowAttrs(row, props, props.selectedRowKey)}>
+                      <div key={String(getValue(row, props.rowKey) ?? i)} class="kjun-market-row kjun-market-row-compact" {...marketRowAttrs(row, props, props.activeKey)}>
                         {marketIdentity(row, props, slots)}
                         <div class="kjun-market-quote">
                           {state.pill?.format === "sparkline"

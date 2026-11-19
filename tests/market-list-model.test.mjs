@@ -16,7 +16,7 @@ test('the market footer counts the app total, then the paged total, then the row
   assert.equal(marketTotal(null, undefined, 3), 3);
 });
 
-test('selectedRowKey marks only the row with that key, and none when it is null or undefined', async () => {
+test('activeKey marks only the row with that key, and none when it is null or undefined', async () => {
   const { isSelectedMarketRow } = await load('shared/package-runtime/market-query.ts');
   assert.equal(isSelectedMarketRow('a', 'a'), true);
   assert.equal(isSelectedMarketRow(1, 1), true);

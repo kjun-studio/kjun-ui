@@ -32,8 +32,8 @@ export function MarketCases({ K }: { K: any }) {
     {config.show && <div style={params.has('narrow') ? { width: Number(params.get('narrow')) || 160 } : undefined} data-testid="cards"><K.KjunMarketCards {...quoteProps} columns={columns} metricConfig={metricConfig} storageNamespace={config.namespace}
       storage={params.has('browser') ? undefined : storage} excludeKeys={config.exclude} sortKey={config.sortKey}
       emitSortOnMount={config.emit} onSort={(key: string) => setEvents(old => [...old, key])}
-      {...(params.has('rows') ? { selectedRowKey: 'a', onRowClick: (row: { id: string }) => setEvents(old => [...old, 'row:' + row.id]) } : {})} /></div>}
-    {params.has('rows') && <div data-testid="list"><K.KjunMarketSimpleList {...quoteProps} selectedRowKey="b"
+      {...(params.has('rows') ? { activeKey: 'a', onRowClick: (row: { id: string }) => setEvents(old => [...old, 'row:' + row.id]) } : {})} /></div>}
+    {params.has('rows') && <div data-testid="list"><K.KjunMarketSimpleList {...quoteProps} activeKey="b"
       priceValue={(row: { price: number }) => row.price} changeValue={(row: { change: number }) => row.change} priceFormatter={String} /></div>}
     <output data-testid="events">{JSON.stringify(events)}</output>
   </>;

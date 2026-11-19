@@ -15,7 +15,7 @@
 .kjun-market-row[role="button"] {
   cursor: pointer;
 }
-/* The row the rest of the screen shows (selectedRowKey) keeps a quiet fill; hover on a clickable row sits one step darker. */
+/* The row the rest of the screen shows (activeKey) keeps a quiet fill; hover on a clickable row sits one step darker. */
 .kjun-market-row[aria-current="true"] {
   background: var(--_kjun-color-secondary);
 }

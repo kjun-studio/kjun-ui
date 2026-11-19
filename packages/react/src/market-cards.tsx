@@ -102,7 +102,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
                   key={String(getValue(row, rowKey) ?? i)}
                   row={row}
                   props={props}
-                  selectedKey={props.selectedRowKey}
+                  selectedKey={props.activeKey}
                   compact
                 >
                   <MarketIdentity row={row} props={props} />

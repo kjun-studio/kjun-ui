@@ -21,12 +21,12 @@ export const rowKeydown = (handler: (() => void) | undefined) => (event: Keyboar
 };
 
 /** Like React's MarketRow: a button only when the app listens for clicks, aria-current on the selected row. */
-export function marketRowAttrs(row: object, props: { rowKey: string; onRowClick?: (row: any) => void }, selectedRowKey: unknown) {
+export function marketRowAttrs(row: object, props: { rowKey: string; onRowClick?: (row: any) => void }, activeKey: unknown) {
   const activate = props.onRowClick && (() => props.onRowClick?.(row));
   return {
     role: activate ? "button" : undefined,
     tabindex: activate ? 0 : undefined,
-    "aria-current": isSelectedMarketRow(getValue(row, props.rowKey || "id"), selectedRowKey) || undefined,
+    "aria-current": isSelectedMarketRow(getValue(row, props.rowKey || "id"), activeKey) || undefined,
     onClick: activate && ((event: MouseEvent) => { if (!fromNestedControl(event)) activate(); }),
     onKeydown: activate && rowKeydown(activate),
   };
@@ -34,8 +34,8 @@ export function marketRowAttrs(row: object, props: { rowKey: string; onRowClick?
 
 const kjunMarketSimpleListProps = {
   ...marketBaseProps,
-  /** The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current. */
-  selectedRowKey: { type: [String, Number, null] as PropType<string | number | null>, default: undefined },
+  /** The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable. */
+  activeKey: { type: null as unknown as PropType<unknown>, default: undefined },
   priceValue: { type: Function as PropType<(row: any) => number | null>, required: true },
   changeValue: { type: Function as PropType<(row: any) => number | null>, required: true },
   changeLoading: { type: Function as PropType<(row: any) => boolean>, default: () => false },
@@ -63,7 +63,7 @@ export const KjunMarketSimpleList = defineComponent({
                 {rows.map((row: any, i) => {
                   const price = props.priceValue(row), change = props.changeValue(row), stale = !!getValue(row, "stale");
                   return (
-                    <div key={String(getValue(row, props.rowKey) ?? i)} class="kjun-market-row" {...marketRowAttrs(row, props, props.selectedRowKey)}>
+                    <div key={String(getValue(row, props.rowKey) ?? i)} class="kjun-market-row" {...marketRowAttrs(row, props, props.activeKey)}>
                       {marketIdentity(row, props, slots)}
                       <div class="kjun-market-quote">
                         <div class="kjun-market-price"><KjunPriceCell value={price} formatter={props.priceFormatter} stale={stale} /></div>

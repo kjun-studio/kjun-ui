@@ -24,8 +24,8 @@ createApp(defineComponent(() => () => <K.KjunProvider>
   {s.config.show && <div style={params.has('narrow') ? { width: (Number(params.get('narrow')) || 160) + 'px' } : undefined} data-testid="cards"><K.KjunMarketCards {...quoteProps} columns={columns} metricConfig={metricConfig} storageNamespace={s.config.namespace}
     storage={params.has('browser') ? undefined : storage} excludeKeys={s.config.exclude} sortKey={s.config.sortKey}
     emitSortOnMount={s.config.emit} onSort={(key: string) => s.events.push(key)}
-    {...(params.has('rows') ? { selectedRowKey: 'a', onRowClick: (row: { id: string }) => s.events.push('row:' + row.id) } : {})} /></div>}
-  {params.has('rows') && <div data-testid="list"><K.KjunMarketSimpleList {...quoteProps} selectedRowKey="b"
+    {...(params.has('rows') ? { activeKey: 'a', onRowClick: (row: { id: string }) => s.events.push('row:' + row.id) } : {})} /></div>}
+  {params.has('rows') && <div data-testid="list"><K.KjunMarketSimpleList {...quoteProps} activeKey="b"
     priceValue={(row: { price: number }) => row.price} changeValue={(row: { change: number }) => row.change} priceFormatter={String} /></div>}
   <output data-testid="events">{JSON.stringify(s.events)}</output>
 </K.KjunProvider>)).mount('#root');

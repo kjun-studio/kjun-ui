@@ -62,8 +62,8 @@ export type MarketFormatter<Row extends object> = (
 export interface KjunMarketSimpleListProps<
   Row extends object = Record<string, unknown>
 > extends MarketBaseProps<Row> {
-  /** The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current. */
-  selectedRowKey?: string | number | null;
+  /** The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable. */
+  activeKey?: unknown;
   priceValue: (row: Row) => number | null;
   changeValue: (row: Row) => number | null;
   changeLoading?: (row: Row) => boolean;
@@ -102,8 +102,8 @@ export interface KjunMarketTableProps<
 export interface KjunMarketCardsProps<
   Row extends object = Record<string, unknown>
 > extends MarketBaseProps<Row>, MarketCardsModelProps {
-  /** The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current. */
-  selectedRowKey?: string | number | null;
+  /** The rowKey value of the row the app has open (a detail or chart beside the list); it takes the selected fill and aria-current, like MarketTable. */
+  activeKey?: unknown;
   columns: MarketColumn[];
   sortOrder?: "asc" | "desc";
   currency?: string;

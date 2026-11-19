@@ -46,7 +46,7 @@ export function KjunMarketSimpleList<
               change = changeValue(row),
               stale = !!getValue(row, "stale");
             return (
-              <MarketRow key={String(getValue(row, rowKey) ?? i)} row={row} props={props} selectedKey={props.selectedRowKey}>
+              <MarketRow key={String(getValue(row, rowKey) ?? i)} row={row} props={props} selectedKey={props.activeKey}>
                 <MarketIdentity row={row} props={props} />
                 <div className="kjun-market-quote">
                   <div className="kjun-market-price">

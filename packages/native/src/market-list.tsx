@@ -59,7 +59,7 @@ export function KjunMarketSimpleList<
                 key={String(getValue(row, rowKey) ?? i)}
                 row={row}
                 props={props}
-                selectedKey={props.selectedRowKey}
+                selectedKey={props.activeKey}
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
