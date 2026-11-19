@@ -1,6 +1,6 @@
 import { UsageBuilder, expr, type UsageInput } from './builder';
 import { tableUsageExample } from './table';
-import { defaultRows, columns, defaultOptions } from '../../previews/catalog/example-tools';
+import { defaultRows, columns, defaultOptions, sparklineSample } from '../../previews/catalog/example-tools';
 
 export function generate(input: UsageInput) {
   const b = new UsageBuilder(input), { name, settings: s } = input;
@@ -54,7 +54,11 @@ export function generate(input: UsageInput) {
     case 'KjunProgressCell': content = b.group([b.node(name, { value: 42, max: 100, showLabel: true, ariaLabel: 'A팀 진척' }), b.node(name, { value: 12, max: 20, valueText: '12/20건', ariaLabel: 'B팀 진척' })]); break;
     case 'KjunCollectionMark': b.domainColors = true; content = b.group(['favorite', 'interest'].map(kind => b.node(name, { kind, active: true }))); break;
     case 'KjunExecutionStatusBadge': content = b.group(['queued', 'running', 'completed', 'failed'].map(status => b.node(name, { status }))); break;
-    case 'KjunSparkline': content = b.node(name, { data: [1, 4, 3, 7, 5, 8], width: 240, height: 64, fill: true, semantic: 'price', ariaLabel: '추세' }); break;
+    case 'KjunSparkline': {
+      const spark = sparklineSample(String(s.data ?? '상승'));
+      content = b.node(name, { data: spark.data, width: 240, height: 64, variant: s.variant === 'bar' ? 'bar' : undefined, fill: s.fill === false ? false : undefined,
+        stretch: s.stretch ? true : undefined, semantic: 'price', baseline: s.baseline === false ? undefined : spark.baseline, ariaLabel: spark.label }); break;
+    }
     case 'KjunMarketSimpleList': case 'KjunMarketTable': case 'KjunMarketCards': case 'KjunMarketListPanel': {
       const market: Record<string, unknown> = { rows: rows(), columns: b.data('columns', columns.map((col, i) => ({ ...col, type: ['text', 'price', 'percent'][i] }))),
         primaryLabel: b.declare('primaryLabel', 'const primaryLabel = row => row.name;'), subMeta: b.declare('subMeta', 'const subMeta = row => row.symbol;'),

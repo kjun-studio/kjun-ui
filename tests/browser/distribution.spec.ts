@@ -12,10 +12,13 @@ const painted = (page: Page, id: string, color: string) => page.getByTestId(id).
     return { x: box.left - left, width: box.width, height: box.height };
   }).sort((a, b) => b.width - a.width);
 }, color);
-// The gauge marker is the absolutely placed part with a width; a sliver cover beside it has none unless it covers.
+// How far a colour reaches: from the start of its first painted box to the end of its last. Native draws a zone the
+// marker cuts as two pieces, the web masks one box; either way the zone spans the same stretch of the axis.
+const span = (boxes: { x: number; width: number }[]) => Math.max(...boxes.map(box => box.x + box.width)) - Math.min(...boxes.map(box => box.x));
+// The gauge marker is the absolutely placed part with a width.
 const marker = (page: Page, id: string) => page.getByTestId(id).evaluate(root => {
   const left = root.getBoundingClientRect().left;
-  return [...root.querySelectorAll('*')].filter(el => getComputedStyle(el).position === 'absolute' && el.getBoundingClientRect().width > 0 && !el.hasAttribute('data-side')).map(el => {
+  return [...root.querySelectorAll('*')].filter(el => getComputedStyle(el).position === 'absolute' && el.getBoundingClientRect().width > 0).map(el => {
     const box = el.getBoundingClientRect();
     return { x: box.left - left, width: box.width, height: box.height };
   });
@@ -34,9 +37,9 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(page.getByTestId('gauge').getByText('72 · 고평가', { exact: true })).toBeVisible();
       for (const name of ['저평가', '중립', '고평가']) await expect(page.getByTestId('gauge').getByText(name, { exact: true })).toBeVisible();
       // 600 wide with two 2px gaps leaves 596 for the zones: 30%, 40%, 30%.
-      const [low] = await painted(page, 'gauge', blue), [high] = await painted(page, 'gauge', orange);
+      const [low] = await painted(page, 'gauge', blue), high = await painted(page, 'gauge', orange);
       expect(low.width).toBeCloseTo(596 * 0.3, 0);
-      expect(high.width).toBeCloseTo(596 * 0.3, 0);
+      expect(span(high)).toBeCloseTo(596 * 0.3, 0);
       expect(low.x).toBeCloseTo(0, 0);
       expect(low.height).toBe(10);
       // A 6px marker travels 594px: its start edge is at 72% of that, and it overhangs the 10px track by 6 on each side.
@@ -58,6 +61,28 @@ for (const platform of ['react', 'vue3', 'native']) {
       const withValue = (await page.getByTestId('gauge').boundingBox())!, without = (await page.getByTestId('gauge-missing').boundingBox())!;
       expect(without.height).toBeCloseTo(withValue.height, 0);
       await expect(image(page, 'gauge-missing')).toHaveAttribute('aria-label', 'PER 백분위, 데이터가 없습니다');
+    });
+
+    test('the marker sits in a gap in the track, not a surface-coloured ring, so a tinted background shows around it', async ({ page }) => {
+      const tinted = page.getByTestId('gauge-tinted');
+      // Nothing in the gauge is painted in the surface colour, and the marker casts no ring.
+      expect(await tinted.evaluate(root => [...root.querySelectorAll('*')].filter(el => getComputedStyle(el).backgroundColor === 'rgb(255, 255, 255)').length)).toBe(0);
+      expect(await tinted.evaluate(root => [...root.querySelectorAll('*')].some(el => !['none', ''].includes(getComputedStyle(el).boxShadow)))).toBe(false);
+      const [pin] = await marker(page, 'gauge-tinted');
+      expect(pin.width).toBe(6);
+      // At 71.5 only 1.5px of the high zone would show between the boundary and the gap: too thin to read, so it joins the gap.
+      const high = await tinted.evaluate((root, orange) => [...root.querySelectorAll('*')].filter(el => getComputedStyle(el).backgroundColor === orange).map(el => ({
+        x: el.getBoundingClientRect().left - root.getBoundingClientRect().left,
+        // The web keeps one zone box and masks the gap out of the track.
+        mask: getComputedStyle(el.parentElement!).maskImage || getComputedStyle(el.parentElement!).webkitMaskImage,
+      })), orange);
+      if (platform === 'native') expect(Math.min(...high.map(piece => piece.x))).toBeGreaterThanOrEqual(pin.x + 6 + 2 - 0.5);
+      else expect(high[0].mask).toContain('linear-gradient');
+    });
+
+    test('a stacked bar shows the summary at the end of its caption and reads it after the name', async ({ page }) => {
+      await expect(page.getByTestId('stacked-summary').getByText('20명 · 강세 우위', { exact: true })).toBeVisible();
+      await expect(image(page, 'stacked-summary')).toHaveAttribute('aria-label', '애널리스트 의견, 20명 · 강세 우위: 강세 12 (60%), 중립 6 (30%), 약세 2 (10%)');
     });
 
     test('a gauge takes its own axis, format and name, and can hide its value and zone names', async ({ page }) => {

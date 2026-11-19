@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { openFixture } from './packed-fixture';
 
 for (const platform of ['react', 'vue3', 'native']) {
-  test(`${platform}: sparklines centre flat series, break gaps, show empty, mark baselines and draw bars`, async ({ page }) => {
+  test(`${platform}: sparklines centre flat series, break gaps, show and name empty, mark baselines and draw bars`, async ({ page }) => {
     await openFixture(page, platform, '', 'sparkline-design');
     const svg = (id: string) => page.getByTestId(id).locator('svg').first();
     // A flat series sits on the vertical middle, not the bottom edge.
@@ -32,6 +32,12 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(await cap.getAttribute('stroke-linecap')).toBe('round');
       expect(await cap.getAttribute('vector-effect')).toBe('non-scaling-stroke');
     }
+    // Stretched bars stay square, and a stretched empty line keeps its dash size like the baseline.
+    await expect(svg('stretch-bars').locator('rect')).toHaveCount(3);
+    for (const bar of await svg('stretch-bars').locator('rect').all()) expect(await bar.getAttribute('rx')).toBe('0');
+    // A named chart with no data says so.
+    await expect(page.getByTestId('empty').getByRole('img', { name: 'empty, 데이터가 없습니다', exact: true })).toHaveCount(1);
+    await expect(page.getByTestId('flat').getByRole('img', { name: 'flat', exact: true })).toHaveCount(1);
     // Negative bars hang from a dashed zero line instead of growing from the minimum.
     const zero = Number(await svg('negative').locator('line').getAttribute('y1'));
     const [down, up] = await svg('negative').locator('rect').all();

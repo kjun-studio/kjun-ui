@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { sparklineCell, sparklineGeometry, sparklineRange, sparklineTone } from '../shared/package-runtime/sparkline.ts';
+import { sparklineCell, sparklineGeometry, sparklineLabel, sparklineRange, sparklineTone } from '../shared/package-runtime/sparkline.ts';
 
 const base = { width: 72, height: 22, strokeWidth: 1.5, dotRadius: 2.5, barGap: 2 };
 
@@ -80,4 +80,30 @@ test('long series stay within the call stack', () => {
 
 test('empty data reports empty', () => {
   assert.equal(sparklineGeometry([], base).empty, true);
+  assert.equal(sparklineGeometry([null, undefined, NaN], base).empty, true);
+});
+
+test('against a baseline the area fills only the side the series moved to', () => {
+  // Falls from 101 to 98 under a 100 baseline: the start above the baseline keeps its line but no fill.
+  const g = sparklineGeometry([101, 99, 98], { ...base, baseline: 100 });
+  const ys = g.areas[0].split(' ').map(p => Number(p.split(',')[1]));
+  assert.ok(ys.every(y => y >= g.baselineY - 1e-9));
+  // The crossing becomes a corner on the baseline, so the fill starts where the line crosses.
+  const xs = g.areas[0].split(' ').map(p => Number(p.split(',')[0]));
+  assert.ok(xs.some(x => x > 3.5 && x < 36 && ys[xs.indexOf(x)] === g.baselineY));
+  // A rise fills above only; without a baseline the area still reaches the bottom.
+  const up = sparklineGeometry([99, 101, 103], { ...base, baseline: 100 });
+  assert.ok(up.areas[0].split(' ').every(p => Number(p.split(',')[1]) <= up.baselineY + 1e-9));
+  assert.ok(sparklineGeometry([3, 1, 4], base).areas[0].includes(',22'));
+});
+
+test('null and undefined are gaps like NaN', () => {
+  assert.equal(sparklineGeometry([3, 4, null, 6, undefined, 7, 8], base).segments.length, 3);
+  assert.equal(sparklineGeometry([2, null, 4, 8], { ...base, variant: 'bar' }).bars.length, 3);
+});
+
+test('a named chart with nothing to draw says so', () => {
+  assert.equal(sparklineLabel('추세', true, '데이터가 없습니다'), '추세, 데이터가 없습니다');
+  assert.equal(sparklineLabel('추세', false, '데이터가 없습니다'), '추세');
+  assert.equal(sparklineLabel(undefined, true, '데이터가 없습니다'), undefined);
 });

@@ -1,6 +1,6 @@
 import { type ExtractPublicPropTypes, type PropType } from "vue";
 import { defineComponent } from "./runtime/component";
-import { gaugeModel, type GaugeZone } from "../../../shared/package-runtime/distribution";
+import { gaugeAxisVars, gaugeModel, type GaugeZone } from "../../../shared/package-runtime/distribution";
 import { useKjunMessageScope } from "./runtime/messages";
 
 export type KjunGaugeZone = GaugeZone;
@@ -35,9 +35,6 @@ export const KjunZoneGauge = defineComponent({
       const { label } = props;
       const { segments, ready, position, near, caption, spoken } = gaugeModel({ value: props.value, min: props.min, max: props.max, zones: props.zones, label,
         ariaLabel: props.ariaLabel, formatValue: props.formatValue, missingText: props.missingText, noData: scope.value.messages.noData, locale: scope.value.intl });
-      const cover = (side: "before" | "after") => near[side] && (
-        <span class="kjun-zone-gauge-cover" data-side={side} style={{ "--_kjun-zone-gauge-cut": String(near[side]!.cut), "--_kjun-zone-gauge-gaps": String(near[side]!.gaps) }} />
-      );
       return (
         <div class="kjun-zone-gauge" data-size={props.size} data-state={ready ? "ready" : "missing"} role="img" aria-label={spoken}>
           {(label || props.showValue || !ready) && (
@@ -48,12 +45,10 @@ export const KjunZoneGauge = defineComponent({
           )}
           {/* Like React: a missing value keeps the axis and the zone names, without colours or a marker. */}
           {segments.length > 0 && (
-            <div class="kjun-zone-gauge-axis" aria-hidden="true" style={{ "--_kjun-zone-gauge-position": String(position / 100), "--_kjun-zone-gauge-count": String(segments.length) }}>
+            <div class="kjun-zone-gauge-axis" aria-hidden="true" style={gaugeAxisVars(position, segments.length, near)}>
               <div class="kjun-zone-gauge-track">
                 {segments.map((segment, i) => <span key={i} class="kjun-zone-gauge-zone" style={{ flexGrow: segment.share, background: ready ? segment.color : undefined }} />)}
               </div>
-              {cover("before")}
-              {cover("after")}
               {ready && <span class="kjun-zone-gauge-marker" />}
             </div>
           )}

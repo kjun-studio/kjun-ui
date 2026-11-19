@@ -1,4 +1,4 @@
-import { sparklineDash, sparklineGeometry, sparklineTone, type SparkPoint } from "../../../shared/package-runtime/sparkline";
+import { sparklineDash, sparklineGeometry, sparklineLabel, sparklineTone, type SparkPoint, type SparklineData } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { deviationText } from "../../../shared/package-runtime/signed-number";
@@ -6,7 +6,9 @@ import { typeStyle } from "./typography";
 import { useId,type ReactNode } from "react";
 import {
 View,
-type ColorValue
+type ColorValue,
+type StyleProp,
+type ViewStyle
 } from "react-native";
 import Svg,{
 Circle,
@@ -341,12 +343,13 @@ export function KjunExecutionStatusBadge({
   );
 }
 export interface KjunSparklineProps {
-  data?: number[];
+  /** Values in time order. null, undefined and non-finite numbers are gaps: the line breaks there. */
+  data?: SparklineData;
   width?: number;
   height?: number;
   color?: ColorValue;
   semantic?: "price" | "status";
-  /** "line" (default) draws the trend; "bar" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color. */
+  /** "line" (default) draws the trend; "bar" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color and the others stay quiet. */
   variant?: "line" | "bar";
   fill?: boolean;
   strokeWidth?: number;
@@ -358,7 +361,9 @@ export interface KjunSparklineProps {
   max?: number;
   /** Marks the last value with a dot (line variant; default true). */
   endDot?: boolean;
+  /** Names the chart for screen readers; without it the chart is decorative. With no data, the no-data message follows it. */
   ariaLabel?: string;
+  style?: StyleProp<ViewStyle>;
 }
 export function KjunSparkline({
   data = [],
@@ -375,22 +380,23 @@ export function KjunSparkline({
   max,
   endDot = true,
   ariaLabel,
+  style,
 }: KjunSparklineProps) {
-  const { colors, domainColors } = useKjunStyles(), id = "kjun-" + useId().replace(/:/g, ""), spec = tokens.extensions.financial;
+  const m = useKjunMessages(), { colors, domainColors } = useKjunStyles(), id = "kjun-" + useId().replace(/:/g, ""), spec = tokens.extensions.financial;
   const g = sparklineGeometry(data, { width, height, strokeWidth, variant, baseline, min, max, endDot });
   const tone = sparklineTone(g.direction, semantic);
   const line = color || (tone === "price-up" ? domainColor(domainColors, "priceUp") : tone === "price-down" ? domainColor(domainColors, "priceDown")
     : { "text-tertiary": colors.textTertiary, success: colors.success, danger: colors.danger }[tone]);
-  const dash = sparklineDash(), scale = stretch ? "non-scaling-stroke" : undefined;
+  const dash = sparklineDash(), scale = stretch ? "non-scaling-stroke" : undefined, label = sparklineLabel(ariaLabel, g.empty, m.noData);
   const dot = (p: SparkPoint, size: number, key?: number) => stretch
     ? <Path key={key} d={`M${p.x} ${p.y}h0`} stroke={line} strokeWidth={size} strokeLinecap="round" vectorEffect="non-scaling-stroke" />
     : <Circle key={key} cx={p.x} cy={p.y} r={size / 2} fill={line} />;
-  // Like Web: an empty series is a quiet dotted line; bars grow from the baseline or zero; stretched dots stay round.
+  // Like Web: an empty series is a quiet dotted line; bars grow from the baseline or zero; stretched dots stay round and stretched bars square.
   return (
     <Svg width={stretch ? "100%" : width} height={height} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio={stretch ? "none" : "xMidYMid meet"}
-      accessibilityRole={ariaLabel ? "image" : undefined} accessibilityLabel={ariaLabel} accessible={!!ariaLabel}>
-      {g.empty && <Line x1={0} x2={width} y1={height / 2} y2={height / 2} stroke={colors.border} strokeWidth={strokeWidth} strokeDasharray={dash} strokeLinecap="round" />}
-      {g.bars.map((bar, i) => <Rect key={i} x={bar.x} y={bar.y} width={bar.width} height={bar.height} rx={Math.min(spec.sparklineBarGap, bar.width / 2)} fill={bar.last ? line : colors.borderStrong} />)}
+      accessibilityRole={label ? "image" : undefined} accessibilityLabel={label} accessible={!!label} style={style}>
+      {g.empty && <Line x1={0} x2={width} y1={height / 2} y2={height / 2} stroke={colors.border} strokeWidth={strokeWidth} strokeDasharray={dash} strokeLinecap="round" vectorEffect={scale} />}
+      {g.bars.map((bar, i) => <Rect key={i} x={bar.x} y={bar.y} width={bar.width} height={bar.height} rx={stretch ? 0 : Math.min(spec.sparklineBarGap, bar.width / 2)} fill={bar.last ? line : colors.border} />)}
       {fill && g.areas.length > 0 && <>
         <Defs>
           <LinearGradient id={id} x1="0" y1="0" x2="0" y2="1">

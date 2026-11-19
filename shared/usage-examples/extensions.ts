@@ -200,7 +200,7 @@ export function generate(input: UsageInput) {
       const values = s.data === '작은 조각' ? [990, 5, 5] : s.data === '모두 0' ? [0, 0, 0] : [12, 6, 2];
       b.declare('opinions', s.data === '없음' ? 'const opinions = null;'
         : `const opinions = [\n  { key: "bull", label: "강세", value: ${values[0]}, color: ${color('danger')} },\n  { key: "flat", label: "중립", value: ${values[1]} },\n  { key: "bear", label: "약세", value: ${values[2]}, color: ${color('info')} },\n];`);
-      content = b.node(name, { label: '애널리스트 의견', items: expr('opinions'), size: s.size === 'sm' ? 'sm' : undefined, legend: s.legend === false ? false : undefined }); break;
+      content = b.node(name, { label: '애널리스트 의견', valueText: s.summary ? '20명 · 강세 우위' : undefined, items: expr('opinions'), size: s.size === 'sm' ? 'sm' : undefined, legend: s.legend === false ? false : undefined }); break;
     }
     case 'KjunSplitPane': {
       const vertical = s.direction === 'vertical', height = vertical ? 320 : 180, px = s.unit === 'px', rail = !!s.collapsible, start = px ? 240 : 0.6;

@@ -5,7 +5,7 @@ export interface SparkBar { x: number; y: number; width: number; height: number;
 export interface SparklineGeometry {
   /** Unbroken runs of finite values; a run of one value is drawn as a dot. */
   segments: SparkPoint[][];
-  /** Closed area polygons ("x,y x,y …") under each run of two or more points. */
+  /** Closed area polygons ("x,y x,y …") under each run of two or more points; against a baseline, only on the side the series moved to. */
   areas: string[];
   end?: SparkPoint;
   baselineY?: number;
@@ -21,10 +21,14 @@ export interface SparklineOptions {
   variant?: "line" | "bar"; baseline?: number; min?: number; max?: number; endDot?: boolean;
 }
 
-export function sparklineGeometry(data: readonly number[], options: SparklineOptions): SparklineGeometry {
+/** A series in time order: null, undefined and non-finite numbers are gaps. */
+export type SparklineData = readonly (number | null | undefined)[];
+const finite = (v: unknown): v is number => typeof v === "number" && Number.isFinite(v);
+
+export function sparklineGeometry(data: SparklineData, options: SparklineOptions): SparklineGeometry {
   const spec = tokens.extensions.financial;
   const o = { dotRadius: spec.sparklineDotSize / 2, barGap: spec.sparklineBarGap, barMinHeight: spec.sparklineBarMinHeight, ...options };
-  const values = data.filter(Number.isFinite);
+  const values = data.filter(finite);
   const empty = !values.length;
   const last = values[values.length - 1], reference = o.baseline ?? values[0];
   const direction = values.length > 1 || (o.baseline != null && values.length) ? (Math.sign(last - reference) as -1 | 0 | 1) : 0;
@@ -36,9 +40,9 @@ export function sparklineGeometry(data: readonly number[], options: SparklineOpt
     for (const v of values) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
     const span = hi - lo || 1, count = data.length, width = (o.width - o.barGap * (count - 1)) / count;
     const y = (v: number) => o.height * (1 - (v - lo) / span), zero = y(Math.min(hi, Math.max(lo, origin)));
-    const lastIndex = data.map(Number.isFinite).lastIndexOf(true);
+    const lastIndex = data.map(finite).lastIndexOf(true);
     const bars = data.flatMap((v, i) => {
-      if (!Number.isFinite(v)) return [];
+      if (!finite(v)) return [];
       const height = Math.max(o.barMinHeight, Math.abs(y(v) - zero));
       return [{ x: i * (width + o.barGap), y: v < origin ? zero : zero - height, width, height, last: i === lastIndex }];
     });
@@ -58,18 +62,30 @@ export function sparklineGeometry(data: readonly number[], options: SparklineOpt
   const segments: SparkPoint[][] = [];
   let run: SparkPoint[] = [];
   data.forEach((v, i) => {
-    if (Number.isFinite(v)) run.push({ x: x(i), y: y(v) });
+    if (finite(v)) run.push({ x: x(i), y: y(v) });
     else if (run.length) { segments.push(run); run = []; }
   });
   if (run.length) segments.push(run);
   const baselineY = o.baseline != null ? y(o.baseline) : undefined, floorY = baselineY ?? o.height;
-  const areas = flat ? [] : segments.filter((s) => s.length > 1)
+  // Against a baseline the area fills only the side the series moved to: a stretch that crossed to the other side keeps
+  // its line but no fill, so it never reads as part of the move. A flat result fills both sides in its quiet colour.
+  const side = baselineY != null ? direction : 0;
+  const keep = (run: SparkPoint[]) => {
+    if (!side) return run;
+    const out: SparkPoint[] = [];
+    run.forEach((p, i) => {
+      const prev = run[i - 1];
+      if (prev && (prev.y - floorY) * (p.y - floorY) < 0) out.push({ x: prev.x + (p.x - prev.x) * (floorY - prev.y) / (p.y - prev.y), y: floorY });
+      out.push({ x: p.x, y: side > 0 ? Math.min(p.y, floorY) : Math.max(p.y, floorY) });
+    });
+    return out;
+  };
+  const areas = flat ? [] : segments.filter((s) => s.length > 1).map(keep)
     .map((s) => [`${s[0].x},${floorY}`, ...s.map((p) => `${p.x},${p.y}`), `${s[s.length - 1].x},${floorY}`].join(" "));
   const tail = segments[segments.length - 1];
   return { segments, areas, end: tail[tail.length - 1], baselineY, bars: [], direction, empty };
 }
 
-/** One vertical range for every row of a column, so their sparklines compare on the same scale. */
 export type SparklineTone = "text-tertiary" | "success" | "danger" | "price-up" | "price-down";
 /** The color role for a direction: price up/down, or success/danger for status, and quiet when flat. */
 export function sparklineTone(direction: -1 | 0 | 1, semantic: "price" | "status" = "price"): SparklineTone {
@@ -80,6 +96,12 @@ export function sparklineTone(direction: -1 | 0 | 1, semantic: "price" | "status
 /** The dash pattern for the empty line and the baseline. */
 export const sparklineDash = () => `${tokens.extensions.financial.sparklineDash} ${tokens.extensions.financial.sparklineDashGap}`;
 
+/** The accessible name: the app's description, and the no-data sentence when there is nothing to draw. */
+export function sparklineLabel(ariaLabel: string | undefined, empty: boolean, noData: string) {
+  return ariaLabel && empty ? `${ariaLabel}, ${noData}` : ariaLabel;
+}
+
+/** One vertical range for every row of a column, so their sparklines compare on the same scale. */
 export function sparklineRange(series: readonly unknown[], baselines: readonly unknown[] = []): { min?: number; max?: number } {
   let min = Infinity, max = -Infinity;
   const take = (v: unknown) => { if (typeof v === "number" && Number.isFinite(v)) { min = Math.min(min, v); max = Math.max(max, v); } };
@@ -101,5 +123,5 @@ export function sparklineCell<Row extends object>(rows: readonly Row[], row: Row
     if (!cache.has(id)) cache.set(id, sparklineRange(rows.map((r) => read(r, column.key)), column.baselineKey ? rows.map((r) => read(r, column.baselineKey!)) : []));
     range = cache.get(id)!;
   }
-  return { data: Array.isArray(series) ? (series as number[]) : [], baseline: typeof reference === "number" && Number.isFinite(reference) ? reference : undefined, ...range };
+  return { data: Array.isArray(series) ? (series as SparklineData) : [], baseline: typeof reference === "number" && Number.isFinite(reference) ? reference : undefined, ...range };
 }

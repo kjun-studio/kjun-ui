@@ -2127,7 +2127,7 @@
       "title": "PriceCell",
       "docs": "/components/price-cell",
       "category": "finance",
-      "differences": "웹 flashClass는 전달된 강조 클래스를 적용하며 자체 가격 변화 감지기가 아닙니다. Native에는 flashClass prop이 없습니다.",
+      "differences": "flash는 세 플랫폼이 이전 값과 비교해 깜빡입니다. 웹은 price-motion 키프레임을, Native는 같은 시간의 겹친 층을 흐리게 합니다. flashClass는 웹 전용이며 더 이상 권장하지 않습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

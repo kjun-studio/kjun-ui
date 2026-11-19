@@ -92,6 +92,46 @@ export function gaugeSliver(width: number, position: number, count: number, boun
   return size > 0 && size < geometry.minSliver ? { start, size } : null;
 }
 
+/**
+ * The gap the track leaves around the marker, in the axis's own length units: the marker and its ring on each side,
+ * widened over a sliver too thin to read. The background shows through it, whatever it is.
+ */
+export function gaugeHole(width: number, position: number, count: number, near: { before?: GaugeBoundary; after?: GaugeBoundary }, geometry: GaugeGeometry) {
+  const marker = (width - geometry.markerWidth) * position / 100;
+  const before = gaugeSliver(width, position, count, near.before, "before", geometry), after = gaugeSliver(width, position, count, near.after, "after", geometry);
+  return { start: marker - geometry.markerRing - (before?.size ?? 0), end: marker + geometry.markerWidth + geometry.markerRing + (after?.size ?? 0) };
+}
+
+export interface GaugePiece { start: number; size: number; first: boolean; last: boolean; color?: string }
+/**
+ * The zones as drawn pieces for a renderer without masks (Native): each zone's span on a measured axis, less the hole
+ * around the marker. `first` and `last` mark the axis's own rounded ends.
+ */
+export function gaugePieces(width: number, segments: readonly GaugeSegment[], gap: number, hole?: { start: number; end: number }): GaugePiece[] {
+  const usable = width - (segments.length - 1) * gap, pieces: GaugePiece[] = [];
+  let cursor = 0;
+  segments.forEach((segment, i) => {
+    const start = cursor, end = cursor + usable * segment.share / 100;
+    cursor = end + gap;
+    const spans = hole && hole.end > start && hole.start < end ? [[start, Math.min(end, hole.start)], [Math.max(start, hole.end), end]] : [[start, end]];
+    for (const [a, b] of spans) if (b > a) pieces.push({ start: a, size: b - a, first: i === 0 && a === start, last: i === segments.length - 1 && b === end, color: segment.color });
+  });
+  return pieces;
+}
+
+/** The CSS variables the web axis reads for its marker and hole: the position, the zone count and the neighbouring boundaries. */
+export function gaugeAxisVars(position: number, count: number, near: { before?: GaugeBoundary; after?: GaugeBoundary }) {
+  const vars: Record<string, string> = { "--_kjun-zone-gauge-position": String(position / 100), "--_kjun-zone-gauge-count": String(count) };
+  for (const side of ["before", "after"] as const) {
+    const boundary = near[side];
+    if (!boundary) continue;
+    vars[`--_kjun-zone-gauge-${side}-on`] = "1";
+    vars[`--_kjun-zone-gauge-${side}-cut`] = String(boundary.cut);
+    vars[`--_kjun-zone-gauge-${side}-gaps`] = String(boundary.gaps);
+  }
+  return vars;
+}
+
 export function gaugeSpoken(label: string | undefined, valueText: string, zoneLabel?: string) {
   return [label, valueText, zoneLabel].filter(Boolean).join(", ");
 }
@@ -158,7 +198,7 @@ export function gaugeModel(input: GaugeInput) {
     segments, ready, zone, position,
     /** The caption's end: the value and the zone it falls in. */
     caption: valueText + (zone?.label ? " · " + zone.label : ""),
-    /** The zone boundaries beside the marker, for the sliver covers; none without a value. */
+    /** The zone boundaries beside the marker, for the hole around it; none without a value. */
     near: (ready ? gaugeNeighbours(position, segments) : {}) as ReturnType<typeof gaugeNeighbours>,
     /** One image for screen readers: the name, the value and the zone it falls in. */
     spoken: gaugeSpoken(input.ariaLabel ?? input.label, ready ? valueText : input.missingText ?? input.noData, zone?.label),
@@ -167,6 +207,8 @@ export function gaugeModel(input: GaugeInput) {
 
 export interface StackedInput {
   items: readonly StackedItem[] | null | undefined; label?: string; ariaLabel?: string;
+  /** The app's summary at the end of the caption line (a total, a verdict); read after the name. */
+  valueText?: string;
   formatValue?: (value: number) => string; missingText?: string; noData: string; locale?: string;
 }
 /** Everything a stacked bar draws and says, worked out once for React, Vue and Native. */
@@ -175,10 +217,12 @@ export function stackedModel(input: StackedInput) {
   const entries = stackedLegend(list, input.formatValue, input.locale, mark), weights = stackedWeights(list), name = input.ariaLabel ?? input.label;
   return {
     state, missing, mark,
+    /** The caption's end: the missing mark, or else the app's summary. */
+    caption: missing ? mark : input.valueText || undefined,
     /** One per item, in order: its key, its length on the bar (when drawn) and its legend line. */
     parts: list.map((item, index) => ({ item, key: item.key ?? "i" + index, weight: weights[index], drawn: entries[index].drawn,
       text: entries[index].label + " " + entries[index].value + (entries[index].percent ? " · " + entries[index].percent : "") })),
     /** One image for screen readers: the name, then each part with its value and share. */
-    spoken: missing ? gaugeSpoken(name, input.missingText ?? input.noData) : stackedSpoken(name, entries),
+    spoken: missing ? gaugeSpoken(name, input.missingText ?? input.noData) : stackedSpoken(gaugeSpoken(name, input.valueText ?? ""), entries),
   };
 }

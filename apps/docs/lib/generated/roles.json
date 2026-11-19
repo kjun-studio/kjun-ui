@@ -125,7 +125,6 @@
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
-      "packages/tokens/src/distribution.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/file-upload.css",
       "packages/tokens/src/list.css",
@@ -168,8 +167,7 @@
       "packages/native/src/table-toolbar.tsx",
       "packages/native/src/tabs.tsx",
       "packages/native/src/toast-stack.tsx",
-      "packages/native/src/toast.tsx",
-      "packages/native/src/zone-gauge.tsx"
+      "packages/native/src/toast.tsx"
     ]
   },
   {
@@ -418,6 +416,7 @@
       "packages/native/src/side-navigation.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/split-pane.tsx",
+      "packages/native/src/stacked-bar.tsx",
       "packages/native/src/steps.tsx",
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-narrow-parts.tsx",

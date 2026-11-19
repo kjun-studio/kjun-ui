@@ -324,7 +324,13 @@ set("MarketCards MarketSimpleList MarketTable", {
   sortKey: "현재 정렬 열·지표를 표시하는 키입니다. 실제 정렬 데이터는 소비자가 제공합니다.",
 });
 delete overrides.KjunMarketSimpleList.common.sortKey;
-set("Sparkline", { data: "시간 순서대로 연결할 숫자 배열입니다. 데이터 정렬은 소비자가 합니다." });
+set("Sparkline", {
+  data: "시간 순서대로 연결할 값 배열입니다. null·undefined·숫자가 아닌 값은 빈 자리로, 선을 그 자리에서 끊습니다. 데이터 정렬은 소비자가 합니다.",
+  ariaLabel: "차트를 스크린리더에 알리는 이름입니다. 없으면 장식으로 숨깁니다. 데이터가 없으면 이름 뒤에 ‘데이터가 없습니다’를 붙여 읽습니다.",
+  stretch: "부모 너비를 채웁니다. 선 굵기·점·점선 간격은 화면 크기를 유지하고, 막대는 모서리를 둥글리지 않습니다.",
+});
+set("Sparkline", { className: "svg 요소의 class입니다.", style: "svg 요소의 style입니다.", id: "svg 요소의 id입니다." }, "react");
+set("Sparkline", { style: "Svg의 style입니다." }, "native");
 set("FormActions", {
   loading: "확인 버튼의 라벨 공간과 너비·높이를 유지하고 중앙에 스피너를 표시합니다. 취소 비활성은 cancelDisabled로 별도 제어합니다.",
   variant: "확인 버튼의 강조 스타일입니다.",

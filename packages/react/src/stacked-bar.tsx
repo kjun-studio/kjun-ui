@@ -10,6 +10,8 @@ export interface KjunStackedBarProps {
   label?: string;
   /** The accessible name when there is no visible label, or a fuller one than it. */
   ariaLabel?: string;
+  /** The app's summary at the end of the caption line, such as a total or a verdict; read after the name. Data that is missing shows missingText there instead. */
+  valueText?: string;
   size?: "sm" | "md";
   /** Each part's colour, name, value and share under the bar, so parts are not told apart by colour alone. */
   legend?: boolean;
@@ -22,15 +24,15 @@ export interface KjunStackedBarProps {
 }
 
 /** The parts of a whole: each segment is as long as its share. It shows a breakdown; it is not a control. */
-export function KjunStackedBar({ items, label, ariaLabel, size = "md", legend = true, formatValue, missingText, className, style, id }: KjunStackedBarProps) {
+export function KjunStackedBar({ items, label, ariaLabel, valueText, size = "md", legend = true, formatValue, missingText, className, style, id }: KjunStackedBarProps) {
   const scope = useKjunMessageScope();
-  const { state, missing, mark, parts, spoken } = stackedModel({ items, label, ariaLabel, formatValue, missingText, noData: scope.messages.noData, locale: scope.intl });
+  const { state, missing, caption, parts, spoken } = stackedModel({ items, label, ariaLabel, valueText, formatValue, missingText, noData: scope.messages.noData, locale: scope.intl });
   return (
     <div id={id} className={"kjun-stacked-bar" + (className ? " " + className : "")} data-size={size} data-state={state} role="img" aria-label={spoken} style={style}>
-      {(label || missing) && (
+      {(label || caption) && (
         <div className="kjun-stacked-bar-caption" aria-hidden="true">
           <span className="kjun-stacked-bar-label">{label}</span>
-          {missing && <span className="kjun-stacked-bar-value">{mark}</span>}
+          {caption && <span className="kjun-stacked-bar-value">{caption}</span>}
         </div>
       )}
       {/* Missing data keeps the empty rail, so the bar holds its place in a list. */}

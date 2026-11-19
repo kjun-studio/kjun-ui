@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  distributionNumber, gaugeModel, gaugeNeighbours, gaugePosition, gaugeSliver, gaugeSegments, gaugeSpoken, gaugeZoneIndex, stackedLegend, stackedModel, stackedShares, stackedSpoken, stackedState, stackedWeights,
+  distributionNumber, gaugeAxisVars, gaugeHole, gaugeModel, gaugeNeighbours, gaugePieces, gaugePosition, gaugeSliver, gaugeSegments, gaugeSpoken, gaugeZoneIndex, stackedLegend, stackedModel, stackedShares, stackedSpoken, stackedState, stackedWeights,
 } from '../shared/package-runtime/distribution.ts';
 
 const zones = [{ to: 30, label: '저평가' }, { to: 70, label: '중립' }, { to: 100, label: '고평가' }];
@@ -130,6 +130,26 @@ test('a zone sliver thinner than the minimum between a boundary and the marker r
   assert.ok(ahead && ahead.size > 0 && ahead.size < 4);
 });
 
+test('the track leaves a gap around the marker that takes in a sliver too thin to read', () => {
+  const segments = gaugeSegments(zones, 0, 100), geometry = { segmentGap: 2, markerWidth: 6, markerRing: 2, minSliver: 4 };
+  // At 72 on 600: the marker starts at 427.68, so the gap runs from its ring at 425.68 to 435.68.
+  const wide = gaugeHole(600, 72, 3, gaugeNeighbours(72, segments), geometry);
+  assert.ok(Math.abs(wide.start - 425.68) < 1e-6 && Math.abs(wide.end - 435.68) < 1e-6);
+  // At 71.5 the 1.51px sliver after the boundary at 421.2 joins the gap.
+  assert.ok(Math.abs(gaugeHole(600, 71.5, 3, gaugeNeighbours(71.5, segments), geometry).start - 421.2) < 1e-6);
+  // Native draws the zones less the gap: the high zone is cut in two, and only the axis ends are rounded.
+  const pieces = gaugePieces(600, segments, 2, wide);
+  assert.deepEqual(pieces.map(piece => [Math.round(piece.start * 100) / 100, Math.round(piece.size * 100) / 100, piece.first, piece.last]),
+    [[0, 178.8, true, false], [180.8, 238.4, false, false], [421.2, 4.48, false, false], [435.68, 164.32, false, true]]);
+  // Without a gap each zone is one piece.
+  assert.equal(gaugePieces(600, segments, 2).length, 3);
+  // At 0 the gap starts before the axis: the first zone loses its rounded start under the marker.
+  assert.equal(gaugePieces(600, segments, 2, gaugeHole(600, 0, 3, gaugeNeighbours(0, segments), geometry))[0].first, false);
+  // The web axis reads the boundaries it has as CSS variables.
+  assert.deepEqual(gaugeAxisVars(72, 3, { before: { cut: 0.7, gaps: 1 } }), { '--_kjun-zone-gauge-position': '0.72', '--_kjun-zone-gauge-count': '3',
+    '--_kjun-zone-gauge-before-on': '1', '--_kjun-zone-gauge-before-cut': '0.7', '--_kjun-zone-gauge-before-gaps': '1' });
+});
+
 test('one model gives each platform what a gauge and a stacked bar draw and say', () => {
   const gauge = gaugeModel({ value: 72, min: 0, max: 100, zones, label: 'PER', noData: '데이터가 없습니다' });
   assert.equal(gauge.ready, true);
@@ -142,4 +162,11 @@ test('one model gives each platform what a gauge and a stacked bar draw and say'
   const bar = stackedModel({ items: [{ label: '강세', value: 3 }, { label: '중립', value: null }, { label: '약세', value: 1 }], label: '의견', noData: '데이터가 없습니다' });
   assert.deepEqual(bar.parts.map(part => [part.key, part.drawn, part.text]), [['i0', true, '강세 3 · 75%'], ['i1', false, '중립 —'], ['i2', true, '약세 1 · 25%']]);
   assert.equal(stackedModel({ items: null, label: '의견', noData: '데이터가 없습니다' }).spoken, '의견, 데이터가 없습니다');
+  // The app's summary ends the caption and follows the name; missing data keeps the mark and drops it.
+  const summed = stackedModel({ items: [{ label: '강세', value: 3 }, { label: '약세', value: 1 }], label: '의견', valueText: '4명', noData: '데이터가 없습니다' });
+  assert.deepEqual([summed.caption, summed.spoken], ['4명', '의견, 4명: 강세 3 (75%), 약세 1 (25%)']);
+  assert.equal(stackedModel({ items: [{ label: '강세', value: 3 }], valueText: '3명', noData: '' }).spoken, '3명: 강세 3 (100%)');
+  const gone = stackedModel({ items: null, label: '의견', valueText: '4명', noData: '데이터가 없습니다' });
+  assert.deepEqual([gone.caption, gone.spoken], ['—', '의견, 데이터가 없습니다']);
+  assert.equal(bar.caption, undefined);
 });

@@ -14,6 +14,8 @@ export interface KjunStackedBarProps {
   label?: string;
   /** The accessible name when there is no visible label, or a fuller one than it. */
   ariaLabel?: string;
+  /** The app's summary at the end of the caption line, such as a total or a verdict; read after the name. Data that is missing shows missingText there instead. */
+  valueText?: string;
   size?: "sm" | "md";
   /** Each part's colour, name, value and share under the bar, so parts are not told apart by colour alone. */
   legend?: boolean;
@@ -26,19 +28,19 @@ export interface KjunStackedBarProps {
 const geometry = tokens.extensions.stackedBar;
 
 /** The parts of a whole: each segment is as long as its share. It shows a breakdown; it is not a control. */
-export function KjunStackedBar({ items, label, ariaLabel, size = "md", legend = true, formatValue, missingText, style }: KjunStackedBarProps) {
+export function KjunStackedBar({ items, label, ariaLabel, valueText, size = "md", legend = true, formatValue, missingText, style }: KjunStackedBarProps) {
   const scope = useKjunMessageScope();
   const { colors } = useKjunStyles();
-  const { state, missing, mark, parts, spoken } = stackedModel({ items: items as readonly StackedItem[] | null | undefined, label, ariaLabel, formatValue, missingText,
+  const { state, missing, caption, parts, spoken } = stackedModel({ items: items as readonly StackedItem[] | null | undefined, label, ariaLabel, valueText, formatValue, missingText,
     noData: scope.messages.noData, locale: scope.intl });
   const track = size === "sm" ? geometry.smTrackHeight : geometry.trackHeight, end = tokens.radius.radius9999, neutral = colors.switchTrack ?? colors.border;
   return (
     <View accessible accessibilityRole="image" accessibilityLabel={spoken} style={[{ minWidth: 0 }, style]}>
       <View {...hiddenParts}>
-        {(!!label || missing) && (
+        {(!!label || !!caption) && (
           <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "baseline", gap: tokens.dimension.value12, marginBottom: geometry.captionGap }}>
             <KText numberOfLines={1} style={{ ...typeStyle("label"), color: colors.textSecondary, flexShrink: 1 }}>{label}</KText>
-            {missing && <KText style={{ ...typeStyle("label"), color: colors.textTertiary }}>{mark}</KText>}
+            {!!caption && <KText numberOfLines={1} style={{ ...typeStyle("label"), fontVariant: ["tabular-nums"], color: missing ? colors.textTertiary : colors.text, flexShrink: 1 }}>{caption}</KText>}
           </View>
         )}
         {/* Like Web: missing data keeps the empty rail, and the rail alone rounds the ends. */}

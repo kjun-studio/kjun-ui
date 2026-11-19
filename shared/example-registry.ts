@@ -68,6 +68,7 @@ assign("MenuButton", [choice("size", "크기", ["xs", "sm", "md", "lg", "xl"], "
 assign("Input", [choice("comparison", "비교", ["기본", "크기", "상태", "아이콘·단위", "보기·글자 수"]), size, disabled, toggle("readOnly", "읽기 전용"), error]);
 controls.KjunCard = cardControls;
 assign("Popover", [toggle("noPadding", "기본 여백 제거")]);
+assign("Sparkline", [choice("variant", "모양", ["line", "bar"]), choice("data", "데이터", ["상승", "하락", "끊긴 값", "없음"]), toggle("baseline", "기준선", true), toggle("fill", "영역 채우기", true), toggle("stretch", "너비 채우기")]);
 assign("ChartSkeleton", [choice("kind", "차트 종류", ["frame", "donut", "matrix"]), toggle("skeleton", "스켈레톤", true), field("loadingText", "로딩 문구", "차트를 불러오는 중")]);
 // Empty: md for pages and panels, sm for cards and list areas.
 assign("Empty", [choice("size", "크기", ["md", "sm"], "md")]);
@@ -138,6 +139,7 @@ const extras: Record<string, ExamplePreset[]> = {
   KjunPopover: [preset("no-padding", "여백 직접 구성", { noPadding:true })],
   KjunPagination: [preset("compact", "짧은 형태", { layout: "compact" }), preset("full", "번호 목록 고정", { layout: "full" }), preset("disabled", "불러오는 중 잠금", { disabled: true })],
   KjunFilterGroup: [preset("count", "개수 표시", { count: true }), preset("scroll", "가로 스크롤", { scroll: true }), preset("count-scroll", "개수·가로 스크롤", { count: true, scroll: true })],
+  KjunSparkline: [preset("bar", "막대", { variant: "bar", data: "하락" }), preset("gaps", "끊긴 값", { data: "끊긴 값" }), preset("empty", "데이터 없음", { data: "없음" }), preset("stretch", "너비 채우기", { stretch: true })],
   KjunKpiRow: [preset("equal", "세 지표 동등 표시", { mobileSummary:false }), { ...preset("summary", "모바일 요약", { mobileSummary:true }), narrow:true }],
   KjunInput: [preset("sizes", "크기 비교", { comparison: "크기" }), preset("states", "상태 비교", { comparison: "상태" }), preset("affixes", "아이콘·단위 비교", { comparison: "아이콘·단위" }), preset("reveal-count", "보기·글자 수 비교", { comparison: "보기·글자 수" }), { ...preset("narrow", "좁은 화면 · 375px"), narrow: true }],
   KjunSelect: [preset("multiple", "복수 선택", { multiple: true }, { select: ["a", "c"] }), preset("labels", "선택 이름 표시", { multiple: true, multipleDisplay: "labels" }, { select: ["a", "c"] }), preset("grouped", "옵션 그룹", { grouped: true }), preset("readonly", "읽기 전용", { readOnly: true }, { select: "c" }), preset("long", "긴 옵션", { data: "long" }), preset("empty", "빈 옵션", { data: "empty" }), preset("error", "오류", { error: true })],

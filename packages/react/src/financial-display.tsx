@@ -1,4 +1,4 @@
-import { sparklineDash, sparklineGeometry, sparklineTone, type SparkPoint } from "../../../shared/package-runtime/sparkline";
+import { sparklineDash, sparklineGeometry, sparklineLabel, sparklineTone, type SparkPoint, type SparklineData } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { deviationText } from "../../../shared/package-runtime/signed-number";
@@ -7,6 +7,7 @@ import { progressMarker, progressMarkerInset } from "../../../shared/package-run
 import { heatCell, progressCellState, type HeatCellColor, type HeatCellMode, type ProgressCellColor } from "../../../shared/package-runtime/data-cells";
 import {
 useId,
+type CSSProperties,
 type ReactNode
 } from "react";
 import { KjunIcon } from "./button";
@@ -227,12 +228,13 @@ export function KjunExecutionStatusBadge({
   );
 }
 export interface KjunSparklineProps {
-  data?: number[];
+  /** Values in time order. null, undefined and non-finite numbers are gaps: the line breaks there. */
+  data?: SparklineData;
   width?: number;
   height?: number;
   color?: string;
   semantic?: "price" | "status";
-  /** "line" (default) draws the trend; "bar" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color. */
+  /** "line" (default) draws the trend; "bar" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color and the others stay quiet. */
   variant?: "line" | "bar";
   fill?: boolean;
   strokeWidth?: number;
@@ -244,7 +246,11 @@ export interface KjunSparklineProps {
   max?: number;
   /** Marks the last value with a dot (line variant; default true). */
   endDot?: boolean;
+  /** Names the chart for screen readers; without it the chart is decorative. With no data, the no-data message follows it. */
   ariaLabel?: string;
+  className?: string;
+  style?: CSSProperties;
+  id?: string;
 }
 export function KjunSparkline({
   data = [],
@@ -261,10 +267,14 @@ export function KjunSparkline({
   max,
   endDot = true,
   ariaLabel,
+  className,
+  style,
+  id,
 }: KjunSparklineProps) {
-  const id = "kjun-" + useId().replace(/:/g, ""), spec = tokens.extensions.financial;
+  const gradient = "kjun-" + useId().replace(/:/g, ""), spec = tokens.extensions.financial, m = useKjunMessages();
   const g = sparklineGeometry(data, { width, height, strokeWidth, variant, baseline, min, max, endDot });
-  const line = color || `var(--_kjun-color-${sparklineTone(g.direction, semantic)})`, dash = sparklineDash();
+  const line = color || `var(--_kjun-color-${sparklineTone(g.direction, semantic)})`, dash = sparklineDash(), label = sparklineLabel(ariaLabel, g.empty, m.noData);
+  const scale = stretch ? "non-scaling-stroke" : undefined;
   const points = (run: SparkPoint[]) => run.map((p) => `${p.x},${p.y}`).join(" ");
   // A stretched viewBox scales x alone, so dots become round stroke caps that keep their screen size.
   const dot = (p: SparkPoint, size: number, key?: number) => stretch
@@ -277,29 +287,32 @@ export function KjunSparkline({
       height={height}
       viewBox={`0 0 ${width} ${height}`}
       preserveAspectRatio={stretch ? "none" : "xMidYMid meet"}
-      role={ariaLabel ? "img" : undefined}
-      aria-label={ariaLabel}
-      aria-hidden={!ariaLabel || undefined}
-      className="kjun-sparkline"
+      role={label ? "img" : undefined}
+      aria-label={label}
+      aria-hidden={!label || undefined}
+      id={id}
+      className={"kjun-sparkline" + (className ? " " + className : "")}
+      style={style}
       data-variant={variant}
     >
       {/* No data reads as a quiet dotted line rather than an empty box. */}
-      {g.empty && <line x1={0} x2={width} y1={height / 2} y2={height / 2} stroke="var(--_kjun-color-border)" strokeWidth={strokeWidth} strokeDasharray={dash} strokeLinecap="round" />}
-      {g.bars.map((bar, i) => <rect key={i} x={bar.x} y={bar.y} width={bar.width} height={bar.height} rx={Math.min(spec.sparklineBarGap, bar.width / 2)} fill={bar.last ? line : "var(--_kjun-color-border-strong)"} />)}
+      {g.empty && <line x1={0} x2={width} y1={height / 2} y2={height / 2} stroke="var(--_kjun-color-border)" strokeWidth={strokeWidth} strokeDasharray={dash} strokeLinecap="round" vectorEffect={scale} />}
+      {/* Stretched bars stay square: a stretched viewBox would pull a corner radius into an ellipse. */}
+      {g.bars.map((bar, i) => <rect key={i} x={bar.x} y={bar.y} width={bar.width} height={bar.height} rx={stretch ? 0 : Math.min(spec.sparklineBarGap, bar.width / 2)} fill={bar.last ? line : "var(--_kjun-color-border)"} />)}
       {fill && g.areas.length > 0 && (
         <>
           <defs>
-            <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id={gradient} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={line} stopOpacity={tokens.states.opacity.sparklineFill} />
               <stop offset="100%" stopColor={line} stopOpacity={0} />
             </linearGradient>
           </defs>
-          {g.areas.map((area, i) => <polygon key={i} points={area} fill={`url(#${id})`} />)}
+          {g.areas.map((area, i) => <polygon key={i} points={area} fill={`url(#${gradient})`} />)}
         </>
       )}
-      {g.baselineY != null && <line x1={0} x2={width} y1={g.baselineY} y2={g.baselineY} stroke="var(--_kjun-color-border-strong)" strokeWidth={spec.sparklineBaselineWidth} strokeDasharray={dash} vectorEffect={stretch ? "non-scaling-stroke" : undefined} />}
+      {g.baselineY != null && <line x1={0} x2={width} y1={g.baselineY} y2={g.baselineY} stroke="var(--_kjun-color-border-strong)" strokeWidth={spec.sparklineBaselineWidth} strokeDasharray={dash} vectorEffect={scale} />}
       {g.segments.map((run, i) => run.length > 1
-        ? <polyline key={i} points={points(run)} fill="none" stroke={line} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" vectorEffect={stretch ? "non-scaling-stroke" : undefined} />
+        ? <polyline key={i} points={points(run)} fill="none" stroke={line} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" vectorEffect={scale} />
         : dot(run[0], spec.sparklineLoneDotSize, i))}
       {endDot && g.end && g.segments.some((run) => run.length > 1) && dot(g.end, spec.sparklineDotSize)}
     </svg>

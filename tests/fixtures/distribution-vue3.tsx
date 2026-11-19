@@ -11,6 +11,8 @@ const App = defineComponent(() => () => <K.KjunProvider>{{ default: () => <div s
   {box('gauge-missing', <K.KjunZoneGauge label="PER 백분위" value={null} zones={zones} />)}
   {box('gauge-custom', <K.KjunZoneGauge ariaLabel="밸류" value={15} min={10} max={20} zones={[{ to: 15, label: '낮음' }, { to: 20, label: '높음' }]} formatValue={times} showValue={false} zoneLabels={false} size="sm" />)}
   {box('stacked', <K.KjunStackedBar label="애널리스트 의견" items={opinions(12, 6, 2)} />)}
+  {box('stacked-summary', <K.KjunStackedBar label="애널리스트 의견" valueText="20명 · 강세 우위" items={opinions(12, 6, 2)} />)}
+  <div data-testid="gauge-tinted" style={{ width: '600px', background: 'rgb(238, 240, 246)', padding: '8px' }}><K.KjunZoneGauge label="PER 백분위" value={71.5} zones={zones} /></div>
   {box('stacked-small', <K.KjunStackedBar label="애널리스트 의견" items={opinions(990, 5, 5)} />)}
   {box('stacked-fractions', <K.KjunStackedBar ariaLabel="비중" items={opinions(0.3, 0, 0.1)} legend={false} />)}
   {box('stacked-zero-item', <K.KjunStackedBar label="애널리스트 의견" items={opinions(7, 3, 0)} />)}

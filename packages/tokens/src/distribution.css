@@ -49,33 +49,40 @@
 }
 /* The marker overhangs the track on both sides, so the axis keeps that room above and below. */
 .kjun-zone-gauge-axis {
+  --_kjun-zone-gauge-before-on: 0;
+  --_kjun-zone-gauge-before-cut: 0;
+  --_kjun-zone-gauge-before-gaps: 0;
+  --_kjun-zone-gauge-after-on: 0;
+  --_kjun-zone-gauge-after-cut: 0;
+  --_kjun-zone-gauge-after-gaps: 0;
   --_kjun-zone-gauge-marker-start: calc((100% - var(--_kjun-extension-zone-gauge-marker-width)) * var(--_kjun-zone-gauge-position));
   --_kjun-zone-gauge-usable: calc(100% - (var(--_kjun-zone-gauge-count) - 1) * var(--_kjun-extension-zone-gauge-segment-gap));
+  /* A marker just past a zone boundary leaves a sliver of the zone between the boundary and its ring. A sliver thinner
+     than the minimum joins the hole; a wider one stays (its share works out to 0). */
+  --_kjun-zone-gauge-before-start: calc(var(--_kjun-zone-gauge-usable) * var(--_kjun-zone-gauge-before-cut) + (var(--_kjun-zone-gauge-before-gaps) + 1) * var(--_kjun-extension-zone-gauge-segment-gap));
+  --_kjun-zone-gauge-before-size: calc(var(--_kjun-zone-gauge-marker-start) - var(--_kjun-extension-zone-gauge-marker-ring) - var(--_kjun-zone-gauge-before-start));
+  --_kjun-zone-gauge-after-start: calc(var(--_kjun-zone-gauge-marker-start) + var(--_kjun-extension-zone-gauge-marker-width) + var(--_kjun-extension-zone-gauge-marker-ring));
+  --_kjun-zone-gauge-after-size: calc(var(--_kjun-zone-gauge-usable) * var(--_kjun-zone-gauge-after-cut) + var(--_kjun-zone-gauge-after-gaps) * var(--_kjun-extension-zone-gauge-segment-gap) - var(--_kjun-zone-gauge-after-start));
+  --_kjun-zone-gauge-hole-start: calc(var(--_kjun-zone-gauge-marker-start) - var(--_kjun-extension-zone-gauge-marker-ring) - var(--_kjun-zone-gauge-before-on) * max(0px, min(var(--_kjun-zone-gauge-before-size), (var(--_kjun-extension-zone-gauge-min-sliver) - var(--_kjun-zone-gauge-before-size)) * 9999)));
+  --_kjun-zone-gauge-hole-end: calc(var(--_kjun-zone-gauge-after-start) + var(--_kjun-zone-gauge-after-on) * max(0px, min(var(--_kjun-zone-gauge-after-size), (var(--_kjun-extension-zone-gauge-min-sliver) - var(--_kjun-zone-gauge-after-size)) * 9999)));
   position: relative;
   padding-block: var(--_kjun-extension-zone-gauge-marker-overhang);
 }
-/* A marker just past a zone boundary leaves a sliver of the zone between the boundary and its ring. A sliver thinner
-   than the minimum is covered in the surface colour; a wider one is left alone (the width works out to 0). */
-.kjun-zone-gauge-cover {
-  position: absolute;
-  top: var(--_kjun-extension-zone-gauge-marker-overhang);
-  bottom: var(--_kjun-extension-zone-gauge-marker-overhang);
-  inset-inline-start: var(--_kjun-zone-gauge-cover-start);
-  width: max(0px, min(var(--_kjun-zone-gauge-cover-size), (var(--_kjun-extension-zone-gauge-min-sliver) - var(--_kjun-zone-gauge-cover-size)) * 9999));
-  background: var(--_kjun-color-surface);
-}
-.kjun-zone-gauge-cover[data-side="before"] {
-  --_kjun-zone-gauge-cover-start: calc(var(--_kjun-zone-gauge-usable) * var(--_kjun-zone-gauge-cut) + (var(--_kjun-zone-gauge-gaps) + 1) * var(--_kjun-extension-zone-gauge-segment-gap));
-  --_kjun-zone-gauge-cover-size: calc(var(--_kjun-zone-gauge-marker-start) - var(--_kjun-extension-zone-gauge-marker-ring) - var(--_kjun-zone-gauge-cover-start));
-}
-.kjun-zone-gauge-cover[data-side="after"] {
-  --_kjun-zone-gauge-cover-start: calc(var(--_kjun-zone-gauge-marker-start) + var(--_kjun-extension-zone-gauge-marker-width) + var(--_kjun-extension-zone-gauge-marker-ring));
-  --_kjun-zone-gauge-cover-size: calc(var(--_kjun-zone-gauge-usable) * var(--_kjun-zone-gauge-cut) + var(--_kjun-zone-gauge-gaps) * var(--_kjun-extension-zone-gauge-segment-gap) - var(--_kjun-zone-gauge-cover-start));
-}
 .kjun-zone-gauge-track {
+  --_kjun-zone-gauge-side: to right;
   display: flex;
   gap: var(--_kjun-extension-zone-gauge-segment-gap);
   height: var(--_kjun-zone-gauge-track);
+}
+.kjun-zone-gauge-track:dir(rtl) {
+  --_kjun-zone-gauge-side: to left;
+}
+/* The track leaves a transparent gap around the marker instead of a ring in one surface colour, so the gauge reads the
+   same on any background (a selected row, a filled card). */
+.kjun-zone-gauge[data-state="ready"] .kjun-zone-gauge-track {
+  --_kjun-zone-gauge-hole: linear-gradient(var(--_kjun-zone-gauge-side), currentColor var(--_kjun-zone-gauge-hole-start), transparent var(--_kjun-zone-gauge-hole-start), transparent var(--_kjun-zone-gauge-hole-end), currentColor var(--_kjun-zone-gauge-hole-end));
+  -webkit-mask-image: var(--_kjun-zone-gauge-hole);
+  mask-image: var(--_kjun-zone-gauge-hole);
 }
 .kjun-zone-gauge-zone {
   flex: 1 1 0;
@@ -90,8 +97,8 @@
   border-start-end-radius: var(--_kjun-geometry-radius-radius9999);
   border-end-end-radius: var(--_kjun-geometry-radius-radius9999);
 }
-/* The marker stays inside the axis at both ends: its start edge travels the axis less its own width. A ring in the
-   surface colour keeps it readable over any zone colour. */
+/* The marker stays inside the axis at both ends: its start edge travels the axis less its own width. The track's gap
+   around it keeps it readable over any zone colour. */
 .kjun-zone-gauge-marker {
   position: absolute;
   top: 0;
@@ -100,7 +107,6 @@
   width: var(--_kjun-extension-zone-gauge-marker-width);
   border-radius: var(--_kjun-geometry-radius-radius9999);
   background: var(--_kjun-color-text);
-  box-shadow: 0 0 0 var(--_kjun-extension-zone-gauge-marker-ring) var(--_kjun-color-surface);
 }
 .kjun-zone-gauge-labels {
   display: flex;

@@ -164,7 +164,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
     case "KjunStackedBar": {
       const color = (role: string) => platform === "native" ? colors[role] : `var(--kjun-${role})`;
       const values = settings.data === "작은 조각" ? [990, 5, 5] : settings.data === "모두 0" ? [0, 0, 0] : [12, 6, 2];
-      return h("Box", { width: 480 }, h(name, { label: "애널리스트 의견", size: settings.size, legend: settings.legend, items: settings.data === "없음" ? null
+      return h("Box", { width: 480 }, h(name, { label: "애널리스트 의견", size: settings.size, legend: settings.legend, valueText: settings.summary ? "20명 · 강세 우위" : undefined, items: settings.data === "없음" ? null
         : [{ key: "bull", label: "강세", value: values[0], color: color("danger") }, { key: "flat", label: "중립", value: values[1] }, { key: "bear", label: "약세", value: values[2], color: color("info") }] }));
     }
     case "KjunSplitPane": {

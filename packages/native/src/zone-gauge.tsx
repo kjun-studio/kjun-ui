@@ -1,5 +1,5 @@
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
-import { gaugeModel, gaugeSliver, type GaugeZone } from "../../../shared/package-runtime/distribution";
+import { gaugeHole, gaugeModel, gaugePieces, type GaugeZone } from "../../../shared/package-runtime/distribution";
 import { useState } from "react";
 import { I18nManager, View, type ColorValue, type StyleProp, type ViewStyle } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
@@ -40,9 +40,10 @@ export function KjunZoneGauge({ value, min = 0, max = 100, zones, label, ariaLab
     noData: scope.messages.noData, locale: scope.intl });
   const track = size === "sm" ? geometry.smTrackHeight : geometry.trackHeight;
   const end = tokens.radius.radius9999, neutral = colors.switchTrack ?? colors.border;
-  // Like Web: a zone sliver thinner than the minimum between a boundary and the marker's ring is covered.
+  // Like Web: the track leaves a gap around the marker (widened over a sliver too thin to read), so any background shows
+  // through it. Until the axis is measured the zones are laid out by flex, without the gap.
   const [width, setWidth] = useState(0);
-  const covers = (["before", "after"] as const).map(side => ({ side, sliver: gaugeSliver(width, position, segments.length, near[side], side, geometry) }));
+  const pieces = width > 0 && ready ? gaugePieces(width, segments, geometry.segmentGap, gaugeHole(width, position, segments.length, near, geometry)) : null;
   return (
     <View accessible accessibilityRole="image" accessibilityLabel={spoken} style={[{ minWidth: 0 }, style]}>
       <View {...hiddenParts}>
@@ -55,20 +56,26 @@ export function KjunZoneGauge({ value, min = 0, max = 100, zones, label, ariaLab
         {/* Like Web: a missing value keeps the axis and the zone names, without colours or a marker. */}
         {segments.length > 0 && (
           <View style={{ paddingVertical: geometry.markerOverhang }} onLayout={event => setWidth(event.nativeEvent.layout.width)}>
-            <View style={{ flexDirection: "row", gap: geometry.segmentGap, height: track }}>
-              {segments.map((segment, i) => (
-                <View key={i} style={{ flexGrow: segment.share, flexBasis: 0, minWidth: 0, backgroundColor: (ready ? segment.color as ColorValue | undefined : undefined) ?? neutral,
-                  ...(i === 0 ? { borderTopStartRadius: end, borderBottomStartRadius: end } : {}),
-                  ...(i === segments.length - 1 ? { borderTopEndRadius: end, borderBottomEndRadius: end } : {}) }} />
-              ))}
-            </View>
-            {covers.map(({ side, sliver }) => sliver && (
-              <View key={side} style={{ position: "absolute", top: geometry.markerOverhang, bottom: geometry.markerOverhang, start: sliver.start, width: sliver.size, backgroundColor: colors.surface }} />
-            ))}
-            {/* The marker stays inside the axis at both ends, with a ring in the surface colour over any zone colour. */}
+            {pieces ? (
+              <View style={{ flexDirection: "row", height: track }}>
+                {pieces.map((piece, i) => (
+                  <View key={i} style={{ marginStart: piece.start - (i ? pieces[i - 1].start + pieces[i - 1].size : 0), width: piece.size, backgroundColor: (piece.color as ColorValue | undefined) ?? neutral,
+                    ...(piece.first ? { borderTopStartRadius: end, borderBottomStartRadius: end } : {}),
+                    ...(piece.last ? { borderTopEndRadius: end, borderBottomEndRadius: end } : {}) }} />
+                ))}
+              </View>
+            ) : (
+              <View style={{ flexDirection: "row", gap: geometry.segmentGap, height: track }}>
+                {segments.map((segment, i) => (
+                  <View key={i} style={{ flexGrow: segment.share, flexBasis: 0, minWidth: 0, backgroundColor: (ready ? segment.color as ColorValue | undefined : undefined) ?? neutral,
+                    ...(i === 0 ? { borderTopStartRadius: end, borderBottomStartRadius: end } : {}),
+                    ...(i === segments.length - 1 ? { borderTopEndRadius: end, borderBottomEndRadius: end } : {}) }} />
+                ))}
+              </View>
+            )}
+            {/* The marker stays inside the axis at both ends; the track's gap keeps it readable over any zone colour. */}
             {ready && <View style={{ position: "absolute", top: 0, bottom: 0, start: `${position}%`, marginStart: -geometry.markerWidth * position / 100,
-              width: geometry.markerWidth, borderRadius: end, backgroundColor: colors.text,
-              boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: geometry.markerRing, color: colors.surface }] } as ViewStyle} />}
+              width: geometry.markerWidth, borderRadius: end, backgroundColor: colors.text }} />}
           </View>
         )}
         {segments.length > 0 && zoneLabels && segments.some(segment => segment.label) && (

@@ -1,4 +1,4 @@
-import { sparklineDash, sparklineGeometry, sparklineTone, type SparkPoint } from "../../../shared/package-runtime/sparkline";
+import { sparklineDash, sparklineGeometry, sparklineLabel, sparklineTone, type SparkPoint, type SparklineData } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "./runtime/messages";
 import { type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
@@ -204,12 +204,13 @@ export const KjunExecutionStatusBadge = defineComponent({
 });
 
 const kjunSparklineProps = {
-  data: { type: Array as PropType<number[]>, default: () => [] },
+  /** Values in time order. null, undefined and non-finite numbers are gaps: the line breaks there. */
+  data: { type: Array as PropType<SparklineData>, default: () => [] },
   width: { type: Number, default: tokens.extensions.financial.sparklineWidth },
   height: { type: Number, default: tokens.extensions.financial.sparklineHeight },
   color: { type: String, default: undefined },
   semantic: { type: String as PropType<"price" | "status">, default: "price" },
-  /** "line" (default) draws the trend; "bar" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color. */
+  /** "line" (default) draws the trend; "bar" draws each value as a bar from the baseline (or zero), values below it hanging down; the last bar takes the direction color and the others stay quiet. */
   variant: { type: String as PropType<"line" | "bar">, default: "line" },
   fill: { type: Boolean, default: true },
   strokeWidth: { type: Number, default: tokens.extensions.financial.sparklineStrokeWidth },
@@ -221,6 +222,7 @@ const kjunSparklineProps = {
   max: { type: Number, default: undefined },
   /** Marks the last value with a dot (line variant). */
   endDot: { type: Boolean, default: true },
+  /** Names the chart for screen readers; without it the chart is decorative. With no data, the no-data message follows it. */
   ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunSparklineProps = ExtractPublicPropTypes<typeof kjunSparklineProps>;
@@ -228,23 +230,24 @@ export const KjunSparkline = defineComponent({
   name: "KjunSparkline",
   props: kjunSparklineProps,
   setup(props) {
-    const id = useKjunId("kjun-");
+    const id = useKjunId("kjun-"), m = useKjunMessages();
     return () => {
       const { width, height, strokeWidth, stretch } = props, spec = tokens.extensions.financial;
       const g = sparklineGeometry(props.data, { width, height, strokeWidth,
         variant: props.variant, baseline: props.baseline, min: props.min, max: props.max, endDot: props.endDot });
       const line = props.color || `var(--_kjun-color-${sparklineTone(g.direction, props.semantic)})`, dash = sparklineDash();
+      const label = sparklineLabel(props.ariaLabel, g.empty, m.value.noData);
       const scale = stretch ? "non-scaling-stroke" : undefined;
       const dot = (p: SparkPoint, size: number, key?: number) => stretch
         ? <path key={key} d={`M${p.x} ${p.y}h0`} stroke={line} stroke-width={size} stroke-linecap="round" vector-effect="non-scaling-stroke" />
         : <circle key={key} cx={p.x} cy={p.y} r={size / 2} fill={line} />;
-      // Like React: an empty series is a quiet dotted line; bars grow from the baseline or zero; stretched dots stay round.
+      // Like React: an empty series is a quiet dotted line; bars grow from the baseline or zero; stretched dots stay round and stretched bars square.
       return (
         <svg ref={domainRef(!props.color && props.semantic === "price" && g.direction !== 0)} width={stretch ? "100%" : width} height={height}
-          viewBox={`0 0 ${width} ${height}`} preserveAspectRatio={stretch ? "none" : "xMidYMid meet"} role={props.ariaLabel ? "img" : undefined}
-          aria-label={props.ariaLabel} aria-hidden={!props.ariaLabel || undefined} class="kjun-sparkline" data-variant={props.variant}>
-          {g.empty && <line x1={0} x2={width} y1={height / 2} y2={height / 2} stroke="var(--_kjun-color-border)" stroke-width={strokeWidth} stroke-dasharray={dash} stroke-linecap="round" />}
-          {g.bars.map((bar, i) => <rect key={i} x={bar.x} y={bar.y} width={bar.width} height={bar.height} rx={Math.min(spec.sparklineBarGap, bar.width / 2)} fill={bar.last ? line : "var(--_kjun-color-border-strong)"} />)}
+          viewBox={`0 0 ${width} ${height}`} preserveAspectRatio={stretch ? "none" : "xMidYMid meet"} role={label ? "img" : undefined}
+          aria-label={label} aria-hidden={!label || undefined} class="kjun-sparkline" data-variant={props.variant}>
+          {g.empty && <line x1={0} x2={width} y1={height / 2} y2={height / 2} stroke="var(--_kjun-color-border)" stroke-width={strokeWidth} stroke-dasharray={dash} stroke-linecap="round" vector-effect={scale} />}
+          {g.bars.map((bar, i) => <rect key={i} x={bar.x} y={bar.y} width={bar.width} height={bar.height} rx={stretch ? 0 : Math.min(spec.sparklineBarGap, bar.width / 2)} fill={bar.last ? line : "var(--_kjun-color-border)"} />)}
           {props.fill && g.areas.length > 0 && <>
             <defs>
               <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">

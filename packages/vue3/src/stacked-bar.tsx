@@ -11,6 +11,8 @@ const kjunStackedBarProps = {
   label: { type: String, default: undefined },
   /** The accessible name when there is no visible label, or a fuller one than it. */
   ariaLabel: { type: String, default: undefined },
+  /** The app's summary at the end of the caption line, such as a total or a verdict; read after the name. Data that is missing shows missingText there instead. */
+  valueText: { type: String, default: undefined },
   size: { type: String as PropType<"sm" | "md">, default: "md" },
   /** Each part's colour, name, value and share under the bar, so parts are not told apart by colour alone. */
   legend: { type: Boolean, default: true },
@@ -26,14 +28,14 @@ export const KjunStackedBar = defineComponent({
   setup(props) {
     const scope = useKjunMessageScope();
     return () => {
-      const { state, missing, mark, parts, spoken } = stackedModel({ items: props.items, label: props.label, ariaLabel: props.ariaLabel, formatValue: props.formatValue,
+      const { state, missing, caption, parts, spoken } = stackedModel({ items: props.items, label: props.label, ariaLabel: props.ariaLabel, valueText: props.valueText, formatValue: props.formatValue,
         missingText: props.missingText, noData: scope.value.messages.noData, locale: scope.value.intl });
       return (
         <div class="kjun-stacked-bar" data-size={props.size} data-state={state} role="img" aria-label={spoken}>
-          {(props.label || missing) && (
+          {(props.label || caption) && (
             <div class="kjun-stacked-bar-caption" aria-hidden="true">
               <span class="kjun-stacked-bar-label">{props.label}</span>
-              {missing && <span class="kjun-stacked-bar-value">{mark}</span>}
+              {caption && <span class="kjun-stacked-bar-value">{caption}</span>}
             </div>
           )}
           {/* Like React: missing data keeps the empty rail. */}

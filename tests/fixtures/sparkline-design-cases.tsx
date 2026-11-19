@@ -9,10 +9,11 @@ export const sparkCases: [string, Record<string, unknown>][] = [
   ['bars', { data: [2, 4, 3, 8], variant: 'bar' }],
   ['stretch', { data: [1, 3, NaN, 2, NaN, 4, 5], stretch: true }],
   ['negative', { data: [-5, 3], variant: 'bar' }],
+  ['stretch-bars', { data: [2, null, 4, 3], variant: 'bar', stretch: true }],
 ];
 export const marketRows = [{ id: 1, name: '가', trend: [1, 2, 3], prev: 2 }, { id: 2, name: '나', trend: [-4, -2, 6], prev: 0 }];
 export const marketColumns = [{ key: 'name', label: '종목' }, { key: 'trend', label: '추이', type: 'sparkline', baselineKey: 'prev', sharedRange: true }];
-export const caseWidth = (id: string) => id === 'stretch' ? 240 : 72;
+export const caseWidth = (id: string) => id.startsWith('stretch') ? 240 : 72;
 export function SparklineDesignCases({ K }: { K: any }) {
   return <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
     {sparkCases.map(([id, props]) => <div key={id} data-testid={id} style={{ width: caseWidth(id) }}><K.KjunSparkline ariaLabel={id} {...props} /></div>)}

@@ -5,6 +5,7 @@ import {
   priceFormat,
   tableExample,
   loadOptions,
+  sparklineSample,
   type ExampleTools,
 } from "./example-tools";
 export function renderDataExample(name: string, tools: ExampleTools): any {
@@ -314,16 +315,13 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
           h(name, { status })
         )
       );
-    case "KjunSparkline":
-      return h(name, {
-        data: [1, 4, 3, 7, 5, 8],
-        width: 240,
-        height: 64,
-        fill: true,
-        semantic: "price",
-        baseline: 3,
-        ariaLabel: "추세, 기준 3에서 8로 상승",
-      });
+    case "KjunSparkline": {
+      // The same series the usage example shows: null marks a gap, and the baseline is the previous close.
+      const spark = sparklineSample(String(settings.data ?? "상승"));
+      const chart = h(name, { data: spark.data, width: 240, height: 64, variant: settings.variant, fill: settings.fill, stretch: settings.stretch, semantic: "price",
+        baseline: settings.baseline === false ? undefined : spark.baseline, ariaLabel: spark.label });
+      return settings.stretch ? h("Box", { width: 480 }, chart) : chart;
+    }
     case "KjunMarketSimpleList":
       return h(name, {
         ...market,
