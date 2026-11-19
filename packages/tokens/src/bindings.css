@@ -690,6 +690,7 @@
   --_kjun-extension-alert-close-radius: 8px;
   --_kjun-extension-alert-actions-gap: 8px;
   --_kjun-extension-alert-warning-icon-lift: 0.5px;
+  --_kjun-extension-alert-message-min-width: 160px;
   --_kjun-extension-alert-sm-radius: 12px;
   --_kjun-extension-alert-sm-padding-x: 14px;
   --_kjun-extension-alert-sm-padding-y: 12px;

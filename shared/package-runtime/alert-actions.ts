@@ -21,7 +21,8 @@ export function observeAlertActions(content: HTMLElement | null, change: (wrappe
   return () => observer.disconnect();
 }
 
-/** Native: wrapped when the actions start below the message's bottom edge (onLayout boxes, same parent). */
-export function alertActionsBelow(message: { y: number; height: number } | null, actions: { y: number } | null): boolean {
-  return !!message && !!actions && actions.y >= message.y + message.height - 1;
+/** Native: the actions wrap when the content row cannot hold the message's minimum width, the gap and the actions.
+ *  Widths only, since React Native Web reports a layout when a box resizes, not when it merely moves. */
+export function alertActionsWrap(contentWidth: number | undefined, actionsWidth: number | undefined, gap: number, messageMinWidth: number): boolean {
+  return contentWidth != null && actionsWidth != null && contentWidth < messageMinWidth + gap + actionsWidth - 0.5;
 }

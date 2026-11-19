@@ -4,7 +4,7 @@ import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { alertLiveRegion, alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
 import { keepFocusPastAlert } from "../../../shared/package-runtime/alert-exit";
-import { alertActionsBelow } from "../../../shared/package-runtime/alert-actions";
+import { alertActionsWrap } from "../../../shared/package-runtime/alert-actions";
 import { typeStyle } from "./typography";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import { badgeGeometry, badgeToneRoles, type BadgeToneRoles } from "../../../shared/package-runtime/badge-tone";
@@ -22,7 +22,6 @@ StyleSheet,
 View,
 useWindowDimensions,
 type LayoutChangeEvent,
-type LayoutRectangle,
 type StyleProp,
 type TextStyle,
 type ViewStyle
@@ -308,8 +307,8 @@ export function KjunAlert({
   const [visible, setVisible] = useState(true);
   const reduced = useReducedMotion();
   const fade = useRef(new Animated.Value(1)).current, closing = useRef(false), root = useRef<any>(null);
-  // Boxes of the message and the beside actions, to tell whether the actions wrapped under the message.
-  const [boxes, setBoxes] = useState<{ message?: LayoutRectangle; actions?: LayoutRectangle }>({});
+  // Widths of the content row and the beside actions, to tell whether the actions wrapped under the message.
+  const [widths, setWidths] = useState<{ content?: number; actions?: number }>({});
   if (!visible) return null;
   const tone = variant || (type === "error" ? "danger" : type),
     small = size === "sm", scale = size === "sm" || size === "lg" ? size : "md";
@@ -328,9 +327,9 @@ export function KjunAlert({
   // would be narrower than its minimum width they move under it, as they do under a title.
   const beside = !titled && hasContent(actions);
   const actionHeight = tokens.button.heights[alertActionSizes[scale]];
-  const wrapped = beside && alertActionsBelow(boxes.message ?? null, boxes.actions ?? null);
-  const measure = (part: "message" | "actions") => beside
-    ? (event: LayoutChangeEvent) => { const box = event.nativeEvent.layout; setBoxes(old => ({ ...old, [part]: box })); }
+  const wrapped = beside && hasContent(children) && alertActionsWrap(widths.content, widths.actions, geometry[scale].gap, geometry.messageMinWidth);
+  const measure = (part: "content" | "actions") => beside
+    ? (event: LayoutChangeEvent) => { const width = event.nativeEvent.layout.width; setWidths(old => old[part] === width ? old : { ...old, [part]: width }); }
     : undefined;
   const actionBox = hasContent(actions) && (
     <ActionSizeContext.Provider value={alertActionSizes[scale]}>
@@ -382,12 +381,12 @@ export function KjunAlert({
           <KjunIcon name={icon || alertIcons[tone]} filled size={geometry.iconSizes[scale]} color={pick(paint.icon)} />
         </View>
       )}
-      <View style={{ flex: 1, minWidth: 0, minHeight: lineHeight, ...(beside ? {
+      <View onLayout={measure("content")} style={{ flex: 1, minWidth: 0, minHeight: lineHeight, ...(beside ? {
         flexDirection: "row", flexWrap: "wrap", alignItems: "flex-start", columnGap: geometry[scale].gap,
         // Wrapped under the message, the buttons sit one action gap below it, as under a title.
         rowGap: geometry[scale].actionGap } as const : null) }}>
         {titled && text(title, { ...typeStyle(titleType[scale]), color: colors.text })}
-        {hasContent(children) && <View onLayout={measure("message")} style={beside
+        {hasContent(children) && <View style={beside
           ? { flexGrow: 1, flexShrink: 1, flexBasis: geometry.messageMinWidth, minWidth: 0 }
           : { marginTop: titled ? geometry.descriptionGap : 0 }}>
           {text(children, {
