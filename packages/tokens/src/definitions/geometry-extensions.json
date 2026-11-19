@@ -457,6 +457,7 @@
       "closeRadius": { "$ref": "button.radii.xs" },
       "actionsGap": { "$ref": "dimension.value8" },
       "warningIconLift": { "$ref": "border.hairlineWidth" },
+      "messageMinWidth": 160,
       "sm": {
         "radius": { "$ref": "card.radii.md" },
         "paddingX": { "$ref": "dimension.value14" },

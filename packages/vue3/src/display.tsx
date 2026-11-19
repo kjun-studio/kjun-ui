@@ -3,11 +3,12 @@ import { spinnerGlyph } from "./spinner-glyph";
 import { spinnerStacked } from "../../../shared/package-runtime/spinner-geometry";
 import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { skeletonLineBox, skeletonRange, skeletonTableWidth, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
-import { ref, useId, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
+import { onBeforeUnmount, ref, useId, watch, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
 import { collapseAlert } from "../../../shared/package-runtime/alert-exit";
+import { observeAlertActions } from "../../../shared/package-runtime/alert-actions";
 import { badgeGeometry, badgeToneRoles } from "../../../shared/package-runtime/badge-tone";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import { progressCircle, progressPercent, progressState } from "../../../shared/package-runtime/progress-circle";
@@ -145,7 +146,7 @@ const kjunAlertProps = {
   live: { type: String as PropType<AlertLive>, default: undefined },
 } as const;
 export type KjunAlertProps = ExtractPublicPropTypes<typeof kjunAlertProps>;
-/** Slots: default (message), title, actions (under the message with a title, beside it without; unsized KjunButtons follow the alert size). */
+/** Slots: default (message), title, actions (under the message with a title, beside it without (under it when the alert is too narrow for both); unsized KjunButtons follow the alert size). */
 export const KjunAlert = defineComponent({
   name: "KjunAlert",
   props: kjunAlertProps,
@@ -157,7 +158,12 @@ export const KjunAlert = defineComponent({
   }>,
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
-    const visible = ref(true), root = ref<HTMLElement | null>(null), reduced = useReducedMotion();
+    const visible = ref(true), root = ref<HTMLElement | null>(null), body = ref<HTMLElement | null>(null), reduced = useReducedMotion();
+    // The Vue form of the React layout effect: watch whether untitled actions wrapped under the message.
+    const wrapped = ref(false);
+    let stop = () => {};
+    watch(body, element => { stop(); stop = observeAlertActions(element, value => { wrapped.value = value; }); }, { flush: "post" });
+    onBeforeUnmount(() => stop());
     let closing = false;
     const close = () => {
       if (closing) return;
@@ -171,11 +177,12 @@ export const KjunAlert = defineComponent({
       const title = slots.title ? slots.title() : props.title;
       const children = slots.default?.(), actions = slots.actions?.();
       const titled = slots.title ? hasContent(title as ReturnType<NonNullable<typeof slots.title>>) : props.title != null && String(props.title).trim() !== "";
-      // Without a title the actions sit beside the message, centred on its first line, like a toast's.
+      // Without a title the actions sit beside the message, centred on its first line, like a toast's; when the message
+      // would be narrower than its minimum width they wrap under it, as under a title.
       const beside = !titled && hasContent(actions);
       const actionBox = hasContent(actions) && (
         <KjunActionSize size={alertActionSizes[scale]}>
-          {{ default: () => <div class="kjun-alert-actions" data-placement={beside ? "end" : undefined}>{actions}</div> }}
+          {{ default: () => <div class="kjun-alert-actions" data-placement={beside ? "end" : undefined} data-wrapped={(beside && wrapped.value) || undefined}>{actions}</div> }}
         </KjunActionSize>
       );
       return (
@@ -186,12 +193,11 @@ export const KjunAlert = defineComponent({
               <KjunIcon name={props.icon || alertIcons[tone]} filled size={tokens.extensions.alert.iconSizes[scale]} />
             </span>
           )}
-          <div class="kjun-alert-content">
+          <div ref={beside ? body : undefined} class="kjun-alert-content">
             {titled && <div class="kjun-alert-title">{title}</div>}
             {hasContent(children) && <div class="kjun-alert-description">{children}</div>}
-            {!beside && actionBox}
+            {actionBox}
           </div>
-          {beside && actionBox}
           {props.closable && (
             <button class="kjun-alert-close" type="button" aria-label={m.value.close} onClick={close}>
               <KjunIcon name="x" size={tokens.extensions.alert.closeIconSize} />

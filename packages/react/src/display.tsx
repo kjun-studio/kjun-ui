@@ -7,6 +7,7 @@ import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/aler
 import { emptyGeometry, type EmptySize } from "../../../shared/package-runtime/empty-geometry";
 import { badgeGeometry, badgeToneRoles } from "../../../shared/package-runtime/badge-tone";
 import { collapseAlert } from "../../../shared/package-runtime/alert-exit";
+import { observeAlertActions } from "../../../shared/package-runtime/alert-actions";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import { progressCircle, progressPercent, progressState } from "../../../shared/package-runtime/progress-circle";
 import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
@@ -17,6 +18,7 @@ import { spinnerStacked } from "../../../shared/package-runtime/spinner-geometry
 import {
 forwardRef,
 useId,
+useLayoutEffect,
 useRef,
 useState,
 type CSSProperties,
@@ -160,7 +162,7 @@ export interface KjunAlertProps {
   /** How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise. */
   live?: AlertLive;
   children?: ReactNode;
-  /** Buttons for the alert, under the message when it has a title and beside it otherwise; unsized KjunButtons follow the alert size. */
+  /** Buttons for the alert, under the message when it has a title, beside it otherwise (under it when the alert is too narrow for both); unsized KjunButtons follow the alert size. */
   actions?: ReactNode;
   /** Extra class on the alert root, for placement in the page layout; it leaves with the alert when closed. */
   className?: string;
@@ -181,17 +183,21 @@ export function KjunAlert({
 }: KjunAlertProps) {
   const m = useKjunMessages();
   const [visible, setVisible] = useState(true);
-  const root = useRef<HTMLDivElement>(null), closing = useRef(false);
+  const root = useRef<HTMLDivElement>(null), body = useRef<HTMLDivElement>(null), closing = useRef(false);
   const reduced = useReducedMotion();
+  // Without a title the actions sit beside the message, centred on its first line, like a toast's; when the message
+  // would be narrower than its minimum width they wrap under it, as under a title.
+  const beside = !hasContent(title) && hasContent(actions);
+  const [wrapped, setWrapped] = useState(false);
+  useLayoutEffect(() => beside && visible ? observeAlertActions(body.current, setWrapped) : undefined, [beside, visible]);
   if (!visible) return null;
   const tone = variant || (type === "error" ? "danger" : type),
     scale = size === "sm" || size === "lg" ? size : "md",
     paint = alertToneRoles(tone);
-  // Without a title the actions sit beside the message, centred on its first line, like a toast's.
-  const titled = hasContent(title), beside = !titled && hasContent(actions);
+  const titled = hasContent(title);
   const actionBox = hasContent(actions) && (
     <ActionSizeContext.Provider value={alertActionSizes[scale]}>
-      <div className="kjun-alert-actions" data-placement={beside ? "end" : undefined}>{actions}</div>
+      <div className="kjun-alert-actions" data-placement={beside ? "end" : undefined} data-wrapped={(beside && wrapped) || undefined}>{actions}</div>
     </ActionSizeContext.Provider>
   );
   return (
@@ -208,12 +214,11 @@ export function KjunAlert({
           <KjunIcon name={icon || alertIcons[tone]} filled size={tokens.extensions.alert.iconSizes[scale]} />
         </span>
       )}
-      <div className="kjun-alert-content">
+      <div ref={body} className="kjun-alert-content">
         {titled && <div className="kjun-alert-title">{title}</div>}
         {hasContent(children) && <div className="kjun-alert-description">{children}</div>}
-        {!beside && actionBox}
+        {actionBox}
       </div>
-      {beside && actionBox}
       {closable && (
         <button
           className="kjun-alert-close"

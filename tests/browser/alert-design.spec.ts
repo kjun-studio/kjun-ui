@@ -71,6 +71,34 @@ for (const platform of ['react', 'vue3', 'native']) {
     }
     expect(errors).toEqual([]);
   });
+  test(`${platform}: untitled actions sit beside the message and wrap under it when the message would be too narrow`, async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await openFixture(page, platform, '', 'alert-design');
+    const alert = page.getByTestId('alert').locator(':scope > *');
+    const box = async (target: typeof alert) => (await target.boundingBox())!;
+    for (const closable of [false, true]) {
+      await update(page, { size: 'md', title: '', body: '변경 사항을 저장하지 못했습니다', action: false, actions: true, actionSize: undefined, closable, width: 520 });
+      const slot = alert.getByRole('button', { name: 'Slot action', exact: true }), body = alert.getByText('변경 사항을 저장하지 못했습니다', { exact: true });
+      // Beside: centred on the message's first line, and the alert keeps its one-line height.
+      await expect(alert).toHaveCSS('height', '52px');
+      let s = await box(slot), b = await box(body);
+      expect(Math.abs(s.y + s.height / 2 - (b.y + b.height / 2))).toBeLessThanOrEqual(1);
+      expect(s.x).toBeGreaterThan(b.x + b.width);
+      // Narrow: under the message from its start, one action gap down, inside the padding.
+      await update(page, { width: 200 });
+      await expect.poll(async () => (await box(slot)).y - ((await box(body)).y + (await box(body)).height)).toBeCloseTo(12, 0);
+      s = await box(slot); b = await box(body);
+      const a = await box(alert);
+      expect(Math.round(s.x)).toBe(Math.round(b.x));
+      expect(Math.round(a.y + a.height - s.y - s.height)).toBe(16);
+      expect(await alert.evaluate(el => el.scrollWidth <= el.clientWidth + 1)).toBe(true);
+      // Wide again: back beside the message.
+      await update(page, { width: 520 });
+      await expect(alert).toHaveCSS('height', '52px');
+    }
+    expect(errors).toEqual([]);
+  });
   test(`${platform}: Alert primary paint and close hover, press and keyboard`, async ({ page }) => {
     for (const palette of ['default', 'dark']) {
       await openFixture(page, platform, '?palette=' + palette, 'alert-design');
