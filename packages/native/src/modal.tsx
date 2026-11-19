@@ -23,6 +23,7 @@ import { KjunButton, KjunIcon } from "./button";
 import { useActionSize } from "../../../shared/package-runtime/action-size";
 import { ScopedNativeModal } from "./overlay-host";
 import { useKjunSafeArea, useKjunStyles } from "./provider";
+import { nativeModalCloseStyle } from "../../../shared/package-runtime/modal-geometry";
 export interface KjunFormActionsProps {
   size?: InputSize;
   cancelText?: string;
@@ -330,7 +331,7 @@ export function KjunModal({
                   ariaLabel={m.close}
                   disabled={loading}
                   onPress={close}
-                  style={{ borderRadius: tokens.modal.closeRadius, width: tokens.modal.closeSize, height: tokens.modal.closeSize, paddingHorizontal: 0, paddingVertical: 0 }}
+                  style={nativeModalCloseStyle}
                 ><KjunIcon name="x" size={tokens.modal.closeIconSize} /></KjunButton>
               )}
             </View>

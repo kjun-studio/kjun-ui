@@ -434,6 +434,8 @@
   gap: var(--_kjun-geometry-modal-footer-gap);
   flex-shrink: 0;
 }
+/* A single wrapper (the app's own action layout) takes the full row, as on Drawer and Native. */
+.kjun-modal-footer > :only-child:not(.kjun-button) { flex: 1; min-width: 0; }
 .kjun-form-actions {
   display: flex;
   flex-wrap: wrap;
@@ -472,7 +474,8 @@
 @media (width <= token(responsive.modal)) {
   .kjun-modal:not([data-size="full"]) {
     width: calc(100vw - 2 * var(--_kjun-geometry-modal-mobile-inset)) !important;
-    max-height: 85dvh;
+    /* Like Native: at most 85% of the screen, and never into the safe areas. */
+    max-height: min(85dvh, calc(100dvh - 2 * var(--_kjun-geometry-modal-mobile-inset) - var(--_kjun-safe-area-top) - var(--_kjun-safe-area-bottom)));
   }
   /* Phones: the footer buttons share the row (form actions too, unless the app chose fill="primary"), as on a bottom Drawer. */
   .kjun-modal-footer > .kjun-button { flex: 1; }

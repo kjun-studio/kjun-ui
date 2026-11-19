@@ -121,3 +121,25 @@ test('native: an icon inside a ghost button takes the button ink, as currentColo
   expect(stroke).toMatch(/^rgb/);
   expect(stroke).not.toBe(title);
 });
+
+for (const platform of platforms) {
+  test(`${platform}: a single wrapper in the footer takes the full row, as on Drawer`, async ({ page }) => {
+    await openFixture(page, platform, '?wrap', 'modal-header');
+    const dialog = await open(page, '편집');
+    const wrap = (await dialog.getByTestId('wrap').boundingBox())!, box = (await dialog.boundingBox())!;
+    // The footer's 20px side padding on each side.
+    expect(wrap.width).toBeCloseTo(box.width - 40, 0);
+  });
+
+  test(`${platform}: on a short phone the Modal stays clear of the safe areas`, async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 600 });
+    await openFixture(page, platform, '?long', 'modal-header');
+    if (platform === 'native') return;
+    await page.addStyleTag({ content: ':root { --_kjun-safe-top: 100px; --_kjun-safe-bottom: 100px; }' });
+    const dialog = await open(page, '편집');
+    const box = (await dialog.boundingBox())!;
+    // 85dvh would be 510px; the safe areas and the 16px insets leave 368px.
+    expect(box.height).toBeLessThanOrEqual(368.5);
+    expect(box.y).toBeGreaterThanOrEqual(116 - 0.5);
+  });
+}

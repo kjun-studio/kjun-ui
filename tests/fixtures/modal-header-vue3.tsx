@@ -3,9 +3,9 @@ import * as K from '@kjun-ui/vue3';
 import { cssPalette } from './typography-values';
 
 cssPalette();
-const query = new URLSearchParams(location.search), bare = query.has('bare'), custom = query.has('custom'), long = query.has('long');
+const query = new URLSearchParams(location.search), bare = query.has('bare'), custom = query.has('custom'), long = query.has('long'), wrap = query.has('wrap');
 // A Modal whose confirm starts a save (loading) and a body button that ends it; ?bare drops the title, ?custom puts a
-// button in the header slot, ?long overflows the body.
+// button in the header slot, ?long overflows the body, ?wrap puts one wrapper in the footer.
 const App = defineComponent(() => {
   const s = reactive({ open: false, loading: false, edits: 0 });
   return () => <K.KjunProvider>
@@ -16,6 +16,7 @@ const App = defineComponent(() => {
       {{
         default: () => [<K.KjunButton variant="secondary" onClick={() => s.loading = false}>진행 끝</K.KjunButton>,
           ...(long ? Array.from({ length: 40 }, (_, i) => <p>본문 {i + 1}</p>) : [])],
+        ...(wrap ? { footer: () => <div data-testid="wrap" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>3개 선택</span><K.KjunButton>보내기</K.KjunButton></div> } : {}),
         ...(custom ? { header: () => <span style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>맞춤 제목<K.KjunButton variant="ghost" size="sm" onClick={() => s.edits++}>이름 바꾸기</K.KjunButton></span> } : {}),
       }}
     </K.KjunModal>
