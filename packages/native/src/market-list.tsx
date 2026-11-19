@@ -3,7 +3,6 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { View,useWindowDimensions } from "react-native";
-import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunDataState } from "./data-state";
 import { KjunEmpty,KjunSkeleton } from "./display";
 import {
@@ -17,7 +16,7 @@ const changeWeight = { fontWeight: typeStyle("label").fontWeight };
 const quoteDesktop = { price: typeStyle("control"), change: { ...typeStyle("caption"), ...changeWeight } };
 const quoteMobile = { price: typeStyle("input"), change: { ...typeStyle("body"), ...changeWeight } };
 import { KjunMarketSimpleListProps } from "./market-model";
-import { MarketFooter,MarketIdentity } from "./market-parts";
+import { MarketFooter,MarketIdentity,MarketRow } from "./market-parts";
 import { useKjunStyles } from "./provider";
 import { KjunListSkeleton } from "./skeletons";
 import { getValue } from "./table";
@@ -56,11 +55,12 @@ export function KjunMarketSimpleList<
               change = changeValue(row),
               stale = !!getValue(row, "stale");
             return (
-              <Pressable
+              <MarketRow
                 key={String(getValue(row, rowKey) ?? i)}
-                accessible={false}
-                onPress={() => props.onRowClick?.(row)}
-                style={({ pressed }) => ({
+                row={row}
+                props={props}
+                selectedKey={props.selectedRowKey}
+                style={{
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "space-between",
@@ -68,10 +68,7 @@ export function KjunMarketSimpleList<
                   paddingHorizontal: mobile ? tokens.dimension.value20 : tokens.dimension.value16,
                   // Like Web, the minimum height belongs to the narrow layout only.
                   minHeight: mobile ? tokens.extensions.marketList.minimumHeight : undefined,
-                  borderBottomWidth: tokens.border.defaultWidth,
-                  borderBottomColor: colors.border,
-                  backgroundColor: pressed ? colors.hover : undefined,
-                })}
+                }}
               >
                 <MarketIdentity row={row} props={props} />
                 {/* Like Web .kjun-market-price/.kjun-market-change: control and caption type, input and body on narrow lists. */}
@@ -120,7 +117,7 @@ export function KjunMarketSimpleList<
                   </View>
                 </View>
                 </MarketQuoteTypeContext.Provider>
-              </Pressable>
+              </MarketRow>
             );
           })}
         </View>

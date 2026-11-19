@@ -15664,8 +15664,8 @@
         "name": "totalCount",
         "type": "number",
         "required": false,
-        "default": "0",
-        "description": ""
+        "default": "—",
+        "description": "The count in the footer. Default: pagination.total, else the number of rows."
       },
       {
         "name": "unitLabel",
@@ -15694,6 +15694,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "selectedRowKey",
+        "type": "string | number | null",
+        "required": false,
+        "default": "—",
+        "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current."
       },
       {
         "name": "columns",
@@ -15847,6 +15854,13 @@
       }
     ],
     "react": [
+      {
+        "name": "selectedRowKey",
+        "type": "string | number | null | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current."
+      },
       {
         "name": "columns",
         "type": "import(\"/workspace/.superpowers/wt-cells/packages/react/src/market-model\").MarketColumn[]",
@@ -16020,7 +16034,7 @@
         "type": "number | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The count in the footer. Default: pagination.total, else the number of rows."
       },
       {
         "name": "unitLabel",
@@ -16171,6 +16185,13 @@
       }
     ],
     "native": [
+      {
+        "name": "selectedRowKey",
+        "type": "string | number | null | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and the current state."
+      },
       {
         "name": "columns",
         "type": "import(\"/workspace/.superpowers/wt-cells/packages/native/src/market-model\").MarketColumn[]",
@@ -16344,7 +16365,7 @@
         "type": "number | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The count in the footer. Default: pagination.total, else the number of rows."
       },
       {
         "name": "unitLabel",
@@ -16689,8 +16710,8 @@
         "name": "totalCount",
         "type": "number",
         "required": false,
-        "default": "0",
-        "description": ""
+        "default": "—",
+        "description": "The count in the footer. Default: pagination.total, else the number of rows."
       },
       {
         "name": "unitLabel",
@@ -16719,6 +16740,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "selectedRowKey",
+        "type": "string | number | null",
+        "required": false,
+        "default": "—",
+        "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current."
       },
       {
         "name": "priceValue",
@@ -16801,6 +16829,13 @@
       }
     ],
     "react": [
+      {
+        "name": "selectedRowKey",
+        "type": "string | number | null | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current."
+      },
       {
         "name": "priceValue",
         "type": "(row: Row) => number | null",
@@ -16953,7 +16988,7 @@
         "type": "number | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The count in the footer. Default: pagination.total, else the number of rows."
       },
       {
         "name": "unitLabel",
@@ -17055,6 +17090,13 @@
       }
     ],
     "native": [
+      {
+        "name": "selectedRowKey",
+        "type": "string | number | null | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and the current state."
+      },
       {
         "name": "priceValue",
         "type": "(row: Row) => number | null",
@@ -17207,7 +17249,7 @@
         "type": "number | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The count in the footer. Default: pagination.total, else the number of rows."
       },
       {
         "name": "unitLabel",
@@ -17455,8 +17497,8 @@
         "name": "totalCount",
         "type": "number",
         "required": false,
-        "default": "0",
-        "description": ""
+        "default": "—",
+        "description": "The count in the footer. Default: pagination.total, else the number of rows."
       },
       {
         "name": "unitLabel",
@@ -17893,7 +17935,7 @@
         "type": "number | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The count in the footer. Default: pagination.total, else the number of rows."
       },
       {
         "name": "unitLabel",
@@ -18245,7 +18287,7 @@
         "type": "number | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The count in the footer. Default: pagination.total, else the number of rows."
       },
       {
         "name": "unitLabel",

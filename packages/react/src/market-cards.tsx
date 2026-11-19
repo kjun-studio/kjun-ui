@@ -1,4 +1,3 @@
-import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { sparklineCell } from "../../../shared/package-runtime/sparkline";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
@@ -14,7 +13,8 @@ import {
 KjunMarketCardsProps,
 useMarketCards
 } from "./market-model";
-import { MarketFooter,MarketIdentity } from "./market-parts";
+import { MarketFooter,MarketIdentity,MarketRow } from "./market-parts";
+import { useFilterScroll } from "./use-filter-scroll";
 import { KjunListSkeleton } from "./skeletons";
 import { getValue } from "./table";
 export function KjunMarketCards<Row extends object = Record<string, unknown>>(
@@ -35,8 +35,12 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
     emptySubMessage = "",
   } = props;
   const state = useMarketCards(props),
+    // Like a scrolling FilterGroup: the clipped edges fade and the selected pill stays in view.
+    pillRow = useFilterScroll(true, false, state.key),
     isPrice = priceMetricKeys.includes(state.key),
     isChange = state.key === changeMetricKey;
+  const sortShown = (pill: { key: string; sortKey?: string | null }) =>
+    state.key === pill.key && (emitSortOnMount || pill.sortKey === sortKey);
   const display = (row: Row) => {
     const value = getValue(row, state.key);
     return state.pill?.formatter
@@ -53,28 +57,23 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
   };
   return (
     <div className="kjun-market-cards">
-      <div className="kjun-metric-pills" role="group" aria-label={m.metrics}>
+      <div ref={pillRow} className="kjun-metric-pills" role="group" aria-label={m.metrics}>
         {state.pills.map((pill) => (
           <button
             key={pill.key}
             type="button"
             aria-pressed={state.key === pill.key}
-            onClick={(event) => {
-              state.select(pill.key);
-              event.currentTarget.scrollIntoView({
-                inline: "center",
-                block: "nearest",
-                behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-                  ? "auto"
-                  : "smooth",
-              });
-            }}
+            onClick={() => state.select(pill.key)}
           >
             <span className="kjun-metric-label" data-label={pill.label}><span>{pill.label}</span></span>
             {!!pill.sortKey && (
-              <span className="kjun-metric-sort" data-visible={state.key === pill.key && (emitSortOnMount || pill.sortKey === sortKey)}>
+              <span className="kjun-metric-sort" aria-hidden="true" data-visible={sortShown(pill)}>
                 {sortOrder === "desc" ? "↓" : "↑"}
               </span>
+            )}
+            {/* The arrow is drawn; the order is read as a word. */}
+            {!!pill.sortKey && sortShown(pill) && (
+              <span className="kjun-sr-only">{sortOrder === "desc" ? m.descending : m.ascending}</span>
             )}
           </button>
         ))}
@@ -100,19 +99,12 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
             <div>
               {state.pill && <div className="kjun-market-column-label">{state.pill.label}</div>}
               {rows.map((row, i) => (
-                <div
+                <MarketRow
                   key={String(getValue(row, rowKey) ?? i)}
-                  className="kjun-market-row kjun-market-row-compact"
-                  role={props.onRowClick ? "button" : undefined}
-                  tabIndex={props.onRowClick ? 0 : undefined}
-                  onClick={(event) => { if (!fromNestedControl(event)) props.onRowClick?.(row); }}
-                  onKeyDown={(event) => {
-                    if (props.onRowClick && event.target === event.currentTarget &&
-                        !event.defaultPrevented && (event.key === "Enter" || event.key === " ")) {
-                      event.preventDefault();
-                      props.onRowClick?.(row);
-                    }
-                  }}
+                  row={row}
+                  props={props}
+                  selectedKey={props.selectedRowKey}
+                  compact
                 >
                   <MarketIdentity row={row} props={props} />
                   <div className="kjun-market-quote">
@@ -149,7 +141,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
                       </>
                     ) : null}
                   </div>
-                </div>
+                </MarketRow>
               ))}
             </div>
           </KjunDataState>

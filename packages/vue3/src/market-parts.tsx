@@ -1,4 +1,4 @@
-import { marketBlockingError } from "../../../shared/package-runtime/market-query";
+import { marketBlockingError, marketTotal } from "../../../shared/package-runtime/market-query";
 import { useKjunMessages } from "./runtime/messages";
 import { type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { defineComponent } from "./runtime/component";
@@ -62,7 +62,7 @@ export const MarketFooter = defineComponent({
     showFooter: { type: Boolean, default: true },
     calculatedAt: { type: String as PropType<string | null>, default: undefined },
     footerNote: { type: String, default: undefined },
-    totalCount: { type: Number, default: 0 },
+    totalCount: { type: Number, default: undefined },
     unitLabel: { type: String, default: undefined },
     formatDate: { type: Function as PropType<(value: string) => string>, default: undefined },
   },
@@ -77,11 +77,11 @@ export const MarketFooter = defineComponent({
         {pagination && !hidden && (
           <KjunPagination currentPage={pagination.page} totalPages={Math.ceil(pagination.total / pagination.size)} totalRows={pagination.total}
             pageSize={pagination.size} showInfo onUpdate:page={(page: number) => emit("page-change", page)} />
-        )}{" "}
+        )}
         {props.showFooter && !hidden && !state.initialLoading && props.rowCount > 0 && (
           <div class="kjun-market-footer">
             <span>{props.calculatedAt ? m.value.lastUpdated + (props.formatDate?.(props.calculatedAt) || props.calculatedAt) : props.footerNote}</span>
-            <span>{m.value.totalCount(props.totalCount, (props.unitLabel ?? m.value.unitLabel))}</span>
+            <span>{m.value.totalCount(marketTotal(props.totalCount, pagination, props.rowCount), (props.unitLabel ?? m.value.unitLabel))}</span>
           </div>
         )}
       </>;
@@ -163,9 +163,9 @@ export const KjunMarketListPanel = defineComponent({
   }>,
   setup(_, { slots }) {
     return () => (
-      <KjunCard>
+      <KjunCard class="kjun-market-list-panel">
         <div>{slots.controls?.()}</div>
-        <div style={{ marginTop: tokens.dimension.value16 + "px", borderTop: `${tokens.border.defaultWidth}px solid var(--_kjun-color-border)` }}>{slots.default?.()}</div>
+        <div class="kjun-market-list-panel-list">{slots.default?.()}</div>
       </KjunCard>
     );
   },

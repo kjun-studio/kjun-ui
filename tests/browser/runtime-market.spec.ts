@@ -4,7 +4,8 @@ const events = (page: Page) => page.getByTestId('events');
 const storage = (page: Page) => page.evaluate(() => (window as any).marketStorage());
 const configure = (page: Page, next: object) => page.evaluate(value => (window as any).configureMarket(value), next);
 for (const platform of ['react', 'vue3', 'native']) {
-  const pill = (page: Page, name: string) => page.getByRole('button', { name, exact: platform === 'native' });
+  // A shown sort arrow is read as a word after the label ("Change, 내림차순"), so match the label at the start.
+  const pill = (page: Page, name: string) => page.getByRole('button', { name: new RegExp(`^${name}\\b`) });
   const selected = async (page: Page, name: string) => expect(pill(page, name)).toHaveAttribute('aria-pressed', 'true');
   for (const stored of ['price', 'missing', '']) test(`${platform} MarketCards restores ${stored || 'default'} and emits initial sort once`, async ({ page }) => {
     await openFixture(page, platform, '?stored=' + stored, 'runtime-market');
@@ -33,6 +34,36 @@ for (const platform of ['react', 'vue3', 'native']) {
     await selected(page, 'Change'); await expect(events(page)).toHaveText('[]');
     await pill(page, 'Change').click(); await expect(events(page)).toHaveText('["change"]');
   });
+  test(`${platform} market rows: buttons only with onRowClick, selectedRowKey, footer count, sort read as a word`, async ({ page }) => {
+    await openFixture(page, platform, '?rows&silent&sort=change', 'runtime-market');
+    const cards = page.getByTestId('cards'), list = page.getByTestId('list');
+    const cardRow = cards.getByRole('button', { name: /Alpha/ });
+    await expect(cardRow).toHaveAttribute('aria-current', 'true');
+    await expect(cards.getByRole('button', { name: /Beta/ })).not.toHaveAttribute('aria-current', 'true');
+    await cardRow.click(); await expect(events(page)).toHaveText('["row:a"]');
+    // The list has no click handler: no buttons, no tab stops, still the selected row.
+    await expect(list.getByRole('button')).toHaveCount(0);
+    await expect(list.locator('[tabindex]')).toHaveCount(0);
+    await expect(list.locator('[aria-current="true"]')).toHaveCount(1);
+    await expect(list.locator('[aria-current="true"]')).toContainText('Beta');
+    // No totalCount: the footer counts the rows instead of reading 0.
+    await expect(list.getByText(/2/).last()).toBeVisible();
+    await expect(list).not.toContainText('총 0');
+    // The selected sortable pill reads its order as a word; the arrow itself is hidden.
+    await expect(pill(page, 'Change')).toHaveAccessibleName(/^Change,? 내림차순$/);
+    await expect(pill(page, 'Price')).toHaveAccessibleName('Price');
+  });
+  if (platform !== 'native') test(`${platform} market rows: hover only on clickable rows, metric pills fade when they overflow`, async ({ page }) => {
+    await openFixture(page, platform, '?rows&silent&narrow', 'runtime-market');
+    const passive = page.getByTestId('list').locator('.kjun-market-row').first();
+    const before = await passive.evaluate(el => getComputedStyle(el).backgroundColor);
+    await passive.hover();
+    expect(await passive.evaluate(el => getComputedStyle(el).backgroundColor)).toBe(before);
+    const pills = page.locator('.kjun-metric-pills');
+    await expect(pills).toHaveAttribute('data-fade-end', '');
+    await pill(page, 'Volume').click();
+    await expect(pills).toHaveAttribute('data-fade-start', '');
+  });
 }
 test('React MarketCards uses localStorage by default', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('runtime:pill', 'price'));
@@ -44,7 +75,7 @@ test('React MarketCards uses localStorage by default', async ({ page }) => {
 test('Native MarketCards uses only consumer-provided storage', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('runtime:pill', 'price'));
   await openFixture(page, 'native', '?browser', 'runtime-market');
-  await expect(page.getByRole('button', { name: 'Change', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('button', { name: /^Change\b/ })).toHaveAttribute('aria-pressed', 'true');
   expect(await page.evaluate(() => localStorage.getItem('runtime:pill'))).toBe('price');
 });
 

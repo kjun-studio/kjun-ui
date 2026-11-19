@@ -17,7 +17,9 @@ import {
 KjunMarketCardsProps,
 useMarketCards
 } from "./market-model";
-import { MarketFooter,MarketIdentity } from "./market-parts";
+import { MarketFooter,MarketIdentity,MarketRow } from "./market-parts";
+import { ScrollFadeEdge } from "./scroll-fade-edge";
+import { useFilterRow } from "./use-filter-row";
 import { useKjunStyles } from "./provider";
 import { KjunListSkeleton } from "./skeletons";
 import { getValue } from "./table";
@@ -42,8 +44,12 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
     } = props,
     { colors } = useKjunStyles();
   const state = useMarketCards(props),
+    // Like a scrolling FilterGroup: the clipped edges fade and the selected pill stays in view.
+    pillRow = useFilterRow(true, false, state.key),
     isPrice = priceMetricKeys.includes(state.key),
     isChange = state.key === changeMetricKey;
+  const sortShown = (pill: { key: string; sortKey?: string | null }) =>
+    state.key === pill.key && (emitSortOnMount || pill.sortKey === sortKey);
   const display = (row: Row) => {
     const value = getValue(row, state.key);
     return state.pill?.formatter
@@ -60,9 +66,15 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
   };
   return (
     <View>
+      <View role="group" accessibilityLabel={m.metrics}>
       <ScrollView
+        ref={pillRow.scroller}
         horizontal
         showsHorizontalScrollIndicator={false}
+        scrollEventThrottle={16}
+        onLayout={event => pillRow.update({ clientWidth: event.nativeEvent.layout.width })}
+        onContentSizeChange={scrollWidth => pillRow.update({ scrollWidth })}
+        onScroll={event => pillRow.update({ scrollLeft: event.nativeEvent.contentOffset.x }, true)}
         contentContainerStyle={{
           flexDirection: "row",
           gap: tokens.dimension.value8,
@@ -73,8 +85,10 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
         {state.pills.map((pill) => (
           <Pressable
             key={pill.key}
+            onLayout={event => pillRow.measure(pill.key, event)}
             accessibilityRole="button"
-            accessibilityLabel={pill.label}
+            // The arrow is drawn; the order is read as a word, like Web.
+            accessibilityLabel={pill.sortKey && sortShown(pill) ? `${pill.label}, ${sortOrder === "desc" ? m.descending : m.ascending}` : pill.label}
             accessibilityState={{ selected: state.key === pill.key }}
             onPress={() => state.select(pill.key)}
             // Like Web: a 36px pill; the hit slop keeps the 44px Native touch target.
@@ -106,13 +120,16 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
             {!!pill.sortKey && (
               <KText numberOfLines={1} accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
                 style={{ ...typeStyle("caption"), color: colors.onBrand,
-                  opacity: state.key === pill.key && (emitSortOnMount || pill.sortKey === sortKey) ? 1 : 0 }}>
+                  opacity: sortShown(pill) ? 1 : 0 }}>
                 {sortOrder === "desc" ? "↓" : "↑"}
               </KText>
             )}
           </Pressable>
         ))}
       </ScrollView>
+      {pillRow.edges.start ? <ScrollFadeEdge edge="start" horizontal color={colors.surface} /> : null}
+      {pillRow.edges.end ? <ScrollFadeEdge edge="end" horizontal color={colors.surface} /> : null}
+      </View>
       {props.renderList ? (
         props.renderList({
           selectedKey: state.key,
@@ -134,20 +151,18 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
             <View>
               {state.pill && <KText style={{ textAlign:"right", paddingHorizontal:tokens.dimension.value16, paddingVertical:tokens.dimension.value8, ...typeStyle('caption'),  color:colors.textSecondary }}>{state.pill.label}</KText>}
               {rows.map((row, i) => (
-                <Pressable
+                <MarketRow
                   key={String(getValue(row, rowKey) ?? i)}
-                  accessible={false}
-                  onPress={() => props.onRowClick?.(row)}
-                  style={({ pressed }) => ({
+                  row={row}
+                  props={props}
+                  selectedKey={props.selectedRowKey}
+                  style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
                     paddingVertical: tokens.dimension.value10,
                     paddingHorizontal: tokens.dimension.value16,
-                    borderBottomWidth: tokens.border.defaultWidth,
-                    borderBottomColor: colors.border,
-                    backgroundColor: pressed ? colors.hover : undefined,
-                  })}
+                  }}
                 >
                   <MarketIdentity row={row} props={props} compact />
                   <View style={{ marginLeft: tokens.dimension.value12, alignItems: "flex-end" }}>
@@ -202,7 +217,7 @@ export function KjunMarketCards<Row extends object = Record<string, unknown>>(
                       </>
                     ) : null}
                   </View>
-                </Pressable>
+                </MarketRow>
               ))}
             </View>
           </KjunDataState>

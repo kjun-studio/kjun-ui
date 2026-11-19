@@ -66,25 +66,34 @@ export function generate(input: UsageInput) {
         stretch: s.stretch ? true : undefined, semantic: 'price', baseline: s.baseline === false ? undefined : spark.baseline, ariaLabel: spark.label }); break;
     }
     case 'KjunMarketSimpleList': case 'KjunMarketTable': case 'KjunMarketCards': case 'KjunMarketListPanel': {
-      const market: Record<string, unknown> = { rows: rows(), columns: b.data('columns', columns.map((col, i) => ({ ...col, type: ['text', 'price', 'percent'][i] }))),
-        primaryLabel: b.declare('primaryLabel', 'const primaryLabel = row => row.name;'), subMeta: b.declare('subMeta', 'const subMeta = row => row.symbol;'),
-        totalCount: expr('rows.length'), hasLoadedOnce: true, loading: s.loading, error: s.error ? '조회 오류' : null, priceFormatter: formatter(),
-        formatMetric: b.declare('formatMetric', `function formatMetric(value, format) {
+      // Each view gets only the props it takes (Vue would pass the rest to the root element as attributes).
+      // Declarations are made in the order the code shows them, so each builder call runs once, in prop order.
+      const marketColumns = () => b.data('columns', columns.map((col, i) => ({ ...col, type: ['text', 'price', 'percent'][i] })));
+      const rowText = () => ({ primaryLabel: b.declare('primaryLabel', 'const primaryLabel = row => row.name;'), subMeta: b.declare('subMeta', 'const subMeta = row => row.symbol;'),
+        totalCount: expr('rows.length'), hasLoadedOnce: true, loading: s.loading, error: s.error ? '조회 오류' : null });
+      const formatMetric = () => b.declare('formatMetric', `function formatMetric(value, format) {
   if (value == null || value === "") return "—";
   if (format !== "price" && format !== "percent") return String(value);
   const number = Number(value);
   if (!Number.isFinite(number)) return "—";
   if (format === "price") return new Intl.NumberFormat("ko-KR").format(number) + "원";
   return (number > 0 ? "+" : "") + number.toFixed(2) + "%";
-}`), showActions: true,
-        onRowClick: notify('selectRow', 'row', 'row.name'),
-      };
-      if (name === 'KjunMarketTable') content = b.node(name, { ...market, columns: b.data('columns', columns.map((col, i) => ({ ...col, type: ['text', 'price', 'percent'][i], ...(i === 1 ? { flash: true } : {}) }))),
-        onToggleFavorite: notify('favorite', 'row', '"즐겨찾기 " + row.name'), onToggleInterest: notify('interest', 'row', '"관심 " + row.name'), onSort: notify('sort', 'key', '(columns.find(column => column.key === key)?.label || "선택한 항목") + " 기준으로 정렬했습니다."') });
-      else if (name === 'KjunMarketCards') content = b.node(name, { ...market, storageNamespace: 'my-market',
-        metricConfig: { price: { label: '가격', format: 'price', sortKey: 'price' }, change: { label: '변동', format: 'percent', sortKey: 'change' } }, priceMetricKeys: ['price'], changeMetricKey: 'change', onSort: notify('sort', 'key', '(columns.find(column => column.key === key)?.label || "선택한 항목") + " 기준으로 정렬했습니다."') });
-      else {
-        const list = b.node('KjunMarketSimpleList', { ...market, priceValue: b.declare('priceValue', 'const priceValue = row => row.price;'), changeValue: b.declare('changeValue', 'const changeValue = row => row.change;') });
+}`);
+      const selectRow = () => notify('selectRow', 'row', 'row.name');
+      const sortNotice = () => notify('sort', 'key', '(columns.find(column => column.key === key)?.label || "선택한 항목") + " 기준으로 정렬했습니다."');
+      if (name === 'KjunMarketTable') {
+        // MarketTable keeps its own output: the shared props, then its flash price column over the plain one.
+        const market = { rows: rows(), columns: marketColumns(), ...rowText(), priceFormatter: formatter(), formatMetric: formatMetric(), showActions: true, onRowClick: selectRow() };
+        content = b.node(name, { ...market, columns: b.data('columns', columns.map((col, i) => ({ ...col, type: ['text', 'price', 'percent'][i], ...(i === 1 ? { flash: true } : {}) }))),
+          onToggleFavorite: notify('favorite', 'row', '"즐겨찾기 " + row.name'), onToggleInterest: notify('interest', 'row', '"관심 " + row.name'), onSort: sortNotice() });
+      }
+      else if (name === 'KjunMarketCards') {
+        const cardRows = rows(), cardColumns = marketColumns(), text = rowText(), format = formatMetric();
+        content = b.node(name, { rows: cardRows, columns: cardColumns, ...text, formatMetric: format, onRowClick: selectRow(), storageNamespace: 'my-market',
+          metricConfig: { price: { label: '가격', format: 'price', sortKey: 'price' }, change: { label: '변동', format: 'percent', sortKey: 'change' } }, priceMetricKeys: ['price'], changeMetricKey: 'change', onSort: sortNotice() });
+      } else {
+        const listRows = rows(), text = rowText(), priceFormatter = formatter(), select = selectRow();
+        const list = b.node('KjunMarketSimpleList', { rows: listRows, ...text, priceFormatter, onRowClick: select, priceValue: b.declare('priceValue', 'const priceValue = row => row.price;'), changeValue: b.declare('changeValue', 'const changeValue = row => row.change;') });
         content = name === 'KjunMarketSimpleList' ? list : b.node(name, {}, list, { controls: b.node('KjunFilterGroup', { value: b.state('filter', 'a'), onValueChange: b.update('filter'), options: b.data('options', defaultOptions) }) });
       }
       break;

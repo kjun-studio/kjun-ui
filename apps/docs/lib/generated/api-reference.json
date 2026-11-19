@@ -3032,9 +3032,9 @@
             "name": "totalCount",
             "type": "number",
             "required": false,
-            "default": "0",
-            "description": "",
-            "summary": "목록 푸터에 표시할 전체 항목 수입니다.",
+            "default": "pagination.total ?? 행 수",
+            "description": "The count in the footer. Default: pagination.total, else the number of rows.",
+            "summary": "푸터에 보이는 전체 개수입니다. 주지 않으면 pagination.total을, 그것도 없으면 표시한 행 수를 셉니다.",
             "source": "packages/vue3/src/market-cards.tsx"
           },
           {
@@ -3071,6 +3071,15 @@
             "default": "—",
             "description": "",
             "summary": "조회 재시도를 요청합니다. 실제 요청과 loading·error 갱신은 소비자가 수행합니다.",
+            "source": "packages/vue3/src/market-cards.tsx"
+          },
+          {
+            "name": "selectedRowKey",
+            "type": "undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다.",
             "source": "packages/vue3/src/market-cards.tsx"
           },
           {
@@ -3272,6 +3281,15 @@
       "react": {
         "props": [
           {
+            "name": "selectedRowKey",
+            "type": "unknown",
+            "required": false,
+            "default": "—",
+            "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current.",
+            "summary": "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다.",
+            "source": "packages/react/src/market-cards.tsx"
+          },
+          {
             "name": "columns",
             "type": "MarketColumn[]",
             "required": true,
@@ -3491,9 +3509,9 @@
             "name": "totalCount",
             "type": "number | undefined",
             "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "목록 푸터에 표시할 전체 항목 수입니다.",
+            "default": "pagination.total ?? 행 수",
+            "description": "The count in the footer. Default: pagination.total, else the number of rows.",
+            "summary": "푸터에 보이는 전체 개수입니다. 주지 않으면 pagination.total을, 그것도 없으면 표시한 행 수를 셉니다.",
             "source": "packages/react/src/market-cards.tsx"
           },
           {
@@ -3694,6 +3712,15 @@
       "native": {
         "props": [
           {
+            "name": "selectedRowKey",
+            "type": "unknown",
+            "required": false,
+            "default": "—",
+            "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and the current state.",
+            "summary": "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다.",
+            "source": "packages/native/src/market-cards.tsx"
+          },
+          {
             "name": "columns",
             "type": "MarketColumn[]",
             "required": true,
@@ -3913,9 +3940,9 @@
             "name": "totalCount",
             "type": "number | undefined",
             "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "목록 푸터에 표시할 전체 항목 수입니다.",
+            "default": "pagination.total ?? 행 수",
+            "description": "The count in the footer. Default: pagination.total, else the number of rows.",
+            "summary": "푸터에 보이는 전체 개수입니다. 주지 않으면 pagination.total을, 그것도 없으면 표시한 행 수를 셉니다.",
             "source": "packages/native/src/market-cards.tsx"
           },
           {
@@ -4301,9 +4328,9 @@
             "name": "totalCount",
             "type": "number",
             "required": false,
-            "default": "0",
-            "description": "",
-            "summary": "목록 푸터에 표시할 전체 항목 수입니다.",
+            "default": "pagination.total ?? 행 수",
+            "description": "The count in the footer. Default: pagination.total, else the number of rows.",
+            "summary": "푸터에 보이는 전체 개수입니다. 주지 않으면 pagination.total을, 그것도 없으면 표시한 행 수를 셉니다.",
             "source": "packages/vue3/src/market-list.tsx"
           },
           {
@@ -4340,6 +4367,15 @@
             "default": "—",
             "description": "",
             "summary": "조회 재시도를 요청합니다. 실제 요청과 loading·error 갱신은 소비자가 수행합니다.",
+            "source": "packages/vue3/src/market-list.tsx"
+          },
+          {
+            "name": "selectedRowKey",
+            "type": "undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다.",
             "source": "packages/vue3/src/market-list.tsx"
           },
           {
@@ -4449,6 +4485,15 @@
       },
       "react": {
         "props": [
+          {
+            "name": "selectedRowKey",
+            "type": "unknown",
+            "required": false,
+            "default": "—",
+            "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current.",
+            "summary": "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다.",
+            "source": "packages/react/src/market-list.tsx"
+          },
           {
             "name": "priceValue",
             "type": "(row: Row) => number | null",
@@ -4642,9 +4687,9 @@
             "name": "totalCount",
             "type": "number | undefined",
             "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "목록 푸터에 표시할 전체 항목 수입니다.",
+            "default": "pagination.total ?? 행 수",
+            "description": "The count in the footer. Default: pagination.total, else the number of rows.",
+            "summary": "푸터에 보이는 전체 개수입니다. 주지 않으면 pagination.total을, 그것도 없으면 표시한 행 수를 셉니다.",
             "source": "packages/react/src/market-list.tsx"
           },
           {
@@ -4782,6 +4827,15 @@
       "native": {
         "props": [
           {
+            "name": "selectedRowKey",
+            "type": "unknown",
+            "required": false,
+            "default": "—",
+            "description": "The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and the current state.",
+            "summary": "목록 옆 차트·상세가 보여 주는 행의 rowKey 값입니다. 그 행을 옅게 채우고 aria-current로 알립니다(Native 기기는 선택 상태). null이면 표시하지 않습니다.",
+            "source": "packages/native/src/market-list.tsx"
+          },
+          {
             "name": "priceValue",
             "type": "(row: Row) => number | null",
             "required": true,
@@ -4974,9 +5028,9 @@
             "name": "totalCount",
             "type": "number | undefined",
             "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "목록 푸터에 표시할 전체 항목 수입니다.",
+            "default": "pagination.total ?? 행 수",
+            "description": "The count in the footer. Default: pagination.total, else the number of rows.",
+            "summary": "푸터에 보이는 전체 개수입니다. 주지 않으면 pagination.total을, 그것도 없으면 표시한 행 수를 셉니다.",
             "source": "packages/native/src/market-list.tsx"
           },
           {
@@ -5299,9 +5353,9 @@
             "name": "totalCount",
             "type": "number",
             "required": false,
-            "default": "0",
-            "description": "",
-            "summary": "목록 푸터에 표시할 전체 항목 수입니다.",
+            "default": "pagination.total ?? 행 수",
+            "description": "The count in the footer. Default: pagination.total, else the number of rows.",
+            "summary": "푸터에 보이는 전체 개수입니다. 주지 않으면 pagination.total을, 그것도 없으면 표시한 행 수를 셉니다.",
             "source": "packages/vue3/src/market-table.tsx"
           },
           {
@@ -5866,9 +5920,9 @@
             "name": "totalCount",
             "type": "number | undefined",
             "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "목록 푸터에 표시할 전체 항목 수입니다.",
+            "default": "pagination.total ?? 행 수",
+            "description": "The count in the footer. Default: pagination.total, else the number of rows.",
+            "summary": "푸터에 보이는 전체 개수입니다. 주지 않으면 pagination.total을, 그것도 없으면 표시한 행 수를 셉니다.",
             "source": "packages/react/src/market-table.tsx"
           },
           {
@@ -6324,9 +6378,9 @@
             "name": "totalCount",
             "type": "number | undefined",
             "required": false,
-            "default": "—",
-            "description": "",
-            "summary": "목록 푸터에 표시할 전체 항목 수입니다.",
+            "default": "pagination.total ?? 행 수",
+            "description": "The count in the footer. Default: pagination.total, else the number of rows.",
+            "summary": "푸터에 보이는 전체 개수입니다. 주지 않으면 pagination.total을, 그것도 없으면 표시한 행 수를 셉니다.",
             "source": "packages/native/src/market-table.tsx"
           },
           {

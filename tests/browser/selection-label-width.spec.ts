@@ -20,7 +20,8 @@ async function readable(nodes: Locator, intrinsic = false) {
     const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT), result = [];
     while (walker.nextNode()) {
       const text = walker.currentNode, el = text.parentElement!;
-      if (!text.textContent?.trim() || el.closest('[aria-hidden="true"]')) continue;
+      // Text read only by screen readers (a pill's sort order) has no visible box to fit.
+      if (!text.textContent?.trim() || el.closest('[aria-hidden="true"], .kjun-sr-only')) continue;
       let hidden = false;
       for (let parent: Element | null = el; parent; parent = parent.parentElement) {
         const style = getComputedStyle(parent);

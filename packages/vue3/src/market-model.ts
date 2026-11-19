@@ -46,7 +46,8 @@ export const marketBaseProps = {
   showFooter: { type: Boolean, default: true },
   calculatedAt: { type: String as PropType<string | null>, default: undefined },
   footerNote: { type: String, default: undefined },
-  totalCount: { type: Number, default: 0 },
+  /** The count in the footer. Default: pagination.total, else the number of rows. */
+  totalCount: { type: Number, default: undefined },
   unitLabel: { type: String, default: undefined },
   formatDate: { type: Function as PropType<(value: string) => string>, default: undefined },
   /** Declared as props: rows become buttons and the retry action appears only when the app listens. */

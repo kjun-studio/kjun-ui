@@ -26,6 +26,7 @@ export interface MarketBaseProps<Row extends object> extends QueryDisplayProps {
   showFooter?: boolean;
   calculatedAt?: string | null;
   footerNote?: string;
+  /** The count in the footer. Default: pagination.total, else the number of rows. */
   totalCount?: number;
   unitLabel?: string;
   formatDate?: (value: string) => string;
@@ -61,6 +62,8 @@ export type MarketFormatter<Row extends object> = (
 export interface KjunMarketSimpleListProps<
   Row extends object = Record<string, unknown>
 > extends MarketBaseProps<Row> {
+  /** The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current. */
+  selectedRowKey?: string | number | null;
   priceValue: (row: Row) => number | null;
   changeValue: (row: Row) => number | null;
   changeLoading?: (row: Row) => boolean;
@@ -99,6 +102,8 @@ export interface KjunMarketTableProps<
 export interface KjunMarketCardsProps<
   Row extends object = Record<string, unknown>
 > extends MarketBaseProps<Row>, MarketCardsModelProps {
+  /** The rowKey value of the row the rest of the screen shows (a chart or detail beside the list): a quiet fill and aria-current. */
+  selectedRowKey?: string | number | null;
   columns: MarketColumn[];
   sortOrder?: "asc" | "desc";
   currency?: string;

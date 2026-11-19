@@ -1,4 +1,3 @@
-import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
 import { marketQueryState } from "../../../shared/package-runtime/market-query";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
@@ -11,7 +10,7 @@ finiteNumber
 } from "./financial";
 import { PriceStatus } from "./number-display";
 import { KjunMarketSimpleListProps } from "./market-model";
-import { MarketFooter,MarketIdentity } from "./market-parts";
+import { MarketFooter,MarketIdentity,MarketRow } from "./market-parts";
 import { KjunListSkeleton } from "./skeletons";
 import { getValue } from "./table";
 export function KjunMarketSimpleList<
@@ -47,20 +46,7 @@ export function KjunMarketSimpleList<
               change = changeValue(row),
               stale = !!getValue(row, "stale");
             return (
-              <div
-                key={String(getValue(row, rowKey) ?? i)}
-                className="kjun-market-row"
-                role={props.onRowClick ? "button" : undefined}
-                tabIndex={props.onRowClick ? 0 : undefined}
-                onClick={(event) => { if (!fromNestedControl(event)) props.onRowClick?.(row); }}
-                onKeyDown={(event) => {
-                  if (props.onRowClick && event.target === event.currentTarget &&
-                      !event.defaultPrevented && (event.key === "Enter" || event.key === " ")) {
-                    event.preventDefault();
-                    props.onRowClick?.(row);
-                  }
-                }}
-              >
+              <MarketRow key={String(getValue(row, rowKey) ?? i)} row={row} props={props} selectedKey={props.selectedRowKey}>
                 <MarketIdentity row={row} props={props} />
                 <div className="kjun-market-quote">
                   <div className="kjun-market-price">
@@ -87,7 +73,7 @@ export function KjunMarketSimpleList<
                     )}
                   </div>
                 </div>
-              </div>
+              </MarketRow>
             );
           })}
         </div>

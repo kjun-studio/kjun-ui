@@ -1,8 +1,10 @@
-import { marketBlockingError } from "../../../shared/package-runtime/market-query";
+import { isSelectedMarketRow, marketBlockingError, marketTotal } from "../../../shared/package-runtime/market-query";
+import { type ReactNode } from "react";
+import { AccessiblePressable as Pressable } from "./a11y";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
-import { Platform,View,useWindowDimensions,type TextStyle } from "react-native";
+import { Platform,View,useWindowDimensions,type TextStyle,type ViewStyle } from "react-native";
 import { useQueryDisplay } from "./data-state";
 import {
 KjunCollectionMark
@@ -95,6 +97,48 @@ export function MarketIdentity<Row extends object>({
     </View>
   );
 }
+/**
+ * Like Web MarketRow: a button only when the app listens for presses (reached by screen readers and the keyboard),
+ * otherwise a plain row with no press fill; the selected row keeps the secondary fill and reads as current.
+ */
+export function MarketRow<Row extends object>({
+  row,
+  props,
+  selectedKey,
+  style,
+  children,
+}: {
+  row: Row;
+  props: MarketBaseProps<Row>;
+  selectedKey?: unknown;
+  style: ViewStyle;
+  children: ReactNode;
+}) {
+  const { colors } = useKjunStyles(),
+    selected = isSelectedMarketRow(getValue(row, props.rowKey || "id"), selectedKey),
+    rest = { ...style, borderBottomWidth: tokens.border.defaultWidth, borderBottomColor: colors.border };
+  // A button's selected state reads as pressed, so the web gets aria-current and devices the selected state.
+  const current = Platform.OS === "web" ? { "aria-current": selected || undefined } : {};
+  if (!props.onRowClick)
+    return (
+      <View {...current} accessibilityState={Platform.OS === "web" ? undefined : { selected }}
+        style={{ ...rest, backgroundColor: selected ? colors.secondary : undefined }}>
+        {children}
+      </View>
+    );
+  return (
+    <Pressable
+      {...current}
+      accessibilityRole="button"
+      accessibilityState={Platform.OS === "web" ? undefined : { selected }}
+      focusRingInset
+      onPress={() => props.onRowClick?.(row)}
+      style={({ pressed }) => ({ ...rest, backgroundColor: pressed ? colors.hover : selected ? colors.secondary : undefined })}
+    >
+      {children}
+    </Pressable>
+  );
+}
 export function MarketFooter<Row extends object>({
   props,
 }: {
@@ -111,7 +155,6 @@ export function MarketFooter<Row extends object>({
       showFooter = true,
       calculatedAt,
       footerNote,
-      totalCount = 0,
       unitLabel = m.unitLabel,
     } = props;
   return (
@@ -145,7 +188,7 @@ export function MarketFooter<Row extends object>({
               : footerNote}
           </KText>
           <KText style={{ ...typeStyle('caption'), color: colors.textTertiary }}>
-            {m.totalCount(totalCount, unitLabel)}
+            {m.totalCount(marketTotal(props.totalCount, pagination, rows.length), unitLabel)}
           </KText>
         </View>
       )}

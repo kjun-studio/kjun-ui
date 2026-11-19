@@ -17,6 +17,10 @@ const storage = {
   getItem(key: string) { reads.push(key); if (params.has('throw')) throw Error('unavailable'); return stored[key] || null; },
   setItem(key: string, value: string) { writes.push([key, value]); if (params.has('throw')) throw Error('unavailable'); stored[key] = value; },
 };
+// ?rows: quotes under the cards and a plain list. The cards' rows answer clicks and mark row a; the list has no
+// click handler and marks row b. Neither gives totalCount, so the footer counts the rows. ?narrow squeezes the pills.
+const rows = [{ id: 'a', name: 'Alpha', price: 100, change: 1.5, volume: 10 }, { id: 'b', name: 'Beta', price: 90, change: -2, volume: 20 }];
+const quoteProps = params.has('rows') ? { rows, hasLoadedOnce: true } : {};
 export function MarketCases({ K }: { K: any }) {
   const [events, setEvents] = useState<string[]>([]);
   const [config, setConfig] = useState({ namespace: 'runtime', show: true, emit: !params.has('silent'), sortKey: params.get('sort'), exclude: [] as string[] });
@@ -25,9 +29,12 @@ export function MarketCases({ K }: { K: any }) {
     marketStorage: () => ({ reads, writes, stored }),
   });
   return <>
-    {config.show && <K.KjunMarketCards columns={columns} metricConfig={metricConfig} storageNamespace={config.namespace}
+    {config.show && <div style={params.has('narrow') ? { width: Number(params.get('narrow')) || 160 } : undefined} data-testid="cards"><K.KjunMarketCards {...quoteProps} columns={columns} metricConfig={metricConfig} storageNamespace={config.namespace}
       storage={params.has('browser') ? undefined : storage} excludeKeys={config.exclude} sortKey={config.sortKey}
-      emitSortOnMount={config.emit} onSort={(key: string) => setEvents(old => [...old, key])} />}
+      emitSortOnMount={config.emit} onSort={(key: string) => setEvents(old => [...old, key])}
+      {...(params.has('rows') ? { selectedRowKey: 'a', onRowClick: (row: { id: string }) => setEvents(old => [...old, 'row:' + row.id]) } : {})} /></div>}
+    {params.has('rows') && <div data-testid="list"><K.KjunMarketSimpleList {...quoteProps} selectedRowKey="b"
+      priceValue={(row: { price: number }) => row.price} changeValue={(row: { change: number }) => row.change} priceFormatter={String} /></div>}
     <output data-testid="events">{JSON.stringify(events)}</output>
   </>;
 }

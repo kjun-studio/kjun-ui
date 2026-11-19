@@ -9,8 +9,18 @@
 .kjun-market-row[role="button"] {
   cursor: pointer;
 }
-.kjun-market-row:hover {
+/* The row the rest of the screen shows (selectedRowKey) keeps a quiet fill; hover on a clickable row sits one step darker. */
+.kjun-market-row[aria-current="true"] {
+  background: var(--_kjun-color-secondary);
+}
+/* Only a row that does something answers the pointer. */
+.kjun-market-row[role="button"]:hover {
   background: var(--_kjun-color-hover);
+}
+/* Rows run edge to edge inside cards that clip, so the ring sits inside the row. */
+.kjun-market-row[role="button"]:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: calc(-1 * var(--_kjun-state-focus-width));
 }
 .kjun-market-row-compact {
   padding: var(--_kjun-geometry-dimension-value10) var(--_kjun-geometry-dimension-value16);
@@ -58,8 +68,6 @@
 }
 /* List and table prices drop the flash pill inset so every value ends on its header's edge, like Vue. */
 .kjun-scope :is(.kjun-market-simple-list, .kjun-market-table-grid) .kjun-price-cell { padding: 0; border-radius: 0; }
-/* Vue rows draw the same divider as .kjun-market-row. */
-.kjun-mobile-simple-list .kjun-mobile-simple-list__row { border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border); }
 .kjun-market-price {
   font-size: var(--_kjun-type-control-size);
   font-variant-numeric: tabular-nums;
@@ -269,6 +277,11 @@
 .kjun-metric-label::after { font-weight: var(--_kjun-type-number-lg-weight); }
 .kjun-metric-label > span { grid-area: 1 / 1; }
 .kjun-metric-sort[data-visible="false"] { visibility: hidden; }
+/* The panel's list sits under its controls, set off by one divider. */
+.kjun-market-list-panel-list {
+  margin-top: var(--_kjun-geometry-dimension-value16);
+  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
+}
 .kjun-metric-sort {
   font-size: var(--_kjun-type-caption-size);
   line-height: var(--_kjun-type-caption-line);
@@ -286,28 +299,18 @@
   font-weight: var(--_kjun-type-control-weight);
   letter-spacing: var(--_kjun-type-control-tracking);
 }
-.kjun-market-metric-label {
-  font-size: var(--_kjun-type-caption-size);
-  color: var(--_kjun-color-text-tertiary);
-  margin-top: var(--_kjun-geometry-dimension-value2);
-  text-transform: uppercase;
-  line-height: var(--_kjun-type-caption-line);
-  font-weight: var(--_kjun-type-caption-weight);
-  letter-spacing: var(--_kjun-type-caption-tracking);
-}
 @media (width < token(responsive.market)) {
-  .kjun-market-simple-list .kjun-market-row, .kjun-mobile-simple-list .kjun-mobile-simple-list__row {
+  .kjun-market-simple-list .kjun-market-row {
     min-height: var(--_kjun-extension-market-list-minimum-height);
     padding: var(--_kjun-geometry-dimension-value14) var(--_kjun-geometry-dimension-value20);
   }
-  /* Vue renders the same list with kjun-mobile-simple-list classes; both get the same mobile type. */
-  :is(.kjun-market-simple-list .kjun-market-name, .kjun-mobile-simple-list .kjun-mobile-simple-list__name) {
+  .kjun-market-simple-list .kjun-market-name {
     font-size: var(--_kjun-type-input-size);
     line-height: var(--_kjun-type-input-line);
     font-weight: var(--_kjun-type-input-weight);
     letter-spacing: var(--_kjun-type-input-tracking);
   }
-  :is(.kjun-market-simple-list .kjun-market-name > span, .kjun-mobile-simple-list .kjun-mobile-simple-list__label) {
+  .kjun-market-simple-list .kjun-market-name > span {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -316,11 +319,11 @@
     overflow-wrap: break-word;
     white-space: normal;
   }
-  .kjun-market-simple-list .kjun-market-quote, .kjun-mobile-simple-list .kjun-mobile-simple-list__quote {
+  .kjun-market-simple-list .kjun-market-quote {
     min-width: var(--_kjun-extension-market-list-mobile-quote-minimum-width);
     max-width: 50%;
   }
-  :is(.kjun-market-simple-list .kjun-market-price, .kjun-mobile-simple-list .kjun-mobile-simple-list__price) {
+  .kjun-market-simple-list .kjun-market-price {
     font-size: var(--_kjun-type-input-size);
     overflow-wrap: anywhere;
     line-height: var(--_kjun-type-input-line);
@@ -328,19 +331,11 @@
     letter-spacing: var(--_kjun-type-input-tracking);
   }
   .kjun-market-simple-list .kjun-market-meta,
-  .kjun-market-simple-list .kjun-market-change,
-  .kjun-mobile-simple-list .kjun-mobile-simple-list__meta,
-  .kjun-mobile-simple-list .kjun-mobile-simple-list__change {
+  .kjun-market-simple-list .kjun-market-change {
     font-size: var(--_kjun-type-body-size);
     line-height: var(--_kjun-type-body-line);
     font-weight: var(--_kjun-type-body-weight);
     letter-spacing: var(--_kjun-type-body-tracking);
-  }
-  /* Vue's signed value carries text-xs; inherit the change line like Web .kjun-market-change .kjun-signed-value. */
-  .kjun-mobile-simple-list .kjun-mobile-simple-list__change .kjun-signed-value {
-    font-size: inherit;
-    line-height: inherit;
-    font-weight: var(--_kjun-type-label-weight);
   }
   .kjun-market-simple-list .kjun-market-footer {
     padding-inline: var(--_kjun-geometry-dimension-value20);

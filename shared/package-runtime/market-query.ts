@@ -14,3 +14,13 @@ export function marketQueryState(props: QueryDisplayProps) {
 export function marketBlockingError(props: QueryDisplayProps, status: { usesQueryState: boolean; hasCurrentResult: boolean }) {
   return !!props.error && !(status.usesQueryState && status.hasCurrentResult);
 }
+
+/** The footer count: the app's total, else the paged total, else the rows shown, so a list never reads "0" over its rows. */
+export function marketTotal(totalCount: number | null | undefined, pagination: { total: number } | null | undefined, rowCount: number) {
+  return totalCount ?? pagination?.total ?? rowCount;
+}
+
+/** selectedKey marks the row the rest of the screen shows (a chart or detail beside the list); null or undefined marks none. */
+export function isSelectedMarketRow(rowKeyValue: unknown, selectedKey: unknown) {
+  return selectedKey != null && rowKeyValue === selectedKey;
+}

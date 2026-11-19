@@ -1,4 +1,3 @@
-import { tokens } from "@kjun-ui/tokens";
 import { type ReactNode } from "react";
 import { KjunCard } from "./display";
 
@@ -10,11 +9,9 @@ export function KjunMarketListPanel({
   children: ReactNode;
 }) {
   return (
-    <KjunCard>
+    <KjunCard className="kjun-market-list-panel">
       <div>{controls}</div>
-      <div style={{ marginTop: tokens.dimension.value16, borderTop: `${tokens.border.defaultWidth}px solid var(--_kjun-color-border)` }}>
-        {children}
-      </div>
+      <div className="kjun-market-list-panel-list">{children}</div>
     </KjunCard>
   );
 }

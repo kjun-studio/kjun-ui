@@ -1,4 +1,6 @@
-import { marketBlockingError } from "../../../shared/package-runtime/market-query";
+import { fromNestedControl } from "../../../shared/package-runtime/nested-controls";
+import { isSelectedMarketRow, marketBlockingError, marketTotal } from "../../../shared/package-runtime/market-query";
+import { type ReactNode } from "react";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useQueryDisplay } from "./data-state";
 import {
@@ -46,6 +48,39 @@ export function MarketIdentity<Row extends object>({
     </div>
   );
 }
+/** A list row: a button only when the app listens for clicks (Enter and Space too), with aria-current on the selected row. */
+export function MarketRow<Row extends object>({
+  row,
+  props,
+  selectedKey,
+  compact = false,
+  children,
+}: {
+  row: Row;
+  props: MarketBaseProps<Row>;
+  selectedKey?: unknown;
+  compact?: boolean;
+  children: ReactNode;
+}) {
+  const activate = props.onRowClick && (() => props.onRowClick?.(row));
+  return (
+    <div
+      className={compact ? "kjun-market-row kjun-market-row-compact" : "kjun-market-row"}
+      role={activate ? "button" : undefined}
+      tabIndex={activate ? 0 : undefined}
+      aria-current={isSelectedMarketRow(getValue(row, props.rowKey || "id"), selectedKey) || undefined}
+      onClick={activate && ((event) => { if (!fromNestedControl(event)) activate(); })}
+      onKeyDown={activate && ((event) => {
+        if (event.target === event.currentTarget && !event.defaultPrevented && (event.key === "Enter" || event.key === " ")) {
+          event.preventDefault();
+          activate();
+        }
+      })}
+    >
+      {children}
+    </div>
+  );
+}
 export function MarketFooter<Row extends object>({
   props,
 }: {
@@ -61,7 +96,6 @@ export function MarketFooter<Row extends object>({
       showFooter = true,
       calculatedAt,
       footerNote,
-      totalCount = 0,
       unitLabel = m.unitLabel,
     } = props;
   return (
@@ -75,7 +109,7 @@ export function MarketFooter<Row extends object>({
           showInfo
           onPageChange={props.onPageChange}
         />
-      )}{" "}
+      )}
       {showFooter && !hidden && !state.initialLoading && rows.length > 0 && (
         <div className="kjun-market-footer">
           <span>
@@ -85,7 +119,7 @@ export function MarketFooter<Row extends object>({
               : footerNote}
           </span>
           <span>
-            {m.totalCount(totalCount, unitLabel)}
+            {m.totalCount(marketTotal(props.totalCount, pagination, rows.length), unitLabel)}
           </span>
         </div>
       )}
