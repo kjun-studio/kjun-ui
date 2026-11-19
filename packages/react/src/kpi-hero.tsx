@@ -1,5 +1,6 @@
 import { tokens } from "@kjun-ui/tokens";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
+import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import {
   KPI_MASK, KPI_MISSING, kpiCssColor, kpiCssTint, kpiDelta, kpiDeltaIcon, kpiDeltaValue, kpiFormat, kpiHeroNeedsDomain,
@@ -51,6 +52,8 @@ export interface KjunKpiHeroProps {
   /** "none" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list. */
   surface?: "card" | "none";
   aside?: ReactNode;
+  /** An app control after the label, such as a mask toggle or an info tooltip trigger; it keeps the label's line height. */
+  labelAside?: ReactNode;
   /** Narrow screens: "below" (default) moves the aside under the delta line at full width; "hidden" drops it. */
   asideMobile?: "below" | "hidden";
   /** Draws the direction as a filled caret before the first delta number, in place of its sign. */
@@ -65,7 +68,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
   const {
     loading = false, label, value, missingText, prefix = "", suffix = "", decimals = 0, deltaPercentDecimals = 1,
     deltaDescription = "", secondary = [], animated = true, size = "md", surface = "card", aside, asideMobile = "below",
-    deltaIcon = false, masked = false, formatter, deltaFormatter, renderSecondary,
+    deltaIcon = false, masked = false, formatter, deltaFormatter, renderSecondary, labelAside,
   } = props;
   const scope = useKjunMessageScope(), locale = scope.intl, hidden = <KpiMasked label={scope.messages.hiddenValue} />;
   const absolute = kpiDeltaValue(props.deltaAbsolute), percent = kpiDeltaValue(props.deltaPercent);
@@ -99,7 +102,10 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     >
       <div className="kjun-kpi-hero__layout">
         <div className="kjun-kpi-hero__main">
-          <div className="kjun-kpi-hero__label">{label}</div>
+          <div className="kjun-kpi-hero__label">
+            {label}
+            {hasContent(labelAside) && <span className="kjun-kpi-hero__label-aside">{labelAside}</span>}
+          </div>
           <div className="kjun-kpi-hero__value">
             {loading ? <KjunSkeleton type="line" width="7ch" />
               : masked && kpiPresent(value) ? hidden
@@ -137,7 +143,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
       {secondary.length > 0 && (
         <div className="kjun-kpi-hero__secondary">
           {secondary.map((item, i) => {
-            const present = kpiPresent(item.value);
+            const present = kpiPresent(item.value), custom = loading ? null : renderSecondary?.(item, i);
             return (
               <div key={i} className="kjun-kpi-hero__sec-item">
                 <div className="kjun-kpi-hero__sec-label">{item.label}</div>
@@ -145,7 +151,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
                   style={{ color: item.valueClass ? undefined : kpiCssColor(masked ? null : kpiTone(item)) }}>
                   {loading ? <KjunSkeleton type="line" width="5ch" />
                     : masked && present ? hidden
-                    : renderSecondary?.(item, i) || (present ? <>
+                    : hasContent(custom) ? custom : (present ? <>
                       {item.prefix && <span className="kjun-kpi-hero__sec-affix">{item.prefix}</span>}
                       <span>{kpiFormat(item, item.value, locale)}</span>
                       {item.suffix && <span className="kjun-kpi-hero__sec-affix">{item.suffix}</span>}

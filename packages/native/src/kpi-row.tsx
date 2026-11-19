@@ -14,12 +14,13 @@ import { KjunSkeleton } from "./display";
 import { BadgeView } from "./display-primitives";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import {
-  KPI_MASK, KPI_NUMERAL_HEIGHT, kpiBadgeRoles, kpiBadgeVariant, kpiFormat, kpiPresent, kpiSpoken, kpiSummaryLayout, kpiTone, type KpiBadgeVariant,
+  KPI_MASK, KPI_NUMERAL_HEIGHT, kpiBadgeRoles, kpiBadgeVariant, kpiFormat, kpiGridLayout, kpiPresent, kpiSpoken, kpiSummaryLayout, kpiTone, type KpiBadgeVariant,
 } from "../../../shared/package-runtime/kpi";
 import { KjunAnimatedNumber } from "./financial";
 import { KjunIcon } from "./button";
 import { KpiNumberLine } from "./kpi-number-line";
-import { KText,domainColor } from "./internal";
+import { KText, content, domainColor } from "./internal";
+import { hasContent } from "../../../shared/package-runtime/content-presence";
 import type { KpiValue } from "./kpi-hero";
 import { useKjunStyles } from "./provider";
 export interface KpiRowItem extends Omit<KpiValue, "value"> {
@@ -42,6 +43,8 @@ export interface KpiRowItem extends Omit<KpiValue, "value"> {
   }[];
   badge?: { text: string; variant?: KpiBadgeVariant } | null;
   badgePlacement?: "label" | "value";
+  /** An app control after the label, such as an info tooltip trigger or a mask toggle; it keeps the label's line height. */
+  labelAside?: ReactNode;
 }
 export interface KjunKpiRowProps {
   loading?: boolean;
@@ -77,10 +80,19 @@ export function KjunKpiRow({
   const spec = small ? geometry.sm : mobile ? geometry.mobile : geometry.md;
   const [width, setWidth] = useState(0);
   const paddingX = summary ? geometry.summary.paddingX : spec.paddingX;
+  // surface="none" has no padding of its own, so its cells measure from its edges.
+  const inset = surface === "none" ? 0 : paddingX;
   const gapX = summary ? geometry.summary.gapX : 0;
   const scope = useKjunMessageScope(), locale = scope.intl;
   // Only items marked mobileSecondary fold into the summary's inline footnote; the rest keep their two-column cells.
   const { secondary, lastFull } = kpiSummaryLayout(items);
+  // Phone grid and sm wrap: the same columns, full lines and dividers as Web (shared kpiGridLayout).
+  const grid = kpiGridLayout(items);
+  // Like Web's container query, a cell steps its display number down by its own width, so a row in a narrow column
+  // keeps every number whole: a wide row's cells share its width, a summary headline takes half.
+  const cellWidth = !width ? 0 : !mobile ? (width - 2 * inset) / Math.max(1, items.length) - 2 * spec.itemPaddingX
+    : summary ? (width - 2 * inset - gapX) / 2 : 0;
+  const narrowCell = cellWidth > 0 && cellWidth <= tokens.responsive.kpiRowCell;
   const toneColor = (item: KpiRowItem, hide: boolean, neutral: ColorValue) => {
     const tone = hide ? null : kpiTone(item);
     return tone ? domainColor(domainColors, tone === "up" ? "priceUp" : "priceDown") : neutral;
@@ -128,25 +140,27 @@ export function KjunKpiRow({
           hide = masked && item.valueKind !== "text" && (present || !!item.valueSegments),
           format = (number: number | string | null | undefined) => kpiFormat(item, number, locale),
           sub = summary && secondary[i],
-          full =
-            item.mobileFull ||
-            (summary && i === lastFull) ||
-            (!summary &&
-              mobile &&
-              i === items.length - 1 &&
-              items.length % 2 === 1),
-          numberRole = sub ? "numberSm" : small ? "numberLg" : mobile && (!summary || narrowSummary) ? "numberLg" : "displaySm",
+          full = summary ? !!item.mobileFull || i === lastFull : mobile && grid[i].full,
+          numberRole = sub ? "numberSm" : small ? "numberLg" : (mobile && (!summary || narrowSummary)) || narrowCell ? "numberLg" : "displaySm",
           numberSize = typeStyle(numberRole).fontSize;
         // A text value is a card title beside number cells; in a summary footnote it stays body text.
         const valueRole = item.valueKind === "text" ? (sub ? "body" : "cardTitle") : numberRole;
         // Summary headline units stay number-sm, like Web, also once a narrow phone steps the number down.
         const unitRole = item.valueKind !== "text" && (numberRole === "displaySm" || (summary && !sub)) ? "numberSm" : "meta";
-        const dividerLeft = summary
-          ? 0
-          : mobile && !small
-          ? i % 2 && !full ? tokens.border.defaultWidth : 0
+        const dividerLeft = summary ? 0
+          : mobile ? (!small && grid[i].column ? tokens.border.defaultWidth : 0)
           : i ? tokens.border.defaultWidth : 0;
-        const dividerTop = mobile && !small && !summary && i >= 2 ? tokens.border.defaultWidth : 0;
+        const dividerTop = mobile && !summary && grid[i].top ? tokens.border.defaultWidth : 0;
+        // Like Web: a text value stands on an invisible strut of the value line's number, so its baseline meets the
+        // numbers beside it; a summary footnote has no value line and keeps its own.
+        const textStrut = (node: ReactNode) => item.valueKind !== "text" || sub ? node : (
+          <View style={{ flexDirection: "row", alignItems: "baseline", minWidth: 0, flexShrink: 1 }}>
+            <KText aria-hidden style={{ fontFamily: numericFontFamily || fontFamily, ...typeStyle(numberRole), width: 0 }}>{"\u200b"}</KText>
+            {node}
+          </View>
+        );
+        // Like React: a custom value of 0 or text is drawn; only nothing falls back to the built-in value.
+        const custom = busy || hide || item.valueSegments ? null : renderValue?.(item, i);
         const valueStyle: TextStyle = {
           fontFamily: item.valueKind === "text" ? fontFamily : numericFontFamily || fontFamily,
           fontVariant: item.valueKind === "text" ? [] : ["tabular-nums"],
@@ -170,7 +184,9 @@ export function KjunKpiRow({
             {...(Platform.OS === "web" && link && !busy ? { href: item.href } : {})}
             disabled={!clickable || busy}
             onPress={event => onItemClick?.(item, i, event)}
-            style={{
+            style={({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => ({
+              // Like Web: hover fills the cell, pressing fills it one step deeper.
+              backgroundColor: clickable && !busy && (pressed || hovered) ? (pressed ? colors.active : colors.hover) : undefined,
               flex: mobile ? undefined : 1,
               flexBasis:
                 mobile
@@ -178,7 +194,7 @@ export function KjunKpiRow({
                     ? "auto"
                     : full
                     ? "100%"
-                    : width ? Math.max(0, (width - 2 * paddingX - gapX) / 2) : "50%"
+                    : width ? Math.max(0, (width - 2 * inset - gapX) / 2) : "50%"
                   : undefined,
               flexGrow: sub ? 0 : 1,
               // Like Web, the last secondary summary item closes the line at the far edge.
@@ -194,7 +210,7 @@ export function KjunKpiRow({
               flexDirection: sub ? "row" : "column",
               alignItems: sub ? "baseline" : undefined,
               gap: sub ? geometry.summary.secondaryGap : 0,
-            }}
+            })}
           >
             {!!(dividerLeft || dividerTop) && (
               <View
@@ -231,6 +247,12 @@ export function KjunKpiRow({
                   {item.label}
                 </KText>
               )}
+              {hasContent(item.labelAside) && (
+                // The aside holds the label's line height; a larger control centres on it and spills over evenly.
+                <View style={{ height: typeStyle("caption").lineHeight, justifyContent: "center", flexShrink: 0 }}>
+                  {content(item.labelAside)}
+                </View>
+              )}
               {!busy && item.badgePlacement !== "value" && badge(item)}
             </View>
             <View
@@ -253,9 +275,10 @@ export function KjunKpiRow({
                     <View key={j} style={{ flexDirection: sub ? 'row' : 'column', alignItems: 'center', display: summary && sub && seg.separator ? 'none' : 'flex' }}>
                       {summary && sub && seg.label && item.valueSegments!.slice(0, j).some(previous => previous.label) &&
                         <KText aria-hidden style={{ ...typeStyle('caption'), marginHorizontal: geometry.separatorGap, color: colors.textTertiary }}>·</KText>}
-                      {summary && seg.label && (
+                      {sub && seg.label && (
+                        // Like Web, segment labels show only in the summary footnote, in the label colour.
                         <KText
-                          style={{ ...typeStyle('caption'), marginRight: sub ? geometry.segmentLabelGap : 0, color: colors.textTertiary }}
+                          style={{ ...typeStyle('caption'), marginRight: geometry.segmentLabelGap, color: colors.textSecondary }}
                         >
                           {seg.label}
                         </KText>
@@ -281,7 +304,7 @@ export function KjunKpiRow({
                 <KjunSkeleton type="line" role={valueRole} height={typeStyle(valueRole).fontSize * KPI_NUMERAL_HEIGHT}
                   width={geometry.valueSkeletonWidth * (valueStyle.fontSize ?? numberSize) / typeStyle("displaySm").fontSize} />
               ) : (
-                renderValue?.(item, i) || (!present ? (
+                hasContent(custom) ? content(custom) : textStrut(!present ? (
                   <KText style={valueStyle}>{format(value)}</KText>
                 ) : (
                   // Units sit 2px from their number, like Web; each is its own Text so it can take the gap.
@@ -309,7 +332,10 @@ export function KjunKpiRow({
             </View>
             {!!item.desc &&
               (busy ? (
-                <KjunSkeleton type="line" role="caption" width={geometry.descriptionSkeletonWidth} />
+                // The placeholder keeps the description's gap, so the cell does not grow when the data arrives.
+                <View style={{ marginTop: spec.descriptionGap }}>
+                  <KjunSkeleton type="line" role="caption" width={geometry.descriptionSkeletonWidth} />
+                </View>
               ) : (
                 <KText
                   style={{

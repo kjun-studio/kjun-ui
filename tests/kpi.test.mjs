@@ -6,7 +6,7 @@ import { build } from 'esbuild';
 const output = await build({ entryPoints: ['shared/package-runtime/kpi.ts'], bundle: true, write: false, format: 'esm', platform: 'node' });
 const {
   KPI_MISSING, kpiBadgeRoles, kpiDelta, kpiDeltaIcon, kpiDeltaValue, kpiDirection, kpiFormat, kpiHeroNeedsDomain, kpiKeyAction,
-  kpiNumber, kpiPresent, kpiRowNeedsDomain, kpiShowDelta, kpiSpoken, kpiSummaryLayout, kpiTone,
+  kpiGridLayout, kpiNumber, kpiPresent, kpiRowNeedsDomain, kpiShowDelta, kpiSpoken, kpiSummaryLayout, kpiTone,
 } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 
 test('direction and sign follow the drawn digits, so a value that rounds to zero is flat', () => {
@@ -74,4 +74,19 @@ test('summary layout, badge tone, keys and spoken text', () => {
   assert.equal(kpiKeyAction('keyup', ' ', false), 'activate');
   assert.equal(kpiKeyAction('keydown', 'Tab', false), null);
   assert.equal(kpiSpoken('평가 금액', false, '1,234원', null, ''), '평가 금액, 1,234원');
+});
+
+test('the phone grid gives every cell a column, closes lone cells and marks lines below the first', () => {
+  const cells = kpiGridLayout([{ mobileFull: true }, {}, {}, {}]);
+  assert.deepEqual(cells, [
+    { column: 0, full: true, top: false },
+    { column: 0, full: false, top: true },
+    { column: 1, full: false, top: true },
+    { column: 0, full: true, top: true },
+  ]);
+  // An odd last cell takes the line; a cell before a full one is never left as a half cell.
+  assert.deepEqual(kpiGridLayout([{}, {}, {}]).map(cell => cell.full), [false, false, true]);
+  assert.deepEqual(kpiGridLayout([{}, { mobileFull: true }, {}, {}]).map(cell => [cell.column, cell.full, cell.top]),
+    [[0, true, false], [0, true, true], [0, false, true], [1, false, true]]);
+  assert.deepEqual(kpiGridLayout([]), []);
 });

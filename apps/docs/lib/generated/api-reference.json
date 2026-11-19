@@ -1899,6 +1899,13 @@
             "summary": "aside 영역의 기본 내용을 교체합니다."
           },
           {
+            "name": "labelAside",
+            "data": [],
+            "source": "packages/vue3/src/kpi-hero.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "labelAside 영역의 기본 내용을 교체합니다."
+          },
+          {
             "name": "secondary",
             "data": [
               "item",
@@ -2056,6 +2063,15 @@
             "default": "—",
             "description": "",
             "summary": "주요 지표 옆에 배치할 보조 콘텐츠입니다.",
+            "source": "packages/react/src/kpi-hero.tsx"
+          },
+          {
+            "name": "labelAside",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "An app control after the label, such as a mask toggle or an info tooltip trigger; it keeps the label's line height.",
+            "summary": "라벨 바로 뒤에 두는 앱 컨트롤입니다(금액 가리기 토글, 지표 설명 툴팁 등). 라벨 줄 높이를 지키며, 더 큰 컨트롤은 줄 가운데에 맞춰 위아래로 고르게 넘칩니다. Vue 3는 labelAside 슬롯입니다.",
             "source": "packages/react/src/kpi-hero.tsx"
           },
           {
@@ -2265,6 +2281,15 @@
             "source": "packages/native/src/kpi-hero.tsx"
           },
           {
+            "name": "labelAside",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "An app control after the label, such as a mask toggle or an info tooltip trigger; it keeps the label's line height.",
+            "summary": "라벨 바로 뒤에 두는 앱 컨트롤입니다(금액 가리기 토글, 지표 설명 툴팁 등). 라벨 줄 높이를 지키며, 더 큰 컨트롤은 줄 가운데에 맞춰 위아래로 고르게 넘칩니다. Vue 3는 labelAside 슬롯입니다.",
+            "source": "packages/native/src/kpi-hero.tsx"
+          },
+          {
             "name": "asideMobile",
             "type": "\"below\" | \"hidden\" | undefined",
             "required": false,
@@ -2343,7 +2368,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. clickable 또는 href 항목은 값 줄 끝에 chevron을 그립니다. href 항목은 실제 링크(Native는 RN Web에서만 링크, 기기에서는 버튼)로 그리고, 클릭 콜백·item-click에 세 번째 인자로 이벤트를 넘겨 라우터가 preventDefault할 수 있게 합니다. Enter는 한 번만(자동 반복 무시), Space는 키를 뗄 때 동작합니다. 숫자는 표시 자릿수로 반올림한 값으로 방향 색을 정합니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
+            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. labelAside(React·Native)는 라벨과 배지 사이에 앱 컨트롤(설명 툴팁 등)을 두며, 그 클릭과 키는 셀을 열지 않습니다(Vue 3는 labelAside({ item, index }) 슬롯). clickable 또는 href 항목은 값 줄 끝에 chevron을 그리고 누르면 한 단계 진한 면으로 채웁니다. href 항목은 실제 링크(Native는 RN Web에서만 링크, 기기에서는 버튼)로 그리고, 클릭 콜백·item-click에 세 번째 인자로 이벤트를 넘겨 라우터가 preventDefault할 수 있게 합니다. Enter는 한 번만(자동 반복 무시), Space는 키를 뗄 때 동작합니다. 숫자는 표시 자릿수로 반올림한 값으로 방향 색을 정합니다. 칸 폭이 160px 이하이면 숫자를 한 단계 작게 써서 자릿수 사이에서 끊지 않습니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
             "source": "packages/vue3/src/kpi-row.tsx"
           },
           {
@@ -2401,6 +2426,16 @@
             "source": "packages/vue3/src/kpi-row.tsx",
             "type": "{ item, index }",
             "summary": "value 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "labelAside",
+            "data": [
+              "item",
+              "index"
+            ],
+            "source": "packages/vue3/src/kpi-row.tsx",
+            "type": "{ item, index }",
+            "summary": "labelAside 영역의 기본 내용을 교체합니다."
           }
         ],
         "ownership": [],
@@ -2423,7 +2458,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. clickable 또는 href 항목은 값 줄 끝에 chevron을 그립니다. href 항목은 실제 링크(Native는 RN Web에서만 링크, 기기에서는 버튼)로 그리고, 클릭 콜백·item-click에 세 번째 인자로 이벤트를 넘겨 라우터가 preventDefault할 수 있게 합니다. Enter는 한 번만(자동 반복 무시), Space는 키를 뗄 때 동작합니다. 숫자는 표시 자릿수로 반올림한 값으로 방향 색을 정합니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
+            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. labelAside(React·Native)는 라벨과 배지 사이에 앱 컨트롤(설명 툴팁 등)을 두며, 그 클릭과 키는 셀을 열지 않습니다(Vue 3는 labelAside({ item, index }) 슬롯). clickable 또는 href 항목은 값 줄 끝에 chevron을 그리고 누르면 한 단계 진한 면으로 채웁니다. href 항목은 실제 링크(Native는 RN Web에서만 링크, 기기에서는 버튼)로 그리고, 클릭 콜백·item-click에 세 번째 인자로 이벤트를 넘겨 라우터가 preventDefault할 수 있게 합니다. Enter는 한 번만(자동 반복 무시), Space는 키를 뗄 때 동작합니다. 숫자는 표시 자릿수로 반올림한 값으로 방향 색을 정합니다. 칸 폭이 160px 이하이면 숫자를 한 단계 작게 써서 자릿수 사이에서 끊지 않습니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
             "source": "packages/react/src/kpi-row.tsx"
           },
           {
@@ -2503,7 +2538,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. clickable 또는 href 항목은 값 줄 끝에 chevron을 그립니다. href 항목은 실제 링크(Native는 RN Web에서만 링크, 기기에서는 버튼)로 그리고, 클릭 콜백·item-click에 세 번째 인자로 이벤트를 넘겨 라우터가 preventDefault할 수 있게 합니다. Enter는 한 번만(자동 반복 무시), Space는 키를 뗄 때 동작합니다. 숫자는 표시 자릿수로 반올림한 값으로 방향 색을 정합니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
+            "summary": "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. labelAside(React·Native)는 라벨과 배지 사이에 앱 컨트롤(설명 툴팁 등)을 두며, 그 클릭과 키는 셀을 열지 않습니다(Vue 3는 labelAside({ item, index }) 슬롯). clickable 또는 href 항목은 값 줄 끝에 chevron을 그리고 누르면 한 단계 진한 면으로 채웁니다. href 항목은 실제 링크(Native는 RN Web에서만 링크, 기기에서는 버튼)로 그리고, 클릭 콜백·item-click에 세 번째 인자로 이벤트를 넘겨 라우터가 preventDefault할 수 있게 합니다. Enter는 한 번만(자동 반복 무시), Space는 키를 뗄 때 동작합니다. 숫자는 표시 자릿수로 반올림한 값으로 방향 색을 정합니다. 칸 폭이 160px 이하이면 숫자를 한 단계 작게 써서 자릿수 사이에서 끊지 않습니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
             "source": "packages/native/src/kpi-row.tsx"
           },
           {

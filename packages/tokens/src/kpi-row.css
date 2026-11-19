@@ -1,6 +1,8 @@
 .kjun-kpi-row {
   /* Every value line is as tall as this size's number line, so a text value or a missing dash keeps the row even. */
   --_kjun-kpi-row-value-line: var(--_kjun-type-display-sm-line);
+  /* The number size of the value line: a text value stands on an invisible strut of it, so both share one baseline. */
+  --_kjun-kpi-row-value-size: var(--_kjun-type-display-sm-size);
   display: flex;
   padding: var(--_kjun-extension-kpi-row-md-padding-y) var(--_kjun-extension-kpi-row-md-padding-x);
   background: var(--_kjun-card-bg);
@@ -29,6 +31,11 @@
 .kjun-kpi-row__item:first-child {
   --_kjun-kpi-row-divider-left: 0px;
 }
+/* A cell steps its number down by its own width, not the screen's, so a row in a narrow column of a wide page never
+   splits a number between its digits. A summary footnote sizes to its content, so it is not a container. */
+.kjun-kpi-row__item:not(.kjun-kpi-row__item--secondary) {
+  container: kjun-kpi-cell / inline-size;
+}
 /* A link cell reads like the other cells: no link colour or underline. */
 a.kjun-kpi-row__item {
   display: block;
@@ -40,8 +47,12 @@ a.kjun-kpi-row__item {
   border-radius: var(--_kjun-extension-kpi-row-item-radius);
   transition: background var(--_kjun-motion-control) var(--_kjun-ease-out);
 }
-.kjun-kpi-row__item--clickable:hover {
+.kjun-kpi-row__item--clickable:not([aria-disabled="true"]):hover {
   background: var(--_kjun-bg-hover);
+}
+/* Pressing fills the cell one step deeper, like a pressable list row. */
+.kjun-kpi-row__item--clickable:not([aria-disabled="true"]):active {
+  background: var(--_kjun-color-active);
 }
 .kjun-kpi-row__item--clickable:focus-visible {
   outline: var(--_kjun-state-focus-width) solid var(--_kjun-focus-ring);
@@ -58,6 +69,14 @@ a.kjun-kpi-row__item {
 .kjun-kpi-row__label {
   color: var(--_kjun-text-secondary);
   margin-bottom: 0; /* moved to label-row */
+}
+/* An app control beside the label (an info tooltip, a mask toggle) holds the label's line height: a larger control
+   centres on the line and spills over it evenly, so the value line never moves. */
+.kjun-kpi-row__label-aside {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: var(--_kjun-type-caption-line);
 }
 .kjun-kpi-row__badge {
   display: inline-flex;
@@ -101,6 +120,14 @@ a.kjun-kpi-row__item {
 }
 /* 텍스트형 값(예: 최대 증가/감소 지표명) — 큰 숫자 글자 크기는 긴 한글명이 모바일 반폭 칸에서 여러 줄로
    터지므로, 텍스트에 맞는 크기 + 한글 단어 보존(keep-all)으로 행 높이를 안정화한다. */
+/* A text value stands on an invisible strut of the value line's number, so its baseline meets the numbers beside it
+   (a centred smaller line sat 2px high). Summary footnotes have no value line, so they keep their own text line. */
+.kjun-kpi-row__item:not(.kjun-kpi-row__item--secondary) .kjun-kpi-row__value--text::before {
+  content: "\200b";
+  font-family: var(--_kjun-font-numeric);
+  font-size: var(--_kjun-kpi-row-value-size);
+  line-height: var(--_kjun-kpi-row-value-line);
+}
 .kjun-kpi-row__value--text {
   font-family: var(--kjun-font);
   font-variant-numeric: normal;
@@ -124,36 +151,23 @@ a.kjun-kpi-row__item {
     padding: var(--_kjun-extension-kpi-row-mobile-padding-y) var(--_kjun-extension-kpi-row-mobile-padding-x);
     overflow: hidden;
     --_kjun-kpi-row-value-line: var(--_kjun-type-number-lg-line);
+    --_kjun-kpi-row-value-size: var(--_kjun-type-number-lg-size);
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item {
     padding: var(--_kjun-extension-kpi-row-mobile-item-padding-y) var(--_kjun-extension-kpi-row-mobile-item-padding-x);
     --_kjun-kpi-row-divider-left: 0px;
     --_kjun-kpi-row-divider-top: 0px;
   }
-  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item:nth-child(even) {
+  /* The grid cells come from the shared phone layout (kpiGridLayout): a left line on the second column, a top line
+     below the first line, and a cell left alone on its line takes the full width so no half cell stays empty. */
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item--grid-end {
     --_kjun-kpi-row-divider-left: var(--_kjun-border-default-width);
   }
-  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item:nth-child(n + 3) {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item--grid-top {
     --_kjun-kpi-row-divider-top: var(--_kjun-border-default-width);
   }
-  /* 홀수 개수의 마지막 항목은 전폭으로 마감해 빈 반쪽 셀을 남기지 않는다. */
-  .kjun-kpi-row:not(.kjun-kpi-row--sm):not(.kjun-kpi-row--hero-first)
-    .kjun-kpi-row__item:last-child:nth-child(odd) {
+  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item--grid-full {
     grid-column: 1 / -1;
-    --_kjun-kpi-row-divider-left: 0px;
-  }
-  /* hero-first는 전폭 헤드라인 아래에 나머지 항목을 2열로 배치한다. */
-  .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__item--full {
-    grid-column: 1 / -1;
-  }
-  .kjun-kpi-row:not(.kjun-kpi-row--sm).kjun-kpi-row--hero-first
-    .kjun-kpi-row__item:nth-child(2) {
-    --_kjun-kpi-row-divider-left: 0px;
-    --_kjun-kpi-row-divider-top: var(--_kjun-border-default-width);
-  }
-  .kjun-kpi-row:not(.kjun-kpi-row--sm).kjun-kpi-row--hero-first
-    .kjun-kpi-row__item:nth-child(3) {
-    --_kjun-kpi-row-divider-left: var(--_kjun-border-default-width);
   }
   .kjun-kpi-row:not(.kjun-kpi-row--sm) .kjun-kpi-row__label-row {
     gap: var(--_kjun-extension-kpi-row-mobile-label-gap);
@@ -176,6 +190,7 @@ a.kjun-kpi-row__item {
     padding: var(--_kjun-extension-kpi-row-summary-padding-y) var(--_kjun-extension-kpi-row-summary-padding-x);
     overflow: visible;
     --_kjun-kpi-row-value-line: var(--_kjun-type-display-sm-line);
+    --_kjun-kpi-row-value-size: var(--_kjun-type-display-sm-size);
   }
   .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm)
     .kjun-kpi-row__item:nth-child(n) {
@@ -269,6 +284,7 @@ a.kjun-kpi-row__item {
      values step down one type level (to the grid's number size) instead of wrapping the unit under them. */
   .kjun-kpi-row.kjun-kpi-row--mobile-summary:not(.kjun-kpi-row--sm) {
     --_kjun-kpi-row-value-line: var(--_kjun-type-number-lg-line);
+    --_kjun-kpi-row-value-size: var(--_kjun-type-number-lg-size);
   }
 }
 
@@ -276,6 +292,7 @@ a.kjun-kpi-row__item {
 .kjun-kpi-row--sm {
   padding: var(--_kjun-extension-kpi-row-sm-padding-y) var(--_kjun-extension-kpi-row-sm-padding-x);
   --_kjun-kpi-row-value-line: var(--_kjun-type-number-lg-line);
+  --_kjun-kpi-row-value-size: var(--_kjun-type-number-lg-size);
 }
 .kjun-kpi-row--sm .kjun-kpi-row__item {
   padding: var(--_kjun-extension-kpi-row-sm-item-padding-y) var(--_kjun-extension-kpi-row-sm-item-padding-x);
@@ -299,19 +316,12 @@ a.kjun-kpi-row__item {
     flex: 1 1 50%;
     padding: var(--_kjun-extension-kpi-row-small-mobile-item-padding-y) var(--_kjun-extension-kpi-row-small-mobile-item-padding-x);
     --_kjun-kpi-row-divider-left: 0px;
+  }
+  .kjun-kpi-row--sm .kjun-kpi-row__item--grid-top {
     --_kjun-kpi-row-divider-top: var(--_kjun-border-default-width);
   }
-  .kjun-kpi-row--sm:not(.kjun-kpi-row--hero-first)
-    .kjun-kpi-row__item:first-child,
-  .kjun-kpi-row--sm:not(.kjun-kpi-row--hero-first)
-    .kjun-kpi-row__item:nth-child(2) {
-    --_kjun-kpi-row-divider-top: 0px;
-  }
-  .kjun-kpi-row--sm .kjun-kpi-row__item--full {
+  .kjun-kpi-row--sm .kjun-kpi-row__item--grid-full {
     flex-basis: 100%;
-  }
-  .kjun-kpi-row--sm.kjun-kpi-row--hero-first .kjun-kpi-row__item:first-child {
-    --_kjun-kpi-row-divider-top: 0px;
   }
 }
 

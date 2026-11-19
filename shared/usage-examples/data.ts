@@ -45,10 +45,12 @@ export function generate(input: UsageInput) {
         }, b.node('KjunCard', { title: '조회 결과', surface: 'muted' }, b.native ? '{"이전 결과와 현재 조건을 구분합니다."}' : b.text('이전 결과와 현재 조건을 구분합니다.'))),
       ]); break;
     }
+    // labelAside puts the mask toggle on the label line; masked hides every amount.
     case 'KjunKpiHero': content = b.node(name, { label: '총 평가 금액', value: 123456789, suffix: '원', deltaAbsolute: 2345678, deltaPercent: 1.9, deltaDescription: '전일 대비', loading: s.loading, animated: false,
       formatter: b.declare('formatNumber', 'const formatNumber = value => new Intl.NumberFormat("ko-KR").format(value);'),
-      secondary: [{ label: '수익률', value: 12.3, suffix: '%', decimals: 1, semantic: 'price' }],
-    }); break;
+      secondary: [{ label: '수익률', value: 12.3, suffix: '%', decimals: 1, semantic: 'price' }], masked: b.state('hidden', false),
+    }, '', { labelAside: b.node('KjunIconToggle', { active: expr(b.read('hidden')), activeIcon: 'eye-off', inactiveIcon: 'eye', size: 'xs', ariaLabel: '금액 가리기',
+      onToggle: b.handler('toggleHidden', '', b.set('hidden', '!' + b.read('hidden'))) }) }); break;
     case 'KjunKpiRow': content = b.node(name, { loading: s.loading, mobileSummary:s.mobileSummary, items: b.data('items', [{ label: '평가 금액', value: 1234567, suffix: '원' }, { label: '수익률', value: 2.35, decimals: 2, suffix: '%', semantic: 'price' }, { label: '상태', value: '정상', valueKind: 'text', badge: { text: '연결', variant: 'success' } }]) }); break;
     case 'KjunAnimatedNumber': content = b.group([b.node(name, { value: b.state('number', 1234567), suffix: '원', fromPrevious: true }), b.button('숫자 변경', b.handler('increase', '', b.set('number', b.read('number') + ' + 123')))]); break;
     // Vue's functional PriceCell returns siblings, so the SFC needs a parent.

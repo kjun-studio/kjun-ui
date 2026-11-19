@@ -1,9 +1,11 @@
 import { expect, test, type Locator } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { tokens } from '../../packages/tokens/dist/index.js';
 // KPI behavior on every platform: provider locale digits, deltas that round to zero stay neutral, missing values,
 // app description colours, masking, percent precision, the app's own delta and secondary text, value segments,
 // link and button cells, keyboard activation without auto-repeat, and what Native screen readers hear for a cell.
 const color = (node: Locator) => node.evaluate(el => getComputedStyle(el).color);
+const box = async (node: Locator) => (await node.boundingBox())!;
 const clicks = (page: import('@playwright/test').Page) => page.evaluate(() => window.kpiClicks);
 
 for (const platform of ['react', 'vue3', 'native']) {
@@ -51,6 +53,13 @@ for (const platform of ['react', 'vue3', 'native']) {
     for (const index of [1, 2]) expect(await color(masks.nth(index))).toBe(neutral);
     // Text values stay readable.
     await expect(page.getByTestId('row-masked').getByText('정상', { exact: true })).toBeVisible();
+    // A text value stands on the number line's baseline, so it reads level with the masked number beside it.
+    const baseline = (node: Locator) => node.evaluate(el => {
+      const probe = document.createElement('span'); probe.style.cssText = 'display:inline-block;width:0;height:0';
+      el.appendChild(probe); const y = probe.getBoundingClientRect().top; probe.remove(); return y;
+    });
+    const rowMasked = page.getByTestId('row-masked');
+    expect(Math.abs(await baseline(rowMasked.getByText('정상', { exact: true })) - await baseline(rowMasked.getByText('••••', { exact: true }).first()))).toBeLessThanOrEqual(0.5);
   });
 
   test(`${platform}: link and button cells report clicks once, and Native cells speak their value`, async ({ page }) => {
@@ -78,5 +87,39 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(await clicks(page)).toEqual(['링크', '버튼']);
     await page.keyboard.up(' ');
     expect(await clicks(page)).toEqual(['링크', '버튼', '버튼']);
+  });
+
+  test(`${platform}: narrow cells keep numbers whole, label asides keep their own clicks, and the phone grid closes lone cells`, async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 1600 });
+    await openFixture(page, platform, '', 'kpi-behavior');
+    // Three cells in a 480px column step their numbers down by their own width, so each number stays on one line.
+    const narrow = page.getByTestId('narrow');
+    for (const text of [/^12\.480/, /^4\.820\.000/]) {
+      const number = narrow.getByText(text).first();
+      const { height, size } = await number.evaluate(el => ({ height: el.getBoundingClientRect().height, size: parseFloat(getComputedStyle(el).fontSize) }));
+      expect(size).toBe(tokens.typography.numberLg.fontSizePx);
+      expect(height).toBeLessThanOrEqual(tokens.typography.numberLg.lineHeightPx + 1);
+    }
+    // A label aside sits on the label line and keeps its clicks: the hero button and the cell button report themselves only.
+    const heroLabel = await box(page.getByTestId('aside-hero').getByText('총 평가 금액', { exact: true }));
+    const heroAside = await box(page.getByTestId('aside-hero').getByText('가리기', { exact: true }));
+    expect(Math.abs((heroAside.y + heroAside.height / 2) - (heroLabel.y + heroLabel.height / 2))).toBeLessThanOrEqual(2);
+    expect(heroAside.x).toBeGreaterThan(heroLabel.x + heroLabel.width);
+    await page.getByTestId('aside-hero').getByText('가리기', { exact: true }).click();
+    await page.getByTestId('aside-row').getByText('설명', { exact: true }).click();
+    expect(await clicks(page)).toEqual(['가리기', '설명']);
+    await page.getByTestId('aside-row').getByText('방문', { exact: true }).click();
+    expect(await clicks(page)).toEqual(['가리기', '설명', '방문']);
+    // Phone grid outside the summary: a full first cell, two side by side, and the last cell alone takes the whole line.
+    await page.setViewportSize({ width: 375, height: 1600 });
+    const grid = page.getByTestId('grid');
+    const [head, left, right, alone] = await Promise.all(['헤드', '왼쪽', '오른쪽', '혼자'].map(text => box(grid.getByText(text, { exact: true }))));
+    expect(Math.abs(left.y - right.y)).toBeLessThanOrEqual(1);
+    expect(right.x).toBeGreaterThan(left.x + left.width);
+    expect(alone.y).toBeGreaterThan(left.y + left.height);
+    expect(Math.abs(alone.x - left.x)).toBeLessThanOrEqual(1);
+    expect(head.y).toBeLessThan(left.y);
+  });
+    expect(aloneCell).toBeGreaterThan(rowBox.width * 0.75);
   });
 }

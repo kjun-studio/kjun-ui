@@ -2,7 +2,7 @@ import { type ExtractPublicPropTypes, type PropType, type VNodeChild, type Slots
 import { defineComponent } from "./runtime/component";
 import { tokens } from "@kjun-ui/tokens";
 import {
-  kpiBadgeRoles, kpiCssColor, kpiFormat, kpiKeyAction, kpiPresent, kpiRowNeedsDomain, kpiSummaryLayout, kpiTone,
+  kpiBadgeRoles, kpiCssColor, kpiFormat, kpiGridLayout, kpiKeyAction, kpiPresent, kpiRowNeedsDomain, kpiSummaryLayout, kpiTone,
   type KpiBadgeVariant,
 } from "../../../shared/package-runtime/kpi";
 import { KjunSkeleton } from "./display";
@@ -11,6 +11,7 @@ import { KjunIcon } from "./button";
 import { domainRef } from "./runtime/refs";
 import { useKjunMessageScope } from "./runtime/messages";
 import { kpiMasked, slotContent, type KpiValue } from "./kpi-hero";
+import { hasContent } from "./runtime/slots";
 
 export interface KpiRowItem extends Omit<KpiValue, "value"> {
   /** null/undefined and non-finite numbers are missing, never zero. Loading still takes precedence. */
@@ -39,12 +40,17 @@ const kjunKpiRowProps = {
   masked: { type: Boolean, default: false },
 } as const;
 export type KjunKpiRowProps = ExtractPublicPropTypes<typeof kjunKpiRowProps>;
-/** Slot value({ item, index }). Event: item-click(item, index, event) for clickable and link items; a router can call preventDefault. */
+/**
+ * Slots value({ item, index }) and labelAside({ item, index }) — an app control after the label that keeps the label's line
+ * height; its clicks and keys never open a clickable or link cell. Event: item-click(item, index, event) for clickable and link items; a router can call preventDefault. */
 export const KjunKpiRow = defineComponent({
   name: "KjunKpiRow",
   props: kjunKpiRowProps,
   emits: { "item-click": (_item: KpiRowItem, _index: number, _event: MouseEvent | KeyboardEvent) => true },
-  slots: Object as SlotsType<{ value?: (scope: { item: KpiRowItem; index: number }) => VNodeChild }>,
+  slots: Object as SlotsType<{
+    value?: (scope: { item: KpiRowItem; index: number }) => VNodeChild;
+    labelAside?: (scope: { item: KpiRowItem; index: number }) => VNodeChild;
+  }>,
   setup(props, { slots, emit }) {
     const scope = useKjunMessageScope();
     const badge = (item: KpiRowItem) => {
@@ -56,6 +62,7 @@ export const KjunKpiRow = defineComponent({
       const { items, loading, mobileSummary, size, masked } = props;
       const locale = scope.value.intl;
       const { secondary, lastFull } = kpiSummaryLayout(items);
+      const grid = kpiGridLayout(items);
       return (
         <div class={"kjun-kpi-row" + (size === "sm" ? " kjun-kpi-row--sm" : "") + (items[0]?.mobileFull ? " kjun-kpi-row--hero-first" : "") +
           (mobileSummary && size !== "sm" ? " kjun-kpi-row--mobile-summary" : "")}
@@ -71,7 +78,10 @@ export const KjunKpiRow = defineComponent({
             const format = (number: number | string | null | undefined) => kpiFormat(item, number, locale);
             const className = "kjun-kpi-row__item" + (clickable ? " kjun-kpi-row__item--clickable" : "") + (item.mobileFull ? " kjun-kpi-row__item--full" : "") +
               (mobileSummary && i === lastFull ? " kjun-kpi-row__item--summary-full" : "") + (secondary[i] ? " kjun-kpi-row__item--secondary" : "") +
-              (item.valueSegments?.some(s => s.label) ? " kjun-kpi-row__item--labeled-segments" : "");
+              (item.valueSegments?.some(s => s.label) ? " kjun-kpi-row__item--labeled-segments" : "") +
+              (grid[i].column ? " kjun-kpi-row__item--grid-end" : "") + (grid[i].top ? " kjun-kpi-row__item--grid-top" : "") +
+              (grid[i].full ? " kjun-kpi-row__item--grid-full" : "");
+            const labelAside = slots.labelAside?.({ item, index: i });
             const key = (event: KeyboardEvent) => {
               const action = kpiKeyAction(event.type as "keydown" | "keyup", event.key, event.repeat);
               if (action) event.preventDefault();
@@ -82,6 +92,14 @@ export const KjunKpiRow = defineComponent({
                 <div class="kjun-kpi-row__label">
                   {busy && !item.label ? <KjunSkeleton type="line" width={tokens.extensions.kpiRow.labelSkeletonWidth} /> : item.label}
                 </div>
+                {hasContent(labelAside) && (
+                  // The aside is its own control: its clicks and keys never open the cell (nor follow a link cell).
+                  <span class="kjun-kpi-row__label-aside"
+                    onClick={(event: MouseEvent) => { event.stopPropagation(); if (link) event.preventDefault(); }}
+                    onKeydown={(event: KeyboardEvent) => event.stopPropagation()} onKeyup={(event: KeyboardEvent) => event.stopPropagation()}>
+                    {labelAside}
+                  </span>
+                )}
                 {!busy && item.badgePlacement !== "value" && badge(item)}
               </div>
               <div class="kjun-kpi-row__value-row">

@@ -3,7 +3,7 @@ import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { KpiNumberLine } from "./kpi-number-line";
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
-import { type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
 View,
 useWindowDimensions,
@@ -67,6 +67,8 @@ export interface KjunKpiHeroProps {
   /** "none" drops the card background, padding and radius, for a KPI placed inside a card, modal or full-width list. */
   surface?: "card" | "none";
   aside?: ReactNode;
+  /** An app control after the label, such as a mask toggle or an info tooltip trigger; it keeps the label's line height. */
+  labelAside?: ReactNode;
   /** Narrow screens: "below" (default) moves the aside under the delta line at full width; "hidden" drops it. */
   asideMobile?: "below" | "hidden";
   /** Draws the direction as a filled caret before the first delta number, in place of its sign. */
@@ -99,15 +101,20 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
     formatter,
     deltaFormatter,
     renderSecondary,
+    labelAside,
   } = props;
   const { colors, domainColors, numericFontFamily, fontFamily } =
       useKjunStyles(),
     windowWidth = useWindowDimensions().width,
     mobile = windowWidth <= tokens.responsive.kpiHero,
-    small = size === "sm",
-    numberRole = small ? "displaySm" : mobile ? "displayMd" : "displayLg",
+    small = size === "sm";
+  // Like Web's container query, the main column steps its value down by its own width, not only the screen's,
+  // so a hero in a narrow column keeps its number whole.
+  const [mainWidth, setMainWidth] = useState(0);
+  const compact = mobile || (mainWidth > 0 && mainWidth <= tokens.responsive.kpiHeroValue),
+    numberRole = small ? "displaySm" : compact ? "displayMd" : "displayLg",
     // Units sit one weight below their number.
-    unitStyle = { ...typeStyle(small ? "numberSm" : mobile ? "numberMd" : "numberLg"), fontWeight: typeStyle("numberSm").fontWeight };
+    unitStyle = { ...typeStyle(small ? "numberSm" : compact ? "numberMd" : "numberLg"), fontWeight: typeStyle("numberSm").fontWeight };
   const geometry = tokens.extensions.kpiHero;
   const spec = small ? geometry.sm : mobile ? geometry.mobile : geometry.md;
   const numeric: TextStyle = {
@@ -179,20 +186,20 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
           gap: mobile ? geometry.asideGap : geometry.layoutGap,
         }}
       >
-        <View style={{ minWidth: 0, flexShrink: 1 }}>
-          <KText
-            style={{
-              color: colors.textSecondary,
-              ...typeStyle("label"),
-              marginBottom: spec.labelGap,
-            }}
-          >
-            {label}
-          </KText>
+        <View style={{ minWidth: 0, flexShrink: 1, flexGrow: 1 }} onLayout={event => setMainWidth(event.nativeEvent.layout.width)}>
+          <View style={{ flexDirection: "row", alignItems: "center", marginBottom: spec.labelGap }}>
+            <KText style={{ color: colors.textSecondary, ...typeStyle("label"), flexShrink: 1, minWidth: 0 }}>{label}</KText>
+            {hasContent(labelAside) && (
+              // The aside holds the label's line height; a larger control centres on it and spills over evenly.
+              <View style={{ height: typeStyle("label").lineHeight, justifyContent: "center", flexShrink: 0, marginLeft: geometry.labelAsideGap }}>
+                {content(labelAside)}
+              </View>
+            )}
+          </View>
           {loading ? (
             // Placeholders fill each line's height, like Web's 1lh; the value width approximates Web's 7ch.
             <KjunSkeleton type="line" role={numberRole} height={typeStyle(numberRole).fontSize * KPI_NUMERAL_HEIGHT}
-              width={small ? tokens.extensions.kpiHero.smValueSkeletonWidth : mobile ? tokens.extensions.kpiHero.mobileValueSkeletonWidth : tokens.extensions.kpiHero.valueSkeletonWidth} />
+              width={small ? tokens.extensions.kpiHero.smValueSkeletonWidth : compact ? tokens.extensions.kpiHero.mobileValueSkeletonWidth : tokens.extensions.kpiHero.valueSkeletonWidth} />
           ) : masked && kpiPresent(value) ? hidden({ ...numeric, ...typeStyle(numberRole), color: colors.text })
           : !kpiPresent(value) ? <KText style={{ ...numeric, ...typeStyle(numberRole), color: colors.text }}>{missingText ?? KPI_MISSING}</KText>
           : (
@@ -257,6 +264,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
             const columns = mobile && !small && windowWidth <= tokens.responsive.kpiHeroSecondary && secondary.length >= 3 ? 2 : 0;
             const first = columns ? i % columns === 0 : i === 0;
             const last = columns ? i % columns === columns - 1 || i === secondary.length - 1 : i === secondary.length - 1;
+            const custom = loading ? null : renderSecondary?.(item, i);
             return (
             <View
               key={i}
@@ -287,7 +295,7 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
                 <KjunSkeleton type="line" role="numberSm" height={typeStyle("numberSm").fontSize * KPI_NUMERAL_HEIGHT} width={geometry.secondarySkeletonWidth} />
               ) : masked && kpiPresent(item.value) ? hidden({ ...numeric, ...typeStyle("numberSm"), color: colors.text })
               : (
-                renderSecondary?.(item, i) || (
+                hasContent(custom) ? content(custom) : (
                   <KpiNumberLine prefix={kpiPresent(item.value) ? item.prefix : undefined} suffix={kpiPresent(item.value) ? item.suffix : undefined}
                     prefixGap={geometry.secondaryAffixGap} suffixGap={geometry.secondaryAffixGap}
                     unitStyle={typeStyle("meta")}
@@ -299,7 +307,10 @@ export function KjunKpiHero(props: KjunKpiHeroProps) {
               )}
               {!!item.desc &&
                 (loading ? (
-                  <KjunSkeleton type="line" role="caption" width={geometry.descriptionSkeletonWidth} />
+                  // The placeholder keeps the description's gap, so the item does not grow when the data arrives.
+                  <View style={{ marginTop: small ? geometry.sm.descriptionGap : geometry.md.descriptionGap }}>
+                    <KjunSkeleton type="line" role="caption" width={geometry.descriptionSkeletonWidth} />
+                  </View>
                 ) : (
                   <KText
                     style={{

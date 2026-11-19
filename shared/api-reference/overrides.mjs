@@ -429,6 +429,12 @@ set("KpiRow", {
   mobileSummary: { default: "true", summary: "좁은 화면에서 항목을 2열 요약으로 흐르게 합니다. mobileSecondary: true로 표시한 항목만 끝의 작은 인라인 줄로 내려가고, 홀수 개의 마지막 일반 항목은 전폭으로 마감합니다." },
   masked: { default: "false", summary: "숫자 값과 valueSegments를 •••• 로 가리고 방향 색을 칠하지 않습니다. 텍스트 값·배지·설명은 그대로 둡니다. 스크린 리더는 '숨김'을 읽습니다." },
 });
+set("KpiHero", {
+  labelAside: "라벨 바로 뒤에 두는 앱 컨트롤입니다(금액 가리기 토글, 지표 설명 툴팁 등). 라벨 줄 높이를 지키며, 더 큰 컨트롤은 줄 가운데에 맞춰 위아래로 고르게 넘칩니다. Vue 3는 labelAside 슬롯입니다.",
+});
+set("KpiRow", {
+  items: "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. labelAside(React·Native)는 라벨과 배지 사이에 앱 컨트롤(설명 툴팁 등)을 두며, 그 클릭과 키는 셀을 열지 않습니다(Vue 3는 labelAside({ item, index }) 슬롯). clickable 또는 href 항목은 값 줄 끝에 chevron을 그리고 누르면 한 단계 진한 면으로 채웁니다. href 항목은 실제 링크(Native는 RN Web에서만 링크, 기기에서는 버튼)로 그리고, 클릭 콜백·item-click에 세 번째 인자로 이벤트를 넘겨 라우터가 preventDefault할 수 있게 합니다. Enter는 한 번만(자동 반복 무시), Space는 키를 뗄 때 동작합니다. 숫자는 표시 자릿수로 반올림한 값으로 방향 색을 정합니다. 칸 폭이 160px 이하이면 숫자를 한 단계 작게 써서 자릿수 사이에서 끊지 않습니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다.",
+});
 set("KpiHero KpiRow", { surface: { default: '"card"', summary: "none이면 자체 카드 배경·패딩·반경을 그리지 않습니다. 카드·모달 안이나 모바일 전폭 목록에 넣을 때 표면이 겹치지 않게 합니다." } });
 set("Table", { edgeInset: { default: "\"default\"", summary: "none이면 격자 표에서 첫 열의 시작 쪽 여백과 끝 열의 끝 쪽 여백을 없애, 표의 글자와 구분선이 주변 글과 같은 선에 놓입니다. 머리글·본문·묶음 제목·펼친 내용·요약·빈 상태에 모두 적용하고, 열 사이 여백과 카드·목록 배치는 그대로입니다. 줄무늬·선택·hover처럼 줄에 배경이 깔리는 표에서는 배경이 글자에 붙으므로 배경 없는 표에 씁니다." } });
 set("Table MarketCards MarketSimpleList MarketTable", { skeleton: { default: "true", summary: "최초 로딩을 스켈레톤으로 표시합니다. false이면 DataState의 스피너와 loadingText를 표시합니다." } });

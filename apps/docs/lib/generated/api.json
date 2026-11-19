@@ -13537,6 +13537,11 @@
         "source": "packages/vue3/src/kpi-hero.tsx"
       },
       {
+        "name": "labelAside",
+        "data": [],
+        "source": "packages/vue3/src/kpi-hero.tsx"
+      },
+      {
         "name": "secondary",
         "data": [
           "item",
@@ -13657,6 +13662,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "labelAside",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "An app control after the label, such as a mask toggle or an info tooltip trigger; it keeps the label's line height."
       },
       {
         "name": "asideMobile",
@@ -13815,6 +13827,13 @@
         "description": ""
       },
       {
+        "name": "labelAside",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "An app control after the label, such as a mask toggle or an info tooltip trigger; it keeps the label's line height."
+      },
+      {
         "name": "asideMobile",
         "type": "\"below\" | \"hidden\" | undefined",
         "required": false,
@@ -13912,6 +13931,14 @@
     "slots": [
       {
         "name": "value",
+        "data": [
+          "item",
+          "index"
+        ],
+        "source": "packages/vue3/src/kpi-row.tsx"
+      },
+      {
+        "name": "labelAside",
         "data": [
           "item",
           "index"

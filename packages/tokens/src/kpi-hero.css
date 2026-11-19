@@ -9,8 +9,11 @@
   justify-content: space-between;
   gap: var(--_kjun-extension-kpi-hero-layout-gap);
 }
+/* The main column fills the line beside the aside and is the width the value steps down by (kpi-typography.css). */
 .kjun-kpi-hero__main {
+  flex: 1 1 auto;
   min-width: 0;
+  container: kjun-kpi-hero / inline-size;
 }
 .kjun-kpi-hero__aside {
   flex-shrink: 0;
@@ -18,6 +21,15 @@
 .kjun-kpi-hero__label {
   color: var(--_kjun-text-secondary);
   margin-bottom: var(--_kjun-extension-kpi-hero-md-label-gap);
+}
+/* An app control beside the label (a mask toggle, an info tooltip) holds the label's line height: a larger control
+   centres on the line and spills over it evenly, so the value never moves. */
+.kjun-kpi-hero__label-aside {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: top;
+  height: var(--_kjun-type-label-line);
+  margin-left: var(--_kjun-extension-kpi-hero-label-aside-gap);
 }
 .kjun-kpi-hero__value {
   color: var(--_kjun-text-primary);
@@ -65,8 +77,11 @@
 .kjun-kpi-hero__delta-line .kjun-number-affix[data-side="suffix"] {
   margin-left: var(--_kjun-extension-kpi-hero-secondary-affix-gap);
 }
+/* The description is words, not digits: it takes the text font, not the delta line's numeric one. */
 .kjun-kpi-hero__delta-desc {
   color: var(--_kjun-text-tertiary);
+  font-family: var(--kjun-font);
+  font-variant-numeric: normal;
 }
 .kjun-kpi-hero__secondary {
   display: flex;

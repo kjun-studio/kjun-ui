@@ -62,12 +62,13 @@ const kjunKpiHeroProps = {
   deltaFormatter: { type: Function as PropType<(value: number, kind: "absolute" | "percent") => string>, default: undefined },
 } as const;
 export type KjunKpiHeroProps = ExtractPublicPropTypes<typeof kjunKpiHeroProps>;
-/** Slots: aside, secondary({ item, index }). */
+/** Slots: aside, labelAside (an app control after the label; it keeps the label's line height), secondary({ item, index }). */
 export const KjunKpiHero = defineComponent({
   name: "KjunKpiHero",
   props: kjunKpiHeroProps,
   slots: Object as SlotsType<{
     aside?: () => VNodeChild;
+    labelAside?: () => VNodeChild;
     secondary?: (scope: { item: KpiValue; index: number }) => VNodeChild;
   }>,
   setup(props, { slots }) {
@@ -97,14 +98,17 @@ export const KjunKpiHero = defineComponent({
           </>}
         </>;
       };
-      const aside = slots.aside?.();
+      const aside = slots.aside?.(), labelAside = slots.labelAside?.();
       return (
         <div class={"kjun-kpi-hero" + (props.size === "sm" ? " kjun-kpi-hero--sm" : "")} data-surface={props.surface === "none" ? "none" : undefined}
           data-aside-mobile={props.asideMobile === "hidden" ? "hidden" : undefined} aria-busy={loading}
           ref={domainRef(kpiHeroNeedsDomain({ loading, masked, absolute, percent, secondary, ...deltaOptions }))}>
           <div class="kjun-kpi-hero__layout">
             <div class="kjun-kpi-hero__main">
-              <div class="kjun-kpi-hero__label">{props.label}</div>
+              <div class="kjun-kpi-hero__label">
+                {props.label}
+                {hasContent(labelAside) && <span class="kjun-kpi-hero__label-aside">{labelAside}</span>}
+              </div>
               <div class="kjun-kpi-hero__value">
                 {loading ? <KjunSkeleton type="line" width="7ch" />
                   : masked && kpiPresent(value) ? hidden

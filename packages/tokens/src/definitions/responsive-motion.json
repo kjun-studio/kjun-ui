@@ -1,5 +1,5 @@
 {
-  "breakpoints": { "compact": 640, "medium": 768, "wide": 1024, "actionContent": 448, "narrow": 400, "imageFallbackText": 120 },
+  "breakpoints": { "compact": 640, "medium": 768, "wide": 1024, "actionContent": 448, "narrow": 400, "imageFallbackText": 120, "kpiCell": 160, "kpiHeroValue": 360 },
   "responsive": {
     "modal": { "$ref": "breakpoints.compact" },
     "drawer": { "$ref": "breakpoints.compact" },
@@ -11,6 +11,8 @@
     "kpiHeroSecondary": { "$ref": "breakpoints.narrow" },
     "kpiRow": { "$ref": "breakpoints.medium" },
     "kpiRowNarrow": { "$ref": "breakpoints.narrow" },
+    "kpiRowCell": { "$ref": "breakpoints.kpiCell" },
+    "kpiHeroValue": { "$ref": "breakpoints.kpiHeroValue" },
     "market": { "$ref": "breakpoints.medium" },
     "selection": { "$ref": "breakpoints.medium" },
     "formColumns": { "$ref": "breakpoints.medium" },

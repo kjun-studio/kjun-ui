@@ -1,8 +1,9 @@
 import { tokens } from "@kjun-ui/tokens";
 import { domainColorRef } from "../../../shared/package-runtime/css-contract";
+import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import {
-  kpiBadgeRoles, kpiCssColor, kpiFormat, kpiKeyAction, kpiPresent, kpiRowNeedsDomain, kpiSummaryLayout, kpiTone,
+  kpiBadgeRoles, kpiCssColor, kpiFormat, kpiGridLayout, kpiKeyAction, kpiPresent, kpiRowNeedsDomain, kpiSummaryLayout, kpiTone,
   type KpiBadgeVariant,
 } from "../../../shared/package-runtime/kpi";
 import { type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
@@ -31,6 +32,11 @@ export interface KpiRowItem extends Omit<KpiValue, "value"> {
   }[];
   badge?: { text: string; variant?: KpiBadgeVariant } | null;
   badgePlacement?: "label" | "value";
+  /**
+   * An app control after the label, such as an info tooltip trigger or a mask toggle. It keeps the label's line
+   * height, and its clicks and keys stay with it: they never open a clickable or link cell.
+   */
+  labelAside?: ReactNode;
 }
 export interface KjunKpiRowProps {
   loading?: boolean;
@@ -57,6 +63,7 @@ export function KjunKpiRow({
 }: KjunKpiRowProps) {
   const scope = useKjunMessageScope(), locale = scope.intl;
   const { secondary, lastFull } = kpiSummaryLayout(items);
+  const grid = kpiGridLayout(items);
   const badge = (item: KpiRowItem) => {
     if (!item.badge) return null;
     const roles = kpiBadgeRoles(item.badge.variant);
@@ -92,17 +99,29 @@ export function KjunKpiRow({
           (item.mobileFull ? " kjun-kpi-row__item--full" : "") +
           (mobileSummary && i === lastFull ? " kjun-kpi-row__item--summary-full" : "") +
           (secondary[i] ? " kjun-kpi-row__item--secondary" : "") +
-          (item.valueSegments?.some((s) => s.label) ? " kjun-kpi-row__item--labeled-segments" : "");
+          (item.valueSegments?.some((s) => s.label) ? " kjun-kpi-row__item--labeled-segments" : "") +
+          (grid[i].column ? " kjun-kpi-row__item--grid-end" : "") +
+          (grid[i].top ? " kjun-kpi-row__item--grid-top" : "") +
+          (grid[i].full ? " kjun-kpi-row__item--grid-full" : "");
         const key = (event: KeyboardEvent) => {
           const action = kpiKeyAction(event.type as "keydown" | "keyup", event.key, event.repeat);
           if (action) event.preventDefault();
           if (action === "activate" && !busy) onItemClick?.(item, i, event);
         };
+        const custom = busy || hide || item.valueSegments ? null : renderValue?.(item, i);
         const content = <>
           <div className="kjun-kpi-row__label-row">
             <div className="kjun-kpi-row__label">
               {busy && !item.label ? <KjunSkeleton type="line" width={tokens.extensions.kpiRow.labelSkeletonWidth} /> : item.label}
             </div>
+            {hasContent(item.labelAside) && (
+              // The aside is its own control: its clicks and keys never open the cell (nor follow a link cell).
+              <span className="kjun-kpi-row__label-aside"
+                onClick={(event) => { event.stopPropagation(); if (link) event.preventDefault(); }}
+                onKeyDown={(event) => event.stopPropagation()} onKeyUp={(event) => event.stopPropagation()}>
+                {item.labelAside}
+              </span>
+            )}
             {!busy && item.badgePlacement !== "value" && badge(item)}
           </div>
           <div className="kjun-kpi-row__value-row">
@@ -125,7 +144,7 @@ export function KjunKpiRow({
                     {busy && !seg.separator ? <KjunSkeleton type="line" width="3ch" /> : seg.text}
                   </span>
                 ))
-                : renderValue?.(item, i) || (present ? <>
+                : hasContent(custom) ? custom : (present ? <>
                   {item.prefix && <span className="kjun-kpi-row__affix" data-side="prefix">{item.prefix}</span>}
                   {item.animated && typeof value === "number" ? <KjunAnimatedNumber fromPrevious value={value} formatter={format} /> : format(value)}
                   {item.suffix && <span className="kjun-kpi-row__affix" data-side="suffix">{item.suffix}</span>}

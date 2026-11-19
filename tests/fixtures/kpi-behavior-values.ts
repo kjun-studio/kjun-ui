@@ -24,3 +24,19 @@ export const maskedItems = [
 declare global { interface Window { kpiClicks: string[] } }
 window.kpiClicks = [];
 export const record = (item: { label?: string }) => { window.kpiClicks.push(item.label ?? ''); };
+// Three display numbers in a 480px column of a wide page: each cell steps down by its own width, never splitting digits.
+export const narrowItems = [
+  { label: '방문자', value: 12480, suffix: '명' },
+  { label: '전환율', value: 3.4, decimals: 1, suffix: '%' },
+  { label: '매출', value: 4820000, suffix: '원' },
+];
+// A label aside in a clickable cell: its own clicks never open the cell.
+export const asideItems = [{ label: '방문', value: 7, clickable: true }, { label: '이탈', value: 2 }];
+export const asideHero = { label: '총 평가 금액', value: 1000, suffix: '원', animated: false };
+// The phone grid: a full first cell, two side by side, and a last cell alone that takes the whole line.
+export const gridItems = [
+  { label: '헤드', value: 1, mobileFull: true },
+  { label: '왼쪽', value: 2 },
+  { label: '오른쪽', value: 3 },
+  { label: '혼자', value: 4 },
+];

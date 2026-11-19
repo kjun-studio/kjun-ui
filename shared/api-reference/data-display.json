@@ -209,6 +209,7 @@
       "deltaIcon",
       "masked",
       "aside",
+      "labelAside",
       "formatter",
       "deltaFormatter",
       "renderSecondary"
@@ -233,6 +234,7 @@
       "deltaIcon",
       "masked",
       "aside",
+      "labelAside",
       "formatter",
       "deltaFormatter",
       "renderSecondary"

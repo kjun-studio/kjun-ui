@@ -121,6 +121,22 @@ export function kpiSummaryLayout(items: { mobileSecondary?: boolean; mobileFull?
   return { secondary, lastFull: primary.length % 2 ? primary[primary.length - 1] : -1 };
 }
 
+/**
+ * The phone grid of a KpiRow outside the summary (two columns, or size="sm" wrapping in two): which column each
+ * cell takes and whether it starts below the first line. A mobileFull cell takes the whole line, and so does a cell
+ * left alone on its line (the last one, or one before a full cell), so no half cell stays empty. Web and Native
+ * draw the same dividers from it: a left line on the second column (not for sm), a top line below the first line.
+ */
+export function kpiGridLayout(items: { mobileFull?: boolean }[]) {
+  let column = 0, line = 0;
+  return items.map((item, i) => {
+    const next = items[i + 1], full = !!item.mobileFull || (column === 0 && (!next || !!next.mobileFull));
+    const cell = { column: full ? 0 : column, full, top: line > 0 };
+    if (full || column === 1) { line++; column = 0; } else column = 1;
+    return cell;
+  });
+}
+
 /** A row badge is KjunBadge's tone: neutral is the secondary badge. */
 export const kpiBadgeVariant = (variant?: KpiBadgeVariant): BadgeVariant => (!variant || variant === "neutral" ? "secondary" : variant);
 export const kpiBadgeRoles = (variant?: KpiBadgeVariant): BadgeToneRoles => badgeToneRoles(kpiBadgeVariant(variant));

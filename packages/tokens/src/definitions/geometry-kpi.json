@@ -19,6 +19,9 @@
       "itemPadding": {
         "$ref": "dimension.value10"
       },
+      "labelAsideGap": {
+        "$ref": "dimension.value6"
+      },
       "md": {
         "paddingX": {
           "$ref": "dimension.value28"
