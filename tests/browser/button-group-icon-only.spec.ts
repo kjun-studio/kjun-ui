@@ -26,9 +26,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(frame(page).getByText('선 차트', { exact: true })).toHaveCount(0);
     for (const [size, height, padding] of [['xs', 24, 2], ['md', 40, 4], ['xl', 56, 4]] as const) {
       await configure(page, { size });
-      const box = (await line.boundingBox())!, side = height - 2 * padding;
-      expect(Math.abs(box.width - side)).toBeLessThanOrEqual(1);
-      expect(Math.abs(box.height - side)).toBeLessThanOrEqual(1);
+      // Under reduced motion KJUN elements keep a 0.01ms transition, so the new size lands a frame later: poll it.
+      const side = height - 2 * padding;
+      await expect.poll(async () => { const box = (await line.boundingBox())!; return Math.max(Math.abs(box.width - side), Math.abs(box.height - side)); }).toBeLessThanOrEqual(1);
       // Segment icons follow the button icon scale for the size, labelled segments included.
       for (const name of ['선 차트', '표'])
         await expect(frame(page).getByRole('button', { name, exact: true }).locator('svg').first()).toHaveAttribute('width', String(tokens.button.iconSizes[size]));
@@ -53,9 +53,10 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'button-group');
     await configure(page, { options, value: 'line', size: 'md', fullWidth: true, width: 480 });
-    const widths = await Promise.all(options.map(async o => (await frame(page).getByRole('button', { name: o.label, exact: true }).boundingBox())!.width));
-    for (const width of widths) expect(Math.abs(width - widths[0])).toBeLessThanOrEqual(1);
-    expect(widths[0]).toBeGreaterThan(100);
+    const widths = () => Promise.all(options.map(async o => (await frame(page).getByRole('button', { name: o.label, exact: true }).boundingBox())!.width));
+    // Icon-only and labelled segments alike: the widest and narrowest differ by at most a pixel.
+    await expect.poll(async () => { const all = await widths(); return Math.max(...all) - Math.min(...all); }).toBeLessThanOrEqual(1);
+    expect((await widths())[0]).toBeGreaterThan(100);
     await alignedTo(page, '선 차트');
   });
 }

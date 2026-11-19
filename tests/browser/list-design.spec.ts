@@ -156,13 +156,13 @@ for (const platform of ['react', 'vue3', 'native']) {
     // A compact section's loading row skeleton is as tall as its compact rows.
     if (web) expect(Math.round((await box(page.locator('.kjun-list-skeleton-row[data-density="compact"]'))).height)).toBe(44);
     // A badge sits after the title, centered on its first line; the row is named by its title, badge and value, and
-    // described by its description (Native reads a text badge only).
+    // described by its description (Native names it by title, badge, description and value, an element badge included).
     const badge = await box(page.getByText('새 기능', { exact: true })), title = await box(page.getByText('배지 행', { exact: true }));
     expect(badge.x).toBeGreaterThan(title.x + title.width);
     expect(Math.abs(badge.y + badge.height / 2 - (title.y + title.height / 2))).toBeLessThanOrEqual(1);
     if (web) {
       const row = page.getByRole('button', { name: '배지 행 새 기능 3개', exact: true });
       await expect(row).toHaveAccessibleDescription('배지 설명');
-    } else await expect(page.getByRole('button', { name: '배지 행, 배지 설명, 3개', exact: true })).toHaveCount(1);
+    } else await expect(page.getByRole('button', { name: '배지 행, 새 기능, 배지 설명, 3개', exact: true })).toHaveCount(1);
   });
 }

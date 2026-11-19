@@ -311,7 +311,8 @@ export const KjunButtonGroup = defineComponent({
               <button key={String(option.value)} type="button" aria-pressed={active} aria-label={iconOnly ? option.label : undefined} disabled={blocked}
                 // An icon-only segment is square: as wide as the segment is tall.
                 style={css({ flex: props.fullWidth ? 1 : undefined, width: iconOnly && !props.fullWidth ? metrics.heights[size] - 2 * metrics.padding[size] : undefined,
-                  paddingInline: iconOnly ? 0 : metrics.itemPaddingX[size], borderRadius: metrics.itemRadii[size], ...selectionTypeStyle(size, active) })}
+                  // Full width, every segment keeps the item padding, so icon-only and labelled segments share the track equally.
+                  paddingInline: iconOnly && !props.fullWidth ? 0 : metrics.itemPaddingX[size], borderRadius: metrics.itemRadii[size], ...selectionTypeStyle(size, active) })}
                 onClick={() => { emit("update:modelValue", option.value); emit("change", option.value); }}>
                 {option.icon && <KjunIcon name={option.icon} size={tokens.button.iconSizes[size]} />}
                 {!iconOnly && <span class="kjun-button-group-label">

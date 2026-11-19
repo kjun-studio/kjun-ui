@@ -13,6 +13,9 @@ const slideBox = (page: Page, id: string, label: string) => section(page, id).ge
   return { left: Math.round(box.left), width: Math.round(box.width) };
 });
 const dot = (page: Page, id: string, n: number) => section(page, id).getByRole('button', { name: n + '번 슬라이드' });
+// The position text on screen. Without a title, a pointer that can hover gets the buttons' pill, which shows the position
+// itself while the separate count steps aside (display: none), so only the visible one is taken.
+const position = (page: Page, id: string, text: string) => section(page, id).getByText(text, { exact: true }).filter({ visible: true });
 
 for (const platform of ['react', 'vue3', 'native']) {
   test.describe(platform, () => {
@@ -76,14 +79,14 @@ for (const platform of ['react', 'vue3', 'native']) {
 
     test('indicators="count" shows the position as text', async ({ page }) => {
       const counted = section(page, 'counted');
-      await expect(counted.getByText('1 / 4', { exact: true })).toBeVisible();
+      await expect(position(page, 'counted', '1 / 4')).toBeVisible();
       await expect(counted.getByRole('button', { name: /번 슬라이드/ })).toHaveCount(0);
       const { width } = await scroller(page, 'counted');
       await counted.locator('*').evaluateAll((nodes, x) => {
         const el = nodes.find(node => ['auto', 'scroll'].includes(getComputedStyle(node).overflowX)) as HTMLElement;
         el.scrollLeft = x;
       }, width + 12);
-      await expect(counted.getByText('2 / 4', { exact: true })).toBeVisible();
+      await expect(position(page, 'counted', '2 / 4')).toBeVisible();
     });
 
     test('dots on a card rail mark the places it can stop, and the last one stays put', async ({ page }) => {
@@ -125,7 +128,7 @@ for (const platform of ['react', 'vue3', 'native']) {
 
     test('overlay indicators sit on the slides', async ({ page }) => {
       const slides = await section(page, 'overlay').getByText('Alpha', { exact: true }).boundingBox();
-      const count = await section(page, 'overlay').getByText('1 / 4', { exact: true }).boundingBox();
+      const count = await position(page, 'overlay', '1 / 4').boundingBox();
       expect(count!.y + count!.height).toBeLessThanOrEqual(slides!.y + slides!.height);
       expect(count!.y).toBeGreaterThan(slides!.y);
       const dotsBox = await dot(page, 'overlay-dots', 1).boundingBox();
@@ -178,7 +181,7 @@ for (const platform of ['react', 'vue3', 'native']) {
         const header = section(page, 'titled').locator('.kjun-carousel-header');
         const next = header.getByRole('button', { name: '다음 슬라이드' });
         await next.focus();
-        await page.keyboard.press('Enter');
+        // The buttons step by stop: on this card rail Charlie and Delta share the end, so two steps reach it.
         await page.keyboard.press('Enter');
         await page.keyboard.press('Enter');
         await expect(next).toBeDisabled();

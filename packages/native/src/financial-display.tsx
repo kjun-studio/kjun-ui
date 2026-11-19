@@ -170,23 +170,18 @@ export function KjunHeatmapCell({
     paddingHorizontal: tokens.extensions.financial.pillPaddingX,
     borderRadius: tokens.extensions.financial.cellRadius,
   };
+  // The fill is a layer behind the text, as on Web and for a present value.
+  const layer = (backgroundColor: ColorValue, opacity?: number) => (
+    <View pointerEvents="none" style={{ position: "absolute", inset: 0, borderRadius: tokens.extensions.financial.cellRadius, backgroundColor, opacity }} />
+  );
   // Like Web: a missing value keeps the neutral fill, so a grid keeps its rhythm, and shows a dash.
-  if (cell.missing) return <View style={[box, { backgroundColor: colors.secondary }]}><KText style={{ ...numeric, color: colors.textDisabled }}>—</KText></View>;
+  if (cell.missing) return <View style={box}>{layer(colors.secondary)}<KText style={{ ...numeric, color: colors.textDisabled }}>—</KText></View>;
   const background = cell.role === "price-up" ? domainColor(domainColors, "priceUp")
     : cell.role === "price-down" ? domainColor(domainColors, "priceDown") : colors[cell.role];
   return (
     <View style={box}>
-      <View
-        pointerEvents="none"
-        style={{
-          position: "absolute",
-          inset: 0,
-          borderRadius: tokens.extensions.financial.cellRadius,
-          // A cell at the centre keeps its shape on the neutral fill; any other value starts from a visible minimum.
-          backgroundColor: cell.magnitude ? background : colors.secondary,
-          opacity: cell.opacity,
-        }}
-      />
+      {/* A cell at the centre keeps its shape on the neutral fill; any other value starts from a visible minimum. */}
+      {layer(cell.magnitude ? background : colors.secondary, cell.opacity)}
       {content(children ?? value, numeric, signedText)}
     </View>
   );

@@ -305,6 +305,8 @@ export function KjunAlert({
   const [visible, setVisible] = useState(true);
   const reduced = useReducedMotion();
   const fade = useRef(new Animated.Value(1)).current, closing = useRef(false), root = useRef<any>(null);
+  // A data state's buttons wrap, so its retry can give way beside the message (the web gets this from min-content).
+  const wrapping = !!useContext(DataStateContentContext);
   if (!visible) return null;
   const tone = variant || (type === "error" ? "danger" : type),
     small = size === "sm", scale = size === "sm" || size === "lg" ? size : "md";
@@ -320,12 +322,13 @@ export function KjunAlert({
   const text = (value: ReactNode, style: object) => typeof value === "string" || typeof value === "number"
     ? <KText {...words} style={[style, wordStyle]}>{value}</KText> : content(value, style);
   // Without a title the actions sit beside the message, centred on its first line, like a toast's.
-  const beside = !titled && hasContent(actions);
+  // In a narrow alert wrapping actions and the message give way in proportion to their length, as on the web.
+  const beside = !titled && hasContent(actions), yielding = beside && wrapping;
   const actionBox = hasContent(actions) && (
     <ActionSizeContext.Provider value={alertActionSizes[scale]}>
       <AlertActionsContext.Provider value={true}>
         <View style={beside
-          ? { flexDirection: "row", alignItems: "center", gap: geometry.actionsGap, flexShrink: 0,
+          ? { flexDirection: "row", alignItems: "center", gap: geometry.actionsGap, flexShrink: yielding ? 1 : 0,
             marginVertical: (lineHeight - tokens.button.heights[alertActionSizes[scale]]) / 2 }
           : { flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: geometry.actionsGap, marginTop: geometry[scale].actionGap }}>
           {content(actions)}
@@ -370,7 +373,7 @@ export function KjunAlert({
           <KjunIcon name={icon || alertIcons[tone]} filled size={geometry.iconSizes[scale]} color={pick(paint.icon)} />
         </View>
       )}
-      <View style={{ flex: 1, minWidth: 0, minHeight: lineHeight }}>
+      <View style={{ ...(yielding ? { flexGrow: 1, flexShrink: 1, flexBasis: "auto" } as const : { flex: 1 }), minWidth: 0, minHeight: lineHeight }}>
         {titled && text(title, { ...typeStyle(titleType[scale]), color: colors.text })}
         {hasContent(children) && <View style={{ marginTop: titled ? geometry.descriptionGap : 0 }}>
           {text(children, {

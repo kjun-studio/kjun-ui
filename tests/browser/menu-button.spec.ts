@@ -15,8 +15,9 @@ const shape = (page: Page, id: string) => page.getByTestId(id).getByRole('button
 });
 const icon = (page: Page) => trigger(page).locator('svg');
 const iconPath = (page: Page) => icon(page).evaluate(el => el.innerHTML);
+// Native Web names its Modal dialog after the panel too; the panel is the labelled View inside it.
 const menu = (page: Page, platform: string) => platform === 'native'
-  ? page.locator('[aria-label="메뉴"]') : page.getByRole('menu');
+  ? page.locator('[role="dialog"] [aria-label="메뉴"]') : page.getByRole('menu');
 
 for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: menu sizes, compact mode and loading reuse Button geometry`, async ({ page }) => {

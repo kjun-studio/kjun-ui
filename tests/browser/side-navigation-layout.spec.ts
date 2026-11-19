@@ -79,6 +79,9 @@ for (const platform of ['react', 'vue3']) {
     await page.setViewportSize({ width: 950, height: 800 });
     await expect.poll(() => width(page)).toBe(256);
     await page.setViewportSize({ width: 1200, height: 800 });
+    // Nothing on screen changes above the band (the column is already open): give the layout frames to see the crossing
+    // before narrowing again, as a real resize passes through the widths in between.
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     await page.setViewportSize({ width: 900, height: 800 });
     await expect.poll(() => width(page)).toBe(68);
     // A first render already below asks for the rail.

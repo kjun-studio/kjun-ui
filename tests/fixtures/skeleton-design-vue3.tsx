@@ -15,6 +15,6 @@ createApp(defineComponent(() => () => <K.KjunProvider>
     <div data-testid="form-actions"><K.KjunFormSkeleton fields={['']} actions={2} /></div>
     <div data-testid="market-status"><K.KjunMarketTableSkeleton columns={[{ key: 'name', label: '이름' }]} rows={Infinity} loadingText="표를 불러오는 중" /></div>
     <div data-testid="stat"><K.KjunSkeleton type="stat" animated={false} /></div>
-    <div data-testid="styled"><K.KjunSkeleton type="block" height={20} style={{ marginTop: 12 }} /></div>
+    <div data-testid="styled"><K.KjunSkeleton type="block" height={20} style={{ marginTop: '12px' }} /></div>
   </div>
 </K.KjunProvider>)).mount('#root');

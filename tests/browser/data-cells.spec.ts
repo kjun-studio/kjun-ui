@@ -45,7 +45,9 @@ for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: PriceCell flashes the way the price moved and reads a loading price`, async ({ page }) => {
     await openFixture(page, platform, '', 'data-cells');
     const text = page.getByTestId('price-text'), background = page.getByTestId('price-bg');
-    await expect(page.getByTestId('price-loading')).toContainText('로딩 중');
+    // Web reads hidden text; Native names the placeholder (its accessibility label).
+    if (platform === 'native') await expect(page.getByTestId('price-loading').getByLabel('로딩 중', { exact: true })).toHaveCount(1);
+    else await expect(page.getByTestId('price-loading')).toContainText('로딩 중');
     if (platform === 'native') {
       // Native draws the move's colour on an overlay that fades out.
       const overlay = (box: Locator) => box.evaluate(e => [...e.querySelectorAll('*')].filter(n => n.getAttribute('aria-hidden') === 'true' || getComputedStyle(n).position === 'absolute')

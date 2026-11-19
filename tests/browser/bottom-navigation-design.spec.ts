@@ -149,10 +149,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(text).not.toBeNull();
     expect(Math.abs(text!.y + text!.height / 2 - (bar.y + bar.height / 2))).toBeLessThanOrEqual(0.5);
     expect(count.x).toBeGreaterThanOrEqual(text!.x + text!.width);
-    // A disabled destination takes the disabled-text role at full opacity, a step below an unselected one.
+    // A disabled destination takes the disabled-text role at full opacity; an unselected one takes navigationInactive
+    // (the demo palette sets it; without it the role falls back to textTertiary).
     await configure(page, { mixed: false, showLabels: true });
     await expect(label(page, '설정')).toHaveCSS('color', rgb(palettes.default.textDisabled));
-    await expect(label(page, '활동')).toHaveCSS('color', rgb(palettes.default.textTertiary));
+    await expect(label(page, '활동')).toHaveCSS('color', rgb(palettes.default.navigationInactive ?? palettes.default.textTertiary));
     expect(await label(page, '설정').evaluate(el => { let node: Element | null = el, opacity = 1; while (node && node.getAttribute('role') !== 'navigation' && node.tagName !== 'NAV') { opacity *= Number(getComputedStyle(node).opacity); node = node.parentElement; } return opacity; })).toBe(1);
     // Without a surface the bar is seamless: no shadow.
     await configure(page, { surface: false });

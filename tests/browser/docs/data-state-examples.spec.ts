@@ -19,6 +19,8 @@ for (const platform of ['react', 'vue3', 'native'] as const) for (const mode of 
       await route.fulfill({ body: await readFile('artifacts/export-checks/' + path), contentType: path.endsWith('.js') ? 'text/javascript' : path.endsWith('.css') ? 'text/css' : 'text/html' });
     });
     await page.setViewportSize({ width: 320, height: 800 });
+    // Where the result's title sits during a short refresh, to compare with a long one.
+    let refreshTitle: number | undefined;
     for (const preset of presets) {
       await page.goto(`/previews/export-checks/${platform}/data-state-${mode}-${preset.id}.html`);
       await expect(page.getByRole('button', { name: '조회 완료', exact: true })).toBeVisible();
@@ -40,10 +42,15 @@ for (const platform of ['react', 'vue3', 'native'] as const) for (const mode of 
         await page.getByRole('button', { name: '조회 완료', exact: true }).click();
         await expect(page.getByText('조회 결과', { exact: true })).toBeVisible();
       }
+      if (preset.id === 'refresh') refreshTitle = (await page.getByText('조회 결과', { exact: true }).boundingBox())!.y;
       if (preset.id === 'long-refresh') {
+        // The refresh pill floats over the content's top, so a long refresh text wraps inside the screen and never moves the result.
         const text = await page.getByText('최신 문서와 세부 정보를 업데이트하고 있습니다', { exact: true }).boundingBox();
         const title = await page.getByText('조회 결과', { exact: true }).boundingBox();
-        expect(text!.y + text!.height).toBeLessThan(title!.y);
+        expect(text!.x).toBeGreaterThanOrEqual(0);
+        expect(text!.x + text!.width).toBeLessThanOrEqual(320);
+        expect(refreshTitle).toBeDefined();
+        expect(Math.abs(title!.y - refreshTitle!)).toBeLessThanOrEqual(1);
       }
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     }

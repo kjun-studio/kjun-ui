@@ -81,6 +81,8 @@ export async function verifyLabeling(page, d, note) {
   }
   if (profile === 'feedback') return feedbackLabeling(page, note);
   if (['select', 'time', 'search'].includes(profile)) {
+    // Native selection opens a Modal; a web TimePicker segment opens its wheel in a dialog, a web Select a listbox.
+    const popup = page.getByRole(d.platform === 'native' || profile === 'time' ? 'dialog' : 'listbox');
     if (d.platform === 'native' && (profile === 'search' || d.component === 'KjunCombobox')) {
       const { active } = await nativeInputPopup(page);
       if (profile === 'search') { await active.fill('AAA'); await expect(page.getByRole('radio')).toBeVisible(); }
@@ -88,11 +90,11 @@ export async function verifyLabeling(page, d, note) {
       await page.getByRole('combobox').fill('AAA'); await expect(page.getByRole('option')).toBeVisible();
     } else {
       await primary(page, d).click();
-      await expect(page.getByRole(d.platform === 'native' ? 'dialog' : 'listbox')).toBeVisible();
+      await expect(popup).toBeVisible();
     }
     await namedControls(page); note('열린 선택 도구의 이름·ID 참조 확인');
     await page.keyboard.press('Escape');
-    await expect(page.getByRole(d.platform === 'native' ? 'dialog' : 'listbox')).not.toBeVisible();
+    await expect(popup).not.toBeVisible();
   }
   if (profile === 'accordion') { await page.getByRole('button', { name: '첫 항목', exact: true }).click(); await expect(page.getByText('첫 내용', { exact: true })).toBeVisible(); }
   if (profile === 'data-state') await page.getByRole('button', { name: '조회 실패', exact: true }).click();

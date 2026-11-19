@@ -19,7 +19,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     }
     await page.getByRole('button', { name: '화면 팝업', exact: true }).click();
-    const surface = platform === 'native' ? page.getByLabel('화면 팝업 내용', { exact: true }) : page.locator('.kjun-content-popover');
+    // Native Web names its Modal dialog after the panel too; the panel is the labelled View inside it.
+    const surface = platform === 'native' ? page.getByRole('dialog', { name: '화면 팝업 내용' }).getByLabel('화면 팝업 내용', { exact: true }) : page.locator('.kjun-content-popover');
     await expect(surface).toHaveCSS('box-shadow', new RegExp(`${tokens.extensions.popover.elevation[0].blurRadius}px`));
     await page.keyboard.press('Escape');
     await page.evaluate(() => (window as any).elevation.toast());

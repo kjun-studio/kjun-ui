@@ -64,13 +64,13 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.keyboard.type('blocked'); await expect(field).toHaveValue('입력 중 변경');
     await field.evaluate((node: HTMLInputElement) => node.setSelectionRange(0, 2));
     expect(await field.evaluate((node: HTMLInputElement) => node.selectionEnd! - node.selectionStart!)).toBe(2);
-    await expect(root.getByRole('button')).toBeDisabled();
-    await root.getByRole('button').evaluate(node => (node as HTMLElement).click());
+    // A read-only or disabled field has no clear button (Input r1), so nothing can clear the kept value.
+    await expect(root.getByRole('button')).toHaveCount(0);
     await expect(page.getByTestId('changes')).toHaveText(changes!);
     await page.evaluate(() => (window as any).configureInputDesign({ readOnly: false }));
     await root.getByRole('button').click(); await expect(field).toHaveValue('');
     await field.fill('유지 값'); await page.evaluate(() => (window as any).configureInputDesign({ disabled: true, error: true }));
-    await expect(field).toBeDisabled(); await expect(root.getByRole('button')).toBeDisabled();
+    await expect(field).toBeDisabled(); await expect(root.getByRole('button')).toHaveCount(0);
     await page.getByTestId('input').evaluate(node => {
       const boundary = document.createElement('button'); boundary.id = 'disabled-entry-boundary';
       boundary.textContent = '입력 앞'; node.before(boundary); boundary.focus();

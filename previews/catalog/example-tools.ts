@@ -209,6 +209,15 @@ export const sparklineSample = (kind: string): { data: (number | null)[]; baseli
   if (kind === "없음") return { data: [], baseline: 3, label: "추세" };
   return { data: [1, 4, 3, 7, 5, 8], baseline: 3, label: "추세, 기준 3에서 8로 상승" };
 };
+/** SideNavigation spaces example: the pages of each space, the first opening when its space is chosen. */
+export const sidePages: Record<string, any[]> = {
+  home: [{ key: "overview", label: "개요", href: "#overview", icon: "chart-bar" }, { key: "requests", label: "받은 요청", href: "#requests", icon: "bell", badge: 4 }],
+  projects: [{ key: "board", label: "보드", href: "#board", icon: "clipboard-list" },
+    { title: "즐겨찾기", items: [{ key: "brand", label: "브랜드 웹사이트", href: "#brand", icon: "world", badge: 8 }, { key: "checkout", label: "결제 화면 개선", href: "#checkout", icon: "currency-won" }] },
+    { title: "보관", items: [{ key: "archive", label: "보관함", href: "#archive", icon: "box" }] }],
+  team: [{ key: "members", label: "구성원", href: "#members", icon: "user" }, { key: "invites", label: "초대", href: "#invites", icon: "mail", badge: true }],
+  settings: [{ key: "profile", label: "프로필", href: "#profile", icon: "user" }, { key: "billing", label: "결제", href: "#billing", icon: "wallet" }],
+};
 export const priceFormat = (value: number) =>
   value == null || !Number.isFinite(Number(value)) ? "—" : new Intl.NumberFormat("ko-KR").format(Number(value)) + "원";
 export const metricFormat = (value: unknown, format: string) => {

@@ -4,7 +4,8 @@ import { openFixture } from './packed-fixture';
 import { longMenuLabel } from '../fixtures/dropdown-design-cases';
 
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureDropdown(next), next);
-const panel = (page: Page, platform: string) => page.locator(platform === 'react' || platform === 'vue3' ? '.kjun-dropdown' : '[aria-label="메뉴"]');
+// Native Web names its Modal dialog after the panel too; the panel is the labelled View inside it.
+const panel = (page: Page, platform: string) => page.locator(platform === 'react' || platform === 'vue3' ? '.kjun-dropdown' : '[role="dialog"] [aria-label="메뉴"]');
 const item = (page: Page, text: string) => page.locator('[role="menuitem"], [role="menuitemradio"], [role="radio"]').filter({ hasText: text });
 
 for (const platform of ['react', 'vue3', 'native']) {

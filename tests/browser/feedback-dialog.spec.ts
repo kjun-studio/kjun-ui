@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { expectBusy, expectIdle } from './loading-state';
 
 const results = (page: Page) => page.evaluate(() => (window as any).feedbackResults);
 async function start(page: Page, platform: string) {
@@ -29,7 +30,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       element.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
     await expect.poll(() => page.evaluate(() => (window as any).confirmCalls)).toBe(1);
-    await expect(button).toBeDisabled();
+    await expectBusy(button, platform);
     await page.keyboard.press('Escape');
     await expect(confirm).toBeVisible();
     expect(await results(page)).toEqual([]);
@@ -42,6 +43,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(prompt.getByText('두 글자 이상', { exact: true })).toBeVisible();
     await prompt.getByRole('textbox').fill('완료');
     await expect(prompt.getByText('두 글자 이상', { exact: true })).toHaveCount(0);
+    // The check of 'a' left confirm busy for the minimum loading time.
+    await expectIdle(prompt.getByRole('button', { name: '확인', exact: true }));
     await prompt.getByRole('button', { name: '확인', exact: true }).click();
     await expect.poll(() => results(page)).toEqual([true, '완료']);
   });

@@ -1,5 +1,6 @@
 import { expect, test, type Page, type Locator } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { expectBusy, expectIdle } from './loading-state';
 import { tokens } from '../../packages/tokens/dist/index.js';
 const configure = (page: Page, next: object) => page.evaluate(next => (window as any).configureTopNavigation(next), next);
 const header = (page: Page) => page.getByTestId('header').locator(':scope > *').first();
@@ -87,10 +88,10 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.getByTestId('events')).toHaveText('back|save');
     const before = await rect(save(page));
     await configure(page, { loading: true });
-    await expect(save(page)).toBeDisabled(); await expect(save(page)).toHaveAttribute('aria-busy', 'true');
+    await expectBusy(save(page), platform);
     expect(await rect(save(page))).toEqual(before); await clickAt(page, save(page));
     await expect(page.getByTestId('events')).toBeEmpty();
-    await configure(page, { loading: false }); await expect(save(page)).toBeEnabled();
+    await configure(page, { loading: false }); await expectIdle(save(page));
     await configure(page, { disabled: true });
     await expect(back(page)).toBeDisabled(); await expect(save(page)).toBeDisabled();
     await clickAt(page, back(page)); await clickAt(page, save(page)); await expect(page.getByTestId('events')).toBeEmpty();
@@ -114,8 +115,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     await assertReadable(page);
     const before = await rect(control);
     await configure(page, { loading: true });
-    await expect(control).toBeDisabled(); expect(await rect(control)).toEqual(before);
-    await configure(page, { loading: false }); await expect(control).toBeEnabled();
+    await expectBusy(control, platform); expect(await rect(control)).toEqual(before);
+    await configure(page, { loading: false }); await expectIdle(control);
     await control.focus(); await control.press('Space'); await expect(page.getByTestId('events')).toHaveText('save');
     await configure(page, { actionText: 'SaveChangesAndContinueWithoutAnySpacesAtAll' });
     await assertReadable(page);

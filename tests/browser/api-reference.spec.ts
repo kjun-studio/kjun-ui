@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { expectIdle } from './loading-state';
 const platforms = ['vue3', 'react', 'native'] as const;
 const events = (page: Page) => page.evaluate(() => (window as any).contractEvents as { name: string; value?: any }[]);
 const clear = (page: Page) => page.evaluate(() => { (window as any).contractEvents = []; });
@@ -106,7 +107,9 @@ for (const platform of platforms) {
     await expect(page.getByRole('dialog').getByRole('button', { name: '확인', exact: true })).toBeDisabled();
     await page.getByRole('dialog').getByRole('textbox').fill('a');
     await page.getByRole('dialog').getByRole('button', { name: '확인', exact: true }).click(); await expect(page.getByText('두 글자 이상', { exact: true })).toBeVisible();
-    await page.getByRole('dialog').getByRole('textbox').fill('완료'); await page.getByRole('dialog').getByRole('button', { name: '확인', exact: true }).click();
+    // The check of 'a' left confirm busy for the minimum loading time.
+    await page.getByRole('dialog').getByRole('textbox').fill('완료'); await expectIdle(page.getByRole('dialog').getByRole('button', { name: '확인', exact: true }));
+    await page.getByRole('dialog').getByRole('button', { name: '확인', exact: true }).click();
     await expect.poll(() => page.evaluate(() => (window as any).results)).toEqual([false, '완료']);
     await page.evaluate(() => {
       const w = window as any, f = w.feedbackContract; w.results = [];

@@ -192,7 +192,9 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
       </View>
       <Animated.View {...(swipeable ? pan.panHandlers : {})} style={{ opacity: fade, transform: [{ translateX: shift }] }}
         // The group is named after the period on every platform; the web also marks it as a group.
-        accessibilityLabel={title} accessibilityState={loading ? { busy: true } : undefined} {...(web ? { role: "group" as const, onKeyDownCapture } : {})}
+        accessibilityLabel={title} accessibilityState={loading ? { busy: true } : undefined}
+        // Native Web reads busy from aria-busy only, not accessibilityState.
+        {...(web ? { role: "group" as const, onKeyDownCapture, "aria-busy": loading || undefined } : {})}
         {...data({ kjunPart: "event-calendar-grid", slide: moving ? slide.phase : undefined, direction: moving ? slide.direction : undefined })}>
         {weeksOf(days).map(row => (
           <View key={row[0].iso} style={{ flexDirection: "row" }}>

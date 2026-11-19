@@ -134,10 +134,11 @@ export function KjunButtonGroup({
                 size={size} disabled={!!blocked} />}
             </Pressable>
           );
-          // The tooltip wraps its trigger in a View, so the outer cell carries the layout the indicator follows.
+          // The tooltip wraps its trigger in a View, so the outer cell carries the layout the indicator follows. Full width,
+          // the cell starts from the labelled segments' padding, so icon-only and labelled segments share the track equally.
           return iconOnly ? (
             <View key={String(option.value)} ref={track} onLayout={event => motion.measure(option.value, event)}
-              style={{ zIndex: 1, flex: fullWidth ? 1 : undefined }}>
+              style={{ zIndex: 1, ...(fullWidth ? { flexGrow: 1, flexShrink: 1, flexBasis: 2 * tokens.buttonGroup.itemPaddingX[size] } : null) }}>
               <KjunTooltip content={blocked ? "" : option.label}>{segment}</KjunTooltip>
             </View>
           ) : segment;

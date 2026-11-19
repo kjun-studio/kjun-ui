@@ -54,7 +54,8 @@ export const FloatingPanel = defineComponent({
     provide(kjunLayerScopeKey, layer.id);
     const target = usePortalTarget();
     const panel = ref<HTMLElement | null>(null);
-    const position = reactive({ top: 0, left: 0, side: "bottom" as string, maxHeight: undefined as number | undefined, triggerWidth: 0 });
+    // The first frame already slides along the requested side (right-start slides from the left, not from above).
+    const position = reactive({ top: 0, left: 0, side: props.placement.split("-")[0] as string, maxHeight: undefined as number | undefined, triggerWidth: 0 });
     const cap = () => typeof props.maxHeight === "number" ? props.maxHeight
       : props.maxHeight == null ? props.field ? tokens.extensions.menu.listMaxHeight : tokens.extensions.floating.maxHeight : undefined;
     const update = () => {

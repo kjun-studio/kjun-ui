@@ -1,4 +1,4 @@
-import { sampleImage, type ExampleTools } from "./example-tools";
+import { sampleImage, sidePages, type ExampleTools } from "./example-tools";
 export function renderExtensionExample(name: string, tools: ExampleTools): any {
   const { h, get, set, change, action, button, settings, disabled, error, platform, colors } = tools;
   switch (name) {
@@ -63,7 +63,20 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       // A sidebar column of a fixed width, as an app would give it; "활동" carries a badge, "문서" opens its children and
       // "도움말" opens in a new tab. Icons only, the column narrows and widens again when a parent or group is pressed;
       // groups carry icons for a rail of groups, and with collapsibleGroups their titles open and close them.
-      if (settings.spaces) return sideNavigationSpaces(tools);
+      // Spaces and a menu panel: a collapsed side navigation with names picks the space, a compact one lists that space's
+      // pages. Choosing a space opens its first page; both values are the app's. Kept inline: the example build copies a
+      // case's body and the consts of example-tools.ts, not other functions in this file.
+      if (settings.spaces) {
+        const space = get("space", "projects"), destination = get("destination", "board");
+        return h("Stack", {}, [h("Group", { style: { alignItems: "flex-start", flexWrap: "nowrap" } }, [
+          h("Box", { width: 72 }, h("KjunSideNavigation", { ariaLabel: "공간", value: space, collapsed: true, railLabels: true, items: [
+            { key: "home", label: "홈", href: "#home", icon: "home" }, { key: "projects", label: "프로젝트", href: "#projects", icon: "folder" },
+            { key: "team", label: "팀", href: "#team", icon: "building", badge: true }, { key: "settings", label: "설정", href: "#settings", icon: "settings" },
+          ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("space", key); set("destination", sidePages[key][0].key); } })),
+          h("Box", { width: 240 }, h("KjunSideNavigation", { ariaLabel: "메뉴", value: destination, density: "compact", items: sidePages[space],
+            onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); } })),
+        ]), h("Text", {}, "현재 위치: " + space + " / " + destination)]);
+      }
       // chrome: a header and a footer with the collapse toggle, which narrows and widens the column itself.
       const collapsed = settings.chrome ? get("narrow", !!settings.collapsed) : !!settings.collapsed && !get("widened", false);
       return h("Stack", {}, [h("Box", { width: collapsed ? settings.railLabels ? 72 : 44 : 240 }, h(name, { ariaLabel: "작업 공간", value: get("destination", "home"), collapsed,
@@ -223,26 +236,4 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         prefix: spec.prefix, suffix: spec.suffix, min: spec.min, max: spec.max, readingAid: settings.readingAid, align: settings.align, size: settings.size, disabled, error, ariaLabel: spec.label, onValueChange: change("amount"), onChangeCommit: (value: string) => set("message", "확정: " + (value || "빈 값")) })));
     }
   }
-}
-
-// Spaces and a menu panel: a collapsed side navigation with names picks the space, a compact one lists that space's pages.
-// Choosing a space opens its first page; both values are the app's.
-const sidePages: Record<string, any[]> = {
-  home: [{ key: "overview", label: "개요", href: "#overview", icon: "chart-bar" }, { key: "requests", label: "받은 요청", href: "#requests", icon: "bell", badge: 4 }],
-  projects: [{ key: "board", label: "보드", href: "#board", icon: "clipboard-list" },
-    { title: "즐겨찾기", items: [{ key: "brand", label: "브랜드 웹사이트", href: "#brand", icon: "world", badge: 8 }, { key: "checkout", label: "결제 화면 개선", href: "#checkout", icon: "currency-won" }] },
-    { title: "보관", items: [{ key: "archive", label: "보관함", href: "#archive", icon: "box" }] }],
-  team: [{ key: "members", label: "구성원", href: "#members", icon: "user" }, { key: "invites", label: "초대", href: "#invites", icon: "mail", badge: true }],
-  settings: [{ key: "profile", label: "프로필", href: "#profile", icon: "user" }, { key: "billing", label: "결제", href: "#billing", icon: "wallet" }],
-};
-function sideNavigationSpaces({ h, get, set }: ExampleTools) {
-  const space = get("space", "projects"), destination = get("destination", "board");
-  return h("Stack", {}, [h("Group", { style: { alignItems: "flex-start", flexWrap: "nowrap" } }, [
-    h("Box", { width: 72 }, h("KjunSideNavigation", { ariaLabel: "공간", value: space, collapsed: true, railLabels: true, items: [
-      { key: "home", label: "홈", href: "#home", icon: "home" }, { key: "projects", label: "프로젝트", href: "#projects", icon: "folder" },
-      { key: "team", label: "팀", href: "#team", icon: "building", badge: true }, { key: "settings", label: "설정", href: "#settings", icon: "settings" },
-    ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("space", key); set("destination", sidePages[key][0].key); } })),
-    h("Box", { width: 240 }, h("KjunSideNavigation", { ariaLabel: "메뉴", value: destination, density: "compact", items: sidePages[space],
-      onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); } })),
-  ]), h("Text", {}, "현재 위치: " + space + " / " + destination)]);
 }

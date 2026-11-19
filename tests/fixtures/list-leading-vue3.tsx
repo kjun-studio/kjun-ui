@@ -25,6 +25,7 @@ createApp(defineComponent(() => () => <K.KjunProvider>
       <K.KjunListRow title="Circle action" icon="bell" leadingSize="xs" iconBackground={iconBackground} chevron onClick={() => { state.clicks++; }} />,
       <K.KjunListRow title="Disabled circle" icon="bell" leadingSize="lg" iconColor={iconColor} iconBackground={iconBackground} disabled onClick={() => { state.clicks++; }} />,
       <K.KjunListRow title="Circle switch" icon="bell" iconBackground={iconBackground} checked={state.checked} onUpdate:checked={(value: boolean) => { state.checked = value; }} />,
+      <K.KjunListRow title="Large switch" icon="bell" leadingSize="lg" iconBackground={iconBackground} description="한 줄 설명" checked={state.checked} onUpdate:checked={(value: boolean) => { state.checked = value; }} />,
       <K.KjunListRow title="Nested parent" icon="bell" leadingSize="lg">{{ default: () => <K.KjunListSection ariaLabel="Nested rows">{{ default: () => <K.KjunListRow title="Nested default" icon="bell" /> }}</K.KjunListSection> }}</K.KjunListRow>,
     ] }}</K.KjunListSection>
     <K.KjunListSection title="Mixed leading">{{ default: () => [

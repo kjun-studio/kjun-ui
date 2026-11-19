@@ -24,10 +24,11 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await openFixture(page, platform, '', 'price-status');
 
-    // A standalone price cell keeps its 8px flash padding; the status sits 6px beyond it, centred on the number.
+    // A standalone price cell without a background flash has no pill padding (only a background flash keeps its
+    // 2px 8px pill), so the status sits 6px after the number, centred on it.
     const cell = page.getByTestId('cell');
     const price = await box(cell.getByText('182,500원', { exact: true })), close = await box(badge(cell, '종가'));
-    expect(Math.round(close.x - (price.x + price.width))).toBe(8 + 6);
+    expect(Math.round(close.x - (price.x + price.width))).toBe(6);
     expect(Math.abs(centre(close) - centre(price))).toBeLessThanOrEqual(1);
     expect(Math.round(close.height)).toBe(16);
 

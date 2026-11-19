@@ -95,7 +95,8 @@ for (const platform of platforms) {
     await expect(anatomy.locator(".guide-case-actions")).toHaveCount(0);
     await expect(anatomy.locator(".anatomy-parts").first()).toBeVisible();
     await page.goto("/components/radio-group?platform=" + platform + "#states");
-    await expect(page.locator('#states [data-guide-case="disabled"]')).toHaveCount(0);
+    // RadioGroup takes a group-wide disabled, so its states show it once.
+    await expect(page.locator('#states [data-guide-case="disabled"]')).toHaveCount(1);
     await page.goto("/components/form-group?platform=" + platform + "#anatomy");
     await expect(page.locator("#anatomy")).toContainText("hint 대신 표시");
     await expect(page.locator("#anatomy .anatomy-graphic img").last()).toHaveAttribute(

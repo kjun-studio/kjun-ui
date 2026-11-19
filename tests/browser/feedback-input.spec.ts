@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { expectIdle } from './loading-state';
 
 async function start(page: Page, platform: string) {
   await openFixture(page, platform, '?scenario=feedback', 'api-contracts');
@@ -48,6 +49,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     await dialog.getByRole('button', { name: '확인' }).click();
     await expect(dialog.getByText('연결이 끊겼습니다')).toBeVisible();
     expect(await results(page)).toEqual([]);
+    // The failed attempt keeps confirm busy for the minimum loading time; retry once it is pressable.
+    await expectIdle(dialog.getByRole('button', { name: '확인' }));
     await dialog.getByRole('button', { name: '확인' }).click();
     await expect.poll(() => results(page)).toEqual([true]);
   });

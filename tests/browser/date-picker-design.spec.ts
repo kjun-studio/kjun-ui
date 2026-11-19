@@ -134,30 +134,50 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(values(page)).toHaveText('2026-09-12|2026-09-21/2026-09-23');
   });
 
+  // TimePicker segments (web spinbuttons, Native buttons) open a wheel of columns in a popover or sheet; the wheel turns a
+  // draft that 확인 commits. The web segment reads its value as aria-valuetext; Native shows it as text.
+  const segment = (page: Page, part: string) => page.getByTestId('time')
+    .getByRole(platform === 'native' ? 'button' : 'spinbutton', { name: '알림 ' + part, exact: true });
+  const reads = async (target: Locator, text: string) => platform === 'native'
+    ? expect(target).toContainText(text) : expect(target).toHaveAttribute('aria-valuetext', text);
+  const column = (page: Page, name: string) => page.getByRole('dialog').getByRole('spinbutton', { name, exact: true });
+
   test(`${platform}: a 12-hour time shows 오후 and keeps HH:mm, and read-only does not open`, async ({ page }) => {
     await openFixture(page, platform, '', 'date-picker-design');
     const time = page.getByTestId('time');
-    await expect(time.getByRole('button', { name: /^알림 시/ })).toContainText('13');
+    await reads(segment(page, '시'), '13');
     await page.evaluate(() => (window as any).configureTime({ hourCycle: 12 }));
-    const period = time.getByRole('button', { name: /^알림 오전\/오후/ });
-    await expect(period).toContainText('오후');
-    await expect(time.getByRole('button', { name: /^알림 시/ })).toContainText('01');
+    const period = segment(page, '오전/오후');
+    await reads(period, '오후');
+    await reads(segment(page, '시'), '01');
+    // The period segment opens the wheel on its column; turning it is a draft until 확인.
     await period.click();
-    await page.getByRole(platform === 'native' ? 'radio' : 'option', { name: '오전' }).click();
+    await expect(column(page, '오전/오후')).toBeFocused();
+    await expect(column(page, '오전/오후')).toHaveAttribute('aria-valuetext', '오후');
+    await page.keyboard.press('ArrowDown');
+    await expect(column(page, '오전/오후')).toHaveAttribute('aria-valuetext', '오전');
+    await expect(page.getByTestId('time-value')).toHaveText('13:30');
+    await page.getByRole('button', { name: '확인', exact: true }).click();
     await expect(page.getByTestId('time-value')).toHaveText('01:30');
+    await expect(column(page, '오전/오후')).toHaveCount(0);
     await page.evaluate(() => (window as any).configureTime({ readOnly: true }));
     await period.click();
-    await expect(page.getByRole(platform === 'native' ? 'radio' : 'option', { name: '오후' })).toHaveCount(0);
+    await expect(column(page, '오전/오후')).toHaveCount(0);
     await expect(time.getByRole('button', { name: '알림 지우기' })).toHaveCount(0);
   });
 
   test(`${platform}: a time off the minute step stays editable`, async ({ page }) => {
     await openFixture(page, platform, '', 'date-picker-design');
     await page.evaluate(() => (window as any).configureTime({ value: '09:07', minuteStep: 5 }));
-    const minute = page.getByTestId('time').getByRole('button', { name: /^알림 분/ });
+    const minute = segment(page, '분');
     await expect(minute).toBeEnabled();
+    await reads(minute, '07');
+    // The wheel stands on the closest step at or below the minute, and turns to the next one.
     await minute.click();
-    await page.getByRole(platform === 'native' ? 'radio' : 'option', { name: '10' }).click();
+    await expect(column(page, '분')).toHaveAttribute('aria-valuenow', '5');
+    await page.keyboard.press('ArrowUp');
+    await expect(column(page, '분')).toHaveAttribute('aria-valuenow', '10');
+    await page.getByRole('button', { name: '확인', exact: true }).click();
     await expect(page.getByTestId('time-value')).toHaveText('09:10');
   });
 

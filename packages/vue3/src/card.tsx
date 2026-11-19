@@ -76,7 +76,8 @@ export const KjunCard = defineComponent({
     onUpdated(warn);
     return () => {
       const link = props.href !== undefined;
-      const { onKeydown: userKeydown, onKeyup: userKeyup, ...rest } = attrs as { onKeydown?: (event: KeyboardEvent) => void; onKeyup?: (event: KeyboardEvent) => void };
+      const { onKeydown: userKeydown, onKeyup: userKeyup, class: appClass, style: appStyle, ...rest } = attrs as {
+        onKeydown?: (event: KeyboardEvent) => void; onKeyup?: (event: KeyboardEvent) => void; class?: unknown; style?: unknown };
       const name = props.ariaLabel ?? props.title;
       // A link card is an a element: the browser handles Enter; a disabled one keeps the link role without an href.
       // Like a native button, a pressable card presses once on Enter keydown (a held key does not repeat) and on Space release.
@@ -127,7 +128,8 @@ export const KjunCard = defineComponent({
             // A pressable or link card's shadow comes from CSS so its hover lift can replace it.
             ...(props.pressable || link ? { "--_kjun-card-shadow": `var(--_kjun-card-elevation-${props.elevation})` } : { boxShadow: `var(--_kjun-card-elevation-${props.elevation})` }),
           },
-        })}>
+        // The app's class follows the KJUN class and its style wins, as on React.
+        }, { class: appClass, style: appStyle })}>
           {parts.media && <div class="kjun-card-media" data-side={layout.sideMedia || undefined} data-aspect={props.mediaAspect}
             style={{ ...(props.mediaAspect ? { aspectRatio: String(tokens.card.mediaAspects[props.mediaAspect]) } : {}), ...(layout.sideMedia ? { gridRow: `1 / span ${Math.max(rows, 1)}` } : {}) }}>{media}</div>}
           {layout.header && (

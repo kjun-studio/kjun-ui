@@ -60,6 +60,10 @@ for (const platform of ['react', 'vue3', 'native']) {
     await openFixture(page,platform,'','visual-contract');
     await page.getByRole('button',{name:'메뉴 묶음 열기'}).click();
     await expect(page.getByRole('button',{name:'하위 메뉴'})).toBeVisible();
+    // The first hover scrolls the button into view, and a scroll of what holds the trigger closes its tooltip at once
+    // (as on React); leave and come back to hover it where it stands.
+    await page.getByRole('button',{name:'도움말 버튼'}).hover();
+    await page.mouse.move(0,0);
     await page.getByRole('button',{name:'도움말 버튼'}).hover();
     await expect(page.getByRole('tooltip')).toContainText('바깥 도움말');
     await page.getByRole('button',{name:'도움말 버튼'}).click();

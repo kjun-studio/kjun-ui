@@ -45,9 +45,18 @@ for (const platform of ['react', 'vue3', 'native']) {
     // A label badge sits right after its label, not at the far edge of the cell.
     const label = await box(row.getByText('상태', { exact: true })), badge = await box(row.getByText('연결', { exact: true }));
     expect(badge.x - (label.x + label.width)).toBeLessThanOrEqual(e.kpiRow.md.labelGap + e.kpiRow.badgePadding.x + 1);
-    // A text value shares the number line, so the two values center on the same line.
-    const number = await box(row.getByText(/^1,234,567/).last()), text = await box(row.getByText('정상', { exact: true }).last());
-    expect(Math.abs(number.y + number.height / 2 - (text.y + text.height / 2))).toBeLessThanOrEqual(1.5);
+    // A text value stands on an invisible strut of the number line, so the two values share one baseline (the web's
+    // strut sits inside the text box, Native's beside it, so the boxes themselves need not match).
+    const baseline = (node: Locator) => node.evaluate(el => {
+      const mark = document.createElement('span');
+      mark.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline';
+      el.appendChild(mark);
+      const y = mark.getBoundingClientRect().top;
+      mark.remove();
+      return y;
+    });
+    const number = await baseline(row.getByText(/^1,234,567/).last()), text = await baseline(row.getByText('정상', { exact: true }).last());
+    expect(Math.abs(number - text)).toBeLessThanOrEqual(1);
     // Only the clickable cell draws a chevron.
     expect((await svgSizes(row)).filter(size => size === e.kpiRow.chevronSize)).toHaveLength(1);
     await captureReview(page, { path: `artifacts/kpi-design-${platform}-1280.png` });

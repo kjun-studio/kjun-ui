@@ -7,7 +7,7 @@ export function generate(input: UsageInput) {
   const rows = () => b.data('rows', s.data === 'empty' ? [] : defaultRows.map(row => s.data === 'long' ? { ...row, name: row.name + ' · 긴 한국어 자산 이름과 설명을 함께 표시합니다' } : row));
   const notify = (name: string, args: string, value: string) => b.handler(name, args, b.result(value));
   const formatter = () => b.declare('formatPrice', 'function formatPrice(value) {\n  return value == null || !Number.isFinite(Number(value)) ? "—" : new Intl.NumberFormat("ko-KR").format(Number(value)) + "원";\n}');
-  b.domainColors = ['KjunKpiHero', 'KjunKpiRow', 'KjunSignedValue', 'KjunDeviation', 'KjunHeatmapCell', 'KjunSparkline', 'KjunMarketSimpleList', 'KjunMarketTable', 'KjunMarketCards', 'KjunMarketListPanel'].includes(name);
+  b.domainColors = ['KjunKpiHero', 'KjunKpiRow', 'KjunSignedValue', 'KjunDeviation', 'KjunPriceCell', 'KjunHeatmapCell', 'KjunSparkline', 'KjunMarketSimpleList', 'KjunMarketTable', 'KjunMarketCards', 'KjunMarketListPanel'].includes(name);
   let content: string;
   switch (name) {
     case 'KjunIcon': content = b.group([b.node(name, { name: 'heart', size: 28 }), b.node(name, { name: 'heart', filled: true, size: 28 }), b.node(name, { name: 'refresh', spin: s.spin, size: 28 })]); break;

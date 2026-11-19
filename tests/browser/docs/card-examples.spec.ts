@@ -50,7 +50,7 @@ for (const platform of ['vue3','react','native'] as const) for (const mode of ['
         await expect(page.getByText('서비스 소개서', { exact: true })).toBeVisible();
         await page.getByRole('button', { name: '전체 문서 보기' }).click();
         await expect(page.getByText('전체 문서를 확인했습니다.', { exact: true })).toBeVisible();
-      } else if (example.id === 'card-statistic') await expect(page.getByText('128', { exact: true })).toBeVisible();
+      } else if (example.id === 'card-statistic') await expect(page.getByText('128건', { exact: true })).toBeVisible();
       else {
         if (example.id === 'card-media') await expect(page.getByRole('img', { name: '정리된 문서와 작업 보드를 그린 일러스트' })).toBeVisible();
         const label = example.id === 'card-media' ? '가이드 보기' : ['card-actions','card-custom-header'].includes(example.id) ? '상세 보기' : '프로젝트 보기';

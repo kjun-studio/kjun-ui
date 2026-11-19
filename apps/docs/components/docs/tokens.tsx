@@ -36,7 +36,7 @@ export function Tokens() {
         <p className="body-copy">2·3·6·10·14px는 작은 요소 사이를 미세하게 맞출 때만 씁니다. 28px와 40px 이상은 큰 영역을 구분할 때 씁니다.</p>
         <SpacingSamples values={spacing.filter(([, value]) => !preferredSpacing.includes(value))} />
       </details>
-      <Related><Link href="/layout">화면 배치</Link><Link href="/components/stack">Stack·Inline의 간격 단계</Link><Link href="/components/form-group#states">FormGroup의 항목 간격</Link></Related>
+      <Related><Link href="/layout">화면 배치</Link><Link href="/components/stack">Stack·Inline의 간격 단계</Link></Related>
     </section>
 
     <section id="radius">

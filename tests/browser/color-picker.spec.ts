@@ -386,8 +386,13 @@ for (const platform of ['react', 'vue3', 'native']) {
       // Eight fixed columns fill the content width: (216 - 7 × 8) / 8 = 20px a swatch, so 'none' + 7 colors make one row.
       const radios = swatches(page).getByRole('radio');
       const eight = () => Promise.all([...Array(8).keys()].map(async i => (await radios.nth(i).boundingBox())!));
-      // Native Web scales the panel in and measures the row: read it once one row holds all eight.
-      await expect.poll(async () => new Set((await eight()).map(box => Math.round(box.y))).size).toBe(1);
+      // The panel slides (web) or scales (Native Web) in and Native measures the row: read it once two reads in a row agree
+      // and one row holds all eight.
+      await expect.poll(async () => {
+        const before = await eight(), after = await eight();
+        const still = before.every((box, i) => box.x === after[i].x && box.y === after[i].y && box.width === after[i].width);
+        return still && new Set(after.map(box => Math.round(box.y))).size === 1;
+      }).toBe(true);
       const boxes = await eight();
       const [a, b] = boxes;
       expect(Math.round(a.width)).toBe(Math.round((content - 7 * 8) / 8));

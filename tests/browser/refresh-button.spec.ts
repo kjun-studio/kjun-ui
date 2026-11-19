@@ -3,6 +3,7 @@ import { icons } from '@kjun-ui/icons/defaults';
 import { expect, test, type Page } from '@playwright/test';
 import { tokens } from '../../packages/tokens/dist/index.js';
 import { openFixture } from './packed-fixture';
+import { expectBusy, expectIdle } from './loading-state';
 
 const button = (page: Page, id = 'icon') => page.getByTestId(id).getByRole('button');
 const configure = async (page: Page, next: object) => {
@@ -44,7 +45,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(button(page, 'text')).toHaveCSS('opacity', '1');
       await expect(button(page)).toHaveAttribute('aria-busy', 'true');
       expect(await shape(page, 'text')).toEqual(before);
-      await expect(button(page)).toBeDisabled();
+      await expectBusy(button(page), platform);
     }
     await configure(page, { size: 'md', block: true, loading: false });
     await page.setViewportSize({ width: 375, height: 700 });
@@ -120,14 +121,14 @@ for (const platform of ['react', 'vue3', 'native']) {
     await page.clock.pauseAt(new Date('2026-09-26T00:00:01Z'));
     await openFixture(page, platform, '?loading&dark', 'refresh-button');
     await configure(page, { tooltip: '' });
-    await expect(button(page)).toBeDisabled();
+    await expectBusy(button(page), platform);
     // Without motion the refresh glyph gives way to the shared loading ring, painted on its arc in the disabled ink.
     await expect(icon(page).locator('path')).toHaveCSS('stroke', 'rgb(212, 212, 212)');
     await expect(button(page)).toHaveAccessibleName('목록 새로고침');
     await configure(page, { loading: false });
-    await expect(button(page)).toBeDisabled();
+    await expectBusy(button(page), platform);
     await page.clock.runFor(450);
-    await expect(button(page)).toBeEnabled();
+    await expectIdle(button(page));
     await button(page).press('Enter');
     await button(page).press('Space');
     await expect(page.getByTestId('events')).toHaveText('2');
@@ -136,9 +137,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(page.getByTestId('events')).toHaveText('2');
     await page.clock.runFor(40);
     await configure(page, { loading: false });
-    await expect(button(page)).toBeDisabled();
+    await expectBusy(button(page), platform);
     await page.clock.runFor(400);
-    await expect(button(page)).toBeEnabled();
+    await expectIdle(button(page));
     await button(page, 'text').press('Enter');
     await expect(page.getByTestId('events')).toHaveText('3');
     await captureReview(page, { path: `artifacts/refresh-${platform}-dark.png` });
@@ -151,8 +152,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(refresh).toBeEnabled();
     await refresh.click();
     await expect(page.getByTestId('events')).toHaveText('1');
-    await expect(refresh).toHaveAttribute('aria-busy', 'true');
-    await expect(refresh).toBeDisabled();
+    await expectBusy(refresh, platform);
     await refresh.click({ force: true });
     await expect(page.getByTestId('events')).toHaveText('1');
     await page.evaluate(() => (window as any).finishRefresh());

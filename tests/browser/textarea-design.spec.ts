@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { openFixture } from './packed-fixture';
+import { expectIdle } from './loading-state';
 const composer = (page: Page) => page.getByTestId('composer');
 const area = (page: Page) => composer(page).locator('textarea');
 const height = async (page: Page) => Math.round((await area(page).boundingBox())!.height);
@@ -85,6 +86,7 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(composer(page).locator('[aria-live="polite"]')).toHaveText('1자 남음');
     }
     await page.evaluate(() => (window as any).configureInputDesign({ submitting: false }));
+    await expectIdle(submit);
     await submit.click();
     await expect(page.getByTestId('sent')).not.toHaveText('');
   });

@@ -215,7 +215,7 @@ test('Native menu never paints its placeholder position', async ({ page }) => {
   const result = await page.evaluate(async () => {
     const trigger = [...document.querySelectorAll<HTMLElement>('[role="button"]')].find(el => el.textContent === 'Open menu')!;
     const anchor = trigger.getBoundingClientRect(); trigger.click(); const points = [];
-    for (let i = 0; i < 24; i++) { await new Promise(requestAnimationFrame); const el = document.querySelector('[aria-label="메뉴"]');
+    for (let i = 0; i < 24; i++) { await new Promise(requestAnimationFrame); const el = document.querySelector('[role="dialog"] [aria-label="메뉴"]');
       if (el && Number(getComputedStyle(el).opacity) > 0) { const r = el.getBoundingClientRect(); points.push({ x: r.x, y: r.y }); }
     }
     return { anchor: { x: anchor.x, bottom: anchor.bottom }, points };

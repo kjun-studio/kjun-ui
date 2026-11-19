@@ -1,7 +1,14 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 import { tokens } from '../../packages/tokens/dist/index.js';
 import { openFixture } from './packed-fixture';
 import { box, chartPart, chartRoot } from './visual-contract-helpers';
+
+// What the chart's status reads: its text without the decorative spinner, whose own hidden "로딩 중" sits in an aria-hidden wrapper.
+const spokenStatus = (page: Page) => page.getByTestId('chart').getByRole('status').evaluate(el => {
+  const copy = el.cloneNode(true) as HTMLElement;
+  copy.querySelectorAll('[aria-hidden="true"]').forEach(node => node.remove());
+  return copy.textContent;
+});
 
 for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: chart loading labels remain clear without animation and can be hidden`,async({page})=>{
@@ -111,7 +118,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(chartPart(page,'loading')).toBeVisible();
     // The chart's status carries the text; the spinner inside it is decorative so nothing is announced twice.
     await expect(page.getByTestId('chart').getByRole('status')).toHaveCount(1);
-    await expect(page.getByTestId('chart').getByRole('status')).toHaveText('차트를 불러오는 중');
+    expect(await spokenStatus(page)).toBe('차트를 불러오는 중');
     await expect(chartPart(page,'plot')).toHaveCount(0);
     expect((await box(chartRoot(page))).height).toBe(180);
     await openFixture(page,platform,'?spinner&no-text','visual-contract');
@@ -120,6 +127,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     await openFixture(page,platform,'?delay=4000','visual-contract');
     expect((await box(chartRoot(page))).height).toBe(180);
     await expect(page.getByTestId('chart').getByRole('status')).toHaveCount(0);
-    await expect(page.getByTestId('chart').getByRole('status')).toHaveText('차트를 불러오는 중',{timeout:15000});
+    await expect(page.getByTestId('chart').getByRole('status')).toHaveCount(1,{timeout:15000});
+    expect(await spokenStatus(page)).toBe('차트를 불러오는 중');
   });
 }

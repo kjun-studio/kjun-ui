@@ -17,7 +17,11 @@ export async function openSelect(page: any) {
 export const geometry = (node: Locator) => node.evaluate(root => {
   const table = root.querySelector('table');
   const title = [...root.querySelectorAll('*')].find(el => el.textContent === '자산' && !el.children.length)!;
-  const header = table ? table.querySelector('thead tr')! : title.parentElement!.parentElement!;
+  // Native: the header row is the first ancestor holding more than the title; a pinned identity cell sits in its own
+  // moving wrapper, one level deeper than the skeleton's.
+  let headerRow = title.parentElement!;
+  while (headerRow.textContent === '자산') headerRow = headerRow.parentElement!;
+  const header = table ? table.querySelector('thead tr')! : headerRow;
   const body = table ? [...table.querySelectorAll('tbody tr')] : [...header.parentElement!.children].slice(1);
   const rect = (el: Element) => { const r = el.getBoundingClientRect(); return { x: r.x - header.getBoundingClientRect().x, width: r.width, height: r.height }; };
   return { header: rect(header), columns: [...header.children].map(rect), rows: body.slice(0, 2).map(rect) };

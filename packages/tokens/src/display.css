@@ -353,12 +353,14 @@
   gap: var(--_kjun-extension-alert-actions-gap);
   margin-top: var(--_kjun-alert-action-gap);
 }
-/* Without a title the actions sit beside the message, centred on its first line like the close button. */
+/* Without a title the actions sit beside the message, centred on its first line like the close button. In a narrow
+   alert the message and the actions give way in proportion to their length; a button that cannot wrap keeps its
+   width (its min-content), while one that wraps (a data state's retry) shrinks with the message instead of overflowing. */
 .kjun-alert-actions[data-placement="end"] {
   flex-wrap: nowrap;
-  flex-shrink: 0;
   margin-block: calc((var(--_kjun-alert-line) - var(--_kjun-alert-action-height)) / 2);
 }
+.kjun-alert:has(> .kjun-alert-actions[data-placement="end"]) > .kjun-alert-content { flex-basis: auto; }
 /* Secondary actions and the close button tint the alert's own fill instead of sitting on it as gray or white. */
 .kjun-alert-actions .kjun-button[data-variant="secondary"] { background: var(--_kjun-alert-tint-control); }
 .kjun-alert-actions .kjun-button[data-variant="secondary"]:hover:not(:disabled, [aria-busy="true"]) { background: var(--_kjun-alert-tint-hover); }

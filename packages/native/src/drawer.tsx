@@ -7,7 +7,7 @@ import { directionalShadow } from "../../../shared/package-runtime/elevation";
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { Animated, Keyboard, PanResponder, Platform, ScrollView, View, useWindowDimensions, type ScrollViewProps } from "react-native";
+import { Animated, Keyboard, PanResponder, Platform, ScrollView, View, useWindowDimensions, type ScrollViewProps, type ViewStyle } from "react-native";
 import { drawerFrame, keyboardEvents, keyboardOverlap } from "../../../shared/package-runtime/drawer-geometry";
 import { sheetDragDismisses, sheetDragOffset } from "../../../shared/package-runtime/sheet-drag";
 import { useNativePresence, motionEmphasized, nativeDriver } from "./motion";
@@ -146,6 +146,8 @@ export function KjunDrawer({
     },
   }), [drag, geometry.dismissDistance]);
   const dragArea = grab ? pan.panHandlers : {};
+  // A mouse drag on Native Web would select the title, and React Native Web ends the gesture when a selection starts.
+  const dragSurface = grab && Platform.OS === "web" ? ({ userSelect: "none" } as ViewStyle) : null;
   const dragFade = drag.interpolate({ inputRange: [0, Math.max(panelHeight, 1)], outputRange: [1, 0], extrapolate: "clamp" });
   // iOS keeps dismissing the native window after visible turns false; report once it is gone so the next sheet can open.
   const iosDismiss = Platform.OS === "ios";
@@ -226,7 +228,7 @@ export function KjunDrawer({
         >
           {grab && (
             <View {...dragArea} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
-              style={{ alignItems: "center", paddingTop: geometry.handleSpace }}>
+              style={{ alignItems: "center", paddingTop: geometry.handleSpace, ...dragSurface }}>
               <View style={{ width: geometry.handleWidth, height: geometry.handleHeight, borderRadius: geometry.handleRadius,
                 backgroundColor: dragging ? colors.textTertiary : colors.borderStrong }} />
             </View>
@@ -241,6 +243,7 @@ export function KjunDrawer({
                 paddingTop: grab ? geometry.handleSpace : geometry.paddingY,
                 paddingBottom: titled ? geometry.paddingY : 0,
                 paddingHorizontal: geometry.paddingX,
+                ...dragSurface,
               }}
             >
               {titled && (

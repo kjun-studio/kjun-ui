@@ -112,26 +112,21 @@ export async function verifyKeyboard(page, d, note) {
     if (profile === 'date') {
       const range = d.component === 'KjunDateRangePicker', before = await snapshot(page);
       const day = name => page.getByRole('button', { name, exact: true });
-      if (d.platform === 'native') {
-        // Native calendars take Tab and Enter; arrow movement is a Web grid feature.
-        for (const name of range ? ['2026년 9월 20일 일요일', '2026년 9월 25일 금요일'] : ['2026년 9월 13일 일요일']) { await tabTo(page, day(name)); await page.keyboard.press('Enter'); }
-      } else {
-        // The calendar opens on the selected day (a range on its start); arrows move a day and Enter picks it.
-        const first = day(range ? '2026년 9월 8일 화요일' : '2026년 9월 12일 토요일');
-        await expect(first).toBeFocused(); await page.keyboard.press('ArrowRight'); await expect(first).not.toBeFocused();
-        await expect(day(range ? '2026년 9월 9일 수요일' : '2026년 9월 13일 일요일')).toBeFocused();
-        await page.keyboard.press('Enter');
-        if (range) { await page.keyboard.press('ArrowRight'); await page.keyboard.press('Enter'); }
-      }
+      // The calendar opens on the selected day (a range on its start); arrows move a day and Enter picks it. Native Web
+      // keeps one tab stop on the shown day and takes the same keys (DatePicker review r1).
+      const first = day(range ? '2026년 9월 8일 화요일' : '2026년 9월 12일 토요일');
+      await expect(first).toBeFocused(); await page.keyboard.press('ArrowRight'); await expect(first).not.toBeFocused();
+      await expect(day(range ? '2026년 9월 9일 수요일' : '2026년 9월 13일 일요일')).toBeFocused();
+      await page.keyboard.press('Enter');
+      if (range) { await page.keyboard.press('ArrowRight'); await page.keyboard.press('Enter'); }
       // A range commits with Apply; a single date commits at once.
       if (range) await page.getByRole('button', { name: '적용' }).click();
       await stateChanged(page, before); note('달력 키보드 선택'); return;
     } else {
-      const option = page.getByRole('option').first(); await expect(option).toBeVisible();
-      // React and Vue 3 move DOM focus into the listbox.
-      if (d.platform !== 'native') await expect.poll(() => page.getByRole('listbox').evaluate(node => node.contains(document.activeElement)),
-        { message: '시간 선택 목록의 초기 포커스' }).toBe(true);
-      await page.keyboard.press('ArrowDown'); const before = await snapshot(page); await page.keyboard.press('Enter');
+      // Enter on a segment opens the wheel with focus on that segment's column; arrows turn the draft and Enter confirms it.
+      const column = page.getByRole('dialog').getByRole('spinbutton').first();
+      await expect(column, '시간 휠의 초기 포커스').toBeFocused();
+      const before = await snapshot(page); await page.keyboard.press('ArrowDown'); await page.keyboard.press('Enter');
       await stateChanged(page, before);
     }
     await page.keyboard.press('Escape');
@@ -225,8 +220,9 @@ export async function verifyKeyboard(page, d, note) {
   for (const key of ['disabled', 'loading'].filter(key => key in settings && !d.scenario.children && !d.scenario.separateAction && profile !== 'market')) {
     await configure(page, { [key]: true });
     const blocked = primary(page, d);
-    // A saving switch is announced busy and ignores presses without leaving the tab order.
-    if (key === 'loading' && profile === 'checked' && d.component === 'KjunSwitch') await expect(blocked).toHaveAttribute('aria-busy', 'true');
+    // A saving switch is announced busy and ignores presses without leaving the tab order. A loading button does too:
+    // aria-disabled on the web, while React Native Web writes aria-disabled from `disabled` alone, so Native shows aria-busy.
+    if (key === 'loading' && ((profile === 'checked' && d.component === 'KjunSwitch') || d.platform === 'native')) await expect(blocked).toHaveAttribute('aria-busy', 'true');
     else await expect(blocked).toBeDisabled();
     const count = await events(page); await page.keyboard.press('Enter'); await page.keyboard.press('Space');
     expect(await events(page)).toBe(count); note(key + ' 실행 차단');

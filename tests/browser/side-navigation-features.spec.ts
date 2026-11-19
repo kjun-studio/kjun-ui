@@ -224,8 +224,9 @@ test('native: SideNavigation flyout, group counts, actions and the collapse togg
   await nav.getByRole('button', { name: /^프로젝트/ }).click();
   const panel = page.getByRole('dialog', { name: '프로젝트' });
   await expect(panel.getByRole('link', { name: '결제 화면 개선' })).toBeVisible();
-  // The panel opens level with the icon (right-start).
-  expect(Math.abs((await panel.boundingBox())!.y - (await nav.getByRole('button', { name: /^프로젝트/ }).boundingBox())!.y)).toBeLessThanOrEqual(1);
+  // The panel opens level with the icon (right-start). Native Web names its full-screen Modal dialog after the panel, so
+  // measure the labelled panel inside it.
+  expect(Math.abs((await panel.getByLabel('프로젝트', { exact: true }).boundingBox())!.y - (await nav.getByRole('button', { name: /^프로젝트/ }).boundingBox())!.y)).toBeLessThanOrEqual(1);
   await panel.getByRole('link', { name: /브랜드 웹사이트/ }).click();
   await expect(page.getByTestId('log')).toHaveText('go:brand');
   await expect(page.getByRole('dialog')).toHaveCount(0);

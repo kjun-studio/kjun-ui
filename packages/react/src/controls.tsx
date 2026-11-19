@@ -62,7 +62,8 @@ export function KjunButtonGroup({
               flex: fullWidth ? 1 : undefined,
               // An icon-only segment is square: as wide as the segment is tall.
               width: iconOnly && !fullWidth ? tokens.buttonGroup.heights[size] - 2 * tokens.buttonGroup.padding[size] : undefined,
-              paddingInline: iconOnly ? 0 : tokens.buttonGroup.itemPaddingX[size],
+              // Full width, every segment keeps the item padding, so icon-only and labelled segments share the track equally.
+              paddingInline: iconOnly && !fullWidth ? 0 : tokens.buttonGroup.itemPaddingX[size],
               borderRadius: tokens.buttonGroup.itemRadii[size],
               ...selectionTypeStyle(size, value === option.value),
             }}

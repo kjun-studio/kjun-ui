@@ -1,5 +1,5 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { createContext, useContext, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from "react";
 import { Image, View, type ColorValue, type ImageSourcePropType } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
@@ -37,14 +37,21 @@ export function KjunImage({ src, source, alt, decorative = false, aspectRatio = 
   const caption = textual && boxWidth >= tokens.responsive.imageFallbackText;
   const icon = <KjunIcon name="photo" size={tokens.extensions.image.fallbackIconSize} color={colors.textSecondary} />;
   const radius = shape === "rounded" ? tokens.extensions.image.roundedRadius : shape === "circle" ? tokens.radius.radius9999 : undefined;
+  // Devices report the decoded size as nativeEvent.source; React Native Web passes the DOM load event, whose target is the
+  // decoded <img>. Native Web reloads the image whenever its handlers change, so they change only with the request.
+  const latest = useRef({ auto, onLoad, onError });
+  latest.current = { auto, onLoad, onError };
+  const loaded = useCallback((event: { nativeEvent: unknown }) => {
+    if (version !== current.current.version) return;
+    const native = event.nativeEvent as { source?: { width?: number; height?: number }; target?: { naturalWidth?: number; naturalHeight?: number } };
+    const width = native.source?.width ?? native.target?.naturalWidth, height = native.source?.height ?? native.target?.naturalHeight;
+    if (latest.current.auto && width && height) setNatural(old => old?.version === version && old.ratio === width / height ? old : { version, ratio: width / height });
+    latest.current.onLoad?.();
+  }, [version]);
+  const errored = useCallback(() => { if (version === current.current.version) { setFailed(version); latest.current.onError?.(); } }, [version]);
   return <View accessibilityElementsHidden={decorative} importantForAccessibility={decorative ? "no-hide-descendants" : "auto"} aria-hidden={decorative || undefined} style={{ width: "100%", aspectRatio: ratio, height: ratio === undefined ? 0 : undefined, borderRadius: radius, overflow: "hidden", backgroundColor: background ?? colors.secondary }}>
     {showing ? <Image key={version} source={source ?? { uri: src }} accessible={!decorative} accessibilityLabel={decorative ? undefined : alt} resizeMode={fit} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-      onLoad={event => {
-        if (version !== current.current.version) return;
-        const size = (event.nativeEvent as { source?: { width?: number; height?: number } }).source;
-        if (auto && size?.width && size.height) setNatural({ version, ratio: size.width / size.height });
-        onLoad?.();
-      }} onError={() => { if (version === current.current.version) { setFailed(version); onError?.(); } }} /> : <View accessible={!decorative} accessibilityRole="image" accessibilityLabel={decorative ? undefined : alt} aria-hidden={decorative || undefined}
+      onLoad={loaded} onError={errored} /> : <View accessible={!decorative} accessibilityRole="image" accessibilityLabel={decorative ? undefined : alt} aria-hidden={decorative || undefined}
       onLayout={textual ? event => setBoxWidth(event.nativeEvent.layout.width) : undefined}
       style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: tokens.space.inline.xs, paddingHorizontal: textual ? tokens.space.inline.md : 0 }}>
       {textual ? <>{icon}{caption ? <KText style={{ ...typeStyle("caption"), color: colors.textSecondary, textAlign: "center" }}>{fallback}</KText> : null}</>

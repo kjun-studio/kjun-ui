@@ -101,7 +101,14 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(height).toBeLessThanOrEqual(tokens.typography.numberLg.lineHeightPx + 1);
     }
     // A label aside sits on the label line and keeps its clicks: the hero button and the cell button report themselves only.
-    const heroLabel = await box(page.getByTestId('aside-hero').getByText('총 평가 금액', { exact: true }));
+    // On the web the aside sits inside the label's block, so the label is measured by its own text.
+    const heroLabel = platform === 'native' ? await box(page.getByTestId('aside-hero').getByText('총 평가 금액', { exact: true }))
+      : await page.getByTestId('aside-hero').locator('.kjun-kpi-hero__label').evaluate(el => {
+        const text = [...el.childNodes].find(node => node.nodeType === Node.TEXT_NODE && node.textContent!.trim() === '총 평가 금액')!;
+        const range = document.createRange(); range.selectNodeContents(text);
+        const { x, y, width, height } = range.getBoundingClientRect();
+        return { x, y, width, height };
+      });
     const heroAside = await box(page.getByTestId('aside-hero').getByText('가리기', { exact: true }));
     expect(Math.abs((heroAside.y + heroAside.height / 2) - (heroLabel.y + heroLabel.height / 2))).toBeLessThanOrEqual(2);
     expect(heroAside.x).toBeGreaterThan(heroLabel.x + heroLabel.width);
@@ -113,7 +120,10 @@ for (const platform of ['react', 'vue3', 'native']) {
     // Phone grid outside the summary: a full first cell, two side by side, and the last cell alone takes the whole line.
     await page.setViewportSize({ width: 375, height: 1600 });
     const grid = page.getByTestId('grid');
-    const [head, left, right, alone] = await Promise.all(['헤드', '왼쪽', '오른쪽', '혼자'].map(text => box(grid.getByText(text, { exact: true }))));
+    const cells = () => Promise.all(['헤드', '왼쪽', '오른쪽', '혼자'].map(text => box(grid.getByText(text, { exact: true }))));
+    // Native lays the grid out from its measured width, a frame after the resize.
+    await expect.poll(async () => { const [, left, , alone] = await cells(); return alone.y > left.y + left.height; }).toBe(true);
+    const [head, left, right, alone] = await cells();
     expect(Math.abs(left.y - right.y)).toBeLessThanOrEqual(1);
     expect(right.x).toBeGreaterThan(left.x + left.width);
     expect(alone.y).toBeGreaterThan(left.y + left.height);
