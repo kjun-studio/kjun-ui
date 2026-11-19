@@ -85,8 +85,9 @@ export function generate(input: UsageInput) {
       const sortNotice = () => notify('sort', 'key', '(columns.find(column => column.key === key)?.label || "선택한 항목") + " 기준으로 정렬했습니다."');
       if (name === 'KjunMarketTable') {
         // MarketTable keeps its own output: the shared props, then its flash price column over the plain one.
-        const market = { rows: rows(), columns: marketColumns(), ...rowText(), priceFormatter: formatter(), formatMetric: formatMetric(), showActions: true, onRowClick: selectRow() };
-        content = b.node(name, { ...market, columns: b.data('columns', columns.map((col, i) => ({ ...col, type: ['text', 'price', 'percent'][i], ...(i === 1 ? { flash: true } : {}) }))),
+        const flashColumns = () => b.data('columns', columns.map((col, i) => ({ ...col, type: ['text', 'price', 'percent'][i], ...(i === 1 ? { flash: true } : {}) })));
+        const market = { rows: rows(), columns: flashColumns(), ...rowText(), priceFormatter: formatter(), formatMetric: formatMetric(), showActions: true, onRowClick: selectRow() };
+        content = b.node(name, { ...market,
           onToggleFavorite: notify('favorite', 'row', '"즐겨찾기 " + row.name'), onToggleInterest: notify('interest', 'row', '"관심 " + row.name'), onSort: sortNotice() });
       }
       else if (name === 'KjunMarketCards') {
