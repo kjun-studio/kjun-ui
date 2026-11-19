@@ -5,7 +5,7 @@ export default [
   ['KjunMarketCards', 'market', 'rows sortKey', '시세 카드의 정렬 선택과 행 컨트롤', {}],
   ['KjunMarketListPanel', 'market', '', '패널에 공급한 필터와 시세 목록', { children: true }],
   ['KjunMarketSimpleList', 'market', 'rows', '시세 목록의 행 실행과 페이지 컨트롤', {}],
-  ['KjunMarketTable', 'market', 'rows showActions', '시세 표의 정렬·관심·즐겨찾기 컨트롤', {}],
+  ['KjunMarketTable', 'market', 'rows showActions onRowClick activeKey', '시세 표의 정렬·관심·즐겨찾기 컨트롤과 행 열기(Enter·Space), 열린 행의 aria-current', {}],
   ['KjunMarketTableSkeleton', 'decorative', 'rows columns', '시세 표의 비대화형 로딩 자리표시자', {}],
   ['KjunPriceCell', 'text', 'value formatter', '가격 수치와 단위', { text: '1,234,567' }],
   ['KjunSignedValue', 'text', 'value format showSign', '등락률의 부호·수치·단위', { text: '1.25' }],

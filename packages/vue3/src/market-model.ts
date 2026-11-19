@@ -11,7 +11,8 @@ export interface MarketColumn {
   width?: number | string;
   sortable?: boolean;
   defaultSort?: boolean;
-  flash?: "price" | "change";
+  /** Price columns: true or "text" colours the digits, "background" fills the price for a moment after it moves (KjunPriceCell flash). "price" reads as true; "change" has no effect. */
+  flash?: boolean | "text" | "background" | "price" | "change";
   weight?: string;
   /** Sparkline columns: the row field with the reference value (a previous close), drawn as a dotted baseline. */
   baselineKey?: string;

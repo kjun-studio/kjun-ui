@@ -17452,6 +17452,27 @@
         "description": ""
       },
       {
+        "name": "stickyIdentity",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "The toggle and identity columns stay in view while the other columns scroll sideways."
+      },
+      {
+        "name": "divider",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "false drops the lines between rows; the header keeps its line."
+      },
+      {
+        "name": "activeKey",
+        "type": "undefined",
+        "required": false,
+        "default": "—",
+        "description": "The rowKey value of the row the app has open; it takes the selected fill and aria-current."
+      },
+      {
         "name": "formatMetric",
         "type": "MarketFormatter",
         "required": false,
@@ -17593,6 +17614,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "stickyIdentity",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The toggle and identity columns stay in view while the other columns scroll sideways. Default true."
+      },
+      {
+        "name": "divider",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false drops the lines between rows; the header keeps its line. Default true."
+      },
+      {
+        "name": "activeKey",
+        "type": "unknown",
+        "required": false,
+        "default": "—",
+        "description": "The rowKey value of the row the app has open (a detail beside the table); it takes the selected fill and aria-current."
       },
       {
         "name": "formatMetric",
@@ -17917,6 +17959,34 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "stickyIdentity",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The toggle and identity columns stay in view while the other columns scroll sideways. Default true."
+      },
+      {
+        "name": "divider",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "false drops the lines between rows; the header keeps its line. Default true."
+      },
+      {
+        "name": "activeKey",
+        "type": "unknown",
+        "required": false,
+        "default": "—",
+        "description": "The rowKey value of the row the app has open (a detail beside the table); it takes the selected fill and aria-current."
+      },
+      {
+        "name": "fadeColor",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").ColorValue | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Native: the colour the trailing scroll edge fades into, for a table on another background than surface."
       },
       {
         "name": "formatMetric",

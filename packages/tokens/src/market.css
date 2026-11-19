@@ -154,8 +154,62 @@
   font-weight: var(--_kjun-type-body-weight);
   letter-spacing: var(--_kjun-type-body-tracking);
 }
-.kjun-market-table-grid tr:hover {
+/* Like KjunTable: rows part with the lighter divider and the header keeps the border line; divider={false} drops them. */
+.kjun-market-table-grid tbody td {
+  border-bottom-color: var(--_kjun-color-divider);
+}
+.kjun-market-table[data-divider="false"] .kjun-market-table-grid tbody td {
+  border-bottom-color: transparent;
+}
+/* Only a row that opens (onRowClick) answers the pointer, and it takes focus like a KjunTable row. */
+.kjun-market-table-grid tbody > tr[data-clickable] {
+  cursor: pointer;
+}
+.kjun-market-table-grid tbody > tr[data-clickable]:hover,
+.kjun-market-table-grid tbody > tr[data-clickable]:hover > [data-pin] {
   background: var(--_kjun-color-hover);
+}
+.kjun-market-table-grid tbody > tr[data-clickable]:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-inset-offset);
+}
+/* activeKey: the row the app has open keeps the selected fill, under the pointer too. */
+.kjun-market-table-grid tbody > tr[aria-current="true"]:nth-child(n),
+.kjun-market-table-grid tbody > tr[aria-current="true"] > [data-pin] {
+  background: var(--_kjun-color-selected-bg);
+}
+/* Sort headers read like KjunTable's: the sorted column turns to text colour and weight, and the button shows focus. */
+.kjun-market-table-grid th[aria-sort="ascending"] button,
+.kjun-market-table-grid th[aria-sort="descending"] button {
+  color: var(--_kjun-color-text);
+  font-weight: var(--_kjun-type-section-title-weight);
+}
+.kjun-market-table-grid th button:hover .kjun-icon { color: var(--_kjun-color-text-secondary); }
+.kjun-market-table-grid th[aria-sort="ascending"] button .kjun-icon,
+.kjun-market-table-grid th[aria-sort="descending"] button .kjun-icon { color: var(--_kjun-color-text); }
+.kjun-market-table-grid th button:focus-visible {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-offset);
+  border-radius: var(--_kjun-geometry-radius-radius4);
+}
+/* stickyIdentity: the toggle column and the identity column after it stay in view while the rest scroll under them;
+   once the table has scrolled, the identity column's end casts a soft edge instead of a rule. */
+.kjun-market-table-grid [data-pin] {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  /* A label wider than its pinned column stops at the column's edge instead of running over the cells passing under it. */
+  overflow: hidden;
+  background: var(--_kjun-color-surface);
+}
+.kjun-market-table-grid [data-pin="identity"] {
+  left: var(--_kjun-market-table-actions-width);
+}
+.kjun-market-table-grid th[data-pin] {
+  z-index: 2;
+}
+.kjun-table-scroll[data-scrolled] .kjun-market-table-grid [data-pin-edge] {
+  box-shadow: var(--_kjun-geometry-dimension-value8) 0 var(--_kjun-geometry-dimension-value8) calc(-1 * var(--_kjun-geometry-dimension-value8)) var(--_kjun-color-shadow);
 }
 .kjun-market-table-grid .kjun-market-actions {
   width: var(--_kjun-market-table-actions-width);

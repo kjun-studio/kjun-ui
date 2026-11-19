@@ -328,13 +328,29 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         priceValue: (r: any) => r.price,
         changeValue: (r: any) => r.change,
       }, undefined, marketStatus);
-    case "KjunMarketTable":
-      return h(name, {
+    case "KjunMarketTable": {
+      // flash: "시세 갱신" moves the prices so the price column flashes; wide adds columns that scroll under the pinned
+      // name; active keeps the row the reader opened filled.
+      const tick = Number(get("tick", 0));
+      const tableRows = market.rows.map((r: any, i: number) => ({ ...r, price: r.price + (i === 1 ? -100 : 100) * tick,
+        volume: ["12,340", "5,120", "880"][i] ?? "-", cap: ["8.2조", "1.1조", "320억"][i] ?? "-" }));
+      const tableColumns = [
+        ...market.columns.map((column: any) => column.type === "price" && settings.flash ? { ...column, flash: true } : column),
+        ...(settings.wide ? [{ key: "volume", label: "거래량", align: "right" }, { key: "cap", label: "시가총액", align: "right" }] : []),
+      ];
+      const table = h(name, {
         ...market,
+        rows: tableRows,
+        columns: tableColumns,
+        activeKey: settings.active ? get("active", "b") : undefined,
+        divider: settings.divider !== false,
+        onRowClick: (r: any) => { set("active", r.id); message(r.name); },
         onToggleFavorite: (r: any) => message("즐겨찾기 " + r.name),
         onToggleInterest: (r: any) => message("관심 " + r.name),
-        onSort: (key: string) => message((market.columns.find(column => column.key === key)?.label || "선택한 항목") + " 기준으로 정렬했습니다."),
+        onSort: (key: string) => message((tableColumns.find((column: any) => column.key === key)?.label || "선택한 항목") + " 기준으로 정렬했습니다."),
       }, undefined, marketStatus);
+      return settings.flash ? h("Stack", {}, [table, h("Group", {}, [button("시세 갱신", () => set("tick", tick + 1))])]) : table;
+    }
     case "KjunMarketCards":
       return h(name, {
         ...market,

@@ -12,3 +12,11 @@ export function watchTrailingOverflow(element: HTMLElement, onChange: (hidden: b
     element.removeEventListener("scroll", update);
   };
 }
+
+// Reports whether a horizontal scroller has moved off its start, so pinned columns can cast their edge.
+export function watchLeadingScroll(element: HTMLElement, onChange: (scrolled: boolean) => void): () => void {
+  const update = () => onChange(element.scrollLeft > 0);
+  element.addEventListener("scroll", update, { passive: true });
+  update();
+  return () => element.removeEventListener("scroll", update);
+}

@@ -45,7 +45,8 @@ export interface MarketColumn {
   width?: number | string;
   sortable?: boolean;
   defaultSort?: boolean;
-  flash?: "price" | "change";
+  /** Price columns: true or "text" colours the digits, "background" fills the price for a moment after it moves (KjunPriceCell flash). "price" reads as true; "change" has no effect. */
+  flash?: boolean | "text" | "background" | "price" | "change";
   weight?: string;
   /** Sparkline columns: the row field with the reference value (a previous close), drawn as a dotted baseline. */
   baselineKey?: string;
@@ -81,6 +82,12 @@ export interface KjunMarketTableProps<
   priceFormatter?: (value: number) => string;
   currency?: string;
   embedded?: boolean;
+  /** The toggle and identity columns stay in view while the other columns scroll sideways. Default true. */
+  stickyIdentity?: boolean;
+  /** false drops the lines between rows; the header keeps its line. Default true. */
+  divider?: boolean;
+  /** The rowKey value of the row the app has open (a detail beside the table); it takes the selected fill and aria-current. */
+  activeKey?: unknown;
   formatMetric?: MarketFormatter<Row>;
   renderCell?: (row: Row, column: MarketColumn) => ReactNode;
   /** The row's quote status after the price column's value. */

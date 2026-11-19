@@ -15,7 +15,7 @@ export interface KjunMarketTableSkeletonProps {
 export function KjunMarketTableSkeleton({ columns = [], rows = 8, showActions = false }: KjunMarketTableSkeletonProps) {
   const { colors } = useKjunStyles();
   const cols = normalizeMarketColumns(columns), layout = useMarketLayout(cols, showActions);
-  const actions = { width: marketGeometry.actionsWidth, paddingVertical: tokens.dimension.value12, paddingHorizontal: tokens.dimension.value4, justifyContent: "center" as const, alignItems: "center" as const };
+  const actions = { width: layout.actionsWidth, paddingVertical: tokens.dimension.value12, paddingHorizontal: tokens.dimension.value4, justifyContent: "center" as const, alignItems: "center" as const };
   return <ScrollView horizontal onLayout={layout.onLayout} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
     <View style={{ width: layout.width }}>
       <View style={{ ...marketHeaderStyle, borderBottomColor: colors.border }}>
@@ -24,7 +24,7 @@ export function KjunMarketTableSkeleton({ columns = [], rows = 8, showActions = 
           <KText style={{ ...typeStyle('meta'),   color: colors.textTertiary, textAlign: col.align }}>{col.label}</KText>
         </View>)}
       </View>
-      {Array.from({ length: Math.max(0, rows) }, (_, row) => <View key={row} style={{ ...marketRowStyle, borderBottomColor: colors.border }}>
+      {Array.from({ length: Math.max(0, rows) }, (_, row) => <View key={row} style={{ ...marketRowStyle, borderBottomColor: colors.divider }}>
         {showActions && <View style={actions}><KjunSkeleton type="block" width={tokens.extensions.marketTable.actionSkeletonWidth} height={tokens.extensions.financial.priceSkeletonHeight} /></View>}
         {cols.map((col, i) => <View key={col.key || i} style={{ width: layout.widths[i], paddingVertical: tokens.dimension.value14, paddingHorizontal: layout.compact ? tokens.dimension.value4 : tokens.dimension.value12, justifyContent: "center", alignItems: isMarketIdentity(col.key) ? undefined : col.align === "right" ? "flex-end" : col.align === "center" ? "center" : "flex-start" }}>
           {isMarketIdentity(col.key) ? <View style={{ gap: tokens.dimension.value2 }}>

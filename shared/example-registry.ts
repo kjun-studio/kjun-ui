@@ -82,6 +82,7 @@ controls.KjunKpiRow.push(toggle("mobileSummary", "모바일 요약", true));
 controls.KjunSignedValue.push(toggle("stale", "오래된 값"));
 assign("PriceCell", [toggle("stale", "오래된 값")]);
 assign("MarketSimpleList MarketTable MarketCards MarketListPanel", [loading, error]);
+controls.KjunMarketTable.push(toggle("flash", "가격 깜빡임"), toggle("wide", "열 여러 개"), toggle("active", "열린 행 표시"), toggle("divider", "행 구분선", true));
 assign("Select", [size, toggle("multiple", "복수 선택"), { ...choice("multipleDisplay", "복수 표시", ["count", "labels"]), when: { multiple: [true] } }, toggle("grouped", "옵션 그룹"), toggle("searchable", "검색", true), toggle("clearable", "지우기", true), disabled, toggle("readOnly", "읽기 전용"), loading, error]);
 assign("SearchInput", [size, number("minChars", "최소 글자 수", 1, 10), number("debounce", "검색 대기 시간(ms)", 0, 2000), toggle("clearable", "지우기", true), disabled, toggle("error", "필드 오류"), choice("response", "검색 응답", ["정상", "빈 결과", "느린 응답", "요청 실패", "긴 결과"])]);
 assign("FormGroup", [field("label", "라벨", "내용"), field("hint", "도움말", "도움말을 입력에 연결합니다."), toggle("required", "필수 입력", true), field("errorMessage", "오류 메시지", ""), toggle("labelEnd", "라벨 끝 글자 수"), toggle("childDisabled", "입력 필드 비활성")]);
@@ -138,6 +139,7 @@ const extras: Record<string, ExamplePreset[]> = {
   KjunCard: [...cardDesignPresets, preset("dividers", "구분선", { dividers:true })],
   KjunPopover: [preset("no-padding", "여백 직접 구성", { noPadding:true })],
   KjunPagination: [preset("compact", "짧은 형태", { layout: "compact" }), preset("full", "번호 목록 고정", { layout: "full" }), preset("disabled", "불러오는 중 잠금", { disabled: true })],
+  KjunMarketTable: [preset("flash", "가격 깜빡임", { flash: true }), { ...preset("sticky", "가로 스크롤 · 이름 고정", { wide: true }), narrow: true }, preset("active", "열린 행 표시", { active: true }), preset("no-divider", "행 구분선 없음", { divider: false })],
   KjunFilterGroup: [preset("count", "개수 표시", { count: true }), preset("scroll", "가로 스크롤", { scroll: true }), preset("count-scroll", "개수·가로 스크롤", { count: true, scroll: true })],
   KjunSparkline: [preset("bar", "막대", { variant: "bar", data: "하락" }), preset("gaps", "끊긴 값", { data: "끊긴 값" }), preset("empty", "데이터 없음", { data: "없음" }), preset("stretch", "너비 채우기", { stretch: true })],
   KjunKpiRow: [preset("equal", "세 지표 동등 표시", { mobileSummary:false }), { ...preset("summary", "모바일 요약", { mobileSummary:true }), narrow:true }],

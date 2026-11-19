@@ -1,4 +1,5 @@
 import { tokens } from "@kjun-ui/tokens";
+import { isMarketIdentity } from "./market-table";
 
 export interface LayoutColumn {
   key?: string;
@@ -7,7 +8,7 @@ export interface LayoutColumn {
   align?: "left" | "right" | "center";
 }
 export const marketGeometry = tokens.extensions.marketTable;
-export const isMarketIdentity = (key?: string) => ["stock_name", "name", "symbol"].includes(key || "");
+export { isMarketIdentity };
 export const normalizeMarketColumns = (columns: (LayoutColumn | string)[]) =>
   columns.map(column => typeof column === "string" ? { key: column, label: column } : column);
 const defaultWidth = (column: LayoutColumn) => isMarketIdentity(column.key)
@@ -17,6 +18,8 @@ const cssDefaultWidth = (column: LayoutColumn) => isMarketIdentity(column.key)
   ? "var(--_kjun-market-table-identity-width)" : "var(--_kjun-market-table-column-width)";
 export const webMarketActionsWidth = "var(--_kjun-market-table-actions-width)";
 /** Below the market breakpoint the identity column may shrink to this and metric columns keep a price's width. */
+/** Web market.css: calc(2 * icon-toggle xs + 2 * 4px) below the market breakpoint. */
+const compactActionsWidth = 2 * tokens.extensions.iconToggle.sizes.xs + 2 * tokens.dimension.value4;
 const compactWidth = (column: LayoutColumn) => isMarketIdentity(column.key) ? tokens.dimension.value56 : tokens.dimension.value96;
 const growIndex = (columns: LayoutColumn[], explicit: boolean[]) => {
   const identity = columns.findIndex((column, index) => isMarketIdentity(column.key) && !explicit[index]);
@@ -49,13 +52,15 @@ export function nativeMarketLayout(columns: LayoutColumn[], showActions: boolean
   // Native keeps its existing numeric-width contract; CSS strings remain web overrides.
   const explicit = columns.map(column => typeof column.width === "number");
   const grow = growIndex(columns, explicit);
-  const actions = showActions ? marketGeometry.actionsWidth : 0, sum = (values: number[]) => values.reduce((total, width) => total + width, actions);
+  const sum = (values: number[], actions: number) => values.reduce((total, width) => total + width, actions);
   const regular = columns.map(column => typeof column.width === "number" ? column.width : defaultWidth(column));
   // Like web below the market breakpoint (a viewport query there, so the window here): when the default columns
-  // overflow a phone, they tighten so name, price and change fit.
-  const compact = containerWidth > 0 && windowWidth < tokens.responsive.market && sum(regular) > containerWidth;
+  // overflow a phone, they tighten so name, price and change fit, and the two toggles sit side by side without slack.
+  const regularActions = showActions ? marketGeometry.actionsWidth : 0;
+  const compact = containerWidth > 0 && windowWidth < tokens.responsive.market && sum(regular, regularActions) > containerWidth;
+  const actionsWidth = !showActions ? 0 : compact ? compactActionsWidth : marketGeometry.actionsWidth;
   const widths = compact ? columns.map((column, index) => typeof column.width === "number" ? regular[index] : compactWidth(column)) : regular;
-  const minimum = sum(widths);
+  const minimum = sum(widths, actionsWidth);
   if (grow >= 0) widths[grow] += Math.max(0, containerWidth - minimum);
-  return { widths, compact, width: sum(widths) };
+  return { widths, compact, actionsWidth, width: sum(widths, actionsWidth) };
 }

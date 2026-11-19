@@ -447,6 +447,14 @@ set("ProgressCell", {
   color: { default: '"auto"', summary: "막대 색입니다. auto는 30% 미만 danger, 70% 미만 warning, 그 이상 success입니다. custom은 customColor를 쓰고, customColor만 주어도(color가 auto일 때) custom으로 봅니다. custom인데 customColor가 없으면 auto 색을 씁니다." },
 });
 set("MarketSimpleList MarketTable", { renderStatus: "행의 시세 상태(종가·지연 등)를 반환합니다. 목록은 등락률 앞, 표는 가격 칸 값 뒤에 둡니다. 문구와 배지 색은 앱이 정합니다." });
+set("MarketTable", {
+  columns: "표시할 열입니다. 가격 열(type: \"price\")의 flash에 true·\"text\"·\"background\"를 주면 값이 바뀔 때 PriceCell flash처럼 깜빡입니다. 예전 값 \"price\"는 true로 읽고 \"change\"는 효과가 없습니다.",
+  stickyIdentity: { default: "true", summary: "첫 데이터 열이 이름(name·symbol·stock_name)일 때 가로로 스크롤해도 관심·즐겨찾기 열과 이름 열을 왼쪽에 고정합니다. 스크롤한 동안에만 이름 열 끝에 8px 그림자가 생기며 1px 선은 그리지 않습니다. 이름 열이 첫 열이 아니면 고정하지 않습니다." },
+  divider: { default: "true", summary: "행 사이 구분선입니다. KjunTable처럼 행은 옅은 divider 색, 머리글 아래는 border 색으로 긋습니다. false면 행 사이 선을 없애고 머리글 선만 남기며 행 높이는 그대로입니다." },
+  activeKey: "앱이 열어 둔 행의 rowKey 값입니다(표 옆 상세 화면 등). 그 행을 선택 배경(selectedBg)으로 채우고 웹은 aria-current=\"true\", 기기는 선택 상태로 알립니다.",
+  onRowClick: "행을 눌렀을 때 호출합니다. 지정하면 웹 행이 Tab으로 포커스를 받고 Enter·Space로 열리며 손가락 커서와 hover 배경이 생깁니다. Native에서 관심·즐겨찾기 열이 있으면 이름 칸이 행을 여는 버튼이 되고, 없으면 행 전체가 버튼입니다.",
+});
+set("MarketTable", { fadeColor: { type: "ColorValue", default: "colors.surface", summary: "가로 스크롤 끝 가장자리가 흐려지며 섞일 색이자 고정 열의 바탕색입니다. embedded로 surface가 아닌 바탕에 놓을 때 그 색을 주세요." } }, "native");
 set("Progress", { label: "진행률의 제목입니다. showLabel과 관계없이 표시하며 showLabel은 백분율을 더합니다." });
 set("Progress ProgressCell", {
   marker: "막대를 가로지르는 기준 눈금의 위치입니다. value와 같은 척도(0–max)로 줍니다(예: 예산 막대에서 오늘까지의 기준 비율). 눈금은 글자색 세로선이며 variant와 관계없이 색이 같습니다. Progress의 원형과 indeterminate·값 없음 상태에서는 그리지 않습니다.",

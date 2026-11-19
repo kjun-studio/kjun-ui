@@ -4,9 +4,11 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { tokens } from "@kjun-ui/tokens";
 import { typeStyle } from "./typography";
 import { useMarketLayout, marketGeometry, marketHeaderStyle, marketRowStyle } from "./market-layout";
-import { useId, useState } from "react";
-import { ScrollView,View } from "react-native";
+import { Fragment, useId, useRef, useState } from "react";
+import { Animated, Platform, View } from "react-native";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
+import { ScrollFadeEdge } from "./scroll-fade-edge";
+import { isMarketIdentity, marketCellKind, marketColumnFlash, marketPinnedIdentity, marketRowLabel, marketSortIcon, marketSortState, marketStatusColumn } from "../../../shared/package-runtime/market-table";
 import { MarketQuoteTypeContext, PriceStatus } from "./number-display";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIconToggle } from "./actions";
@@ -46,22 +48,27 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
       priceFormatter,
       currency = "krw",
       embedded = false,
+      stickyIdentity = true,
+      divider = true,
+      activeKey,
       emptyMessage = m.noItems,
       emptySubMessage = "",
       formatMetric,
       renderCell,
       renderStatus,
+      onRowClick,
     } = props,
     { colors, domainColors } = useKjunStyles();
+  const label = (row: Row) => marketRowLabel(row, props.primaryLabel, getValue);
   const render = (row: Row, col: MarketColumn) => {
     const value = getValue(row, col.key),
       stale = !!getValue(row, "stale");
     if (cellLoading(row, col))
       return <KjunSkeleton type="line" role="numberSm" width={tokens.extensions.marketTable.valueSkeletonWidth} />;
     if (renderCell) return content(renderCell(row, col));
-    if (["stock_name", "name", "symbol"].includes(col.key))
-      return <MarketIdentity row={row} props={props} table />;
-    if (col.type === "sparkline")
+    const kind = marketCellKind(col), context = { currency, row, column: col };
+    if (kind === "identity") return <MarketIdentity row={row} props={props} table />;
+    if (kind === "sparkline")
       return (
         <KjunSparkline
           {...sparklineCell(rows, row, col, getValue)}
@@ -69,62 +76,50 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
           height={tokens.extensions.marketTable.sparklineHeight}
         />
       );
-    if (col.type === "price")
-      return (
-        <KjunPriceCell
-          value={finiteNumber(value)}
-          formatter={priceFormatter}
-          stale={stale}
-        />
+    if (kind === "price")
+      return <KjunPriceCell value={finiteNumber(value)} formatter={priceFormatter} stale={stale} flash={marketColumnFlash(col)} />;
+    if (kind === "percent")
+      return value == null ? <KText>-</KText> : (
+        <KjunSignedValue value={finiteNumber(value)} format="percent" stale={stale}
+          formatter={formatMetric ? (number) => formatMetric(number, col.type!, context) : undefined} />
       );
-    if (col.type === "percent")
-      return value == null ? (
-        <KText>-</KText>
-      ) : (
-        <KjunSignedValue
-          value={finiteNumber(value)}
-          format="percent"
-          stale={stale}
-          formatter={
-            formatMetric
-              ? (number) =>
-                  formatMetric(number, col.type!, {
-                    currency,
-                    row,
-                    column: col,
-                  })
-              : undefined
-          }
-        />
-      );
-    const text = formatMetric
-      ? formatMetric(value, col.type || "text", { currency, row, column: col })
-      : value == null
-      ? "-"
-      : String(value);
-    return ["investor", "net_amount", "net_volume"].includes(col.type || "") ? (
-      <KjunSignedValue
-        value={finiteNumber(value)}
-        formatter={() => text}
-        stale={stale}
-      />
-    ) : (
-      <KText
-        style={{
-          textAlign: col.align,
-          fontWeight: col.weight === "bold" ? typeStyle('control').fontWeight : undefined,
-        }}
-      >
+    const text = formatMetric ? formatMetric(value, col.type || "text", context) : value == null ? "-" : String(value);
+    return kind === "signed" ? <KjunSignedValue value={finiteNumber(value)} formatter={() => text} stale={stale} /> : (
+      <KText style={{ textAlign: col.align, fontWeight: col.weight === "bold" ? typeStyle("control").fontWeight : undefined }}>
         {text}
       </KText>
     );
   };
   const layout = useMarketLayout(columns, showActions);
   // Like Web's market table scroll hint: when columns overflow, the trailing edge fades until the end is reached.
-  const [scroll, setScroll] = useState({ viewport: 0, x: 0 }), fadeId = "kjun-market-fade-" + useId().replace(/[^a-z0-9]/gi, "");
+  const [scroll, setScroll] = useState({ viewport: 0, x: 0 }), edgeId = "kjun-market-edge-" + useId().replace(/[^a-z0-9]/gi, "");
+  // Like Web's sticky cells: the toggle and identity columns move with the scroll offset, so they stay in view.
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const pinned = marketPinnedIdentity(columns, stickyIdentity), base = props.fadeColor ?? colors.surface;
+  const pin = (background: unknown, edge = false) => pinned ? {
+    transform: [{ translateX: scrollX }], zIndex: edge ? 2 : 1, backgroundColor: background as string,
+  } : {};
+  // Once scrolled, the last pinned column casts a soft edge over the columns passing under it, like Web's box-shadow.
+  const pinEdge = pinned && scroll.x > 0 ? (
+    <View pointerEvents="none" style={{ position: "absolute", top: 0, bottom: 0, right: -tokens.dimension.value8, width: tokens.dimension.value8 }}>
+      <Svg width="100%" height="100%">
+        <Defs><LinearGradient id={edgeId} x1="0%" y1="0%" x2="100%" y2="0%">
+          <Stop offset="0" stopColor={colors.shadow} stopOpacity={1} />
+          <Stop offset="1" stopColor={colors.shadow} stopOpacity={0} />
+        </LinearGradient></Defs>
+        <Rect width="100%" height="100%" fill={`url(#${edgeId})`} />
+      </Svg>
+    </View>
+  ) : null;
+  // A row with toggles cannot be one accessible button (a device would merge them in), so like KjunTable's cards its
+  // identity cell is the button that opens it; a row without toggles is the button itself.
+  const merged = !!onRowClick && !showActions, opener = onRowClick && showActions ? (columns.find(c => isMarketIdentity(c.key)) ?? columns[0])?.key : undefined;
   // Table cells read change at the body weight like Web td text, and prices drop the flash pill inset
   // so every numeric value ends on its header's right edge.
   const tableQuote = { price: {}, change: { fontWeight: typeStyle("body").fontWeight } };
+  const actionsCell = { width: layout.actionsWidth, paddingVertical: tokens.dimension.value12, paddingHorizontal: tokens.dimension.value4,
+    flexDirection: "row" as const, alignItems: "center" as const, justifyContent: "center" as const };
+  const justify = (align?: string) => align === "right" ? "flex-end" as const : align === "center" ? "center" as const : "flex-start" as const;
   return (
     <View
       onLayout={layout.onLayout}
@@ -148,9 +143,14 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
       >
         <MarketQuoteTypeContext.Provider value={tableQuote}>
         <View style={{ position: "relative", minWidth: 0 }}>
-        <ScrollView horizontal scrollEventThrottle={16}
+        <Animated.ScrollView horizontal scrollEventThrottle={16}
           onLayout={(event) => { const viewport = event.nativeEvent.layout.width; setScroll((previous) => ({ ...previous, viewport })); }}
-          onScroll={(event) => { const x = event.nativeEvent.contentOffset.x; setScroll((previous) => ({ ...previous, x })); }}>
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+            useNativeDriver: Platform.OS !== "web",
+            listener: (event: { nativeEvent: { contentOffset: { x: number } } }) => {
+              const x = event.nativeEvent.contentOffset.x; setScroll((previous) => ({ ...previous, x }));
+            },
+          })}>
           <View style={{ width: layout.width }}>
             <View
               style={{
@@ -159,171 +159,154 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
               }}
             >
               {showActions && (
-                <View
+                <Animated.View
                   // Like Web's header cell: the marks are drawings, so the column carries its own name.
                   accessible
                   accessibilityLabel={m.collectionMarks}
-                  style={{
-                    width: marketGeometry.actionsWidth,
-                    paddingVertical: tokens.dimension.value12,
-                    paddingHorizontal: tokens.dimension.value4,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+                  style={{ ...actionsCell, ...pin(base) }}
                 >
-                  {/* Header marks share the row toggles' column so both icons line up. */}
+                  {/* Header marks take the row toggles' squares, so both icons line up as on Web. */}
                   {(["interest", "favorite"] as const).map(kind => (
-                    <View key={kind} style={{ width: Math.max(tokens.native.minimumTouchTarget, tokens.extensions.iconToggle.sizes.xs), alignItems: "center" }}>
+                    <View key={kind} style={{ width: tokens.extensions.iconToggle.sizes.xs, alignItems: "center" }}>
                       <KjunCollectionMark kind={kind} size="md" />
                     </View>
                   ))}
-                </View>
+                </Animated.View>
               )}
-              {columns.map((col, columnIndex) => (
-                <Pressable
-                  key={col.key}
-                  disabled={!col.sortable}
-                  accessibilityRole="button"
-                  accessibilityLabel={col.label}
-                  onPress={() => props.onSort?.(col.key)}
-                  style={{
-                    width: layout.widths[columnIndex],
-                    paddingVertical: tokens.dimension.value12,
-                    paddingHorizontal: layout.compact ? tokens.dimension.value4 : tokens.dimension.value12,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent:
-                      col.align === "right"
-                        ? "flex-end"
-                        : col.align === "center"
-                        ? "center"
-                        : "flex-start",
-                    gap: tokens.dimension.value4,
-                  }}
-                >
-                  <KText
+              {columns.map((col, columnIndex) => {
+                const sort = marketSortState(col, sortKey, sortOrder), sorted = sort === "ascending" || sort === "descending";
+                const cell = (grow = false) => (
+                  // Like KjunTable: only a sortable column is a button, and its hint says the current order.
+                  <Pressable
+                    disabled={!sort}
+                    accessible={!!sort}
+                    accessibilityRole={sort ? "button" : undefined}
+                    accessibilityLabel={sort ? col.label : undefined}
+                    accessibilityHint={sorted ? (sort === "ascending" ? m.ascending : m.descending) : undefined}
+                    onPress={() => props.onSort?.(col.key)}
                     style={{
-                      ...typeStyle('meta'),
-
-
-                      color: colors.textTertiary,
+                      width: layout.widths[columnIndex],
+                      flexGrow: grow ? 1 : undefined,
+                      // Like Web: a pinned label stops at its column's edge instead of running over the cells passing under it.
+                      overflow: grow ? "hidden" : undefined,
+                      paddingVertical: tokens.dimension.value12,
+                      paddingHorizontal: layout.compact ? tokens.dimension.value4 : tokens.dimension.value12,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: justify(col.align),
+                      gap: tokens.dimension.value4,
                     }}
                   >
-                    {col.label}
-                  </KText>
-                  {col.sortable && (
-                    <KjunIcon
-                      name={
-                        sortKey === col.key
-                          ? sortOrder === "asc"
-                            ? "sort-ascending"
-                            : "sort-descending"
-                          : "arrows-sort"
-                      }
-                      size={tokens.extensions.marketTable.sortIconSize}
-                      color={
-                        sortKey === col.key ? colors.brand : colors.textTertiary
-                      }
-                    />
-                  )}
-                </Pressable>
-              ))}
+                    <KText style={{ ...typeStyle("meta"), color: sorted ? colors.text : colors.textTertiary,
+                      fontWeight: sorted ? typeStyle("sectionTitle").fontWeight : typeStyle("meta").fontWeight }}>
+                      {col.label}
+                    </KText>
+                    {sort && (
+                      <KjunIcon name={marketSortIcon(sort)} size={tokens.extensions.marketTable.sortIconSize}
+                        color={sorted ? colors.text : colors.textTertiary} />
+                    )}
+                  </Pressable>
+                );
+                // A pinned cell sits in a moving wrapper and grows to the header's height inside it.
+                return col.key === pinned
+                  ? <Animated.View key={col.key} style={pin(base, true)}>{cell(true)}{pinEdge}</Animated.View>
+                  : <Fragment key={col.key}>{cell()}</Fragment>;
+              })}
             </View>
             {rows.map((row, i) => {
               const id = getValue(row, rowKey),
-                priceCol = columns.find(
-                  (c) =>
-                    c.type === "price" &&
-                    !cellLoading(row, c) &&
-                    getValue(row, c.key) != null
-                );
+                statusKey = marketStatusColumn(columns, row, cellLoading, getValue),
+                active = activeKey != null && id === activeKey,
+                interest = !!props.interestKeys?.has(id), favorite = !!props.favoriteKeys?.has(id);
+              // Web exposes the open row as aria-current; devices hear it as selected.
+              const current = active ? (Platform.OS === "web" ? { "aria-current": "true" } : { accessibilityState: { selected: true } }) : {};
               return (
                 <Pressable
                   key={String(id ?? i)}
-                  accessible={false}
-                  onPress={() => props.onRowClick?.(row)}
+                  accessible={merged}
+                  accessibilityRole={merged ? "button" : undefined}
+                  accessibilityLabel={merged ? label(row) : undefined}
+                  focusRingInset
+                  {...(merged ? current : {})}
+                  onPress={onRowClick ? () => onRowClick(row) : undefined}
                   style={({ pressed }) => ({
                     ...marketRowStyle,
-                    borderBottomColor: colors.border,
-                    backgroundColor: pressed ? colors.hover : undefined,
+                    // Like KjunTable: rows part with the lighter divider and the header keeps the border line.
+                    borderBottomColor: divider ? colors.divider : "transparent",
+                    backgroundColor: active ? colors.selectedBg : pressed && onRowClick ? colors.hover : undefined,
                   })}
                 >
-                  {showActions && (
-                    <View
-                      style={{
-                        width: marketGeometry.actionsWidth,
-                        paddingVertical: tokens.dimension.value12,
-                        paddingHorizontal: tokens.dimension.value4,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <KjunIconToggle
-                        size="xs"
-                        active={props.interestKeys?.has(id)}
-                        activeIcon="heart"
-                        activeColor={domainColor(domainColors, "interest")}
-                        ariaLabel={m.watchToggle(props.primaryLabel?.(row) || String(getValue(row, "name") || ""), !!props.interestKeys?.has(id))}
-                        loading={togglingInterest === id}
-                        onToggle={() => props.onToggleInterest?.(row)}
-                      />
-                      <KjunIconToggle
-                        size="xs"
-                        active={props.favoriteKeys?.has(id)}
-                        activeIcon="star"
-                        activeColor={domainColor(domainColors, "favorite")}
-                        ariaLabel={m.favoriteToggle(props.primaryLabel?.(row) || String(getValue(row, "name") || ""), !!props.favoriteKeys?.has(id))}
-                        loading={togglingFavorite === id}
-                        onToggle={() => props.onToggleFavorite?.(row)}
-                      />
-                    </View>
-                  )}
-                  {columns.map((col, columnIndex) => (
-                    <View
-                      key={col.key}
-                      style={{
-                        width: layout.widths[columnIndex],
-                        paddingVertical: tokens.dimension.value14,
-                        paddingHorizontal: layout.compact ? tokens.dimension.value4 : tokens.dimension.value12,
-                        justifyContent: "center",
-                        alignItems:
-                          col.align === "right"
-                            ? "flex-end"
-                            : col.align === "center"
-                            ? "center"
-                            : undefined,
-                      }}
-                    >
-                      {/* The wrapper takes the column alignment; content-hugging values (KjunSignedValue) would
-                          otherwise pull themselves to the start of a right-aligned cell. */}
-                      {/* Like Web, the price column's status sits after the value on the same line, or under it on a phone. */}
-                      <View style={{ alignSelf: col.align === "right" ? "flex-end" : col.align === "center" ? "center" : undefined,
-                        flexDirection: layout.compact ? "column" : "row",
-                        alignItems: layout.compact ? (col.align === "right" ? "flex-end" : col.align === "center" ? "center" : "flex-start") : "center",
-                        gap: layout.compact ? tokens.dimension.value2 : tokens.extensions.financial.statusGap }}>
-                        {render(row, col)}
-                        {col.key === priceCol?.key && <PriceStatus status={renderStatus?.(row)} />}
-                      </View>
-                    </View>
-                  ))}
+                  {({ pressed }) => {
+                    const rowBackground = active ? colors.selectedBg : pressed && onRowClick ? colors.hover : base;
+                    return (
+                      <>
+                        {showActions && (
+                          <Animated.View style={{ ...actionsCell, ...pin(rowBackground) }}>
+                            {/* The toggles align themselves to the top, so a row of their own takes the cell's vertical centre. */}
+                            <View style={{ flexDirection: "row" }}>
+                            <KjunIconToggle
+                              size="xs"
+                              active={interest}
+                              activeIcon="heart"
+                              activeColor={domainColor(domainColors, "interest")}
+                              ariaLabel={m.watchToggle(label(row), interest)}
+                              loading={togglingInterest === id}
+                              onToggle={() => props.onToggleInterest?.(row)}
+                            />
+                            <KjunIconToggle
+                              size="xs"
+                              active={favorite}
+                              activeIcon="star"
+                              activeColor={domainColor(domainColors, "favorite")}
+                              ariaLabel={m.favoriteToggle(label(row), favorite)}
+                              loading={togglingFavorite === id}
+                              onToggle={() => props.onToggleFavorite?.(row)}
+                            />
+                            </View>
+                          </Animated.View>
+                        )}
+                        {columns.map((col, columnIndex) => {
+                          const isPinned = col.key === pinned, cellStyle = {
+                            width: layout.widths[columnIndex],
+                            flexGrow: isPinned ? 1 : undefined,
+                            overflow: isPinned ? "hidden" as const : undefined,
+                            paddingVertical: tokens.dimension.value14,
+                            paddingHorizontal: layout.compact ? tokens.dimension.value4 : tokens.dimension.value12,
+                            justifyContent: "center" as const,
+                            alignItems: col.align === "right" || col.align === "center" ? justify(col.align) : undefined,
+                          };
+                          // The wrapper takes the column alignment; content-hugging values (KjunSignedValue) would
+                          // otherwise pull themselves to the start of a right-aligned cell.
+                          // Like Web, the price column's status sits after the value on the same line, or under it on a phone.
+                          // The identity keeps to its column, so a long name ends in an ellipsis instead of running over the price.
+                          const fitted = marketCellKind(col) === "identity" && !renderCell;
+                          const value = (
+                            <View style={fitted ? { flexDirection: "row", alignItems: "center", minWidth: 0 } : {
+                              alignSelf: col.align === "right" || col.align === "center" ? justify(col.align) : undefined,
+                              flexDirection: layout.compact ? "column" : "row",
+                              alignItems: layout.compact ? justify(col.align) : "center",
+                              gap: layout.compact ? tokens.dimension.value2 : tokens.extensions.financial.statusGap }}>
+                              {render(row, col)}
+                              {col.key === statusKey && <PriceStatus status={renderStatus?.(row)} />}
+                            </View>
+                          );
+                          const inner = col.key === opener ? (
+                            <Pressable accessibilityRole="button" accessibilityLabel={label(row)} focusRingInset {...current}
+                              onPress={() => onRowClick?.(row)} style={cellStyle}>{value}</Pressable>
+                          ) : <View style={cellStyle}>{value}</View>;
+                          return isPinned
+                            ? <Animated.View key={col.key} style={pin(rowBackground, true)}>{inner}{pinEdge}</Animated.View>
+                            : <Fragment key={col.key}>{inner}</Fragment>;
+                        })}
+                      </>
+                    );
+                  }}
                 </Pressable>
               );
             })}
           </View>
-        </ScrollView>
-        {layout.width - scroll.viewport - scroll.x > 1 && (
-          <View pointerEvents="none" style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: tokens.extensions.scrollFade.width }}>
-            <Svg width="100%" height="100%">
-              <Defs><LinearGradient id={fadeId} x1="0%" y1="0%" x2="100%" y2="0%">
-                <Stop offset="0" stopColor={colors.surface} stopOpacity={0} />
-                <Stop offset="1" stopColor={colors.surface} stopOpacity={1} />
-              </LinearGradient></Defs>
-              <Rect width="100%" height="100%" fill={`url(#${fadeId})`} />
-            </Svg>
-          </View>
-        )}
+        </Animated.ScrollView>
+        {layout.width - scroll.viewport - scroll.x > 1 && <ScrollFadeEdge edge="end" horizontal color={base} />}
         </View>
         </MarketQuoteTypeContext.Provider>
       </KjunDataState>
