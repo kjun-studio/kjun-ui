@@ -270,6 +270,8 @@ export const kjunMessagesKo = {
   uploadProgress: (name: string) => `${name} 업로드 진행률`,
   uploadRetry: (name: string) => `${name} 다시 시도`,
   uploadRetryFailed: "실패한 파일 다시 시도",
+  uploadCancel: (name: string) => `${name} 업로드 취소`,
+  uploadEmpty: "첨부한 파일이 없어요",
   uploadReplace: "바꾸기",
   uploadReplaceFile: (name: string) => `${name} 바꾸기`,
   uploadFiles: "첨부 파일",

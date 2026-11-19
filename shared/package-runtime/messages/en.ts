@@ -254,6 +254,8 @@ export const kjunMessagesEn: KjunMessages = {
   uploadProgress: (name: string) => `${name} upload progress`,
   uploadRetry: (name: string) => `Retry ${name}`,
   uploadRetryFailed: "Retry failed files",
+  uploadCancel: (name: string) => `Cancel uploading ${name}`,
+  uploadEmpty: "No files attached",
   uploadReplace: "Replace",
   uploadReplaceFile: (name: string) => `Replace ${name}`,
   uploadFiles: "Files",

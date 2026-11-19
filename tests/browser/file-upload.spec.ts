@@ -96,15 +96,95 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
 
     test('removing a row moves focus to the next row, then the previous, then the add button', async ({ page }) => {
-      test.skip(!web, 'Native leaves focus to the platform');
       const s = section(page, 'fu-filled');
       await s.getByRole('button', { name: '사업자등록증.pdf 삭제' }).click();
-      await expect(s.getByRole('button', { name: '거래처_목록.xlsx 삭제' })).toBeFocused();
-      await s.getByRole('button', { name: '거래처_목록.xlsx 삭제' }).click();
+      await expect(s.getByRole('button', { name: '거래처_목록.xlsx 업로드 취소' })).toBeFocused();
+      await s.getByRole('button', { name: '거래처_목록.xlsx 업로드 취소' }).click();
       await expect(s.getByRole('button', { name: /최종\.pdf 삭제$/ })).toBeFocused();
       const single = section(page, 'fu-single');
       await single.getByRole('button', { name: '계약서.pdf 삭제' }).click();
-      await expect(single.getByRole('button', { name: '파일을 끌어다 놓거나 눌러서 선택' })).toBeFocused();
+      await expect(single.getByRole('button', { name: web ? '파일을 끌어다 놓거나 눌러서 선택' : '파일 선택' })).toBeFocused();
+    });
+
+    test('the add row spans the card like the empty zone', async ({ page }) => {
+      const add = section(page, 'fu-filled').getByRole('button', { name: web ? '파일 추가 또는 여기로 끌어다 놓기' : '파일 추가' });
+      const [a, c] = await Promise.all([add.boundingBox(), section(page, 'fu-filled').getByRole('group').boundingBox()]);
+      expect(Math.abs(a!.width - (c!.width - 24))).toBeLessThanOrEqual(1);
+    });
+
+    test('the × of a waiting or uploading file cancels; a finished or failed one removes', async ({ page }) => {
+      const s = section(page, 'fu-filled');
+      await expect(s.getByRole('button', { name: '매장_외관_사진_2026.jpg 업로드 취소' })).toBeVisible();
+      await expect(s.getByRole('button', { name: '거래처_목록.xlsx 업로드 취소' })).toBeVisible();
+      await expect(s.getByRole('button', { name: '사업자등록증.pdf 삭제' })).toBeVisible();
+    });
+
+    test('a failure message runs to two lines and a broken preview falls back to the extension', async ({ page }) => {
+      const s = section(page, 'fu-broken');
+      const message = s.getByText(/서버가 응답하지 않아/);
+      await expect(message).toBeVisible();
+      expect((await message.boundingBox())!.height).toBeGreaterThanOrEqual(30);
+      await expect(s.getByRole('listitem').first()).toContainText('JPG');
+      if (web) await expect(card(page, 'fu-broken').locator('.kjun-file-upload-thumb img')).toBeHidden();
+    });
+
+    test('a FormGroup error marks the pick control invalid', async ({ page }) => {
+      const zone = section(page, 'fu-form').getByRole('button', { name: web ? '파일을 끌어다 놓거나 눌러서 선택' : '파일 선택' });
+      await expect(zone).toHaveAttribute('aria-invalid', 'true');
+      if (web) {
+        const fill = (id: string) => card(page, id).locator('.kjun-file-upload-zone').evaluate(el => getComputedStyle(el).backgroundColor);
+        expect(await fill('fu-form')).not.toBe(await fill('fu-basic'));
+      }
+      await expect(section(page, 'fu-basic').getByRole('button', { name: web ? '파일을 끌어다 놓거나 눌러서 선택' : '파일 선택' })).not.toHaveAttribute('aria-invalid', 'true');
+    });
+
+    test('size="compact" draws the empty field as one 56px row', async ({ page }) => {
+      const s = section(page, 'fu-compact');
+      const pick = s.getByRole('button', { name: web ? '파일을 끌어다 놓거나 눌러서 선택' : '파일 선택' });
+      expect(Math.round((await pick.boundingBox())!.height)).toBe(56);
+      expect(Math.round((await s.getByRole('group').boundingBox())!.height)).toBe(80);
+    });
+
+    test('trigger="button" picks only through the button at the end of the line', async ({ page }) => {
+      const s = section(page, 'fu-button');
+      await expect(s).toContainText('첨부한 파일이 없어요');
+      const pick = s.getByRole('button', { name: '파일 선택' });
+      await expect(pick).toBeVisible();
+      await expect(s.getByRole('group').getByRole('button')).toHaveCount(1);
+      if (web) {
+        await expect(pick).toHaveAccessibleDescription('PDF, XLSX, 이미지 · 파일당 20MB · 5개까지');
+        await card(page, 'fu-button').locator('input[type=file]').setInputFiles([file('a.pdf', 1024, 'application/pdf')]);
+      } else await pick.click();
+      expect((await log(page, 'fu-button'))[0]).toEqual({ select: { accepted: ['a.pdf'], rejected: web ? [] : [['b.hwp', 'type'], ['big.pdf', 'size']] } });
+      const foot = section(page, 'fu-button-filled');
+      await expect(foot.getByRole('button', { name: '파일 추가' })).toBeVisible();
+      // The line beside the button only lists what may be added; the button names the action.
+      await expect(foot).not.toContainText('파일 추가 또는 여기로 끌어다 놓기');
+      await expect(foot).toContainText('PDF, XLSX, 이미지 · 파일당 20MB');
+    });
+
+    test('layout="grid" draws square tiles that read their name and state, with an add tile last', async ({ page }) => {
+      const s = section(page, 'fu-grid');
+      const tiles = s.getByRole('listitem');
+      await expect(tiles).toHaveCount(3);
+      const box = (await tiles.first().boundingBox())!;
+      expect(box.width).toBeGreaterThanOrEqual(72);
+      expect(Math.abs(box.width - box.height)).toBeLessThanOrEqual(1);
+      // Web reads the tile's name from visually hidden text, Native from the preview's accessibility label.
+      if (web) {
+        await expect(tiles.nth(1)).toContainText('내부.jpg, 64%');
+        await expect(tiles.nth(2)).toContainText('메뉴.jpg, 올리지 못했어요');
+      } else {
+        await expect(s.getByLabel('내부.jpg, 64%')).toHaveCount(1);
+        await expect(s.getByLabel('메뉴.jpg, 올리지 못했어요')).toHaveCount(1);
+      }
+      await expect(s.getByRole('button', { name: '메뉴.jpg 다시 시도' })).toBeVisible();
+      await expect(s.getByRole('button', { name: '내부.jpg 업로드 취소' })).toBeVisible();
+      await expect(s.getByRole('progressbar', { name: '내부.jpg 업로드 진행률' })).toBeVisible();
+      const add = s.getByRole('button', { name: web ? '파일 추가 또는 여기로 끌어다 놓기' : '파일 추가' });
+      expect(Math.round((await add.boundingBox())!.width)).toBe(Math.round(box.width));
+      await s.getByRole('button', { name: '외관.jpg 삭제' }).click();
+      await expect(s.getByRole('button', { name: '내부.jpg 업로드 취소' })).toBeFocused();
     });
 
     test('dragging files over the card shows the veil and survives moving over rows', async ({ page }) => {
@@ -204,6 +284,12 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(card(page, 'fu-basic')).toHaveAttribute('data-drag', 'over');
       const events = await card(page, 'fu-basic').evaluate(el => [...el.querySelectorAll('*')].map(child => getComputedStyle(child).pointerEvents));
       expect(events.filter(value => value !== 'none')).toEqual([]);
+    });
+
+    test('the head keeps the retry-all button on its centre line', async ({ page }) => {
+      const s = section(page, 'fu-filled');
+      const [b, h] = await Promise.all([s.getByRole('button', { name: '실패한 파일 다시 시도' }).boundingBox(), s.getByText('첨부 파일').boundingBox()]);
+      expect(Math.abs((b!.y + b!.height / 2) - (h!.y + h!.height / 2))).toBeLessThanOrEqual(1);
     });
 
     test('no horizontal overflow at 360px', async ({ page }) => {

@@ -1,5 +1,6 @@
 // KjunFileUpload state rules shared by Vue 3, React and Native. The app owns the files and the upload itself;
 // these helpers only pre-screen picks, read drags and shape what the rows show.
+import type { KjunMessages } from "./messages";
 
 export type KjunUploadStatus = "queued" | "uploading" | "done" | "error";
 export interface KjunUploadFile {
@@ -134,4 +135,58 @@ export function acceptLabels(accept?: string): { labels: string[]; groups: strin
     else labels.push((part.split("/")[1] ?? part).toUpperCase());
   }
   return { labels, groups };
+}
+
+export type KjunUploadSize = "md" | "compact";
+export type KjunUploadTrigger = "area" | "button";
+export type KjunUploadLayout = "list" | "grid";
+export type DragState = { verdict: DragVerdict; count: number; room: number } | null;
+
+/** How many rejected files are listed by name; the rest fold into one "n more" line. */
+export const REJECTION_LINES = 3;
+
+/** The rejection notice (and its announcement): the first three by name, then one "n more" line. */
+export function rejectionLines<T extends { name: string }>(m: KjunMessages, list: KjunRejectedFile<T>[], sizeText?: string): string[] {
+  const lines = list.slice(0, REJECTION_LINES).map(({ file, reason }) => m.uploadRejected(file.name, reason, sizeText ?? ""));
+  if (list.length > REJECTION_LINES) lines.push(m.uploadRejectedMore(list.length - REJECTION_LINES));
+  return lines;
+}
+
+/** A drag that cannot add anything: a refused type, or no room left at all. */
+export const dragBlocked = (drag: DragState) => !!drag && (drag.verdict === "type" || (drag.verdict === "count" && drag.room === 0));
+
+/** What the zone (empty) or the veil (filled) says and shows while files are dragged over the card. */
+export function dragCopy(m: KjunMessages, drag: DragState, types: string, maxFiles?: number) {
+  if (!drag) return null;
+  const blocked = dragBlocked(drag);
+  const title = drag.verdict === "type" ? m.uploadTypeBlockedTitle : blocked && maxFiles != null ? m.uploadFull(maxFiles) : m.uploadDropHere;
+  const hint = drag.verdict === "type" ? m.uploadTypeBlocked(types)
+    : drag.verdict === "count" && drag.room > 0 ? m.uploadDropOverflow(drag.room, drag.count - drag.room)
+    : blocked ? m.uploadFullHint
+    : m.uploadDropCount(drag.count);
+  return { title, hint, icon: drag.verdict === "type" ? "ban" : "arrow-down", blocked };
+}
+
+/** The allowed types in words: extensions and exact MIME in capitals, wildcard groups named by the messages. */
+export function acceptText(m: KjunMessages, accept?: string): string {
+  const { labels, groups } = acceptLabels(accept);
+  return [...labels, ...groups.map(m.uploadGroup)].join(", ");
+}
+
+/** The row's × cancels a file still waiting or uploading and removes one that finished or failed. */
+export const removeLabel = (m: KjunMessages, file: { name: string; status: KjunUploadStatus }) =>
+  file.status === "queued" || file.status === "uploading" ? m.uploadCancel(file.name) : m.remove(file.name);
+
+/** A tile's name for assistive tech: the file name, then its state in words. */
+export function tileLabel(m: KjunMessages, file: KjunUploadFile): string {
+  const progress = file.status === "uploading" ? clampProgress(file.progress) : undefined;
+  const state = file.status === "queued" ? m.uploadQueued : file.status === "done" ? m.uploadDone
+    : file.status === "error" ? file.error || m.uploadFailed : progress === undefined ? "" : Math.round(progress) + "%";
+  return state ? `${file.name}, ${state}` : file.name;
+}
+
+/** Grid columns that keep every tile at least `min` wide, and the tile width that fills the row. */
+export function gridColumns(width: number, min: number, gap: number) {
+  const columns = Math.max(1, Math.floor((width + gap) / (min + gap)));
+  return { columns, tile: Math.max(0, (width - gap * (columns - 1)) / columns) };
 }

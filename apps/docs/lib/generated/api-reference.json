@@ -11910,7 +11910,7 @@
           },
           {
             "name": "responsive",
-            "type": "\"none\" | \"compact\" | \"card\" | \"list\" | null | undefined",
+            "type": "\"none\" | \"compact\" | \"list\" | \"card\" | null | undefined",
             "required": false,
             "default": "null",
             "description": "",
@@ -47186,7 +47186,7 @@
             "type": "KjunUploadFile[]",
             "required": false,
             "default": "[]",
-            "description": "The app's files. Empty shows the wide pick zone; any file folds it into a list with an add row.",
+            "description": "The app's files. Empty shows the pick zone; any file folds it into a list with an add row.",
             "summary": "앱이 가진 파일 목록입니다. 각 항목은 id·name·size(바이트)·status(queued·uploading·done·error)와 선택적인 progress(0~100)·error(실패 문구)·previewUrl(썸네일)·type입니다. 비어 있으면 넓은 선택 영역을, 하나라도 있으면 목록과 추가 행을 그립니다.",
             "source": "packages/vue3/src/file-upload.tsx"
           },
@@ -47222,7 +47222,7 @@
             "type": "boolean",
             "required": false,
             "default": "true",
-            "description": "false: one file; a new pick asks to replace it.",
+            "description": "false: one file; a new pick replaces it.",
             "summary": "false면 파일 하나만 다룹니다. 추가 행 대신 행에 바꾸기 버튼을 두고, 새로 고른 파일을 onSelect로 넘겨 앱이 교체합니다. 기본값 true입니다.",
             "source": "packages/vue3/src/file-upload.tsx"
           },
@@ -47242,6 +47242,33 @@
             "default": "—",
             "description": "Second line of the zone; built from accept, maxSize and maxFiles when left out.",
             "summary": "선택 영역 둘째 줄 문구입니다. 생략하면 accept·maxSize·maxFiles로 ‘PDF, 이미지 · 파일당 20MB · 5개까지’처럼 만듭니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          },
+          {
+            "name": "size",
+            "type": "KjunUploadSize",
+            "required": false,
+            "default": "\"md\"",
+            "description": "\"compact\": the empty field is the one-line add row (80px card) instead of the tall zone.",
+            "summary": "빈 필드의 크기입니다. md(기본값)는 136px 높이의 넓은 선택 영역이고, compact는 파일이 있을 때의 추가 행과 같은 한 줄(56px, 카드 80px)입니다. 파일이 있으면 두 값의 모양이 같습니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          },
+          {
+            "name": "trigger",
+            "type": "KjunUploadTrigger",
+            "required": false,
+            "default": "\"area\"",
+            "description": "\"button\": a \"Choose files\" button at the end of a text line picks instead of a pressable area; drops still land on the card.",
+            "summary": "고르는 방법입니다. area(기본값)는 선택 영역·추가 행 전체가 버튼입니다. button은 안내 문구 줄 끝에 ‘파일 선택’(파일이 있으면 형식 안내 줄 끝에 ‘파일 추가’) 보조 버튼을 두고 그 버튼만 누를 수 있습니다. 끌어다 놓기는 카드 어디에서나 그대로 받습니다(웹). 카드를 넓게 누르게 하기 어려운 화면(댓글·채팅 첨부)에 씁니다.",
+            "source": "packages/vue3/src/file-upload.tsx"
+          },
+          {
+            "name": "layout",
+            "type": "KjunUploadLayout",
+            "required": false,
+            "default": "\"list\"",
+            "description": "\"grid\": files show as square tiles (photos) with an add tile, instead of rows.",
+            "summary": "파일을 보여 주는 모양입니다. list(기본값)는 행 목록이고, grid는 사진 첨부용 정사각형 타일입니다. 타일은 최소 72px에서 폭에 맞춰 열 수를 정하고 8px 간격으로 놓으며, 마지막에 추가 타일(maxFiles가 있으면 n/최대 개수)을 둡니다. 올리는 중이면 타일 아래쪽에 막대를, 실패하면 타일을 실패 면으로 덮고 다시 시도 버튼을 둡니다. 삭제 ×는 오른쪽 위 24px 원입니다. 파일 이름과 상태는 화면 낭독기에 읽힙니다.",
             "source": "packages/vue3/src/file-upload.tsx"
           },
           {
@@ -47282,7 +47309,7 @@
             "details": [
               {
                 "label": "발생 시점",
-                "text": "행의 ×를 누를 때. 업로드 중인 행도 같습니다"
+                "text": "행이나 타일의 ×를 누를 때. 대기·업로드 중인 파일의 ×는 ‘업로드 취소’로 읽힙니다"
               },
               {
                 "label": "전달값",
@@ -47294,7 +47321,7 @@
               },
               {
                 "label": "상태 책임",
-                "text": "앱이 files에서 빼고, 필요하면 전송 취소·서버 삭제를 합니다. 빠진 뒤 포커스는 다음 행으로 옮깁니다(웹)."
+                "text": "앱이 files에서 빼고, 필요하면 전송 취소·서버 삭제를 합니다. 빠진 뒤 포커스는 다음 행의 ×, 없으면 이전 행, 그것도 없으면 추가 버튼으로 옮깁니다."
               }
             ],
             "source": "packages/vue3/src/file-upload.tsx",
@@ -47395,12 +47422,12 @@
               {
                 "name": "error",
                 "type": "string | undefined",
-                "summary": "실패 행에 보일 문구"
+                "summary": "실패 행에 보일 문구. 두 줄까지 보이고 넘치면 말줄임합니다."
               },
               {
                 "name": "previewUrl",
                 "type": "string | undefined",
-                "summary": "이미지 썸네일 주소"
+                "summary": "이미지 썸네일 주소. 불러오지 못하면 확장자를 보입니다."
               },
               {
                 "name": "type",
@@ -47418,7 +47445,7 @@
             "type": "KjunUploadFile[] | undefined",
             "required": false,
             "default": "[]",
-            "description": "The app's files. Empty shows the wide pick zone; any file folds it into a list with an add row.",
+            "description": "The app's files. Empty shows the pick zone; any file folds it into a list with an add row.",
             "summary": "앱이 가진 파일 목록입니다. 각 항목은 id·name·size(바이트)·status(queued·uploading·done·error)와 선택적인 progress(0~100)·error(실패 문구)·previewUrl(썸네일)·type입니다. 비어 있으면 넓은 선택 영역을, 하나라도 있으면 목록과 추가 행을 그립니다.",
             "source": "packages/react/src/file-upload.tsx"
           },
@@ -47454,7 +47481,7 @@
             "type": "boolean | undefined",
             "required": false,
             "default": "true",
-            "description": "false: one file; a new pick asks to replace it.",
+            "description": "false: one file; a new pick replaces it.",
             "summary": "false면 파일 하나만 다룹니다. 추가 행 대신 행에 바꾸기 버튼을 두고, 새로 고른 파일을 onSelect로 넘겨 앱이 교체합니다. 기본값 true입니다.",
             "source": "packages/react/src/file-upload.tsx"
           },
@@ -47474,6 +47501,33 @@
             "default": "—",
             "description": "Second line of the zone; built from accept, maxSize and maxFiles when left out.",
             "summary": "선택 영역 둘째 줄 문구입니다. 생략하면 accept·maxSize·maxFiles로 ‘PDF, 이미지 · 파일당 20MB · 5개까지’처럼 만듭니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "size",
+            "type": "KjunUploadSize | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "\"compact\": the empty field is the one-line add row (80px card) instead of the tall zone.",
+            "summary": "빈 필드의 크기입니다. md(기본값)는 136px 높이의 넓은 선택 영역이고, compact는 파일이 있을 때의 추가 행과 같은 한 줄(56px, 카드 80px)입니다. 파일이 있으면 두 값의 모양이 같습니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "trigger",
+            "type": "KjunUploadTrigger | undefined",
+            "required": false,
+            "default": "\"area\"",
+            "description": "\"button\": a \"Choose files\" button at the end of a text line picks instead of a pressable area; drops still land on the card.",
+            "summary": "고르는 방법입니다. area(기본값)는 선택 영역·추가 행 전체가 버튼입니다. button은 안내 문구 줄 끝에 ‘파일 선택’(파일이 있으면 형식 안내 줄 끝에 ‘파일 추가’) 보조 버튼을 두고 그 버튼만 누를 수 있습니다. 끌어다 놓기는 카드 어디에서나 그대로 받습니다(웹). 카드를 넓게 누르게 하기 어려운 화면(댓글·채팅 첨부)에 씁니다.",
+            "source": "packages/react/src/file-upload.tsx"
+          },
+          {
+            "name": "layout",
+            "type": "KjunUploadLayout | undefined",
+            "required": false,
+            "default": "\"list\"",
+            "description": "\"grid\": files show as square tiles (photos) with an add tile, instead of rows.",
+            "summary": "파일을 보여 주는 모양입니다. list(기본값)는 행 목록이고, grid는 사진 첨부용 정사각형 타일입니다. 타일은 최소 72px에서 폭에 맞춰 열 수를 정하고 8px 간격으로 놓으며, 마지막에 추가 타일(maxFiles가 있으면 n/최대 개수)을 둡니다. 올리는 중이면 타일 아래쪽에 막대를, 실패하면 타일을 실패 면으로 덮고 다시 시도 버튼을 둡니다. 삭제 ×는 오른쪽 위 24px 원입니다. 파일 이름과 상태는 화면 낭독기에 읽힙니다.",
             "source": "packages/react/src/file-upload.tsx"
           },
           {
@@ -47509,12 +47563,12 @@
             "type": "((id: string) => void) | undefined",
             "required": false,
             "default": "—",
-            "description": "The × on a row. Whether the file is also deleted on the server is the app's call.",
+            "description": "The × on a row: cancels a waiting or uploading file, removes a finished one. Server-side deletion is the app's call.",
             "summary": "행의 삭제를 요청합니다.",
             "details": [
               {
                 "label": "발생 시점",
-                "text": "행의 ×를 누를 때. 업로드 중인 행도 같습니다"
+                "text": "행이나 타일의 ×를 누를 때. 대기·업로드 중인 파일의 ×는 ‘업로드 취소’로 읽힙니다"
               },
               {
                 "label": "전달값",
@@ -47526,7 +47580,7 @@
               },
               {
                 "label": "상태 책임",
-                "text": "앱이 files에서 빼고, 필요하면 전송 취소·서버 삭제를 합니다. 빠진 뒤 포커스는 다음 행으로 옮깁니다(웹)."
+                "text": "앱이 files에서 빼고, 필요하면 전송 취소·서버 삭제를 합니다. 빠진 뒤 포커스는 다음 행의 ×, 없으면 이전 행, 그것도 없으면 추가 버튼으로 옮깁니다."
               }
             ],
             "source": "packages/react/src/file-upload.tsx",
@@ -47645,12 +47699,12 @@
               {
                 "name": "error",
                 "type": "string | undefined",
-                "summary": "실패 행에 보일 문구"
+                "summary": "실패 행에 보일 문구. 두 줄까지 보이고 넘치면 말줄임합니다."
               },
               {
                 "name": "previewUrl",
                 "type": "string | undefined",
-                "summary": "이미지 썸네일 주소"
+                "summary": "이미지 썸네일 주소. 불러오지 못하면 확장자를 보입니다."
               },
               {
                 "name": "type",
@@ -47668,7 +47722,7 @@
             "type": "KjunUploadFile[] | undefined",
             "required": false,
             "default": "[]",
-            "description": "The app's files. Empty shows the wide pick zone; any file folds it into a list with an add row.",
+            "description": "The app's files. Empty shows the pick zone; any file folds it into a list with an add row.",
             "summary": "앱이 가진 파일 목록입니다. 각 항목은 id·name·size(바이트)·status(queued·uploading·done·error)와 선택적인 progress(0~100)·error(실패 문구)·previewUrl(썸네일)·type입니다. 비어 있으면 넓은 선택 영역을, 하나라도 있으면 목록과 추가 행을 그립니다.",
             "source": "packages/native/src/file-upload.tsx"
           },
@@ -47724,6 +47778,33 @@
             "default": "—",
             "description": "",
             "summary": "선택 영역 둘째 줄 문구입니다. 생략하면 accept·maxSize·maxFiles로 ‘PDF, 이미지 · 파일당 20MB · 5개까지’처럼 만듭니다.",
+            "source": "packages/native/src/file-upload.tsx"
+          },
+          {
+            "name": "size",
+            "type": "KjunUploadSize | undefined",
+            "required": false,
+            "default": "\"md\"",
+            "description": "\"compact\": the empty field is the one-line add row instead of the tall zone.",
+            "summary": "빈 필드의 크기입니다. md(기본값)는 136px 높이의 넓은 선택 영역이고, compact는 파일이 있을 때의 추가 행과 같은 한 줄(56px, 카드 80px)입니다. 파일이 있으면 두 값의 모양이 같습니다.",
+            "source": "packages/native/src/file-upload.tsx"
+          },
+          {
+            "name": "trigger",
+            "type": "KjunUploadTrigger | undefined",
+            "required": false,
+            "default": "\"area\"",
+            "description": "\"button\": a \"Choose files\" button at the end of a text line picks instead of a pressable area.",
+            "summary": "고르는 방법입니다. area(기본값)는 선택 영역·추가 행 전체가 버튼입니다. button은 안내 문구 줄 끝에 ‘파일 선택’(파일이 있으면 형식 안내 줄 끝에 ‘파일 추가’) 보조 버튼을 두고 그 버튼만 누를 수 있습니다. 끌어다 놓기는 카드 어디에서나 그대로 받습니다(웹). 카드를 넓게 누르게 하기 어려운 화면(댓글·채팅 첨부)에 씁니다.",
+            "source": "packages/native/src/file-upload.tsx"
+          },
+          {
+            "name": "layout",
+            "type": "KjunUploadLayout | undefined",
+            "required": false,
+            "default": "\"list\"",
+            "description": "\"grid\": files show as square tiles (photos) with an add tile, instead of rows.",
+            "summary": "파일을 보여 주는 모양입니다. list(기본값)는 행 목록이고, grid는 사진 첨부용 정사각형 타일입니다. 타일은 최소 72px에서 폭에 맞춰 열 수를 정하고 8px 간격으로 놓으며, 마지막에 추가 타일(maxFiles가 있으면 n/최대 개수)을 둡니다. 올리는 중이면 타일 아래쪽에 막대를, 실패하면 타일을 실패 면으로 덮고 다시 시도 버튼을 둡니다. 삭제 ×는 오른쪽 위 24px 원입니다. 파일 이름과 상태는 화면 낭독기에 읽힙니다.",
             "source": "packages/native/src/file-upload.tsx"
           },
           {
@@ -47792,7 +47873,7 @@
             "details": [
               {
                 "label": "발생 시점",
-                "text": "행의 ×를 누를 때. 업로드 중인 행도 같습니다"
+                "text": "행이나 타일의 ×를 누를 때. 대기·업로드 중인 파일의 ×는 ‘업로드 취소’로 읽힙니다"
               },
               {
                 "label": "전달값",
@@ -47804,7 +47885,7 @@
               },
               {
                 "label": "상태 책임",
-                "text": "앱이 files에서 빼고, 필요하면 전송 취소·서버 삭제를 합니다. 빠진 뒤 포커스는 다음 행으로 옮깁니다(웹)."
+                "text": "앱이 files에서 빼고, 필요하면 전송 취소·서버 삭제를 합니다. 빠진 뒤 포커스는 다음 행의 ×, 없으면 이전 행, 그것도 없으면 추가 버튼으로 옮깁니다."
               }
             ],
             "source": "packages/native/src/file-upload.tsx",
@@ -47896,12 +47977,12 @@
               {
                 "name": "error",
                 "type": "string | undefined",
-                "summary": "실패 행에 보일 문구"
+                "summary": "실패 행에 보일 문구. 두 줄까지 보이고 넘치면 말줄임합니다."
               },
               {
                 "name": "previewUrl",
                 "type": "string | undefined",
-                "summary": "이미지 썸네일 주소"
+                "summary": "이미지 썸네일 주소. 불러오지 못하면 확장자를 보입니다."
               },
               {
                 "name": "type",

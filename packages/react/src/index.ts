@@ -79,7 +79,7 @@ export type {
 
 export { KjunCarousel } from "./carousel";
 export { KjunColorPicker, type KjunColorPickerProps, type KjunColorSwatch } from "./color-picker";
-export { KjunFileUpload, type KjunFileUploadProps, type KjunUploadFile, type KjunUploadStatus, type KjunRejectedFile, type KjunRejectReason } from "./file-upload";
+export { KjunFileUpload, type KjunFileUploadProps, type KjunUploadFile, type KjunUploadStatus, type KjunRejectedFile, type KjunRejectReason, type KjunUploadSize, type KjunUploadTrigger, type KjunUploadLayout } from "./file-upload";
 export type { KjunCarouselProps } from "./carousel";
 export { KjunSteps, type KjunStepsProps, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout, type KjunStepsSelectable } from "./steps";
 export { KjunEventCalendar, type KjunEventCalendarProps, type DayMarks, type DaySpan, type HolidayTest } from "./event-calendar";

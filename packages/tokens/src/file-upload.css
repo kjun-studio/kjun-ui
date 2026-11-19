@@ -12,7 +12,7 @@
   overflow: hidden;
 }
 /* The card swaps its content when the first file arrives or the last one leaves; the new content fades in. */
-.kjun-file-upload > :is(.kjun-file-upload-zone, .kjun-file-upload-head) {
+.kjun-file-upload > :is(.kjun-file-upload-zone, .kjun-file-upload-add, .kjun-file-upload-trigger, .kjun-file-upload-head) {
   animation: kjun-file-upload-in var(--_kjun-motion-collapse) var(--_kjun-ease-out);
 }
 @keyframes kjun-file-upload-in { from { opacity: 0; } to { opacity: 1; } }
@@ -81,6 +81,10 @@
   color: var(--_kjun-color-text-secondary);
   word-break: keep-all;
 }
+/* A FormGroup error fills the pick control with the danger surface and tints its icon; hover, press and drag keep their steps
+   (same specificity, declared after). */
+.kjun-file-upload[data-invalid] :is(.kjun-file-upload-zone, .kjun-file-upload-add) { background: var(--_kjun-color-danger-bg); }
+.kjun-file-upload[data-invalid] :is(.kjun-file-upload-zone, .kjun-file-upload-add):not([aria-disabled="true"]) .kjun-file-upload-icon { color: var(--_kjun-color-danger); }
 :is(.kjun-file-upload-zone, .kjun-file-upload-add):hover:not([aria-disabled="true"]) { background: var(--_kjun-color-hover); }
 :is(.kjun-file-upload-zone, .kjun-file-upload-add):active:not([aria-disabled="true"]) { background: var(--_kjun-color-active); }
 :is(.kjun-file-upload-zone, .kjun-file-upload-add):focus-visible {
@@ -91,8 +95,8 @@
 :is(.kjun-file-upload-zone, .kjun-file-upload-add)[aria-disabled="true"] :is(.kjun-file-upload-hint, .kjun-file-upload-icon) { color: var(--_kjun-color-text-disabled); }
 
 /* Dragging files over the card. An empty card fills its zone; a filled card lays a see-through veil over the list. */
-.kjun-file-upload[data-drag="over"] .kjun-file-upload-zone { background: var(--_kjun-color-active); }
-:is(.kjun-file-upload[data-drag="over"] .kjun-file-upload-zone, .kjun-file-upload-veil) .kjun-file-upload-icon {
+.kjun-file-upload[data-drag="over"] > :is(.kjun-file-upload-zone, .kjun-file-upload-add) { background: var(--_kjun-color-active); }
+:is(.kjun-file-upload[data-drag="over"] > :is(.kjun-file-upload-zone, .kjun-file-upload-add), .kjun-file-upload-veil) .kjun-file-upload-icon {
   background: var(--_kjun-color-brand);
   color: var(--_kjun-color-inverse);
 }
@@ -113,6 +117,13 @@
   text-align: center;
   pointer-events: none;
 }
+/* A one-line empty card (button trigger) is too short for the stacked veil: icon and title sit in a row. */
+.kjun-file-upload[data-state="empty"] .kjun-file-upload-veil { flex-direction: row; gap: var(--_kjun-extension-file-upload-gap); }
+.kjun-file-upload[data-state="empty"] .kjun-file-upload-veil .kjun-file-upload-icon {
+  width: var(--_kjun-extension-file-upload-add-icon);
+  height: var(--_kjun-extension-file-upload-add-icon);
+}
+.kjun-file-upload[data-state="empty"] .kjun-file-upload-veil .kjun-file-upload-hint { display: none; }
 .kjun-file-upload[data-drag="blocked"] .kjun-file-upload-veil .kjun-file-upload-icon {
   background: var(--_kjun-color-surface);
   color: var(--_kjun-color-text-secondary);
@@ -171,7 +182,9 @@
   font-weight: var(--_kjun-type-caption-strong-weight);
   overflow: hidden;
 }
-.kjun-file-upload-thumb > img { width: 100%; height: 100%; object-fit: cover; }
+.kjun-file-upload-thumb { position: relative; }
+/* The preview covers the extension; a preview that fails to load is hidden and the extension shows. */
+.kjun-file-upload-thumb > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .kjun-file-upload-body { flex: 1; min-width: 0; }
 /* Middle truncation: the head may end in an ellipsis; the tail (last characters and extension) always shows. */
 .kjun-file-upload-name {
@@ -201,6 +214,15 @@
 .kjun-file-upload-num { font-family: var(--_kjun-font-numeric); font-variant-numeric: tabular-nums; }
 .kjun-file-upload-status[data-tone="done"] { color: var(--_kjun-color-success); }
 .kjun-file-upload-status[data-tone="error"] { color: var(--_kjun-color-danger); }
+/* A failure message may run to two lines; the size and the dot stay on the first. */
+.kjun-file-upload-row[data-status="error"] .kjun-file-upload-meta { align-items: flex-start; }
+.kjun-file-upload-row[data-status="error"] .kjun-file-upload-status {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 .kjun-file-upload-bar {
   height: var(--_kjun-extension-file-upload-progress-height);
   margin-top: var(--_kjun-extension-file-upload-progress-gap);
@@ -245,10 +267,111 @@
 .kjun-file-upload-action:disabled { cursor: default; opacity: var(--_kjun-state-opacity-disabled); }
 @media (pointer: coarse) {
   .kjun-file-upload-action { width: var(--_kjun-extension-file-upload-touch-target); height: var(--_kjun-extension-file-upload-touch-target); }
+  .kjun-file-upload-tile-remove { width: var(--_kjun-extension-file-upload-touch-target); height: var(--_kjun-extension-file-upload-touch-target); }
 }
 
 /* Foot: the add row and the rejection notice under it. */
-.kjun-file-upload-foot { border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-divider); }
+/* A column, so the add row stretches across the card like the empty zone (a block parent leaves a button at its content width). */
+.kjun-file-upload-foot {
+  display: flex;
+  flex-direction: column;
+  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-divider);
+}
+
+/* trigger="button": a text line with the pick button at its end, for the empty field and the foot of a list. */
+.kjun-file-upload-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--_kjun-extension-file-upload-trigger-gap);
+  padding: var(--_kjun-file-upload-inset) var(--_kjun-file-upload-inset) var(--_kjun-file-upload-inset) var(--_kjun-extension-file-upload-row-padding);
+}
+.kjun-file-upload-trigger > .kjun-file-upload-text { flex: 1; min-width: 0; }
+.kjun-file-upload[data-disabled] .kjun-file-upload-trigger :is(.kjun-file-upload-title, .kjun-file-upload-hint) { color: var(--_kjun-color-text-disabled); }
+
+/* layout="grid": square tiles that keep at least the tile size, with the add tile last. */
+.kjun-file-upload-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--_kjun-extension-file-upload-tile-min-size), 1fr));
+  gap: var(--_kjun-extension-file-upload-tile-gap);
+  padding: var(--_kjun-file-upload-inset);
+}
+.kjun-file-upload-tile {
+  position: relative;
+  aspect-ratio: 1;
+  min-width: 0;
+  border-radius: var(--_kjun-extension-file-upload-tile-radius);
+  overflow: hidden;
+}
+.kjun-file-upload-tile > .kjun-file-upload-thumb { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 0; }
+/* On a tile the track sits on a photo or the secondary fill, so it takes the surface colour. */
+.kjun-file-upload-tile > .kjun-file-upload-bar {
+  background: var(--_kjun-color-surface);
+  position: absolute;
+  inset-inline: var(--_kjun-extension-file-upload-tile-inset);
+  bottom: var(--_kjun-extension-file-upload-tile-inset);
+  margin: 0;
+}
+.kjun-file-upload-tile-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--_kjun-extension-file-upload-tile-inset);
+  background: color-mix(in srgb, var(--_kjun-color-danger-bg) 88%, transparent);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  text-align: center;
+  word-break: keep-all;
+}
+.kjun-file-upload-tile-remove {
+  appearance: none;
+  position: absolute;
+  top: 0;
+  inset-inline-end: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  width: var(--_kjun-extension-file-upload-action-size);
+  height: var(--_kjun-extension-file-upload-action-size);
+  border: 0;
+  padding: var(--_kjun-extension-file-upload-tile-inset);
+  background: transparent;
+  cursor: pointer;
+}
+.kjun-file-upload-tile-remove > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_kjun-extension-file-upload-tile-remove-size);
+  height: var(--_kjun-extension-file-upload-tile-remove-size);
+  border-radius: var(--_kjun-extension-file-upload-round-radius);
+  background: var(--_kjun-color-overlay);
+  color: var(--_kjun-color-inverse);
+}
+.kjun-file-upload-tile-remove:focus-visible { outline: none; }
+.kjun-file-upload-tile-remove:focus-visible > span {
+  outline: var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring);
+  outline-offset: var(--_kjun-state-focus-offset);
+}
+.kjun-file-upload-tile-remove:disabled { cursor: default; opacity: var(--_kjun-state-opacity-disabled); }
+.kjun-file-upload-add[data-tile] {
+  margin: 0;
+  aspect-ratio: 1;
+  min-height: 0;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--_kjun-extension-file-upload-tile-inset);
+  padding: 0;
+  border-radius: var(--_kjun-extension-file-upload-tile-radius);
+  font-size: var(--_kjun-type-caption-size);
+  line-height: var(--_kjun-type-caption-line);
+  color: var(--_kjun-color-text-secondary);
+}
+.kjun-file-upload-add[data-tile] > .kjun-file-upload-icon { color: var(--_kjun-color-text); }
+.kjun-file-upload-add[data-tile][aria-disabled="true"] > .kjun-file-upload-icon { color: var(--_kjun-color-text-disabled); }
 .kjun-file-upload-notice {
   display: flex;
   align-items: flex-start;
@@ -268,7 +391,7 @@
 .kjun-file-upload:not([data-drag="none"]) * { pointer-events: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .kjun-file-upload > :is(.kjun-file-upload-zone, .kjun-file-upload-head) { animation: none; }
+  .kjun-file-upload > :is(.kjun-file-upload-zone, .kjun-file-upload-add, .kjun-file-upload-trigger, .kjun-file-upload-head) { animation: none; }
   .kjun-file-upload-bar:not([aria-valuenow]) > div { animation: none; transform: translateX(116%); }
   :is(.kjun-file-upload-zone, .kjun-file-upload-add, .kjun-file-upload-icon, .kjun-file-upload-action, .kjun-file-upload-bar > div) { transition: none; }
 }

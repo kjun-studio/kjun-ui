@@ -45,7 +45,7 @@ export { safeExternalUrl } from "./actions";
 export type { KjunCarouselProps } from "./carousel";
 export type { KjunStepsProps, KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLayout, KjunStepsSelectable } from "./steps";
 export type { KjunColorPickerProps, KjunColorSwatch } from "./color-picker";
-export type { KjunFileUploadProps, KjunUploadFile, KjunUploadStatus, KjunRejectedFile, KjunRejectReason } from "./file-upload";
+export type { KjunFileUploadProps, KjunUploadFile, KjunUploadStatus, KjunRejectedFile, KjunRejectReason, KjunUploadSize, KjunUploadTrigger, KjunUploadLayout } from "./file-upload";
 export type { KjunSplitPaneProps } from "./split-pane";
 export type { KjunZoneGaugeProps, KjunGaugeZone } from "./zone-gauge";
 export type { KjunStackedBarProps, KjunStackedBarItem } from "./stacked-bar";

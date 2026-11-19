@@ -1056,6 +1056,13 @@
   --_kjun-extension-file-upload-action-size: 32px;
   --_kjun-extension-file-upload-touch-target: 44px;
   --_kjun-extension-file-upload-notice-gap: 8px;
+  --_kjun-extension-file-upload-trigger-gap: 12px;
+  --_kjun-extension-file-upload-tile-min-size: 72px;
+  --_kjun-extension-file-upload-tile-gap: 8px;
+  --_kjun-extension-file-upload-tile-radius: 12px;
+  --_kjun-extension-file-upload-tile-inset: 6px;
+  --_kjun-extension-file-upload-tile-remove-size: 24px;
+  --_kjun-extension-file-upload-tile-remove-icon: 14px;
   --_kjun-extension-color-picker-width: 240px;
   --_kjun-extension-color-picker-padding: 12px;
   --_kjun-extension-color-picker-gap: 12px;

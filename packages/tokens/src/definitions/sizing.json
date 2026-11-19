@@ -289,7 +289,14 @@
       "progressGap": { "$ref": "dimension.value8" },
       "actionSize": { "$ref": "dimension.value32" },
       "touchTarget": { "$ref": "native.minimumTouchTarget" },
-      "noticeGap": { "$ref": "dimension.value8" }
+      "noticeGap": { "$ref": "dimension.value8" },
+      "triggerGap": { "$ref": "dimension.value12" },
+      "tileMinSize": { "$ref": "dimension.value72" },
+      "tileGap": { "$ref": "dimension.value8" },
+      "tileRadius": { "$ref": "radius.radius12" },
+      "tileInset": { "$ref": "dimension.value6" },
+      "tileRemoveSize": { "$ref": "dimension.value24" },
+      "tileRemoveIcon": { "$ref": "dimension.value14" }
     },
     "colorPicker": {
       "width": { "$ref": "extensions.popover.width" },

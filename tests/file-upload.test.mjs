@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  acceptLabels, clampProgress, dragVerdict, extensionLabel, focusAfterRemove, formatBytes, matchesAccept,
-  screenFiles, splitFileName, uploadRoom, uploadSummary, uploadTransitions,
+  acceptLabels, acceptText, clampProgress, dragBlocked, dragCopy, dragVerdict, extensionLabel, focusAfterRemove, formatBytes, gridColumns,
+  matchesAccept, rejectionLines, removeLabel, screenFiles, splitFileName, tileLabel, uploadRoom, uploadSummary, uploadTransitions,
 } from '../shared/package-runtime/file-upload.ts';
+import { kjunMessagesKo as ko } from '../shared/package-runtime/messages/ko.ts';
 
 const f = (name, size, type = '') => ({ name, size, type });
 
@@ -106,4 +107,51 @@ test('uploadSummary counts each status', () => {
 test('acceptLabels splits extensions and exact MIME from wildcard groups', () => {
   assert.deepEqual(acceptLabels('.pdf, image/png ,video/*,.XLSX'), { labels: ['PDF', 'PNG', 'XLSX'], groups: ['video'] });
   assert.deepEqual(acceptLabels(undefined), { labels: [], groups: [] });
+});
+
+test('rejectionLines lists three files by name, then one line for the rest', () => {
+  const list = ['a.pdf', 'b.pdf', 'c.pdf', 'd.pdf', 'e.pdf'].map(name => ({ file: f(name, 1), reason: 'type' }));
+  const lines = rejectionLines(ko, list, '20MB');
+  assert.equal(lines.length, 4);
+  assert.match(lines[0], /^a\.pdf: /);
+  assert.equal(lines[3], ko.uploadRejectedMore(2));
+  assert.deepEqual(rejectionLines(ko, []), []);
+});
+
+test('dragCopy: type refusal, full field, overflow and a plain drop', () => {
+  assert.equal(dragCopy(ko, null, 'PDF'), null);
+  const type = dragCopy(ko, { verdict: 'type', count: 1, room: 3 }, 'PDF');
+  assert.deepEqual([type.title, type.hint, type.icon, type.blocked], [ko.uploadTypeBlockedTitle, ko.uploadTypeBlocked('PDF'), 'ban', true]);
+  const fullField = dragCopy(ko, { verdict: 'count', count: 2, room: 0 }, 'PDF', 5);
+  assert.deepEqual([fullField.title, fullField.hint, fullField.blocked], [ko.uploadFull(5), ko.uploadFullHint, true]);
+  const overflow = dragCopy(ko, { verdict: 'count', count: 4, room: 1 }, 'PDF', 5);
+  assert.deepEqual([overflow.title, overflow.hint, overflow.blocked], [ko.uploadDropHere, ko.uploadDropOverflow(1, 3), false]);
+  assert.equal(dragCopy(ko, { verdict: 'ok', count: 2, room: 3 }, 'PDF').hint, ko.uploadDropCount(2));
+  assert.equal(dragBlocked({ verdict: 'unknown', count: 1, room: 1 }), false);
+});
+
+test('acceptText names wildcard groups after the listed types', () => {
+  assert.equal(acceptText(ko, '.pdf,image/*'), 'PDF, ' + ko.uploadGroup('image'));
+  assert.equal(acceptText(ko), '');
+});
+
+test('removeLabel cancels a waiting or uploading file and removes a finished one', () => {
+  assert.equal(removeLabel(ko, { name: 'a.pdf', status: 'uploading' }), ko.uploadCancel('a.pdf'));
+  assert.equal(removeLabel(ko, { name: 'a.pdf', status: 'queued' }), ko.uploadCancel('a.pdf'));
+  assert.equal(removeLabel(ko, { name: 'a.pdf', status: 'done' }), ko.remove('a.pdf'));
+  assert.equal(removeLabel(ko, { name: 'a.pdf', status: 'error' }), ko.remove('a.pdf'));
+});
+
+test('tileLabel reads the name, then the state in words or percent', () => {
+  const file = (status, extra = {}) => ({ id: '1', name: 'a.jpg', size: 1, status, ...extra });
+  assert.equal(tileLabel(ko, file('done')), 'a.jpg, ' + ko.uploadDone);
+  assert.equal(tileLabel(ko, file('uploading', { progress: 41.6 })), 'a.jpg, 42%');
+  assert.equal(tileLabel(ko, file('uploading')), 'a.jpg');
+  assert.equal(tileLabel(ko, file('error', { error: '용량 초과' })), 'a.jpg, 용량 초과');
+});
+
+test('gridColumns keeps tiles at least the minimum and fills the row', () => {
+  assert.deepEqual(gridColumns(336, 72, 8), { columns: 4, tile: 78 });
+  assert.deepEqual(gridColumns(60, 72, 8), { columns: 1, tile: 60 });
+  assert.equal(gridColumns(0, 72, 8).tile, 0);
 });

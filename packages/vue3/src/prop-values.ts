@@ -131,6 +131,11 @@ export const kjunPropValues = Object.freeze({
   KjunFeedbackProvider: Object.freeze({
     placement: Object.freeze(["bottom","top"] as const),
   }),
+  KjunFileUpload: Object.freeze({
+    layout: Object.freeze(["grid","list"] as const),
+    size: Object.freeze(["compact","md"] as const),
+    trigger: Object.freeze(["area","button"] as const),
+  }),
   KjunFilterGroup: Object.freeze({
     size: Object.freeze(["xs","sm","md","lg","xl"] as const),
   }),

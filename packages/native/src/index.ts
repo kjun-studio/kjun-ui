@@ -92,7 +92,7 @@ export { KjunSplitPane, type KjunSplitPaneProps } from "./split-pane";
 export { KjunZoneGauge, type KjunZoneGaugeProps, type KjunGaugeZone } from "./zone-gauge";
 export { KjunStackedBar, type KjunStackedBarProps, type KjunStackedBarItem } from "./stacked-bar";
 export { KjunColorPicker, type KjunColorPickerProps, type KjunColorSwatch } from "./color-picker";
-export { KjunFileUpload, type KjunFileUploadProps, type KjunUploadFile, type KjunUploadStatus, type KjunRejectedFile, type KjunRejectReason, type KjunPickedFile } from "./file-upload";
+export { KjunFileUpload, type KjunFileUploadProps, type KjunUploadFile, type KjunUploadStatus, type KjunRejectedFile, type KjunRejectReason, type KjunPickedFile, type KjunUploadSize, type KjunUploadTrigger, type KjunUploadLayout } from "./file-upload";
 
 export { KjunDataState, KjunErrorBoundary } from "./data-state";
 export type { KjunDataStateProps, KjunErrorBoundaryProps, KjunErrorFallbackProps } from "./data-state";

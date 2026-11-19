@@ -118,7 +118,10 @@ export const extensions: Record<string, GuideAuthor> = {
   KjunFileUpload: {
     parts: [p("선택 영역", "비어 있을 때의 넓은 버튼입니다. 누르거나 파일을 끌어다 놓아 고릅니다.", ".kjun-file-upload-zone, [role=\"button\"]"), t("안내 문구", "허용 형식·파일당 크기·최대 개수입니다.", "PDF, XLSX, 이미지 · 파일당 20MB · 5개까지", true)],
     related: "input-settings",
-    states: [{ id: "states", label: "여러 상태", description: "업로드 중·완료·실패·대기 행과 머리의 실패 수, 추가 행을 함께 보입니다.", settings: { sample: "여러 상태" } }],
+    states: [{ id: "states", label: "여러 상태", description: "업로드 중·완료·실패·대기 행과 머리의 실패 수, 추가 행을 함께 보입니다. 실패 문구는 두 줄까지 보입니다.", settings: { sample: "여러 상태" } },
+      { id: "compact", label: "한 줄 빈 필드", description: "size=\"compact\"는 빈 필드를 추가 행과 같은 56px 한 줄로 그립니다.", settings: { size: "compact" } },
+      { id: "button", label: "버튼으로 고르기", description: "trigger=\"button\"은 안내 줄 끝의 보조 버튼으로만 고릅니다. 끌어다 놓기는 카드 어디서나 받습니다.", settings: { trigger: "button" } },
+      { id: "grid", label: "사진 타일", description: "layout=\"grid\"는 최소 72px 정사각형 타일과 추가 타일로 사진을 보입니다.", settings: { layout: "grid", sample: "사진" } }],
   },
   KjunQuantityStepper: {
     parts: [p("감소 버튼", "확정값에서 step을 뺍니다.", '[aria-label="수량 줄이기"]'), p("숫자 입력", "입력 문자열은 Enter·blur에서 숫자로 확정합니다.", '[role="spinbutton"]'), p("증가 버튼", "확정값에 step을 더합니다.", '[aria-label="수량 늘리기"]')], related: "input-settings",

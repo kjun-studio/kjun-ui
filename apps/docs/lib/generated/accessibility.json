@@ -6812,7 +6812,7 @@
       "label": "키보드 동작",
       "profile": "upload",
       "scenario": {},
-      "behavior": "증빙 자료의 파일 선택·행 삭제와 다시 시도·포커스 이동. 선택 영역과 추가 행은 버튼이며 숨은 파일 입력을 엽니다. 끌어다 놓기는 보조 경로이고, 고른 파일은 사전 검사 뒤 onSelect로 전달합니다. 행 삭제·다시 시도는 소비 코드가 처리합니다.",
+      "behavior": "증빙 자료의 파일 선택·행 삭제와 다시 시도·포커스 이동. 선택 영역과 추가 행(trigger=\"button\"이면 파일 선택 버튼, layout=\"grid\"면 추가 타일)은 버튼이며 숨은 파일 입력을 엽니다. 끌어다 놓기는 보조 경로이고, 고른 파일은 사전 검사 뒤 onSelect로 전달합니다. FormGroup 오류가 있으면 고르는 버튼이 aria-invalid와 오류 설명을 가집니다. 대기·업로드 중인 파일의 ×는 업로드 취소로, 끝난 파일의 ×는 삭제로 읽히며 처리는 소비 코드가 합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
@@ -6887,7 +6887,7 @@
       "label": "키보드 동작",
       "profile": "upload",
       "scenario": {},
-      "behavior": "증빙 자료의 파일 선택·행 삭제와 다시 시도·포커스 이동. 선택 영역과 추가 행은 버튼이며 숨은 파일 입력을 엽니다. 끌어다 놓기는 보조 경로이고, 고른 파일은 사전 검사 뒤 onSelect로 전달합니다. 행 삭제·다시 시도는 소비 코드가 처리합니다.",
+      "behavior": "증빙 자료의 파일 선택·행 삭제와 다시 시도·포커스 이동. 선택 영역과 추가 행(trigger=\"button\"이면 파일 선택 버튼, layout=\"grid\"면 추가 타일)은 버튼이며 숨은 파일 입력을 엽니다. 끌어다 놓기는 보조 경로이고, 고른 파일은 사전 검사 뒤 onSelect로 전달합니다. FormGroup 오류가 있으면 고르는 버튼이 aria-invalid와 오류 설명을 가집니다. 대기·업로드 중인 파일의 ×는 업로드 취소로, 끝난 파일의 ×는 삭제로 읽히며 처리는 소비 코드가 합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
@@ -6962,7 +6962,7 @@
       "label": "키보드 동작",
       "profile": "upload",
       "scenario": {},
-      "behavior": "증빙 자료의 파일 선택·행 삭제와 다시 시도·포커스 이동. 선택 영역과 추가 행은 버튼이며 숨은 파일 입력을 엽니다. 끌어다 놓기는 보조 경로이고, 고른 파일은 사전 검사 뒤 onSelect로 전달합니다. 행 삭제·다시 시도는 소비 코드가 처리합니다.",
+      "behavior": "증빙 자료의 파일 선택·행 삭제와 다시 시도·포커스 이동. 선택 영역과 추가 행(trigger=\"button\"이면 파일 선택 버튼, layout=\"grid\"면 추가 타일)은 버튼이며 숨은 파일 입력을 엽니다. 끌어다 놓기는 보조 경로이고, 고른 파일은 사전 검사 뒤 onSelect로 전달합니다. FormGroup 오류가 있으면 고르는 버튼이 aria-invalid와 오류 설명을 가집니다. 대기·업로드 중인 파일의 ×는 업로드 취소로, 끝난 파일의 ×는 삭제로 읽히며 처리는 소비 코드가 합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
@@ -20078,12 +20078,14 @@
       "label": "키보드 동작",
       "profile": "market",
       "scenario": {},
-      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤. 시세 행과 정렬·필터 컨트롤을 조합합니다. 행 실행과 데이터 변경은 프로젝트가 처리합니다.",
+      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤과 행 열기(Enter·Space), 열린 행의 aria-current. 시세 행과 정렬·필터 컨트롤을 조합합니다. 행 실행과 데이터 변경은 프로젝트가 처리합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "rows",
-        "showActions"
+        "showActions",
+        "onRowClick",
+        "activeKey"
       ],
       "applicable": true,
       "reason": null,
@@ -20099,12 +20101,14 @@
       "label": "라벨·오류 연결",
       "profile": "market",
       "scenario": {},
-      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤과 행 열기(Enter·Space), 열린 행의 aria-current. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
       "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "rows",
-        "showActions"
+        "showActions",
+        "onRowClick",
+        "activeKey"
       ],
       "applicable": true,
       "reason": null,
@@ -20120,12 +20124,14 @@
       "label": "포커스 이동·복귀",
       "profile": "market",
       "scenario": {},
-      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤과 행 열기(Enter·Space), 열린 행의 aria-current. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
       "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "rows",
-        "showActions"
+        "showActions",
+        "onRowClick",
+        "activeKey"
       ],
       "applicable": true,
       "reason": null,
@@ -20141,12 +20147,14 @@
       "label": "키보드 동작",
       "profile": "market",
       "scenario": {},
-      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤. 시세 행과 정렬·필터 컨트롤을 조합합니다. 행 실행과 데이터 변경은 프로젝트가 처리합니다.",
+      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤과 행 열기(Enter·Space), 열린 행의 aria-current. 시세 행과 정렬·필터 컨트롤을 조합합니다. 행 실행과 데이터 변경은 프로젝트가 처리합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "rows",
-        "showActions"
+        "showActions",
+        "onRowClick",
+        "activeKey"
       ],
       "applicable": true,
       "reason": null,
@@ -20162,12 +20170,14 @@
       "label": "라벨·오류 연결",
       "profile": "market",
       "scenario": {},
-      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤과 행 열기(Enter·Space), 열린 행의 aria-current. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
       "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "rows",
-        "showActions"
+        "showActions",
+        "onRowClick",
+        "activeKey"
       ],
       "applicable": true,
       "reason": null,
@@ -20183,12 +20193,14 @@
       "label": "포커스 이동·복귀",
       "profile": "market",
       "scenario": {},
-      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤과 행 열기(Enter·Space), 열린 행의 aria-current. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
       "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "rows",
-        "showActions"
+        "showActions",
+        "onRowClick",
+        "activeKey"
       ],
       "applicable": true,
       "reason": null,
@@ -20204,12 +20216,14 @@
       "label": "키보드 동작",
       "profile": "market",
       "scenario": {},
-      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤. 시세 행과 정렬·필터 컨트롤을 조합합니다. 행 실행과 데이터 변경은 프로젝트가 처리합니다.",
+      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤과 행 열기(Enter·Space), 열린 행의 aria-current. 시세 행과 정렬·필터 컨트롤을 조합합니다. 행 실행과 데이터 변경은 프로젝트가 처리합니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
         "rows",
-        "showActions"
+        "showActions",
+        "onRowClick",
+        "activeKey"
       ],
       "applicable": true,
       "reason": null,
@@ -20225,12 +20239,14 @@
       "label": "라벨·오류 연결",
       "profile": "market",
       "scenario": {},
-      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤과 행 열기(Enter·Space), 열린 행의 aria-current. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
       "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
         "rows",
-        "showActions"
+        "showActions",
+        "onRowClick",
+        "activeKey"
       ],
       "applicable": true,
       "reason": null,
@@ -20246,12 +20262,14 @@
       "label": "포커스 이동·복귀",
       "profile": "market",
       "scenario": {},
-      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "behavior": "시세 표의 정렬·관심·즐겨찾기 컨트롤과 행 열기(Enter·Space), 열린 행의 aria-current. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
       "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
         "rows",
-        "showActions"
+        "showActions",
+        "onRowClick",
+        "activeKey"
       ],
       "applicable": true,
       "reason": null,
@@ -20884,32 +20902,32 @@
       "name": "@kjun-ui/tokens",
       "version": "0.21.0",
       "file": "kjun-ui-tokens-0.21.0.tgz",
-      "bytes": 159280,
-      "integrity": "sha512-P7WhDdyM4O5xL6Fkp2yaPnlTMpj8cMnb4RQJIunamplGWQDWSzkgsyE4fILVJswicxCsqZwa9PTv2loWQshqZQ=="
+      "bytes": 168384,
+      "integrity": "sha512-pap/7ZF4SeC2CFR2mqSuQs4U3Owvj+qylUkp1Zn42FwpN+4nHlb0zY7GX1pKD6cPAc8hhg6+G/k4hLPDbaa8kw=="
     },
     {
       "name": "@kjun-ui/vue3",
       "version": "0.21.0",
       "file": "kjun-ui-vue3-0.21.0.tgz",
-      "bytes": 755471,
-      "integrity": "sha512-x89PDJRsNM2OrMIugqsWm6nadGHCTlQy6b0zYLkjw5yJH/TwSlzuIBqR0Q8s/m7goyhde9jdWT0mk65Erc/frQ=="
+      "bytes": 831009,
+      "integrity": "sha512-xCD1TUmmHRzvMwiqSZeB3k2YfNwUVmKW8GZvGmwUOwTuF+GQPFPL/49eCjfj4FUZnIbIqdUPQZ6C/Wro98J17Q=="
     },
     {
       "name": "@kjun-ui/react",
       "version": "0.21.0",
       "file": "kjun-ui-react-0.21.0.tgz",
-      "bytes": 641347,
-      "integrity": "sha512-H6YXSasusBMSY6Pyd/vwjmIA731XtfU/sSYoqG8TmikKUtTkeP9drk6KkMwQNNSDnGGVWuqHLMvGcUzMAkdA5A=="
+      "bytes": 707380,
+      "integrity": "sha512-LeqDKROsCJMZjSxqYvX0VrgLoFS6VvITjCp4lkh9jX+QE1Fan8G805HC2QXuKcDl5GVamqE6ystBLt+pNCpUnw=="
     },
     {
       "name": "@kjun-ui/native",
       "version": "0.21.0",
       "file": "kjun-ui-native-0.21.0.tgz",
-      "bytes": 1137032,
-      "integrity": "sha512-FbpEd+uElv9i7QUxTUzVW2r9w/3IDxRYwbooGYwXgEwk1yQiyfgSNdM7tNBGTAn9r4ZDNNzLAeZDg871OhRxCg=="
+      "bytes": 1278304,
+      "integrity": "sha512-F6cb8O8v9yregjvarZrK/78tT2KYsw24/jJoV7fiamN3UMk41V3XaiuCcYmziNs3G/rdPzb39u53rqnOERB4nw=="
     }
   ],
-  "definitionHash": "sha256-2c22c713f0aa4feb45472f7c521c2c4ef8f245a0fc71751394392251b3356a72",
+  "definitionHash": "sha256-0fda187a2fe26a3711ad64b4d56c3038aa3a1c62f5ca4bb95294afc902df8930",
   "runs": [
     {
       "schemaVersion": 1,

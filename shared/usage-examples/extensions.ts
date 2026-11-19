@@ -224,15 +224,21 @@ export function generate(input: UsageInput) {
         ariaLabel: '라벨 색', onChangeCommit: commit() }); break;
     case 'KjunFileUpload': {
       // The app uploads; this example marks each accepted file as done right away.
-      const sample = s.sample === '여러 상태' ? [
+      const sample = (s.sample === '여러 상태' ? [
         { id: 'receipt', name: '영수증_11월.pdf', size: 245760, status: 'done' },
         { id: 'photo', name: '매장_외관_사진_2026.jpg', size: 4404019, status: 'uploading', progress: 64 },
-        { id: 'license', name: '사업자등록증.pdf', size: 1153434, status: 'error' },
+        { id: 'license', name: '사업자등록증.pdf', size: 1153434, status: 'error', error: '서버가 응답하지 않아 올리지 못했어요. 잠시 뒤 다시 시도해 주세요.' },
         { id: 'clients', name: '거래처_목록.xlsx', size: 327680, status: 'queued' },
-      ].slice(0, s.multiple === false ? 1 : 4) : [];
+      ] : s.sample === '사진' ? [
+        // previewUrl is the app's: URL.createObjectURL(file) while uploading, the stored thumbnail afterwards.
+        { id: 'front', name: '매장_외관.jpg', size: 4404019, status: 'done', previewUrl: '/uploads/front-thumb.jpg' },
+        { id: 'inside', name: '매장_내부.jpg', size: 3145728, status: 'uploading', progress: 64, previewUrl: '/uploads/inside-thumb.jpg' },
+        { id: 'menu', name: '메뉴판.jpg', size: 2202009, status: 'error', previewUrl: '/uploads/menu-thumb.jpg' },
+      ] : []).slice(0, s.multiple === false ? 1 : 4);
       const add = 'accepted.map(file => ({ id: file.name + "-" + Date.now(), name: file.name, size: file.size, type: file.type, status: "done" }))';
       content = b.node(name, { files: b.state('files', sample), accept: '.pdf,image/*,.xlsx', maxSize: 20 * 1024 * 1024, maxFiles: 5,
-        ...b.props('multiple', 'disabled'),
+        ...b.props('multiple', 'disabled'), size: s.size === 'compact' ? 'compact' : undefined,
+        trigger: s.trigger === 'button' ? 'button' : undefined, layout: s.layout === 'grid' ? 'grid' : undefined,
         onSelect: b.handler('select', 'accepted', b.set('files', s.multiple === false ? add : `[...${b.read('files')}, ...${add}]`)),
         onRemove: b.handler('remove', 'id', b.set('files', `${b.read('files')}.filter(file => file.id !== id)`)),
         onRetry: b.handler('retry', 'id', b.set('files', `${b.read('files')}.map(file => file.id === id ? { ...file, status: "done" } : file)`)),

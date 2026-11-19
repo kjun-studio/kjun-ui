@@ -256,6 +256,9 @@ const fileUploadSummaries = {
   multiple: "false면 파일 하나만 다룹니다. 추가 행 대신 행에 바꾸기 버튼을 두고, 새로 고른 파일을 onSelect로 넘겨 앱이 교체합니다. 기본값 true입니다.",
   disabled: "고르기·끌어다 놓기와 행의 삭제·다시 시도를 막습니다.",
   hint: "선택 영역 둘째 줄 문구입니다. 생략하면 accept·maxSize·maxFiles로 ‘PDF, 이미지 · 파일당 20MB · 5개까지’처럼 만듭니다.",
+  size: "빈 필드의 크기입니다. md(기본값)는 136px 높이의 넓은 선택 영역이고, compact는 파일이 있을 때의 추가 행과 같은 한 줄(56px, 카드 80px)입니다. 파일이 있으면 두 값의 모양이 같습니다.",
+  trigger: "고르는 방법입니다. area(기본값)는 선택 영역·추가 행 전체가 버튼입니다. button은 안내 문구 줄 끝에 ‘파일 선택’(파일이 있으면 형식 안내 줄 끝에 ‘파일 추가’) 보조 버튼을 두고 그 버튼만 누를 수 있습니다. 끌어다 놓기는 카드 어디에서나 그대로 받습니다(웹). 카드를 넓게 누르게 하기 어려운 화면(댓글·채팅 첨부)에 씁니다.",
+  layout: "파일을 보여 주는 모양입니다. list(기본값)는 행 목록이고, grid는 사진 첨부용 정사각형 타일입니다. 타일은 최소 72px에서 폭에 맞춰 열 수를 정하고 8px 간격으로 놓으며, 마지막에 추가 타일(maxFiles가 있으면 n/최대 개수)을 둡니다. 올리는 중이면 타일 아래쪽에 막대를, 실패하면 타일을 실패 면으로 덮고 다시 시도 버튼을 둡니다. 삭제 ×는 오른쪽 위 24px 원입니다. 파일 이름과 상태는 화면 낭독기에 읽힙니다.",
   id: "숨은 파일 입력의 ID입니다. 바깥 <label for>와 연결할 때 씁니다. FormGroup 안에서는 그룹 ID를 씁니다.",
   ariaLabel: "FormGroup 라벨이 없을 때 필드 묶음의 이름입니다.",
   ariaDescribedBy: "FormGroup의 도움말·오류에 더해 연결할 설명 ID입니다.",
@@ -264,11 +267,11 @@ const fileUploadSummaries = {
 };
 const fileUploadCallbacks = {
   onSelect: event("고른 파일을 사전 검사한 결과를 알립니다.", "파일 선택 창에서 고르거나(웹), 카드에 놓거나(웹), onPick이 파일을 돌려줄 때(Native). 고른 파일이 없거나 취소하면 알리지 않습니다", "(accepted, rejected): 통과한 파일 배열(웹 File, Native KjunPickedFile)과 { file, reason: \"type\" | \"size\" | \"count\" } 배열", "반환값을 사용하지 않습니다.", "앱이 accepted를 files에 넣고 업로드를 시작합니다. 거부 이유는 KJUN이 추가 행 아래에 알립니다."),
-  onRemove: event("행의 삭제를 요청합니다.", "행의 ×를 누를 때. 업로드 중인 행도 같습니다", "string: 파일 id", "반환값을 사용하지 않습니다.", "앱이 files에서 빼고, 필요하면 전송 취소·서버 삭제를 합니다. 빠진 뒤 포커스는 다음 행으로 옮깁니다(웹)."),
+  onRemove: event("행의 삭제를 요청합니다.", "행이나 타일의 ×를 누를 때. 대기·업로드 중인 파일의 ×는 ‘업로드 취소’로 읽힙니다", "string: 파일 id", "반환값을 사용하지 않습니다.", "앱이 files에서 빼고, 필요하면 전송 취소·서버 삭제를 합니다. 빠진 뒤 포커스는 다음 행의 ×, 없으면 이전 행, 그것도 없으면 추가 버튼으로 옮깁니다."),
   onRetry: event("실패한 파일의 재시도를 요청합니다.", "실패한 행의 다시 시도, 또는 머리의 다시 시도(실패한 행마다 한 번씩)", "string: 파일 id", "반환값을 사용하지 않습니다.", "앱이 status를 uploading으로 바꾸고 다시 보냅니다."),
   onPick: event("Native에서 앱의 파일 선택기를 엽니다.", "선택 영역·추가 행·바꾸기를 누를 때", "없음", "Promise<KjunPickedFile[] | null>: { name, size, type?, uri? } 배열, 취소면 null", "expo-document-picker 같은 선택기를 앱이 연결합니다. 패키지는 선택 라이브러리에 의존하지 않습니다."),
 };
-const fileUploadTypes = [fields("KjunUploadFile", "files의 항목입니다.", [["id", "string", "고유한 파일 id"], ["name", "string", "파일 이름"], ["size", "number", "바이트 크기"], ["status", "\"queued\" | \"uploading\" | \"done\" | \"error\"", "업로드 상태"], ["progress", "number | undefined", "uploading일 때 0~100. 없으면 막대가 불확정으로 움직입니다."], ["error", "string | undefined", "실패 행에 보일 문구"], ["previewUrl", "string | undefined", "이미지 썸네일 주소"], ["type", "string | undefined", "MIME 형식"]])];
+const fileUploadTypes = [fields("KjunUploadFile", "files의 항목입니다.", [["id", "string", "고유한 파일 id"], ["name", "string", "파일 이름"], ["size", "number", "바이트 크기"], ["status", "\"queued\" | \"uploading\" | \"done\" | \"error\"", "업로드 상태"], ["progress", "number | undefined", "uploading일 때 0~100. 없으면 막대가 불확정으로 움직입니다."], ["error", "string | undefined", "실패 행에 보일 문구. 두 줄까지 보이고 넘치면 말줄임합니다."], ["previewUrl", "string | undefined", "이미지 썸네일 주소. 불러오지 못하면 확장자를 보입니다."], ["type", "string | undefined", "MIME 형식"]])];
 const splitPaneSummaries = {
   direction: "나누는 방향입니다. horizontal(기본값)은 패널을 좌우로, vertical은 상하로 둡니다. 상하 분할은 부모가 높이를 정해야 합니다.",
   sizeUnit: "크기 값의 단위입니다. ratio(기본값)는 경계를 뺀 공간에서 첫 패널이 차지하는 비율(0~1)이라 컨테이너가 커지면 함께 커집니다. px는 첫 패널의 픽셀이라 창 폭이 바뀌어도 사이드 목록이 같은 폭을 지킵니다. size·defaultSize와 크기 콜백 값이 모두 이 단위를 따릅니다.",

@@ -64,6 +64,18 @@ export const fuCases: { id: string; props: Record<string, any>; initial?: any[];
     { id: 'p-low', name: 'low.pdf', size: MB, status: 'uploading', progress: -5 },
     { id: 'p-high', name: 'high.pdf', size: MB, status: 'uploading', progress: 140 },
   ] },
+  { id: 'fu-broken', props: limits, initial: [
+    { id: 'pic', name: '현장.jpg', size: MB, status: 'done', previewUrl: 'data:image/png;base64,invalid' },
+    { id: 'slow', name: '견적서.pdf', size: MB, status: 'error', error: '서버가 응답하지 않아 올리지 못했어요. 네트워크를 확인한 뒤 다시 시도해 주세요.' },
+  ] },
+  { id: 'fu-compact', props: { ...limits, size: 'compact' } },
+  { id: 'fu-button', props: { ...limits, trigger: 'button' } },
+  { id: 'fu-button-filled', props: { ...limits, trigger: 'button' }, initial: [done('b1', '1.pdf', MB)] },
+  { id: 'fu-grid', props: { ...limits, layout: 'grid' }, initial: [
+    done('g1', '외관.jpg', 4 * MB),
+    { id: 'g2', name: '내부.jpg', size: 3 * MB, status: 'uploading', progress: 64 },
+    { id: 'g3', name: '메뉴.jpg', size: 2 * MB, status: 'error' },
+  ] },
   { id: 'fu-cancel', props: limits, picks: null },
   { id: 'fu-slow', props: limits, pickMode: 'slow' },
   { id: 'fu-throw', props: limits, pickMode: 'throw' },

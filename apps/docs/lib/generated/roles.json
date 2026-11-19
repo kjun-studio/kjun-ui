@@ -148,6 +148,7 @@
       "packages/native/src/drawer.tsx",
       "packages/native/src/fab.tsx",
       "packages/native/src/field-clear.tsx",
+      "packages/native/src/file-upload-row.tsx",
       "packages/native/src/file-upload.tsx",
       "packages/native/src/floating-panel.tsx",
       "packages/native/src/kpi-hero.tsx",
@@ -660,7 +661,8 @@
       "packages/tokens/src/carousel.css",
       "packages/tokens/src/file-upload.css",
       "packages/native/src/button.tsx",
-      "packages/native/src/carousel.tsx"
+      "packages/native/src/carousel.tsx",
+      "packages/native/src/file-upload-row.tsx"
     ]
   },
   {
@@ -813,12 +815,15 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/controls.css",
+      "packages/tokens/src/file-upload.css",
       "packages/tokens/src/list.css",
       "packages/tokens/src/steps.css",
       "packages/tokens/src/web.css",
       "packages/native/src/button.tsx",
       "packages/native/src/dropdown.tsx",
       "packages/native/src/feedback.tsx",
+      "packages/native/src/file-upload-row.tsx",
+      "packages/native/src/file-upload.tsx",
       "packages/native/src/list.tsx",
       "packages/native/src/steps.tsx"
     ]
@@ -929,9 +934,11 @@
     "implementationFiles": [
       "packages/tokens/src/carousel.css",
       "packages/tokens/src/controls.css",
+      "packages/tokens/src/file-upload.css",
       "packages/tokens/src/web.css",
       "packages/native/src/carousel.tsx",
       "packages/native/src/drawer.tsx",
+      "packages/native/src/file-upload-row.tsx",
       "packages/native/src/modal.tsx"
     ]
   },
