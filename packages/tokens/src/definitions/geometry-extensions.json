@@ -13,7 +13,12 @@
       "segmentMinimumWidth": { "$ref": "native.minimumTouchTarget" },
       "separatorWidth": { "$ref": "dimension.value6" },
       "segmentPadding": { "$ref": "dimension.value4" },
-      "optionsWidth": 64
+      "wheelRowHeight": { "$ref": "native.minimumTouchTarget" },
+      "wheelVisibleRows": 5,
+      "wheelColumnWidth": 64,
+      "wheelColumnGap": { "$ref": "dimension.value4" },
+      "panelPadding": { "$ref": "dimension.value12" },
+      "panelGap": { "$ref": "dimension.value12" }
     },
     "popover": {
       "width": 240,

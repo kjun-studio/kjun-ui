@@ -16,7 +16,7 @@ export const behavior = {
   select: '값·옵션과 선택 이벤트를 연결합니다. 필터 입력과 열림 상태는 선택 도구의 공개 API에 따라 처리합니다.',
   search: '입력값으로 원격 옵션을 요청하고 선택된 항목을 소비 코드에 전달합니다. 대체·취소된 요청 결과는 반영하지 않습니다.',
   date: '웹 패키지는 브라우저 date 입력을 사용하고 Native는 날짜 버튼과 달력 Modal을 사용합니다.',
-  time: '시·분·선택적인 초마다 Select를 조합하고 선택값을 시각 문자열로 전달합니다.',
+  time: '시·분(·초·오전/오후) 칸은 spinbutton이며 숫자 입력과 ↑↓로 값을 바꿉니다. 칸을 누르거나 Enter·Space를 누르면 같은 단위의 열이 spinbutton인 휠 dialog가 열리고, 휠의 값은 확인을 눌러야 시각 문자열로 전달됩니다.',
   slider: '손잡이별 값과 범위·이름을 제공하며 step에 맞는 값을 전달합니다.',
   upload: '선택 영역과 추가 행(trigger="button"이면 파일 선택 버튼, layout="grid"면 추가 타일)은 버튼이며 숨은 파일 입력을 엽니다. 끌어다 놓기는 보조 경로이고, 고른 파일은 사전 검사 뒤 onSelect로 전달합니다. FormGroup 오류가 있으면 고르는 버튼이 aria-invalid와 오류 설명을 가집니다. 대기·업로드 중인 파일의 ×는 업로드 취소로, 끝난 파일의 ×는 삭제로 읽히며 처리는 소비 코드가 합니다.',
   calendar: '날짜 칸은 버튼이며 한 칸만 Tab 대상(roving tabindex)입니다. 화살표·Home·End·PageUp·PageDown으로 칸을 옮기고 Enter로 고르며 고른 날은 aria-pressed, 오늘은 aria-current="date"입니다. 칸 이름은 날짜·요일에 휴일 이름과 일정 수를 붙여 읽습니다. 길게 누르기는 Shift+Enter(터치·오른쪽 클릭도 같음)이며 onDayLongPress가 있을 때만 켜집니다. 달·주를 바꾸는 요청은 소비 코드가 처리합니다.',
@@ -58,7 +58,8 @@ export function platformBehavior(target, platform, item) {
   if (item === 'focus') description = focusBehavior[target.profile] || '포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.';
   if (target.scenario.parent) description = `${target.scenario.parent} 안에서 사용하는 하위 구성입니다. ` + description;
   if (target.scenario.children) description += ' 이 항목은 문서에 명시한 하위 컨트롤을 공급한 조합을 검사합니다.';
-  if (platform === 'native' && ['select', 'search', 'time'].includes(target.profile)) description += ' Native는 DOM listbox 대신 Modal 내부 입력·radio 옵션을 사용하며 입력 포커스가 내부 입력으로 이동할 수 있습니다.';
+  if (platform === 'native' && ['select', 'search'].includes(target.profile)) description += ' Native는 DOM listbox 대신 Modal 내부 입력·radio 옵션을 사용하며 입력 포커스가 내부 입력으로 이동할 수 있습니다.';
+  if (platform === 'native' && target.profile === 'time') description += ' Native 칸은 버튼이고, 휠 열은 기기에서 adjustable(스크린리더 증감 동작), 웹 미리보기에서 spinbutton입니다.';
   if (platform === 'native' && target.profile === 'calendar') description = '날짜 칸은 각각 버튼이며 저마다 포커스 대상입니다(한 칸만 Tab 대상이 되는 roving은 없고, 화살표·Home·End·PageUp·PageDown 이동과 Shift+Enter도 없습니다). 고르면 selected 상태가 되고 칸 이름은 날짜·요일에 휴일 이름과 일정 수를 붙여 읽으며 오늘에는 \'오늘\'이 붙습니다. 달·주는 스와이프나 화면의 버튼으로 바꾸고, 길게 누르기는 접근성 동작(longpress)으로 노출되며 onDayLongPress가 있을 때만 켜집니다. 달·주를 바꾸는 요청은 소비 코드가 처리합니다.';
   if (platform === 'native' && target.profile === 'menu') description += ' Native는 Modal과 menuitem을 사용합니다. DOM menu 역할과 방향키 동작의 제공 여부는 결과에서 구분합니다.';
   return target.subject + '. ' + description;

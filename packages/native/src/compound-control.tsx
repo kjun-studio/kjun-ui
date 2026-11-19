@@ -1,13 +1,7 @@
-import { createContext, type ReactNode, type RefObject } from "react";
+import type { ReactNode } from "react";
 import { View } from "react-native";
-import { tokens, type InputSize } from "@kjun-ui/tokens";
+import { tokens } from "@kjun-ui/tokens";
 import { finePointer } from "./internal";
-
-export const CompoundControlContext = createContext<{
-  size: InputSize; focusRef?: RefObject<View | null>; onFocusChange?: (focused: boolean) => void;
-  /** First time segment: its value starts on the field text line. */
-  leading?: boolean;
-} | null>(null);
 
 // The visible surface follows the web geometry; the surrounding target stays touchable.
 export function CompoundTarget({ children, square = false }: { children: ReactNode; square?: boolean }) {

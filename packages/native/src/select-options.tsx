@@ -5,7 +5,6 @@ import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIcon } from "./button";
 import { content } from "./internal";
 import { useKjunStyles } from "./provider";
-import { typeStyle } from "./typography";
 
 export { optionValue, optionKey, optionLabel, optionDisabled } from "../../../shared/package-runtime/options";
 export type { OptionValue, SelectOption } from "../../../shared/package-runtime/options";
@@ -17,10 +16,7 @@ export function OptionRow({
   children,
   onPress,
   onLayout,
-  centered = false,
 }: {
-  /** Time segment lists: a centred number, the selected one inverted instead of checked. */
-  centered?: boolean;
   selected: boolean;
   disabled?: boolean;
   multiple?: boolean;
@@ -43,21 +39,20 @@ export function OptionRow({
         minHeight: tokens.extensions.menu.optionHeight,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: centered ? "center" : "space-between",
+        justifyContent: "space-between",
         gap: tokens.dimension.value8,
         paddingVertical: tokens.extensions.menu.optionPaddingY,
-        paddingHorizontal: centered ? 0 : tokens.extensions.menu.optionPaddingX,
+        paddingHorizontal: tokens.extensions.menu.optionPaddingX,
         backgroundColor: selected
-          ? centered ? colors.text : colors.selectedBg
+          ? colors.selectedBg
           : pressed
           ? colors.hover
           : undefined,
         opacity: disabled ? tokens.states.opacity.disabled : 1,
       })}
     >
-      <View style={centered ? undefined : { flex: 1 }}>{content(children || label, { fontSize: tokens.extensions.menu.optionFontSize, lineHeight: tokens.extensions.menu.optionLineHeight,
-        ...(centered ? { fontVariant: ["tabular-nums"], ...(selected ? { color: colors.surface, fontWeight: typeStyle("control").fontWeight } : {}) } : {}) })}</View>
-      {selected && !centered && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} color={colors.brand} />}
+      <View style={{ flex: 1 }}>{content(children || label, { fontSize: tokens.extensions.menu.optionFontSize, lineHeight: tokens.extensions.menu.optionLineHeight })}</View>
+      {selected && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} color={colors.brand} />}
     </Pressable>
   );
 }

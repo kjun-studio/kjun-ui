@@ -120,7 +120,6 @@
       "packages/tokens/src/cards.css",
       "packages/tokens/src/carousel.css",
       "packages/tokens/src/color-picker.css",
-      "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
@@ -132,6 +131,7 @@
       "packages/tokens/src/side-navigation.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
+      "packages/tokens/src/time-picker.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/tabs.tsx",
@@ -159,7 +159,6 @@
       "packages/native/src/modal.tsx",
       "packages/native/src/navigation.tsx",
       "packages/native/src/progress.tsx",
-      "packages/native/src/select-options.tsx",
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/side-navigation-parts.tsx",
       "packages/native/src/skeleton-base.tsx",
@@ -167,6 +166,7 @@
       "packages/native/src/table-grid.tsx",
       "packages/native/src/table-toolbar.tsx",
       "packages/native/src/tabs.tsx",
+      "packages/native/src/time-wheel.tsx",
       "packages/native/src/toast-stack.tsx",
       "packages/native/src/toast.tsx"
     ]
@@ -239,6 +239,7 @@
       "packages/tokens/src/split-pane.css",
       "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
+      "packages/tokens/src/time-picker.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/native/src/actions.tsx",
@@ -260,7 +261,6 @@
       "packages/native/src/navigation.tsx",
       "packages/native/src/pagination.tsx",
       "packages/native/src/quantity-stepper.tsx",
-      "packages/native/src/select-control.tsx",
       "packages/native/src/select-options.tsx",
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/side-navigation-parts.tsx",
@@ -268,6 +268,7 @@
       "packages/native/src/steps.tsx",
       "packages/native/src/table-list.tsx",
       "packages/native/src/tabs.tsx",
+      "packages/native/src/time-picker.tsx",
       "packages/native/src/toast.tsx"
     ]
   },
@@ -282,7 +283,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/color-picker.css",
-      "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/event-calendar.css",
       "packages/tokens/src/extensions.css",
@@ -292,6 +292,7 @@
       "packages/tokens/src/motion.css",
       "packages/tokens/src/side-navigation.css",
       "packages/tokens/src/steps.css",
+      "packages/tokens/src/time-picker.css",
       "packages/tokens/src/web.css",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button.tsx",
@@ -304,10 +305,10 @@
       "packages/native/src/file-upload.tsx",
       "packages/native/src/kpi-row.tsx",
       "packages/native/src/list.tsx",
-      "packages/native/src/select-control.tsx",
       "packages/native/src/side-navigation-parts.tsx",
       "packages/native/src/steps.tsx",
-      "packages/native/src/table-cards.tsx"
+      "packages/native/src/table-cards.tsx",
+      "packages/native/src/time-wheel.tsx"
     ]
   },
   {
@@ -377,6 +378,7 @@
       "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
+      "packages/tokens/src/time-picker.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/native/src/actions.tsx",
@@ -413,7 +415,6 @@
       "packages/native/src/pressable.tsx",
       "packages/native/src/progress.tsx",
       "packages/native/src/range-input.tsx",
-      "packages/native/src/select-options.tsx",
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/side-navigation-parts.tsx",
       "packages/native/src/side-navigation.tsx",
@@ -425,6 +426,8 @@
       "packages/native/src/table-narrow-parts.tsx",
       "packages/native/src/table-view.tsx",
       "packages/native/src/tabs.tsx",
+      "packages/native/src/time-picker.tsx",
+      "packages/native/src/time-wheel.tsx",
       "packages/native/src/toast-stack.tsx",
       "packages/native/src/toast.tsx",
       "packages/native/src/zone-gauge.tsx"
@@ -444,7 +447,6 @@
       "packages/tokens/src/cards.css",
       "packages/tokens/src/carousel.css",
       "packages/tokens/src/color-picker.css",
-      "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
@@ -461,6 +463,7 @@
       "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
+      "packages/tokens/src/time-picker.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/native/src/actions.tsx",
@@ -504,6 +507,7 @@
       "packages/native/src/table-view.tsx",
       "packages/native/src/tabs.tsx",
       "packages/native/src/time-picker.tsx",
+      "packages/native/src/time-wheel.tsx",
       "packages/native/src/toast.tsx",
       "packages/native/src/zone-gauge.tsx"
     ]
@@ -521,7 +525,6 @@
       "packages/tokens/src/calendar.css",
       "packages/tokens/src/cards.css",
       "packages/tokens/src/color-picker.css",
-      "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/data-state.css",
       "packages/tokens/src/display.css",
@@ -537,6 +540,7 @@
       "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
+      "packages/tokens/src/time-picker.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/actions.tsx",
       "packages/vue3/src/color-picker.tsx",
@@ -545,6 +549,7 @@
       "packages/vue3/src/kpi-hero.tsx",
       "packages/vue3/src/number-display.tsx",
       "packages/vue3/src/select-control.tsx",
+      "packages/vue3/src/time-picker.tsx",
       "packages/react/src/actions.tsx",
       "packages/react/src/color-picker.tsx",
       "packages/react/src/date-picker.tsx",
@@ -552,6 +557,7 @@
       "packages/react/src/kpi-hero.tsx",
       "packages/react/src/number-display.tsx",
       "packages/react/src/select-control.tsx",
+      "packages/react/src/time-picker.tsx",
       "packages/native/src/actions.tsx",
       "packages/native/src/calendar.tsx",
       "packages/native/src/card.tsx",
@@ -608,7 +614,6 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/calendar.css",
-      "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/file-upload.css",
@@ -616,15 +621,18 @@
       "packages/tokens/src/layout.css",
       "packages/tokens/src/motion.css",
       "packages/tokens/src/navigation.css",
+      "packages/tokens/src/time-picker.css",
       "packages/tokens/src/web.css",
       "packages/vue3/src/color-picker.tsx",
       "packages/vue3/src/date-picker.tsx",
       "packages/vue3/src/financial-display.tsx",
       "packages/vue3/src/select-control.tsx",
+      "packages/vue3/src/time-picker.tsx",
       "packages/react/src/color-picker.tsx",
       "packages/react/src/date-picker.tsx",
       "packages/react/src/financial-display.tsx",
       "packages/react/src/select-control.tsx",
+      "packages/react/src/time-picker.tsx",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/button-group-motion.tsx",
       "packages/native/src/button.tsx",
@@ -647,7 +655,8 @@
       "packages/native/src/selection-groups.tsx",
       "packages/native/src/tabs.tsx",
       "packages/native/src/textarea.tsx",
-      "packages/native/src/time-picker.tsx"
+      "packages/native/src/time-picker.tsx",
+      "packages/native/src/time-wheel.tsx"
     ]
   },
   {
@@ -751,6 +760,7 @@
       "packages/tokens/src/layout.css",
       "packages/tokens/src/list.css",
       "packages/tokens/src/steps.css",
+      "packages/tokens/src/time-picker.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/native/src/app-navigation.tsx",
@@ -1025,6 +1035,7 @@
       "packages/tokens/src/color-picker.css",
       "packages/tokens/src/compound-controls.css",
       "packages/tokens/src/controls.css",
+      "packages/tokens/src/time-picker.css",
       "packages/tokens/src/web.css",
       "packages/native/src/color-picker-parts.tsx",
       "packages/native/src/color-picker.tsx",
@@ -1044,13 +1055,15 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/controls.css",
+      "packages/tokens/src/time-picker.css",
       "packages/tokens/src/web.css",
       "packages/native/src/color-picker-parts.tsx",
       "packages/native/src/color-picker.tsx",
       "packages/native/src/date-picker.tsx",
       "packages/native/src/input.tsx",
       "packages/native/src/select-control.tsx",
-      "packages/native/src/textarea.tsx"
+      "packages/native/src/textarea.tsx",
+      "packages/native/src/time-picker.tsx"
     ]
   },
   {
@@ -1064,8 +1077,10 @@
     ],
     "implementationFiles": [
       "packages/tokens/src/controls.css",
+      "packages/tokens/src/time-picker.css",
       "packages/tokens/src/web.css",
-      "packages/native/src/field-surface.ts"
+      "packages/native/src/field-surface.ts",
+      "packages/native/src/time-picker.tsx"
     ]
   },
   {
@@ -1245,6 +1260,7 @@
       "packages/tokens/src/steps.css",
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
+      "packages/tokens/src/time-picker.css",
       "packages/tokens/src/toast.css",
       "packages/tokens/src/web.css",
       "packages/native/src/a11y.tsx",
@@ -1254,7 +1270,7 @@
       "packages/native/src/quantity-stepper.tsx",
       "packages/native/src/range-input.tsx",
       "packages/native/src/split-pane.tsx",
-      "packages/native/src/time-picker.tsx"
+      "packages/native/src/time-wheel.tsx"
     ]
   },
   {

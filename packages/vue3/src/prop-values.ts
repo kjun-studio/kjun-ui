@@ -360,8 +360,10 @@ export const kjunPropValues = Object.freeze({
   }),
   KjunTimePicker: Object.freeze({
     hourCycle: Object.freeze([12,24] as const),
+    layout: Object.freeze(["auto","inline","popover","sheet"] as const),
     precision: Object.freeze(["minute","second"] as const),
     size: Object.freeze(["sm","md","lg"] as const),
+    trigger: Object.freeze(["button","segments"] as const),
   }),
   KjunTooltip: Object.freeze({
     align: Object.freeze(["center","start"] as const),

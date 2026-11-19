@@ -190,7 +190,8 @@ export function generate(input: UsageInput) {
     }
     case 'KjunTimePicker':
       content = b.node(name, { value: b.state('time', null), onValueChange: b.update('time'), ...b.props('precision', 'minuteStep', 'secondStep', 'disabled', 'error', 'clearable', 'size', 'block'),
-        min: s.bounded ? s.precision === 'second' ? '09:30:15' : '09:30' : undefined, max: s.bounded ? s.precision === 'second' ? '18:30:45' : '18:30' : undefined, hourCycle: s.hourCycle === '12' ? 12 : undefined, ariaLabel: '알림 시각', onChangeCommit: commit() }); break;
+        min: s.bounded ? s.precision === 'second' ? '09:30:15' : '09:30' : undefined, max: s.bounded ? s.precision === 'second' ? '18:30:45' : '18:30' : undefined, hourCycle: s.hourCycle === '12' ? 12 : undefined,
+        layout: s.layout && s.layout !== 'auto' ? s.layout : undefined, trigger: s.layout !== 'inline' && s.trigger && s.trigger !== '기본' ? s.trigger : undefined, ariaLabel: '알림 시각', onChangeCommit: commit() }); break;
     case 'KjunZoneGauge': {
       // Zone colours are the app's own: KJUN draws them as given.
       if (b.native) b.declare('appColors', 'import { appColors } from "./kjun";');

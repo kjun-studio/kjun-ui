@@ -117,7 +117,6 @@ export function FloatingPanel({
   popoverWidth = tokens.extensions.popover.width,
   tooltipMaxWidth = tokens.extensions.tooltip.maxWidth,
   nonModal = false,
-  optionsWidth,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
@@ -147,8 +146,6 @@ export function FloatingPanel({
   popoverWidth?: number;
   /** Popover modal={false}: screen readers are not confined to the panel. */
   nonModal?: boolean;
-  /** Time segment lists: this narrow width replaces the menu minimum, and the selected row opens in the middle. */
-  optionsWidth?: number;
 }) {
   const m = useKjunMessages();
   ariaLabel ??= m.select;
@@ -188,9 +185,9 @@ export function FloatingPanel({
     const row = reveal?.current;
     if (!open || !anchored || !sized || !row || !viewport.current) return;
     const padding = menu || field ? tokens.extensions.menu.padding : 0;
-    const offset = optionsWidth != null ? row.y + padding - (viewport.current - row.height) / 2 : row.y + row.height + padding - viewport.current;
+    const offset = row.y + row.height + padding - viewport.current;
     if (offset > 0) scroll.current?.scrollTo({ y: offset, animated: false });
-  }, [open, anchored, sized, reveal, menu, field, optionsWidth]);
+  }, [open, anchored, sized, reveal, menu, field]);
   useEffect(() => {
     if (!open || !anchored || !sized || !focusOnOpen || !panelRef.current) return;
     if (Platform.OS === 'web') {
@@ -212,7 +209,7 @@ export function FloatingPanel({
   const tooltipWidth = Math.min(Math.max(0, window.width - 2 * tokens.extensions.floating.viewportInset), tooltipMaxWidth);
   const maximumWidth = Math.max(0, window.width - 2 * tokens.extensions.floating.viewportInset);
   const minimumPanelWidth = Math.min(maximumWidth,
-    Math.max(minimumWidth, optionsWidth ?? (menu || field ? tokens.extensions.menu.minimumWidth : 0)));
+    Math.max(minimumWidth, menu || field ? tokens.extensions.menu.minimumWidth : 0));
   const width = tooltip
     ? Math.min(tooltipWidth, panel.width || tooltipWidth)
     : Math.min(

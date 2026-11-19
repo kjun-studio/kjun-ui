@@ -50,5 +50,5 @@ export async function visit(page: Page, platform: string, name: string) {
   await page.evaluate(() => document.fonts.ready);
 }
 export const state = (page: Page) => page.evaluate(() => (window as any).visualSnapshot.values);
-export const timePart = (page: Page, platform: string, name: string) => page.getByRole('button', { name: `알림 시각 ${name}`, exact: true });
+export const timePart = (page: Page, platform: string, name: string) => page.getByRole(platform === 'native' ? 'button' : 'spinbutton', { name: `알림 시각 ${name}`, exact: true });
 export const option = (page: Page, platform: string, name: string) => page.getByRole(platform === 'native' ? 'radio' : 'option', { name, exact: true });

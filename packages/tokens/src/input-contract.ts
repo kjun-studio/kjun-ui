@@ -132,5 +132,11 @@ export function createTimeDomain({ precision = "minute", minuteStep = 1, secondS
     const exact = current === null ? undefined : candidates.find(time => [0, 1, 2].every(i => i === index || part(time, i) === part(current, i)));
     return formatTime(exact ?? candidates[0], precision);
   };
-  return { valid: valid && times.length > 0, options, select, part, parse: (value: string) => parseTime(value, precision), accepts: (value: string | null) => value === null || accepted.has(parseTime(value, precision) ?? -1) };
+  /** The allowed time closest to a time of day in seconds (the earlier one on a tie); null when nothing is allowed. */
+  const nearest = (time: number) => {
+    let best: number | null = null;
+    for (const candidate of times) if (best === null || Math.abs(candidate - time) < Math.abs(best - time)) best = candidate;
+    return best === null ? null : formatTime(best, precision);
+  };
+  return { valid: valid && times.length > 0, options, select, part, nearest, parse: (value: string) => parseTime(value, precision), accepts: (value: string | null) => value === null || accepted.has(parseTime(value, precision) ?? -1) };
 }

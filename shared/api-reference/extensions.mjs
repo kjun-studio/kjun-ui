@@ -306,7 +306,7 @@ const callback = (name, key, platform) => {
   if (key === "onReorder") return event("같은 이동을 자세히 알립니다.", "onOrderChange와 같은 시점", "{ value, from, to, order }: 옮긴 행의 value, 원래 위치와 새 위치(0부터), 새 순서", "반환값을 사용하지 않습니다.", "서버에 한 건의 이동만 보내는 식으로 쓸 때 사용합니다. order 갱신은 onOrderChange에서 합니다.");
   if (name === "KjunColorPicker") return colorPickerCallback(key);
   if (name === "KjunAvatarGroup") return event("그룹을 눌렀음을 알립니다.", "pressable이고 비활성이 아닌 그룹을 누르거나 Enter·Space로 실행할 때", platform === "native" ? "GestureResponderEvent" : "MouseEvent", "반환값을 사용하지 않습니다.", "전체 목록을 여는 등 다음 행동은 앱이 정합니다.");
-  const changeWhen = name.includes("Slider") ? "드래그·트랙 선택·키보드·접근성 증감으로 실제 값이 바뀔 때" : name === "KjunTimePicker" ? "시·분·초 선택 또는 지우기로 완전한 시각이 바뀔 때" : "Enter·blur 확정 또는 증감 버튼으로 숫자가 바뀔 때";
+  const changeWhen = name.includes("Slider") ? "드래그·트랙 선택·키보드·접근성 증감으로 실제 값이 바뀔 때" : name === "KjunTimePicker" ? "휠의 확인, 칸의 숫자 입력·↑↓, 지우기, inline 휠의 멈춤으로 완전한 시각이 바뀔 때" : "Enter·blur 확정 또는 증감 버튼으로 숫자가 바뀔 때";
   const arg = name === "KjunRangeSlider" ? "[시작 숫자, 끝 숫자]" : name === "KjunTimePicker" ? "HH:mm 또는 HH:mm:ss 문자열 / null" : "새 숫자";
   if (key === "onValueChange" && name === "KjunListSection") return event("고른 행 값의 변경을 요청합니다.", "value를 가진 행을 누를 때(single은 이미 고른 행을 누르면 알리지 않음)" + (platform === "vue3" ? "" : ", 행의 " + (platform === "native" ? "onPress" : "onClick") + "보다 먼저"), "single은 누른 행의 value, multiple은 그 행을 넣거나 뺀 새 배열", "반환값을 사용하지 않습니다.", "소비자가 섹션의 value를 갱신합니다. 갱신하지 않으면 선택 표시도 바뀌지 않습니다.");
   if (key === "onValueChange") return event("값 변경을 소비자에게 요청합니다.", changeWhen, arg, "반환값을 사용하지 않습니다.", "소비자가 value를 갱신합니다. 패키지가 업무 상태를 소유하지 않습니다.");
@@ -405,14 +405,27 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (name === "KjunListRow" && key === "expanded") entry = detail("행이 자기 내용을 펼치게 합니다.", { "동작": platform === "vue3" ? "v-model:expanded로 연결합니다. 행 머리가 버튼이 되어 누르면 update:expanded로 반대 값을 알리고, 내용은 expanded 슬롯에 넣습니다." : "행 머리가 버튼이 되어 누르면 onExpandedChange로 반대 값을 알립니다. 내용은 expandedContent에 넣습니다.", "표시": "끝에 아래 방향 꺾쇠가 붙고 펼치면 위로 뒤집힙니다. 내용은 같은 행 안, 제목이 시작하는 선에서 열립니다. hover·누름 배경은 행 머리에만 깔립니다.", "함께 쓰지 않는 것": "href·checked·selected·chevron. 함께 주면 그쪽 역할이 우선하고 개발 모드에서 경고합니다." });
     else if (name === "KjunBottomActionBar" && key === "variant") entry = { type: '"docked" | "floating"', default: '"docked"', ...detail("바의 모양입니다.", { "floating": "화면 가장자리에서 떨어진 알약 모양입니다. KjunFloatingNavigation과 같은 띄움·여백·테두리·그림자를 씁니다. 설명과 작업은 항상 한 줄에 놓이고 긴 설명은 말줄임합니다. 설명이 없으면 글자가 있는 버튼들이 폭을 나눠 채웁니다.", "버튼": "size를 주지 않은 버튼은 lg, 모양은 알약이 되어 바 높이가 60px입니다. 작업은 두세 개까지 권합니다.", "배치": "바는 화면 맨 아래 자리를 그대로 차지하고 둘레만 투명합니다. 내용 위에 겹쳐 띄우려면 앱이 배치합니다. surface는 이 모양에서 효과가 없습니다." }) };
     else if (name === "KjunQuantityStepper" && key === "name") entry = { summary: "폼 제출용 숨은 input의 이름입니다. 확정된 value를 제출하고, 비활성이면 제출하지 않습니다." };
+    // Described below with the other TimePicker props.
+    else if (name === "KjunTimePicker" && (key === "layout" || key === "trigger")) entry = {};
     else if (summaries[key]) entry = { summary: summaries[key] };
     else throw Error("Missing extension prop description: " + name + "." + key);
     if (name === "KjunQuantityStepper" && key === "block") entry.default = "false";
     if (name === "KjunTimePicker" && key === "block") entry = { summary: "부모의 전체 너비를 채웁니다. 기본값 false는 시각 폭만 차지합니다.", default: "false" };
     if (name === "KjunTimePicker" && key === "hourCycle") entry = { type: "12 | 24", default: "24", ...detail("시계 방식입니다. 24는 00~23시, 12는 오전/오후 칸과 1~12시를 보입니다.", { "값 형태": "어느 쪽이든 값은 HH:mm(또는 HH:mm:ss) 24시간 문자열입니다.", "칸 순서": "한국어·일본어·중국어는 오전/오후를 시 앞에, 그 밖의 언어는 뒤에 둡니다." }) };
-    if (name === "KjunTimePicker" && key === "readOnly") entry = { default: "false", summary: "시각을 보여 주기만 하고 바꾸지 않습니다. 칸은 초점을 받지만 목록을 열지 않고 지우기 버튼도 숨깁니다." };
+    if (name === "KjunTimePicker" && key === "readOnly") entry = { default: "false", summary: "시각을 보여 주기만 하고 바꾸지 않습니다. 칸은 초점을 받지만 휠을 열지 않고 지우기 버튼도 숨깁니다. inline 휠은 움직이지 않습니다." };
+    if (name === "KjunTimePicker" && key === "layout") entry = { type: '"auto" | "popover" | "sheet" | "inline"', default: '"auto"', ...detail("휠을 여는 방식입니다.", {
+      "auto": platform === "native" ? "기기와 터치 화면은 아래 시트, 마우스를 쓰는 웹 미리보기는 팝오버로 엽니다." : "마우스 화면(pointer: fine)은 팝오버, 터치 화면(pointer: coarse)은 아래 시트로 엽니다.",
+      "popover·sheet": "휠을 돌리는 동안은 초안입니다. 확인을 눌러야 " + (platform === "vue3" ? "update:modelValue와 change" : "onValueChange와 onChangeCommit") + "가 한 번 발생합니다. 취소·Esc·바깥 누름·시트 내리기는 값을 그대로 둡니다. ‘지금’은 현재 시각을 minuteStep에 맞춰 휠만 옮깁니다.",
+      "inline": "필드 없이 휠을 그 자리에 보입니다. 열이 멈출 때마다 값을 바로 바꿉니다. value가 비어 있으면 현재 시각에서 시작하되 움직이기 전에는 값을 바꾸지 않습니다.",
+      "휠": "시는 0~23(12시간제는 12·1~11), 분·초는 간격마다 한 줄이며 끝없이 돕니다. 오전/오후 열만 양 끝에서 멈춥니다. min·max 밖의 시각은 흐리게 남고, 그곳에 멈추면 가장 가까운 허용 시각으로 돌아갑니다.",
+      "키보드": "열 사이는 ←→, ↑↓는 한 칸, PageUp·PageDown은 다섯 칸, Home·End는 처음·끝 허용 값입니다. Enter는 확인입니다.",
+    }) };
+    if (name === "KjunTimePicker" && key === "trigger") entry = { type: '"segments" | "button"', default: 'layout이 sheet면 "button", 그 밖에는 "segments"', ...detail("휠을 여는 필드의 모양입니다. inline에서는 쓰지 않습니다.", {
+      "segments": "시·분(·초·오전/오후) 칸입니다. 칸을 누르면 그 열에 초점을 둔 휠이 열리고, " + (platform === "native" ? "웹 미리보기에서는 " : "") + "숫자를 입력하면 바로 값을 바꾸며 칸이 차면 다음 칸으로 넘어갑니다. ↑↓는 칸 값을 한 단계씩 바꿉니다.",
+      "button": "‘오전 9:30’처럼 한 줄로 읽히는 필드 버튼입니다. 비어 있으면 ‘시간 선택’을 보입니다.",
+    }) };
     if (name === "KjunTimePicker" && key === "name") entry = { summary: "폼 제출용 숨은 input의 이름입니다. 비어 있으면 빈 문자열을 제출합니다." };
-    if (name === "KjunTimePicker" && key === "id") entry = { summary: "첫 구간 트리거의 id입니다. FormGroup 없이 바깥 <label for>가 첫 구간을 가리킬 때 씁니다. 생략하면 FormGroup의 id를 씁니다." };
+    if (name === "KjunTimePicker" && key === "id") entry = { summary: "첫 칸(button 필드면 그 버튼)의 id입니다. FormGroup 없이 바깥 <label for>가 첫 구간을 가리킬 때 씁니다. 생략하면 FormGroup의 id를 씁니다." };
     if (name === "KjunQuantityStepper" && (key === "value" || key === "modelValue")) entry = detail(valueDescription[name], {
       "상태 책임": guides[name].interaction,
       "키보드": "Enter·blur는 변경값을 확정합니다. 편집 중 첫 Escape는 초안을 되돌리고 상위 창에 전달하지 않습니다. 편집이 끝난 뒤 Escape는 상위 창이 처리합니다. IME 조합 중 키와 조합 확정 keyCode=229는 수량을 확정하거나 증감하지 않습니다.",

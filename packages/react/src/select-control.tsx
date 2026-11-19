@@ -6,7 +6,6 @@ import { selectOptions } from "../../../shared/package-runtime/options";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
 import {
 useId,
-useContext,
 useRef,
 useEffect,
 useLayoutEffect,
@@ -17,12 +16,10 @@ import { Header, ListBox, ListBoxItem, ListBoxSection } from "react-aria-compone
 import { measureHiddenLabels, selectClearMarkStyle, selectClearStyle } from "../../../shared/package-runtime/select-trigger";
 import type { SelectMultipleDisplay } from "../../../shared/package-runtime/options";
 import { useSelectState } from "../../../shared/package-runtime/select";
-import { centerSelectedOption } from "../../../shared/package-runtime/center-option";
 import { useCompositionGuard } from "./composition";
 import { KjunButton,KjunIcon } from "./button";
 import { KjunSpinner } from "./display";
 import { KjunInput,FieldContext,useKjunField } from "./input";
-import { CompoundControlContext } from "./compound-control";
 import { FloatingPanel } from "./layers";
 import { resolveFocusReturn, type FocusReturn } from "./floating-panel";
 import {
@@ -115,7 +112,6 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
     menu = useRef<HTMLDivElement>(null),
     field = useKjunField(),
     id = "kjun-" + useId();
-  const segment = useContext(CompoundControlContext) !== null;
   const spec = tokens.input[size];
   const expanded = usePopupExpanded(open, ref);
   const registerControl = field?.setControlId;
@@ -127,12 +123,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
   useEffect(() => {
     if (open && searchable) menu.current?.querySelector('input')?.focus({ preventScroll: true });
     if (!open) composition.onCompositionEnd();
-    // After the list has focused and revealed the selected option, move it to the middle.
-    if (open && segment) {
-      let frame = requestAnimationFrame(() => { frame = requestAnimationFrame(() => centerSelectedOption(menu.current?.querySelector<HTMLElement>(".kjun-listbox"))); });
-      return () => cancelAnimationFrame(frame);
-    }
-  }, [open, searchable, segment]);
+  }, [open, searchable]);
   const change = (v: OptionValue | OptionValue[] | null) => {
     onValueChange?.(v);
     onChange?.(v);
@@ -173,7 +164,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
       {renderOption?.(o, selected(o)) || (
         <span>{optionLabel(o, labelKey)}</span>
       )}
-      {selected(o) && !segment && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
+      {selected(o) && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
     </ListBoxItem>
   );
   return (
@@ -184,7 +175,6 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
           id={triggerId ?? field?.id}
           type="button"
           className="kjun-input kjun-select-trigger"
-          data-time-segment={segment || undefined}
           disabled={disabled}
           aria-haspopup="listbox"
           aria-controls={expanded ? id : undefined}
@@ -199,8 +189,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
             height: spec.height,
             borderRadius: spec.radius,
             ...inputTypeStyle(size),
-            // Time segments take their padding from compound-controls.css, which also aligns the first value.
-            ...(segment ? {} : { paddingInline: spec.padding - tokens.border.controlWidth }),
+            paddingInline: spec.padding - tokens.border.controlWidth,
           }}
           onClick={() => { if (!readOnly) changeOpen(!open); }}
           onKeyDown={(e) => {
@@ -216,8 +205,8 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
               {hidden > 0 && <span className="kjun-select-values-more" aria-hidden="true">+{hidden}</span>}
             </> : label || placeholder)}
           </span>
-          {/* Time segments read as one value, and a read-only value does not open, so neither carries an indicator. */}
-          {!segment && !readOnly && <KjunIcon name="chevron-down" className="kjun-select-indicator" data-open={expanded || undefined} size={spec.iconSize} style={{ flexShrink: 0, color: disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />}
+          {/* A read-only value does not open, so it carries no indicator. */}
+          {!readOnly && <KjunIcon name="chevron-down" className="kjun-select-indicator" data-open={expanded || undefined} size={spec.iconSize} style={{ flexShrink: 0, color: disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />}
         </button>
         {showClear && (
           <KjunButton
@@ -244,7 +233,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
         triggerRef={ref}
         placement="bottom-start"
         matchTriggerWidth
-        className={"kjun-select-panel kjun-select-options-panel" + (segment ? " kjun-time-options" : "")}
+        className="kjun-select-panel kjun-select-options-panel"
       >
         <FieldContext.Provider value={null}><div ref={menu} className="kjun-select-content"
           // A searchable list hands typing back to its search: Arrow Up on the first option, or a printable key.

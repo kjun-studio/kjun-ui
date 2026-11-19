@@ -3057,7 +3057,7 @@
       "title": "TimePicker",
       "docs": "/components/time-picker",
       "category": "inputs",
-      "differences": "기존 Select를 조합합니다. 플랫폼별 Select 레이어 동작을 유지하며 시스템 시간 선택기는 사용하지 않습니다.",
+      "differences": "웹은 CSS scroll-snap 스크롤 열, Native는 snapToInterval ScrollView 열로 같은 휠을 그립니다. 팝오버는 DatePicker와 같은 떠 있는 패널, 시트는 아래 Drawer입니다. Native 기기에서는 숫자 입력 대신 휠을 쓰고, 휠 열은 스크린리더의 증감 동작(adjustable)으로 바꿉니다. 시스템 시간 선택기는 사용하지 않습니다. Native는 RN Web에서만 확인했습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

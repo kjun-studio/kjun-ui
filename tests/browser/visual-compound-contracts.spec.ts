@@ -1,7 +1,7 @@
 import { captureReview } from './review-captures';
 import { test, expect } from '@playwright/test';
 import { openFixture } from './packed-fixture';
-import { box, middle, geometry, output, configure, visit, state, timePart, option } from './visual-contract-helpers';
+import { box, middle, geometry, output, configure, visit, state, timePart } from './visual-contract-helpers';
 
 for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: compound controls retain their geometry, width options and number interactions`,async({page})=>{
@@ -22,8 +22,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(quantity.getByRole('button',{name:'수량 늘리기'})).toBeDisabled();
       await input.fill('4');await input.press('Escape');await expect(input).toHaveValue('10');
       const time=page.getByTestId('time');
-      // Vue uses role=combobox on a button; include its three triggers.
-      const parts=await time.locator('button').all();
+      // Three segments (spinbutton inputs on the web, buttons on Native) and the clear button.
+      const parts=[...await time.getByRole(platform==='native'?'button':'spinbutton',{name:/^알림 시각 (시|분|초)$/}).all(),time.getByRole('button',{name:'알림 시각 지우기'})];
       const bounds=await Promise.all(parts.map(box));
       expect(bounds.length).toBe(4);
       // Native keeps a 44px clear target centered on the field; the field itself keeps its size height.
@@ -58,7 +58,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     await configure(page, 'KjunTimePicker', { precision: 'second', size: 'md' }, { time: '09:30:15' });
     await captureReview(page.locator('[aria-label="알림 시각"]').first(), { path: `${output}/${platform}-time-wide.png` });
     await timePart(page, platform, '시').click();
-    await option(page, platform, '10').click();
+    await page.keyboard.press('ArrowUp');
+    await page.getByRole('button', { name: '확인', exact: true }).click();
     await expect.poll(async () => (await state(page)).time).toBe('10:30:15');
     await page.getByRole('button', { name: '알림 시각 지우기' }).click();
     await expect.poll(async () => (await state(page)).time).toBe(null);

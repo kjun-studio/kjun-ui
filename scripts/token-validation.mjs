@@ -10,6 +10,8 @@ export function tokenKind(path) {
   // Calendar extension values that are not lengths: opacities are plain numbers, slide and long-press times are milliseconds.
   if (/^extensions\.calendar\./.test(path) && /Opacity$/.test(name)) return 'opacity';
   if (path === 'extensions.calendar.swipeRatio') return 'ratio';
+  // How many wheel rows a TimePicker shows: a plain number of rows.
+  if (path === 'extensions.timePicker.wheelVisibleRows') return 'count';
   if (/^extensions\.calendar\./.test(path) && /^(slideOut|slideIn|longPressDelay|pressGuard)$/.test(name)) return 'duration';
   // Hold-to-repeat timing of the step buttons.
   if (/^extensions\.compound\.repeat(Delay|Interval)$/.test(path)) return 'duration';

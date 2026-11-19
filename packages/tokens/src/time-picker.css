@@ -1,0 +1,93 @@
+/* TimePicker: a segment field or a one-line button that opens a wheel in a popover or a bottom sheet, or the wheel inline. */
+/* A time is a short fixed-length value, so the field hugs it; block stretches it like Input. */
+.kjun-time-picker { display:inline-flex; align-items:center; width:max-content; border-radius:var(--_kjun-compound-radius); background:var(--_kjun-color-input-bg); }
+.kjun-time-picker[data-block="true"] { display:flex; width:100%; }
+/* Focus and an open wheel draw Input's inner border; keyboard focus adds Input's inset ring. */
+.kjun-time-picker::before { content:""; position:absolute; inset:0; border-radius:inherit; border:var(--_kjun-border-control-width) solid transparent; pointer-events:none; }
+.kjun-time-picker:is(:focus-within,[data-open="true"]):not([data-disabled="true"])::before { border-color:var(--_kjun-color-input-border-focus); }
+.kjun-time-picker:has(.kjun-time-segment-value:focus-visible) { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-inset-offset); }
+.kjun-time-picker[data-error="true"]:has(.kjun-time-segment-value:focus-visible) { outline-offset:var(--_kjun-state-focus-offset); }
+.kjun-time-segments { display:flex; align-items:center; flex:1; min-width:0; }
+/* Segments hug their values so "09:30" stays together; in a block field leftover width collects before the trailing icon. */
+.kjun-time-segment { flex:0 0 auto; display:flex; }
+/* Same type as the segment values so "09 : 30" reads as one time. */
+.kjun-time-separator { flex:0 0 var(--_kjun-extension-time-picker-separator-width); text-align:center; font-size:var(--_kjun-compound-font-size); line-height:var(--_kjun-compound-line-height); color:var(--_kjun-color-text-secondary); }
+.kjun-time-picker[data-disabled="true"] .kjun-time-separator { color:var(--_kjun-color-text-disabled); }
+/* A segment is a spinbutton input: two digits centred in a touch-wide slot, typed by keys only (no caret, no selection). */
+.kjun-time-segment-value {
+  box-sizing:border-box; width:var(--_kjun-extension-time-picker-segment-minimum-width); height:var(--_kjun-compound-height); margin:0;
+  padding:0 var(--_kjun-extension-time-picker-segment-padding); border:0; border-radius:var(--_kjun-compound-radius); background:transparent;
+  font:inherit; font-size:var(--_kjun-compound-font-size); line-height:var(--_kjun-compound-line-height); font-weight:var(--_kjun-type-input-weight); letter-spacing:var(--_kjun-type-input-tracking);
+  color:var(--_kjun-color-text); text-align:center; font-variant-numeric:tabular-nums; caret-color:transparent; cursor:pointer; outline:none; user-select:none;
+  transition:background-color var(--_kjun-motion-control) var(--_kjun-ease-out);
+}
+.kjun-time-segment-value::selection { background:transparent; }
+.kjun-time-segment-value::placeholder { color:var(--_kjun-color-input-placeholder); opacity:1; }
+/* The first value starts on the field text line, like Input and DatePicker values; its trailing room matches the centred gap of the other segments. */
+.kjun-time-segment:first-child .kjun-time-segment-value {
+  width:calc(var(--_kjun-compound-padding) + 2ch + (var(--_kjun-extension-time-picker-segment-minimum-width) - 2ch) / 2); text-align:start;
+  padding-inline:var(--_kjun-compound-padding) calc((var(--_kjun-extension-time-picker-segment-minimum-width) - 2ch) / 2);
+}
+/* The AM/PM word is two letters of the text font wide and sits a separator's width from the hour instead of a ":". */
+.kjun-time-segment[data-period] .kjun-time-segment-value { width:calc(2em + 2 * var(--_kjun-extension-time-picker-segment-padding)); min-width:var(--_kjun-extension-time-picker-segment-minimum-width); }
+.kjun-time-segment:first-child[data-period] .kjun-time-segment-value { width:calc(var(--_kjun-compound-padding) + 2em + var(--_kjun-extension-time-picker-segment-padding)); padding-inline:var(--_kjun-compound-padding) var(--_kjun-extension-time-picker-segment-padding); }
+.kjun-time-segment[data-period] + .kjun-time-segment, .kjun-time-segment + .kjun-time-segment[data-period] { margin-inline-start:var(--_kjun-extension-time-picker-separator-width); }
+.kjun-time-segment-value:is(:hover,:focus):not(:disabled) { background:var(--_kjun-color-hover); }
+.kjun-time-segment-value:disabled { color:var(--_kjun-color-text-disabled); cursor:not-allowed; }
+.kjun-time-segment-value:disabled::placeholder { color:var(--_kjun-color-text-disabled); }
+/* A read-only time shows its value without the hover of a control that opens. */
+.kjun-time-picker[data-readonly] .kjun-time-segment-value { cursor:default; }
+.kjun-time-picker[data-readonly] .kjun-time-segment-value:is(:hover,:focus) { background:transparent; }
+.kjun-time-clear { flex:0 0 var(--_kjun-geometry-native-minimum-touch-target); width:var(--_kjun-geometry-native-minimum-touch-target); padding:0; }
+/* Without a value to clear (or while disabled) the trailing slot shows what the field holds, and opens the wheel. */
+.kjun-time-icon { display:flex; flex:0 0 var(--_kjun-geometry-native-minimum-touch-target); align-self:stretch; align-items:center; justify-content:center; color:var(--_kjun-color-text-tertiary); cursor:pointer; }
+.kjun-time-picker:is([data-disabled="true"],[data-readonly]) .kjun-time-icon { cursor:default; }
+.kjun-time-picker[data-disabled="true"] .kjun-time-icon { color:var(--_kjun-color-text-disabled); }
+@media (pointer:coarse) {
+  .kjun-time-segment-value,.kjun-time-picker .kjun-time-clear { min-height:var(--_kjun-geometry-native-minimum-touch-target); }
+}
+/* The button trigger is DatePicker's field with a clock: it hugs "오전 9:30" unless block. */
+.kjun-time-button-field { display:inline-block; vertical-align:middle; width:max-content; max-width:100%; }
+.kjun-time-button-field[data-block="true"] { display:block; width:100%; }
+.kjun-time-trigger { width:100%; }
+.kjun-time-trigger > span { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:left; font-variant-numeric:tabular-nums; }
+
+/* The wheel: columns of rows that snap to the band in the middle, fading towards the top and bottom. */
+.kjun-time-wheel {
+  --_kjun-time-wheel-row:var(--_kjun-extension-time-picker-wheel-row-height);
+  position:relative; display:flex; justify-content:center; gap:var(--_kjun-extension-time-picker-wheel-column-gap);
+  height:calc(var(--_kjun-time-wheel-row) * var(--_kjun-extension-time-picker-wheel-visible-rows));
+}
+.kjun-time-wheel-band {
+  position:absolute; inset-inline:0; top:calc(var(--_kjun-time-wheel-row) * (var(--_kjun-extension-time-picker-wheel-visible-rows) - 1) / 2);
+  height:var(--_kjun-time-wheel-row); border-radius:var(--_kjun-geometry-radius-radius8); background:var(--_kjun-color-active); pointer-events:none;
+}
+.kjun-time-wheel-column { position:relative; flex:0 0 var(--_kjun-extension-time-picker-wheel-column-width); border-radius:var(--_kjun-geometry-radius-radius8); }
+.kjun-time-wheel-column:has(:focus-visible) { outline:var(--_kjun-state-focus-width) solid var(--_kjun-color-focus-ring); outline-offset:var(--_kjun-state-focus-inset-offset); }
+.kjun-time-wheel-scroll {
+  box-sizing:border-box; height:100%; overflow-y:auto; overscroll-behavior:contain; scroll-snap-type:y mandatory; scrollbar-width:none; outline:none;
+  padding-block:calc(var(--_kjun-time-wheel-row) * (var(--_kjun-extension-time-picker-wheel-visible-rows) - 1) / 2);
+  -webkit-mask-image:linear-gradient(to bottom, transparent, black 35%, black 65%, transparent); mask-image:linear-gradient(to bottom, transparent, black 35%, black 65%, transparent);
+}
+.kjun-time-wheel-scroll::-webkit-scrollbar { display:none; }
+.kjun-time-wheel-scroll[data-locked] { overflow-y:hidden; }
+.kjun-time-wheel-row {
+  display:flex; align-items:center; justify-content:center; height:var(--_kjun-time-wheel-row); scroll-snap-align:center;
+  font-size:var(--_kjun-type-input-size); line-height:var(--_kjun-type-input-line); font-variant-numeric:tabular-nums; color:var(--_kjun-color-text-secondary);
+  cursor:pointer; user-select:none;
+}
+.kjun-time-wheel-row[data-selected] { color:var(--_kjun-color-text); font-weight:var(--_kjun-type-control-weight); }
+.kjun-time-wheel-row[data-disabled] { color:var(--_kjun-color-text-disabled); }
+.kjun-time-wheel-scroll[data-locked] .kjun-time-wheel-row { cursor:default; }
+.kjun-time-wheel[data-disabled] .kjun-time-wheel-row { color:var(--_kjun-color-text-disabled); }
+/* Inline wheels sit on the page in a field fill, so the band is the surface. */
+.kjun-time-picker-inline { display:inline-block; width:max-content; max-width:100%; padding:var(--_kjun-extension-time-picker-panel-padding); border-radius:var(--_kjun-geometry-radius-radius12); background:var(--_kjun-color-input-bg); box-sizing:border-box; }
+.kjun-time-picker-inline[data-block] { display:block; width:auto; }
+.kjun-time-picker-inline[data-error] { box-shadow:inset 0 0 0 var(--_kjun-border-control-width) var(--_kjun-color-danger); }
+.kjun-time-wheel[data-inline] .kjun-time-wheel-band { background:var(--_kjun-color-surface); }
+/* The popover holds the wheel over its footer: "지금" at the start, cancel and confirm at the end. */
+.kjun-time-panel { box-sizing:border-box; padding:var(--_kjun-extension-time-picker-panel-padding); display:flex; flex-direction:column; gap:var(--_kjun-extension-time-picker-panel-gap); border-radius:var(--_kjun-extension-popover-radius); }
+.kjun-time-panel-footer { display:flex; align-items:center; gap:var(--_kjun-geometry-dimension-value8); }
+.kjun-time-panel-actions { display:flex; gap:var(--_kjun-geometry-dimension-value8); margin-inline-start:auto; }
+.kjun-time-sheet-body { display:flex; justify-content:center; }
+.kjun-time-sheet-body .kjun-time-wheel { flex:1; max-width:calc(4 * var(--_kjun-extension-time-picker-wheel-column-width) + 6 * var(--_kjun-extension-time-picker-wheel-column-gap)); }

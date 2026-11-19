@@ -97,6 +97,8 @@ export const kjunMessagesEn: KjunMessages = {
   minute: "Minute",
   second: "Second",
   timePlaceholder: "--",
+  selectTime: "Select time",
+  now: "Now",
   value: "Value",
   minimum: "Minimum",
   maximum: "Maximum",

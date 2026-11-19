@@ -28,7 +28,7 @@ export const profiles = {
     check('선택 도구를 열고 Escape로 닫은 뒤 포커스를 검사합니다.', '입력 또는 원래 선택 트리거에 포커스가 돌아옵니다.')],
   search: [check('자산 검색어를 입력하고 ArrowDown·Enter로 원격 결과를 선택한 뒤 Escape를 누릅니다.', '유효한 aria-activedescendant를 제공하고 선택 값이 바뀌며 결과가 닫힙니다.'), names, focus],
   date: [check('날짜 필드에 키보드로 진입하고 열린 달력의 방향키·Escape를 검사합니다.', '활성 날짜가 방향키에 반응하고 Escape로 닫힙니다. 브라우저 기본 date 입력은 키보드 편집을 검사합니다.'), names, focus],
-  time: [check('시각 선택 도구에 키보드로 진입하여 값을 변경하고 Escape로 닫습니다.', '시·분 값 변경이 전달되고 열린 팝업이 닫힙니다.'), names, focus],
+  time: [check('시 칸에 키보드로 진입해 숫자와 ↑↓로 값을 바꾸고, Enter로 휠을 열어 ←→·↑↓로 돌린 뒤 Enter로 확정하거나 Escape로 닫습니다.', '칸 입력은 바로 전달되고, 휠은 확정할 때만 전달되며 Escape는 값을 그대로 두고 칸으로 초점을 돌려줍니다.'), names, focus],
   slider: [check('각 슬라이더에 포커스를 주고 ArrowRight를 누릅니다.', 'aria-valuenow 또는 range 값이 증가하며 범위 안에 있습니다.'), names, focus],
   upload: [check('선택 영역에 Tab으로 진입해 Enter로 파일 선택을 열고, 파일 행의 다시 시도·삭제 버튼을 키보드로 실행합니다.', '파일 선택 창이 열리고, 삭제 뒤 포커스가 다음 행의 삭제 버튼 또는 추가 버튼으로 옮겨 갑니다.'), names, focus],
   calendar: [check('날짜 칸에 Tab으로 진입한 뒤 화살표로 이웃 날로 옮기고 Enter로 고릅니다. 같은 칸에서 Shift+Enter로 길게 누르기를 실행합니다.', '포커스가 이웃 날 칸으로 옮겨 가고, 고른 날의 aria-pressed가 켜지며, 길게 누르기 콜백이 실행됩니다. Tab 대상은 한 칸입니다.'), names, focus],

@@ -194,21 +194,23 @@ for (const platform of ["react", "vue3"]) test(`${platform === "react" ? "React"
 
 for (const platform of ["react", "native", "vue3"]) test(`${platform} TimePicker scopes segment names, IDs and field feedback`, async ({ page }) => {
   await scenarioFixture(page, platform, "time");
-  const role = "button";
+  // Segments are spinbutton inputs on the web and buttons on Native; the wheel's columns are named by their unit alone.
+  const role = platform === "native" ? "button" : "spinbutton";
   for (const segment of ["시", "분", "초"]) await expect(page.getByRole(role, { name: "예약 시간 " + segment, exact: true })).toBeVisible();
   await uniqueIds(page);
   if (platform !== "native") {
     await page.locator("label").filter({ hasText: "예약 시간" }).click();
-    await expect(page.getByRole("listbox")).toBeVisible();
-    if (platform === "react" || platform === "vue3") await expect.poll(() => page.getByRole("listbox").evaluate(el => el.contains(document.activeElement))).toBe(true);
+    await expect(page.getByRole("spinbutton", { name: "시", exact: true })).toBeFocused();
     await page.keyboard.press("Escape");
-    await expect(page.getByRole("listbox")).toHaveCount(0);
+    await expect(page.getByRole("spinbutton", { name: "시", exact: true })).toHaveCount(0);
     await expect(page.getByRole(role, { name: "예약 시간 시", exact: true })).toBeFocused();
     await expect(page.getByTestId("time")).toHaveText("10:30:15");
   }
   const minute = page.getByRole(role, { name: "예약 시간 분", exact: true });
   await minute.click();
-  await page.getByRole(platform === "native" ? "radio" : "option", { name: "31", exact: true }).click();
+  await expect(page.getByRole("spinbutton", { name: "분", exact: true })).toBeFocused();
+  await page.keyboard.press("ArrowUp");
+  await page.getByRole("button", { name: "확인", exact: true }).click();
   await expect(page.getByTestId("time")).toHaveText("10:31:15");
   await configureScenario(page, { error: "예약 가능한 시간을 선택하세요" });
   await expect(page.getByRole("alert")).toHaveText("예약 가능한 시간을 선택하세요");

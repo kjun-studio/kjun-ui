@@ -43,11 +43,11 @@ async function replay(page: Page, platform: string, name: string, mode: 'full' |
   });
   await page.goto(`/previews/export-checks/${platform}/${id}.html`);
 }
+// Time segments are spinbutton inputs on the web and buttons on Native; digits typed on one pick its value.
+const timeSegment = (page: Page, label: string) => page.getByRole("spinbutton", { name: label, exact: true }).or(page.getByRole("button", { name: label, exact: true }));
 async function chooseTime(page: Page, label: string, option: string) {
-  await page.getByRole("combobox", { name: label, exact: true }).or(page.getByRole("button", { name: label, exact: true })).click();
-  const item = page.getByRole("option", { name: option, exact: true }).or(page.getByRole("radio", { name: option, exact: true }));
-  await item.click();
-  await expect(page.getByRole("combobox", { name: label, exact: true }).or(page.getByRole("button", { name: label, exact: true }))).toHaveAttribute("aria-expanded", "false");
+  await timeSegment(page, label).focus();
+  await page.keyboard.type(option);
 }
 for (const platform of platforms) {
   for (const mode of ['full', 'usage'] as const) test(`${platform} list leading size and icon background controls survive ${mode} copied code`, async ({ page }) => {
@@ -149,7 +149,7 @@ for (const platform of platforms) {
     await chooseTime(page, "알림 시각 초", "20");
     await expect.poll(async () => (await snapshot(page)).values.time).toBe("09:31:20");
     await replay(page, platform, "KjunTimePicker");
-    await expect(page.getByRole("combobox", { name: "알림 시각 초", exact: true }).or(page.getByRole("button", { name: "알림 시각 초", exact: true }))).toContainText("20");
+    await expect.poll(() => timeSegment(page, "알림 시각 초").evaluate(el => el instanceof HTMLInputElement ? el.value : el.textContent)).toContain("20");
     await page.getByRole("button", { name: "알림 시각 지우기" }).click();
     await expect(page.getByRole("button", { name: "알림 시각 지우기" })).toHaveCount(0);
   });

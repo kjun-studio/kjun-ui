@@ -1,10 +1,12 @@
 import { useState } from 'react';
 // KjunTimePicker cases for React and Native (Vue 3 mirrors this in time-picker-vue3.tsx).
 export const tpCases: { id: string; initial: string | null; props: Record<string, unknown> }[] = [
-  { id: 'tp-basic', initial: null, props: { ariaLabel: '알림', minuteStep: 15 } },
-  { id: 'tp-twelve', initial: '13:15', props: { ariaLabel: '퇴근', hourCycle: 12 } },
-  { id: 'tp-bounds', initial: '09:00', props: { ariaLabel: '영업', min: '09:00', max: '18:00', minuteStep: 30 } },
-  { id: 'tp-readonly', initial: '08:00', props: { ariaLabel: '고정', readOnly: true } },
+  { id: 'tp-basic', initial: null, props: { ariaLabel: '알림', minuteStep: 15, layout: 'popover' } },
+  { id: 'tp-twelve', initial: '13:15', props: { ariaLabel: '퇴근', hourCycle: 12, layout: 'popover' } },
+  { id: 'tp-bounds', initial: '09:00', props: { ariaLabel: '영업', min: '09:00', max: '18:00', minuteStep: 30, layout: 'popover' } },
+  { id: 'tp-readonly', initial: '08:00', props: { ariaLabel: '고정', readOnly: true, layout: 'popover' } },
+  { id: 'tp-sheet', initial: '21:30', props: { ariaLabel: '취침', hourCycle: 12, minuteStep: 5, layout: 'sheet' } },
+  { id: 'tp-inline', initial: '09:30', props: { ariaLabel: '출근', minuteStep: 5, layout: 'inline' } },
 ];
 
 function Case({ K, id, initial, props }: { K: any; id: string; initial: string | null; props: Record<string, unknown> }) {
@@ -21,7 +23,7 @@ function Case({ K, id, initial, props }: { K: any; id: string; initial: string |
 function LabelCase({ K }: { K: any }) {
   const [value, setValue] = useState<string | null>('10:00');
   return <div data-testid="tp-label"><label htmlFor="tp-outside">출발 시각</label>
-    <K.KjunTimePicker id="tp-outside" ariaLabel="출발" value={value} onValueChange={setValue} /></div>;
+    <K.KjunTimePicker id="tp-outside" ariaLabel="출발" layout="popover" value={value} onValueChange={setValue} /></div>;
 }
 
 export function TimePickerCases({ K, native = false, providerProps = {} }: { K: any; native?: boolean; providerProps?: Record<string, any> }) {

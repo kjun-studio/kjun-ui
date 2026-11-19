@@ -1,19 +1,17 @@
 import { useKjunMessages } from "./runtime/messages";
 import { createTypeahead } from "../../../shared/package-runtime/typeahead";
-import { computed, inject, mergeProps, nextTick, onBeforeUnmount, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
+import { computed, mergeProps, nextTick, onBeforeUnmount, ref, shallowRef, watch, type ExtractPublicPropTypes, type PropType, type VNode, type VNodeChild, type SlotsType } from "vue";
 import { defineComponent } from "./runtime/component";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { tokens, type InputSize } from "@kjun-ui/tokens";
 import { inputTypeStyle } from "../../../shared/package-runtime/typography";
 import { isFocusVisible } from "../../../shared/package-runtime/focus-visible";
-import { centerSelectedOption } from "../../../shared/package-runtime/center-option";
 import { optionDisabled, optionLabel, selectOptions, type OptionValue, type SelectItem, type SelectMultipleDisplay, type SelectOption } from "../../../shared/package-runtime/options";
 import { measureHiddenLabels, selectClearMarkStyle, selectClearStyle } from "../../../shared/package-runtime/select-trigger";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunSpinner } from "./display";
 import { FloatingPanel, focusReturnProp, readFocusReturn } from "./floating-panel";
 import { KjunFieldReset, KjunInput, useCompositionGuard, useKjunField, useKjunId } from "./input";
-import { kjunCompoundControlKey } from "./quantity-stepper";
 import { usePopupExpanded } from "./runtime/layers";
 import { useSelectState } from "./runtime/selection";
 import { css } from "./runtime/style";
@@ -79,7 +77,6 @@ export const KjunSelect = defineComponent({
     const composition = useCompositionGuard();
     const trigger = ref<HTMLButtonElement | null>(null), menu = ref<HTMLElement | null>(null);
     const field = useKjunField(), id = useKjunId("kjun-");
-    const segment = inject(kjunCompoundControlKey, null);
     const expanded = usePopupExpanded(() => state.open.value, () => trigger.value);
     watch(() => props.id, (own, _previous, onCleanup) => {
       const register = field.value?.setControlId;
@@ -123,8 +120,6 @@ export const KjunSelect = defineComponent({
         if (props.searchable) { element.querySelector("input")?.focus({ preventScroll: true }); return; }
         const list = optionElements();
         focusOption(list.find(option => option.getAttribute("aria-selected") === "true") ?? list[0]);
-        // Time segment lists then move the selected value to the middle.
-        if (segment) centerSelectedOption(element.querySelector<HTMLElement>(".kjun-listbox"));
       });
     }, { flush: "post" });
     watch(state.open, value => { if (!value) { focused.value = null; composition.onCompositionend(); } });
@@ -178,7 +173,7 @@ export const KjunSelect = defineComponent({
               if (!props.multiple) state.changeOpen(false);
             }}>
             {(Array.isArray(content) ? content.length : content) ? content : <span>{optionLabel(option, props.labelKey)}</span>}
-            {isSelected && !segment && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
+            {isSelected && <KjunIcon name="check" size={tokens.extensions.menu.iconSize} />}
           </div>
         );
       };
@@ -188,14 +183,13 @@ export const KjunSelect = defineComponent({
             <button {...mergeProps(controlAttrs, {
               onClick: (event: MouseEvent) => { if (!event.defaultPrevented && !props.readOnly) state.changeOpen(!open); },
               onKeydown: (event: KeyboardEvent) => { if (!event.defaultPrevented && !props.readOnly && ["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); state.changeOpen(true); } },
-            })} ref={trigger} id={props.id ?? owner?.id} type="button" class="kjun-input kjun-select-trigger" data-time-segment={segment ? "true" : undefined}
+            })} ref={trigger} id={props.id ?? owner?.id} type="button" class="kjun-input kjun-select-trigger"
               disabled={props.disabled} aria-readonly={props.readOnly || undefined} aria-haspopup="listbox" aria-controls={expanded.value ? id : undefined} aria-expanded={expanded.value}
               aria-label={props.ariaLabel || attrs["aria-label"] as string || (props.id || owner ? undefined : (props.placeholder ?? m.value.select))} aria-labelledby={attrs["aria-labelledby"] as string || owner?.labelId}
               aria-describedby={mergeIds(props.ariaDescribedby, attrs["aria-describedby"] as string, owner?.describedBy)}
               aria-invalid={props.error || !!owner?.error ? "true" : attrs["aria-invalid"] as never}
               style={css({ height: spec.height, borderRadius: spec.radius, ...inputTypeStyle(props.size),
-                // Time segments take their padding from compound-controls.css, which also aligns the first value.
-                ...(segment ? {} : { paddingInline: spec.padding - tokens.border.controlWidth }) })}>
+                paddingInline: spec.padding - tokens.border.controlWidth })}>
               <span class={!custom && !label ? "kjun-placeholder" : listed.value && !custom ? "kjun-select-values" : undefined}
                 style={css({ flex: 1, paddingRight: showClear ? spec.clearSize + spec.affixGap : undefined })}>
                 {custom ? shown : listed.value ? [
@@ -203,8 +197,8 @@ export const KjunSelect = defineComponent({
                   hidden.value > 0 && <span class="kjun-select-values-more" aria-hidden="true">+{hidden.value}</span>,
                 ] : label || (props.placeholder ?? m.value.select)}
               </span>
-              {/* Time segments read as one value, and a read-only value does not open, so neither carries an indicator. */}
-              {!segment && !props.readOnly && <KjunIcon name="chevron-down" class="kjun-select-indicator" data-open={expanded.value || undefined} size={spec.iconSize}
+              {/* A read-only value does not open, so it carries no indicator. */}
+              {!props.readOnly && <KjunIcon name="chevron-down" class="kjun-select-indicator" data-open={expanded.value || undefined} size={spec.iconSize}
                 style={{ flexShrink: 0, color: props.disabled ? "var(--_kjun-color-text-disabled)" : "var(--_kjun-color-text-tertiary)" }} />}
             </button>
             {showClear && (
@@ -216,7 +210,7 @@ export const KjunSelect = defineComponent({
             )}
           </div>
           <FloatingPanel field open={open} onOpenChange={state.changeOpen} trigger={() => trigger.value} returnFocus={props.returnFocus === undefined ? undefined : () => readFocusReturn(props.returnFocus)} placement="bottom-start" matchTriggerWidth
-            panelClass={"kjun-select-panel kjun-select-options-panel" + (segment ? " kjun-time-options" : "")}>
+            panelClass="kjun-select-panel kjun-select-options-panel">
             <KjunFieldReset>
               <div ref={menu} class="kjun-select-content">
                 {slots.menuHeader && <div class="kjun-select-header">{slots.menuHeader()}</div>}

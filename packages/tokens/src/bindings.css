@@ -262,7 +262,12 @@
   --_kjun-extension-time-picker-segment-minimum-width: 44px;
   --_kjun-extension-time-picker-separator-width: 6px;
   --_kjun-extension-time-picker-segment-padding: 4px;
-  --_kjun-extension-time-picker-options-width: 64px;
+  --_kjun-extension-time-picker-wheel-row-height: 44px;
+  --_kjun-extension-time-picker-wheel-visible-rows: 5;
+  --_kjun-extension-time-picker-wheel-column-width: 64px;
+  --_kjun-extension-time-picker-wheel-column-gap: 4px;
+  --_kjun-extension-time-picker-panel-padding: 12px;
+  --_kjun-extension-time-picker-panel-gap: 12px;
   --_kjun-extension-popover-width: 240px;
   --_kjun-extension-popover-widths-sm: 192px;
   --_kjun-extension-popover-widths-md: 240px;

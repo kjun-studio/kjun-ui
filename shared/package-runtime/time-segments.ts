@@ -95,3 +95,17 @@ export function createSegmentTyping(timeout = 1000) {
     reset() { index = -1; typed = ""; },
   };
 }
+
+/** A segment's spinbutton keys: ↑ and ↓ take the next and previous option and go round, Home and End the first and last.
+ * An empty segment starts from its first option (↑) or its last (↓). Returns the option, or null when the key does nothing. */
+export function segmentStep(segment: TimeSegmentModel, key: string): number | null {
+  const values = segment.options.map(option => option.value);
+  if (!values.length) return null;
+  if (key === "Home") return values[0];
+  if (key === "End") return values[values.length - 1];
+  const delta = key === "ArrowUp" ? 1 : key === "ArrowDown" ? -1 : 0;
+  if (!delta) return null;
+  const at = segment.value === null ? -1 : values.indexOf(segment.value);
+  if (at < 0) return delta > 0 ? values[0] : values[values.length - 1];
+  return values[(at + delta + values.length) % values.length];
+}

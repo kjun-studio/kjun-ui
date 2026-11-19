@@ -19,7 +19,7 @@ const Case = defineComponent({
 const LabelCase = defineComponent(() => {
   const value = ref<string | null>('10:00');
   return () => <div data-testid="tp-label"><label for="tp-outside">출발 시각</label>
-    <K.KjunTimePicker id="tp-outside" ariaLabel="출발" modelValue={value.value} {...{ 'onUpdate:modelValue': (v: string | null) => { value.value = v; } }} /></div>;
+    <K.KjunTimePicker id="tp-outside" ariaLabel="출발" layout="popover" modelValue={value.value} {...{ 'onUpdate:modelValue': (v: string | null) => { value.value = v; } }} /></div>;
 });
 createApp(() => <K.KjunProvider><div style={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '16px', width: '360px', paddingBottom: '480px' }}>
   {tpCases.map(c => <Case key={c.id} caseId={c.id} initial={c.initial} options={c.props} />)}

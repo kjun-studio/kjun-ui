@@ -4,7 +4,7 @@ import { createTimeDomain } from '../packages/tokens/src/input-contract.ts';
 import { build } from 'esbuild';
 
 const output = await build({ entryPoints: ['shared/package-runtime/time-segments.ts'], bundle: true, write: false, format: 'esm', platform: 'node', external: ['@kjun-ui/tokens'] });
-const { timeSegments, periodLeads, typeSegmentDigit, typeSegmentPeriod, createSegmentTyping } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
+const { timeSegments, periodLeads, typeSegmentDigit, typeSegmentPeriod, createSegmentTyping, segmentStep } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 const messages = { hour: '시', minute: '분', second: '초', period: '오전/오후', am: '오전', pm: '오후' };
 
 test('a 24-hour clock draws hour and minute segments', () => {
@@ -93,4 +93,18 @@ test('segment typing forgets a waiting digit after a second or on another segmen
   typing.key(hour, 0, '1', 3000);
   assert.deepEqual(typing.key(minute, 1, '4', 3100), { value: 4, advance: false });
   assert.equal(typing.key(hour, 0, 'x', 3200), null);
+});
+
+test('a segment spinbutton steps through its options and goes round', () => {
+  const domain = createTimeDomain({ minuteStep: 15 });
+  const [hour, minute] = timeSegments(domain, '23:45', { precision: 'minute', messages });
+  assert.equal(segmentStep(hour, 'ArrowUp'), 0);
+  assert.equal(segmentStep(hour, 'ArrowDown'), 22);
+  assert.equal(segmentStep(minute, 'ArrowUp'), 0);
+  assert.equal(segmentStep(minute, 'Home'), 0);
+  assert.equal(segmentStep(minute, 'End'), 45);
+  assert.equal(segmentStep(minute, 'x'), null);
+  const [empty] = timeSegments(domain, null, { precision: 'minute', messages });
+  assert.equal(segmentStep(empty, 'ArrowUp'), 0);
+  assert.equal(segmentStep(empty, 'ArrowDown'), 23);
 });

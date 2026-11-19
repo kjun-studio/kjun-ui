@@ -6362,19 +6362,20 @@
       "label": "키보드 동작",
       "profile": "time",
       "scenario": {},
-      "behavior": "시·분 선택 컨트롤과 시각 팝업. 시·분·선택적인 초마다 Select를 조합하고 선택값을 시각 문자열로 전달합니다.",
+      "behavior": "시·분 칸과 시각 휠. 시·분(·초·오전/오후) 칸은 spinbutton이며 숫자 입력과 ↑↓로 값을 바꿉니다. 칸을 누르거나 Enter·Space를 누르면 같은 단위의 열이 spinbutton인 휠 dialog가 열리고, 휠의 값은 확인을 눌러야 시각 문자열로 전달됩니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "ariaLabel",
         "precision",
+        "layout",
         "disabled",
         "error"
       ],
       "applicable": true,
       "reason": null,
-      "procedure": "시각 선택 도구에 키보드로 진입하여 값을 변경하고 Escape로 닫습니다.",
-      "expected": "시·분 값 변경이 전달되고 열린 팝업이 닫힙니다.",
+      "procedure": "시 칸에 키보드로 진입해 숫자와 ↑↓로 값을 바꾸고, Enter로 휠을 열어 ←→·↑↓로 돌린 뒤 Enter로 확정하거나 Escape로 닫습니다.",
+      "expected": "칸 입력은 바로 전달되고, 휠은 확정할 때만 전달되며 Escape는 값을 그대로 두고 칸으로 초점을 돌려줍니다.",
       "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
     },
     {
@@ -6385,12 +6386,13 @@
       "label": "라벨·오류 연결",
       "profile": "time",
       "scenario": {},
-      "behavior": "시·분 선택 컨트롤과 시각 팝업. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "behavior": "시·분 칸과 시각 휠. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
       "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "ariaLabel",
         "precision",
+        "layout",
         "disabled",
         "error"
       ],
@@ -6408,12 +6410,13 @@
       "label": "포커스 이동·복귀",
       "profile": "time",
       "scenario": {},
-      "behavior": "시·분 선택 컨트롤과 시각 팝업. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "behavior": "시·분 칸과 시각 휠. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
       "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
       "platformNote": "Vue 3의 DOM 속성·이벤트·슬롯 출력과 키보드 상호작용을 검사합니다. React와 같은 DOM 계약을 따르며 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "ariaLabel",
         "precision",
+        "layout",
         "disabled",
         "error"
       ],
@@ -6431,19 +6434,20 @@
       "label": "키보드 동작",
       "profile": "time",
       "scenario": {},
-      "behavior": "시·분 선택 컨트롤과 시각 팝업. 시·분·선택적인 초마다 Select를 조합하고 선택값을 시각 문자열로 전달합니다.",
+      "behavior": "시·분 칸과 시각 휠. 시·분(·초·오전/오후) 칸은 spinbutton이며 숫자 입력과 ↑↓로 값을 바꿉니다. 칸을 누르거나 Enter·Space를 누르면 같은 단위의 열이 spinbutton인 휠 dialog가 열리고, 휠의 값은 확인을 눌러야 시각 문자열로 전달됩니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "ariaLabel",
         "precision",
+        "layout",
         "disabled",
         "error"
       ],
       "applicable": true,
       "reason": null,
-      "procedure": "시각 선택 도구에 키보드로 진입하여 값을 변경하고 Escape로 닫습니다.",
-      "expected": "시·분 값 변경이 전달되고 열린 팝업이 닫힙니다.",
+      "procedure": "시 칸에 키보드로 진입해 숫자와 ↑↓로 값을 바꾸고, Enter로 휠을 열어 ←→·↑↓로 돌린 뒤 Enter로 확정하거나 Escape로 닫습니다.",
+      "expected": "칸 입력은 바로 전달되고, 휠은 확정할 때만 전달되며 Escape는 값을 그대로 두고 칸으로 초점을 돌려줍니다.",
       "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
     },
     {
@@ -6454,12 +6458,13 @@
       "label": "라벨·오류 연결",
       "profile": "time",
       "scenario": {},
-      "behavior": "시·분 선택 컨트롤과 시각 팝업. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
+      "behavior": "시·분 칸과 시각 휠. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다.",
       "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "ariaLabel",
         "precision",
+        "layout",
         "disabled",
         "error"
       ],
@@ -6477,12 +6482,13 @@
       "label": "포커스 이동·복귀",
       "profile": "time",
       "scenario": {},
-      "behavior": "시·분 선택 컨트롤과 시각 팝업. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
+      "behavior": "시·분 칸과 시각 휠. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다.",
       "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
       "platformNote": "React DOM·React Aria의 실제 출력과 키보드 상호작용을 검사합니다. 스크린리더 발화 검증은 포함하지 않습니다.",
       "api": [
         "ariaLabel",
         "precision",
+        "layout",
         "disabled",
         "error"
       ],
@@ -6500,19 +6506,20 @@
       "label": "키보드 동작",
       "profile": "time",
       "scenario": {},
-      "behavior": "시·분 선택 컨트롤과 시각 팝업. 시·분·선택적인 초마다 Select를 조합하고 선택값을 시각 문자열로 전달합니다. Native는 DOM listbox 대신 Modal 내부 입력·radio 옵션을 사용하며 입력 포커스가 내부 입력으로 이동할 수 있습니다.",
+      "behavior": "시·분 칸과 시각 휠. 시·분(·초·오전/오후) 칸은 spinbutton이며 숫자 입력과 ↑↓로 값을 바꿉니다. 칸을 누르거나 Enter·Space를 누르면 같은 단위의 열이 spinbutton인 휠 dialog가 열리고, 휠의 값은 확인을 눌러야 시각 문자열로 전달됩니다. Native 칸은 버튼이고, 휠 열은 기기에서 adjustable(스크린리더 증감 동작), 웹 미리보기에서 spinbutton입니다.",
       "responsibility": "실행·선택 콜백과 제어 상태를 연결하고 실제 업무의 비활성 조건을 제공합니다. 사용자 정의 슬롯의 키보드 동작은 프로젝트가 구현합니다.",
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
         "ariaLabel",
         "precision",
+        "layout",
         "disabled",
         "error"
       ],
       "applicable": true,
       "reason": null,
-      "procedure": "키보드로 Native 선택 Modal을 열고 내부 입력·radio 옵션에서 방향키와 Enter로 값을 선택합니다.",
-      "expected": "Modal 내부 활성 옵션이 방향키에 반응하고 Enter로 선택값을 전달하며 닫힙니다.",
+      "procedure": "시 칸에 키보드로 진입해 숫자와 ↑↓로 값을 바꾸고, Enter로 휠을 열어 ←→·↑↓로 돌린 뒤 Enter로 확정하거나 Escape로 닫습니다.",
+      "expected": "칸 입력은 바로 전달되고, 휠은 확정할 때만 전달되며 Escape는 값을 그대로 두고 칸으로 초점을 돌려줍니다.",
       "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
     },
     {
@@ -6523,12 +6530,13 @@
       "label": "라벨·오류 연결",
       "profile": "time",
       "scenario": {},
-      "behavior": "시·분 선택 컨트롤과 시각 팝업. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다. Native는 DOM listbox 대신 Modal 내부 입력·radio 옵션을 사용하며 입력 포커스가 내부 입력으로 이동할 수 있습니다.",
+      "behavior": "시·분 칸과 시각 휠. label·ariaLabel·옵션 텍스트 등 공개 API와 하위 콘텐츠에서 컨트롤 이름을 구성합니다. 실제 이름, 오류 상태와 라벨·설명 ID를 검사하며 장식 아이콘은 이름을 대신하지 않습니다. Native 칸은 버튼이고, 휠 열은 기기에서 adjustable(스크린리더 증감 동작), 웹 미리보기에서 spinbutton입니다.",
       "responsibility": "사용 목적을 나타내는 이름·단위·대체 텍스트를 제공하고, 검증 오류를 텍스트로 전달합니다. 사용자 지정 ID는 화면 전체에서 유일하게 관리합니다.",
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
         "ariaLabel",
         "precision",
+        "layout",
         "disabled",
         "error"
       ],
@@ -6546,19 +6554,20 @@
       "label": "포커스 이동·복귀",
       "profile": "time",
       "scenario": {},
-      "behavior": "시·분 선택 컨트롤과 시각 팝업. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다. Native는 DOM listbox 대신 Modal 내부 입력·radio 옵션을 사용하며 입력 포커스가 내부 입력으로 이동할 수 있습니다.",
+      "behavior": "시·분 칸과 시각 휠. 포커스 순서는 실제 활성 컨트롤과 공급한 하위 구성에 따릅니다. Tab으로 진입·이동할 수 있는지 확인하며 화면 전환 이후의 포커스는 프로젝트에서 정합니다. Native 칸은 버튼이고, 휠 열은 기기에서 adjustable(스크린리더 증감 동작), 웹 미리보기에서 spinbutton입니다.",
       "responsibility": "열기 트리거를 유지하고 화면 전환·항목 삭제 후의 다음 포커스를 정합니다. 추가한 슬롯과 실제 화면 순서를 함께 검증합니다.",
       "platformNote": "Native는 Pressable·TextInput·Modal과 접근성 속성을 사용합니다. 이 검사는 Native Web의 DOM·키보드 결과만 확인합니다. iOS·Android 기기와 스크린리더 검증은 미실행입니다.",
       "api": [
         "ariaLabel",
         "precision",
+        "layout",
         "disabled",
         "error"
       ],
       "applicable": true,
       "reason": null,
-      "procedure": "키보드 진입으로 열린 Modal의 초기 포커스를 확인하고 Escape로 닫습니다.",
-      "expected": "내부 입력 또는 옵션으로 포커스가 이동하고 닫힌 뒤 외부 입력·트리거로 복귀합니다.",
+      "procedure": "대상에 Tab으로 진입한 뒤 다음 Tab·Shift+Tab 이동을 확인합니다.",
+      "expected": "활성 컨트롤에 키보드로 접근하고 다음 컨트롤 또는 영역 밖으로 이동할 수 있습니다.",
       "limitation": "명시된 예제·설정의 자동 DOM·키보드 검사입니다. 전체 접근성 준수, 색 대비, 스크린리더 발화, 실제 기기 지원을 보증하지 않습니다."
     },
     {
@@ -20902,32 +20911,32 @@
       "name": "@kjun-ui/tokens",
       "version": "0.21.0",
       "file": "kjun-ui-tokens-0.21.0.tgz",
-      "bytes": 168384,
-      "integrity": "sha512-pap/7ZF4SeC2CFR2mqSuQs4U3Owvj+qylUkp1Zn42FwpN+4nHlb0zY7GX1pKD6cPAc8hhg6+G/k4hLPDbaa8kw=="
+      "bytes": 171104,
+      "integrity": "sha512-ovXwcJ2bKFnCF2E/cWwBb0Mt37zt7o+8a4wIhPIfvqd3RuCEZF1cHgHA5MLzELyxaF/naTVbcpJfQT5AHm51jg=="
     },
     {
       "name": "@kjun-ui/vue3",
       "version": "0.21.0",
       "file": "kjun-ui-vue3-0.21.0.tgz",
-      "bytes": 831009,
-      "integrity": "sha512-xCD1TUmmHRzvMwiqSZeB3k2YfNwUVmKW8GZvGmwUOwTuF+GQPFPL/49eCjfj4FUZnIbIqdUPQZ6C/Wro98J17Q=="
+      "bytes": 852055,
+      "integrity": "sha512-wNxKAMW9a168Sr38EM3yZTzcbFkjcHFHBXLn1dSjTRAP/tsxxo3Yl4jwCiz5p9/ZqedvRTYEW3fyQzOngak0Og=="
     },
     {
       "name": "@kjun-ui/react",
       "version": "0.21.0",
       "file": "kjun-ui-react-0.21.0.tgz",
-      "bytes": 707380,
-      "integrity": "sha512-LeqDKROsCJMZjSxqYvX0VrgLoFS6VvITjCp4lkh9jX+QE1Fan8G805HC2QXuKcDl5GVamqE6ystBLt+pNCpUnw=="
+      "bytes": 725155,
+      "integrity": "sha512-ooYrxmNRAZWOn87vBA4rdVyCNXWpWPki2ALHf/McUCKCGAekuLL2ZUcDwC0twNDYRS4y9dAMAAg3IetE2rfQ6A=="
     },
     {
       "name": "@kjun-ui/native",
       "version": "0.21.0",
       "file": "kjun-ui-native-0.21.0.tgz",
-      "bytes": 1278304,
-      "integrity": "sha512-F6cb8O8v9yregjvarZrK/78tT2KYsw24/jJoV7fiamN3UMk41V3XaiuCcYmziNs3G/rdPzb39u53rqnOERB4nw=="
+      "bytes": 1316819,
+      "integrity": "sha512-ofos3yRBpU7JvxU57MQnKD9SRfjpZ7c3dduT61FdDmHCi3GXmViGUkwSdiMBZSR364gjuH6n48VxetqnjRE7aw=="
     }
   ],
-  "definitionHash": "sha256-0fda187a2fe26a3711ad64b4d56c3038aa3a1c62f5ca4bb95294afc902df8930",
+  "definitionHash": "sha256-573bd5f5ce2e40343ea66d4401a1e929ff5ff177621d7d80c7f74369d5674d5d",
   "runs": [
     {
       "schemaVersion": 1,

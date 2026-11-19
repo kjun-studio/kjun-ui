@@ -1,5 +1,5 @@
 import { useKjunMessages } from "./runtime/messages";
-import { computed, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type InjectionKey, type PropType, type Ref } from "vue";
+import { computed, onBeforeUnmount, ref, watch, type ExtractPublicPropTypes, type PropType } from "vue";
 import { defineComponent } from "./runtime/component";
 import { createNumberDomain, quantityKeyAction, tokens, type InputSize } from "@kjun-ui/tokens";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
@@ -9,9 +9,6 @@ import { provideFallbackIcons } from "./runtime/icons";
 import { css } from "./runtime/style";
 import { numberKeyboard } from "../../../shared/package-runtime/number-input";
 import { createPressRepeat, type PressRepeat } from "../../../shared/package-runtime/press-repeat";
-
-// Only a composed control's trigger consumes this; popup content keeps its own sizes.
-export const kjunCompoundControlKey: InjectionKey<Readonly<Ref<InputSize | null>>> = Symbol("kjunCompoundControl");
 
 const kjunQuantityStepperProps = {
   modelValue: { type: Number, required: true },

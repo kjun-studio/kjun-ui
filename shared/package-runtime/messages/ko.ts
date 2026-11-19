@@ -106,6 +106,9 @@ export const kjunMessagesKo = {
   second: "초",
   // An empty time segment, two characters wide like its value.
   timePlaceholder: "--",
+  // The TimePicker button field before a time is chosen, and the wheel panel button that moves to the current time.
+  selectTime: "시간 선택",
+  now: "지금",
   value: "값",
   minimum: "최솟값",
   maximum: "최댓값",

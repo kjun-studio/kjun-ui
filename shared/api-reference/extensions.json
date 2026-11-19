@@ -848,7 +848,9 @@
       "hourCycle",
       "readOnly",
       "name",
-      "id"
+      "id",
+      "layout",
+      "trigger"
     ],
     "react": [
       "value",
@@ -868,7 +870,9 @@
       "hourCycle",
       "readOnly",
       "name",
-      "id"
+      "id",
+      "layout",
+      "trigger"
     ],
     "native": [
       "value",
@@ -886,7 +890,9 @@
       "onValueChange",
       "onChangeCommit",
       "hourCycle",
-      "readOnly"
+      "readOnly",
+      "layout",
+      "trigger"
     ]
   },
   "KjunColorPicker": {
