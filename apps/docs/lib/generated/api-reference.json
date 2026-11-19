@@ -26341,7 +26341,7 @@
             "required": false,
             "default": "true",
             "description": "",
-            "summary": "모달 기본 헤더를 표시합니다.",
+            "summary": "모달 기본 머리를 표시합니다. 제목과 header가 모두 없으면 제목 줄 없이 닫기 버튼만 오른쪽에 둡니다.",
             "source": "packages/vue3/src/modal.tsx"
           },
           {
@@ -26413,7 +26413,7 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
+            "summary": "확인 버튼에 진행 표시를 합니다. 진행 중에는 취소·닫기 버튼이 비활성되고 Esc·바깥 누름·뒤로 가기로도 닫히지 않습니다. 작업이 끝나면 open을 false로 바꾸거나 loading을 끄세요.",
             "source": "packages/vue3/src/modal.tsx"
           },
           {
@@ -26645,7 +26645,7 @@
             "required": false,
             "default": "true",
             "description": "",
-            "summary": "모달 기본 헤더를 표시합니다.",
+            "summary": "모달 기본 머리를 표시합니다. 제목과 header가 모두 없으면 제목 줄 없이 닫기 버튼만 오른쪽에 둡니다.",
             "source": "packages/react/src/modal.tsx"
           },
           {
@@ -26717,7 +26717,7 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
+            "summary": "확인 버튼에 진행 표시를 합니다. 진행 중에는 취소·닫기 버튼이 비활성되고 Esc·바깥 누름·뒤로 가기로도 닫히지 않습니다. 작업이 끝나면 open을 false로 바꾸거나 loading을 끄세요.",
             "source": "packages/react/src/modal.tsx"
           },
           {
@@ -26762,7 +26762,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "기본 헤더 대신 배치할 콘텐츠입니다.",
+            "summary": "제목 자리를 대신하는 내용입니다. 제목 태그(h2)가 아닌 상자에 넣으므로 버튼·배지를 함께 둘 수 있고, 제목 문장이 필요하면 앱이 h2 등을 직접 넣습니다. 대화상자 이름은 이 영역으로 연결합니다.",
             "source": "packages/react/src/modal.tsx"
           },
           {
@@ -26923,7 +26923,7 @@
             "required": false,
             "default": "true",
             "description": "",
-            "summary": "모달 기본 헤더를 표시합니다.",
+            "summary": "모달 기본 머리를 표시합니다. 제목과 header가 모두 없으면 제목 줄 없이 닫기 버튼만 오른쪽에 둡니다.",
             "source": "packages/native/src/modal.tsx"
           },
           {
@@ -26986,7 +26986,7 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "진행 중인 작업을 표시합니다. 실제 작업의 시작·완료는 소비자가 관리합니다.",
+            "summary": "확인 버튼에 진행 표시를 합니다. 진행 중에는 취소·닫기 버튼이 비활성되고 Esc·바깥 누름·뒤로 가기로도 닫히지 않습니다. 작업이 끝나면 open을 false로 바꾸거나 loading을 끄세요.",
             "source": "packages/native/src/modal.tsx"
           },
           {
@@ -27068,6 +27068,15 @@
             "default": "—",
             "description": "Text that describes the dialog (e.g. its message), read after its name (accessibilityHint).",
             "summary": "대화상자를 설명하는 문장입니다. 화면 낭독기가 이름 다음에 읽습니다(accessibilityHint).",
+            "source": "packages/native/src/modal.tsx"
+          },
+          {
+            "name": "ariaDescribedBy",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Id of the element that describes the dialog (React Native Web aria-describedby).",
+            "summary": "대화상자를 설명하는 요소의 id입니다(React Native Web의 aria-describedby). 기기에서는 ariaDescription을 쓰세요.",
             "source": "packages/native/src/modal.tsx"
           }
         ],

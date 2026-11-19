@@ -111,7 +111,8 @@ controls.KjunFeedbackProvider = [
 for (const name of ["GuideSettingsForm", "GuideSearchToolbar", "GuideAssetList"]) {
   controls[name] = [choice("content", "콘텐츠", ["기본", "긴 콘텐츠"]), ...(name === "GuideSettingsForm" ? [toggle("validation", "검증 오류")] : name === "GuideAssetList" ? [choice("status", "조회 상태", ["정상", "최초 로딩", "빈 결과", "실패"])] : [])];
 }
-controls.KjunModal.push(field("title", "제목", "작업 확인"), field("confirmText", "확인 문구", "확인"));
+controls.KjunModal.push(field("title", "제목", "작업 확인"), field("confirmText", "확인 문구", "확인"), choice("confirmVariant", "확인 버튼 변형", ["primary", "danger", "success"]),
+  toggle("showHeader", "머리 표시", true), toggle("closeOnOverlay", "바깥 눌러 닫기", true), toggle("noPadding", "본문 여백 없음"));
 controls.KjunDrawer = [choice("position", "위치", ["right", "left", "bottom", "top"]), field("title", "제목", "작업 확인"), toggle("footer", "바닥글", true), toggle("headerActions", "헤더 동작"),
   { ...toggle("handle", "손잡이로 끌어 닫기"), when: { position: ["bottom"] } }];
 const preset = (id: string, label: string, settings: Settings = {}, values: Values = {}): ExamplePreset => ({ id, label, settings, values });

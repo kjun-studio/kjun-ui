@@ -352,6 +352,8 @@ set("SearchInput", {
 });
 set("Modal", {
   ariaLabel: "대화상자의 접근성 이름입니다. 명시하면 시각적 제목보다 우선합니다. 헤더를 숨겨도 이름 또는 title을 유지하며, 둘 다 없으면 '대화상자'를 사용합니다.",
+  loading: "확인 버튼에 진행 표시를 합니다. 진행 중에는 취소·닫기 버튼이 비활성되고 Esc·바깥 누름·뒤로 가기로도 닫히지 않습니다. 작업이 끝나면 open을 false로 바꾸거나 loading을 끄세요.",
+  showHeader: "모달 기본 머리를 표시합니다. 제목과 header가 모두 없으면 제목 줄 없이 닫기 버튼만 오른쪽에 둡니다.",
   returnFocus: "닫힘 애니메이션이 끝난 뒤 초점을 보낼 요소입니다. 요소·ref·요소를 돌려주는 함수를 받으며 닫힐 때 최신 값을 읽습니다. 반응형 헤더처럼 버튼이 교체되면 ref나 함수로 현재 버튼을 지정하세요. 대상이 없거나 제거되면 원래 열기 버튼, 남아 있는 상위 창 순서로 복귀합니다. React·Vue 웹 전용입니다.",
 });
 set("Dropdown", {
@@ -540,6 +542,8 @@ set("Drawer", {
   safeArea: { default:"true", summary:"KjunProvider의 안전 영역을 반영합니다. 위·좌우 Drawer는 안쪽 위, 아래·좌우 Drawer는 footer 아래 여백으로 넣고, 시트는 반대쪽 안전 영역을 높이 상한에서 비워 둡니다. false면 모두 0입니다." },
   maxHeight: { default:"화면 높이 − 반대쪽 안전 영역 − 48px", summary:"위·아래 Drawer의 전체 높이 상한(px)입니다. 넘치면 본문만 스크롤하고 머리글·footer는 고정합니다. 좌우 Drawer에는 쓰지 않습니다." },
 });
+set("Modal", { header: "제목 자리를 대신하는 내용입니다. 제목 태그(h2)가 아닌 상자에 넣으므로 버튼·배지를 함께 둘 수 있고, 제목 문장이 필요하면 앱이 h2 등을 직접 넣습니다. 대화상자 이름은 이 영역으로 연결합니다." }, "react");
+set("Modal", { ariaDescribedBy: "대화상자를 설명하는 요소의 id입니다(React Native Web의 aria-describedby). 기기에서는 ariaDescription을 쓰세요." }, "native");
 set("Drawer", { avoidKeyboard: { default:"true", summary:"화면 키보드가 패널을 가리지 않게 합니다. 아래 Drawer는 키보드 위로 올라가고 다른 위치는 높이를 줄입니다. 기기에서만 동작합니다." } }, "native");
 // 0.13.0 additions.
 set("Button RefreshButton", { shape: { default:'"default"', summary:'"circle"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다. "pill"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).' } });

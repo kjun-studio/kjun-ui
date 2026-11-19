@@ -150,6 +150,8 @@ export interface KjunModalProps {
   ariaLabel?: string;
   /** Text that describes the dialog (e.g. its message), read after its name (accessibilityHint). */
   ariaDescription?: string;
+  /** Id of the element that describes the dialog (React Native Web aria-describedby). */
+  ariaDescribedBy?: string;
 }
 export function KjunModal({
   open,
@@ -180,6 +182,7 @@ export function KjunModal({
   children,
   ariaLabel,
   ariaDescription,
+  ariaDescribedBy,
 }: KjunModalProps) {
   const m = useKjunMessages();
   confirmText ??= m.confirm;
@@ -192,8 +195,11 @@ export function KjunModal({
   const offset = useMotionValue(open ? 0 : tokens.motionDistance.modalExit, open ? tokens.motion.layerEnter : tokens.motion.layerExit, tokens.motionDistance.modalEnter, open ? motionOut : motionIn, true);
   const backdrop = useNativePresence(open, tokens.motion.backdrop, tokens.motion.backdropExit, true, 0, { fade: tokens.motion.backdropExit });
   useLayoutEffect(() => { if (!motion.present) { offset.stopAnimation(); offset.setValue(tokens.motionDistance.modalEnter); } }, [motion.present, offset]);
+  // Without a title or header only the close button remains: no title band, no empty text.
+  const titled = showHeader && (hasContent(header) || !!title.trim()), bare = showHeader && !titled && closable;
   const close = () => {
-    if (!open) return;
+    // While the confirm action runs the window stays open (as Confirm and Prompt do while busy).
+    if (!open || loading) return;
     onOpenChange(false);
     onClose?.();
   };
@@ -256,7 +262,7 @@ export function KjunModal({
           accessibilityLabel={ariaLabel || title || m.dialog}
           accessibilityHint={ariaDescription}
           {...(Platform.OS === "web"
-            ? { role: "dialog", "aria-modal": true }
+            ? { role: "dialog", "aria-modal": true, ...(ariaDescribedBy ? { "aria-describedby": ariaDescribedBy } : {}) }
             : {})}
           style={{
             opacity: motion.opacity,
@@ -274,18 +280,20 @@ export function KjunModal({
             boxShadow: tokens.modal.elevation.map(({ colorRole, ...layer }) => ({ ...layer, color: c[colorRole] })),
           }}
         >
-          {showHeader && (
+          {(titled || bare) && (
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
+                justifyContent: "flex-end",
                 paddingHorizontal: tokens.modal.padding,
-                paddingVertical: tokens.modal.headerPaddingY,
-                borderBottomWidth: tokens.border.defaultWidth,
+                paddingTop: tokens.modal.headerPaddingY,
+                paddingBottom: bare ? 0 : tokens.modal.headerPaddingY,
+                borderBottomWidth: bare ? 0 : tokens.border.defaultWidth,
                 borderBottomColor: c.border,
               }}
             >
-              <View style={{ flex: 1, paddingRight: tokens.modal.titleActionGap }}>
+              {titled && <View style={{ flex: 1, paddingRight: tokens.modal.titleActionGap }}>
                 {hasContent(header) ? content(header) : (
                   <FontText
                     accessibilityRole="header"
@@ -299,12 +307,13 @@ export function KjunModal({
                     {title}
                   </FontText>
                 )}
-              </View>
+              </View>}
               {closable && (
                 <KjunButton
                   variant="ghost"
                   size="sm"
                   ariaLabel={m.close}
+                  disabled={loading}
                   onPress={close}
                   style={{ borderRadius: tokens.modal.closeRadius, width: tokens.modal.closeSize, height: tokens.modal.closeSize, paddingHorizontal: 0, paddingVertical: 0 }}
                 ><KjunIcon name="x" size={tokens.modal.closeIconSize} /></KjunButton>
@@ -313,7 +322,7 @@ export function KjunModal({
           )}
           <ScrollView
             keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ padding: noPadding ? 0 : tokens.modal.padding }}
+            contentContainerStyle={noPadding ? { padding: 0 } : { padding: tokens.modal.padding, ...(bare ? { paddingTop: tokens.modal.bareBodyPaddingTop } : {}) }}
             style={{ flexGrow: 0, flexShrink: 1 }}
           >
             {children}
@@ -339,6 +348,7 @@ export function KjunModal({
                   showConfirm={showConfirmButton}
                   cancelText={cancelText}
                   confirmText={confirmText}
+                  cancelDisabled={loading}
                   confirmDisabled={confirmDisabled}
                   loading={loading}
                   variant={confirmVariant}

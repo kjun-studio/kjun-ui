@@ -12,6 +12,8 @@ import { useActionSize } from "../../../shared/package-runtime/action-size";
 import { FeedbackLayerOutlet } from "./overlay-host";
 import { useKjunPortalContainer } from "./provider";
 import { resolveFocusReturn, type FocusReturn } from "./floating-panel";
+import { hasContent } from "../../../shared/package-runtime/content-presence";
+import { modalCloseStyle } from "../../../shared/package-runtime/modal-geometry";
 export interface KjunFormActionsProps {
   size?: InputSize;
   cancelText?: string;
@@ -160,11 +162,12 @@ export function KjunModal({
   const portalContainer = useKjunPortalContainer();
   const id = "kjun-" + useId();
   const explicitLabel = ariaLabel?.trim();
-  const heading = header || title;
-  const labelledByHeading = showHeader && !explicitLabel &&
-    (typeof heading === "string" ? !!heading.trim() : !!heading);
+  // Without a title or header only the close button remains: no title band, no empty heading.
+  const custom = hasContent(header), titled = showHeader && (custom || !!title.trim());
+  const labelledByHeading = titled && !explicitLabel;
   const close = () => {
-    if (!open) return;
+    // While the confirm action runs the window stays open (as Confirm and Prompt do while busy).
+    if (!open || loading) return;
     onOpenChange(false);
     onClose?.();
   };
@@ -208,20 +211,17 @@ export function KjunModal({
           aria-labelledby={labelledByHeading ? id : undefined}
           aria-describedby={ariaDescribedBy}
         >
-          {showHeader && (
-            <div className="kjun-modal-header">
-              <Heading slot="title" id={id} className="kjun-modal-title">
-                {heading}
-              </Heading>
+          {showHeader && (titled || closable) && (
+            <div className="kjun-modal-header" data-bare={titled ? undefined : ""}>
+              {/* A header slot may hold buttons or badges, so it gets a plain labelled box, not the heading. */}
+              {titled && (custom
+                ? <div id={id} className="kjun-modal-title">{header}</div>
+                : <Heading slot="title" id={id} className="kjun-modal-title">{title}</Heading>)}
               {closable && (
-                <button
-                  type="button"
-                  className="kjun-modal-close"
-                  aria-label={m.close}
-                  onClick={close}
-                >
+                <KjunButton size="sm" variant="ghost" ariaLabel={m.close} onClick={close} disabled={loading}
+                  className="kjun-modal-close" style={modalCloseStyle}>
                   <KjunIcon name="x" size={tokens.modal.closeIconSize} />
-                </button>
+                </KjunButton>
               )}
             </div>
           )}
@@ -231,9 +231,9 @@ export function KjunModal({
           >
             {children}
           </div>
-          {(showFooter || footer) && (
+          {(showFooter || hasContent(footer)) && (
             <div className="kjun-modal-footer">
-              {footer || (
+              {hasContent(footer) ? footer : (
                 <KjunFormActions
                   size={footerSize}
                   cancelVariant="secondary"
@@ -241,6 +241,7 @@ export function KjunModal({
                   showConfirm={showConfirmButton}
                   cancelText={cancelText}
                   confirmText={confirmText}
+                  cancelDisabled={loading}
                   form={form}
                   confirmDisabled={confirmDisabled}
                   loading={loading}

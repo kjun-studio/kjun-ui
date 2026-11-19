@@ -11,6 +11,8 @@ import { kjunLayerScopeKey, useLayer, type Layer } from "./runtime/layers";
 import { useModalOverlay } from "./runtime/modal";
 import { usePresence, useReducedMotion } from "./runtime/presence";
 import { hasContent } from "./runtime/slots";
+import { modalCloseStyle } from "../../../shared/package-runtime/modal-geometry";
+import { css } from "./runtime/style";
 
 const kjunFormActionsProps = {
   size: { type: String as PropType<InputSize>, default: undefined },
@@ -140,7 +142,8 @@ export const KjunModal = defineComponent({
     const m = useKjunMessages();
     const target = usePortalTarget();
     const id = useKjunId("kjun-");
-    const close = () => { if (!props.open) return; emit("update:open", false); emit("close"); };
+    // While the confirm action runs the window stays open (as Confirm and Prompt do while busy).
+    const close = () => { if (!props.open || props.loading) return; emit("update:open", false); emit("close"); };
     const { motion, layer } = useWindowLayer(() => props.open, close, () => props.closeOnEsc, undefined, () => emit("after-close"),
       () => readFocusReturn(props.returnFocus));
     const overlay = ref<HTMLElement | null>(null), modal = ref<HTMLElement | null>(null), dialog = ref<HTMLElement | null>(null);
@@ -153,7 +156,9 @@ export const KjunModal = defineComponent({
       if (to === null || !motion.present()) return null;
       const header = slots.header?.();
       const explicitLabel = props.ariaLabel?.trim();
-      const labelledByHeading = props.showHeader && !explicitLabel && (hasContent(header) || !!props.title.trim());
+      // Without a title or header only the close button remains: no title band, no empty heading.
+      const custom = hasContent(header), titled = props.showHeader && (custom || !!props.title.trim());
+      const labelledByHeading = titled && !explicitLabel;
       const footer = slots.footer?.();
       return (
         <Teleport to={to}>
@@ -168,10 +173,12 @@ export const KjunModal = defineComponent({
               <DismissButton onDismiss={close} />
               <section ref={(node: unknown) => { dialog.value = node as HTMLElement | null; rootRef(node); }} class="kjun-modal-dialog" role="dialog" tabindex={-1}
                 aria-label={explicitLabel || (labelledByHeading ? undefined : props.title.trim() || m.value.dialog)} aria-labelledby={labelledByHeading ? id : undefined} aria-describedby={props.ariaDescribedBy}>
-                {props.showHeader && (
-                  <div class="kjun-modal-header">
-                    <h2 id={id} class="kjun-modal-title">{hasContent(header) ? header : props.title}</h2>
-                    {props.closable && <button type="button" class="kjun-modal-close" aria-label={m.value.close} onClick={close}><KjunIcon name="x" size={tokens.modal.closeIconSize} /></button>}
+                {props.showHeader && (titled || props.closable) && (
+                  <div class="kjun-modal-header" data-bare={titled ? undefined : ""}>
+                    {/* A header slot may hold buttons or badges, so it gets a plain labelled box, not the heading. */}
+                    {titled && (custom ? <div id={id} class="kjun-modal-title">{header}</div> : <h2 id={id} class="kjun-modal-title">{props.title}</h2>)}
+                    {props.closable && <KjunButton size="sm" variant="ghost" ariaLabel={m.value.close} onClick={close} disabled={props.loading}
+                      class="kjun-modal-close" style={css(modalCloseStyle)}><KjunIcon name="x" size={tokens.modal.closeIconSize} /></KjunButton>}
                   </div>
                 )}
                 <div class="kjun-modal-body" style={props.noPadding ? { padding: 0 } : undefined}>{slots.default?.()}</div>
@@ -179,7 +186,7 @@ export const KjunModal = defineComponent({
                   <div class="kjun-modal-footer">
                     {hasContent(footer) ? footer : (
                       <KjunFormActions size={props.footerSize} cancelVariant="secondary" showCancel={props.showCancelButton} showConfirm={props.showConfirmButton}
-                        cancelText={(props.cancelText ?? m.value.cancel)} confirmText={(props.confirmText ?? m.value.confirm)} form={props.form} confirmDisabled={props.confirmDisabled} loading={props.loading}
+                        cancelText={(props.cancelText ?? m.value.cancel)} confirmText={(props.confirmText ?? m.value.confirm)} cancelDisabled={props.loading} form={props.form} confirmDisabled={props.confirmDisabled} loading={props.loading}
                         variant={props.confirmVariant} onConfirm={() => emit("confirm")} onCancel={() => { emit("cancel"); close(); }} />
                     )}
                   </div>

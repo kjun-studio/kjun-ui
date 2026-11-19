@@ -28,7 +28,7 @@ const componentGroups = {
   accordion: [...files('accordion-design', 'controlled-state', 'component-motion', 'expanded', 'accessibility-components'), ...visuals],
   navigation: [...files('top-navigation-design', 'trail', 'bottom-navigation-design', 'floating-navigation-design', 'bottom-action-bar-design', 'accessibility-components'), ...visuals],
   feedback: [...files('feedback-dialog', 'feedback-features', 'feedback-input', 'feedback-motion', 'copy-button-feedback', 'chip-toast-tokens', 'toast-stack', 'component-motion', 'native-layout'), ...layers, ...contracts],
-  modal: [...layers, ...files('modal-return-focus', 'quantity', 'feedback-dialog', 'feedback-input', 'form-actions', 'component-motion'), ...contracts],
+  modal: [...layers, ...files('modal-return-focus', 'modal-header', 'quantity', 'feedback-dialog', 'feedback-input', 'form-actions', 'component-motion'), ...contracts],
   drawer: [...layers, ...files('component-motion', 'size-contracts', 'native-layout', 'drawer-scroll', 'drawer-handle')],
   popover: [...layers, ...files('popover-design', 'expanded', 'react-popover-trigger')],
   dropdown: [...layers, ...files('dropdown-design', 'dropdown-structure', 'dropdown-regressions', 'menu-button', 'controlled-state', 'expanded')],

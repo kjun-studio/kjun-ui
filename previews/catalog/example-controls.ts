@@ -390,6 +390,8 @@ export function renderControlExample(name: string, tools: ExampleTools): any {
             title: settings.title || "작업 확인",
             ...(name === "KjunModal" ? {
               size: settings.size || "md", confirmText: settings.confirmText || "확인", showFooter: true,
+              confirmVariant: settings.confirmVariant || "primary", showHeader: settings.showHeader !== false,
+              closeOnOverlay: settings.closeOnOverlay !== false, noPadding: !!settings.noPadding,
               loading, confirmDisabled: disabled,
               onConfirm: () => { set("open", false); message("저장했습니다"); },
             } : {

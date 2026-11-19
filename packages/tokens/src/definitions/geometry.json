@@ -196,7 +196,8 @@
     "mobileInset": { "$ref": "dimension.value16" },
     "actionsGap": { "$ref": "dimension.value8" },
     "closeRadius": { "$ref": "radius.radius8" },
-    "titleActionGap": { "$ref": "dimension.value12" }
+    "titleActionGap": { "$ref": "dimension.value12" },
+    "bareBodyPaddingTop": { "$ref": "dimension.value8" }
   },
   "dimension": {
     "value2": 2,

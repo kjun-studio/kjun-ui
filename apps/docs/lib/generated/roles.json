@@ -192,7 +192,6 @@
       "packages/tokens/src/table-narrow.css",
       "packages/tokens/src/table.css",
       "packages/tokens/src/toast.css",
-      "packages/tokens/src/web.css",
       "packages/vue3/src/financial-display.tsx",
       "packages/react/src/financial-display.tsx",
       "packages/native/src/calendar.tsx",

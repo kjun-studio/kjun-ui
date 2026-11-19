@@ -44,6 +44,8 @@ export function generate(input: UsageInput) {
         b.button(name === 'KjunModal' ? '모달 열기' : '패널 열기', b.handler('openDialog', '', b.set('open', 'true'))),
         b.node(name, { open: b.state('open', false), onOpenChange: b.update('open'), title: s.title ?? '작업 확인',
           ...(name === 'KjunModal' ? { size: s.size, confirmText: s.confirmText, showFooter: true, loading: s.loading, confirmDisabled: s.disabled,
+            ...(s.confirmVariant && s.confirmVariant !== 'primary' ? { confirmVariant: s.confirmVariant } : {}), ...(s.showHeader === false ? { showHeader: false } : {}),
+            ...(s.closeOnOverlay === false ? { closeOnOverlay: false } : {}), ...(s.noPadding ? { noPadding: true } : {}),
             onConfirm: b.handler('confirm', '', b.set('open', 'false') + '\n' + b.result('"저장했습니다"')) }
             : { ...(s.position && s.position !== 'right' ? { position: s.position } : {}), ...(s.position === 'bottom' && s.handle ? { handle: true } : {}) }),
         }, [b.node('KjunInput', { value: b.state('input', ''), onValueChange: b.update('input'), ariaLabel: '입력 예제', clearable: true }),

@@ -339,22 +339,22 @@
   font-weight: var(--_kjun-geometry-modal-title-weight);
   letter-spacing: var(--_kjun-type-section-title-tracking);
 }
-.kjun-modal-close {
-  width: var(--_kjun-geometry-modal-close-size);
-  height: var(--_kjun-geometry-modal-close-size);
-  border-radius: var(--_kjun-geometry-modal-close-radius);
-  background: transparent;
-  border: 0;
-  color: var(--_kjun-color-text-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
+/* The close button is a ghost KjunButton; on touch screens its press area grows to the minimum touch target. */
+.kjun-modal-close { flex-shrink: 0; }
+@media (pointer: coarse) {
+  .kjun-modal-header > .kjun-modal-close::after {
+    content: "";
+    position: absolute;
+    inset: calc((var(--_kjun-geometry-modal-close-size) - var(--_kjun-geometry-native-minimum-touch-target)) / 2);
+  }
 }
-.kjun-modal-close:hover {
-  background: var(--_kjun-color-secondary);
+/* Close button only: no title band or divider, the body follows closely. */
+.kjun-modal-header[data-bare] {
+  justify-content: flex-end;
+  padding-bottom: 0;
+  border-bottom: 0;
 }
+.kjun-modal-header[data-bare] + .kjun-modal-body { padding-top: var(--_kjun-geometry-modal-bare-body-padding-top); }
 .kjun-modal-body {
   padding: var(--_kjun-geometry-modal-padding);
   flex: 1;
@@ -472,15 +472,6 @@
   .kjun-modal:not([data-size="full"]) {
     width: calc(100vw - 2 * var(--_kjun-geometry-modal-mobile-inset)) !important;
     max-height: 85dvh;
-  }
-  .kjun-modal:not([data-fixed="true"]):not([data-size="full"]) {
-    overflow: auto;
-    overscroll-behavior: contain;
-  }
-  .kjun-modal:not([data-fixed="true"]):not([data-size="full"])
-    .kjun-modal-body {
-    flex: 0 0 auto;
-    overflow: visible;
   }
 }
 @media (hover: none), (pointer: coarse) {

@@ -328,7 +328,8 @@
       "children",
       "ariaLabel",
       "ariaDescription",
-      "onAfterClose"
+      "onAfterClose",
+      "ariaDescribedBy"
     ]
   },
   "KjunPopover": {
