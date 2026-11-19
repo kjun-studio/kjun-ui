@@ -17,6 +17,8 @@ export interface CalendarDayCellProps {
   dim?: number;
   /** The fade is the past one (event calendar): a toned number fades less, as on the web (data-past). */
   past?: boolean;
+  /** Event calendar loading: the number fades as a past day's does, except today and outside days (data-loading on the web). */
+  loading?: boolean;
   /** Picker: today inside a range band shows a bare brand number instead of the pill. */
   inRangeToday?: boolean;
   marks?: DayMarks<ColorValue>; column?: number;
@@ -32,7 +34,7 @@ const calendar = tokens.extensions.calendar;
 const data = (set: Record<string, string | number | boolean | undefined>) => Platform.OS === "web" ? { dataSet: set } : {};
 const longPress = "longpress";
 
-export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim, past = false, inRangeToday = false, marks, column = 0,
+export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim, past = false, inRangeToday = false, marks, column = 0, loading = false,
   onPress, onLongPress, longPressLabel, tabIndex, keyShortcuts }: CalendarDayCellProps) {
   const { colors, fontFamily, numericFontFamily } = useKjunStyles();
   const event = emphasis === "event";
@@ -43,7 +45,9 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
     : selected ? colors.onBrand : day.today && inRangeToday ? colors.brand : day.blocked ? colors.textDisabled : toned;
   const pill = event ? (day.today ? colors.brand : "transparent") : day.today && !selected && !inRangeToday ? colors.brandSubtleBg : "transparent";
   // Outside days win over past; a past danger or info number keeps more of its colour.
-  const numberDim = past && !day.outside && tone !== "text" ? calendar.pastAccentOpacity : dim;
+  // Loading (event calendar): the days to come fade their number as past days do; today keeps its pill.
+  const faded = !day.outside && (past || (loading && !day.today));
+  const numberDim = faded && tone !== "text" ? calendar.pastAccentOpacity : faded && !past ? calendar.pastOpacity : dim;
   const dots = visibleDots(marks?.dots), icon = marks?.icon;
   const span = event ? marks?.spans?.[0] : undefined, segment = span ? spanSegment(span, day.iso, column) : null;
   const band = !event && (day.inRange || day.rangeStart || day.rangeEnd) && !(day.rangeStart && day.rangeEnd);
@@ -67,11 +71,11 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
         ? { flex: 1, height: calendar.eventDayHeight, paddingTop: calendar.eventDayPaddingTop, paddingBottom: calendar.eventDayPaddingBottom, alignItems: "center", borderRadius: calendar.dayRadius }
         : { width: calendar.daySize, height: calendar.daySize, borderRadius: calendar.dayRadius, alignItems: "center", justifyContent: "center",
           backgroundColor: selected ? colors.brand : pressed && !day.blocked ? colors.hover : "transparent" }}>
-      {({ pressed }) => <>
+      {({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => <>
         {/* The selected (or pressed) square wraps the number and marks: full cell height, inset at the sides. */}
         {event && <View pointerEvents="none" collapsable={false} {...data({ kjunPart: "square" })}
           style={{ position: "absolute", top: 0, bottom: 0, left: calendar.eventSelectedInset, right: calendar.eventSelectedInset, borderRadius: calendar.dayRadius,
-            backgroundColor: selected ? colors.active : pressed ? colors.hover : "transparent" }} />}
+            backgroundColor: selected ? colors.active : pressed || hovered ? colors.hover : "transparent" }} />}
         <View pointerEvents="none" collapsable={false} {...data({ kjunPart: "pill" })}
           style={{ minWidth: calendar.todayPillMinWidth, height: calendar.todayPillHeight, borderRadius: calendar.todayPillCorner,
             // The fade sits on the pill, which owns both the fill and the number, as on the web.

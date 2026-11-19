@@ -86,6 +86,8 @@ export class UsageBuilder {
     this.exposed.push(name);
     return expr(name);
   }
+  /** A value exported by the KJUN package (not a component), imported with the components. */
+  use(name: string) { this.imports.add(name); return expr(name); }
   props(...keys: string[]) { return Object.fromEntries(keys.filter(key => key in this.input.settings).map(key => [key, this.input.settings[key]])); }
   nativeTextStyle(fontSize: number, lineHeight: number) {
     this.imports.add('useKjunStyles');

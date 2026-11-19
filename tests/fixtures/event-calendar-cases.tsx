@@ -33,6 +33,8 @@ export function EventCalendarCases({ K }: { K: any }) {
     {/* A month with no listener: keys stop at the edge of the month. */}
     <div data-testid="unlistened"><K.KjunEventCalendar month="2026-11" /></div>
     <div data-testid="deferred"><K.KjunEventCalendar month={deferredMonth} onMonthChange={(next: string) => setTimeout(() => setDeferredMonth(next), 50)} /></div>
+    {/* The app's today (2026-02-10, not the clock's) while February's events are still loading. */}
+    <div data-testid="loading"><K.KjunEventCalendar month="2026-02" today="2026-02-10" loading /></div>
     <output data-testid="deferred-month" style={{ display: 'none' }}>{deferredMonth}</output>
     <output data-testid="values" style={{ display: 'none' }}>{month}|{week}|{value ?? ''}|{longPressed}</output>
   </main>;

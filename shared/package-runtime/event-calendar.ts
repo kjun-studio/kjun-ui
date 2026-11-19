@@ -1,7 +1,7 @@
 import { tokens } from "@kjun-ui/tokens";
 import { addDays, addMonths, calendarDays, dateLabel, parseDate, todayIso, weekdayOf } from "./calendar";
 import type { CalendarDay, WeekStart } from "./calendar";
-import { calendarLabels, defaultMessageScope } from "./messages";
+import { calendarLabels, defaultMessageScope, resolveMessageScope } from "./messages";
 import type { KjunMessageScope } from "./messages";
 
 // Model of the event calendar (month and week) shared by React, Vue 3 and Native. Pure: no react import here.
@@ -12,6 +12,8 @@ export interface DayMarks<C = string> { spans?: readonly DaySpan<C>[]; icon?: { 
 export type HolidayTest = (iso: string) => string | boolean;
 
 const monthPattern = /^\d{4}-(0[1-9]|1[0-2])$/;
+/** The app's "YYYY-MM-DD" today (server time, another time zone); missing or malformed reads as the device's today. */
+export const resolveToday = (today?: string) => today && parseDate(today) ? today : todayIso();
 /** "YYYY-MM"; a malformed value reads as the month of today. */
 export const resolveMonth = (month: string | undefined, today = todayIso()) => monthPattern.test(month ?? "") ? month! : today.slice(0, 7);
 /** The first day of the week holding the given day (today's week when malformed). */
@@ -53,6 +55,22 @@ export function periodTitle(key: string, scope: KjunMessageScope = defaultMessag
   }
   return scope.messages.weekTitle(first.year, first.month + 1, first.day, last.year, last.month + 1, last.day);
 }
+
+/**
+ * Helpers for the app's own title row and buttons: the calendar draws neither.
+ * key is "YYYY-MM" for a month, or any day "YYYY-MM-DD" of a week.
+ */
+export const kjunCalendarPeriod = {
+  /** The month ("YYYY-MM") or the week's first day ("YYYY-MM-DD") delta periods away. */
+  step(view: "month" | "week", key: string, delta: number, weekStart: WeekStart = 0): string {
+    return view === "week" ? addDays(resolveWeek(key, weekStart), 7 * delta) : stepMonth(resolveMonth(key.slice(0, 7)), delta);
+  },
+  /** The period's name as the grid reads it: "2026년 11월", or "2026년 11월 29일 – 12월 5일" for a week. locale follows KjunProvider's. */
+  title(view: "month" | "week", key: string, options: { locale?: string; weekStart?: WeekStart } = {}): string {
+    const scope = options.locale ? resolveMessageScope(undefined, options.locale) : defaultMessageScope;
+    return periodTitle(view === "week" ? resolveWeek(key, options.weekStart ?? 0) : resolveMonth(key.slice(0, 7)), scope);
+  },
+};
 
 /** What a span draws on one day: null outside it; rounded at the span's ends and at the week's edges (column 0 and 6). */
 export function spanSegment(span: DaySpan<unknown>, iso: string, column: number) {

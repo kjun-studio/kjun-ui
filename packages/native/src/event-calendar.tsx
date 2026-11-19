@@ -1,8 +1,8 @@
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import { calendarLabels } from "../../../shared/package-runtime/messages";
-import { addDays, moveDate, orderWeekdays, parseDate, todayIso, type CalendarDay, type WeekStart } from "../../../shared/package-runtime/calendar";
+import { addDays, moveDate, orderWeekdays, parseDate, type CalendarDay, type WeekStart } from "../../../shared/package-runtime/calendar";
 import {
-  dayTone, eventDayLabel, holidayOf, isPast, periodDays, periodTitle, resolveMonth, resolveWeek, stepMonth, swipeStep, withinPeriod as within,
+  dayTone, eventDayLabel, holidayOf, isPast, periodDays, periodTitle, resolveMonth, resolveToday, resolveWeek, stepMonth, swipeStep, withinPeriod as within,
   type DayMarks as SharedDayMarks, type DaySpan as SharedDaySpan, type HolidayTest,
 } from "../../../shared/package-runtime/event-calendar";
 import { useSlide } from "../../../shared/package-runtime/use-slide";
@@ -52,6 +52,10 @@ export interface KjunEventCalendarProps {
   markSunday?: boolean;
   /** Paints Saturdays with the info role (default true). */
   markSaturday?: boolean;
+  /** The app's today, "YYYY-MM-DD" (server time, another time zone); the device's today when missing or malformed. */
+  today?: string;
+  /** The app is still fetching the period's events: day numbers step back to the past fade and the grid is busy. Days stay pressable. */
+  loading?: boolean;
   /** A horizontal swipe asks for the next or previous month or week (default true). On the web only touch swipes; mouse drags never do. */
   swipeable?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -65,10 +69,10 @@ const weeksOf = (days: CalendarDay[]) => Array.from({ length: days.length / 7 },
 
 /** A month or week of days that show events as dots, an icon and a span bar. It draws no card or heading. */
 export function KjunEventCalendar({ view = "month", month, onMonthChange, week, onWeekChange, value = null, onSelect, onDayLongPress,
-  dayLongPressLabel, marks, isHoliday, dimPast = true, weekStart = 0, markSunday = true, markSaturday = true, swipeable = true, style }: KjunEventCalendarProps) {
+  dayLongPressLabel, marks, isHoliday, dimPast = true, weekStart = 0, markSunday = true, markSaturday = true, swipeable = true, today: todayProp, loading = false, style }: KjunEventCalendarProps) {
   const scope = useKjunMessageScope(), { colors } = useKjunStyles();
   const reduced = useReducedMotion();
-  const today = todayIso();
+  const today = resolveToday(todayProp);
   const key = view === "week" ? resolveWeek(week, weekStart, today) : resolveMonth(month, today);
   // The grid draws the shown month, so the old one stays while it slides out.
   const slide = useSlide(key, reduced), shown = slide.shown;
@@ -176,7 +180,7 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
   const moving = slide.phase !== "idle";
 
   return (
-    <View style={style} {...data({ view, swipeable: swipeable || undefined })}>
+    <View style={style} {...data({ view, swipeable: swipeable || undefined, loading: loading || undefined })}>
       <View style={{ flexDirection: "row" }}>
         {orderWeekdays(labels.weekdays, weekStart).map((name, index) => {
           const tone = dayTone((index + weekStart) % 7, { markSunday, markSaturday, holiday: false });
@@ -188,7 +192,7 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
       </View>
       <Animated.View {...(swipeable ? pan.panHandlers : {})} style={{ opacity: fade, transform: [{ translateX: shift }] }}
         // The group is named after the period on every platform; the web also marks it as a group.
-        accessibilityLabel={title} {...(web ? { role: "group" as const, onKeyDownCapture } : {})}
+        accessibilityLabel={title} accessibilityState={loading ? { busy: true } : undefined} {...(web ? { role: "group" as const, onKeyDownCapture } : {})}
         {...data({ kjunPart: "event-calendar-grid", slide: moving ? slide.phase : undefined, direction: moving ? slide.direction : undefined })}>
         {weeksOf(days).map(row => (
           <View key={row[0].iso} style={{ flexDirection: "row" }}>
@@ -197,7 +201,7 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
               const mark = marks?.(day.iso);
               const past = dimPast && isPast(day.iso, today);
               return <CalendarDayCell key={day.iso} day={{ ...day, selected: day.iso === value }} density="comfortable" emphasis="event"
-                tone={dayTone(day.weekday, { markSunday, markSaturday, holiday: holiday.holiday })} past={past}
+                tone={dayTone(day.weekday, { markSunday, markSaturday, holiday: holiday.holiday })} past={past} loading={loading}
                 dim={day.outside ? calendar.outsideOpacity : past ? calendar.pastOpacity : undefined}
                 label={eventDayLabel(day.iso, { holiday: holiday.name, count: mark?.count, today: day.today && !web }, scope)}
                 tabIndex={day.iso === tabStop ? 0 : -1} keyShortcuts={onDayLongPress ? "Shift+Enter" : undefined}

@@ -399,6 +399,33 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(grid(page, 'month')).toHaveAttribute('aria-label', '2026년 11월');
     });
 
+    test('today from the app and loading: the days to come fade, the grid is busy', async ({ page }) => {
+      const id = 'loading';
+      // The app's today wins over the pinned clock: its pill, the past fade and the tab stop follow it.
+      await expect(day(page, id, '2026-02-10')).toHaveAttribute('data-today', /.*/);
+      await expect(day(page, id, '2026-02-10')).toHaveAttribute('tabindex', '0');
+      await expect(day(page, id, '2026-02-09')).toHaveAttribute('data-past', /.*/);
+      await expect(day(page, id, '2026-02-11')).not.toHaveAttribute('data-past');
+      await expect(grid(page, id)).toHaveAttribute('aria-busy', 'true');
+      await expect(grid(page, 'month')).not.toHaveAttribute('aria-busy');
+      const fade = (iso: string) => opacity(native ? pillOf(page, id, iso) : number(page, id, iso));
+      // A day to come takes the past fade (a toned one the accent fade); today keeps its pill.
+      expect(await fade('2026-02-11')).toBeCloseTo(0.45, 2);
+      expect(await fade('2026-02-15')).toBeCloseTo(0.7, 2);
+      expect(await fade('2026-02-10')).toBe(1);
+      // Still pressable.
+      await expect(day(page, id, '2026-02-12')).toBeEnabled();
+    });
+
+    test('a mouse hover fills an event day only where it hovers', async ({ page }) => {
+      const cell = day(page, 'plain', '2026-11-18');
+      const hover = await role(page, 'hover');
+      await cell.hover();
+      await expect.poll(() => squareColor(cell)).toBe(hover);
+      await page.mouse.move(0, 0);
+      await expect.poll(() => squareColor(cell)).not.toBe(hover);
+    });
+
     test('reduced motion swaps at once', async ({ page }) => {
       // The preference is read live, so the open page follows it.
       await page.emulateMedia({ reducedMotion: 'reduce' });

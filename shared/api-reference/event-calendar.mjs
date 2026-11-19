@@ -11,7 +11,7 @@ const marksDetail = platform => detail("날짜마다 칸 아래에 그릴 표시
 });
 const summaries = platform => ({
   view: { type: '"month" | "week"', default: '"month"', summary: "한 달 전체(month) 또는 한 주(week)를 그립니다. 한 달 보기는 항상 6주를 그려 달을 넘겨도 높이가 변하지 않고, 한 주 보기는 다른 달 날짜를 흐리게 하지 않습니다." },
-  month: { type: "string", summary: "보여 줄 달(YYYY-MM)입니다. 제어 값이며 없거나 형식이 틀리면 이번 달입니다. 제목과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 앱이 제목 줄을 만들고 버튼으로 이 값을 바꿉니다." },
+  month: { type: "string", summary: "보여 줄 달(YYYY-MM)입니다. 제어 값이며 없거나 형식이 틀리면 이번 달입니다. 제목과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 앱이 제목 줄을 만들고 버튼으로 이 값을 바꿉니다. 제목과 다음·이전 값은 함께 내보내는 kjunCalendarPeriod로 구할 수 있습니다." },
   week: { type: "string", summary: "한 주 보기에서 보여 줄 주입니다. 그 주의 아무 날(YYYY-MM-DD)이며 weekStart에 맞춰 그 주의 첫날로 정리하고, 없으면 이번 주입니다. 제어 값입니다. 날짜 칸 묶음은 그 주의 첫날과 끝날로 읽습니다(예: 2026년 11월 29일 – 12월 5일)." },
   [platform === "vue3" ? "modelValue" : "value"]: { type: "string | null", default: "null", summary: "고른 날(YYYY-MM-DD)입니다. null이면 아무것도 고르지 않은 상태로 그립니다. 날짜를 눌러도 값은 앱이 바꾸며, 고르기를 풀지도 앱이 정합니다." + (platform === "vue3" ? " v-model로 연결합니다." : "") },
   dayLongPressLabel: { type: "string", summary: "길게 누르기가 무슨 동작인지 화면 낭독기에 알리는 문구입니다(예: \"이날 약속 추가\"). onDayLongPress가 있을 때만 쓰입니다." },
@@ -21,6 +21,8 @@ const summaries = platform => ({
   weekStart: { type: "0 | 1 | 2 | 3 | 4 | 5 | 6", default: "0", summary: "주의 첫 요일입니다. 0은 일요일, 1은 월요일입니다. 요일 줄과 한 주 보기의 시작, 키보드 Home·End가 함께 바뀝니다." },
   markSunday: { type: "boolean", default: "true", summary: "일요일을 danger 역할로 칠합니다. 끄면 일요일도 다른 요일과 같은 색입니다. 휴일은 이 값과 상관없이 danger입니다." },
   markSaturday: { type: "boolean", default: "true", summary: "토요일을 info 역할로 칠합니다. 끄면 토요일도 다른 요일과 같은 색입니다." },
+  today: { type: "string", summary: "앱이 정한 오늘(YYYY-MM-DD)입니다. 서버 시각이나 다른 시간대를 쓸 때 넘깁니다. 오늘 알약, 지난 날 흐림, month·week가 없을 때의 기본 달(주), 키보드 시작 칸이 이 날을 따릅니다. 없거나 형식이 틀리면 기기의 오늘입니다." },
+  loading: { type: "boolean", default: "false", summary: "앱이 그 달(주)의 일정을 아직 받는 중임을 알립니다. 오늘·지난 날·다른 달을 뺀 날의 숫자를 지난 날과 같은 투명도 0.45(빨강·파랑 0.7)로 흐리고 날짜 칸 묶음을 aria-busy로 알립니다. 새 요소는 그리지 않고, 넘긴 표시는 그대로 그리며, 날짜는 계속 누를 수 있습니다. 일정을 받으면 false로 돌립니다." },
   swipeable: { type: "boolean", default: "true", summary: "가로로 넘겨 달(주)을 바꿉니다. 가로 이동이 20을 넘고 세로 이동의 2배보다 클 때만 잡아 바깥 세로 스크롤과 다투지 않습니다. 웹(Native 웹 미리보기 포함)에서는 터치 입력만 잡고 마우스 끌기는 달을 바꾸지 않습니다. 달을 바꾸려는 요청은 onMonthChange·onWeekChange로 알립니다." },
   className: { summary: "루트에 KJUN 클래스 뒤로 더할 클래스입니다. 바깥 여백·배치에 씁니다." },
   style: { summary: "루트에 더할 스타일입니다. 바깥 여백·배치에 씁니다." },
@@ -52,5 +54,6 @@ export const eventCalendarEvents = {
 };
 export const eventCalendarTypes = platform => [
   fields("DayMarks", "marks가 돌려주는 날짜 하나의 표시입니다.", [["spans", "DaySpan[] | undefined", "여러 날에 걸친 막대입니다. 첫 항목만 그리므로 겹치는 일정은 같은 일정을 기간 내내 첫 항목으로 넘깁니다."], ["icon", "{ name: string; color: " + (platform === "native" ? "ColorValue" : "string") + " } | undefined", "점 앞에 그릴 11px 아이콘입니다."], ["dots", (platform === "native" ? "ColorValue" : "string") + "[] | undefined", "점의 색 배열입니다. 지름 5px로 최대 3개를 그립니다."], ["count", "number | undefined", "일정 수입니다. 화면에는 그리지 않고 읽기 이름에만 씁니다."]]),
+  fields("kjunCalendarPeriod", "컴포넌트와 함께 내보내는 함수 묶음입니다. 달력은 제목 줄과 이전·다음 버튼을 그리지 않으므로 앱이 이것으로 제목과 다음 값을 구합니다. key는 달(YYYY-MM)이나 그 주의 아무 날(YYYY-MM-DD)입니다.", [["step(view, key, delta, weekStart?)", "(view: \"month\" | \"week\", key: string, delta: number, weekStart?: 0–6) => string", "delta만큼 떨어진 달(YYYY-MM)이나 그 주의 첫날(YYYY-MM-DD)을 돌려줍니다. month·week에 그대로 넘깁니다."], ["title(view, key, options?)", "(view, key, { locale?: string; weekStart?: 0–6 }) => string", "달력이 날짜 칸 묶음을 읽는 이름과 같은 제목입니다. 예: 2026년 11월, 한 주는 2026년 11월 29일 – 12월 5일. locale을 주면 Intl로 씁니다(KjunProvider와 같은 값)."]]),
   fields("DaySpan", "막대 하나입니다. 시작·끝 날과 주의 양 끝만 모서리를 둥글게 그립니다.", [["color", platform === "native" ? "ColorValue" : "string", "막대 색입니다."], ["start", "string", "시작 날(YYYY-MM-DD)입니다."], ["end", "string", "끝 날(YYYY-MM-DD)입니다. 시작 날보다 앞서면 그리지 않습니다."]]),
 ];

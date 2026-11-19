@@ -15,15 +15,8 @@ const events = [
   { start: "2026-11-12", end: "2026-11-14", color: ${color('warning')}, bar: true },
 ];
 const holidays = { "2026-11-05": "임시 휴일" };`);
-  b.declare('titleOf', 'const titleOf = (iso) => iso.slice(0, 4) + "년 " + Number(iso.slice(5, 7)) + "월";');
-  if (week) b.declare('shiftWeek', `function shiftWeek(iso, delta) {
-  const date = new Date(Number(iso.slice(0, 4)), Number(iso.slice(5, 7)) - 1, Number(iso.slice(8, 10)) + 7 * delta);
-  return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, "0") + "-" + String(date.getDate()).padStart(2, "0");
-}`);
-  else b.declare('shiftMonth', `function shiftMonth(month, delta) {
-  const date = new Date(Number(month.slice(0, 4)), Number(month.slice(5, 7)) - 1 + delta, 1);
-  return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, "0");
-}`);
+  // The title row and its buttons are the app's; kjunCalendarPeriod gives the next period and the name the grid reads.
+  const period = b.use('kjunCalendarPeriod').code, view = week ? '"week"' : '"month"', key = week ? 'state.week' : 'state.month';
   const added = !!s.longPress && !week;
   // The marks of one day; a function (not a handler) so Vue binds it as a prop.
   b.handler('marksOf', 'iso', `const onDay = events.filter(event => event.start <= iso && iso <= event.end);
@@ -50,10 +43,10 @@ return {
   if (added) b.state('added', []);
   const status = b.node('KjunText', { tone: 'secondary' }, inline(added ? '(state.added.length ? "약속을 추가한 날: " + state.added.join(", ") : "날짜를 길게 눌러 약속을 추가해 보세요.")' : '"고른 날: " + (state.picked || "없음")'));
   if (week) {
-    const nav = b.node(row, { style: b.native ? { flexDirection: 'row' } : { display: 'flex' } }, [step('previousWeek', '이전 주', 'chevron-left', 'shiftWeek(state.week, -1)'), step('nextWeek', '다음 주', 'chevron-right', 'shiftWeek(state.week, 1)')].join('\n'));
-    return b.group([b.node('KjunCard', { title: expr('titleOf(state.week)') }, calendar, { headerActions: nav }), status]);
+    const nav = b.node(row, { style: b.native ? { flexDirection: 'row' } : { display: 'flex' } }, [step('previousWeek', '이전 주', 'chevron-left', `${period}.step(${view}, ${key}, -1)`), step('nextWeek', '다음 주', 'chevron-right', `${period}.step(${view}, ${key}, 1)`)].join('\n'));
+    return b.group([b.node('KjunCard', { title: expr(`${period}.title(${view}, ${key})`) }, calendar, { headerActions: nav }), status]);
   }
   const head = b.node(row, { style: b.native ? { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' } : { display: 'flex', alignItems: 'center', justifyContent: 'space-between' } }, [
-    step('previousMonth', '이전 달', 'chevron-left', 'shiftMonth(state.month, -1)'), b.node('KjunText', { variant: 'cardTitle' }, inline('titleOf(state.month + "-01")')), step('nextMonth', '다음 달', 'chevron-right', 'shiftMonth(state.month, 1)')].join('\n'));
+    step('previousMonth', '이전 달', 'chevron-left', `${period}.step(${view}, ${key}, -1)`), b.node('KjunText', { variant: 'cardTitle' }, inline(`${period}.title(${view}, ${key})`)), step('nextMonth', '다음 달', 'chevron-right', `${period}.step(${view}, ${key}, 1)`)].join('\n'));
   return b.group([head, calendar, status]);
 }

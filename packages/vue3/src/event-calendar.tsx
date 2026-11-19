@@ -1,8 +1,8 @@
 import { useKjunMessageScope } from "./runtime/messages";
 import { calendarLabels } from "../../../shared/package-runtime/messages";
-import { addDays, moveDate, orderWeekdays, parseDate, todayIso, type CalendarDay, type WeekStart } from "../../../shared/package-runtime/calendar";
+import { addDays, moveDate, orderWeekdays, parseDate, type CalendarDay, type WeekStart } from "../../../shared/package-runtime/calendar";
 import {
-  dayTone, eventDayLabel, holidayOf, isPast, periodDays, periodTitle, resolveMonth, resolveWeek, spanSegment, stepMonth, swipeStep, visibleDots, withinPeriod as within,
+  dayTone, eventDayLabel, holidayOf, isPast, periodDays, periodTitle, resolveMonth, resolveToday, resolveWeek, spanSegment, stepMonth, swipeStep, visibleDots, withinPeriod as within,
   type DayMarks, type HolidayTest,
 } from "../../../shared/package-runtime/event-calendar";
 import { onBeforeUnmount, onMounted, onUpdated, ref, useId, type ExtractPublicPropTypes, type PropType } from "vue";
@@ -48,6 +48,10 @@ const kjunEventCalendarProps = {
   markSunday: { type: Boolean, default: true },
   /** Paints Saturdays with the info role (default true). */
   markSaturday: { type: Boolean, default: true },
+  /** The app's today, "YYYY-MM-DD" (server time, another time zone); the device's today when missing or malformed. */
+  today: { type: String, default: undefined },
+  /** The app is still fetching the period's events: day numbers step back to the past fade and the grid is busy. Days stay pressable. */
+  loading: { type: Boolean, default: false },
   /** A horizontal touch swipe asks for the next or previous month or week (default true). Mouse drags never do. */
   swipeable: { type: Boolean, default: true },
 } as const;
@@ -70,7 +74,7 @@ export const KjunEventCalendar = defineComponent({
   setup(props, { emit }) {
     const scope = useKjunMessageScope();
     const reduced = useReducedMotion();
-    const key = () => props.view === "week" ? resolveWeek(props.week, props.weekStart, todayIso()) : resolveMonth(props.month, todayIso());
+    const key = () => { const today = resolveToday(props.today); return props.view === "week" ? resolveWeek(props.week, props.weekStart, today) : resolveMonth(props.month, today); };
     // The grid draws the shown month, so the old one stays while it slides out.
     const slide = useSlide(key, () => reduced.value);
     const uid = "kjun-event-calendar-" + useId().replace(/[^\w-]/g, "");
@@ -178,7 +182,7 @@ export const KjunEventCalendar = defineComponent({
     };
 
     return () => {
-      const today = todayIso(), weekStart = props.weekStart, value = props.modelValue;
+      const today = resolveToday(props.today), weekStart = props.weekStart, value = props.modelValue;
       const shown = slide.value.shown, phase = slide.value.phase;
       const days = periodDays(shown, today, weekStart);
       const first = parseDate(shown.length === 7 ? shown + "-01" : shown)!;
@@ -190,14 +194,14 @@ export const KjunEventCalendar = defineComponent({
       const describe = longPress && props.dayLongPressLabel ? uid + "-long-press" : undefined;
       const { markSunday, markSaturday } = props;
       return (
-        <div class="kjun-event-calendar" data-view={props.view} data-swipeable={props.swipeable || undefined}>
+        <div class="kjun-event-calendar" data-view={props.view} data-swipeable={props.swipeable || undefined} data-loading={props.loading || undefined}>
           <div class="kjun-event-calendar-weekdays">
             {orderWeekdays(labels.weekdays, weekStart).map((name, index) => {
               const tone = dayTone((index + weekStart) % 7, { markSunday, markSaturday, holiday: false });
               return <span key={index} class="kjun-calendar-weekday" data-tone={tone === "text" ? undefined : tone} aria-hidden="true">{name}</span>;
             })}
           </div>
-          <div ref={grid} class="kjun-event-calendar-grid" role="group" aria-label={title}
+          <div ref={grid} class="kjun-event-calendar-grid" role="group" aria-label={title} aria-busy={props.loading || undefined}
             data-slide={phase === "idle" ? undefined : phase} data-direction={phase === "idle" ? undefined : slide.value.direction}
             onKeydown={onKeydown} onPointerdown={onPointerdown} onPointermove={onPointermove} onPointerup={onPointerEnd} onPointercancel={onPointerEnd}
             onContextmenu={onContextmenu}>

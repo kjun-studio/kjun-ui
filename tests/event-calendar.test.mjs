@@ -8,7 +8,7 @@ const output = await build({ stdin: { contents: "export * from './shared/package
   alias: { '@kjun-ui/tokens': './packages/tokens/src/index.ts' }, define: { 'process.env.NODE_ENV': '"production"' } });
 const {
   resolveMonth, resolveWeek, stepMonth, weekDays, spanSegment, visibleDots, swipeStep, dayTone, holidayOf, isPast, eventDayLabel, slideStart, slideNext,
-  withinPeriod, periodDays, periodTitle, kjunMessagesEn,
+  withinPeriod, periodDays, periodTitle, kjunMessagesEn, kjunCalendarPeriod, resolveToday,
 } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 
 test('month and week fall back to today when malformed', () => {
@@ -127,4 +127,41 @@ test('the hover square shows only where a pointer hovers', async () => {
   const hover = /:hover/g, media = css.indexOf('@media (hover: hover)');
   assert.ok(media >= 0);
   for (const match of css.matchAll(hover)) assert.ok(match.index > media, 'every :hover sits inside @media (hover: hover)');
+});
+
+test('kjunCalendarPeriod steps and names the period the app shows', () => {
+  assert.equal(kjunCalendarPeriod.step('month', '2026-12', 1), '2027-01');
+  assert.equal(kjunCalendarPeriod.step('month', '2026-01', -1), '2025-12');
+  // A day as a month key reads as its month.
+  assert.equal(kjunCalendarPeriod.step('month', '2026-11-18', 1), '2026-12');
+  assert.equal(kjunCalendarPeriod.step('week', '2026-11-18', 1), '2026-11-22');
+  assert.equal(kjunCalendarPeriod.step('week', '2026-11-18', -1, 1), '2026-11-09');
+  assert.equal(kjunCalendarPeriod.title('month', '2026-11'), periodTitle('2026-11'));
+  assert.equal(kjunCalendarPeriod.title('week', '2026-12-01'), periodTitle('2026-11-29'));
+  assert.equal(kjunCalendarPeriod.title('week', '2026-12-01', { weekStart: 1 }), periodTitle('2026-11-30'));
+  assert.match(kjunCalendarPeriod.title('month', '2026-11', { locale: 'en-US' }), /November 2026/);
+});
+
+test('the app may set today; a malformed one reads as the device today', () => {
+  assert.equal(resolveToday('2026-02-03'), '2026-02-03');
+  for (const bad of [undefined, '', '2026-02-30', 'today']) assert.match(resolveToday(bad), /^\d{4}-\d{2}-\d{2}$/);
+  assert.notEqual(resolveToday('2026-02-30'), '2026-02-30');
+});
+
+test('loading fades the numbers of the days to come, never today, past or outside days', async () => {
+  const css = (await readFile('packages/tokens/src/event-calendar.css', 'utf8')).replace(/\/\*[\s\S]*?\*\//g, '');
+  assert.match(css, /\[data-loading\] \.kjun-calendar-day:not\(\[data-outside\], \[data-past\], \[data-today\]\) \.kjun-calendar-day-number \{ opacity: var\(--_kjun-extension-calendar-past-opacity\)/);
+  assert.match(css, /\[data-loading\] \.kjun-calendar-day\[data-tone\]:not\([^)]*\) \.kjun-calendar-day-number \{ opacity: var\(--_kjun-extension-calendar-past-accent-opacity\)/);
+  for (const platform of ['react', 'vue3', 'native']) {
+    const source = await readFile(`packages/${platform}/src/event-calendar.tsx`, 'utf8');
+    assert.match(source, platform === 'native' ? /loading \? \{ busy: true \}/ : /aria-busy=\{(props\.)?loading \|\| undefined\}/, platform);
+    assert.match(source, /resolveToday\((props\.today|todayProp)\)/, platform);
+  }
+  const cell = await readFile('packages/native/src/calendar-day.tsx', 'utf8');
+  assert.match(cell, /loading && !day\.today/);
+});
+
+test('Native Web hovers an event day like the web packages', async () => {
+  const cell = await readFile('packages/native/src/calendar-day.tsx', 'utf8');
+  assert.match(cell, /selected \? colors\.active : pressed \|\| hovered \? colors\.hover/);
 });

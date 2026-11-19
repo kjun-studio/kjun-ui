@@ -68,6 +68,7 @@ export type {
   SelectOption,
 } from "./select";
 export { KjunEventCalendar, type KjunEventCalendarProps, type DayMarks, type DaySpan, type HolidayTest } from "./event-calendar";
+export { kjunCalendarPeriod } from "../../../shared/package-runtime/event-calendar";
 
 export * from "./navigation";
 export {

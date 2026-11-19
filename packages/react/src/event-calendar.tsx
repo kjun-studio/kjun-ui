@@ -1,8 +1,8 @@
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import { calendarLabels } from "../../../shared/package-runtime/messages";
-import { addDays, moveDate, orderWeekdays, parseDate, todayIso, type CalendarDay, type WeekStart } from "../../../shared/package-runtime/calendar";
+import { addDays, moveDate, orderWeekdays, parseDate, type CalendarDay, type WeekStart } from "../../../shared/package-runtime/calendar";
 import {
-  dayTone, eventDayLabel, holidayOf, isPast, periodDays, periodTitle, resolveMonth, resolveWeek, spanSegment, stepMonth, swipeStep, visibleDots, withinPeriod as within,
+  dayTone, eventDayLabel, holidayOf, isPast, periodDays, periodTitle, resolveMonth, resolveToday, resolveWeek, spanSegment, stepMonth, swipeStep, visibleDots, withinPeriod as within,
   type DayMarks, type HolidayTest,
 } from "../../../shared/package-runtime/event-calendar";
 import { useSlide } from "../../../shared/package-runtime/use-slide";
@@ -44,6 +44,10 @@ export interface KjunEventCalendarProps {
   markSunday?: boolean;
   /** Paints Saturdays with the info role (default true). */
   markSaturday?: boolean;
+  /** The app's today, "YYYY-MM-DD" (server time, another time zone); the device's today when missing or malformed. */
+  today?: string;
+  /** The app is still fetching the period's events: day numbers step back to the past fade and the grid is busy. Days stay pressable. */
+  loading?: boolean;
   /** A horizontal touch swipe asks for the next or previous month or week (default true). Mouse drags never do. */
   swipeable?: boolean;
   className?: string;
@@ -57,10 +61,10 @@ interface TouchTrack { id: number; x: number; y: number; timer?: ReturnType<type
 
 /** A month or week of days that show events as dots, an icon and a span bar. It draws no card or heading. */
 export function KjunEventCalendar({ view = "month", month, onMonthChange, week, onWeekChange, value = null, onSelect, onDayLongPress,
-  dayLongPressLabel, marks, isHoliday, dimPast = true, weekStart = 0, markSunday = true, markSaturday = true, swipeable = true, className, style, id }: KjunEventCalendarProps) {
+  dayLongPressLabel, marks, isHoliday, dimPast = true, weekStart = 0, markSunday = true, markSaturday = true, swipeable = true, today: todayProp, loading = false, className, style, id }: KjunEventCalendarProps) {
   const scope = useKjunMessageScope();
   const reduced = useReducedMotion();
-  const today = todayIso();
+  const today = resolveToday(todayProp);
   const key = view === "week" ? resolveWeek(week, weekStart, today) : resolveMonth(month, today);
   // The grid draws the shown month, so the old one stays while it slides out.
   const slide = useSlide(key, reduced), shown = slide.shown;
@@ -171,14 +175,15 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
   };
 
   return (
-    <div id={id} className={"kjun-event-calendar" + (className ? " " + className : "")} style={style} data-view={view} data-swipeable={swipeable || undefined}>
+    <div id={id} className={"kjun-event-calendar" + (className ? " " + className : "")} style={style} data-view={view} data-swipeable={swipeable || undefined}
+      data-loading={loading || undefined}>
       <div className="kjun-event-calendar-weekdays">
         {orderWeekdays(labels.weekdays, weekStart).map((name, index) => {
           const tone = dayTone((index + weekStart) % 7, { markSunday, markSaturday, holiday: false });
           return <span key={index} className="kjun-calendar-weekday" data-tone={tone === "text" ? undefined : tone} aria-hidden="true">{name}</span>;
         })}
       </div>
-      <div ref={grid} className="kjun-event-calendar-grid" role="group" aria-label={title}
+      <div ref={grid} className="kjun-event-calendar-grid" role="group" aria-label={title} aria-busy={loading || undefined}
         data-slide={slide.phase === "idle" ? undefined : slide.phase} data-direction={slide.phase === "idle" ? undefined : slide.direction}
         onKeyDown={onKeyDown} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerEnd} onPointerCancel={onPointerEnd}
         onContextMenu={onContextMenu}>

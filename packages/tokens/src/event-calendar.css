@@ -30,6 +30,9 @@
 /* Past days fade the number and marks only; the span bar keeps its color (outside days fade it, below). Outside days win over past. */
 .kjun-calendar-day[data-past]:not([data-outside]) :is(.kjun-calendar-day-number, .kjun-event-calendar-marks) { opacity: var(--_kjun-extension-calendar-past-opacity); }
 .kjun-calendar-day[data-past][data-tone]:not([data-outside]) .kjun-calendar-day-number { opacity: var(--_kjun-extension-calendar-past-accent-opacity); }
+/* Loading: the period's events are not in yet, so the numbers of the days to come step back to the past fade (today keeps its pill). Marks stay as passed. */
+.kjun-event-calendar[data-loading] .kjun-calendar-day:not([data-outside], [data-past], [data-today]) .kjun-calendar-day-number { opacity: var(--_kjun-extension-calendar-past-opacity); }
+.kjun-event-calendar[data-loading] .kjun-calendar-day[data-tone]:not([data-outside], [data-past], [data-today]) .kjun-calendar-day-number { opacity: var(--_kjun-extension-calendar-past-accent-opacity); }
 .kjun-calendar-day[data-outside] .kjun-event-calendar-marks { opacity: var(--_kjun-extension-calendar-outside-opacity); }
 /* An outside day's bar steps back with the past fade, still readable where a span runs on into the next month. */
 .kjun-calendar-day[data-outside] .kjun-event-calendar-span { opacity: var(--_kjun-extension-calendar-past-opacity); }
