@@ -93,7 +93,7 @@ export const inputs: Record<string, GuideAuthor> = {
   KjunRadio: {
     parts: [
       c("선택 컨트롤", "RadioGroup 안에서 하나의 항목을 고릅니다.", "radio"),
-      t("라벨", "해당 선택지를 설명합니다.", "첫 선택"),
+      t("라벨", "해당 선택지를 설명합니다.", "일반 배송"),
     ],
     related: "form",
   },

@@ -203,12 +203,12 @@ export const groupedFieldOptions = (data?: unknown) => {
   return data === "empty" ? [] : [{ label: "개인", options: [mine] }, { label: "공유", options: [everyone, team] }];
 };
 /** Sparkline docs samples: a series in time order (null is a gap), its previous close and the spoken name. */
-export function sparklineSample(kind: string): { data: (number | null)[]; baseline: number; label: string } {
+export const sparklineSample = (kind: string): { data: (number | null)[]; baseline: number; label: string } => {
   if (kind === "하락") return { data: [8, 6, 7, 3, 4, 2], baseline: 5, label: "추세, 기준 5에서 2로 하락" };
   if (kind === "끊긴 값") return { data: [1, 4, null, 7, 5, 8], baseline: 3, label: "추세, 기준 3에서 8로 상승, 하루 빠짐" };
   if (kind === "없음") return { data: [], baseline: 3, label: "추세" };
   return { data: [1, 4, 3, 7, 5, 8], baseline: 3, label: "추세, 기준 3에서 8로 상승" };
-}
+};
 export const priceFormat = (value: number) =>
   value == null || !Number.isFinite(Number(value)) ? "—" : new Intl.NumberFormat("ko-KR").format(Number(value)) + "원";
 export const metricFormat = (value: unknown, format: string) => {

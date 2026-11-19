@@ -66,7 +66,7 @@ export const extensions: Record<string, GuideAuthor> = {
     states: [{ id: "peek", label: "다음 카드 보이기", description: "다음 슬라이드를 24px 보여 넘길 수 있음을 알립니다.", settings: { slideSize: "peek", gap: "sm" } }, { id: "cards", label: "카드 줄", description: "섹션 제목 오른쪽에 이전·다음 버튼을 둡니다.", settings: { slideSize: "auto", indicators: "none", title: true } }, { id: "second", label: "두 번째 슬라이드", description: "앱이 index로 두 번째 슬라이드를 엽니다.", values: { slide: 1 } }],
   },
   KjunEventCalendar: {
-    parts: [p("날짜 칸", "누르면 그 날을 고르는 버튼입니다. 오늘은 알약, 고른 날은 둥근 사각형이며 테두리는 없습니다.", ".kjun-event-calendar-grid button"), p("일정 표시", "날짜 아래의 점·아이콘·막대입니다. 색은 앱이 넘기고 막대는 칸을 가로질러 이어집니다.", ".kjun-event-calendar-marks, .kjun-event-calendar-span")],
+    parts: [p("날짜 칸", "누르면 그 날을 고르는 버튼입니다. 오늘은 알약, 고른 날은 둥근 사각형이며 테두리는 없습니다.", '.kjun-event-calendar-grid button, [aria-label$="요일"]'), p("일정 표시", "날짜 아래의 점·아이콘·막대입니다. 색은 앱이 넘기고 막대는 칸을 가로질러 이어집니다.", ".kjun-event-calendar-marks, .kjun-event-calendar-span")],
     related: "app-screen",
     states: [{ id: "week", label: "한 주 보기", description: "카드 안에 한 주만 그립니다. 아무 날도 고르지 않은 채 시작하고 스와이프는 끕니다.", settings: { view: "week", swipeable: false } }, { id: "long-press", label: "길게 눌러 추가", description: "날짜를 길게 누르면(웹은 오른쪽 클릭·Shift+Enter) 앱이 약속을 추가하고 점을 표시합니다.", settings: { longPress: true } }],
   },
@@ -87,7 +87,7 @@ export const extensions: Record<string, GuideAuthor> = {
     states: [{ id: "decimal", label: "소수 step", description: "0~1 범위를 0.1 단위로 조절합니다.", settings: { decimal: true }, values: { slider: .5 } }],
   },
   KjunRangeSlider: {
-    parts: [p("시작 손잡이", "끝 값을 넘어가지 않는 구간 시작값입니다.", 'thumb=[aria-label="시작 값"]'), p("끝 손잡이", "시작 값 아래로 내려가지 않는 구간 끝값입니다.", 'thumb=[aria-label="끝 값"]')], related: "input-settings",
+    parts: [p("시작 손잡이", "끝 값을 넘어가지 않는 구간 시작값입니다.", 'thumb=[aria-label^="시작 값"]'), p("끝 손잡이", "시작 값 아래로 내려가지 않는 구간 끝값입니다.", 'thumb=[aria-label^="끝 값"]')], related: "input-settings",
     states: [{ id: "decimal", label: "소수 구간", description: "손잡이 순서를 유지하며 소수 단위로 조절합니다.", settings: { decimal: true }, values: { range: [.2, .8] } }],
   },
   KjunTimePicker: {

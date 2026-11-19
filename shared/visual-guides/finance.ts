@@ -58,7 +58,7 @@ export const finance: Record<string, GuideAuthor> = {
     related: "loading",
   },
   KjunPriceCell: {
-    parts: [t("가격과 단위", "소비자 formatter로 값과 단위를 표현합니다.", "1,234,567원")],
+    parts: [t("가격과 단위", "소비자 formatter로 값과 단위를 표현합니다.", "84,200원")],
     related: "assets",
   },
   KjunSignedValue: {

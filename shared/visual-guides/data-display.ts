@@ -23,7 +23,7 @@ export const dataDisplay: Record<string, GuideAuthor> = {
     related: "writing",
   },
   KjunHeatmapCell: {
-    parts: [t("수치 셀", "같은 범위의 상대적 크기를 색상과 숫자로 표현합니다.", "-0.5")],
+    parts: [t("수치 셀", "같은 범위의 상대적 크기를 색상과 숫자로 표현합니다.", "-1%")],
     related: "assets",
   },
   KjunIcon: {
