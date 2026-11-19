@@ -328,9 +328,12 @@ export function KjunAlert({
   const beside = !titled && hasContent(actions);
   const actionHeight = tokens.button.heights[alertActionSizes[scale]];
   const wrapped = beside && hasContent(children) && alertActionsWrap(widths.content, widths.actions, geometry[scale].gap, geometry.messageMinWidth);
-  const measure = (part: "content" | "actions") => beside
-    ? (event: LayoutChangeEvent) => { const width = event.nativeEvent.layout.width; setWidths(old => old[part] === width ? old : { ...old, [part]: width }); }
-    : undefined;
+  // Always attached: React Native Web observes a view's layout only if it had a handler when it mounted, and an
+  // alert can lose its title later.
+  const measure = (part: "content" | "actions") => (event: LayoutChangeEvent) => {
+    const width = event.nativeEvent.layout.width;
+    setWidths(old => old[part] === width ? old : { ...old, [part]: width });
+  };
   const actionBox = hasContent(actions) && (
     <ActionSizeContext.Provider value={alertActionSizes[scale]}>
       <AlertActionsContext.Provider value={true}>
