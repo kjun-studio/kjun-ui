@@ -11,7 +11,7 @@ import { formActionsNeedStack } from "../../../shared/package-runtime/form-actio
 import { Animated } from "react-native";
 import { useNativePresence, useMotionValue, motionIn, motionOut } from "./motion";
 import { tokens,type InputSize } from "@kjun-ui/tokens";
-import { type ReactNode } from "react";
+import { Children, Fragment, cloneElement, isValidElement, type ReactNode } from "react";
 import {
 KeyboardAvoidingView,
 Platform,
@@ -119,6 +119,20 @@ export function KjunFormActions({
     </FormActionsContext.Provider>
   );
 }
+// Like the web footer (Modal and Drawer): buttons gather at the end; a phone's Modal or bottom sheet shares the width between them (form actions too,
+// unless the app chose fill="primary"), and a single wrapper (the app's own action layout) keeps the full row.
+export function layerFooterItems(footer: ReactNode, share: boolean) {
+  // A fragment's children are the row's items.
+  const items = Children.toArray(footer).flatMap(item => isValidElement<{ children?: ReactNode }>(item) && item.type === Fragment ? Children.toArray(item.props.children) : [item]);
+  const own = items.length === 1 && !(isValidElement(items[0]) && items[0].type === KjunButton);
+  if (!share && !own) return items.map(item => content(item));
+  // A shared button fills its share, as on the web.
+  return items.map((item, index) => <View key={index} style={{ flexGrow: 1, flexShrink: 1, flexBasis: own ? "100%" : 0, minWidth: 0 }}>
+    {isValidElement<{ block?: boolean }>(item) && item.type === KjunButton ? cloneElement(item, { block: true })
+      : share && isValidElement<{ fill?: boolean | "primary" }>(item) && item.type === KjunFormActions && item.props.fill !== "primary" ? cloneElement(item, { fill: true })
+      : content(item)}
+  </View>);
+}
 export interface KjunModalProps {
   open: boolean;
   onOpenChange: (value: boolean) => void;
@@ -210,6 +224,8 @@ export function KjunModal({
       ? window.width - 2 * tokens.modal.mobileInset
       : Math.min(tokens.modal.widths[size], window.width - 2 * tokens.modal.mobileInset);
   const layer = useLayer(open, motion.present, "window", () => { if (closeOnEsc) close(); });
+  // Phones: the footer buttons share the row, as on the web.
+  const compact = window.width <= tokens.responsive.modal;
   // iOS keeps dismissing the native window after visible turns false; report once it is gone so the next sheet can open.
   const iosDismiss = Platform.OS === "ios";
   useAfterClose(motion.present, onAfterClose, !iosDismiss);
@@ -288,9 +304,8 @@ export function KjunModal({
                 justifyContent: "flex-end",
                 paddingHorizontal: tokens.modal.padding,
                 paddingTop: tokens.modal.headerPaddingY,
+                // No dividers, as on the web: the header's bottom padding is the gap to the body.
                 paddingBottom: bare ? 0 : tokens.modal.headerPaddingY,
-                borderBottomWidth: bare ? 0 : tokens.border.defaultWidth,
-                borderBottomColor: c.border,
               }}
             >
               {titled && <View style={{ flex: 1, paddingRight: tokens.modal.titleActionGap }}>
@@ -322,7 +337,8 @@ export function KjunModal({
           )}
           <ScrollView
             keyboardShouldPersistTaps="handled"
-            contentContainerStyle={noPadding ? { padding: 0 } : { padding: tokens.modal.padding, ...(bare ? { paddingTop: tokens.modal.bareBodyPaddingTop } : {}) }}
+            contentContainerStyle={noPadding ? { padding: 0 } : { padding: tokens.modal.padding,
+              ...(bare ? { paddingTop: tokens.modal.bareBodyPaddingTop } : titled ? { paddingTop: 0 } : {}) }}
             style={{ flexGrow: 0, flexShrink: 1 }}
           >
             {children}
@@ -334,13 +350,13 @@ export function KjunModal({
                 flexWrap: 'wrap',
                 justifyContent: 'flex-end',
                 gap: tokens.modal.footerGap,
-                paddingVertical: tokens.modal.headerPaddingY,
+                // The body's bottom padding is the gap to the footer.
+                paddingTop: noPadding ? tokens.modal.headerPaddingY : 0,
+                paddingBottom: tokens.modal.headerPaddingY,
                 paddingHorizontal: tokens.modal.padding,
-                borderTopWidth: tokens.border.defaultWidth,
-                borderTopColor: c.border,
               }}
             >
-              {hasContent(footer) ? content(footer) : (
+              {hasContent(footer) ? layerFooterItems(footer, compact) : (
                 <KjunFormActions
                   size={footerSize}
                   cancelVariant="secondary"
@@ -352,6 +368,7 @@ export function KjunModal({
                   confirmDisabled={confirmDisabled}
                   loading={loading}
                   variant={confirmVariant}
+                  fill={compact}
                   onConfirm={onConfirm}
                   onCancel={() => {
                     onCancel?.();

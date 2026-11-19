@@ -227,7 +227,7 @@ export function KjunModal({
           )}
           <div
             className="kjun-modal-body"
-            style={noPadding ? { padding: 0 } : undefined}
+            data-no-padding={noPadding ? "" : undefined}
           >
             {children}
           </div>

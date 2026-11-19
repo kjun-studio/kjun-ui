@@ -181,7 +181,7 @@ export const KjunModal = defineComponent({
                       class="kjun-modal-close" style={css(modalCloseStyle)}><KjunIcon name="x" size={tokens.modal.closeIconSize} /></KjunButton>}
                   </div>
                 )}
-                <div class="kjun-modal-body" style={props.noPadding ? { padding: 0 } : undefined}>{slots.default?.()}</div>
+                <div class="kjun-modal-body" data-no-padding={props.noPadding ? "" : undefined}>{slots.default?.()}</div>
                 {(props.showFooter || hasContent(footer)) && (
                   <div class="kjun-modal-footer">
                     {hasContent(footer) ? footer : (

@@ -9257,6 +9257,20 @@
         "description": "Paints Saturdays with the info role (default true)."
       },
       {
+        "name": "today",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "The app's today, \"YYYY-MM-DD\" (server time, another time zone); the device's today when missing or malformed."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The app is still fetching the period's events: day numbers step back to the past fade and the grid is busy. Days stay pressable."
+      },
+      {
         "name": "swipeable",
         "type": "boolean",
         "required": false,
@@ -9388,6 +9402,20 @@
         "required": false,
         "default": "—",
         "description": "Paints Saturdays with the info role (default true)."
+      },
+      {
+        "name": "today",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The app's today, \"YYYY-MM-DD\" (server time, another time zone); the device's today when missing or malformed."
+      },
+      {
+        "name": "loading",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The app is still fetching the period's events: day numbers step back to the past fade and the grid is busy. Days stay pressable."
       },
       {
         "name": "swipeable",
@@ -9523,6 +9551,20 @@
         "required": false,
         "default": "—",
         "description": "Paints Saturdays with the info role (default true)."
+      },
+      {
+        "name": "today",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The app's today, \"YYYY-MM-DD\" (server time, another time zone); the device's today when missing or malformed."
+      },
+      {
+        "name": "loading",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The app is still fetching the period's events: day numbers step back to the past fade and the grid is busy. Days stay pressable."
       },
       {
         "name": "swipeable",

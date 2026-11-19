@@ -6,13 +6,13 @@ import { LayerScope, useLayer } from "../../../shared/package-runtime/use-layer"
 import { directionalShadow } from "../../../shared/package-runtime/elevation";
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
-import { Children, Fragment, cloneElement, isValidElement, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Animated, Keyboard, PanResponder, Platform, ScrollView, View, useWindowDimensions, type ScrollViewProps } from "react-native";
 import { drawerFrame, keyboardEvents, keyboardOverlap } from "../../../shared/package-runtime/drawer-geometry";
 import { sheetDragDismisses, sheetDragOffset } from "../../../shared/package-runtime/sheet-drag";
 import { useNativePresence, motionEmphasized, nativeDriver } from "./motion";
 import { KjunButton, KjunIcon } from "./button";
-import { KjunFormActions } from "./modal";
+import { layerFooterItems } from "./modal";
 import { KText,content } from "./internal";
 import { ScopedNativeModal } from "./overlay-host";
 import { useKjunSafeArea, useKjunStyles } from "./provider";
@@ -66,20 +66,6 @@ function useKeyboardOverlap(enabled: boolean, rootHeight: number) {
     return () => { show.remove(); hide.remove(); };
   }, [enabled, rootHeight]);
   return overlap;
-}
-// Like the web footer: buttons gather at the end; a phone's bottom sheet shares the width between them (form actions too,
-// unless the app chose fill="primary"), and a single wrapper (the app's own action layout) keeps the full row.
-function footerItems(footer: ReactNode, share: boolean) {
-  // A fragment's children are the row's items.
-  const items = Children.toArray(footer).flatMap(item => isValidElement<{ children?: ReactNode }>(item) && item.type === Fragment ? Children.toArray(item.props.children) : [item]);
-  const own = items.length === 1 && !(isValidElement(items[0]) && items[0].type === KjunButton);
-  if (!share && !own) return items.map(item => content(item));
-  // A shared button fills its share, as on the web.
-  return items.map((item, index) => <View key={index} style={{ flexGrow: 1, flexShrink: 1, flexBasis: own ? "100%" : 0, minWidth: 0 }}>
-    {isValidElement<{ block?: boolean }>(item) && item.type === KjunButton ? cloneElement(item, { block: true })
-      : share && isValidElement<{ fill?: boolean | "primary" }>(item) && item.type === KjunFormActions && item.props.fill !== "primary" ? cloneElement(item, { fill: true })
-      : content(item)}
-  </View>);
 }
 export function KjunDrawer({
   open,
@@ -292,7 +278,7 @@ export function KjunDrawer({
                 paddingHorizontal: geometry.paddingX,
               }}
             >
-              {footerItems(footer, compact && position === "bottom")}
+              {layerFooterItems(footer, compact && position === "bottom")}
             </View>
           )}
         </Animated.View>

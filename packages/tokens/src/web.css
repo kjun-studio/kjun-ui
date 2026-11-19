@@ -325,7 +325,6 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--_kjun-geometry-modal-header-padding-y) var(--_kjun-geometry-modal-padding);
-  border-bottom: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
   flex-shrink: 0;
 }
 .kjun-modal-title {
@@ -352,9 +351,11 @@
 .kjun-modal-header[data-bare] {
   justify-content: flex-end;
   padding-bottom: 0;
-  border-bottom: 0;
 }
-.kjun-modal-header[data-bare] + .kjun-modal-body { padding-top: var(--_kjun-geometry-modal-bare-body-padding-top); }
+.kjun-modal-header[data-bare] + .kjun-modal-body:not([data-no-padding]) { padding-top: var(--_kjun-geometry-modal-bare-body-padding-top); }
+/* No dividers, as on Drawer: the header's bottom padding is the gap to the body, and the body's bottom padding the gap to the footer. */
+.kjun-modal-header:not([data-bare]) + .kjun-modal-body:not([data-no-padding]) { padding-top: 0; }
+.kjun-modal-body:not([data-no-padding]) + .kjun-modal-footer { padding-top: 0; }
 .kjun-modal-body {
   padding: var(--_kjun-geometry-modal-padding);
   flex: 1;
@@ -362,6 +363,7 @@
   overflow: auto;
   color: var(--_kjun-color-text);
 }
+.kjun-modal-body[data-no-padding] { padding: 0; }
 /* Confirm and prompt dialogs: one small surface, no header or footer bands, the field labelled above. */
 .kjun-feedback-dialog > h2 {
   margin: 0;
@@ -426,7 +428,6 @@
 }
 .kjun-modal-footer {
   padding: var(--_kjun-geometry-modal-header-padding-y) var(--_kjun-geometry-modal-padding);
-  border-top: var(--_kjun-border-default-width) solid var(--_kjun-color-border);
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -473,6 +474,9 @@
     width: calc(100vw - 2 * var(--_kjun-geometry-modal-mobile-inset)) !important;
     max-height: 85dvh;
   }
+  /* Phones: the footer buttons share the row (form actions too, unless the app chose fill="primary"), as on a bottom Drawer. */
+  .kjun-modal-footer > .kjun-button { flex: 1; }
+  .kjun-modal-footer > .kjun-form-actions:not([data-fill="primary"], [data-stacked]) > .kjun-button { flex: 1 1 0; min-width: 0; }
 }
 @media (hover: none), (pointer: coarse) {
   .kjun-button {

@@ -12,7 +12,7 @@ import { useActionPill, useActionSize } from "../../../shared/package-runtime/ac
 import { DataStateContentContext } from "./data-state-context";
 import { tokens,type ButtonSize,type ButtonVariant } from "@kjun-ui/tokens";
 import { useIcon } from "../../../shared/package-runtime/icon-context";
-import { useContext,useEffect,useRef,type ReactNode } from "react";
+import { createContext,useContext,useEffect,useRef,type ReactNode } from "react";
 import { useMinimumLoading } from "../../../shared/package-runtime/minimum-loading";
 import {
 Animated,
@@ -77,6 +77,8 @@ function Spinning({ size, children }: { size: number; children: ReactNode }) {
   );
 }
 /** Internal: KjunIcon with a stroke width in viewBox units, for parts that paint one fixed line weight. */
+/** The ink of the button an icon sits in (package-internal). */
+const ButtonInkContext = createContext<ColorValue | undefined>(undefined);
 export function IconBase({
   name,
   size = tokens.iconSizes.default,
@@ -86,7 +88,10 @@ export function IconBase({
   ariaLabel,
   strokeWidth: stroke,
 }: KjunIconProps & { strokeWidth?: number }) {
-  const { colors } = useKjunStyles();
+  const { colors: c } = useKjunStyles();
+  // Inside a button an icon without its own colour takes the button's ink, like currentColor on the web.
+  const ink = useContext(ButtonInkContext);
+  const colors = { text: ink ?? c.text };
   const { nodes, filled: renderFilled } = useIcon(name, filled), strokeWidth = stroke ?? 2;
   const parts: Record<string, React.ComponentType<any>> = {
     path: Path,
@@ -315,7 +320,7 @@ export function KjunButton(input: KjunButtonProps) {
             // A link is underlined at rest, like KjunExternalLink, so it reads as one in body text of the same colour.
             ...(link ? { textDecorationLine: 'underline' as const } : {}),
             ...(multiline || navigation ? { flexShrink: 1, minWidth: 0, textAlign: 'center' as const } : {}),
-          }}>{children}</FontText>}
+          }}><ButtonInkContext.Provider value={color}>{children}</ButtonInkContext.Provider></FontText>}
           {!!suffixIcon && <View style={{ opacity: busy && prefixIcon ? 0 : 1 }}>
             {busy && !prefixIcon ? <KjunSpinnerGlyph size={iconSize} color={color} /> : suffixNode ? media(suffix) : <KjunIcon name={suffixName!}
               filled={!busy && suffixIconFilled} size={iconSize} color={color} />}

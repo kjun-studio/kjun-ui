@@ -40964,7 +40964,7 @@
             "required": false,
             "default": "—",
             "description": "v-model:month. The month shown, \"YYYY-MM\" (this month when missing or malformed). Without a listener the month does not change.",
-            "summary": "보여 줄 달(YYYY-MM)입니다. 제어 값이며 없거나 형식이 틀리면 이번 달입니다. 제목과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 앱이 제목 줄을 만들고 버튼으로 이 값을 바꿉니다.",
+            "summary": "보여 줄 달(YYYY-MM)입니다. 제어 값이며 없거나 형식이 틀리면 이번 달입니다. 제목과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 앱이 제목 줄을 만들고 버튼으로 이 값을 바꿉니다. 제목과 다음·이전 값은 함께 내보내는 kjunCalendarPeriod로 구할 수 있습니다.",
             "source": "packages/vue3/src/event-calendar.tsx"
           },
           {
@@ -41171,6 +41171,24 @@
             "source": "packages/vue3/src/event-calendar.tsx"
           },
           {
+            "name": "today",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The app's today, \"YYYY-MM-DD\" (server time, another time zone); the device's today when missing or malformed.",
+            "summary": "앱이 정한 오늘(YYYY-MM-DD)입니다. 서버 시각이나 다른 시간대를 쓸 때 넘깁니다. 오늘 알약, 지난 날 흐림, month·week가 없을 때의 기본 달(주), 키보드 시작 칸이 이 날을 따릅니다. 없거나 형식이 틀리면 기기의 오늘입니다.",
+            "source": "packages/vue3/src/event-calendar.tsx"
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "The app is still fetching the period's events: day numbers step back to the past fade and the grid is busy. Days stay pressable.",
+            "summary": "앱이 그 달(주)의 일정을 아직 받는 중임을 알립니다. 오늘·지난 날·다른 달을 뺀 날의 숫자를 지난 날과 같은 투명도 0.45(빨강·파랑 0.7)로 흐리고 날짜 칸 묶음을 aria-busy로 알립니다. 새 요소는 그리지 않고, 넘긴 표시는 그대로 그리며, 날짜는 계속 누를 수 있습니다. 일정을 받으면 false로 돌립니다.",
+            "source": "packages/vue3/src/event-calendar.tsx"
+          },
+          {
             "name": "swipeable",
             "type": "boolean",
             "required": false,
@@ -41284,7 +41302,7 @@
         ],
         "slots": [],
         "ownership": [
-          "완전 제어형입니다. 앱이 month(YYYY-MM)나 week(그 주의 아무 날)와 value(고른 날, 없으면 null)를 넘기고, 달·주를 바꾸려는 요청은 onMonthChange·onWeekChange로 받아 값을 바꿉니다. 이 콜백을 주지 않으면 화면은 바뀌지 않습니다. 제목(예: 2026년 11월)과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 화면이 제목 줄을 만들고 버튼으로 month를 바꿉니다. 날짜를 누르면 onSelect(iso)를 알리며 고르기를 풀지는 앱이 정합니다. 한 달 보기에서 다른 달 날짜를 누르면 onSelect 다음에 그 달로 onMonthChange를 부릅니다. marks(iso)는 날짜마다 spans·icon·dots·count를 돌려주고 표시 색은 앱이 정합니다. 여러 날 막대는 날마다 spans의 첫 항목만 그리므로, 일정이 겹치는 날에도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다. isHoliday(iso)는 true나 휴일 이름을 돌려주며 숫자를 danger 색으로 그리고 이름은 읽기 이름에 넣습니다. onDayLongPress를 주면 길게 누르기가 켜지고, 주지 않으면 관련 동작이 모두 꺼집니다.",
+          "완전 제어형입니다. 앱이 month(YYYY-MM)나 week(그 주의 아무 날)와 value(고른 날, 없으면 null)를 넘기고, 달·주를 바꾸려는 요청은 onMonthChange·onWeekChange로 받아 값을 바꿉니다. 이 콜백을 주지 않으면 화면은 바뀌지 않습니다. 제목(예: 2026년 11월)과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 화면이 제목 줄을 만들고 버튼으로 month를 바꿉니다. 제목과 다음·이전 값은 함께 내보내는 kjunCalendarPeriod.title·step으로 구합니다. 일정을 받는 동안 loading을 켜면 앞으로 올 날의 숫자가 흐려지고, today로 서버 시각 등 앱이 정한 오늘을 넘길 수 있습니다. 날짜를 누르면 onSelect(iso)를 알리며 고르기를 풀지는 앱이 정합니다. 한 달 보기에서 다른 달 날짜를 누르면 onSelect 다음에 그 달로 onMonthChange를 부릅니다. marks(iso)는 날짜마다 spans·icon·dots·count를 돌려주고 표시 색은 앱이 정합니다. 여러 날 막대는 날마다 spans의 첫 항목만 그리므로, 일정이 겹치는 날에도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다. isHoliday(iso)는 true나 휴일 이름을 돌려주며 숫자를 danger 색으로 그리고 이름은 읽기 이름에 넣습니다. onDayLongPress를 주면 길게 누르기가 켜지고, 주지 않으면 관련 동작이 모두 꺼집니다.",
           "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. Native 웹 미리보기도 웹과 같은 키보드 이동과 Shift+Enter를 받고 마우스 끌기는 무시합니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다."
         ],
         "types": [
@@ -41311,6 +41329,22 @@
                 "name": "count",
                 "type": "number | undefined",
                 "summary": "일정 수입니다. 화면에는 그리지 않고 읽기 이름에만 씁니다."
+              }
+            ]
+          },
+          {
+            "name": "kjunCalendarPeriod",
+            "summary": "컴포넌트와 함께 내보내는 함수 묶음입니다. 달력은 제목 줄과 이전·다음 버튼을 그리지 않으므로 앱이 이것으로 제목과 다음 값을 구합니다. key는 달(YYYY-MM)이나 그 주의 아무 날(YYYY-MM-DD)입니다.",
+            "fields": [
+              {
+                "name": "step(view, key, delta, weekStart?)",
+                "type": "(view: \"month\" | \"week\", key: string, delta: number, weekStart?: 0–6) => string",
+                "summary": "delta만큼 떨어진 달(YYYY-MM)이나 그 주의 첫날(YYYY-MM-DD)을 돌려줍니다. month·week에 그대로 넘깁니다."
+              },
+              {
+                "name": "title(view, key, options?)",
+                "type": "(view, key, { locale?: string; weekStart?: 0–6 }) => string",
+                "summary": "달력이 날짜 칸 묶음을 읽는 이름과 같은 제목입니다. 예: 2026년 11월, 한 주는 2026년 11월 29일 – 12월 5일. locale을 주면 Intl로 씁니다(KjunProvider와 같은 값)."
               }
             ]
           },
@@ -41354,7 +41388,7 @@
             "required": false,
             "default": "—",
             "description": "The month shown, \"YYYY-MM\" (controlled; this month when missing or malformed).",
-            "summary": "보여 줄 달(YYYY-MM)입니다. 제어 값이며 없거나 형식이 틀리면 이번 달입니다. 제목과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 앱이 제목 줄을 만들고 버튼으로 이 값을 바꿉니다.",
+            "summary": "보여 줄 달(YYYY-MM)입니다. 제어 값이며 없거나 형식이 틀리면 이번 달입니다. 제목과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 앱이 제목 줄을 만들고 버튼으로 이 값을 바꿉니다. 제목과 다음·이전 값은 함께 내보내는 kjunCalendarPeriod로 구할 수 있습니다.",
             "source": "packages/react/src/event-calendar.tsx"
           },
           {
@@ -41589,6 +41623,24 @@
             "source": "packages/react/src/event-calendar.tsx"
           },
           {
+            "name": "today",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The app's today, \"YYYY-MM-DD\" (server time, another time zone); the device's today when missing or malformed.",
+            "summary": "앱이 정한 오늘(YYYY-MM-DD)입니다. 서버 시각이나 다른 시간대를 쓸 때 넘깁니다. 오늘 알약, 지난 날 흐림, month·week가 없을 때의 기본 달(주), 키보드 시작 칸이 이 날을 따릅니다. 없거나 형식이 틀리면 기기의 오늘입니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "The app is still fetching the period's events: day numbers step back to the past fade and the grid is busy. Days stay pressable.",
+            "summary": "앱이 그 달(주)의 일정을 아직 받는 중임을 알립니다. 오늘·지난 날·다른 달을 뺀 날의 숫자를 지난 날과 같은 투명도 0.45(빨강·파랑 0.7)로 흐리고 날짜 칸 묶음을 aria-busy로 알립니다. 새 요소는 그리지 않고, 넘긴 표시는 그대로 그리며, 날짜는 계속 누를 수 있습니다. 일정을 받으면 false로 돌립니다.",
+            "source": "packages/react/src/event-calendar.tsx"
+          },
+          {
             "name": "swipeable",
             "type": "boolean",
             "required": false,
@@ -41628,7 +41680,7 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "완전 제어형입니다. 앱이 month(YYYY-MM)나 week(그 주의 아무 날)와 value(고른 날, 없으면 null)를 넘기고, 달·주를 바꾸려는 요청은 onMonthChange·onWeekChange로 받아 값을 바꿉니다. 이 콜백을 주지 않으면 화면은 바뀌지 않습니다. 제목(예: 2026년 11월)과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 화면이 제목 줄을 만들고 버튼으로 month를 바꿉니다. 날짜를 누르면 onSelect(iso)를 알리며 고르기를 풀지는 앱이 정합니다. 한 달 보기에서 다른 달 날짜를 누르면 onSelect 다음에 그 달로 onMonthChange를 부릅니다. marks(iso)는 날짜마다 spans·icon·dots·count를 돌려주고 표시 색은 앱이 정합니다. 여러 날 막대는 날마다 spans의 첫 항목만 그리므로, 일정이 겹치는 날에도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다. isHoliday(iso)는 true나 휴일 이름을 돌려주며 숫자를 danger 색으로 그리고 이름은 읽기 이름에 넣습니다. onDayLongPress를 주면 길게 누르기가 켜지고, 주지 않으면 관련 동작이 모두 꺼집니다.",
+          "완전 제어형입니다. 앱이 month(YYYY-MM)나 week(그 주의 아무 날)와 value(고른 날, 없으면 null)를 넘기고, 달·주를 바꾸려는 요청은 onMonthChange·onWeekChange로 받아 값을 바꿉니다. 이 콜백을 주지 않으면 화면은 바뀌지 않습니다. 제목(예: 2026년 11월)과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 화면이 제목 줄을 만들고 버튼으로 month를 바꿉니다. 제목과 다음·이전 값은 함께 내보내는 kjunCalendarPeriod.title·step으로 구합니다. 일정을 받는 동안 loading을 켜면 앞으로 올 날의 숫자가 흐려지고, today로 서버 시각 등 앱이 정한 오늘을 넘길 수 있습니다. 날짜를 누르면 onSelect(iso)를 알리며 고르기를 풀지는 앱이 정합니다. 한 달 보기에서 다른 달 날짜를 누르면 onSelect 다음에 그 달로 onMonthChange를 부릅니다. marks(iso)는 날짜마다 spans·icon·dots·count를 돌려주고 표시 색은 앱이 정합니다. 여러 날 막대는 날마다 spans의 첫 항목만 그리므로, 일정이 겹치는 날에도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다. isHoliday(iso)는 true나 휴일 이름을 돌려주며 숫자를 danger 색으로 그리고 이름은 읽기 이름에 넣습니다. onDayLongPress를 주면 길게 누르기가 켜지고, 주지 않으면 관련 동작이 모두 꺼집니다.",
           "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. Native 웹 미리보기도 웹과 같은 키보드 이동과 Shift+Enter를 받고 마우스 끌기는 무시합니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다."
         ],
         "types": [
@@ -41655,6 +41707,22 @@
                 "name": "count",
                 "type": "number | undefined",
                 "summary": "일정 수입니다. 화면에는 그리지 않고 읽기 이름에만 씁니다."
+              }
+            ]
+          },
+          {
+            "name": "kjunCalendarPeriod",
+            "summary": "컴포넌트와 함께 내보내는 함수 묶음입니다. 달력은 제목 줄과 이전·다음 버튼을 그리지 않으므로 앱이 이것으로 제목과 다음 값을 구합니다. key는 달(YYYY-MM)이나 그 주의 아무 날(YYYY-MM-DD)입니다.",
+            "fields": [
+              {
+                "name": "step(view, key, delta, weekStart?)",
+                "type": "(view: \"month\" | \"week\", key: string, delta: number, weekStart?: 0–6) => string",
+                "summary": "delta만큼 떨어진 달(YYYY-MM)이나 그 주의 첫날(YYYY-MM-DD)을 돌려줍니다. month·week에 그대로 넘깁니다."
+              },
+              {
+                "name": "title(view, key, options?)",
+                "type": "(view, key, { locale?: string; weekStart?: 0–6 }) => string",
+                "summary": "달력이 날짜 칸 묶음을 읽는 이름과 같은 제목입니다. 예: 2026년 11월, 한 주는 2026년 11월 29일 – 12월 5일. locale을 주면 Intl로 씁니다(KjunProvider와 같은 값)."
               }
             ]
           },
@@ -41698,7 +41766,7 @@
             "required": false,
             "default": "—",
             "description": "The month shown, \"YYYY-MM\" (controlled; this month when missing or malformed).",
-            "summary": "보여 줄 달(YYYY-MM)입니다. 제어 값이며 없거나 형식이 틀리면 이번 달입니다. 제목과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 앱이 제목 줄을 만들고 버튼으로 이 값을 바꿉니다.",
+            "summary": "보여 줄 달(YYYY-MM)입니다. 제어 값이며 없거나 형식이 틀리면 이번 달입니다. 제목과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 앱이 제목 줄을 만들고 버튼으로 이 값을 바꿉니다. 제목과 다음·이전 값은 함께 내보내는 kjunCalendarPeriod로 구할 수 있습니다.",
             "source": "packages/native/src/event-calendar.tsx"
           },
           {
@@ -41933,6 +42001,24 @@
             "source": "packages/native/src/event-calendar.tsx"
           },
           {
+            "name": "today",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The app's today, \"YYYY-MM-DD\" (server time, another time zone); the device's today when missing or malformed.",
+            "summary": "앱이 정한 오늘(YYYY-MM-DD)입니다. 서버 시각이나 다른 시간대를 쓸 때 넘깁니다. 오늘 알약, 지난 날 흐림, month·week가 없을 때의 기본 달(주), 키보드 시작 칸이 이 날을 따릅니다. 없거나 형식이 틀리면 기기의 오늘입니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "The app is still fetching the period's events: day numbers step back to the past fade and the grid is busy. Days stay pressable.",
+            "summary": "앱이 그 달(주)의 일정을 아직 받는 중임을 알립니다. 오늘·지난 날·다른 달을 뺀 날의 숫자를 지난 날과 같은 투명도 0.45(빨강·파랑 0.7)로 흐리고 날짜 칸 묶음을 aria-busy로 알립니다. 새 요소는 그리지 않고, 넘긴 표시는 그대로 그리며, 날짜는 계속 누를 수 있습니다. 일정을 받으면 false로 돌립니다.",
+            "source": "packages/native/src/event-calendar.tsx"
+          },
+          {
             "name": "swipeable",
             "type": "boolean",
             "required": false,
@@ -41954,7 +42040,7 @@
         "events": [],
         "slots": [],
         "ownership": [
-          "완전 제어형입니다. 앱이 month(YYYY-MM)나 week(그 주의 아무 날)와 value(고른 날, 없으면 null)를 넘기고, 달·주를 바꾸려는 요청은 onMonthChange·onWeekChange로 받아 값을 바꿉니다. 이 콜백을 주지 않으면 화면은 바뀌지 않습니다. 제목(예: 2026년 11월)과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 화면이 제목 줄을 만들고 버튼으로 month를 바꿉니다. 날짜를 누르면 onSelect(iso)를 알리며 고르기를 풀지는 앱이 정합니다. 한 달 보기에서 다른 달 날짜를 누르면 onSelect 다음에 그 달로 onMonthChange를 부릅니다. marks(iso)는 날짜마다 spans·icon·dots·count를 돌려주고 표시 색은 앱이 정합니다. 여러 날 막대는 날마다 spans의 첫 항목만 그리므로, 일정이 겹치는 날에도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다. isHoliday(iso)는 true나 휴일 이름을 돌려주며 숫자를 danger 색으로 그리고 이름은 읽기 이름에 넣습니다. onDayLongPress를 주면 길게 누르기가 켜지고, 주지 않으면 관련 동작이 모두 꺼집니다.",
+          "완전 제어형입니다. 앱이 month(YYYY-MM)나 week(그 주의 아무 날)와 value(고른 날, 없으면 null)를 넘기고, 달·주를 바꾸려는 요청은 onMonthChange·onWeekChange로 받아 값을 바꿉니다. 이 콜백을 주지 않으면 화면은 바뀌지 않습니다. 제목(예: 2026년 11월)과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 화면이 제목 줄을 만들고 버튼으로 month를 바꿉니다. 제목과 다음·이전 값은 함께 내보내는 kjunCalendarPeriod.title·step으로 구합니다. 일정을 받는 동안 loading을 켜면 앞으로 올 날의 숫자가 흐려지고, today로 서버 시각 등 앱이 정한 오늘을 넘길 수 있습니다. 날짜를 누르면 onSelect(iso)를 알리며 고르기를 풀지는 앱이 정합니다. 한 달 보기에서 다른 달 날짜를 누르면 onSelect 다음에 그 달로 onMonthChange를 부릅니다. marks(iso)는 날짜마다 spans·icon·dots·count를 돌려주고 표시 색은 앱이 정합니다. 여러 날 막대는 날마다 spans의 첫 항목만 그리므로, 일정이 겹치는 날에도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다. isHoliday(iso)는 true나 휴일 이름을 돌려주며 숫자를 danger 색으로 그리고 이름은 읽기 이름에 넣습니다. onDayLongPress를 주면 길게 누르기가 켜지고, 주지 않으면 관련 동작이 모두 꺼집니다.",
           "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. Native 웹 미리보기도 웹과 같은 키보드 이동과 Shift+Enter를 받고 마우스 끌기는 무시합니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다."
         ],
         "types": [
@@ -41981,6 +42067,22 @@
                 "name": "count",
                 "type": "number | undefined",
                 "summary": "일정 수입니다. 화면에는 그리지 않고 읽기 이름에만 씁니다."
+              }
+            ]
+          },
+          {
+            "name": "kjunCalendarPeriod",
+            "summary": "컴포넌트와 함께 내보내는 함수 묶음입니다. 달력은 제목 줄과 이전·다음 버튼을 그리지 않으므로 앱이 이것으로 제목과 다음 값을 구합니다. key는 달(YYYY-MM)이나 그 주의 아무 날(YYYY-MM-DD)입니다.",
+            "fields": [
+              {
+                "name": "step(view, key, delta, weekStart?)",
+                "type": "(view: \"month\" | \"week\", key: string, delta: number, weekStart?: 0–6) => string",
+                "summary": "delta만큼 떨어진 달(YYYY-MM)이나 그 주의 첫날(YYYY-MM-DD)을 돌려줍니다. month·week에 그대로 넘깁니다."
+              },
+              {
+                "name": "title(view, key, options?)",
+                "type": "(view, key, { locale?: string; weekStart?: 0–6 }) => string",
+                "summary": "달력이 날짜 칸 묶음을 읽는 이름과 같은 제목입니다. 예: 2026년 11월, 한 주는 2026년 11월 29일 – 12월 5일. locale을 주면 Intl로 씁니다(KjunProvider와 같은 값)."
               }
             ]
           },
