@@ -35,9 +35,9 @@
     "native": ["columns", "cellLoading", "showActions", "togglingInterest", "togglingFavorite", "sortKey", "sortOrder", "priceFormatter", "currency", "embedded", "stickyIdentity", "divider", "activeKey", "fadeColor", "formatMetric", "renderCell", "renderStatus", "onSort", "onToggleInterest", "onToggleFavorite", "rows", "rowKey", "interestKeys", "favoriteKeys", "pagination", "primaryLabel", "subMeta", "emptyMessage", "emptySubMessage", "skeleton", "loadingText", "loadingDelay", "showFooter", "calculatedAt", "footerNote", "totalCount", "unitLabel", "formatDate", "renderIdentity", "renderNamePrefix", "renderNameSuffix", "renderSubMeta", "onPageChange", "onRowClick", "onRetry", "queryKey", "resultKey", "loading", "error", "hasLoadedOnce"]
   },
   "KjunMarketTableSkeleton": {
-    "vue3": ["columns", "rows", "showActions", "alignClass", "widthClass"],
-    "react": ["columns", "rows", "showActions", "alignClass", "widthClass"],
-    "native": ["columns", "rows", "showActions"]
+    "vue3": ["columns", "rows", "showActions", "alignClass", "widthClass", "loadingText"],
+    "react": ["columns", "rows", "showActions", "alignClass", "widthClass", "loadingText", "className", "style", "id"],
+    "native": ["columns", "rows", "showActions", "loadingText", "style"]
   },
   "KjunPriceCell": {
     "vue3": ["value", "formatter", "stale", "flash", "flashClass", "fromPrevious"],

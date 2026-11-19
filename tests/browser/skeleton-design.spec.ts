@@ -43,5 +43,31 @@ for (const platform of ['react', 'vue3', 'native']) {
       const r = n.getBoundingClientRect(); return Math.abs(r.width - w) < 0.6 && r.height > 0 && r.height < 20;
     }), tokens.extensions.tableCard.titleSkeletonWidth);
     expect(titleBar).toBe(true);
+    // A paragraph takes its role's line boxes: three caption lines.
+    expect((await box(page.getByTestId('text-caption'))).height).toBeCloseTo(3 * type.caption.lineHeightPx, 0);
+    // Counts from data are bounded: Infinity draws no rows instead of throwing, 1e9 columns stop at 100.
+    expect((await box(page.getByTestId('table-unbounded'))).height).toBeGreaterThan(0);
+    // Form action bars: end-aligned, the size's button height, the primary last.
+    const sk = tokens.extensions.skeleton, form = await box(page.getByTestId('form-actions'));
+    const bars = await page.getByTestId('form-actions').evaluate((el, h) => [...el.querySelectorAll('*')].map(n => n.getBoundingClientRect())
+      .filter(r => Math.abs(r.height - h) < 0.6 && r.width < 120).map(r => ({ left: r.left, right: r.right, width: r.width }))
+      .filter((r, i, all) => all.findIndex(o => Math.abs(o.left - r.left) < 0.6 && Math.abs(o.width - r.width) < 0.6) === i), tokens.button.heights.md);
+    expect(bars.map(b => Math.round(b.width))).toEqual([sk.actionWidth, sk.primaryActionWidth]);
+    expect(bars[1].right).toBeCloseTo(form.x + form.width, 0);
+    expect(bars[1].left - bars[0].right).toBeCloseTo(tokens.modal.actionsGap, 0);
+    // The market table skeleton announces its loading text and keeps the table silent.
+    const marketStatus = page.getByTestId('market-status').getByRole('status');
+    await expect(marketStatus).toHaveCount(1);
+    if (platform === 'native') await expect(marketStatus).toHaveAttribute('aria-label', '표를 불러오는 중');
+    else await expect(marketStatus).toContainText('표를 불러오는 중');
+    // A stat in a wide box stops its bars at a KPI's usual size: label, value, description.
+    const statBars = await page.getByTestId('stat').evaluate(el => [...el.querySelectorAll('*')].map(n => n.getBoundingClientRect())
+      .filter(r => r.height > 0 && r.height < 30 && r.width > 20 && r.width < 300).map(r => Math.round(r.width)));
+    expect(Math.max(...statBars)).toBe(sk.statValueMaxWidth);
+    for (const w of [sk.statLabelMaxWidth, sk.statDescriptionMaxWidth]) expect(statBars).toContain(w);
+    // A root style reaches the outer element.
+    const styled = await box(page.getByTestId('styled')), styledBar = await page.getByTestId('styled').evaluate(el => el.firstElementChild!.getBoundingClientRect().top - el.getBoundingClientRect().top);
+    expect(styledBar).toBeCloseTo(12, 0);
+    expect(styled.height).toBeCloseTo(32, 0);
   });
 }

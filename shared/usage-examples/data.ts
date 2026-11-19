@@ -16,9 +16,15 @@ export function generate(input: UsageInput) {
       content = b.group(['default', 'primary', 'success', 'warning', 'danger', 'price-up', 'price-down'].map(variant => b.node(name, { variant, dot: true }, b.text(variant)))); break;
     case 'KjunSpinner': content = b.node(name, { size: 'md', text: '조회 중' }); break;
     case 'KjunEmpty': content = b.node(name, { text: '항목이 없습니다', description: '조건을 바꾸거나 새 항목을 추가하세요.', icon: 'search' }, b.button('추가', notify('add', '', '"추가 요청"'))); break;
-    case 'KjunSkeleton': content = b.node(name, { type: 'card', animated: s.animated, rows: 3 }); break;
-    case 'KjunListSkeleton': content = b.node(name, { rows: 3, variant: 'market', avatar: true }); break;
-    case 'KjunFormSkeleton': content = b.node(name, { fields: ['', '', ''], columns: 1, size: s.size || 'md', multiline: s.multiline }); break;
+    case 'KjunSkeleton': {
+      const type = s.type || 'card', role = ['text', 'line'].includes(String(type)) && s.role && s.role !== 'auto' ? s.role : undefined;
+      content = b.node(name, { type, role, animated: s.animated, rows: 3 }); break;
+    }
+    case 'KjunListSkeleton': {
+      const variant = s.variant || 'row';
+      content = b.node(name, { rows: 3, variant, avatar: s.avatar !== false, trailing: variant === 'row' ? s.trailing || 'value' : undefined }); break;
+    }
+    case 'KjunFormSkeleton': content = b.node(name, { fields: ['', '', ''], columns: 1, size: s.size || 'md', multiline: s.multiline, actions: Number(s.actions ?? 2) }); break;
     case 'KjunChartSkeleton': content = b.node(name, { kind:s.kind, skeleton:s.skeleton, loadingText:s.loadingText, height:180 }); break;
     case 'KjunMarketTableSkeleton':
       content = b.node(name, { columns: b.data('columns', columns), rows: 3, showActions: true }); break;

@@ -37,3 +37,8 @@ export function skeletonFill(pulse: Animated.Value | undefined, colors: { skelet
     ? pulse.interpolate({ inputRange: [0.6, 1], outputRange: [colors.skeletonShine, colors.skeleton] })
     : (colors.skeleton as string);
 }
+
+/** A skeleton is hidden from assistive technology unless it carries loading text, which it then announces politely. */
+export const skeletonStatus = (loadingText?: string) => loadingText
+  ? { role: "status" as const, accessible: true, accessibilityLabel: loadingText, accessibilityLiveRegion: "polite" as const }
+  : { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants" as const };

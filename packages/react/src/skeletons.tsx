@@ -4,7 +4,7 @@ import { useContext, type CSSProperties } from "react";
 import { ListShapeContext } from "./list-context";
 import { KjunSkeleton, KjunSpinner } from "./display";
 import { useSkeletonPhase } from "./skeleton-phase";
-import { skeletonCount, skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
+import { skeletonActionWidths, skeletonCount, skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import {
   chartFrameDefaults,
@@ -31,6 +31,9 @@ export interface KjunListSkeletonProps {
   trailing?: "value" | "switch" | "chevron";
   /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
   loadingText?: string;
+  className?: string;
+  style?: CSSProperties;
+  id?: string;
 }
 export function KjunListSkeleton({
   rows = 8,
@@ -41,6 +44,9 @@ export function KjunListSkeleton({
   description = true,
   trailing = "value",
   loadingText,
+  className,
+  style,
+  id,
 }: KjunListSkeletonProps) {
   const sk = tokens.extensions.skeleton;
   // The row silhouette takes ListRow's default leading square (sm, 32px, in the 40px column); other variants keep the market avatar.
@@ -51,7 +57,7 @@ export function KjunListSkeleton({
   const count = skeletonCount(rows);
   const shape = useContext(ListShapeContext), open = shape.open && variant === "row", leadingSize = tokens.extensions.list.open.leadingSize;
   return (
-    <div aria-hidden={loadingText ? undefined : true} role={loadingText ? "status" : undefined}>
+    <div id={id} className={className} style={style} aria-hidden={loadingText ? undefined : true} role={loadingText ? "status" : undefined}>
       {loadingText && <span className="kjun-sr-only">{loadingText}</span>}
       {variant === "row"
         ? Array.from({ length: count }, (_, i) => (
@@ -94,23 +100,41 @@ export interface KjunFormSkeletonProps {
   columns?: number;
   multiline?: boolean;
   size?: InputSize;
+  /**
+   * Bars for a FormActions row under the fields, end-aligned at the size's button height; the last is the primary
+   * button. Give the real FormActions the same size so nothing moves when the form arrives. Default 0.
+   */
+  actions?: number;
   /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
   loadingText?: string;
+  className?: string;
+  style?: CSSProperties;
+  id?: string;
 }
 export function KjunFormSkeleton({
   fields = ["", "", "", ""],
   columns = 1,
   multiline = false,
   size = "md",
+  actions = 0,
   loadingText,
+  className,
+  style,
+  id,
 }: KjunFormSkeletonProps) {
+  const sk = tokens.extensions.skeleton, actionWidths = skeletonActionWidths(actions, sk.actionWidth, sk.primaryActionWidth);
   return (
     <div
+      id={id}
       aria-hidden={loadingText ? undefined : true}
       role={loadingText ? "status" : undefined}
-      className="kjun-form-skeleton"
+      className={"kjun-form-skeleton" + (className ? " " + className : "")}
       data-columns={columns}
-      style={{ "--_kjun-form-skeleton-radius": `${tokens.input[size].radius}px` } as CSSProperties}
+      style={{
+        "--_kjun-form-skeleton-radius": `${tokens.input[size].radius}px`,
+        "--_kjun-form-skeleton-action-radius": `${tokens.button.radii[size]}px`,
+        ...style,
+      } as CSSProperties}
     >
       {loadingText && <span className="kjun-sr-only">{loadingText}</span>}
       {fields.map((field, i) => (
@@ -135,6 +159,11 @@ export function KjunFormSkeleton({
           />
         </div>
       ))}
+      {actionWidths.length > 0 && (
+        <div className="kjun-form-skeleton-actions">
+          {actionWidths.map((w, i) => <KjunSkeleton key={i} type="block" width={w} height={tokens.button.heights[size]} />)}
+        </div>
+      )}
     </div>
   );
 }
@@ -152,6 +181,10 @@ export interface KjunChartSkeletonProps {
   xTicks?: number;
   /** Frame: y-axis label width in px (default 40); label bars fill it, less the label gap. */
   axisWidth?: number;
+  className?: string;
+  /** Merged over the root's height and reveal styles. */
+  style?: CSSProperties;
+  id?: string;
 }
 export function KjunChartSkeleton({
   kind: requestedKind = "frame",
@@ -164,6 +197,9 @@ export function KjunChartSkeleton({
   gridLines = chartFrameDefaults.gridLines,
   xTicks = chartFrameDefaults.xTicks,
   axisWidth = tokens.extensions.chartSkeleton.axisWidth,
+  className,
+  style,
+  id,
 }: KjunChartSkeletonProps) {
   const m = useKjunMessages();
   loadingText ??= m.chartLoading;
@@ -176,11 +212,12 @@ export function KjunChartSkeleton({
   return (
     <div
       ref={phase}
-      className="kjun-chart-skeleton"
+      id={id}
+      className={"kjun-chart-skeleton" + (className ? " " + className : "")}
       data-kjun-chart-kind={kind}
       data-skeleton={skeleton ? undefined : "false"}
       aria-hidden={revealed ? undefined : true}
-      style={{ height, visibility: revealed ? undefined : "hidden" }}
+      style={{ height, ...style, visibility: revealed ? undefined : "hidden" }}
     >
       {!skeleton ? (
         <div className="kjun-data-loading" data-kjun-chart-part="loading" role={status}>

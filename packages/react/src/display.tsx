@@ -1,7 +1,7 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
-import { skeletonLineBox, skeletonTableWidth, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
+import { skeletonLineBox, skeletonRange, skeletonTableWidth, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
 import { alertIcons, alertToneRoles } from "../../../shared/package-runtime/alert-tone";
 import { emptyGeometry, type EmptySize } from "../../../shared/package-runtime/empty-geometry";
@@ -326,16 +326,25 @@ export function KjunProgress({
 export interface KjunSkeletonProps {
   /** "line" is one line of text: a bar in the line box of `role`, or of the surrounding text when no role is given. */
   type?: "text" | "line" | "avatar" | "card" | "table" | "stat" | "block";
-  /** Typography role for type="line"; omit it to take the surrounding text's line height. */
+  /**
+   * Typography role of the text a "line" or "text" skeleton stands in for. Omitted, a line takes the surrounding
+   * text's line height and a paragraph the body role.
+   */
   role?: TypographyRole;
   /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
   loadingText?: string;
+  /** Lines of a "text" or "card" skeleton, body rows of a "table" one; floored, 0–100. */
   rows?: number;
+  /** Columns of a "table" skeleton; floored, 0–100. */
   columns?: number;
   height?: CSSProperties["height"];
   width?: CSSProperties["width"];
   animated?: boolean;
   rounded?: boolean;
+  className?: string;
+  /** Merged over the root's own width. */
+  style?: CSSProperties;
+  id?: string;
 }
 export function KjunSkeleton({
   type = "text",
@@ -347,6 +356,9 @@ export function KjunSkeleton({
   rounded = true,
   role,
   loadingText,
+  className,
+  style,
+  id,
 }: KjunSkeletonProps) {
   const root = useSkeletonPhase(animated);
   const line = (w: CSSProperties["width"], key?: number) => (
@@ -370,19 +382,18 @@ export function KjunSkeleton({
       }}
     />
   );
-  const count = (n: number) =>
-    Array.from({ length: Math.max(0, Math.floor(n)) }, (_, i) => i + 1);
   return (
     <div
       ref={root}
+      id={id}
       aria-hidden={loadingText ? undefined : true}
       role={loadingText ? "status" : undefined}
-      className={"kjun-skeleton" + (animated ? " kjun-skeleton-animated" : "")}
+      className={"kjun-skeleton" + (animated ? " kjun-skeleton-animated" : "") + (className ? " " + className : "")}
       data-type={type}
-      style={{ width }}
+      style={{ width, ...style }}
     >
       {loadingText && <span className="kjun-sr-only">{loadingText}</span>}
-      {type === "text" && skeletonTextWidths(rows).map((w, i) => slot(w, undefined, i))}
+      {type === "text" && skeletonTextWidths(rows).map((w, i) => slot(w, role, i))}
       {type === "line" && slot("100%", role ?? "inherit")}
       {type === "avatar" && avatar()}
       {type === "card" && (
@@ -396,7 +407,7 @@ export function KjunSkeleton({
       )}
       {type === "table" && (
         <div className="kjun-skeleton-table">
-          {[0, ...count(rows)].map((row) => (
+          {[0, ...skeletonRange(rows)].map((row) => (
             <div
               key={row}
               className={
@@ -405,7 +416,7 @@ export function KjunSkeleton({
                   : "kjun-skeleton-table-row"
               }
             >
-              {count(columns).map((col) => (
+              {skeletonRange(columns).map((col) => (
                 <div key={col} className="kjun-skeleton-table-cell" data-align={col > 1 ? "end" : undefined}>
                   {slot(skeletonTableWidth(row, col - 1), row === 0 ? "caption" : "body")}
                 </div>

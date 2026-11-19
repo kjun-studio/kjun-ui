@@ -7,7 +7,7 @@ import { isMarketIdentity, normalizeMarketColumns, webMarketActionsWidth, webMar
 import { getValue } from "../../../shared/package-runtime/table-model";
 import { KjunCard } from "./card";
 import { useQueryDisplay } from "./data-state";
-import { skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
+import { skeletonCount, skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
 import { KjunSkeleton } from "./display";
 import { KjunCollectionMark } from "./financial-display";
 import { queryProps, type MarketPagination } from "./market-model";
@@ -105,6 +105,8 @@ const kjunMarketTableSkeletonProps = {
   showActions: { type: Boolean, default: false },
   alignClass: { type: Function as PropType<(align: unknown) => string>, default: undefined },
   widthClass: { type: Function as PropType<(column: unknown) => string>, default: undefined },
+  /** Announces loading to screen readers (a status); the table itself stays silent. */
+  loadingText: { type: String, default: undefined },
 } as const;
 export type KjunMarketTableSkeletonProps = ExtractPublicPropTypes<typeof kjunMarketTableSkeletonProps>;
 export const KjunMarketTableSkeleton = defineComponent({
@@ -112,22 +114,27 @@ export const KjunMarketTableSkeleton = defineComponent({
   props: kjunMarketTableSkeletonProps,
   setup(props) {
     return () => {
-      const cols = normalizeMarketColumns(props.columns), geometry = tokens.extensions.marketTable;
+      const cols = normalizeMarketColumns(props.columns), toggle = tokens.extensions.iconToggle.sizes.xs;
       // Like React: values differ a little from cell to cell, so a column does not read as stripes.
       const valueSkeleton = (index = 0) => (
         <span class="kjun-market-skeleton-value"><KjunSkeleton type="line" width={tokens.extensions.financial.priceSkeletonWidth * skeletonWidthScale(index)} /></span>
       );
       return (
-        <div aria-hidden="true" class="kjun-table-scroll">
-          <table class="kjun-market-table-grid" style={webMarketLayout(cols, props.showActions, props.widthClass).tableStyle}>
+        <div aria-hidden={props.loadingText ? undefined : "true"} role={props.loadingText ? "status" : undefined} class="kjun-table-scroll">
+          {props.loadingText && <span class="kjun-sr-only">{props.loadingText}</span>}
+          <table aria-hidden="true" class="kjun-market-table-grid" style={webMarketLayout(cols, props.showActions, props.widthClass).tableStyle}>
             {marketColumns(cols, props.showActions, props.widthClass)}
             <thead><tr>
-              {props.showActions && <th class="kjun-market-actions"><span class="kjun-market-skeleton-value"><KjunSkeleton type="block" width={geometry.actionSkeletonWidth} height={geometry.headerSkeletonHeight} /></span></th>}
+              {/* Like React: the header marks show as they will; the row toggles load as their squares. */}
+              {props.showActions && <th class="kjun-market-actions">
+                <span class="kjun-market-actions-mark"><KjunCollectionMark kind="interest" size="md" /></span>
+                <span class="kjun-market-actions-mark"><KjunCollectionMark kind="favorite" size="md" /></span>
+              </th>}
               {cols.map((col, i) => <th key={col.key || i} class={props.alignClass?.(col.align)} style={{ textAlign: col.align }}>{col.label}</th>)}
             </tr></thead>
-            <tbody>{Array.from({ length: Math.max(0, props.rows) }, (_, row) => (
+            <tbody>{Array.from({ length: skeletonCount(props.rows) }, (_, row) => (
               <tr key={row}>
-                {props.showActions && <td class="kjun-market-actions"><span class="kjun-market-skeleton-value"><KjunSkeleton type="block" width={geometry.actionSkeletonWidth} height={tokens.extensions.financial.priceSkeletonHeight} /></span></td>}
+                {props.showActions && <td class="kjun-market-actions">{[0, 1].map(i => <span key={i} class="kjun-market-actions-mark"><KjunSkeleton type="block" width={toggle} height={toggle} /></span>)}</td>}
                 {cols.map((col, i) => (
                   <td key={col.key || i} class={props.alignClass?.(col.align)} style={{ textAlign: col.align }}>
                     {isMarketIdentity(col.key) ? (

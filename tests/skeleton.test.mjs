@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { skeletonCount, skeletonLineBox, skeletonPhase, skeletonRowWidths, skeletonTableWidth, skeletonTextWidths, skeletonWidthScale } from '../shared/package-runtime/skeleton-text.ts';
+import { skeletonActionWidths, skeletonCount, skeletonLineBox, skeletonPhase, skeletonRange, skeletonRowWidths, skeletonTableWidth, skeletonTextWidths, skeletonWidthScale } from '../shared/package-runtime/skeleton-text.ts';
 import { tokens } from '../packages/tokens/dist/index.js';
 
 const read = (path) => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
@@ -99,4 +99,35 @@ test('Native skeletons share one animation and scale their line boxes with the f
 test('table loading states never nest a card skeleton inside a table card', () => {
   for (const path of ['packages/react/src/table-cards.tsx', 'packages/vue3/src/table-narrow.tsx', 'packages/native/src/table-cards.tsx'])
     assert.doesNotMatch(read(path), /type="card"/, path);
+});
+
+test('paragraphs, tables and action rows bound counts that may come from data', () => {
+  assert.equal(skeletonTextWidths(1e6).length, 100);
+  assert.deepEqual(skeletonTextWidths(Infinity), []);
+  assert.deepEqual(skeletonRange(2.9), [1, 2]);
+  assert.deepEqual(skeletonRange(-1), []);
+  assert.equal(skeletonRange(1e9).length, 100);
+  assert.deepEqual(skeletonRange(Infinity), []);
+  // Every platform draws table rows and columns and market table rows through the bounded helpers.
+  for (const path of ['packages/react/src/display.tsx', 'packages/vue3/src/display.tsx', 'packages/native/src/skeleton-base.tsx'])
+    assert.match(read(path), /skeletonRange\(rows\)[\s\S]*skeletonRange\(columns\)/, path);
+  for (const path of ['packages/react/src/market-skeleton.tsx', 'packages/vue3/src/market-parts.tsx', 'packages/native/src/market-skeleton.tsx'])
+    assert.match(read(path), /length: skeletonCount\((props\.)?rows\)/, path);
+});
+
+test('form action bars end on the primary button', () => {
+  const sk = tokens.extensions.skeleton;
+  assert.deepEqual(skeletonActionWidths(0, sk.actionWidth, sk.primaryActionWidth), []);
+  assert.deepEqual(skeletonActionWidths(1, 72, 96), [96]);
+  assert.deepEqual(skeletonActionWidths(3, 72, 96), [72, 72, 96]);
+  assert.equal(sk.actionWidth, 72);
+  assert.equal(sk.primaryActionWidth, 96);
+  for (const path of ['packages/react/src/skeletons.tsx', 'packages/vue3/src/skeletons.tsx', 'packages/native/src/skeletons.tsx'])
+    assert.match(read(path), /skeletonActionWidths\([^)]*\.actionWidth, \w+\.primaryActionWidth\)/, path);
+});
+
+test('a paragraph skeleton takes the role it is given on every platform', () => {
+  assert.match(read('packages/react/src/display.tsx'), /skeletonTextWidths\(rows\)\.map\(\(w, i\) => slot\(w, role, i\)\)/);
+  assert.match(read('packages/vue3/src/display.tsx'), /skeletonTextWidths\(rows\)\.map\(\(w, i\) => slot\(w, props\.role, i\)\)/);
+  assert.match(read('packages/native/src/skeleton-base.tsx'), /type === "text" && paragraph\(role\)/);
 });

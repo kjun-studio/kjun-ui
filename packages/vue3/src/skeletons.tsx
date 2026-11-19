@@ -17,7 +17,7 @@ import {
   chartTickShift,
   type KjunChartSkeletonKind,
 } from "../../../shared/package-runtime/chart-skeleton";
-import { skeletonCount, skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
+import { skeletonActionWidths, skeletonCount, skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
 import { css } from "./runtime/style";
 
 type Length = number | string;
@@ -98,6 +98,8 @@ const kjunFormSkeletonProps = {
   columns: { type: Number, default: 1 },
   multiline: { type: Boolean, default: false },
   size: { type: String as PropType<InputSize>, default: "md" },
+  /** Like React: bars for a FormActions row under the fields at the size's button height; the last is the primary button. */
+  actions: { type: Number, default: 0 },
   /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
   loadingText: { type: String, default: undefined },
 } as const;
@@ -107,10 +109,10 @@ export const KjunFormSkeleton = defineComponent({
   props: kjunFormSkeletonProps,
   setup(props) {
     return () => {
-      const input = tokens.input[props.size];
+      const input = tokens.input[props.size], actionWidths = skeletonActionWidths(props.actions, sizes.actionWidth, sizes.primaryActionWidth);
       return (
         <div aria-hidden={props.loadingText ? undefined : "true"} role={props.loadingText ? "status" : undefined} class="kjun-form-skeleton" data-columns={props.columns}
-          style={{ "--_kjun-form-skeleton-radius": `${input.radius}px` }}>
+          style={{ "--_kjun-form-skeleton-radius": `${input.radius}px`, "--_kjun-form-skeleton-action-radius": `${tokens.button.radii[props.size]}px` }}>
           {props.loadingText && <span class="kjun-sr-only">{props.loadingText}</span>}
           {props.fields.map((field, i) => (
             <div key={i}>
@@ -126,6 +128,11 @@ export const KjunFormSkeleton = defineComponent({
                   : input.height} />
             </div>
           ))}
+          {actionWidths.length > 0 && (
+            <div class="kjun-form-skeleton-actions">
+              {actionWidths.map((w, i) => <KjunSkeleton key={i} type="block" width={w} height={tokens.button.heights[props.size]} />)}
+            </div>
+          )}
         </div>
       );
     };

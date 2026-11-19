@@ -75,8 +75,10 @@ assign("Empty", [choice("size", "크기", ["md", "sm"], "md")]);
 // Alert renders two sizes; "lg" stays accepted for compatibility but draws md, so the example offers sm and md.
 assign("Alert", [choice("tone", "종류", ["info", "success", "warning", "danger", "primary"]), choice("size", "크기", ["sm", "md"], "md"), field("title", "제목", "안내"), field("body", "본문", "작업 상태를 설명하는 문장입니다."), toggle("closable", "닫기 표시", true), toggle("action", "재시도 버튼"), choice("icon", "아이콘", ["기본", "wallet", "없음"], "기본")]);
 assign("Icon", [toggle("spin", "회전")]);
-assign("Skeleton", [toggle("animated", "애니메이션")]);
-assign("FormSkeleton", [size, toggle("multiline", "여러 줄 입력")]);
+// Skeleton: every type, and the type role of a line or a paragraph ("auto" leaves role out).
+assign("Skeleton", [choice("type", "형태", ["card", "text", "line", "table", "stat", "avatar", "block"]), { ...choice("role", "글자 역할", ["auto", "caption", "label", "cardTitle", "displaySm"]), when: { type: ["text", "line"] } }, toggle("animated", "애니메이션", true)]);
+assign("ListSkeleton", [choice("variant", "형태", ["row", "market", "compact", "notification"]), toggle("avatar", "아바타", true), { ...choice("trailing", "행 끝", ["value", "switch", "chevron"]), when: { variant: ["row"] } }]);
+assign("FormSkeleton", [size, toggle("multiline", "여러 줄 입력"), number("actions", "버튼 자리", 2, 3)]);
 assign("KpiHero KpiRow SignedValue", [loading]);
 controls.KjunKpiRow.push(toggle("mobileSummary", "모바일 요약", true));
 controls.KjunSignedValue.push(toggle("stale", "오래된 값"));

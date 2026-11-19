@@ -5,13 +5,22 @@ type Percent = `${number}%`;
 const bodyWidths: Percent[] = ["100%", "96%", "92%", "98%", "94%"];
 /** A paragraph that does not look like every other one, with a short last line. */
 export function skeletonTextWidths(rows: number): Percent[] {
-  const count = Math.max(0, Math.floor(Number.isFinite(rows) ? rows : 0));
+  const count = skeletonCount(rows);
   return Array.from({ length: count }, (_, i) => (count === 1 ? "60%" : i === count - 1 ? "55%" : bodyWidths[i % bodyWidths.length]));
 }
 
 /** Rows drawn for a count that may come from data: floored, never negative, and at most 100. */
 export function skeletonCount(value: number) {
   return Number.isFinite(value) ? Math.min(100, Math.max(0, Math.floor(value))) : 0;
+}
+/** 1…n for a count that may come from data (rows, columns, buttons), bounded like skeletonCount. */
+export function skeletonRange(value: number) {
+  return Array.from({ length: skeletonCount(value) }, (_, i) => i + 1);
+}
+
+/** Widths of the action bars that stand in for a FormActions row: the last is the primary button. */
+export function skeletonActionWidths(count: number, width: number, primaryWidth: number) {
+  return skeletonRange(count).map((n, _, all) => (n === all.length ? primaryWidth : width));
 }
 
 const cycle = <T,>(values: readonly T[], index: number) => values[((Math.floor(index) % values.length) + values.length) % values.length];

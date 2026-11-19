@@ -2,7 +2,7 @@ import { useKjunMessages } from "./runtime/messages";
 import { spinnerGlyph } from "./spinner-glyph";
 import { spinnerStacked } from "../../../shared/package-runtime/spinner-geometry";
 import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
-import { skeletonLineBox, skeletonTableWidth, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
+import { skeletonLineBox, skeletonRange, skeletonTableWidth, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
 import { ref, useId, type ExtractPublicPropTypes, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { alertRole, type AlertLive } from "../../../shared/package-runtime/alert-live";
@@ -300,7 +300,7 @@ type Length = number | string;
 const kjunSkeletonProps = {
   /** "line" is one line of text: a bar in the line box of `role`, or of the surrounding text when no role is given. */
   type: { type: String as PropType<"text" | "line" | "avatar" | "card" | "table" | "stat" | "block">, default: "text" },
-  /** Typography role for type="line"; omit it to take the surrounding text's line height. */
+  /** Like React: the role of a "line" or "text" skeleton; omitted, a line follows the surrounding text and a paragraph is body. */
   role: { type: String as PropType<TypographyRole>, default: undefined },
   /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
   loadingText: { type: String, default: undefined },
@@ -331,7 +331,6 @@ export const KjunSkeleton = defineComponent({
           borderRadius: props.rounded ? tokens.radius.radius9999 : tokens.extensions.skeleton.blockRadius,
         })} />
     );
-    const count = (n: number) => Array.from({ length: Math.max(0, Math.floor(n)) }, (_, i) => i + 1);
     return () => {
       const { type, rows, columns, height, width } = props;
       const sizes = tokens.extensions.skeleton;
@@ -339,7 +338,7 @@ export const KjunSkeleton = defineComponent({
         <div ref={root} aria-hidden={props.loadingText ? undefined : "true"} role={props.loadingText ? "status" : undefined}
           class={"kjun-skeleton" + (props.animated ? " kjun-skeleton-animated" : "")} data-type={type} style={css({ width })}>
           {props.loadingText && <span class="kjun-sr-only">{props.loadingText}</span>}
-          {type === "text" && skeletonTextWidths(rows).map((w, i) => slot(w, undefined, i))}
+          {type === "text" && skeletonTextWidths(rows).map((w, i) => slot(w, props.role, i))}
           {type === "line" && slot("100%", props.role ?? "inherit")}
           {type === "avatar" && avatar()}
           {type === "card" && (
@@ -350,9 +349,9 @@ export const KjunSkeleton = defineComponent({
           )}
           {type === "table" && (
             <div class="kjun-skeleton-table">
-              {[0, ...count(rows)].map(row => (
+              {[0, ...skeletonRange(rows)].map(row => (
                 <div key={row} class={row === 0 ? "kjun-skeleton-table-header" : "kjun-skeleton-table-row"}>
-                  {count(columns).map(col => (
+                  {skeletonRange(columns).map(col => (
                     <div key={col} class="kjun-skeleton-table-cell" data-align={col > 1 ? "end" : undefined}>
                       {slot(skeletonTableWidth(row, col - 1), row === 0 ? "caption" : "body")}
                     </div>

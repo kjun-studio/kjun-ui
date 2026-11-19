@@ -423,6 +423,33 @@
             "description": "Frame: y-axis label width in px (default 40); label bars fill it, less the label gap.",
             "summary": "프레임 스켈레톤의 세로축 라벨 폭(px)입니다. 라벨 막대는 이 폭에서 라벨 간격을 뺀 길이입니다.",
             "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 class입니다.",
+            "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Merged over the root's height and reveal styles.",
+            "summary": "바깥 요소의 style입니다. 컴포넌트가 정하는 크기(width·height) 위에 합칩니다.",
+            "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 id입니다.",
+            "source": "packages/react/src/skeletons.tsx"
           }
         ],
         "events": [],
@@ -520,6 +547,15 @@
             "default": "—",
             "description": "Frame: y-axis label width (default 40); label bars fill it, less the label gap.",
             "summary": "프레임 스켈레톤의 세로축 라벨 폭(px)입니다. 라벨 막대는 이 폭에서 라벨 간격을 뺀 길이입니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "Merged over the root's height and reveal styles.",
+            "summary": "바깥 View의 style입니다. 컴포넌트가 정하는 크기 위에 합칩니다.",
             "source": "packages/native/src/skeletons.tsx"
           }
         ],
@@ -1249,7 +1285,7 @@
             "required": false,
             "default": "1",
             "description": "",
-            "summary": "폼 스켈레톤을 배치할 열 수입니다.",
+            "summary": "1 또는 2입니다. 2는 넓은 화면에서 필드를 두 열로 놓고 좁은 화면에서는 한 열로 쌓습니다. 다른 값은 한 열입니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           },
           {
@@ -1268,6 +1304,15 @@
             "default": "md",
             "description": "",
             "summary": "대상 Input과 같은 크기입니다. sm 32px, md 40px, lg 48px이며 모서리도 공유합니다.",
+            "source": "packages/vue3/src/skeletons.tsx"
+          },
+          {
+            "name": "actions",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Like React: bars for a FormActions row under the fields at the size's button height; the last is the primary button.",
+            "summary": "필드 아래 FormActions 줄 자리에 그릴 버튼 막대 수입니다. 끝에 맞춰 8px 간격으로 놓고 마지막이 주 버튼(96px), 앞은 72px입니다. 높이와 모서리는 size의 Button(sm 32·md 40·lg 48)과 같으므로, 실제 FormActions에 같은 size를 주면 로딩 전후 자리가 맞습니다. 2열에서도 모든 열 아래 한 줄입니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           },
           {
@@ -1302,7 +1347,7 @@
             "required": false,
             "default": "1",
             "description": "",
-            "summary": "폼 스켈레톤을 배치할 열 수입니다.",
+            "summary": "1 또는 2입니다. 2는 넓은 화면에서 필드를 두 열로 놓고 좁은 화면에서는 한 열로 쌓습니다. 다른 값은 한 열입니다.",
             "source": "packages/react/src/skeletons.tsx"
           },
           {
@@ -1324,12 +1369,48 @@
             "source": "packages/react/src/skeletons.tsx"
           },
           {
+            "name": "actions",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Bars for a FormActions row under the fields, end-aligned at the size's button height; the last is the primary\nbutton. Give the real FormActions the same size so nothing moves when the form arrives. Default 0.",
+            "summary": "필드 아래 FormActions 줄 자리에 그릴 버튼 막대 수입니다. 끝에 맞춰 8px 간격으로 놓고 마지막이 주 버튼(96px), 앞은 72px입니다. 높이와 모서리는 size의 Button(sm 32·md 40·lg 48)과 같으므로, 실제 FormActions에 같은 size를 주면 로딩 전후 자리가 맞습니다. 2열에서도 모든 열 아래 한 줄입니다.",
+            "source": "packages/react/src/skeletons.tsx"
+          },
+          {
             "name": "loadingText",
             "type": "string | undefined",
             "required": false,
             "default": "—",
             "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
             "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
+            "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 class입니다.",
+            "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 style입니다. 컴포넌트가 정하는 크기(width·height) 위에 합칩니다.",
+            "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 id입니다.",
             "source": "packages/react/src/skeletons.tsx"
           }
         ],
@@ -1355,7 +1436,7 @@
             "required": false,
             "default": "1",
             "description": "",
-            "summary": "폼 스켈레톤을 배치할 열 수입니다.",
+            "summary": "1 또는 2입니다. 2는 넓은 화면에서 필드를 두 열로 놓고 좁은 화면에서는 한 열로 쌓습니다. 다른 값은 한 열입니다.",
             "source": "packages/native/src/skeletons.tsx"
           },
           {
@@ -1377,12 +1458,30 @@
             "source": "packages/native/src/skeletons.tsx"
           },
           {
+            "name": "actions",
+            "type": "number | undefined",
+            "required": false,
+            "default": "0",
+            "description": "Like Web: bars for a FormActions row under the fields at the size's button height; the last is the primary button.",
+            "summary": "필드 아래 FormActions 줄 자리에 그릴 버튼 막대 수입니다. 끝에 맞춰 8px 간격으로 놓고 마지막이 주 버튼(96px), 앞은 72px입니다. 높이와 모서리는 size의 Button(sm 32·md 40·lg 48)과 같으므로, 실제 FormActions에 같은 size를 주면 로딩 전후 자리가 맞습니다. 2열에서도 모든 열 아래 한 줄입니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
             "name": "loadingText",
             "type": "string | undefined",
             "required": false,
             "default": "—",
             "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
             "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 View의 style입니다. 컴포넌트가 정하는 크기 위에 합칩니다.",
             "source": "packages/native/src/skeletons.tsx"
           }
         ],
@@ -2477,7 +2576,7 @@
             "required": false,
             "default": "8",
             "description": "",
-            "summary": "자리 표시자로 출력할 행 수입니다.",
+            "summary": "자리 표시자로 출력할 행 수입니다. 0–100 정수로 내림합니다.",
             "source": "packages/vue3/src/skeletons.tsx"
           },
           {
@@ -2557,7 +2656,7 @@
             "required": false,
             "default": "8",
             "description": "",
-            "summary": "자리 표시자로 출력할 행 수입니다.",
+            "summary": "자리 표시자로 출력할 행 수입니다. 0–100 정수로 내림합니다.",
             "source": "packages/react/src/skeletons.tsx"
           },
           {
@@ -2622,6 +2721,33 @@
             "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
             "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
             "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 class입니다.",
+            "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 style입니다. 컴포넌트가 정하는 크기(width·height) 위에 합칩니다.",
+            "source": "packages/react/src/skeletons.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 id입니다.",
+            "source": "packages/react/src/skeletons.tsx"
           }
         ],
         "events": [],
@@ -2637,7 +2763,7 @@
             "required": false,
             "default": "8",
             "description": "",
-            "summary": "자리 표시자로 출력할 행 수입니다.",
+            "summary": "자리 표시자로 출력할 행 수입니다. 0–100 정수로 내림합니다.",
             "source": "packages/native/src/skeletons.tsx"
           },
           {
@@ -2701,6 +2827,15 @@
             "default": "—",
             "description": "Announces loading to screen readers (a status); the skeleton itself stays silent.",
             "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다.",
+            "source": "packages/native/src/skeletons.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 View의 style입니다. 컴포넌트가 정하는 크기 위에 합칩니다.",
             "source": "packages/native/src/skeletons.tsx"
           }
         ],
@@ -6345,7 +6480,7 @@
             "required": false,
             "default": "8",
             "description": "",
-            "summary": "자리 표시자로 출력할 행 수입니다.",
+            "summary": "자리 표시자로 출력할 행 수입니다. 0–100 정수로 내림합니다.",
             "source": "packages/vue3/src/market-parts.tsx"
           },
           {
@@ -6354,7 +6489,7 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "시장 표에 관심·즐겨찾기 행동 영역을 표시합니다.",
+            "summary": "관심·즐겨찾기 열을 그립니다. 머리글은 불러온 표와 같은 하트·별 표시를 그대로 보이고, 행에는 IconToggle xs(24px) 자리 두 개를 그립니다.",
             "source": "packages/vue3/src/market-parts.tsx"
           },
           {
@@ -6373,6 +6508,15 @@
             "default": "—",
             "description": "",
             "summary": "선택적 웹 너비 클래스 콜백입니다. 생략하면 공통 열 배치를 사용합니다.",
+            "source": "packages/vue3/src/market-parts.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Announces loading to screen readers (a status); the table itself stays silent.",
+            "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. MarketTable·DataState 안에서는 중복 알림을 피하도록 생략합니다.",
             "source": "packages/vue3/src/market-parts.tsx"
           }
         ],
@@ -6398,7 +6542,7 @@
             "required": false,
             "default": "8",
             "description": "",
-            "summary": "자리 표시자로 출력할 행 수입니다.",
+            "summary": "자리 표시자로 출력할 행 수입니다. 0–100 정수로 내림합니다.",
             "source": "packages/react/src/market-skeleton.tsx"
           },
           {
@@ -6407,7 +6551,7 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "시장 표에 관심·즐겨찾기 행동 영역을 표시합니다.",
+            "summary": "관심·즐겨찾기 열을 그립니다. 머리글은 불러온 표와 같은 하트·별 표시를 그대로 보이고, 행에는 IconToggle xs(24px) 자리 두 개를 그립니다.",
             "source": "packages/react/src/market-skeleton.tsx"
           },
           {
@@ -6426,6 +6570,42 @@
             "default": "—",
             "description": "",
             "summary": "선택적 웹 너비 클래스 콜백입니다. 생략하면 공통 열 배치를 사용합니다.",
+            "source": "packages/react/src/market-skeleton.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Announces loading to screen readers (a status); the table itself stays silent.",
+            "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. MarketTable·DataState 안에서는 중복 알림을 피하도록 생략합니다.",
+            "source": "packages/react/src/market-skeleton.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 class입니다.",
+            "source": "packages/react/src/market-skeleton.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 style입니다. 컴포넌트가 정하는 크기(width·height) 위에 합칩니다.",
+            "source": "packages/react/src/market-skeleton.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 id입니다.",
             "source": "packages/react/src/market-skeleton.tsx"
           }
         ],
@@ -6451,7 +6631,7 @@
             "required": false,
             "default": "8",
             "description": "",
-            "summary": "자리 표시자로 출력할 행 수입니다.",
+            "summary": "자리 표시자로 출력할 행 수입니다. 0–100 정수로 내림합니다.",
             "source": "packages/native/src/market-skeleton.tsx"
           },
           {
@@ -6460,7 +6640,25 @@
             "required": false,
             "default": "false",
             "description": "",
-            "summary": "시장 표에 관심·즐겨찾기 행동 영역을 표시합니다.",
+            "summary": "관심·즐겨찾기 열을 그립니다. 머리글은 불러온 표와 같은 하트·별 표시를 그대로 보이고, 행에는 IconToggle xs(24px) 자리 두 개를 그립니다.",
+            "source": "packages/native/src/market-skeleton.tsx"
+          },
+          {
+            "name": "loadingText",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Announces loading to screen readers (a status); the table itself stays silent.",
+            "summary": "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. MarketTable·DataState 안에서는 중복 알림을 피하도록 생략합니다.",
+            "source": "packages/native/src/market-skeleton.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 View의 style입니다. 컴포넌트가 정하는 크기 위에 합칩니다.",
             "source": "packages/native/src/market-skeleton.tsx"
           }
         ],
@@ -7787,7 +7985,7 @@
             "required": false,
             "default": "\"text\"",
             "description": "\"line\" is one line of text: a bar in the line box of `role`, or of the surrounding text when no role is given.",
-            "summary": "text는 본문 줄, line은 한 줄, card는 기본 Card, stat은 KpiRow 항목, table·avatar·block은 표·아바타·블록 자리입니다. 글자 자리 막대는 그 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다.",
+            "summary": "text는 본문 줄, line은 한 줄, card는 기본 Card, stat은 KpiRow 항목(넓은 곳에서도 라벨 80·값 160·설명 96px에서 멈춤), table·avatar·block은 표·아바타·블록 자리입니다. 글자 자리 막대는 그 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다.",
             "source": "packages/vue3/src/display.tsx"
           },
           {
@@ -7795,8 +7993,8 @@
             "type": "\"label\" | \"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"labelStrong\" | \"control\" | \"bodyLg\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\"",
             "required": false,
             "default": "—",
-            "description": "Typography role for type=\"line\"; omit it to take the surrounding text's line height.",
-            "summary": "type=\"line\"의 글자 역할입니다(예: caption, numberSm, displaySm). 웹에서 생략하면 주변 글자의 줄 높이를 따르고, Native는 기본 body입니다.",
+            "description": "Like React: the role of a \"line\" or \"text\" skeleton; omitted, a line follows the surrounding text and a paragraph is body.",
+            "summary": "type=\"line\"·\"text\"가 대신하는 글자 역할입니다(예: caption, numberSm, displaySm). 막대는 그 역할 줄 높이의 절반입니다. 생략하면 text는 body, line은 웹에서 주변 글자의 줄 높이(Native는 body)를 따릅니다.",
             "source": "packages/vue3/src/display.tsx"
           },
           {
@@ -7814,7 +8012,7 @@
             "required": false,
             "default": "3",
             "description": "",
-            "summary": "자리 표시자로 출력할 행 수입니다.",
+            "summary": "text·card의 줄 수, table의 본문 행 수입니다. 0–100 정수로 내림합니다.",
             "source": "packages/vue3/src/display.tsx"
           },
           {
@@ -7823,7 +8021,7 @@
             "required": false,
             "default": "4",
             "description": "",
-            "summary": "표 형태 스켈레톤의 열 수입니다.",
+            "summary": "table의 열 수입니다. 0–100 정수로 내림합니다.",
             "source": "packages/vue3/src/display.tsx"
           },
           {
@@ -7876,7 +8074,7 @@
             "required": false,
             "default": "\"text\"",
             "description": "\"line\" is one line of text: a bar in the line box of `role`, or of the surrounding text when no role is given.",
-            "summary": "text는 본문 줄, line은 한 줄, card는 기본 Card, stat은 KpiRow 항목, table·avatar·block은 표·아바타·블록 자리입니다. 글자 자리 막대는 그 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다.",
+            "summary": "text는 본문 줄, line은 한 줄, card는 기본 Card, stat은 KpiRow 항목(넓은 곳에서도 라벨 80·값 160·설명 96px에서 멈춤), table·avatar·block은 표·아바타·블록 자리입니다. 글자 자리 막대는 그 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다.",
             "source": "packages/react/src/display.tsx"
           },
           {
@@ -7884,8 +8082,8 @@
             "type": "\"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"label\" | \"labelStrong\" | \"control\" | \"bodyLg\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
             "required": false,
             "default": "—",
-            "description": "Typography role for type=\"line\"; omit it to take the surrounding text's line height.",
-            "summary": "type=\"line\"의 글자 역할입니다(예: caption, numberSm, displaySm). 웹에서 생략하면 주변 글자의 줄 높이를 따르고, Native는 기본 body입니다.",
+            "description": "Typography role of the text a \"line\" or \"text\" skeleton stands in for. Omitted, a line takes the surrounding\ntext's line height and a paragraph the body role.",
+            "summary": "type=\"line\"·\"text\"가 대신하는 글자 역할입니다(예: caption, numberSm, displaySm). 막대는 그 역할 줄 높이의 절반입니다. 생략하면 text는 body, line은 웹에서 주변 글자의 줄 높이(Native는 body)를 따릅니다.",
             "source": "packages/react/src/display.tsx"
           },
           {
@@ -7902,8 +8100,8 @@
             "type": "number | undefined",
             "required": false,
             "default": "3",
-            "description": "",
-            "summary": "자리 표시자로 출력할 행 수입니다.",
+            "description": "Lines of a \"text\" or \"card\" skeleton, body rows of a \"table\" one; floored, 0–100.",
+            "summary": "text·card의 줄 수, table의 본문 행 수입니다. 0–100 정수로 내림합니다.",
             "source": "packages/react/src/display.tsx"
           },
           {
@@ -7911,8 +8109,8 @@
             "type": "number | undefined",
             "required": false,
             "default": "4",
-            "description": "",
-            "summary": "표 형태 스켈레톤의 열 수입니다.",
+            "description": "Columns of a \"table\" skeleton; floored, 0–100.",
+            "summary": "table의 열 수입니다. 0–100 정수로 내림합니다.",
             "source": "packages/react/src/display.tsx"
           },
           {
@@ -7950,6 +8148,33 @@
             "description": "",
             "summary": "컨테이너 또는 스켈레톤의 모서리 표현입니다.",
             "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "className",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 class입니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Merged over the root's own width.",
+            "summary": "바깥 요소의 style입니다. 컴포넌트가 정하는 크기(width·height) 위에 합칩니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 id입니다.",
+            "source": "packages/react/src/display.tsx"
           }
         ],
         "events": [],
@@ -7965,7 +8190,7 @@
             "required": false,
             "default": "\"text\"",
             "description": "\"line\" is one line of text: a bar in the line box of `role` (default body).",
-            "summary": "text는 본문 줄, line은 한 줄, card는 기본 Card, stat은 KpiRow 항목, table·avatar·block은 표·아바타·블록 자리입니다. 글자 자리 막대는 그 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다.",
+            "summary": "text는 본문 줄, line은 한 줄, card는 기본 Card, stat은 KpiRow 항목(넓은 곳에서도 라벨 80·값 160·설명 96px에서 멈춤), table·avatar·block은 표·아바타·블록 자리입니다. 글자 자리 막대는 그 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다.",
             "source": "packages/native/src/skeleton-base.tsx"
           },
           {
@@ -7973,8 +8198,8 @@
             "type": "\"label\" | \"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"labelStrong\" | \"control\" | \"bodyLg\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
             "required": false,
             "default": "\"body\"",
-            "description": "Typography role for type=\"line\".",
-            "summary": "type=\"line\"의 글자 역할입니다(예: caption, numberSm, displaySm). 웹에서 생략하면 주변 글자의 줄 높이를 따르고, Native는 기본 body입니다.",
+            "description": "Typography role of the text a \"line\" or \"text\" skeleton stands in for (default body).",
+            "summary": "type=\"line\"·\"text\"가 대신하는 글자 역할입니다(예: caption, numberSm, displaySm). 막대는 그 역할 줄 높이의 절반입니다. 생략하면 text는 body, line은 웹에서 주변 글자의 줄 높이(Native는 body)를 따릅니다.",
             "source": "packages/native/src/skeleton-base.tsx"
           },
           {
@@ -7992,7 +8217,7 @@
             "required": false,
             "default": "3",
             "description": "",
-            "summary": "자리 표시자로 출력할 행 수입니다.",
+            "summary": "text·card의 줄 수, table의 본문 행 수입니다. 0–100 정수로 내림합니다.",
             "source": "packages/native/src/skeleton-base.tsx"
           },
           {
@@ -8001,7 +8226,7 @@
             "required": false,
             "default": "4",
             "description": "",
-            "summary": "표 형태 스켈레톤의 열 수입니다.",
+            "summary": "table의 열 수입니다. 0–100 정수로 내림합니다.",
             "source": "packages/native/src/skeleton-base.tsx"
           },
           {
@@ -8038,6 +8263,15 @@
             "default": "true",
             "description": "",
             "summary": "컨테이너 또는 스켈레톤의 모서리 표현입니다.",
+            "source": "packages/native/src/skeleton-base.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "Merged over the root's own width.",
+            "summary": "바깥 View의 style입니다. 컴포넌트가 정하는 크기 위에 합칩니다.",
             "source": "packages/native/src/skeleton-base.tsx"
           }
         ],

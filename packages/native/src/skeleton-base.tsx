@@ -4,18 +4,19 @@ Animated,
 View,
 useWindowDimensions,
 type DimensionValue,
+type StyleProp,
 type ViewStyle
 } from "react-native";
-import { skeletonTableWidth, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
+import { skeletonCount, skeletonRange, skeletonTableWidth, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
 import { useReducedMotion } from "./internal";
-import { skeletonFill, useSkeletonPulse } from "./skeleton-clock";
+import { skeletonFill, skeletonStatus, useSkeletonPulse } from "./skeleton-clock";
 import { KPI_NUMERAL_HEIGHT } from "../../../shared/package-runtime/kpi";
 import { useKjunStyles } from "./provider";
 
 export interface KjunSkeletonProps {
   /** "line" is one line of text: a bar in the line box of `role` (default body). */
   type?: "text" | "line" | "avatar" | "card" | "table" | "stat" | "block";
-  /** Typography role for type="line". */
+  /** Typography role of the text a "line" or "text" skeleton stands in for (default body). */
   role?: TypographyRole;
   /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
   loadingText?: string;
@@ -26,6 +27,8 @@ export interface KjunSkeletonProps {
   width?: DimensionValue;
   animated?: boolean;
   rounded?: boolean;
+  /** Merged over the root's own width. */
+  style?: StyleProp<ViewStyle>;
 }
 export function KjunSkeleton({
   type = "text",
@@ -37,13 +40,14 @@ export function KjunSkeleton({
   rounded = true,
   role = "body",
   loadingText,
+  style,
 }: KjunSkeletonProps) {
   const { colors } = useKjunStyles(),
     reduced = useReducedMotion(),
     // Text scales with the device's font size, so the line boxes that stand in for it scale too.
     { fontScale } = useWindowDimensions(),
     opacity = useSkeletonPulse(animated && !reduced);
-  const shimmer = skeletonFill(opacity, colors);
+  const shimmer = skeletonFill(opacity, colors), sk = tokens.extensions.skeleton;
   const block = (
     w: DimensionValue,
     h: DimensionValue = tokens.extensions.skeleton.lineHeights.md,
@@ -59,30 +63,27 @@ export function KjunSkeleton({
       }}
     />
   );
-  const count = (n: number) =>
-    Array.from({ length: Math.max(0, Math.floor(n)) }, (_, i) => i + 1);
   // Like Web: a bar half a type role's line height, centred in that line box, so the skeleton is as tall as the text.
   // `bar` overrides the bar's height (unscaled), never taller than the line box.
-  const slot = (w: DimensionValue, lineRole: TypographyRole = "body", key?: number, marginTop = 0, bar?: number, end = false) => {
+  // `max` stops the bar at a fixed width in wide containers.
+  const slot = (w: DimensionValue, lineRole: TypographyRole = "body", key?: number, marginTop = 0, bar?: number, end = false, max?: number) => {
     const lineHeight = tokens.typography[lineRole].lineHeightPx * fontScale;
     return (
       <View key={key} style={{ height: lineHeight, justifyContent: "center", alignItems: end ? "flex-end" : undefined, marginTop }}>
-        {block(w, bar === undefined ? lineHeight / 2 : Math.min(bar * fontScale, lineHeight))}
+        {block(w, bar === undefined ? lineHeight / 2 : Math.min(bar * fontScale, lineHeight), max === undefined ? {} : { maxWidth: max })}
       </View>
     );
   };
   const lineBar = typeof height === "number" ? Math.min(height * fontScale, tokens.typography[role].lineHeightPx * fontScale) : undefined;
-  const paragraph = () => skeletonTextWidths(rows).map((w, i) => slot(w, "body", i));
+  const paragraph = (lineRole: TypographyRole = "body") => skeletonTextWidths(rows).map((w, i) => slot(w, lineRole, i));
   return (
     <View
-      {...(loadingText
-        // The status carries the text; iOS and Android need the label and an explicit live region.
-        ? { role: "status" as const, accessible: true, accessibilityLabel: loadingText, accessibilityLiveRegion: "polite" as const }
-        : { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants" as const })}
+      // The status carries the text; iOS and Android need the label and an explicit live region.
+      {...skeletonStatus(loadingText)}
       // An avatar is as wide as itself, so it does not claim (or get squeezed in) a row; everything else fills.
-      style={{ width: width || (type === "avatar" ? tokens.extensions.skeleton.avatarSize : "100%"), flexShrink: type === "avatar" ? 0 : undefined, overflow: "hidden" }}
+      style={[{ width: width || (type === "avatar" ? tokens.extensions.skeleton.avatarSize : "100%"), flexShrink: type === "avatar" ? 0 : undefined, overflow: "hidden" }, style]}
     >
-      {type === "text" && paragraph()}
+      {type === "text" && paragraph(role)}
       {type === "line" && (lineBar === undefined ? slot("100%", role)
         : <View style={{ height: tokens.typography[role].lineHeightPx * fontScale, justifyContent: "center" }}>{block("100%", lineBar)}</View>)}
       {type === "avatar" &&
@@ -98,16 +99,16 @@ export function KjunSkeleton({
       {type === "table" && (
         // Like Web: rows of a KjunTable at rest, with row dividers only; columns after the first end like values.
         <View>
-          {[0, ...count(rows)].map((row) => (
+          {[0, ...skeletonRange(rows)].map((row) => (
             <View
               key={row}
               style={{
                 flexDirection: "row",
-                borderBottomWidth: row === rows ? 0 : tokens.border.defaultWidth,
+                borderBottomWidth: row === skeletonCount(rows) ? 0 : tokens.border.defaultWidth,
                 borderBottomColor: colors.divider,
               }}
             >
-              {count(columns).map((col) => (
+              {skeletonRange(columns).map((col) => (
                 <View
                   key={col}
                   style={{
@@ -126,10 +127,11 @@ export function KjunSkeleton({
       )}
       {type === "stat" && (
         <View>
-          {slot("40%", "caption")}
+          {/* Like Web: wide containers stop the bars at a KPI's usual size. */}
+          {slot("40%", "caption", undefined, 0, undefined, false, sk.statLabelMaxWidth)}
           {/* Like a loading KpiRow: the value bar stands as tall as the value's digits. */}
-          {slot("64%", "displaySm", undefined, tokens.extensions.kpiRow.md.labelGap, tokens.typography.displaySm.fontSizePx * KPI_NUMERAL_HEIGHT)}
-          {slot("30%", "caption", undefined, tokens.extensions.kpiRow.md.descriptionGap)}
+          {slot("64%", "displaySm", undefined, tokens.extensions.kpiRow.md.labelGap, tokens.typography.displaySm.fontSizePx * KPI_NUMERAL_HEIGHT, false, sk.statValueMaxWidth)}
+          {slot("30%", "caption", undefined, tokens.extensions.kpiRow.md.descriptionGap, undefined, false, sk.statDescriptionMaxWidth)}
         </View>
       )}
       {type === "block" &&

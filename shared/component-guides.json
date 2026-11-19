@@ -44,9 +44,9 @@
   "KjunFormSkeleton": {
     "slug": "form-skeleton",
     "description": "폼 항목과 열 구성을 유지하면서 조회를 기다립니다.",
-    "interaction": "fields·columns·multiline으로 입력 폼의 자리를 구성합니다. 각 필드의 입력값이나 검증 상태를 소유하지 않습니다.",
+    "interaction": "fields·columns·multiline으로 입력 폼의 자리를 구성하고, actions로 필드 아래 FormActions 줄의 버튼 자리를 그립니다(마지막이 주 버튼). 실제 FormActions에 같은 size를 주면 로딩 후 버튼 줄이 새로 붙으며 아래 내용이 밀리지 않습니다. 각 필드의 입력값이나 검증 상태를 소유하지 않습니다.",
     "differences": "세 플랫폼 모두 같은 필드 구성 prop을 사용합니다. 자체 animated 조절기는 없으며 기본 Skeleton 표현을 사용합니다.",
-    "states": "fields·columns·multiline으로 필드 자리와 배치를 설정합니다. 입력·검증 상태는 없습니다."
+    "states": "fields·columns·multiline·actions로 필드와 버튼 자리, 배치를 설정합니다. 입력·검증 상태는 없습니다."
   },
   "KjunHeatmapCell": {
     "slug": "heatmap-cell",
@@ -100,7 +100,7 @@
   "KjunMarketTableSkeleton": {
     "slug": "market-table-skeleton",
     "description": "실제 시장 표의 열·행·액션 영역을 유지합니다.",
-    "interaction": "열 구성과 rows로 시장 표의 자리를 유지합니다. showActions는 관심·즐겨찾기 행동 영역의 자리 표시 여부입니다.",
+    "interaction": "열 구성과 rows로 시장 표의 자리를 유지합니다. showActions는 관심·즐겨찾기 행동 영역의 자리 표시 여부입니다. 단독으로 쓸 때는 loadingText로 화면 낭독기에 로딩을 알립니다.",
     "differences": "웹의 alignClass·widthClass는 Native에 없습니다. Native는 columns 구성과 자체 크기 규칙으로 배치합니다.",
     "states": "rows·columns·showActions로 행·열과 행동 영역의 자리를 구성합니다. 실제 선택·정렬은 수행하지 않습니다."
   },
@@ -135,7 +135,7 @@
   "KjunSkeleton": {
     "slug": "skeleton",
     "description": "텍스트·카드·표·통계·아바타·블록의 조회 대기 모양을 표시합니다.",
-    "interaction": "type별 자리 표시자의 크기와 반복 수를 구성합니다. text는 본문 줄 높이, line은 role 글자 역할(웹에서 생략하면 주변 글자)의 한 줄, card는 기본 KjunCard(제목·부제·본문 줄), stat은 KpiRow 항목(라벨·값·설명)과 같은 높이라 로딩 후 화면이 움직이지 않습니다. table은 테두리·헤더 채움 없이 행 구분선만 그리고 첫 열 뒤의 열은 값처럼 끝에 맞춥니다. 막대는 해당 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다(stat의 값 막대는 숫자 높이). KJUN 컴포넌트의 로딩 자리(KPI·표·시세 값)도 같은 line 규칙을 씁니다. DataState 밖에서 단독으로 쓸 때는 loadingText로 화면 낭독기에 로딩을 알립니다. 로딩 판단과 실제 콘텐츠 교체는 소비자가 합니다.",
+    "interaction": "type별 자리 표시자의 크기와 반복 수를 구성합니다. text는 role 글자 역할(생략하면 본문)의 문단, line은 role 글자 역할(웹에서 생략하면 주변 글자)의 한 줄, card는 기본 KjunCard(제목·부제·본문 줄), stat은 KpiRow 항목(라벨·값·설명)과 같은 높이라 로딩 후 화면이 움직이지 않습니다. table은 테두리·헤더 채움 없이 행 구분선만 그리고 첫 열 뒤의 열은 값처럼 끝에 맞춥니다. 막대는 해당 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다(stat의 값 막대는 숫자 높이). KJUN 컴포넌트의 로딩 자리(KPI·표·시세 값)도 같은 line 규칙을 씁니다. DataState 밖에서 단독으로 쓸 때는 loadingText로 화면 낭독기에 로딩을 알립니다. 로딩 판단과 실제 콘텐츠 교체는 소비자가 합니다.",
     "differences": "웹의 width·height는 CSS 길이, Native는 Native 크기 타입을 따릅니다. 크기를 지정할 때 선택 플랫폼의 API를 확인하세요.",
     "states": "지정한 행·열·크기와 슬롯 영역을 로딩 모양으로 유지합니다. 움직임은 animated 설정과 동작 줄이기 환경을 따릅니다. 입력·선택 이벤트는 없습니다."
   },

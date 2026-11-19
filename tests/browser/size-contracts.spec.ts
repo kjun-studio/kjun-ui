@@ -99,8 +99,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     await halfLine(page.getByTestId('market-card'), e.financial.priceSkeletonWidth);
     const market = page.getByTestId('market-skeleton');
     await halfLine(market, e.financial.priceSkeletonWidth);
-    await dimensions(market, e.marketTable.actionSkeletonWidth, e.marketTable.headerSkeletonHeight);
-    await dimensions(market, e.marketTable.actionSkeletonWidth, e.financial.priceSkeletonHeight);
+    // Row toggles load as IconToggle xs squares under the header marks.
+    await dimensions(market, e.iconToggle.sizes.xs, e.iconToggle.sizes.xs);
     await halfLine(page.getByTestId('kpi-row'), e.kpiRow.labelSkeletonWidth);
     await dimensions(page.getByTestId('kpi-chevron'), e.kpiRow.chevronSize, e.kpiRow.chevronSize);
     if (platform === 'native') {

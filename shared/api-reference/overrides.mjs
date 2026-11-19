@@ -287,15 +287,17 @@ set("Icon", {
 });
 set("ScrollFade", { direction: "내용이 스크롤되는 방향입니다. horizontal(기본)은 좌우, vertical은 위아래로 스크롤하며 그 방향의 양 끝을 흐리게 합니다. vertical은 높이(style·class)가 있어야 스크롤됩니다." });
 set("FormSkeleton", {
-  columns: "폼 스켈레톤을 배치할 열 수입니다.",
+  columns: "1 또는 2입니다. 2는 넓은 화면에서 필드를 두 열로 놓고 좁은 화면에서는 한 열로 쌓습니다. 다른 값은 한 열입니다.",
+  actions: { default: "0", summary: "필드 아래 FormActions 줄 자리에 그릴 버튼 막대 수입니다. 끝에 맞춰 8px 간격으로 놓고 마지막이 주 버튼(96px), 앞은 72px입니다. 높이와 모서리는 size의 Button(sm 32·md 40·lg 48)과 같으므로, 실제 FormActions에 같은 size를 주면 로딩 전후 자리가 맞습니다. 2열에서도 모든 열 아래 한 줄입니다." },
   size: { default: "md", summary: "대상 Input과 같은 크기입니다. sm 32px, md 40px, lg 48px이며 모서리도 공유합니다." },
   fields: "필드 라벨 또는 { label, height } 배열입니다. 개별 height가 size와 multiline보다 우선합니다.",
   multiline: "개별 높이를 지정하지 않은 필드를 3줄 Textarea와 같은 높이(sm 92px, md 100px, lg 108px)로 표시합니다.",
 });
 set("Skeleton", {
-  columns: "표 형태 스켈레톤의 열 수입니다.",
-  type: { default: '"text"', summary: "text는 본문 줄, line은 한 줄, card는 기본 Card, stat은 KpiRow 항목, table·avatar·block은 표·아바타·블록 자리입니다. 글자 자리 막대는 그 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다." },
-  role: { summary: "type=\"line\"의 글자 역할입니다(예: caption, numberSm, displaySm). 웹에서 생략하면 주변 글자의 줄 높이를 따르고, Native는 기본 body입니다." },
+  columns: "table의 열 수입니다. 0–100 정수로 내림합니다.",
+  type: { default: '"text"', summary: "text는 본문 줄, line은 한 줄, card는 기본 Card, stat은 KpiRow 항목(넓은 곳에서도 라벨 80·값 160·설명 96px에서 멈춤), table·avatar·block은 표·아바타·블록 자리입니다. 글자 자리 막대는 그 글자 역할 줄 높이의 절반이며 줄 상자 가운데에 놓입니다." },
+  role: { summary: "type=\"line\"·\"text\"가 대신하는 글자 역할입니다(예: caption, numberSm, displaySm). 막대는 그 역할 줄 높이의 절반입니다. 생략하면 text는 body, line은 웹에서 주변 글자의 줄 높이(Native는 body)를 따릅니다." },
+  rows: "text·card의 줄 수, table의 본문 행 수입니다. 0–100 정수로 내림합니다.",
   loadingText: { summary: "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다." },
 });
 set("FormSkeleton ListSkeleton", { loadingText: { summary: "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. DataState 안에서는 중복 알림을 피하도록 생략합니다." } });
@@ -306,8 +308,12 @@ set("ListSkeleton", {
 });
 set("MarketTableSkeleton", {
   columns: "MarketTable과 동일한 열 구성입니다. 기본 폭은 이름 240px·기타 160px·액션 96px이며 지정한 너비를 우선합니다.",
+  showActions: "관심·즐겨찾기 열을 그립니다. 머리글은 불러온 표와 같은 하트·별 표시를 그대로 보이고, 행에는 IconToggle xs(24px) 자리 두 개를 그립니다.",
 });
-set("ListSkeleton Skeleton MarketTableSkeleton", { rows: "자리 표시자로 출력할 행 수입니다." });
+set("ListSkeleton MarketTableSkeleton", { rows: "자리 표시자로 출력할 행 수입니다. 0–100 정수로 내림합니다." });
+set("MarketTableSkeleton", { loadingText: "화면 낭독기에 알릴 로딩 문구입니다. 주면 status 역할로 한 번 알리고 화면에는 보이지 않습니다. MarketTable·DataState 안에서는 중복 알림을 피하도록 생략합니다." });
+set("Skeleton ListSkeleton FormSkeleton ChartSkeleton MarketTableSkeleton", { className: "바깥 요소의 class입니다.", style: "바깥 요소의 style입니다. 컴포넌트가 정하는 크기(width·height) 위에 합칩니다.", id: "바깥 요소의 id입니다." }, "react");
+set("Skeleton ListSkeleton FormSkeleton ChartSkeleton MarketTableSkeleton", { style: "바깥 View의 style입니다. 컴포넌트가 정하는 크기 위에 합칩니다." }, "native");
 set("Textarea", {
   rows: { default: "3", summary: "처음 표시하는 행 수이자 최소 높이입니다." },
   maxRows: { default: "6", summary: "내용에 맞춰 늘어나는 최대 행 수입니다. 넘으면 필드 안에서 스크롤합니다. rows와 같게 두면 높이가 고정됩니다. \"none\"이면 한도 없이 글 길이만큼 늘어나고 필드 안에서는 스크롤하지 않습니다(노트·문서 본문)." },

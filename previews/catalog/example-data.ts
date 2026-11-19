@@ -43,11 +43,21 @@ export function renderDataExample(name: string, tools: ExampleTools): any {
         button("추가", () => message((JSON.parse(settings.visual || "{}").KjunButton?.text || "추가") + " 요청"))
       );
     case "KjunSkeleton":
-      return h(name, { type: "card", animated: settings.animated, rows: 3 });
+      return h(name, {
+        type: settings.type || "card",
+        role: ["text", "line"].includes(String(settings.type)) && settings.role && settings.role !== "auto" ? settings.role : undefined,
+        animated: settings.animated !== false,
+        rows: 3,
+      });
     case "KjunListSkeleton":
-      return h(name, { rows: 3, variant: "row", avatar: true });
+      return h(name, {
+        rows: 3,
+        variant: settings.variant || "row",
+        avatar: settings.avatar !== false,
+        trailing: (settings.variant || "row") === "row" ? settings.trailing || "value" : undefined,
+      });
     case "KjunFormSkeleton":
-      return h(name, { fields: ["", "", ""], size: settings.size || "md", multiline: !!settings.multiline, columns: 1 });
+      return h(name, { fields: ["", "", ""], size: settings.size || "md", multiline: !!settings.multiline, columns: 1, actions: Number(settings.actions ?? 2) });
     case "KjunChartSkeleton":
       return h(name, { kind: settings.kind, skeleton: settings.skeleton, loadingText:settings.loadingText, height: 180 });
     case "KjunMarketTableSkeleton":

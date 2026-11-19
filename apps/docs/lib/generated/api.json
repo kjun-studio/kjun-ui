@@ -3954,6 +3954,27 @@
         "required": false,
         "default": "—",
         "description": "Frame: y-axis label width in px (default 40); label bars fill it, less the label gap."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Merged over the root's height and reveal styles."
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "native": [
@@ -4026,6 +4047,13 @@
         "required": false,
         "default": "—",
         "description": "Frame: y-axis label width (default 40); label bars fill it, less the label gap."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": "Merged over the root's height and reveal styles."
       }
     ]
   },
@@ -11303,6 +11331,13 @@
         "description": ""
       },
       {
+        "name": "actions",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Like React: bars for a FormActions row under the fields at the size's button height; the last is the primary button."
+      },
+      {
         "name": "loadingText",
         "type": "string",
         "required": false,
@@ -11342,11 +11377,39 @@
         "description": ""
       },
       {
+        "name": "actions",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Bars for a FormActions row under the fields, end-aligned at the size's button height; the last is the primary\nbutton. Give the real FormActions the same size so nothing moves when the form arrives. Default 0."
+      },
+      {
         "name": "loadingText",
         "type": "string | undefined",
         "required": false,
         "default": "—",
         "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "native": [
@@ -11379,11 +11442,25 @@
         "description": ""
       },
       {
+        "name": "actions",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Like Web: bars for a FormActions row under the fields at the size's button height; the last is the primary button."
+      },
+      {
         "name": "loadingText",
         "type": "string | undefined",
         "required": false,
         "default": "—",
         "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ]
   },
@@ -15352,6 +15429,27 @@
         "required": false,
         "default": "—",
         "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "native": [
@@ -15410,6 +15508,13 @@
         "required": false,
         "default": "—",
         "description": "Announces loading to screen readers (a status); the skeleton itself stays silent."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ]
   },
@@ -18278,6 +18383,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "loadingText",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Announces loading to screen readers (a status); the table itself stays silent."
       }
     ],
     "events": [],
@@ -18317,6 +18429,34 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Announces loading to screen readers (a status); the table itself stays silent."
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "native": [
@@ -18337,6 +18477,20 @@
       {
         "name": "showActions",
         "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "loadingText",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Announces loading to screen readers (a status); the table itself stays silent."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
         "required": false,
         "default": "—",
         "description": ""
@@ -25705,7 +25859,7 @@
         "type": "\"label\" | \"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"labelStrong\" | \"control\" | \"bodyLg\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\"",
         "required": false,
         "default": "—",
-        "description": "Typography role for type=\"line\"; omit it to take the surrounding text's line height."
+        "description": "Like React: the role of a \"line\" or \"text\" skeleton; omitted, a line follows the surrounding text and a paragraph is body."
       },
       {
         "name": "loadingText",
@@ -25772,7 +25926,7 @@
         "type": "\"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"label\" | \"labelStrong\" | \"control\" | \"bodyLg\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
         "required": false,
         "default": "—",
-        "description": "Typography role for type=\"line\"; omit it to take the surrounding text's line height."
+        "description": "Typography role of the text a \"line\" or \"text\" skeleton stands in for. Omitted, a line takes the surrounding\ntext's line height and a paragraph the body role."
       },
       {
         "name": "loadingText",
@@ -25786,14 +25940,14 @@
         "type": "number | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Lines of a \"text\" or \"card\" skeleton, body rows of a \"table\" one; floored, 0–100."
       },
       {
         "name": "columns",
         "type": "number | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "Columns of a \"table\" skeleton; floored, 0–100."
       },
       {
         "name": "height",
@@ -25822,6 +25976,27 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Merged over the root's own width."
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "native": [
@@ -25837,7 +26012,7 @@
         "type": "\"label\" | \"caption\" | \"meta\" | \"captionStrong\" | \"controlSmall\" | \"body\" | \"bodyLong\" | \"labelStrong\" | \"control\" | \"bodyLg\" | \"input\" | \"cardTitle\" | \"controlLarge\" | \"sectionTitle\" | \"pageTitle\" | \"numberSm\" | \"numberMd\" | \"numberLg\" | \"displaySm\" | \"displayMd\" | \"displayLg\" | undefined",
         "required": false,
         "default": "—",
-        "description": "Typography role for type=\"line\"."
+        "description": "Typography role of the text a \"line\" or \"text\" skeleton stands in for (default body)."
       },
       {
         "name": "loadingText",
@@ -25887,6 +26062,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
+        "required": false,
+        "default": "—",
+        "description": "Merged over the root's own width."
       }
     ]
   },

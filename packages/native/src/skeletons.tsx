@@ -5,12 +5,12 @@ import { useContext, useState } from "react";
 import { ListShapeContext } from "./list-context";
 import { listRowMetrics } from "../../../shared/package-runtime/list-row";
 import { listRowBleed } from "../../../shared/package-runtime/list-leading";
-import { Animated,Platform,StyleSheet,View,useWindowDimensions,type DimensionValue } from "react-native";
+import { Animated,Platform,StyleSheet,View,useWindowDimensions,type DimensionValue,type StyleProp,type ViewStyle } from "react-native";
 import Svg,{ Path } from "react-native-svg";
 import { KjunSkeleton,KjunSpinner } from "./display";
 import { KText,useReducedMotion } from "./internal";
-import { skeletonFill, useSkeletonPulse } from "./skeleton-clock";
-import { skeletonCount, skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
+import { skeletonFill, skeletonStatus, useSkeletonPulse } from "./skeleton-clock";
+import { skeletonActionWidths, skeletonCount, skeletonRowWidths, skeletonWidthScale } from "../../../shared/package-runtime/skeleton-text";
 import { useKjunStyles } from "./provider";
 import { useLoadingReveal } from "../../../shared/package-runtime/use-loading-reveal";
 import {
@@ -39,11 +39,8 @@ export interface KjunListSkeletonProps {
   trailing?: "value" | "switch" | "chevron";
   /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
   loadingText?: string;
+  style?: StyleProp<ViewStyle>;
 }
-// A skeleton is hidden from assistive technology unless it carries loading text, which it then announces politely.
-const skeletonStatus = (loadingText?: string) => loadingText
-  ? { role: "status" as const, accessible: true, accessibilityLabel: loadingText, accessibilityLiveRegion: "polite" as const }
-  : { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants" as const };
 export function KjunListSkeleton({
   rows = 8,
   variant = "market",
@@ -53,13 +50,14 @@ export function KjunListSkeleton({
   description = true,
   trailing = "value",
   loadingText,
+  style,
 }: KjunListSkeletonProps) {
   const { colors } = useKjunStyles();
   const window = useWindowDimensions();
   // The row silhouette takes ListRow's default leading square (sm, 32px, in the 40px column); other variants keep the market avatar.
   const avatarSize = ownAvatarSize ?? (variant === "row" ? tokens.extensions.list.leadingSizes.sm : tokens.extensions.skeleton.listAvatarSize);
   if (variant === "row") return (
-    <View {...skeletonStatus(loadingText)}>
+    <View {...skeletonStatus(loadingText)} style={style}>
       <ListRowSkeleton rows={skeletonCount(rows)} avatar={avatar ?? false} avatarSize={avatarSize} description={description}
         trailing={quote ? trailing : undefined} divider={colors.divider} />
     </View>
@@ -70,7 +68,7 @@ export function KjunListSkeleton({
   const market = variant === "market", narrow = market && window.width < tokens.responsive.market;
   const roles = narrow ? (["input", "body"] as const) : (["label", "caption"] as const);
   return (
-    <View {...skeletonStatus(loadingText)}>
+    <View {...skeletonStatus(loadingText)} style={style}>
       {Array.from({ length: skeletonCount(rows) }, (_, i) => (
         <View
           key={i}
@@ -137,27 +135,33 @@ export interface KjunFormSkeletonProps {
   columns?: number;
   multiline?: boolean;
   size?: InputSize;
+  /** Like Web: bars for a FormActions row under the fields at the size's button height; the last is the primary button. */
+  actions?: number;
   /** Announces loading to screen readers (a status); the skeleton itself stays silent. */
   loadingText?: string;
+  style?: StyleProp<ViewStyle>;
 }
 export function KjunFormSkeleton({
   fields = ["", "", "", ""],
   columns = 1,
   multiline = false,
   size = "md",
+  actions = 0,
   loadingText,
+  style,
 }: KjunFormSkeletonProps) {
   const { colors } = useKjunStyles();
+  const sk = tokens.extensions.skeleton, actionWidths = skeletonActionWidths(actions, sk.actionWidth, sk.primaryActionWidth);
   const window = useWindowDimensions();
   const twoColumns = columns === 2 && window.width >= tokens.responsive.formColumns;
   return (
     <View
       {...skeletonStatus(loadingText)}
-      style={{
+      style={[{
         flexDirection: twoColumns ? "row" : "column",
         flexWrap: twoColumns ? "wrap" : "nowrap",
         gap: tokens.extensions.skeleton.formGap,
-      }}
+      }, style]}
     >
       {fields.map((field, i) => (
         <View
@@ -191,6 +195,16 @@ export function KjunFormSkeleton({
           </View>
         </View>
       ))}
+      {actionWidths.length > 0 && (
+        // Like Web: a FormActions row under every column, end-aligned, at the size's button radius.
+        <View style={{ width: "100%", flexDirection: "row", justifyContent: "flex-end", gap: tokens.modal.actionsGap }}>
+          {actionWidths.map((w, i) => (
+            <View key={i} style={{ width: w, borderRadius: tokens.button.radii[size], overflow: "hidden" }}>
+              <KjunSkeleton type="block" height={tokens.button.heights[size]} />
+            </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 }
@@ -208,6 +222,8 @@ export interface KjunChartSkeletonProps {
   xTicks?: number;
   /** Frame: y-axis label width (default 40); label bars fill it, less the label gap. */
   axisWidth?: number;
+  /** Merged over the root's height and reveal styles. */
+  style?: StyleProp<ViewStyle>;
 }
 // React Native Web prints dataSet as data-* so the packed web contracts can find each part.
 const chartPart = (name: string) => (Platform.OS === "web" ? { dataSet: { kjunChartPart: name } } : {});
@@ -222,6 +238,7 @@ export function KjunChartSkeleton({
   gridLines = chartFrameDefaults.gridLines,
   xTicks = chartFrameDefaults.xTicks,
   axisWidth = tokens.extensions.chartSkeleton.axisWidth,
+  style,
 }: KjunChartSkeletonProps) {
   const m = useKjunMessages();
   loadingText ??= m.chartLoading;
@@ -250,13 +267,14 @@ export function KjunChartSkeleton({
   );
   return (
     <View
-      style={{ height, width: "100%", minWidth: 0, opacity: revealed ? 1 : 0, justifyContent: skeleton ? undefined : "center", alignItems: skeleton ? undefined : "center" }}
+      style={[{ height, width: "100%", minWidth: 0, justifyContent: skeleton ? undefined : "center", alignItems: skeleton ? undefined : "center" }, style, { opacity: revealed ? 1 : 0 }]}
       aria-hidden={revealed ? undefined : true}
       importantForAccessibility={revealed ? undefined : "no-hide-descendants"}
       {...(Platform.OS === "web" ? { dataSet: { kjunChartKind: kind, skeleton: skeleton ? undefined : "false" } } : {})}
     >
       {!skeleton ? (
-        <View {...chartPart("loading")} role={status} style={{ alignItems: "center", gap: tokens.dimension.value12 }}>
+        // Like the skeleton's status below: iOS and Android need the live region explicitly.
+        <View {...chartPart("loading")} role={status} accessibilityLiveRegion={status ? "polite" : undefined} style={{ alignItems: "center", gap: tokens.dimension.value12 }}>
           {/* The chart's status carries the text; the spinner stays out of the accessibility tree. */}
           <View aria-hidden importantForAccessibility="no-hide-descendants">
             <KjunSpinner size="md" />

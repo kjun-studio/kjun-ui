@@ -23,7 +23,7 @@ export function data(name: string) {
     case 'KjunCollectionMark': return row(<><K.KjunCollectionMark kind="favorite" active size="lg" /><K.KjunCollectionMark kind="interest" active size="lg" /><K.KjunCollectionMark kind="favorite" size="lg" /></>);
     case 'KjunExecutionStatusBadge': return row(<><K.KjunExecutionStatusBadge status="completed" label="완료" size="lg" /><K.KjunExecutionStatusBadge status="running" label="실행 중" size="lg" /><K.KjunExecutionStatusBadge status="failed" label="실패" size="lg" /></>);
     case 'KjunSparkline': return <K.KjunSparkline data={[18, 24, 21, 30, 26, 39, 35, 43, 40, 49]} width={320} height={100} fill ariaLabel="자산 가격 추이" />;
-    case 'KjunSkeleton': return <K.KjunSkeleton type="card" height={200} />;
+    case 'KjunSkeleton': return <K.KjunSkeleton type="card" />;
     case 'KjunListSkeleton': return surface(<K.KjunListSkeleton rows={3} variant="notification" avatar />, false);
     case 'KjunFormSkeleton': return surface(<K.KjunFormSkeleton fields={['목록 이름', '공개 범위']} />);
     case 'KjunChartSkeleton': return surface(<K.KjunChartSkeleton kind="frame" height={200} />);

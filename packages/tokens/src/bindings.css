@@ -746,6 +746,11 @@
   --_kjun-extension-skeleton-quote-width: 88px;
   --_kjun-extension-skeleton-detail-width: 56px;
   --_kjun-extension-skeleton-form-label-width: 96px;
+  --_kjun-extension-skeleton-action-width: 72px;
+  --_kjun-extension-skeleton-primary-action-width: 96px;
+  --_kjun-extension-skeleton-stat-label-max-width: 80px;
+  --_kjun-extension-skeleton-stat-value-max-width: 160px;
+  --_kjun-extension-skeleton-stat-description-max-width: 96px;
   --_kjun-extension-skeleton-identity-width: 128px;
   --_kjun-extension-skeleton-identity-height: 20px;
   --_kjun-extension-skeleton-list-avatar-size: 36px;

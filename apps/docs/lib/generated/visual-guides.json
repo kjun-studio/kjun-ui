@@ -847,7 +847,7 @@
           }
         ],
         "sizeDefault": "md",
-        "note": "fields·columns·multiline으로 필드 자리와 배치를 설정합니다. 입력·검증 상태는 없습니다."
+        "note": "fields·columns·multiline·actions로 필드와 버튼 자리, 배치를 설정합니다. 입력·검증 상태는 없습니다."
       },
       "react": {
         "figures": [
@@ -899,7 +899,7 @@
           }
         ],
         "sizeDefault": "md",
-        "note": "fields·columns·multiline으로 필드 자리와 배치를 설정합니다. 입력·검증 상태는 없습니다."
+        "note": "fields·columns·multiline·actions로 필드와 버튼 자리, 배치를 설정합니다. 입력·검증 상태는 없습니다."
       },
       "native": {
         "figures": [
@@ -951,7 +951,7 @@
           }
         ],
         "sizeDefault": "md",
-        "note": "fields·columns·multiline으로 필드 자리와 배치를 설정합니다. 입력·검증 상태는 없습니다."
+        "note": "fields·columns·multiline·actions로 필드와 버튼 자리, 배치를 설정합니다. 입력·검증 상태는 없습니다."
       }
     }
   },

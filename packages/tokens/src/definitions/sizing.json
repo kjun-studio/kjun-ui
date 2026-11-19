@@ -447,6 +447,11 @@
       "quoteWidth": 88,
       "detailWidth": 56,
       "formLabelWidth": 96,
+      "actionWidth": 72,
+      "primaryActionWidth": 96,
+      "statLabelMaxWidth": 80,
+      "statValueMaxWidth": 160,
+      "statDescriptionMaxWidth": 96,
       "identityWidth": 128,
       "identityHeight": 20,
       "listAvatarSize": 36

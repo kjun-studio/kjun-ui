@@ -376,6 +376,8 @@
 .kjun-market-skeleton-identity > .kjun-skeleton { display: block; line-height: var(--_kjun-type-body-line); }
 .kjun-market-skeleton-identity > .kjun-skeleton + .kjun-skeleton { line-height: var(--_kjun-type-caption-line); }
 .kjun-market-skeleton-value { display: inline-block; max-width: 100%; vertical-align: middle; }
+/* Row toggles load as IconToggle xs squares under the header marks. */
+.kjun-market-actions .kjun-market-actions-mark .kjun-skeleton-block { border-radius: var(--_kjun-extension-icon-toggle-radii-xs); }
 
 /* Market tables fade their trailing edge while columns still overflow it, like the Native grid. */
 .kjun-table-scroll[data-fade-end] {

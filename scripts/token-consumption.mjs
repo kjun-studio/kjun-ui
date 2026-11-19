@@ -30,6 +30,9 @@ export const platformSpecific = {
   ...Object.fromEntries(['identityWidth', 'identityHeight'].map(key => ['extensions.skeleton.' + key, {
     excludes: ['react', 'vue3', 'native'], reason: 'Retired Vue 2 AssetIdentity loading adapter; current platforms render the supplied identity slot. Kept for token compatibility.',
   }])),
+  ...Object.fromEntries(['marketTable.actionSkeletonWidth', 'marketTable.headerSkeletonHeight', 'financial.priceSkeletonHeight'].map(path => ['extensions.' + path, {
+    excludes: ['react', 'vue3', 'native'], reason: 'Retired single action bar of the market table skeleton; it now draws the header marks and IconToggle xs squares. Kept for token compatibility.',
+  }])),
   ...Object.fromEntries(['titleSkeletonHeight', 'badgeSkeletonWidth', 'fieldSkeletonHeight', 'actionSkeletonWidth', 'actionSkeletonHeight'].map(key => ['extensions.tableCard.' + key, {
     excludes: ['react', 'vue3', 'native'], reason: 'Retired Vue 2 section-aware table loading cards; current platforms compose the general Card skeleton. Kept for token compatibility.',
   }])),
