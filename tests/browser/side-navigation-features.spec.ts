@@ -66,10 +66,15 @@ for (const platform of ['react', 'vue3']) {
     await parent.click();
     const panel = page.getByRole('dialog', { name: '프로젝트' });
     await expect(panel).toBeVisible();
-    // Top edges line up, and the title starts where the rows' names start.
+    // The popup slides in sideways; measure once its open transition has settled.
+    await panel.evaluate(el => Promise.allSettled(el.ownerDocument.getAnimations().map(animation => animation.finished)));
+    // Top edges line up, and the title starts where the rows' names start (both read in the same frame).
     expect(Math.abs((await panel.boundingBox())!.y - (await parent.boundingBox())!.y)).toBeLessThanOrEqual(1);
-    const title = await panel.locator('.kjun-popover-header').evaluate(el => { const range = document.createRange(); range.selectNodeContents(el); return range.getBoundingClientRect().x; });
-    expect(Math.round(title)).toBe(Math.round((await panel.locator('.kjun-side-navigation-label').first().boundingBox())!.x));
+    const [title, label] = await panel.evaluate(el => {
+      const range = document.createRange(); range.selectNodeContents(el.querySelector('.kjun-popover-header')!);
+      return [range.getBoundingClientRect().x, el.querySelector('.kjun-side-navigation-label')!.getBoundingClientRect().x];
+    });
+    expect(Math.round(title)).toBe(Math.round(label));
   });
 
   test(`${platform}: SideNavigation collapsedParent="flyout" shows a collapsed parent's children beside it and keeps the column narrow`, async ({ page }) => {

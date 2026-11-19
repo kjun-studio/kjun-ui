@@ -241,6 +241,8 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(page.getByText('여기서 색을 고르세요', { exact: true })).toBeVisible();
       await expect(hex(page)).toHaveAttribute('placeholder', 'RRGGBB');
       if (web) await expect(area(page).locator('.kjun-color-thumb')).toHaveCount(0);
+      // The panel moves focus to the area two frames after it opens; keys go there once it lands.
+      await expect(area(page)).toBeFocused();
       await page.keyboard.press('ArrowRight');
       await expect(page.getByText('여기서 색을 고르세요', { exact: true })).toHaveCount(0);
       if (web) await expect(area(page).locator('.kjun-color-thumb')).toHaveCount(1);

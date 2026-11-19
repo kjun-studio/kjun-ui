@@ -52,7 +52,8 @@ for (const platform of ['vue3', 'react', 'native']) {
     await expect(page.locator('.tokens-content')).not.toContainText('extensions.');
     // Each section shows its values: a role type scale, breakpoint table and motion durations.
     await expect(page.locator('.token-index li')).toHaveCount(10);
-    await expect(page.locator('#typography tbody tr')).toHaveCount(10);
+    // One row per type role shown: 14 since labelStrong, captionStrong, bodyLong (8ea523e4) and bodyLg (b2d75c1d).
+    await expect(page.locator('#typography tbody tr')).toHaveCount(14);
     await expect(page.locator('#typography iframe')).toHaveCount(0);
     await expect(page.locator('#responsive tbody tr')).toHaveCount(Object.keys(tokens.breakpoints).length);
     await expect(page.locator('#motion .token-motion-scale code')).toHaveText(['motion.instant', 'motion.quick', 'motion.fast', 'motion.normal']);

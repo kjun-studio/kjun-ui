@@ -79,7 +79,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     const disabled = label(page, '설정');
     const point = await rect(disabled); await page.mouse.click(point.x + point.width / 2, point.y + point.height / 2);
     await expect(page.getByTestId('events')).toHaveText('activity');
-    await configure(page, { acceptNavigation: true }); await activity.press('Enter');
+    // configure() clears the event log; once it reads empty the fixture has re-rendered with the new handler.
+    await configure(page, { acceptNavigation: true }); await expect(page.getByTestId('events')).toHaveText('');
+    await activity.press('Enter');
     await expect(activity).toHaveAttribute('aria-current', 'page');
     await configure(page, { safeAreaBottom: 24 }); await expect(nav(page)).toHaveCSS('height', '84px');
     await configure(page, { keyboardVisible: true }); await expect(nav(page)).toHaveCount(0);
