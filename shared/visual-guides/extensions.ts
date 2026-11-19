@@ -92,7 +92,7 @@ export const extensions: Record<string, GuideAuthor> = {
   },
   KjunTimePicker: {
     values: { time: "09:30" },
-    parts: [p("시 칸", "숫자를 입력하거나 ↑↓로 시를 바꾸고, 누르면 시 열에 초점을 둔 휠이 열립니다.", '[aria-label="알림 시각 시"]'), p("분 칸", "분 간격에 맞는 분을 입력하거나, 누르면 분 열에 초점을 둔 휠이 열립니다.", '[aria-label="알림 시각 분"]'), p("지우기", "값이 있을 때 시계 아이콘 자리에 나타나며, 값을 null로 바꾸고 첫 구간으로 초점을 옮깁니다.", '[aria-label="알림 시각 지우기"]', true)], related: "input-settings",
+    parts: [p("시 칸", "숫자를 입력하거나 ↑↓로 시를 바꾸고, 누르면 시 열에 초점을 둔 휠이 열립니다.", '[aria-label="알림 시각 시"], [aria-labelledby$="-segment-0"]'), p("분 칸", "분 간격에 맞는 분을 입력하거나, 누르면 분 열에 초점을 둔 휠이 열립니다.", '[aria-label="알림 시각 분"], [aria-labelledby$="-segment-1"]'), p("지우기", "값이 있을 때 시계 아이콘 자리에 나타나며, 값을 null로 바꾸고 첫 구간으로 초점을 옮깁니다.", '[aria-label="알림 시각 지우기"]', true)], related: "input-settings",
     states: [{ id: "seconds", label: "초 선택", description: "precision=second로 초 선택 영역을 추가합니다.", settings: { precision: "second" }, values: { time: "09:30:15" } }, { id: "bounded", label: "시각 범위", description: "09:30:15~18:30:45 사이의 시각만 선택합니다.", settings: { precision: "second", bounded: true } }, { id: "inline", label: "인라인 휠", description: "layout=inline은 필드 없이 휠을 펼쳐 두고 열이 멈출 때마다 값을 바꿉니다.", settings: { layout: "inline", minuteStep: 5 }, values: { time: "09:30" } }],
   },
   KjunZoneGauge: {
