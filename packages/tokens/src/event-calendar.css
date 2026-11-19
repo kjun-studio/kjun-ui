@@ -5,7 +5,7 @@
 .kjun-event-calendar-grid { isolation: isolate; --_kjun-slide-sign: 1; --_kjun-slide-distance: var(--_kjun-extension-calendar-slide-distance); }
 .kjun-event-calendar-grid[data-direction="-1"] { --_kjun-slide-sign: -1; }
 .kjun-event-calendar[data-swipeable] .kjun-event-calendar-grid { touch-action: pan-y; }
-/* Full-width cell: top padding, number, space, marks row, bottom padding add up to the event day height. */
+/* Full-width cell: top padding, number, space, the bar's lane, space, marks row and bottom padding add up to the event day height. */
 .kjun-calendar-day[data-density="comfortable"] {
   box-sizing: border-box; flex-direction: column; justify-content: flex-start; gap: var(--_kjun-extension-calendar-event-mark-space);
   max-width: none; aspect-ratio: auto; height: var(--_kjun-extension-calendar-event-day-height);
@@ -17,23 +17,31 @@
   left: var(--_kjun-extension-calendar-event-selected-inset); right: var(--_kjun-extension-calendar-event-selected-inset);
   border-radius: var(--_kjun-extension-calendar-day-radius); background: transparent;
 }
-.kjun-calendar-day[data-density="comfortable"]:hover:not(:disabled, [aria-disabled="true"]):not([data-selected])::before { background: var(--_kjun-color-hover); }
+/* Hover only where a pointer hovers: a tap, swipe or hold on a touch screen leaves no grey square on the day it touched. */
+@media (hover: hover) {
+  .kjun-calendar-day[data-density="comfortable"]:hover:not(:disabled, [aria-disabled="true"]):not([data-selected])::before { background: var(--_kjun-color-hover); }
+}
 .kjun-calendar-day[data-density="comfortable"][data-selected]::before { background: var(--_kjun-color-active); }
 .kjun-calendar-day[data-density="comfortable"] :is(.kjun-calendar-day-number, .kjun-event-calendar-marks) { position: relative; z-index: 1; }
+/* The marks row sits under the bar's lane, at the same height whether or not the day has a bar. */
+.kjun-calendar-day[data-density="comfortable"] .kjun-event-calendar-marks { margin-top: calc(var(--_kjun-extension-calendar-event-span-height) + var(--_kjun-extension-calendar-event-mark-space)); }
 .kjun-calendar-day[data-density="comfortable"][data-selected] .kjun-calendar-day-number { font-weight: var(--_kjun-extension-calendar-selected-weight); }
 .kjun-calendar-day[data-density="comfortable"][data-today] .kjun-calendar-day-number { background: var(--_kjun-color-brand); color: var(--_kjun-color-on-brand); }
-/* Past days fade the number and marks only; the span bar keeps its color. Outside days win over past. */
+/* Past days fade the number and marks only; the span bar keeps its color (outside days fade it, below). Outside days win over past. */
 .kjun-calendar-day[data-past]:not([data-outside]) :is(.kjun-calendar-day-number, .kjun-event-calendar-marks) { opacity: var(--_kjun-extension-calendar-past-opacity); }
 .kjun-calendar-day[data-past][data-tone]:not([data-outside]) .kjun-calendar-day-number { opacity: var(--_kjun-extension-calendar-past-accent-opacity); }
 .kjun-calendar-day[data-outside] .kjun-event-calendar-marks { opacity: var(--_kjun-extension-calendar-outside-opacity); }
+/* An outside day's bar steps back with the past fade, still readable where a span runs on into the next month. */
+.kjun-calendar-day[data-outside] .kjun-event-calendar-span { opacity: var(--_kjun-extension-calendar-past-opacity); }
 /* Marks row: an icon first, then up to three dots, centered in the fixed-height row. */
 .kjun-event-calendar-marks { display: flex; align-items: center; justify-content: center; flex: none; gap: var(--_kjun-extension-calendar-event-dot-gap); height: var(--_kjun-extension-calendar-event-mark-height); }
 .kjun-event-calendar-dot { flex: none; width: var(--_kjun-extension-calendar-event-dot-size); height: var(--_kjun-extension-calendar-event-dot-size); border-radius: 50%; }
 .kjun-event-calendar-icon { flex: none; width: var(--_kjun-extension-calendar-event-icon-size); height: var(--_kjun-extension-calendar-event-icon-size); }
-/* The span bar crosses the full cell width in the bottom padding zone (padding minus bar height from the cell bottom), above the selected square, clear of the marks row.
+/* The span bar crosses the full cell width right under the number, one mark space below it, above the selected square; it reads as the date's underline and the marks row follows it.
    A piece that continues reaches one overlap under the next cell's piece, so fractional widths leave no hairline; an end piece stops at its cell's edge. */
 .kjun-event-calendar-span {
-  position: absolute; z-index: 2; left: 0; right: calc(0px - var(--_kjun-extension-calendar-event-span-overlap)); bottom: calc(var(--_kjun-extension-calendar-event-day-padding-bottom) - var(--_kjun-extension-calendar-event-span-height));
+  position: absolute; z-index: 2; left: 0; right: calc(0px - var(--_kjun-extension-calendar-event-span-overlap));
+  top: calc(var(--_kjun-extension-calendar-event-day-padding-top) + var(--_kjun-extension-calendar-today-pill-height) + var(--_kjun-extension-calendar-event-mark-space));
   height: var(--_kjun-extension-calendar-event-span-height);
 }
 .kjun-event-calendar-span[data-start] { border-top-left-radius: var(--_kjun-extension-calendar-event-span-corner); border-bottom-left-radius: var(--_kjun-extension-calendar-event-span-corner); }

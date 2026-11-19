@@ -30,6 +30,12 @@ const role = (page: Page, name: string) => page.evaluate(name => {
 // React Native Web's responder system reads touch (and mouse) events, not pointer events: Native gets touch events, which, as a browser sends them,
 // all target the element the finger went down on. (Its mouse path loses a drag that crosses into a sibling cell: RN Web finds no common ancestor there.)
 async function drag(cell: Locator, dx: number, dy: number, pointerType = 'touch') {
+  if (native && pointerType === 'mouse') {
+    // React Native Web's responder reads mouse events, so a real mouse drag.
+    const box = (await cell.boundingBox())!, x = box.x + box.width / 2, y = box.y + box.height / 2, mouse = cell.page().mouse;
+    await mouse.move(x, y); await mouse.down(); await mouse.move(x + dx / 2, y + dy / 2); await mouse.move(x + dx, y + dy); await mouse.up();
+    return;
+  }
   if (native) {
     await cell.evaluate((el, { dx, dy }) => {
       const box = el.getBoundingClientRect(), x = box.x + box.width / 2, y = box.y + box.height / 2;
@@ -159,6 +165,15 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(bar('2026-11-16')).toHaveAttribute('data-end', /.*/);
       await expect(bar('2026-11-17')).toHaveCount(0);
       expect(Math.round((await bar('2026-11-13').boundingBox())!.height)).toBe(5);
+      // The bar is the date's underline: 1px under the number's pill, and the marks row follows it at the same height with or without a bar.
+      const top = async (target: Locator, cell: Locator) => (await target.boundingBox())!.y - (await cell.boundingBox())!.y;
+      const barCell = day(page, 'month', '2026-11-13');
+      expect(Math.round(await top(bar('2026-11-13'), barCell))).toBe(31);
+      const marksOf = (iso: string) => day(page, 'month', iso).locator(part('.kjun-event-calendar-marks', 'marks'));
+      expect(Math.round(await top(marksOf('2026-11-11'), busy))).toBe(37);
+      expect(Math.round(await top(marksOf('2026-12-01'), day(page, 'month', '2026-12-01')))).toBe(37);
+      const bottom = await busy.evaluate(el => el.getBoundingClientRect().bottom), marksBottom = (await marksOf('2026-11-11').boundingBox())!;
+      expect(marksBottom.y + marksBottom.height).toBeLessThanOrEqual(bottom + 0.5);
       const edge = (iso: string) => bar(iso).evaluate(el => { const box = el.getBoundingClientRect(); return { left: box.left, right: box.right }; });
       // Neighbouring pieces touch or overlap, so fractional cell widths leave no hairline.
       expect((await edge('2026-11-13')).right).toBeGreaterThanOrEqual((await edge('2026-11-14')).left);
@@ -198,9 +213,10 @@ for (const platform of ['react', 'vue3', 'native']) {
       }
       // The last column's end piece stays inside the grid.
       expect((await box(bar('2026-11-14'))).right).toBeLessThanOrEqual((await box(grid(page, 'month'))).right + 0.5);
-      // An outside day keeps its bar at full strength while its number fades.
+      // An outside day's bar steps back to the past fade (0.45) while its number fades to 0.2; the bar stays joined.
       await expect(day(page, 'month', '2026-12-01')).toHaveAttribute('data-outside', /.*/);
-      expect(await opacity(bar('2026-12-01'))).toBe(1);
+      expect(await opacity(bar('2026-12-01'))).toBeCloseTo(0.45, 2);
+      expect(await opacity(bar('2026-11-30'))).toBe(1);
       expect(await opacity(pillOf(page, 'month', '2026-12-01'))).toBeCloseTo(0.2, 2);
       expect((await box(bar('2026-11-30'))).right).toBeGreaterThanOrEqual((await box(bar('2026-12-01'))).left);
     });
@@ -213,9 +229,8 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
 
     test('arrow keys cross the month and carry focus', async ({ page }) => {
-      test.skip(native, 'Native has no keyboard roving between days, as its date picker.');
       // Before any pick, today holds the only tab stop.
-      await expect(grid(page, 'month').locator('button[tabindex="0"]')).toHaveAttribute('data-iso', '2026-11-17');
+      await expect(grid(page, 'month').locator('[data-iso][tabindex="0"]')).toHaveAttribute('data-iso', '2026-11-17');
       await day(page, 'month', '2026-11-30').focus();
       await page.keyboard.press('ArrowRight');
       await expect(values(page)).toHaveText(/^2026-12\|/);
@@ -233,7 +248,6 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
 
     test('without a month listener the keys stay inside the month', async ({ page }) => {
-      test.skip(native, 'Native has no keyboard roving between days.');
       const last = day(page, 'unlistened', '2026-11-30');
       await last.focus();
       for (const key of ['ArrowRight', 'PageDown']) {
@@ -247,7 +261,6 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
 
     test('going back slides the other way', async ({ page }) => {
-      test.skip(native, 'Moved by keys here; Native has no keyboard roving.');
       await grid(page, 'month').evaluate(el => {
         const seen: (string | null)[] = (window as any).directions = [];
         new MutationObserver(() => seen.push(el.getAttribute('data-direction'))).observe(el, { attributes: true, attributeFilter: ['data-direction'] });
@@ -269,7 +282,6 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
 
     test('a parent that applies the month later still gets focus on the new day', async ({ page }) => {
-      test.skip(native, 'Focus follows keyboard movement, which Native does not have.');
       // 12-12 is the last of November's 42 cells; 12-19 is drawn only once December is.
       await day(page, 'deferred', '2026-12-12').focus();
       await page.keyboard.press('ArrowDown');
@@ -285,13 +297,11 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.waitForTimeout(300);
       await expect(grid(page, 'month')).not.toHaveAttribute('data-slide');
       await expect(values(page)).toHaveText('2026-11|2026-11-30||');
-      // The web ignores mouse drags; Native has no mouse on devices, and its web preview takes a mouse drag as a finger.
-      if (!native) {
-        await drag(middleCell(page, 'month'), -60, 0, 'mouse');
-        await page.waitForTimeout(300);
-        await expect(grid(page, 'month')).not.toHaveAttribute('data-slide');
-        await expect(values(page)).toHaveText('2026-11|2026-11-30||');
-      }
+      // Mouse drags never change the month, Native's web preview included.
+      await drag(middleCell(page, 'month'), -60, 0, 'mouse');
+      await page.waitForTimeout(300);
+      await expect(grid(page, 'month')).not.toHaveAttribute('data-slide');
+      await expect(values(page)).toHaveText('2026-11|2026-11-30||');
       await drag(middleCell(page, 'month'), -60, 0);
       await expect(values(page)).toHaveText('2026-12|2026-11-30||');
       await expect(day(page, 'month', '2026-12-15')).not.toHaveAttribute('data-outside');
@@ -321,11 +331,15 @@ for (const platform of ['react', 'vue3', 'native']) {
     test('long press: touch hold, right click and Shift+Enter; the hold does not pick', async ({ page }) => {
       const cell = day(page, 'month', '2026-11-19');
       if (native) {
-        // Native offers the long press as an accessibility action on devices; its web preview has no right click or Shift+Enter for it.
+        // Native offers the long press as an accessibility action on devices; its web preview also takes Shift+Enter, but no right click.
+        await expect(cell).toHaveAttribute('aria-keyshortcuts', 'Shift+Enter');
         await mouseHold(cell);
         await expect(values(page)).toHaveText('2026-11|2026-11-30||2026-11-19');
+        await day(page, 'month', '2026-11-25').focus();
+        await page.keyboard.press('Shift+Enter');
+        await expect(values(page)).toHaveText('2026-11|2026-11-30||2026-11-25');
         await day(page, 'month', '2026-11-26').click();
-        await expect(values(page)).toHaveText('2026-11|2026-11-30|2026-11-26|2026-11-19');
+        await expect(values(page)).toHaveText('2026-11|2026-11-30|2026-11-26|2026-11-25');
         return;
       }
       await expect(cell).toHaveAttribute('aria-keyshortcuts', 'Shift+Enter');
@@ -366,11 +380,10 @@ for (const platform of ['react', 'vue3', 'native']) {
         ['2026-11-29', '2026-11-30', '2026-12-01', '2026-12-02', '2026-12-03', '2026-12-04', '2026-12-05']);
       await expect(grid(page, 'week').locator('[data-outside]')).toHaveCount(0);
       await expect(grid(page, 'week').locator('[aria-pressed="true"]')).toHaveCount(0);
-      // A week across two months names both.
-      await expect(grid(page, 'week')).toHaveAttribute('aria-label', '2026년 11월 – 2026년 12월');
+      // A week is named by its first and last day; across two months both months show.
+      await expect(grid(page, 'week')).toHaveAttribute('aria-label', '2026년 11월 29일 – 12월 5일');
       expect(await opacity(pillOf(page, 'week', '2026-12-01'))).toBe(1);
       expect(Math.round((await day(page, 'week', '2026-12-01').boundingBox())!.height)).toBe(49);
-      if (native) return; // No keyboard roving on Native.
       // Arrow keys past the week's end ask for the next week by its first day.
       await day(page, 'week', '2026-12-05').focus();
       await page.keyboard.press('ArrowRight');

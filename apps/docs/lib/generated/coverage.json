@@ -1073,7 +1073,7 @@
       "title": "EventCalendar",
       "docs": "/components/event-calendar",
       "category": "data-display",
-      "differences": "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다.",
+      "differences": "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. Native 웹 미리보기도 웹과 같은 키보드 이동과 Shift+Enter를 받고 마우스 끌기는 무시합니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다.",
       "platforms": {
         "vue3": {
           "status": "implemented",

@@ -1,7 +1,7 @@
 import { tokens } from "@kjun-ui/tokens";
-import { addDays, addMonths, dateLabel, parseDate, todayIso, weekdayOf } from "./calendar";
+import { addDays, addMonths, calendarDays, dateLabel, parseDate, todayIso, weekdayOf } from "./calendar";
 import type { CalendarDay, WeekStart } from "./calendar";
-import { defaultMessageScope } from "./messages";
+import { calendarLabels, defaultMessageScope } from "./messages";
 import type { KjunMessageScope } from "./messages";
 
 // Model of the event calendar (month and week) shared by React, Vue 3 and Native. Pure: no react import here.
@@ -29,6 +29,30 @@ export const weekDays = (weekStartIso: string, today = todayIso()): CalendarDay[
     selected: false, rangeStart: false, rangeEnd: false, inRange: false, limited: false,
   };
 });
+
+// A period key is "YYYY-MM" for a month or the week's first day ("YYYY-MM-DD") for a week.
+/** Whether a day belongs to the period shown (outside days of a month do not). */
+export const withinPeriod = (iso: string, key: string) => key.length === 7 ? iso.startsWith(key + "-") : iso >= key && iso <= addDays(key, 6);
+/** The days drawn for a period: six fixed weeks for a month, seven days for a week. */
+export function periodDays(key: string, today: string, weekStart: WeekStart): CalendarDay[] {
+  if (key.length !== 7) return weekDays(key, today);
+  const [year, month] = key.split("-").map(Number);
+  return calendarDays(year, month - 1, { today, weekStart, fixedWeeks: true });
+}
+/** The grid's name: the month ("2026년 11월"), or a week's first and last day ("2026년 11월 16일 – 22일"). */
+export function periodTitle(key: string, scope: KjunMessageScope = defaultMessageScope) {
+  const first = parseDate(key.length === 7 ? key + "-01" : key)!;
+  if (key.length === 7) return calendarLabels(first.year, first.month, scope).title;
+  const last = parseDate(addDays(key, 6))!;
+  if (scope.intl) {
+    const format = new Intl.DateTimeFormat(scope.intl, { year: "numeric", month: "long", day: "numeric" });
+    const from = new Date(first.year, first.month, first.day), to = new Date(last.year, last.month, last.day);
+    // Runtimes without formatRange (older Hermes) join the two dates.
+    const range = (format as { formatRange?: (from: Date, to: Date) => string }).formatRange;
+    return typeof range === "function" ? range.call(format, from, to) : format.format(from) + " – " + format.format(to);
+  }
+  return scope.messages.weekTitle(first.year, first.month + 1, first.day, last.year, last.month + 1, last.day);
+}
 
 /** What a span draws on one day: null outside it; rounded at the span's ends and at the week's edges (column 0 and 6). */
 export function spanSegment(span: DaySpan<unknown>, iso: string, column: number) {

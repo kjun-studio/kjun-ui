@@ -20,8 +20,10 @@ export interface CalendarDayCellProps {
   /** Picker: today inside a range band shows a bare brand number instead of the pill. */
   inRangeToday?: boolean;
   marks?: DayMarks<ColorValue>; column?: number;
-  /** Web picker: the roving tab stop, 0 on the focused day. */
+  /** Web: the roving tab stop, 0 on the focused day. */
   tabIndex?: 0 | -1;
+  /** Web: the keyboard long press, e.g. "Shift+Enter". */
+  keyShortcuts?: string;
   onPress: () => void; onLongPress?: () => void; longPressLabel?: string;
 }
 
@@ -31,7 +33,7 @@ const data = (set: Record<string, string | number | boolean | undefined>) => Pla
 const longPress = "longpress";
 
 export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim, past = false, inRangeToday = false, marks, column = 0,
-  onPress, onLongPress, longPressLabel, tabIndex }: CalendarDayCellProps) {
+  onPress, onLongPress, longPressLabel, tabIndex, keyShortcuts }: CalendarDayCellProps) {
   const { colors, fontFamily, numericFontFamily } = useKjunStyles();
   const event = emphasis === "event";
   const selected = day.selected;
@@ -56,12 +58,13 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
         past: past || undefined, tone: tone === "text" ? undefined : tone, inRange: day.inRange || undefined,
         rangeStart: day.rangeStart || undefined, rangeEnd: day.rangeEnd || undefined, limited: day.limited || undefined })}
       {...(Platform.OS === "web" && tabIndex != null ? { tabIndex } : {})}
+      {...(Platform.OS === "web" && keyShortcuts ? { "aria-keyshortcuts": keyShortcuts } : {})}
       {...actions}
       disabled={day.blocked} onPress={onPress} onLongPress={onLongPress} delayLongPress={onLongPress ? calendar.longPressDelay : undefined}
       // Android draws later-added fills with square corners, so every fill below exists from the start and only its colour changes.
       collapsable={false}
       style={({ pressed }) => event
-        ? { flex: 1, height: calendar.eventDayHeight, paddingTop: calendar.eventDayPaddingTop, alignItems: "center", borderRadius: calendar.dayRadius }
+        ? { flex: 1, height: calendar.eventDayHeight, paddingTop: calendar.eventDayPaddingTop, paddingBottom: calendar.eventDayPaddingBottom, alignItems: "center", borderRadius: calendar.dayRadius }
         : { width: calendar.daySize, height: calendar.daySize, borderRadius: calendar.dayRadius, alignItems: "center", justifyContent: "center",
           backgroundColor: selected ? colors.brand : pressed && !day.blocked ? colors.hover : "transparent" }}>
       {({ pressed }) => <>
@@ -79,7 +82,9 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
         </View>
         {event && (icon || dots.length > 0) && (
           <View pointerEvents="none" {...data({ kjunPart: "marks" })} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center",
-            gap: calendar.eventDotGap, height: calendar.eventMarkHeight, marginTop: calendar.eventMarkSpace, opacity: dim }}>
+            gap: calendar.eventDotGap, height: calendar.eventMarkHeight, opacity: dim,
+            // Under the bar's lane, at the same height whether or not the day has a bar.
+            marginTop: calendar.eventMarkSpace + calendar.eventSpanHeight + calendar.eventMarkSpace }}>
             {icon ? <View {...data({ kjunPart: "icon" })} style={{ width: calendar.eventIconSize, height: calendar.eventIconSize }}>
               <KjunIcon name={icon.name} filled size={calendar.eventIconSize} color={icon.color} />
             </View> : null}
@@ -87,10 +92,12 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
               style={{ width: calendar.eventDotSize, height: calendar.eventDotSize, borderRadius: calendar.eventDotSize / 2, backgroundColor: color }} />)}
           </View>
         )}
-        {/* The span bar crosses the whole cell, above the square, in the bottom padding; a continuing piece reaches one overlap under the next cell, an end piece stops at its edge. It never fades. */}
+        {/* The span bar crosses the whole cell right under the number, above the square; a continuing piece reaches one overlap under the next cell, an end piece stops at its edge.
+            It keeps its colour on past days and steps back to the past fade on outside days. */}
         {span && segment ? <View pointerEvents="none" {...data({ kjunPart: "span", start: segment.start || undefined, end: segment.end || undefined })}
-          style={{ position: "absolute", left: 0, right: segment.end ? 0 : -calendar.eventSpanOverlap, bottom: calendar.eventDayPaddingBottom - calendar.eventSpanHeight,
-            height: calendar.eventSpanHeight, backgroundColor: span.color,
+          style={{ position: "absolute", left: 0, right: segment.end ? 0 : -calendar.eventSpanOverlap,
+            top: calendar.eventDayPaddingTop + calendar.todayPillHeight + calendar.eventMarkSpace, height: calendar.eventSpanHeight, backgroundColor: span.color,
+            opacity: day.outside ? calendar.pastOpacity : undefined,
             borderTopLeftRadius: segment.start ? calendar.eventSpanCorner : 0, borderBottomLeftRadius: segment.start ? calendar.eventSpanCorner : 0,
             borderTopRightRadius: segment.end ? calendar.eventSpanCorner : 0, borderBottomRightRadius: segment.end ? calendar.eventSpanCorner : 0 }} /> : null}
       </>}

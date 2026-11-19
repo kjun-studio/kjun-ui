@@ -64,6 +64,10 @@ export const kjunMessagesEn: KjunMessages = {
   datePlaceholder: "Select date",
   clearDate: "Clear date",
   calendarTitle: (year: number, month: number) => `${months[month - 1]} ${year}`,
+  /** A week of the event calendar: the shared month and year are written once. */
+  weekTitle: (y1: number, m1: number, d1: number, y2: number, m2: number, d2: number) =>
+    y1 !== y2 ? `${months[m1 - 1]} ${d1}, ${y1} – ${months[m2 - 1]} ${d2}, ${y2}`
+      : m1 !== m2 ? `${months[m1 - 1]} ${d1} – ${months[m2 - 1]} ${d2}, ${y2}` : `${months[m1 - 1]} ${d1} – ${d2}, ${y2}`,
   weekdays: "Sun,Mon,Tue,Wed,Thu,Fri,Sat",
   previousMonth: "Previous month",
   nextMonth: "Next month",

@@ -4,10 +4,11 @@ import { build } from 'esbuild';
 import { readFile } from 'node:fs/promises';
 
 // event-calendar.ts reads the message folder, which Node cannot import directly, so the test bundles it.
-const output = await build({ entryPoints: ['shared/package-runtime/event-calendar.ts'], bundle: true, write: false, format: 'esm', platform: 'node',
+const output = await build({ stdin: { contents: "export * from './shared/package-runtime/event-calendar.ts'; export { kjunMessagesEn } from './shared/package-runtime/messages';", resolveDir: '.', loader: 'ts' }, bundle: true, write: false, format: 'esm', platform: 'node',
   alias: { '@kjun-ui/tokens': './packages/tokens/src/index.ts' }, define: { 'process.env.NODE_ENV': '"production"' } });
 const {
   resolveMonth, resolveWeek, stepMonth, weekDays, spanSegment, visibleDots, swipeStep, dayTone, holidayOf, isPast, eventDayLabel, slideStart, slideNext,
+  withinPeriod, periodDays, periodTitle, kjunMessagesEn,
 } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 
 test('month and week fall back to today when malformed', () => {
@@ -101,4 +102,29 @@ test('day cells carry no ring and the event calendar css ships', async () => {
     assert.ok(!bad.test(rule.body), 'no shadow or border (a border: 0 reset is allowed): ' + rule.selector);
   assert.ok(!/:has\(/.test(event));
   assert.ok(/prefers-reduced-motion/.test(event) && /touch-action:\s*pan-y/.test(event));
+});
+
+test('a period: which days it holds, the days it draws and its name', () => {
+  assert.ok(withinPeriod('2026-11-30', '2026-11') && !withinPeriod('2026-12-01', '2026-11'));
+  assert.ok(withinPeriod('2026-12-05', '2026-11-29') && !withinPeriod('2026-12-06', '2026-11-29') && !withinPeriod('2026-11-28', '2026-11-29'));
+  assert.equal(periodDays('2026-11', '2026-11-17', 0).length, 42);
+  assert.deepEqual(periodDays('2026-11-29', '2026-11-17', 0).map(day => day.iso), ['2026-11-29', '2026-11-30', '2026-12-01', '2026-12-02', '2026-12-03', '2026-12-04', '2026-12-05']);
+  assert.equal(periodTitle('2026-11'), '2026년 11월');
+  assert.equal(periodTitle('2026-11-15'), '2026년 11월 15일 – 21일');
+  assert.equal(periodTitle('2026-11-29'), '2026년 11월 29일 – 12월 5일');
+  assert.equal(periodTitle('2026-12-27'), '2026년 12월 27일 – 2027년 1월 2일');
+  const en = { messages: kjunMessagesEn, overrides: {}, language: 'en' };
+  assert.equal(periodTitle('2026-11-15', en), 'November 15 – 21, 2026');
+  assert.equal(periodTitle('2026-11-29', en), 'November 29 – December 5, 2026');
+  assert.equal(periodTitle('2026-12-27', en), 'December 27, 2026 – January 2, 2027');
+  // With an Intl locale the range is the runtime's own.
+  const intl = periodTitle('2026-11-15', { ...en, intl: 'en-US' });
+  assert.match(intl, /November 15\s*–\s*21, 2026/);
+});
+
+test('the hover square shows only where a pointer hovers', async () => {
+  const css = (await readFile('packages/tokens/src/event-calendar.css', 'utf8')).replace(/\/\*[\s\S]*?\*\//g, '');
+  const hover = /:hover/g, media = css.indexOf('@media (hover: hover)');
+  assert.ok(media >= 0);
+  for (const match of css.matchAll(hover)) assert.ok(match.index > media, 'every :hover sits inside @media (hover: hover)');
 });

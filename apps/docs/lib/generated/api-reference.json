@@ -40929,7 +40929,7 @@
             "required": false,
             "default": "—",
             "description": "v-model:week. Week view: any day of the week shown, \"YYYY-MM-DD\" (this week when missing); changes ask with the week's first day.",
-            "summary": "한 주 보기에서 보여 줄 주입니다. 그 주의 아무 날(YYYY-MM-DD)이며 weekStart에 맞춰 그 주의 첫날로 정리하고, 없으면 이번 주입니다. 제어 값입니다.",
+            "summary": "한 주 보기에서 보여 줄 주입니다. 그 주의 아무 날(YYYY-MM-DD)이며 weekStart에 맞춰 그 주의 첫날로 정리하고, 없으면 이번 주입니다. 제어 값입니다. 날짜 칸 묶음은 그 주의 첫날과 끝날로 읽습니다(예: 2026년 11월 29일 – 12월 5일).",
             "source": "packages/vue3/src/event-calendar.tsx"
           },
           {
@@ -41052,7 +41052,7 @@
               },
               {
                 "label": "막대",
-                "text": "칸을 가로지르는 높이 5px 막대이며 날마다 spans의 첫 항목만 그립니다. 컴포넌트는 이웃 날을 살피지 않으므로, 일정이 겹쳐도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다."
+                "text": "숫자 바로 아래(1px)에서 칸을 가로지르는 높이 5px 막대이고 점·아이콘은 그 아래 줄에 놓입니다. 다른 달 날짜에서는 투명도 0.45로 흐립니다. 날마다 spans의 첫 항목만 그립니다. 컴포넌트는 이웃 날을 살피지 않으므로, 일정이 겹쳐도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다."
               },
               {
                 "label": "점·아이콘",
@@ -41096,7 +41096,7 @@
             "required": false,
             "default": "true",
             "description": "Fades the numbers and marks of days before today (default true); span bars keep their colour.",
-            "summary": "오늘 이전 날의 숫자와 점·아이콘을 투명도 0.45로 흐리게 합니다. 빨강·파랑 숫자는 0.7입니다. 여러 날 막대는 흐리게 하지 않습니다.",
+            "summary": "오늘 이전 날의 숫자와 점·아이콘을 투명도 0.45로 흐리게 합니다. 빨강·파랑 숫자는 0.7입니다. 여러 날 막대는 흐리게 하지 않습니다(다른 달 날짜의 막대만 0.45).",
             "source": "packages/vue3/src/event-calendar.tsx"
           },
           {
@@ -41132,7 +41132,7 @@
             "required": false,
             "default": "true",
             "description": "A horizontal touch swipe asks for the next or previous month or week (default true). Mouse drags never do.",
-            "summary": "가로로 넘겨 달(주)을 바꿉니다. 가로 이동이 20을 넘고 세로 이동의 2배보다 클 때만 잡아 바깥 세로 스크롤과 다투지 않습니다. 웹에서는 터치 입력만 잡고 마우스 끌기는 달을 바꾸지 않습니다. 달을 바꾸려는 요청은 onMonthChange·onWeekChange로 알립니다.",
+            "summary": "가로로 넘겨 달(주)을 바꿉니다. 가로 이동이 20을 넘고 세로 이동의 2배보다 클 때만 잡아 바깥 세로 스크롤과 다투지 않습니다. 웹(Native 웹 미리보기 포함)에서는 터치 입력만 잡고 마우스 끌기는 달을 바꾸지 않습니다. 달을 바꾸려는 요청은 onMonthChange·onWeekChange로 알립니다.",
             "source": "packages/vue3/src/event-calendar.tsx"
           }
         ],
@@ -41241,7 +41241,7 @@
         "slots": [],
         "ownership": [
           "완전 제어형입니다. 앱이 month(YYYY-MM)나 week(그 주의 아무 날)와 value(고른 날, 없으면 null)를 넘기고, 달·주를 바꾸려는 요청은 onMonthChange·onWeekChange로 받아 값을 바꿉니다. 이 콜백을 주지 않으면 화면은 바뀌지 않습니다. 제목(예: 2026년 11월)과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 화면이 제목 줄을 만들고 버튼으로 month를 바꿉니다. 날짜를 누르면 onSelect(iso)를 알리며 고르기를 풀지는 앱이 정합니다. 한 달 보기에서 다른 달 날짜를 누르면 onSelect 다음에 그 달로 onMonthChange를 부릅니다. marks(iso)는 날짜마다 spans·icon·dots·count를 돌려주고 표시 색은 앱이 정합니다. 여러 날 막대는 날마다 spans의 첫 항목만 그리므로, 일정이 겹치는 날에도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다. isHoliday(iso)는 true나 휴일 이름을 돌려주며 숫자를 danger 색으로 그리고 이름은 읽기 이름에 넣습니다. onDayLongPress를 주면 길게 누르기가 켜지고, 주지 않으면 관련 동작이 모두 꺼집니다.",
-          "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다."
+          "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. Native 웹 미리보기도 웹과 같은 키보드 이동과 Shift+Enter를 받고 마우스 끌기는 무시합니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다."
         ],
         "types": [
           {
@@ -41347,7 +41347,7 @@
             "required": false,
             "default": "—",
             "description": "Week view: any day of the week shown, \"YYYY-MM-DD\" (controlled; this week when missing).",
-            "summary": "한 주 보기에서 보여 줄 주입니다. 그 주의 아무 날(YYYY-MM-DD)이며 weekStart에 맞춰 그 주의 첫날로 정리하고, 없으면 이번 주입니다. 제어 값입니다.",
+            "summary": "한 주 보기에서 보여 줄 주입니다. 그 주의 아무 날(YYYY-MM-DD)이며 weekStart에 맞춰 그 주의 첫날로 정리하고, 없으면 이번 주입니다. 제어 값입니다. 날짜 칸 묶음은 그 주의 첫날과 끝날로 읽습니다(예: 2026년 11월 29일 – 12월 5일).",
             "source": "packages/react/src/event-calendar.tsx"
           },
           {
@@ -41470,7 +41470,7 @@
               },
               {
                 "label": "막대",
-                "text": "칸을 가로지르는 높이 5px 막대이며 날마다 spans의 첫 항목만 그립니다. 컴포넌트는 이웃 날을 살피지 않으므로, 일정이 겹쳐도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다."
+                "text": "숫자 바로 아래(1px)에서 칸을 가로지르는 높이 5px 막대이고 점·아이콘은 그 아래 줄에 놓입니다. 다른 달 날짜에서는 투명도 0.45로 흐립니다. 날마다 spans의 첫 항목만 그립니다. 컴포넌트는 이웃 날을 살피지 않으므로, 일정이 겹쳐도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다."
               },
               {
                 "label": "점·아이콘",
@@ -41514,7 +41514,7 @@
             "required": false,
             "default": "true",
             "description": "Fades the numbers and marks of days before today (default true); span bars keep their colour.",
-            "summary": "오늘 이전 날의 숫자와 점·아이콘을 투명도 0.45로 흐리게 합니다. 빨강·파랑 숫자는 0.7입니다. 여러 날 막대는 흐리게 하지 않습니다.",
+            "summary": "오늘 이전 날의 숫자와 점·아이콘을 투명도 0.45로 흐리게 합니다. 빨강·파랑 숫자는 0.7입니다. 여러 날 막대는 흐리게 하지 않습니다(다른 달 날짜의 막대만 0.45).",
             "source": "packages/react/src/event-calendar.tsx"
           },
           {
@@ -41550,7 +41550,7 @@
             "required": false,
             "default": "true",
             "description": "A horizontal touch swipe asks for the next or previous month or week (default true). Mouse drags never do.",
-            "summary": "가로로 넘겨 달(주)을 바꿉니다. 가로 이동이 20을 넘고 세로 이동의 2배보다 클 때만 잡아 바깥 세로 스크롤과 다투지 않습니다. 웹에서는 터치 입력만 잡고 마우스 끌기는 달을 바꾸지 않습니다. 달을 바꾸려는 요청은 onMonthChange·onWeekChange로 알립니다.",
+            "summary": "가로로 넘겨 달(주)을 바꿉니다. 가로 이동이 20을 넘고 세로 이동의 2배보다 클 때만 잡아 바깥 세로 스크롤과 다투지 않습니다. 웹(Native 웹 미리보기 포함)에서는 터치 입력만 잡고 마우스 끌기는 달을 바꾸지 않습니다. 달을 바꾸려는 요청은 onMonthChange·onWeekChange로 알립니다.",
             "source": "packages/react/src/event-calendar.tsx"
           },
           {
@@ -41576,7 +41576,7 @@
         "slots": [],
         "ownership": [
           "완전 제어형입니다. 앱이 month(YYYY-MM)나 week(그 주의 아무 날)와 value(고른 날, 없으면 null)를 넘기고, 달·주를 바꾸려는 요청은 onMonthChange·onWeekChange로 받아 값을 바꿉니다. 이 콜백을 주지 않으면 화면은 바뀌지 않습니다. 제목(예: 2026년 11월)과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 화면이 제목 줄을 만들고 버튼으로 month를 바꿉니다. 날짜를 누르면 onSelect(iso)를 알리며 고르기를 풀지는 앱이 정합니다. 한 달 보기에서 다른 달 날짜를 누르면 onSelect 다음에 그 달로 onMonthChange를 부릅니다. marks(iso)는 날짜마다 spans·icon·dots·count를 돌려주고 표시 색은 앱이 정합니다. 여러 날 막대는 날마다 spans의 첫 항목만 그리므로, 일정이 겹치는 날에도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다. isHoliday(iso)는 true나 휴일 이름을 돌려주며 숫자를 danger 색으로 그리고 이름은 읽기 이름에 넣습니다. onDayLongPress를 주면 길게 누르기가 켜지고, 주지 않으면 관련 동작이 모두 꺼집니다.",
-          "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다."
+          "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. Native 웹 미리보기도 웹과 같은 키보드 이동과 Shift+Enter를 받고 마우스 끌기는 무시합니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다."
         ],
         "types": [
           {
@@ -41682,7 +41682,7 @@
             "required": false,
             "default": "—",
             "description": "Week view: any day of the week shown, \"YYYY-MM-DD\" (controlled; this week when missing).",
-            "summary": "한 주 보기에서 보여 줄 주입니다. 그 주의 아무 날(YYYY-MM-DD)이며 weekStart에 맞춰 그 주의 첫날로 정리하고, 없으면 이번 주입니다. 제어 값입니다.",
+            "summary": "한 주 보기에서 보여 줄 주입니다. 그 주의 아무 날(YYYY-MM-DD)이며 weekStart에 맞춰 그 주의 첫날로 정리하고, 없으면 이번 주입니다. 제어 값입니다. 날짜 칸 묶음은 그 주의 첫날과 끝날로 읽습니다(예: 2026년 11월 29일 – 12월 5일).",
             "source": "packages/native/src/event-calendar.tsx"
           },
           {
@@ -41760,7 +41760,7 @@
             "details": [
               {
                 "label": "발생 시점",
-                "text": "날짜 칸을 길게 누를 때. 화면 낭독기에는 사용자 동작(길게 누르기)으로도 알려 줍니다"
+                "text": "날짜 칸을 길게 누를 때. 화면 낭독기에는 사용자 동작(길게 누르기)으로도 알려 주고, 웹 미리보기에서는 키보드 Shift+Enter로도 부릅니다"
               },
               {
                 "label": "전달값",
@@ -41805,7 +41805,7 @@
               },
               {
                 "label": "막대",
-                "text": "칸을 가로지르는 높이 5px 막대이며 날마다 spans의 첫 항목만 그립니다. 컴포넌트는 이웃 날을 살피지 않으므로, 일정이 겹쳐도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다."
+                "text": "숫자 바로 아래(1px)에서 칸을 가로지르는 높이 5px 막대이고 점·아이콘은 그 아래 줄에 놓입니다. 다른 달 날짜에서는 투명도 0.45로 흐립니다. 날마다 spans의 첫 항목만 그립니다. 컴포넌트는 이웃 날을 살피지 않으므로, 일정이 겹쳐도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다."
               },
               {
                 "label": "점·아이콘",
@@ -41849,7 +41849,7 @@
             "required": false,
             "default": "true",
             "description": "Fades the numbers and marks of days before today (default true); span bars keep their colour.",
-            "summary": "오늘 이전 날의 숫자와 점·아이콘을 투명도 0.45로 흐리게 합니다. 빨강·파랑 숫자는 0.7입니다. 여러 날 막대는 흐리게 하지 않습니다.",
+            "summary": "오늘 이전 날의 숫자와 점·아이콘을 투명도 0.45로 흐리게 합니다. 빨강·파랑 숫자는 0.7입니다. 여러 날 막대는 흐리게 하지 않습니다(다른 달 날짜의 막대만 0.45).",
             "source": "packages/native/src/event-calendar.tsx"
           },
           {
@@ -41885,7 +41885,7 @@
             "required": false,
             "default": "true",
             "description": "A horizontal swipe asks for the next or previous month or week (default true).",
-            "summary": "가로로 넘겨 달(주)을 바꿉니다. 가로 이동이 20을 넘고 세로 이동의 2배보다 클 때만 잡아 바깥 세로 스크롤과 다투지 않습니다. 웹에서는 터치 입력만 잡고 마우스 끌기는 달을 바꾸지 않습니다. 달을 바꾸려는 요청은 onMonthChange·onWeekChange로 알립니다.",
+            "summary": "가로로 넘겨 달(주)을 바꿉니다. 가로 이동이 20을 넘고 세로 이동의 2배보다 클 때만 잡아 바깥 세로 스크롤과 다투지 않습니다. 웹(Native 웹 미리보기 포함)에서는 터치 입력만 잡고 마우스 끌기는 달을 바꾸지 않습니다. 달을 바꾸려는 요청은 onMonthChange·onWeekChange로 알립니다.",
             "source": "packages/native/src/event-calendar.tsx"
           },
           {
@@ -41902,7 +41902,7 @@
         "slots": [],
         "ownership": [
           "완전 제어형입니다. 앱이 month(YYYY-MM)나 week(그 주의 아무 날)와 value(고른 날, 없으면 null)를 넘기고, 달·주를 바꾸려는 요청은 onMonthChange·onWeekChange로 받아 값을 바꿉니다. 이 콜백을 주지 않으면 화면은 바뀌지 않습니다. 제목(예: 2026년 11월)과 이전·다음 버튼은 컴포넌트가 그리지 않으므로 화면이 제목 줄을 만들고 버튼으로 month를 바꿉니다. 날짜를 누르면 onSelect(iso)를 알리며 고르기를 풀지는 앱이 정합니다. 한 달 보기에서 다른 달 날짜를 누르면 onSelect 다음에 그 달로 onMonthChange를 부릅니다. marks(iso)는 날짜마다 spans·icon·dots·count를 돌려주고 표시 색은 앱이 정합니다. 여러 날 막대는 날마다 spans의 첫 항목만 그리므로, 일정이 겹치는 날에도 같은 일정을 그 기간 내내 첫 항목으로 넘겨야 막대가 끊기지 않습니다. isHoliday(iso)는 true나 휴일 이름을 돌려주며 숫자를 danger 색으로 그리고 이름은 읽기 이름에 넣습니다. onDayLongPress를 주면 길게 누르기가 켜지고, 주지 않으면 관련 동작이 모두 꺼집니다.",
-          "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다."
+          "웹은 날짜 칸이 버튼이고 한 칸만 Tab 대상입니다. 화살표, Home·End, PageUp·PageDown으로 칸 사이를 옮기며 보이는 달(주)을 벗어나면 onMonthChange(onWeekChange)를 부르고 포커스가 따라갑니다. 길게 누르기는 터치로 길게 누르기, 마우스 오른쪽 클릭, 키보드 Shift+Enter이며 Enter는 날짜 고르기입니다. 터치 스와이프는 지원하지만 마우스 끌기는 달을 바꾸지 않습니다. Native는 눌러서 고르고 가로 스와이프로 달·주를 바꾸며, 길게 누르기를 화면 낭독기의 동작으로도 알립니다. Native 웹 미리보기도 웹과 같은 키보드 이동과 Shift+Enter를 받고 마우스 끌기는 무시합니다. 기기에서는 오늘 칸의 읽기 이름에 '오늘'이 붙습니다. Vue 3는 v-model(고른 날), v-model:month, v-model:week와 @select를 쓰고, 길게 누르기는 @day-long-press입니다. Native는 RN Web에서만 확인했습니다."
         ],
         "types": [
           {

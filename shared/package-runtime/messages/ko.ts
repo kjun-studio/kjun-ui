@@ -70,6 +70,9 @@ export const kjunMessagesKo = {
   datePlaceholder: "날짜 선택",
   clearDate: "날짜 지우기",
   calendarTitle: (year: number, month: number) => `${year}년 ${month}월`,
+  /** A week of the event calendar: the second date drops the year and month it shares with the first. */
+  weekTitle: (y1: number, m1: number, d1: number, y2: number, m2: number, d2: number) =>
+    `${y1}년 ${m1}월 ${d1}일 – ${y1 !== y2 ? `${y2}년 ${m2}월 ` : m1 !== m2 ? `${m2}월 ` : ""}${d2}일`,
   weekdays: "일,월,화,수,목,금,토",
   previousMonth: "이전 달",
   nextMonth: "다음 달",

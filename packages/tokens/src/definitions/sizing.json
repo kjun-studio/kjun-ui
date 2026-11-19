@@ -356,7 +356,7 @@
       "eventDayPaddingTop": { "$ref": "dimension.value4" },
       "eventMarkSpace": 1,
       "eventMarkHeight": { "$ref": "dimension.value12" },
-      "eventDayPaddingBottom": { "$ref": "dimension.value6" },
+      "eventDayPaddingBottom": 0,
       "eventDotSize": 5,
       "eventDotGap": { "$ref": "dimension.value3" },
       "eventIconSize": 11,

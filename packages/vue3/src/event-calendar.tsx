@@ -1,8 +1,8 @@
 import { useKjunMessageScope } from "./runtime/messages";
 import { calendarLabels } from "../../../shared/package-runtime/messages";
-import { addDays, calendarDays, moveDate, orderWeekdays, parseDate, todayIso, type CalendarDay, type WeekStart } from "../../../shared/package-runtime/calendar";
+import { addDays, moveDate, orderWeekdays, parseDate, todayIso, type CalendarDay, type WeekStart } from "../../../shared/package-runtime/calendar";
 import {
-  dayTone, eventDayLabel, holidayOf, isPast, resolveMonth, resolveWeek, spanSegment, stepMonth, swipeStep, visibleDots, weekDays,
+  dayTone, eventDayLabel, holidayOf, isPast, periodDays, periodTitle, resolveMonth, resolveWeek, spanSegment, stepMonth, swipeStep, visibleDots, withinPeriod as within,
   type DayMarks, type HolidayTest,
 } from "../../../shared/package-runtime/event-calendar";
 import { onBeforeUnmount, onMounted, onUpdated, ref, useId, type ExtractPublicPropTypes, type PropType } from "vue";
@@ -54,13 +54,6 @@ const kjunEventCalendarProps = {
 export type KjunEventCalendarProps = ExtractPublicPropTypes<typeof kjunEventCalendarProps>;
 
 const calendar = tokens.extensions.calendar;
-// A month key is "YYYY-MM"; a week key is the week's first day.
-const within = (iso: string, key: string) => key.length === 7 ? iso.startsWith(key + "-") : iso >= key && iso <= addDays(key, 6);
-function daysOf(key: string, today: string, weekStart: WeekStart): CalendarDay[] {
-  if (key.length !== 7) return weekDays(key, today);
-  const [year, month] = key.split("-").map(Number);
-  return calendarDays(year, month - 1, { today, weekStart, fixedWeeks: true });
-}
 const isoOf = (target: EventTarget | null) => (target as Element | null)?.closest?.<HTMLElement>("[data-iso]")?.dataset.iso;
 interface TouchTrack { id: number; x: number; y: number; timer?: ReturnType<typeof setTimeout>; swiped: boolean; held: boolean }
 
@@ -187,12 +180,11 @@ export const KjunEventCalendar = defineComponent({
     return () => {
       const today = todayIso(), weekStart = props.weekStart, value = props.modelValue;
       const shown = slide.value.shown, phase = slide.value.phase;
-      const days = daysOf(shown, today, weekStart);
+      const days = periodDays(shown, today, weekStart);
       const first = parseDate(shown.length === 7 ? shown + "-01" : shown)!;
       const labels = calendarLabels(first.year, first.month, scope.value);
-      // A week across two months names both.
-      const last = shown.length === 7 ? first : parseDate(addDays(shown, 6))!;
-      const title = last.month === first.month ? labels.title : labels.title + " – " + calendarLabels(last.year, last.month, scope.value).title;
+      // The month, or the week's first and last day.
+      const title = periodTitle(shown, scope.value);
       const tabStop = [focus.value, value, today].find(iso => !!iso && within(iso, shown)) ?? days.find(day => within(day.iso, shown))!.iso;
       const longPress = !!props.onDayLongPress;
       const describe = longPress && props.dayLongPressLabel ? uid + "-long-press" : undefined;

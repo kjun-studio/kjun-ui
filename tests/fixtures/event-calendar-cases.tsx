@@ -7,7 +7,7 @@ export function eventMarks(iso: string) {
   if (iso === '2026-11-10') return { dots: [eventColors.blue], count: 1 };
   if (iso === '2026-11-11') return { dots: sevenDots, icon: { name: 'heart', color: eventColors.pink }, count: 7 };
   if (iso >= '2026-11-13' && iso <= '2026-11-16') return { spans: [{ color: eventColors.green, start: '2026-11-13', end: '2026-11-16' }], count: 1 };
-  // A second bar from November's last row into December: its outside pieces keep their colour.
+  // A second bar from November's last row into December: its outside pieces step back to the past fade; 12-01 also has a dot under it.
   const late = { color: eventColors.purple, start: '2026-11-29', end: '2026-12-02' };
   if (iso === '2026-12-01') return { dots: [eventColors.orange], spans: [late], count: 1 };
   if (iso >= late.start && iso <= late.end) return { spans: [late], count: 1 };

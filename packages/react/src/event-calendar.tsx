@@ -1,8 +1,8 @@
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import { calendarLabels } from "../../../shared/package-runtime/messages";
-import { addDays, calendarDays, moveDate, orderWeekdays, parseDate, todayIso, type CalendarDay, type WeekStart } from "../../../shared/package-runtime/calendar";
+import { addDays, moveDate, orderWeekdays, parseDate, todayIso, type CalendarDay, type WeekStart } from "../../../shared/package-runtime/calendar";
 import {
-  dayTone, eventDayLabel, holidayOf, isPast, resolveMonth, resolveWeek, spanSegment, stepMonth, swipeStep, visibleDots, weekDays,
+  dayTone, eventDayLabel, holidayOf, isPast, periodDays, periodTitle, resolveMonth, resolveWeek, spanSegment, stepMonth, swipeStep, visibleDots, withinPeriod as within,
   type DayMarks, type HolidayTest,
 } from "../../../shared/package-runtime/event-calendar";
 import { useSlide } from "../../../shared/package-runtime/use-slide";
@@ -48,34 +48,27 @@ export interface KjunEventCalendarProps {
   swipeable?: boolean;
   className?: string;
   style?: CSSProperties;
+  id?: string;
 }
 
 const calendar = tokens.extensions.calendar;
-// A month key is "YYYY-MM"; a week key is the week's first day.
-const within = (iso: string, key: string) => key.length === 7 ? iso.startsWith(key + "-") : iso >= key && iso <= addDays(key, 6);
-function daysOf(key: string, today: string, weekStart: WeekStart): CalendarDay[] {
-  if (key.length !== 7) return weekDays(key, today);
-  const [year, month] = key.split("-").map(Number);
-  return calendarDays(year, month - 1, { today, weekStart, fixedWeeks: true });
-}
 const isoOf = (target: EventTarget) => (target as Element).closest?.<HTMLElement>("[data-iso]")?.dataset.iso;
 interface TouchTrack { id: number; x: number; y: number; timer?: ReturnType<typeof setTimeout>; swiped: boolean; held: boolean }
 
 /** A month or week of days that show events as dots, an icon and a span bar. It draws no card or heading. */
 export function KjunEventCalendar({ view = "month", month, onMonthChange, week, onWeekChange, value = null, onSelect, onDayLongPress,
-  dayLongPressLabel, marks, isHoliday, dimPast = true, weekStart = 0, markSunday = true, markSaturday = true, swipeable = true, className, style }: KjunEventCalendarProps) {
+  dayLongPressLabel, marks, isHoliday, dimPast = true, weekStart = 0, markSunday = true, markSaturday = true, swipeable = true, className, style, id }: KjunEventCalendarProps) {
   const scope = useKjunMessageScope();
   const reduced = useReducedMotion();
   const today = todayIso();
   const key = view === "week" ? resolveWeek(week, weekStart, today) : resolveMonth(month, today);
   // The grid draws the shown month, so the old one stays while it slides out.
   const slide = useSlide(key, reduced), shown = slide.shown;
-  const days = daysOf(shown, today, weekStart);
+  const days = periodDays(shown, today, weekStart);
   const first = parseDate(shown.length === 7 ? shown + "-01" : shown)!;
   const labels = calendarLabels(first.year, first.month, scope);
-  // A week across two months names both.
-  const last = shown.length === 7 ? first : parseDate(addDays(shown, 6))!;
-  const title = last.month === first.month ? labels.title : labels.title + " – " + calendarLabels(last.year, last.month, scope).title;
+  // The month, or the week's first and last day.
+  const title = periodTitle(shown, scope);
   const uid = "kjun-event-calendar-" + useId().replace(/:/g, "");
   const grid = useRef<HTMLDivElement>(null);
   const [focus, setFocus] = useState<string>();
@@ -178,7 +171,7 @@ export function KjunEventCalendar({ view = "month", month, onMonthChange, week, 
   };
 
   return (
-    <div className={"kjun-event-calendar" + (className ? " " + className : "")} style={style} data-view={view} data-swipeable={swipeable || undefined}>
+    <div id={id} className={"kjun-event-calendar" + (className ? " " + className : "")} style={style} data-view={view} data-swipeable={swipeable || undefined}>
       <div className="kjun-event-calendar-weekdays">
         {orderWeekdays(labels.weekdays, weekStart).map((name, index) => {
           const tone = dayTone((index + weekStart) % 7, { markSunday, markSaturday, holiday: false });
