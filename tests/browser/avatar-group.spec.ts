@@ -121,6 +121,56 @@ for (const platform of ['react', 'vue3'] as const) {
     expect(centres[0] - centres[1]).toBeCloseTo(40 - 12, 0);
   });
 }
+for (const platform of ['react', 'vue3'] as const) {
+  test(`${platform}: hover and press tint each avatar of a pressable group, not a disabled one`, async ({ page }) => {
+    await openFixture(page, platform, '', 'avatar-group');
+    const tint = (el: Locator) => el.evaluate(e => getComputedStyle(e, '::after').opacity);
+    const first = items(page.getByRole('button', { name: '참여자 목록 열기' })).first();
+    expect(await tint(first)).toBe('0');
+    await first.hover();
+    await expect.poll(() => tint(first)).toBe('0.08');
+    await expect.poll(() => tint(items(page.getByRole('button', { name: '참여자 목록 열기' })).last())).toBe('0.08');
+    const box = (await first.boundingBox())!;
+    await page.mouse.down();
+    await expect.poll(() => tint(first)).toBe('0.16');
+    await page.mouse.up();
+    const locked = items(page.getByRole('button', { name: '잠긴 목록' })).first();
+    await locked.hover({ force: true });
+    expect(await tint(locked)).toBe('0');
+    expect(box.width).toBe(40);
+  });
+  test(`${platform}: an item's fallback replaces the initial and onError reports the photo`, async ({ page }) => {
+    await openFixture(page, platform, '', 'avatar-group');
+    await expect(items(group(page, 'fallback')).first()).toContainText('★');
+    await expect(page.getByTestId('errors')).toHaveText('1');
+  });
+}
+test.describe('touch', () => {
+  test.use({ hasTouch: true });
+  for (const platform of ['react', 'vue3'] as const) {
+    test(`${platform}: on touch a pressable group keeps its size and takes taps across 44px`, async ({ page }) => {
+      await openFixture(page, platform, '', 'avatar-group');
+      const button = page.getByRole('button', { name: '참여자 목록 열기' });
+      expect((await button.boundingBox())!.height).toBe(40);
+      expect(await button.evaluate(el => getComputedStyle(el, '::before').height)).toBe('44px');
+    });
+  }
+});
+test('react: id, aria-describedby and ref reach the root', async ({ page }) => {
+  await openFixture(page, 'react', '', 'avatar-group');
+  const team = page.getByRole('img', { name: '팀 2명' });
+  await expect(team).toHaveAttribute('id', 'team');
+  await expect(team).toHaveAccessibleDescription('초대 1명 대기');
+  await expect(page.getByTestId('root-tag')).toHaveText('DIV');
+});
+test('native: hover and press tint each avatar of a pressable group', async ({ page }) => {
+  await openFixture(page, 'native', '', 'avatar-group');
+  const first = items(page.getByRole('button', { name: '참여자 목록 열기' })).first();
+  await expect(first.locator(':scope > *')).toHaveCount(1);
+  await first.hover();
+  await expect(first.locator(':scope > *')).toHaveCount(2);
+  expect(await style(first.locator(':scope > *').last(), 'opacity')).toBe('0.08');
+});
 test('native: the ring is a wrapper painted in the colour behind the group', async ({ page }) => {
   await openFixture(page, 'native', '', 'avatar-group');
   expect(await style(items(group(page, 'ring')).first(), 'background-color')).toBe('rgb(230, 241, 251)');

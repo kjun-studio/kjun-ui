@@ -1,4 +1,4 @@
-import type { CSSProperties, MouseEvent } from "react";
+import { forwardRef, type CSSProperties, type MouseEvent, type Ref } from "react";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { avatarGroupModel } from "../../../shared/package-runtime/avatar-group";
 import { KjunAvatar, type KjunAvatarProps } from "./media";
@@ -26,10 +26,16 @@ export interface KjunAvatarGroupProps {
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   style?: CSSProperties;
+  id?: string;
+  /** Points at text that says more about the group, e.g. who is still invited. */
+  "aria-describedby"?: string;
 }
 
-/** Overlapping avatars with a "+N" chip, read as one name. Each avatar is wrapped so the group owns overlap, order and ring. */
-export function KjunAvatarGroup({ items, max, total, size = "md", shape = "circle", ariaLabel, ringColor, pressable = false, disabled = false, onClick, className, style }: KjunAvatarGroupProps) {
+/**
+ * Overlapping avatars with a "+N" chip, read as one name. Each avatar is wrapped so the group owns overlap, order and ring.
+ * The ref reaches the root: the button when pressable, else the div.
+ */
+export const KjunAvatarGroup = forwardRef<HTMLElement, KjunAvatarGroupProps>(function KjunAvatarGroup({ items, max, total, size = "md", shape = "circle", ariaLabel, ringColor, pressable = false, disabled = false, onClick, className, style, id, "aria-describedby": describedBy }, ref) {
   const m = useKjunMessages();
   const { visible, overflowText, totalCount } = avatarGroupModel({ count: items.length, max, total });
   const label = ariaLabel ?? m.avatarGroupCount(totalCount);
@@ -42,6 +48,6 @@ export function KjunAvatarGroup({ items, max, total, size = "md", shape = "circl
   </>;
   const classes = className ? `kjun-avatar-group ${className}` : "kjun-avatar-group";
   return pressable
-    ? <button type="button" className={classes} data-pressable="" data-size={size} data-shape={shape} aria-label={label} disabled={disabled} onClick={onClick} style={rootStyle}>{content}</button>
-    : <div className={classes} role="img" data-size={size} data-shape={shape} aria-label={label} style={rootStyle}>{content}</div>;
-}
+    ? <button ref={ref as Ref<HTMLButtonElement>} id={id} aria-describedby={describedBy} type="button" className={classes} data-pressable="" data-size={size} data-shape={shape} aria-label={label} disabled={disabled} onClick={onClick} style={rootStyle}>{content}</button>
+    : <div ref={ref as Ref<HTMLDivElement>} id={id} aria-describedby={describedBy} className={classes} role="img" data-size={size} data-shape={shape} aria-label={label} style={rootStyle}>{content}</div>;
+});

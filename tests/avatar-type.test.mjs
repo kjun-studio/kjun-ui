@@ -17,6 +17,8 @@ test('Native avatar initials use the type steps Web CSS sets per size', () => {
 test('Native AvatarGroup overflow uses the Web short and two-digit type steps', () => {
   for (const size of Object.keys(avatarType)) {
     assert.equal(sizeOf(`.kjun-avatar-group[data-size=${size}] .kjun-avatar-group-overflow`), kebab(avatarType[size]), size);
-    assert.equal(sizeOf(`.kjun-avatar-group[data-size=${size}] .kjun-avatar-group-overflow[data-digits="2"]`), kebab(avatarCompactType[size]), size);
+    // Where the compact step equals the short one (xs) CSS writes no separate three-character rule.
+    const compact = sizeOf(`.kjun-avatar-group[data-size=${size}] .kjun-avatar-group-overflow[data-digits="2"]`) ?? (avatarCompactType[size] === avatarType[size] ? kebab(avatarType[size]) : undefined);
+    assert.equal(compact, kebab(avatarCompactType[size]), size);
   }
 });

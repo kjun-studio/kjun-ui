@@ -1395,6 +1395,20 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "aria-describedby",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Points at text that says more about the group, e.g. who is still invited."
       }
     ],
     "native": [

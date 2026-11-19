@@ -1,12 +1,15 @@
 import { useKjunMessages } from "./runtime/messages";
-import { type ExtractPublicPropTypes, type PropType } from "vue";
+import { type ExtractPublicPropTypes, type PropType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
 import { css } from "./runtime/style";
 import { avatarGroupModel } from "../../../shared/package-runtime/avatar-group";
 import { KjunAvatar } from "./media";
 
-/** One person in a group: the KjunAvatar props the group does not decide, plus a stable key. */
-export interface KjunAvatarGroupItem { key: string; src?: string; name?: string; color?: string; textColor?: string }
+/**
+ * One person in a group: the KjunAvatar props the group does not decide, plus a stable key. As in React and Native,
+ * fallback replaces the initial and onLoad / onError report the photo (KjunAvatar's fallback slot and load / error events).
+ */
+export interface KjunAvatarGroupItem { key: string; src?: string; name?: string; color?: string; textColor?: string; fallback?: VNodeChild; onLoad?: () => void; onError?: () => void }
 
 const kjunAvatarGroupProps = {
   /** The people shown, front first. */
@@ -41,9 +44,9 @@ export const KjunAvatarGroup = defineComponent({
       const label = props.ariaLabel ?? m.value.avatarGroupCount(totalCount);
       const style = props.ringColor === undefined ? undefined : css({ "--_kjun-avatar-group-ring": props.ringColor });
       const content = [
-        ...props.items.slice(0, visible).map(({ key, ...item }, index) =>
+        ...props.items.slice(0, visible).map(({ key, fallback, ...item }, index) =>
           <span key={key} class="kjun-avatar-group-item" aria-hidden="true" style={{ zIndex: visible + 1 - index }}>
-            <KjunAvatar {...item} size={props.size} shape={props.shape} decorative />
+            <KjunAvatar {...item} size={props.size} shape={props.shape} decorative>{fallback === undefined ? undefined : { fallback: () => fallback }}</KjunAvatar>
           </span>),
         overflowText ? <span key="overflow" class="kjun-avatar-group-item kjun-avatar-group-overflow" aria-hidden="true" data-digits={overflowText.length - 1} style={{ zIndex: 0 }}>{overflowText}</span> : null,
       ];

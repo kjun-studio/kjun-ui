@@ -1,6 +1,7 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { avatarCompactType, avatarType } from "../../../shared/package-runtime/avatar-type";
 import { avatarGroupModel } from "../../../shared/package-runtime/avatar-group";
+import { useState } from "react";
 import { View, type ColorValue, type GestureResponderEvent, type StyleProp, type ViewStyle } from "react-native";
 import { tokens } from "@kjun-ui/tokens";
 import { AccessiblePressable } from "./a11y";
@@ -49,6 +50,10 @@ export function KjunAvatarGroup({ items, max, total, size = "md", shape = "circl
   const circle = shape === "circle", side = tokens.extensions.avatar[size];
   const ring = circle ? tokens.border.controlWidth : 0, overlap = tokens.extensions.avatarGroup.overlap[size];
   const radius = circle ? tokens.radius.radius9999 : tokens.radius.radius8;
+  // Like KjunPressable and Web: hover and press tint each avatar, so the tint follows the circles, never the group's box.
+  const [pressed, setPressed] = useState(false), [hovered, setHovered] = useState(false);
+  const tint = !pressable || disabled ? 0 : pressed ? tokens.states.opacity.tintActive : hovered ? tokens.states.opacity.tintControl : 0;
+  const overlay = tint > 0 ? <View pointerEvents="none" style={{ position: "absolute", top: ring, left: ring, width: side, height: side, borderRadius: radius, backgroundColor: colors.text, opacity: tint }} /> : null;
   const hidden = { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants" as const, "aria-hidden": true };
   const slot = (index: number, zIndex: number): ViewStyle => ({
     width: side + ring * 2, height: side + ring * 2, borderRadius: radius, alignItems: "center", justifyContent: "center", zIndex,
@@ -56,18 +61,20 @@ export function KjunAvatarGroup({ items, max, total, size = "md", shape = "circl
     marginStart: index === 0 ? 0 : circle ? -(overlap + ring * 2) : tokens.extensions.avatarGroup.squareGap[size],
   });
   const people = items.slice(0, visible).map(({ key, ...item }, index) =>
-    <View key={key} {...hidden} style={slot(index, visible + 1 - index)}><KjunAvatar {...item} size={size} shape={shape} decorative /></View>);
+    <View key={key} {...hidden} style={slot(index, visible + 1 - index)}><KjunAvatar {...item} size={size} shape={shape} decorative />{overlay}</View>);
   const chip = overflowText ? <View key="overflow" {...hidden} style={slot(visible, 0)}>
     <View style={{ width: side, height: side, borderRadius: radius, backgroundColor: colors.secondary, alignItems: "center", justifyContent: "center", paddingStart: circle && visible > 0 ? overlap : 0 }}>
       <KText numberOfLines={1} style={{ ...typeStyle((overflowText.length > 2 ? avatarCompactType : avatarType)[size]), fontWeight: typeStyle("control").fontWeight,
         fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"], color: colors.textSecondary }}>{overflowText}</KText>
     </View>
+    {overlay}
   </View> : null;
   const base: ViewStyle = { flexDirection: "row", alignItems: "center", alignSelf: "flex-start", margin: -ring, zIndex: 0 };
   const row = <>{people}{chip}</>;
   if (!pressable) return <View accessible accessibilityRole="image" accessibilityLabel={label} style={[base, style]}>{row}</View>;
   const hit = Math.max(0, (tokens.native.minimumTouchTarget - side) / 2);
   return <AccessiblePressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled }} disabled={disabled} onPress={onPress}
+    onPressIn={() => setPressed(true)} onPressOut={() => setPressed(false)} onHoverIn={() => setHovered(true)} onHoverOut={() => setHovered(false)}
     hitSlop={{ top: hit, bottom: hit, left: 0, right: 0 }}
     style={({ pressed }: { pressed: boolean }) => [base, pressed ? { transform: [{ scale: 0.99 }] } : null, disabled ? { opacity: tokens.states.opacity.disabled } : null, style]}>{row}</AccessiblePressable>;
 }
