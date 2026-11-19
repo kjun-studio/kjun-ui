@@ -1,4 +1,4 @@
-import { wheelCopies, wheelHome, wheelItemAt, wheelKey, wheelRow, type WheelColumn, type WheelColumnKey } from "../../../shared/package-runtime/time-wheel";
+import { wheelCopies, wheelHome, wheelItemAt, wheelKey, wheelRow, wheelSeparated, type WheelColumn, type WheelColumnKey } from "../../../shared/package-runtime/time-wheel";
 import { tokens } from "@kjun-ui/tokens";
 import { nextTick, onBeforeUnmount, onMounted, ref, watch, type PropType } from "vue";
 import { defineComponent } from "./runtime/component";
@@ -21,6 +21,7 @@ const WheelColumnView = defineComponent({
     autoFocus: { type: Boolean, default: false },
     onPick: { type: Function as PropType<(value: number) => void>, required: true },
     onEnter: { type: Function as PropType<() => void>, default: undefined },
+    onFocus: { type: Function as PropType<() => void>, default: undefined },
   },
   setup(props) {
     const scroller = ref<HTMLElement | null>(null), reduced = useReducedMotion();
@@ -84,7 +85,7 @@ const WheelColumnView = defineComponent({
           <div ref={scroller} class="kjun-time-wheel-scroll" role="spinbutton" tabindex={props.disabled ? -1 : 0}
             aria-label={column.label} aria-valuenow={item.value} aria-valuetext={item.label}
             aria-disabled={props.disabled || undefined} aria-readonly={props.readOnly || undefined} data-locked={locked || undefined}
-            onScroll={later}
+            onScroll={later} onFocus={() => props.onFocus?.()}
             onWheel={() => { travel = null; }}
             onPointerdown={(event: PointerEvent) => { travel = null; if (event.pointerType !== "mouse") held = true; }}
             onTouchstart={() => { travel = null; held = true; }} onTouchend={release}
@@ -115,6 +116,8 @@ export const TimeWheel = defineComponent({
     readOnly: { type: Boolean, default: false },
     /** The column to focus when the wheel appears. */
     focusColumn: { type: Number as PropType<number | null>, default: null },
+    /** The column the person is on: focused or turned. */
+    onFocusColumn: { type: Function as PropType<(index: number) => void>, default: undefined },
     onPick: { type: Function as PropType<(key: WheelColumnKey, value: number) => void>, required: true },
     onEnter: { type: Function as PropType<() => void>, default: undefined },
   },
@@ -123,8 +126,11 @@ export const TimeWheel = defineComponent({
       <div class="kjun-time-wheel" role="group" aria-label={props.labelledBy ? undefined : props.label} aria-labelledby={props.labelledBy}
         data-inline={props.inline || undefined} data-disabled={props.disabled || undefined}>
         <div class="kjun-time-wheel-band" aria-hidden="true" />
-        {props.columns.map((column, index) => <WheelColumnView key={column.key} column={column} disabled={props.disabled} readOnly={props.readOnly}
-          autoFocus={props.focusColumn === index} onPick={(value: number) => props.onPick(column.key, value)} onEnter={props.onEnter} />)}
+        {props.columns.flatMap((column, index) => [
+          wheelSeparated(props.columns, index) && <span key={"sep-" + column.key} class="kjun-time-wheel-separator" aria-hidden="true">:</span>,
+          <WheelColumnView key={column.key} column={column} disabled={props.disabled} readOnly={props.readOnly} autoFocus={props.focusColumn === index}
+            onFocus={() => props.onFocusColumn?.(index)} onPick={(value: number) => { props.onFocusColumn?.(index); props.onPick(column.key, value); }} onEnter={props.onEnter} />,
+        ])}
       </div>
     );
   },

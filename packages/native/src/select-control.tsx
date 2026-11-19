@@ -1,6 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { usePopupExpanded } from "../../../shared/package-runtime/use-layer";
-import { FieldClear } from "./field-clear";
+import { FieldClear, fieldClearRight } from "./field-clear";
 import { FieldPressable, QuietFocusContext, fieldTarget, useFieldSurface } from "./field-surface";
 import { typeStyle, inputTypeStyle } from "./typography";
 import { selectOptions, type SelectMultipleDisplay } from "../../../shared/package-runtime/options";
@@ -220,7 +220,7 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
           <View
             style={{
               position: "absolute",
-              right: spec.padding + spec.iconSize + spec.affixGap,
+              right: fieldClearRight(spec),
               top: 0,
               bottom: 0,
               justifyContent: "center",

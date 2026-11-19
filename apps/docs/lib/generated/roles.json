@@ -308,6 +308,7 @@
       "packages/native/src/side-navigation-parts.tsx",
       "packages/native/src/steps.tsx",
       "packages/native/src/table-cards.tsx",
+      "packages/native/src/time-picker.tsx",
       "packages/native/src/time-wheel.tsx"
     ]
   },

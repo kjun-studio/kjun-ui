@@ -109,6 +109,9 @@ export const resolveTimeLayout = (layout: TimeLayout, coarse: boolean): Exclude<
 /** Segments keep typing on a keyboard; a sheet opens from a one-line button. */
 export const resolveTimeTrigger = (trigger: TimeTrigger | undefined, layout: Exclude<TimeLayout, "auto">): TimeTrigger => trigger ?? (layout === "sheet" ? "button" : "segments");
 
+/** A ":" goes before a digit column that follows another (hour:minute:second); AM/PM reads as a word and takes none, as in the field. */
+export const wheelSeparated = (columns: Pick<WheelColumn, "key">[], index: number) =>
+  index > 0 && columns[index].key !== "period" && columns[index - 1].key !== "period";
 /** A looping column draws its items three times and stays in the middle copy, so it turns either way without an end. */
 export const wheelCopies = (column: Pick<WheelColumn, "loop">) => column.loop ? 3 : 1;
 /** The row to show an item on: the copy nearest to the row now in the middle, so a move takes the short way round. */

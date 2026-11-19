@@ -13,9 +13,9 @@
 /* Same type as the segment values so "09 : 30" reads as one time. */
 .kjun-time-separator { flex:0 0 var(--_kjun-extension-time-picker-separator-width); text-align:center; font-size:var(--_kjun-compound-font-size); line-height:var(--_kjun-compound-line-height); color:var(--_kjun-color-text-secondary); }
 .kjun-time-picker[data-disabled="true"] .kjun-time-separator { color:var(--_kjun-color-text-disabled); }
-/* A segment is a spinbutton input: two digits centred in a touch-wide slot, typed by keys only (no caret, no selection). */
+/* A segment is a spinbutton input: its digits with a little room each side, so "09:30" reads as one time; typed by keys only (no caret, no selection). */
 .kjun-time-segment-value {
-  box-sizing:border-box; width:var(--_kjun-extension-time-picker-segment-minimum-width); height:var(--_kjun-compound-height); margin:0;
+  box-sizing:border-box; width:calc(2ch + 2 * var(--_kjun-extension-time-picker-segment-padding)); height:var(--_kjun-compound-height); margin:0;
   padding:0 var(--_kjun-extension-time-picker-segment-padding); border:0; border-radius:var(--_kjun-compound-radius); background:transparent;
   font:inherit; font-size:var(--_kjun-compound-font-size); line-height:var(--_kjun-compound-line-height); font-weight:var(--_kjun-type-input-weight); letter-spacing:var(--_kjun-type-input-tracking);
   color:var(--_kjun-color-text); text-align:center; font-variant-numeric:tabular-nums; caret-color:transparent; cursor:pointer; outline:none; user-select:none;
@@ -23,16 +23,19 @@
 }
 .kjun-time-segment-value::selection { background:transparent; }
 .kjun-time-segment-value::placeholder { color:var(--_kjun-color-input-placeholder); opacity:1; }
-/* The first value starts on the field text line, like Input and DatePicker values; its trailing room matches the centred gap of the other segments. */
+/* The first value starts on the field text line, like Input and DatePicker values. */
 .kjun-time-segment:first-child .kjun-time-segment-value {
-  width:calc(var(--_kjun-compound-padding) + 2ch + (var(--_kjun-extension-time-picker-segment-minimum-width) - 2ch) / 2); text-align:start;
-  padding-inline:var(--_kjun-compound-padding) calc((var(--_kjun-extension-time-picker-segment-minimum-width) - 2ch) / 2);
+  width:calc(var(--_kjun-compound-padding) + 2ch + var(--_kjun-extension-time-picker-segment-padding)); text-align:start;
+  padding-inline:var(--_kjun-compound-padding) var(--_kjun-extension-time-picker-segment-padding);
 }
 /* The AM/PM word is two letters of the text font wide and sits a separator's width from the hour instead of a ":". */
-.kjun-time-segment[data-period] .kjun-time-segment-value { width:calc(2em + 2 * var(--_kjun-extension-time-picker-segment-padding)); min-width:var(--_kjun-extension-time-picker-segment-minimum-width); }
+.kjun-time-segment[data-period] .kjun-time-segment-value { width:calc(2em + 2 * var(--_kjun-extension-time-picker-segment-padding)); }
 .kjun-time-segment:first-child[data-period] .kjun-time-segment-value { width:calc(var(--_kjun-compound-padding) + 2em + var(--_kjun-extension-time-picker-segment-padding)); padding-inline:var(--_kjun-compound-padding) var(--_kjun-extension-time-picker-segment-padding); }
 .kjun-time-segment[data-period] + .kjun-time-segment, .kjun-time-segment + .kjun-time-segment[data-period] { margin-inline-start:var(--_kjun-extension-time-picker-separator-width); }
 .kjun-time-segment-value:is(:hover,:focus):not(:disabled) { background:var(--_kjun-color-hover); }
+/* While the wheel is open the segment of its focused column takes the active fill, and no other segment shows a hover. */
+.kjun-time-picker[data-open] .kjun-time-segment-value:not(:disabled) { background:transparent; }
+.kjun-time-picker[data-open] .kjun-time-segment-value[data-active]:not(:disabled) { background:var(--_kjun-color-active); }
 .kjun-time-segment-value:disabled { color:var(--_kjun-color-text-disabled); cursor:not-allowed; }
 .kjun-time-segment-value:disabled::placeholder { color:var(--_kjun-color-text-disabled); }
 /* A read-only time shows its value without the hover of a control that opens. */
@@ -76,6 +79,12 @@
   font-size:var(--_kjun-type-input-size); line-height:var(--_kjun-type-input-line); font-variant-numeric:tabular-nums; color:var(--_kjun-color-text-secondary);
   cursor:pointer; user-select:none;
 }
+/* A ":" between digit columns sits in the gap on the band, so the band reads "09:30" like the field; it takes no width. */
+.kjun-time-wheel-separator {
+  position:relative; z-index:1; flex:0 0 0; min-width:0; align-self:center; display:flex; justify-content:center; margin-inline:calc(var(--_kjun-extension-time-picker-wheel-column-gap) / -2);
+  font-size:var(--_kjun-type-input-size); line-height:var(--_kjun-type-input-line); font-weight:var(--_kjun-type-control-weight); color:var(--_kjun-color-text); pointer-events:none; user-select:none;
+}
+.kjun-time-wheel[data-disabled] .kjun-time-wheel-separator { color:var(--_kjun-color-text-disabled); }
 .kjun-time-wheel-row[data-selected] { color:var(--_kjun-color-text); font-weight:var(--_kjun-type-control-weight); }
 .kjun-time-wheel-row[data-disabled] { color:var(--_kjun-color-text-disabled); }
 .kjun-time-wheel-scroll[data-locked] .kjun-time-wheel-row { cursor:default; }

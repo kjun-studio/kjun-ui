@@ -38,6 +38,22 @@ for (const platform of ['react', 'vue3', 'native']) {
       if (platform !== 'native') await expect(segment(page, 'tp-basic', '알림', '시')).toBeFocused();
     });
 
+    test('the open wheel reads hour:minute and fills the segment of the column in use', async ({ page }) => {
+      await segment(page, 'tp-basic', '알림', '분').click();
+      await expect(column(page, '분')).toBeFocused();
+      // One ":" between the digit columns, none beside AM/PM.
+      if (platform !== 'native') {
+        await expect(page.getByRole('dialog').locator('.kjun-time-wheel-separator')).toHaveCount(1);
+        const minute = segment(page, 'tp-basic', '알림', '분'), hour = segment(page, 'tp-basic', '알림', '시');
+        await expect(minute).toHaveAttribute('data-active', 'true');
+        await page.keyboard.press('ArrowLeft');
+        await expect(hour).toHaveAttribute('data-active', 'true');
+        await expect(minute).not.toHaveAttribute('data-active');
+        await page.keyboard.press('Escape');
+        await expect(hour).not.toHaveAttribute('data-active');
+      } else await expect(page.getByRole('dialog').getByText(':', { exact: true })).toHaveCount(1);
+    });
+
     test('scrolling a column settles on a row; Escape and cancel leave the value', async ({ page }) => {
       await segment(page, 'tp-twelve', '퇴근', '시').click();
       const minute = column(page, '분');

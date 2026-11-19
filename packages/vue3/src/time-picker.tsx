@@ -76,11 +76,11 @@ export const KjunTimePicker = defineComponent({
       if (!blocked.value && !props.readOnly && next !== props.modelValue) { emit("update:modelValue", next); emit("change", next); }
     };
     // popover and sheet turn a draft and commit it with the confirm button; inline commits each stop.
-    const open = ref(false), draft = ref(wheelStart(domain.value, props.modelValue)), focusColumn = ref<number | null>(null);
+    const open = ref(false), draft = ref(wheelStart(domain.value, props.modelValue)), focusColumn = ref<number | null>(null), active = ref<number | null>(null);
     const openAt = (column: number, from: HTMLElement | null) => {
       if (blocked.value || props.readOnly) return;
       opener = from;
-      draft.value = wheelStart(domain.value, props.modelValue); focusColumn.value = column; open.value = true;
+      draft.value = wheelStart(domain.value, props.modelValue); focusColumn.value = column; active.value = column; open.value = true;
     };
     const confirm = () => { change(draft.value); open.value = false; };
     const inputs = () => Array.from(root.value?.querySelectorAll<HTMLInputElement>(".kjun-time-segment-value") ?? []);
@@ -96,7 +96,7 @@ export const KjunTimePicker = defineComponent({
         if (kind === "inline") change(time);
       };
       const wheel = (inline: boolean) => <TimeWheel columns={timeWheel(domain.value, shown, shape)} label={label} labelledBy={inline ? owner?.labelId : undefined} inline={inline}
-        disabled={blocked.value} readOnly={props.readOnly} focusColumn={inline ? null : focusColumn.value} onPick={pick} onEnter={inline ? undefined : confirm} />;
+        disabled={blocked.value} readOnly={props.readOnly} focusColumn={inline ? null : focusColumn.value} onFocusColumn={inline ? undefined : (index: number) => { active.value = index; }} onPick={pick} onEnter={inline ? undefined : confirm} />;
       const buttonSize = kind === "sheet" ? "md" : "sm";
       const now = () => <KjunButton size={buttonSize} variant="ghost" onClick={() => { draft.value = wheelStart(domain.value, null); }}>{m.now}</KjunButton>;
       const actions = () => [
@@ -160,7 +160,7 @@ export const KjunTimePicker = defineComponent({
                 <div key={segment.key} class="kjun-time-segment" data-period={segment.key === "period" || undefined}>
                   <span id={labelId} class="kjun-sr-only" aria-hidden="true">{segment.label}</span>
                   <input id={index === 0 ? fieldId : `${fieldId}-${index}`} class="kjun-time-segment-value" role="spinbutton" inputmode="none" autocomplete="off" spellcheck={false}
-                    value={text} placeholder={m.timePlaceholder} disabled={blocked.value}
+                    value={text} placeholder={m.timePlaceholder} disabled={blocked.value} data-active={open.value && active.value === index || undefined}
                     aria-label={owner?.labelId ? undefined : label + " " + segment.label} aria-labelledby={owner?.labelId ? `${owner.labelId} ${labelId}` : undefined}
                     aria-valuenow={segment.value ?? undefined} aria-valuetext={text || undefined} aria-readonly={props.readOnly || undefined}
                     aria-invalid={invalid ? "true" : undefined} aria-required={owner?.required || undefined} aria-describedby={owner?.describedBy} aria-haspopup="dialog"

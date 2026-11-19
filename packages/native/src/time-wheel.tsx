@@ -1,6 +1,6 @@
-import { wheelCopies, wheelHome, wheelItemAt, wheelKey, wheelRow, type WheelColumn, type WheelColumnKey } from "../../../shared/package-runtime/time-wheel";
+import { wheelCopies, wheelHome, wheelItemAt, wheelKey, wheelRow, wheelSeparated, type WheelColumn, type WheelColumnKey } from "../../../shared/package-runtime/time-wheel";
 import { tokens } from "@kjun-ui/tokens";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { Animated, Platform, Pressable, View, type NativeScrollEvent, type NativeSyntheticEvent, type ScrollView } from "react-native";
 import { KText, useReducedMotion } from "./internal";
 import { useKjunStyles } from "./provider";
@@ -25,12 +25,13 @@ interface ColumnProps {
   autoFocus: boolean;
   onPick: (value: number) => void;
   onEnter?: () => void;
+  onFocus?: () => void;
   onMove?: (direction: 1 | -1) => void;
   focusRef: (view: View | null) => void;
   /** Set by the first key or press in the wheel. */
   touched: { current: boolean };
 }
-function WheelColumnView({ column, disabled, readOnly, autoFocus, onPick, onEnter, onMove, focusRef, touched }: ColumnProps) {
+function WheelColumnView({ column, disabled, readOnly, autoFocus, onPick, onEnter, onFocus, onMove, focusRef, touched }: ColumnProps) {
   const { colors } = useKjunStyles(), reduced = useReducedMotion();
   const scroller = useRef<ScrollView>(null), focusable = useRef<View | null>(null);
   const offset = useRef(0), mounted = useRef(false), momentum = useRef(false), timer = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -114,7 +115,7 @@ function WheelColumnView({ column, disabled, readOnly, autoFocus, onPick, onEnte
       step(event.key);
     },
     // The ring marks keyboard focus only, like :focus-visible on the web.
-    onFocus: (event: { currentTarget?: unknown; target?: unknown }) => setFocused(focusVisible(event.currentTarget ?? event.target)), onBlur: () => setFocused(false),
+    onFocus: (event: { currentTarget?: unknown; target?: unknown }) => { setFocused(focusVisible(event.currentTarget ?? event.target)); onFocus?.(); }, onBlur: () => setFocused(false),
   } as object : {};
   return (
     <View ref={view => { focusable.current = view; focusRef(view); }} collapsable={false}
@@ -159,11 +160,13 @@ export interface TimeWheelProps {
   disabled?: boolean;
   readOnly?: boolean;
   focusColumn?: number | null;
+  /** The column the person is on: focused (web) or turned. */
+  onFocusColumn?: (index: number) => void;
   onPick: (key: WheelColumnKey, value: number) => void;
   onEnter?: () => void;
 }
 /** The hour, minute (and second, AM/PM) columns over one band that marks the chosen time. */
-export function TimeWheel({ columns, label, inline = false, disabled = false, readOnly = false, focusColumn = null, onPick, onEnter }: TimeWheelProps) {
+export function TimeWheel({ columns, label, inline = false, disabled = false, readOnly = false, focusColumn = null, onFocusColumn, onPick, onEnter }: TimeWheelProps) {
   const { colors } = useKjunStyles();
   const views = useRef<(View | null)[]>([]), touched = useRef(false);
   return (
@@ -172,9 +175,13 @@ export function TimeWheel({ columns, label, inline = false, disabled = false, re
       alignSelf: "center", width: "100%", maxWidth: 4 * geometry.wheelColumnWidth + 6 * geometry.wheelColumnGap }}>
       <View aria-hidden={true} pointerEvents="none" style={{ position: "absolute", left: 0, right: 0, top: rowHeight * edge, height: rowHeight,
         borderRadius: tokens.radius.radius8, backgroundColor: inline ? colors.surface : colors.active }} />
-      {columns.map((column, index) => <WheelColumnView key={column.key} column={column} disabled={disabled} readOnly={readOnly} autoFocus={focusColumn === index} touched={touched}
-        focusRef={view => { views.current[index] = view; }} onMove={direction => views.current[index + direction]?.focus?.()}
-        onPick={value => onPick(column.key, value)} onEnter={onEnter} />)}
+      {columns.map((column, index) => <Fragment key={column.key}>
+        {/* A ":" between digit columns sits in the gap on the band, so the band reads "09:30" like the field; it takes no width. */}
+        {wheelSeparated(columns, index) && <View aria-hidden={true} pointerEvents="none" style={{ width: 0, marginHorizontal: -geometry.wheelColumnGap / 2, alignSelf: "center", alignItems: "center" }}>
+          <KText style={{ ...inputTypeStyle("md"), fontWeight: typeStyle("control").fontWeight, color: disabled ? colors.textDisabled : colors.text }}>:</KText></View>}
+        <WheelColumnView column={column} disabled={disabled} readOnly={readOnly} autoFocus={focusColumn === index} touched={touched}
+          focusRef={view => { views.current[index] = view; }} onMove={direction => views.current[index + direction]?.focus?.()} onFocus={() => onFocusColumn?.(index)}
+          onPick={value => { onFocusColumn?.(index); onPick(column.key, value); }} onEnter={onEnter} /></Fragment>)}
     </View>
   );
 }

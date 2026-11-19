@@ -1,6 +1,6 @@
-import { wheelCopies, wheelHome, wheelItemAt, wheelKey, wheelRow, type WheelColumn, type WheelColumnKey } from "../../../shared/package-runtime/time-wheel";
+import { wheelCopies, wheelHome, wheelItemAt, wheelKey, wheelRow, wheelSeparated, type WheelColumn, type WheelColumnKey } from "../../../shared/package-runtime/time-wheel";
 import { tokens } from "@kjun-ui/tokens";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef } from "react";
 import { useReducedMotion } from "./use-reduced-motion";
 
 const rowHeight = tokens.extensions.timePicker.wheelRowHeight;
@@ -16,9 +16,10 @@ interface ColumnProps {
   autoFocus: boolean;
   onPick: (value: number) => void;
   onEnter?: () => void;
+  onFocus?: () => void;
 }
 /** One scrolling column: a spinbutton whose rows snap to the band in the middle. */
-function WheelColumnView({ column, disabled, readOnly, autoFocus, onPick, onEnter }: ColumnProps) {
+function WheelColumnView({ column, disabled, readOnly, autoFocus, onPick, onEnter, onFocus }: ColumnProps) {
   const scroller = useRef<HTMLDivElement>(null), held = useRef(false), timer = useRef<ReturnType<typeof setTimeout>>(undefined), mounted = useRef(false);
   // Where the column itself is scrolling to: its own scroll events are no stop of the user's (cleared by a wheel or a touch).
   const travel = useRef<{ top: number; until: number } | null>(null);
@@ -65,7 +66,7 @@ function WheelColumnView({ column, disabled, readOnly, autoFocus, onPick, onEnte
       <div ref={scroller} className="kjun-time-wheel-scroll" role="spinbutton" tabIndex={disabled ? -1 : 0}
         aria-label={column.label} aria-valuenow={item.value} aria-valuetext={item.label}
         aria-disabled={disabled || undefined} aria-readonly={readOnly || undefined} data-locked={locked || undefined}
-        onScroll={later}
+        onScroll={later} onFocus={onFocus}
         onWheel={() => { travel.current = null; }}
         onPointerDown={event => { travel.current = null; if (event.pointerType !== "mouse") held.current = true; }}
         onTouchStart={() => { travel.current = null; held.current = true; }}
@@ -106,17 +107,21 @@ export interface TimeWheelProps {
   readOnly?: boolean;
   /** The column to focus when the wheel appears. */
   focusColumn?: number | null;
+  /** The column the person is on: focused or turned. */
+  onFocusColumn?: (index: number) => void;
   onPick: (key: WheelColumnKey, value: number) => void;
   onEnter?: () => void;
 }
 /** The hour, minute (and second, AM/PM) columns over one band that marks the chosen time. */
-export function TimeWheel({ columns, label, labelledBy, inline = false, disabled = false, readOnly = false, focusColumn = null, onPick, onEnter }: TimeWheelProps) {
+export function TimeWheel({ columns, label, labelledBy, inline = false, disabled = false, readOnly = false, focusColumn = null, onFocusColumn, onPick, onEnter }: TimeWheelProps) {
   return (
     <div className="kjun-time-wheel" role="group" aria-label={labelledBy ? undefined : label} aria-labelledby={labelledBy}
       data-inline={inline || undefined} data-disabled={disabled || undefined}>
       <div className="kjun-time-wheel-band" aria-hidden="true" />
-      {columns.map((column, index) => <WheelColumnView key={column.key} column={column} disabled={disabled} readOnly={readOnly}
-        autoFocus={focusColumn === index} onPick={value => onPick(column.key, value)} onEnter={onEnter} />)}
+      {columns.map((column, index) => <Fragment key={column.key}>
+        {wheelSeparated(columns, index) && <span className="kjun-time-wheel-separator" aria-hidden="true">:</span>}
+        <WheelColumnView column={column} disabled={disabled} readOnly={readOnly} autoFocus={focusColumn === index} onFocus={() => onFocusColumn?.(index)}
+          onPick={value => { onFocusColumn?.(index); onPick(column.key, value); }} onEnter={onEnter} /></Fragment>)}
     </div>
   );
 }

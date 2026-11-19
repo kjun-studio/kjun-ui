@@ -1,4 +1,4 @@
-import { FieldClear } from "./field-clear";
+import { FieldClear, fieldClearRight } from "./field-clear";
 import { useKjunMessageScope } from "../../../shared/package-runtime/messages-context";
 import { formatDateValue } from "../../../shared/package-runtime/messages";
 import { dateLabel, formatRange, normalizeRange, pickRange, rangeSpoken, type DateRange } from "../../../shared/package-runtime/calendar";
@@ -75,7 +75,7 @@ function DateField({ size = "md", clearable, placeholder, ariaLabel, error, disa
           <KjunIcon name="calendar" size={spec.iconSize} color={surface.icon} />
         </FieldPressable>
         {clear && (
-          <View style={{ position: "absolute", right: spec.padding + spec.iconSize + spec.affixGap, top: 0, bottom: 0, justifyContent: "center" }}>
+          <View style={{ position: "absolute", right: fieldClearRight(spec), top: 0, bottom: 0, justifyContent: "center" }}>
             <FieldClear mark size={size} label={clearLabel} onPress={onClear} />
           </View>
         )}

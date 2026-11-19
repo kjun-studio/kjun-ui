@@ -63,11 +63,11 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
   const shape = { precision, hourCycle, minuteStep, secondStep, messages: m, periodFirst: periodLeads(scope.language) };
 
   // popover and sheet turn a draft and commit it with the confirm button; inline commits each stop.
-  const [open, setOpen] = useState(false), [draft, setDraft] = useState(() => wheelStart(domain, value)), [focusColumn, setFocusColumn] = useState<number | null>(null);
+  const [open, setOpen] = useState(false), [draft, setDraft] = useState(() => wheelStart(domain, value)), [focusColumn, setFocusColumn] = useState<number | null>(null), [active, setActive] = useState<number | null>(null);
   const openAt = (column: number, from: HTMLElement | null) => {
     if (blocked || readOnly) return;
     opener.current = from;
-    setDraft(wheelStart(domain, value)); setFocusColumn(column); setOpen(true);
+    setDraft(wheelStart(domain, value)); setFocusColumn(column); setActive(column); setOpen(true);
   };
   const confirm = () => { change(draft); setOpen(false); };
   const shown = layout === "inline" ? value !== null && accepted ? value : draft : draft;
@@ -78,7 +78,7 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
     if (layout === "inline") change(time);
   };
   const wheel = (inline: boolean) => <TimeWheel columns={columns} label={ariaLabel} labelledBy={inline ? field?.labelId : undefined} inline={inline}
-    disabled={blocked} readOnly={readOnly} focusColumn={inline ? null : focusColumn} onPick={pick} onEnter={inline ? undefined : confirm} />;
+    disabled={blocked} readOnly={readOnly} focusColumn={inline ? null : focusColumn} onFocusColumn={inline ? undefined : setActive} onPick={pick} onEnter={inline ? undefined : confirm} />;
   const now = <KjunButton size={layout === "sheet" ? "md" : "sm"} variant="ghost" onClick={() => setDraft(wheelStart(domain, null))}>{m.now}</KjunButton>;
   const actions = <>
     <KjunButton size={layout === "sheet" ? "md" : "sm"} variant="secondary" onClick={() => setOpen(false)}>{m.cancel}</KjunButton>
@@ -140,7 +140,7 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
             <div className="kjun-time-segment" data-period={segment.key === "period" || undefined}>
               <span id={labelId} className="kjun-sr-only" aria-hidden>{segment.label}</span>
               <input id={index === 0 ? fieldId : `${fieldId}-${index}`} className="kjun-time-segment-value" role="spinbutton" inputMode="none" autoComplete="off" spellCheck={false}
-                value={text} placeholder={m.timePlaceholder} disabled={blocked} onChange={() => {}}
+                value={text} placeholder={m.timePlaceholder} disabled={blocked} onChange={() => {}} data-active={open && active === index || undefined}
                 aria-label={field?.labelId ? undefined : ariaLabel + " " + segment.label} aria-labelledby={field?.labelId ? `${field.labelId} ${labelId}` : undefined}
                 aria-valuenow={segment.value ?? undefined} aria-valuetext={text || undefined} aria-readonly={readOnly || undefined}
                 aria-invalid={invalid || undefined} aria-required={field?.required || undefined} aria-describedby={field?.describedBy} aria-haspopup="dialog"

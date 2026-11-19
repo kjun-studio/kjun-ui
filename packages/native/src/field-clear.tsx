@@ -6,6 +6,12 @@ import { useKjunStyles } from "./provider";
 import { FontText } from "./internal";
 import { typeStyle } from "./typography";
 
+/** Where a select-like trigger's clear target sits from the field's end: its mark centred where the web's clearSize button
+ * centres it (an affix gap before the open indicator), though the 44px target is wider. */
+export function fieldClearRight(spec: { padding: number; iconSize: number; affixGap: number; clearSize: number }) {
+  return spec.padding + spec.iconSize + spec.affixGap - (tokens.native.minimumTouchTarget - spec.clearSize) / 2;
+}
+
 /** The visual clear affordance is smaller than its 44px activation target. */
 export function FieldClear({ size, disabled, label, onPress, mark = false }: {
   size: InputSize; disabled?: boolean; label: string; onPress: () => void;

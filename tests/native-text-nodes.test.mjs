@@ -43,12 +43,13 @@ test('Native JSX renders ReactNode slots through content(), never bare or as a |
 
 // Yoga treats flex: 1 as a zero flex basis, so an auto-sized time segment once ignored its digits and clipped "19" to "·"
 // on devices. React Native Web measures the content, so only this source check catches it.
-test('Native time segments size to their digits (no zero flex basis around them)', () => {
+test('Native time segments size to their digits (no zero flex basis or fixed width around them)', () => {
   const source = readFileSync(new URL('../packages/native/src/time-picker.tsx', import.meta.url), 'utf8');
   const start = source.indexOf('<Pressable ref={view => { segmentViews.current[index]'), end = source.indexOf('</Pressable>', start);
   assert.ok(start > 0 && end > start, 'time segment not found');
   const segment = source.slice(start, end);
-  assert.match(segment, /minWidth:\s*geometry\.segmentMinimumWidth/);
+  // A segment is its digits and padding, like the web's 2ch + padding: no fixed width that could clip or pad it.
+  assert.doesNotMatch(segment, /minWidth:/);
   assert.doesNotMatch(segment, /\bflex:\s*1\b|flexBasis:\s*0/);
 });
 

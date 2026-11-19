@@ -10,7 +10,6 @@
       "repeatInterval": { "$ref": "motion.instant" }
     },
     "timePicker": {
-      "segmentMinimumWidth": { "$ref": "native.minimumTouchTarget" },
       "separatorWidth": { "$ref": "dimension.value6" },
       "segmentPadding": { "$ref": "dimension.value4" },
       "wheelRowHeight": { "$ref": "native.minimumTouchTarget" },

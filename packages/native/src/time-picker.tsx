@@ -6,7 +6,7 @@ import { warnPicker } from "../../../shared/package-runtime/calendar";
 import { Fragment, useEffect, useId, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Platform, Pressable, View } from "react-native";
 import { createTimeDomain, tokens, type TimePrecision, type InputSize } from "@kjun-ui/tokens";
-import { FieldClear } from "./field-clear";
+import { FieldClear, fieldClearRight } from "./field-clear";
 import { FieldPressable, fieldTarget, useFieldSurface } from "./field-surface";
 import { KjunButton, KjunIcon } from "./button";
 import { KjunDrawer } from "./drawer";
@@ -59,11 +59,11 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
   const name = field?.label || ariaLabel;
 
   // popover and sheet turn a draft and commit it with the confirm button; inline commits each stop.
-  const [open, setOpen] = useState(false), [draft, setDraft] = useState(() => wheelStart(domain, value)), [focusColumn, setFocusColumn] = useState<number | null>(null);
+  const [open, setOpen] = useState(false), [draft, setDraft] = useState(() => wheelStart(domain, value)), [focusColumn, setFocusColumn] = useState<number | null>(null), [active, setActive] = useState<number | null>(null);
   const openAt = (column: number, from: View | null) => {
     if (blocked || readOnly) return;
     opener.current = from;
-    setDraft(wheelStart(domain, value)); setFocusColumn(column); setOpen(true);
+    setDraft(wheelStart(domain, value)); setFocusColumn(column); setActive(column); setOpen(true);
   };
   const close = () => { setOpen(false); if (Platform.OS === "web") opener.current?.focus?.(); };
   const confirm = () => { change(draft); close(); };
@@ -74,7 +74,7 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
     if (layout === "inline") change(time);
   };
   const wheel = (inline: boolean) => <TimeWheel columns={timeWheel(domain, shown, shape)} label={name} inline={inline} disabled={blocked} readOnly={readOnly}
-    focusColumn={inline ? null : focusColumn} onPick={pick} onEnter={inline ? undefined : confirm} />;
+    focusColumn={inline ? null : focusColumn} onFocusColumn={inline ? undefined : setActive} onPick={pick} onEnter={inline ? undefined : confirm} />;
   const buttonSize = layout === "sheet" ? "md" : "sm";
   const now = <KjunButton size={buttonSize} variant="ghost" onPress={() => setDraft(wheelStart(domain, null))}>{m.now}</KjunButton>;
   const buttons = <>
@@ -133,12 +133,19 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
               onHoverIn={() => setHovered(index)} onHoverOut={() => setHovered(current => current === index ? null : current)}
               onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
               onPress={() => openAt(index, segmentViews.current[index])}
-              style={({ pressed }) => ({ height: spec.height, minWidth: geometry.segmentMinimumWidth, justifyContent: "center", alignItems: leading ? "flex-start" : "center",
+              style={({ pressed }) => ({ height: spec.height, justifyContent: "center", alignItems: leading ? "flex-start" : "center",
                 marginLeft: index > 0 && !separated ? geometry.separatorWidth : 0, borderRadius: spec.radius,
                 paddingLeft: leading ? spec.padding : geometry.segmentPadding, paddingRight: geometry.segmentPadding,
-                backgroundColor: !blocked && !readOnly && (pressed || hovered === index) ? colors.hover : "transparent",
+                // While the wheel is open only the segment of its focused column is filled.
+                backgroundColor: blocked || readOnly ? "transparent" : open ? (active === index ? colors.active : "transparent") : pressed || hovered === index ? colors.hover : "transparent",
                 ...(Platform.OS === "web" ? { outlineStyle: "none", cursor: readOnly ? "default" : undefined } as object : {}) })}>
-              <KText style={{ ...inputTypeStyle(size), fontVariant: ["tabular-nums"], color: blocked ? colors.textDisabled : text ? colors.text : colors.inputPlaceholder }}>{text || m.timePlaceholder}</KText>
+              {/* A hidden "00" (or the longer AM/PM word) holds the width, so the field keeps its size from empty to filled like the web's 2ch. */}
+              <View>
+                <KText aria-hidden={true} style={{ ...inputTypeStyle(size), fontVariant: ["tabular-nums"], opacity: 0 }}>{segment.key === "period"
+                  ? segment.options.reduce((wide, option) => option.label.length > wide.length ? option.label : wide, "") : "00"}</KText>
+                <KText style={{ ...inputTypeStyle(size), position: "absolute", left: 0, right: 0, textAlign: leading ? "left" : "center", fontVariant: ["tabular-nums"],
+                  color: blocked ? colors.textDisabled : text ? colors.text : colors.inputPlaceholder }}>{text || m.timePlaceholder}</KText>
+              </View>
             </Pressable></Fragment>;
         })}
       </View>
@@ -178,7 +185,7 @@ function ButtonField({ size, name, text, placeholder, fieldId, disabled, readOnl
           color: disabled ? colors.textDisabled : text ? colors.text : colors.inputPlaceholder }}>{text || placeholder}</KText>
         <KjunIcon name="clock" size={spec.iconSize} color={surface.icon} />
       </FieldPressable>
-      {!!clearLabel && <View style={{ position: "absolute", right: spec.padding + spec.iconSize + spec.affixGap, top: 0, bottom: 0, justifyContent: "center" }}>
+      {!!clearLabel && <View style={{ position: "absolute", right: fieldClearRight(spec), top: 0, bottom: 0, justifyContent: "center" }}>
         <FieldClear mark size={size} label={clearLabel} onPress={() => { onClear(); button.current?.focus?.(); }} />
       </View>}
     </View>
