@@ -100,6 +100,19 @@ Playwright의 기본 조건 대기는 30초, 일반 테스트 제한은 90초다
 
 문서 앱의 색상·서체는 `apps/docs/app/kjun.css`에 있고, `DocsKjunProvider`가 앱 토큰을 공급한다. 탐색 링크와 검색 결과 목록은 문서에 맞게 조합하며 버튼·입력·선택·표·카드·탭·레이어는 공개 KJUN API를 사용한다. 예시 팔레트와 서체는 `shared/demo-colors.ts`에서 관리하며 패키지에 포함하지 않는다.
 
+### worktree 작업 마무리
+
+여러 세션이 함께 작업하므로 작업은 `.superpowers/` 아래 자기 detached worktree에서 하고 브랜치는 만들지 않는다. 작업 중에는 typecheck와 변경을 덮는 unit 파일만 실행하고, 빌드와 브라우저 검사는 모인 뒤 main에서 한 번 실행한다. 작업을 끝낼 때는 다음 순서를 따른다.
+
+1. worktree에서 커밋한다.
+2. `git rebase main`으로 최신 main 위에 올린다. 그 사이 main의 커밋이 같은 경로를 바꿨으면 typecheck와 관련 unit 파일을 다시 실행한다. 공개 컴포넌트를 추가했다면 개수를 세는 기대값(`tests/browser/docs/presentation.spec.ts`, `usage-examples.spec.ts`, unit 개수 검사)은 main의 값 + 1로 다시 맞춘다.
+3. main 체크아웃에서 `git cherry-pick`이나 `checkout <커밋>`을 하지 않는다. 다른 세션의 미커밋 변경이 있기 때문이다. 먼저 내 커밋이 바꾼 파일 가운데 main에 미커밋 변경이 있는 파일을 찾는다. 그 파일마다 임시 폴더에서 `git merge-file <main 작업 사본> <이전 main 내용> <내 커밋 내용>`으로 합친다.
+4. `git update-ref refs/heads/main <내 커밋> <이전 main>`으로 main을 옮기고 main 체크아웃에서 `git reset -q`를 실행한다. 이전 main을 함께 주므로 그 사이 main이 움직였으면 실패하고, 그때는 2부터 다시 한다. 이어서 겹친 파일은 3에서 합친 파일을 복사하고, 겹치지 않은 내 파일은 `git checkout -- <파일>`로 맞춘다. 끝나면 main의 `git diff`가 내 줄을 지우지 않는지 확인한다.
+5. 커밋이 main에 있고 worktree가 깨끗하면 `git worktree remove .superpowers/<이름>`으로 지운다. 다른 세션의 worktree는 지우지 않는다.
+6. push는 요청이 있을 때만 한다.
+
+worktree에서 패키지를 빌드해야 하면(새 토큰, 시안 확인 등) 컨테이너 안에서 worktree의 `node_modules`를 실제 폴더로 만든다. `/workspace/node_modules`의 항목은 `@kjun-ui`만 빼고 링크하고, `@kjun-ui/{icons,tokens,react,vue3,native}`는 worktree의 `../../packages/<패키지>`로 링크한다. 루트 `node_modules`를 통째로 링크하면 `@kjun-ui/*`가 main 체크아웃의 패키지를 가리켜 Vue 선언 빌드가 새 토큰에서 실패한다. `apps/docs/node_modules`는 모든 worktree가 함께 쓰므로 worktree에서 `docs:install`을 실행하지 않고, 두 세션이 동시에 전체 빌드를 돌리지 않는다.
+
 ## 패키지와 공개 범위
 
 현재 배포 버전은 npm `@kjun-ui/*` v0.21.0이다. `pack:local`은 다섯 패키지의 `.tgz`를 생성하고 `artifacts/manifest.json`에 파일명·버전·무결성을 기록한다. 문서 다운로드와 소비 검증은 이 manifest를 사용한다. `verify:consumers`는 별도 임시 프로젝트에 설치하여 워크스페이스 소스 없이 소비할 수 있는지 확인한다.
