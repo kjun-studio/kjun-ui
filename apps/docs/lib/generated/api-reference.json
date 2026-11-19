@@ -13254,7 +13254,7 @@
             "type": "ReactNode",
             "required": false,
             "default": "—",
-            "description": "Buttons for the alert, under the message when it has a title and beside it otherwise; unsized KjunButtons follow the alert size.",
+            "description": "Buttons for the alert, under the message when it has a title, beside it otherwise (under it when the alert is too narrow for both); unsized KjunButtons follow the alert size.",
             "summary": "행동 버튼입니다. 제목이 있으면 본문 아래에, 없으면 문장 오른쪽에 첫 줄 가운데로 놓입니다. size를 생략한 KjunButton은 sm 알림에서 xs, md에서 sm, lg에서 md 크기를 씁니다. 직접 지정한 size가 우선합니다.",
             "source": "packages/react/src/display.tsx"
           },
@@ -13361,7 +13361,7 @@
             "type": "ReactNode",
             "required": false,
             "default": "—",
-            "description": "Buttons for the alert, under the message when it has a title and beside it otherwise; unsized KjunButtons follow the alert size.",
+            "description": "Buttons for the alert, under the message when it has a title, beside it otherwise (under it when the alert is too narrow for both); unsized KjunButtons follow the alert size.",
             "summary": "행동 버튼입니다. 제목이 있으면 본문 아래에, 없으면 문장 오른쪽에 첫 줄 가운데로 놓입니다. size를 생략한 KjunButton은 sm 알림에서 xs, md에서 sm, lg에서 md 크기를 씁니다. 직접 지정한 size가 우선합니다.",
             "source": "packages/native/src/display-primitives.tsx"
           },
