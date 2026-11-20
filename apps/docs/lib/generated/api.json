@@ -15008,6 +15008,13 @@
         "description": "Paints the surface background (default true); false lets the page background show through; \"muted\" paints the muted fill, which sets rows apart inside a white card or modal."
       },
       {
+        "name": "bleed",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Runs the section past its container's content edge to the container's edge: inside a KjunCard body by the card's\npadding, elsewhere by the rows' 16px. Rows, heading and footer take that inset, so their text stays on the content line\naround the section while row fills and dividers reach the edge. The section is flat (radius does not apply); an open\nsection keeps its own inset. Leave room for the overhang: a parent that clips its overflow cuts it off."
+      },
+      {
         "name": "divider",
         "type": "boolean",
         "required": false,
@@ -15217,6 +15224,13 @@
         "description": "Paints the surface background (default true); false lets the page background show through; \"muted\" paints the muted fill, which sets rows apart inside a white card or modal."
       },
       {
+        "name": "bleed",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Runs the section past its container's content edge to the container's edge: inside a KjunCard body by the card's\npadding, elsewhere by the rows' 16px. Rows, heading and footer take that inset, so their text stays on the content line\naround the section while row fills and dividers reach the edge. The section is flat (radius does not apply); an open\nsection keeps its own inset. Leave room for the overhang: a parent that clips its overflow cuts it off."
+      },
+      {
         "name": "divider",
         "type": "boolean | undefined",
         "required": false,
@@ -15413,6 +15427,13 @@
         "required": false,
         "default": "—",
         "description": "Paints the surface background (default true); false lets the page background show through; \"muted\" paints the muted fill, which sets rows apart inside a white card or modal."
+      },
+      {
+        "name": "bleed",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Runs the section past its container's content edge to the container's edge: inside a KjunCard body by the card's\npadding, elsewhere by the rows' 16. Rows, heading and footer take that inset, so their text stays on the content line\naround the section while row fills and dividers reach the edge. The section is flat (radius does not apply); an open\nsection keeps its own inset. A parent that clips its overflow cuts the overhang off."
       },
       {
         "name": "divider",

@@ -35239,6 +35239,30 @@
             "example": "/components/list-section#preview"
           },
           {
+            "name": "bleed",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Runs the section past its container's content edge to the container's edge: inside a KjunCard body by the card's\npadding, elsewhere by the rows' 16px. Rows, heading and footer take that inset, so their text stays on the content line\naround the section while row fills and dividers reach the edge. The section is flat (radius does not apply); an open\nsection keeps its own inset. Leave room for the overhang: a parent that clips its overflow cuts it off.",
+            "summary": "섹션을 부모의 안쪽 여백 너머 가장자리까지 넓힙니다.",
+            "details": [
+              {
+                "label": "넓히는 폭",
+                "text": "KjunCard 본문 안에서는 카드 본문 여백(sm 12·md 16·lg 24)만큼, 그 밖에서는 행의 기본 여백 16px만큼 양옆으로 넓힙니다. 행·제목·빈 상태·footer의 가로 여백도 같은 값이 되어, 글자는 섹션 바깥 내용(카드 제목, 페이지 제목)과 같은 선에 서고 행의 누름 면과 구분선은 가장자리까지 닿습니다."
+              },
+              {
+                "label": "쓰는 곳",
+                "text": "여백 있는 카드 안에서 목록만 카드 끝까지 넓힐 때, 표면 없는 섹션(surface false)의 행 글자를 바깥 제목 선에 맞출 때 씁니다."
+              },
+              {
+                "label": "제한",
+                "text": "넓힌 섹션은 직각입니다(radius와 inset 그룹의 모서리를 쓰지 않고 제목·footer도 행과 함께 둡니다). open 섹션은 자기 행 여백을 지키므로 넓히지 않습니다. 부모가 overflow를 자르면 넓힌 부분이 잘립니다. 카드 bodyPadding이 none이면 넓힐 폭이 없어 행 글자가 카드 끝에 붙으니 쓰지 마세요."
+              }
+            ],
+            "source": "packages/vue3/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
             "name": "divider",
             "type": "boolean",
             "required": false,
@@ -35761,6 +35785,30 @@
             "example": "/components/list-section#preview"
           },
           {
+            "name": "bleed",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Runs the section past its container's content edge to the container's edge: inside a KjunCard body by the card's\npadding, elsewhere by the rows' 16px. Rows, heading and footer take that inset, so their text stays on the content line\naround the section while row fills and dividers reach the edge. The section is flat (radius does not apply); an open\nsection keeps its own inset. Leave room for the overhang: a parent that clips its overflow cuts it off.",
+            "summary": "섹션을 부모의 안쪽 여백 너머 가장자리까지 넓힙니다.",
+            "details": [
+              {
+                "label": "넓히는 폭",
+                "text": "KjunCard 본문 안에서는 카드 본문 여백(sm 12·md 16·lg 24)만큼, 그 밖에서는 행의 기본 여백 16px만큼 양옆으로 넓힙니다. 행·제목·빈 상태·footer의 가로 여백도 같은 값이 되어, 글자는 섹션 바깥 내용(카드 제목, 페이지 제목)과 같은 선에 서고 행의 누름 면과 구분선은 가장자리까지 닿습니다."
+              },
+              {
+                "label": "쓰는 곳",
+                "text": "여백 있는 카드 안에서 목록만 카드 끝까지 넓힐 때, 표면 없는 섹션(surface false)의 행 글자를 바깥 제목 선에 맞출 때 씁니다."
+              },
+              {
+                "label": "제한",
+                "text": "넓힌 섹션은 직각입니다(radius와 inset 그룹의 모서리를 쓰지 않고 제목·footer도 행과 함께 둡니다). open 섹션은 자기 행 여백을 지키므로 넓히지 않습니다. 부모가 overflow를 자르면 넓힌 부분이 잘립니다. 카드 bodyPadding이 none이면 넓힐 폭이 없어 행 글자가 카드 끝에 붙으니 쓰지 마세요."
+              }
+            ],
+            "source": "packages/react/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
             "name": "divider",
             "type": "boolean | undefined",
             "required": false,
@@ -36227,6 +36275,30 @@
               {
                 "label": "radius·그룹",
                 "text": "radius나 inset 그룹으로 행을 카드로 묶으면 그 카드만 칠하고, 제목·설명·actions·footer는 페이지에 둡니다."
+              }
+            ],
+            "source": "packages/native/src/list.tsx",
+            "example": "/components/list-section#preview"
+          },
+          {
+            "name": "bleed",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Runs the section past its container's content edge to the container's edge: inside a KjunCard body by the card's\npadding, elsewhere by the rows' 16. Rows, heading and footer take that inset, so their text stays on the content line\naround the section while row fills and dividers reach the edge. The section is flat (radius does not apply); an open\nsection keeps its own inset. A parent that clips its overflow cuts the overhang off.",
+            "summary": "섹션을 부모의 안쪽 여백 너머 가장자리까지 넓힙니다.",
+            "details": [
+              {
+                "label": "넓히는 폭",
+                "text": "KjunCard 본문 안에서는 카드 본문 여백(sm 12·md 16·lg 24)만큼, 그 밖에서는 행의 기본 여백 16px만큼 양옆으로 넓힙니다. 행·제목·빈 상태·footer의 가로 여백도 같은 값이 되어, 글자는 섹션 바깥 내용(카드 제목, 페이지 제목)과 같은 선에 서고 행의 누름 면과 구분선은 가장자리까지 닿습니다."
+              },
+              {
+                "label": "쓰는 곳",
+                "text": "여백 있는 카드 안에서 목록만 카드 끝까지 넓힐 때, 표면 없는 섹션(surface false)의 행 글자를 바깥 제목 선에 맞출 때 씁니다."
+              },
+              {
+                "label": "제한",
+                "text": "넓힌 섹션은 직각입니다(radius와 inset 그룹의 모서리를 쓰지 않고 제목·footer도 행과 함께 둡니다). open 섹션은 자기 행 여백을 지키므로 넓히지 않습니다. 부모가 overflow를 자르면 넓힌 부분이 잘립니다. 카드 bodyPadding이 none이면 넓힐 폭이 없어 행 글자가 카드 끝에 붙으니 쓰지 마세요."
               }
             ],
             "source": "packages/native/src/list.tsx",
