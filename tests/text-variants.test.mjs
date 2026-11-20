@@ -17,9 +17,15 @@ test("bodyLg is the 16px reading step with body's weight", () => {
   assert.deepEqual(typography.bodyLg, { fontSizePx: 16, lineHeightPx: 24, fontWeight: typography.body.fontWeight, letterSpacingEm: 0 });
 });
 
-test("numberLg tracks like the title of its size", () => {
-  assert.equal(typography.numberLg.fontSizePx, typography.sectionTitle.fontSizePx);
+test("numberLg tracks like the titles: a 20px figure, tight like sectionTitle and pageTitle", () => {
+  assert.equal(typography.numberLg.fontSizePx, 20);
   assert.equal(typography.numberLg.letterSpacingEm, typography.sectionTitle.letterSpacingEm);
+  assert.equal(typography.numberLg.letterSpacingEm, typography.pageTitle.letterSpacingEm);
+});
+
+test("sectionTitle sits between cardTitle and pageTitle on the 4px line rhythm", () => {
+  assert.deepEqual(typography.sectionTitle, { fontSizePx: 18, lineHeightPx: 24, fontWeight: 700, letterSpacingEm: -0.01 });
+  assert.ok(typography.sectionTitle.fontWeight > typography.cardTitle.fontWeight);
 });
 
 test("the strong steps keep their base step's size and raise only the weight", () => {

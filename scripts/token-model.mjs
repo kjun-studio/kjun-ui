@@ -148,7 +148,7 @@ export function compileTokens(source) {
     .map(([size, radius]) => [size, Math.max(0, radius - data.buttonGroup.padding[size])]));
   for (const [role, t] of Object.entries(data.typography)) {
     if (Object.keys(t).sort().join() !== ['fontSizePx','lineHeightPx','fontWeight','letterSpacingEm'].sort().join() ||
-        ![12,14,16,20,24,32,40].includes(t.fontSizePx) || ![16,20,24,28,32,40,48].includes(t.lineHeightPx) || t.lineHeightPx < t.fontSizePx ||
+        ![12,14,16,18,20,24,32,40].includes(t.fontSizePx) || ![16,20,24,28,32,40,48].includes(t.lineHeightPx) || t.lineHeightPx < t.fontSizePx ||
         ![400,500,600,700].includes(t.fontWeight) || !Number.isFinite(t.letterSpacingEm))
       throw Error('Invalid typography units or values: ' + role);
   }

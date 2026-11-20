@@ -78,8 +78,8 @@
     "letterSpacingEm": 0
   },
   "sectionTitle": {
-    "fontSizePx": 20,
-    "lineHeightPx": 28,
+    "fontSizePx": 18,
+    "lineHeightPx": 24,
     "fontWeight": 700,
     "letterSpacingEm": -0.01
   },
