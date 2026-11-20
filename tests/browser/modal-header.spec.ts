@@ -102,8 +102,8 @@ for (const platform of platforms) {
     expect(cancel.width).toBeGreaterThan(140);
     const title = (await dialog.getByRole('heading', { name: '편집' }).boundingBox())!;
     const first = (await (platform === 'native' ? dialog.getByText('이름을 바꿉니다.') : dialog.getByRole('button', { name: '진행 끝' })).boundingBox())!;
-    // The header's 16px bottom padding, plus 2px from centring the 28px title line on the 32px close button.
-    expect(first.y - (title.y + title.height)).toBeCloseTo(18, 0);
+    // The header's 16px bottom padding, plus 4px from centring the 24px title line on the 32px close button.
+    expect(first.y - (title.y + title.height)).toBeCloseTo(20, 0);
     if (platform !== 'native') {
       await expect(dialog.locator('.kjun-modal-header')).toHaveCSS('border-bottom-width', '0px');
       await expect(dialog.locator('.kjun-modal-footer')).toHaveCSS('border-top-width', '0px');

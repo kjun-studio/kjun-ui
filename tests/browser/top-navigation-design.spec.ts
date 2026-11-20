@@ -32,12 +32,12 @@ for (const platform of ['react', 'vue3', 'native']) {
       await openFixture(page, platform, '?palette=' + palette, 'top-navigation-design');
       await expect(header(page)).toHaveCSS('border-bottom-width', '0px');
       await expect(header(page)).toHaveCSS('box-shadow', 'none');
-      await expect(title(page)).toHaveCSS('font-size', '20px');
+      await expect(title(page)).toHaveCSS('font-size', '18px');
       await expect(title(page)).toHaveCSS('font-weight', '600');
-      await expect(title(page)).toHaveCSS('line-height', '28px');
+      await expect(title(page)).toHaveCSS('line-height', '24px');
       const t = await rect(title(page)), b = await rect(back(page)), s = await rect(save(page));
       expect(b.width).toBe(44); expect(b.height).toBe(44); expect(s.height).toBe(44);
-      expect(b.y + b.height / 2).toBe(t.y + 14); expect(s.y + s.height / 2).toBe(t.y + 14);
+      expect(b.y + b.height / 2).toBe(t.y + 12); expect(s.y + s.height / 2).toBe(t.y + 12);
       await expect(back(page).locator('svg')).toHaveCSS('width', '24px');
       const description = await rect(title(page, '변경할 내용을 선택하세요.'));
       expect(description.x).toBe(t.x); expect(description.y - t.y - t.height).toBe(4);
@@ -61,7 +61,7 @@ for (const platform of ['react', 'vue3', 'native']) {
     const long = '팀과 함께 관리하는 프로젝트의 상세 설정';
     await configure(page, { title: long, multiple: true, description: '' });
     const t = await rect(title(page, long)), b = await rect(back(page));
-    expect(t.height).toBe(28); expect(b.y + b.height / 2).toBe(t.y + 14);
+    expect(t.height).toBe(24); expect(b.y + b.height / 2).toBe(t.y + 12);
     await expect(header(page)).toHaveCSS('height', '56px');
     await expect(title(page, long)).toHaveCSS('text-overflow', 'ellipsis');
     await expect.poll(() => title(page, long).evaluate(el => el.scrollWidth > el.clientWidth)).toBe(true);

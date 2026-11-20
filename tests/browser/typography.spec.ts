@@ -49,7 +49,7 @@ for(const platform of ['react','vue3','native']) {
     await page.keyboard.press('Escape');
     await expect(page.getByRole('button',{name:'모달 버튼',exact:true})).toHaveCount(0);
     await page.getByRole('button',{name:'서랍 열기',exact:true}).click();
-    expect(await textStyle(page.getByText('토큰 서랍',{exact:true}))).toMatchObject({size:'20px',line:'28px',weight:'700',tracking:'-0.2px'});
+    expect(await textStyle(page.getByText('토큰 서랍',{exact:true}))).toMatchObject({size:tokens.typography.sectionTitle.fontSizePx+'px',line:tokens.typography.sectionTitle.lineHeightPx+'px',weight:String(tokens.typography.sectionTitle.fontWeight),tracking:tokens.typography.sectionTitle.fontSizePx*tokens.typography.sectionTitle.letterSpacingEm+'px'});
     await page.keyboard.press('Escape');
     await expect(page.getByRole('button',{name:'서랍 버튼',exact:true})).toHaveCount(0);
   });
