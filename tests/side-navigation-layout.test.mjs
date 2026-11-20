@@ -7,7 +7,11 @@ const read = path => readFile(new URL("../" + path, import.meta.url), "utf8");
 // Plain rules shared by the three layouts; transpiled here so the test needs no build.
 const source = ts.transpileModule(await read("shared/package-runtime/side-navigation-layout.ts"), { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
 const runtime = await import("data:text/javascript;base64," + Buffer.from(source).toString("base64"));
-const g = { spacesColumnWidth: 60, spacesPanelWidth: 216, spacesPanelInset: 8 };
+const g = { paddingX: 12, iconSize: 20, spacesRailPaddingX: 8, spacesPanelWidth: 216, spacesPanelInset: 8 };
+
+test("the rail cell is the icon rail (padding, icon, padding: 44) with 8 on each side, 60 in all", () => {
+  assert.equal(runtime.spacesRailCellWidth(g), 60);
+});
 
 test("the spaces column is 284 with a card panel, 276 flat and 60 with the panel collapsed", () => {
   assert.equal(runtime.spacesColumnWidth(g, "card", false), 284);
@@ -34,9 +38,9 @@ test("props the spaces layout ignores are named only when set", () => {
 test("tokens carry the spaces geometry and the rail colour role falls back to secondary", async () => {
   const geometry = JSON.parse(await read("packages/tokens/src/definitions/geometry-extensions.json"));
   const nav = geometry.extensions.sideNavigation;
-  assert.equal(nav.spacesColumnWidth, 60);
+  assert.equal(nav.spacesColumnWidth, undefined, "the rail cell is derived, not a separate length");
   assert.equal(nav.spacesPanelWidth, 216);
-  for (const key of ["spacesPanelInset", "spacesPanelRadius", "spacesPanelHeadHeight"]) assert.ok(nav[key]?.$ref, key + " is a $ref");
+  for (const key of ["spacesRailPaddingX", "spacesPanelInset", "spacesPanelRadius", "spacesPanelHeadHeight"]) assert.ok(nav[key]?.$ref, key + " is a $ref");
   const colors = JSON.parse(await read("packages/tokens/src/definitions/colors.json"));
   assert.ok(colors.colorRoles.includes("navigationRailBg"));
   assert.equal(colors.roleBindings["navigation-rail-bg"], "navigationRailBg");

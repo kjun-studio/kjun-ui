@@ -76,6 +76,13 @@ for (const platform of ['react', 'vue3']) {
       await expect(page.getByRole('button', { name: '메뉴 패널 펼치기' })).toBeFocused();
     });
 
+    test('moves focus to the expand button when the app collapses the panel while its collapse button has focus', async ({ page }) => {
+      await open(page, platform, '');
+      await page.getByRole('button', { name: '메뉴 패널 접기' }).focus();
+      await page.evaluate(() => (window as any).__collapse());
+      await expect(page.getByRole('button', { name: '메뉴 패널 펼치기' })).toBeFocused();
+    });
+
     test('ignores collapsed and width with spaces, warning once', async ({ page }) => {
       const warnings: string[] = [];
       page.on('console', message => { if (message.type() === 'warning' && message.text().includes('do not apply with spaces')) warnings.push(message.text()); });
@@ -133,6 +140,15 @@ test.describe('native: SideNavigationLayout spaces (Native Web)', () => {
     await expect.poll(() => bandWidth(page)).toBe(276);
     await open(page, 'native', '&closed=1');
     await expect.poll(() => bandWidth(page)).toBe(60);
+  });
+
+  test('the panel is a named region the toggles control', async ({ page }) => {
+    await open(page, 'native', '');
+    const panel = page.getByRole('region', { name: '메뉴 패널' });
+    await expect(panel).toBeVisible();
+    const id = await panel.getAttribute('id');
+    expect(id).toMatch(/^kjun-side-panel-/);
+    await expect(page.getByRole('button', { name: '메뉴 패널 접기' })).toHaveAttribute('aria-controls', id!);
   });
 
   test('collapsing keeps the menu mounted, so an open parent stays open', async ({ page }) => {

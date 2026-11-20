@@ -158,12 +158,13 @@
 .kjun-side-navigation-layout[data-drawer]{display:block}
 /* Spaces: a band in the rail colour holds the spaces rail and the menu panel (a card set into the band, or flat with a line before
    the page). The column is the rail's cell, plus the panel and a card's inset while the panel is open. The page is untouched. */
-.kjun-side-navigation-layout[data-spaces]{--_kjun-side-navigation-layout-column:calc(var(--_kjun-extension-side-navigation-spaces-column-width) + var(--_kjun-extension-side-navigation-spaces-panel-width) + var(--_kjun-extension-side-navigation-spaces-panel-inset))}
-.kjun-side-navigation-layout[data-spaces][data-panel-surface=flat]{--_kjun-side-navigation-layout-column:calc(var(--_kjun-extension-side-navigation-spaces-column-width) + var(--_kjun-extension-side-navigation-spaces-panel-width))}
-.kjun-side-navigation-layout[data-spaces][data-panel-collapsed]{--_kjun-side-navigation-layout-column:var(--_kjun-extension-side-navigation-spaces-column-width)}
+:is(.kjun-side-navigation-layout[data-spaces],.kjun-side-navigation-layout-band){--_kjun-side-navigation-spaces-rail:calc(var(--_kjun-extension-side-navigation-padding-x) * 2 + var(--_kjun-extension-side-navigation-icon-size) + var(--_kjun-extension-side-navigation-spaces-rail-padding-x) * 2)}
+.kjun-side-navigation-layout[data-spaces]{--_kjun-side-navigation-layout-column:calc(var(--_kjun-side-navigation-spaces-rail) + var(--_kjun-extension-side-navigation-spaces-panel-width) + var(--_kjun-extension-side-navigation-spaces-panel-inset))}
+.kjun-side-navigation-layout[data-spaces][data-panel-surface=flat]{--_kjun-side-navigation-layout-column:calc(var(--_kjun-side-navigation-spaces-rail) + var(--_kjun-extension-side-navigation-spaces-panel-width))}
+.kjun-side-navigation-layout[data-spaces][data-panel-collapsed]{--_kjun-side-navigation-layout-column:var(--_kjun-side-navigation-spaces-rail)}
 :is(.kjun-side-navigation-layout[data-spaces] > .kjun-side-navigation-layout-nav,.kjun-side-navigation-layout-band){flex-direction:row;align-items:stretch;padding:0;overflow:hidden;background:var(--_kjun-color-navigation-rail-bg)}
 .kjun-side-navigation-layout-band{display:flex;height:100%;min-height:0}
-.kjun-side-navigation-layout-spaces{display:flex;flex-direction:column;align-items:center;flex:none;width:var(--_kjun-extension-side-navigation-spaces-column-width);min-height:0;padding:var(--_kjun-extension-side-navigation-column-padding-y) 0;box-sizing:border-box;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
+.kjun-side-navigation-layout-spaces{display:flex;flex-direction:column;align-items:center;flex:none;width:var(--_kjun-side-navigation-spaces-rail);min-height:0;padding:var(--_kjun-extension-side-navigation-column-padding-y) 0;box-sizing:border-box;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
 :is(.kjun-side-navigation-layout-spaces-top,.kjun-side-navigation-layout-panel-head){display:flex;align-items:center;flex:none;height:var(--_kjun-extension-side-navigation-spaces-panel-head-height);margin-bottom:var(--_kjun-extension-side-navigation-group-gap)}
 .kjun-side-navigation-layout-spaces-top{justify-content:center;align-self:stretch}
 .kjun-side-navigation-layout-spaces .kjun-side-navigation[data-collapsed] .kjun-side-navigation-item:is([aria-current],[data-current-within]){background:var(--_kjun-color-background);--_kjun-navigation-ring:var(--_kjun-color-background)}

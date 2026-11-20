@@ -224,7 +224,7 @@
       "columnPaddingX": { "$ref": "dimension.value12" },
       "columnPaddingY": { "$ref": "dimension.value12" },
       "railColumnPaddingX": { "$ref": "dimension.value4" },
-      "spacesColumnWidth": 60,
+      "spacesRailPaddingX": { "$ref": "dimension.value8" },
       "spacesPanelWidth": 216,
       "spacesPanelInset": { "$ref": "dimension.value8" },
       "spacesPanelRadius": { "$ref": "radius.radius12" },

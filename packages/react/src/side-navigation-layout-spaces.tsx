@@ -68,12 +68,13 @@ export function SpacesLayout(p: SpacesLayoutProps) {
         {render(p.spaces, { collapsed: true, drawer, closeDrawer: p.closeDrawer })}
       </div>
       <section ref={panel} id={panelId} className="kjun-side-navigation-layout-panel" aria-label={p.panelLabel ?? m.spacesPanel} hidden={closed && settled}>
+        {/* While the column narrows the collapse button stays, so focus on it is still in the panel when the effect looks. */}
         <div className="kjun-side-navigation-layout-panel-head">
           {p.spacesTitle != null && p.spacesTitle !== false && p.spacesTitle !== "" && <div className="kjun-side-navigation-layout-panel-title">{p.spacesTitle}</div>}
           {drawer
             ? <button type="button" className="kjun-side-navigation-toggle kjun-side-navigation-layout-panel-toggle" aria-label={m.close} onClick={p.closeDrawer}>
                 <KjunIcon name="x" size={tokens.extensions.sideNavigation.iconSize} /></button>
-            : !closed && toggle(true, collapse)}
+            : (!closed || !settled) && toggle(true, collapse)}
         </div>
         {render(p.nav, { collapsed: false, drawer, closeDrawer: p.closeDrawer })}
       </section>

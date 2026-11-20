@@ -55,6 +55,17 @@ const kjunSideNavigationLayoutProps = {
 } as const;
 export type KjunSideNavigationLayoutProps = ExtractPublicPropTypes<typeof kjunSideNavigationLayoutProps>;
 
+/** The panel toggles' icons are outside the default icon set; this wrapper provides them to its own icon only, so the
+ * layout's page keeps the app's icon set as it is. */
+const PanelToggleIcon = defineComponent({
+  name: "KjunSideNavigationLayoutToggleIcon",
+  props: { name: { type: String, required: true } },
+  setup(props) {
+    provideFallbackIcons(componentIcons);
+    return () => <KjunIcon name={props.name} size={tokens.extensions.sideNavigation.iconSize} />;
+  },
+});
+
 /** Whether the viewport is narrower than a width (never for 0), following the width as it changes. The server and the
  * first render take the wide layout. */
 function useNarrow(breakpoint: () => number, changed: (narrow: boolean) => void) {
@@ -101,7 +112,6 @@ export const KjunSideNavigationLayout = defineComponent({
       wasBelow = below.value;
       if (request !== null) spaced() ? emit("update:panelCollapsed", request) : emit("update:collapsed", request);
     }, { immediate: true });
-    provideFallbackIcons(componentIcons);
     const reduced = useReducedMotion(), panelId = "kjun-side-panel-" + useId().replace(/[^\w-]/g, "");
     const panel = ref<HTMLElement | null>(null), expand = ref<HTMLButtonElement | null>(null), collapse = ref<HTMLButtonElement | null>(null);
     // A collapsing panel stays in the page while the column narrows, then leaves the tab order and the accessibility tree.
@@ -130,7 +140,7 @@ export const KjunSideNavigationLayout = defineComponent({
       return <KjunTooltip content={label} placement="right">{{ default: () =>
         <button ref={next ? collapse : expand} type="button" class="kjun-side-navigation-toggle kjun-side-navigation-layout-panel-toggle" aria-label={label}
           aria-expanded={!props.panelCollapsed} aria-controls={panelId} onClick={() => request(next)}>
-          <KjunIcon name={next ? "layout-sidebar-left-collapse" : "layout-sidebar-left-expand"} size={tokens.extensions.sideNavigation.iconSize} />
+          <PanelToggleIcon name={next ? "layout-sidebar-left-collapse" : "layout-sidebar-left-expand"} />
         </button> }}
       </KjunTooltip>;
     };
@@ -147,7 +157,7 @@ export const KjunSideNavigationLayout = defineComponent({
             {drawer
               ? <button type="button" class="kjun-side-navigation-toggle kjun-side-navigation-layout-panel-toggle" aria-label={m.value.close} onClick={closeDrawer}>
                   <KjunIcon name="x" size={tokens.extensions.sideNavigation.iconSize} /></button>
-              : !closed ? toggle(true) : null}
+              : !closed || !settled.value ? toggle(true) : null}
           </div>
           {slots.nav?.({ collapsed: false, drawer, closeDrawer })}
         </section>,

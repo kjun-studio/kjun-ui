@@ -96,10 +96,11 @@ export function sideNavigationRows(ctx: SideRowsContext) {
   // turns full weight instead) and half of it while only icons show, where there is no name to strengthen.
   const soft = (color: ColorValue, amount: number) => (typeof color === "string" && tintColor(color, amount)) || color;
   const hover = soft(colors.hover, tokens.states.opacity.hoverSoft), withinFill = soft(colors.selectedBg, tokens.states.opacity.selectedWithin);
-  // In a layout's spaces rail the current space takes the panel's background instead, on the band's colour.
+  // In a layout's spaces rail the current space takes the panel's background instead, on the band's colour; its flyouts
+  // keep the selection fill on their own surface.
   const railSelected = ctx.railSelected ?? null;
   const fill = (mode: Mode, level: Level, disabled: boolean | undefined, { pressed, hovered }: PressState): ColorValue =>
-    level === "page" ? railSelected ?? colors.selectedBg : level === "within" && mode.collapsed ? railSelected ?? withinFill : disabled ? "transparent" : pressed ? colors.active : hovered ? hover : "transparent";
+    level === "page" ? (mode.collapsed && railSelected) || colors.selectedBg : level === "within" && mode.collapsed ? railSelected ?? withinFill : disabled ? "transparent" : pressed ? colors.active : hovered ? hover : "transparent";
   // Icons are a step lighter than names, and join them in full ink on the current page, a row over it and under a press.
   const ink = (lit: boolean) => lit ? colors.text : colors.textSecondary;
   // Names are in full ink; under a labelled rail's icons they stay a step lighter until lit.

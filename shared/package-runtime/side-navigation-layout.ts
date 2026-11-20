@@ -3,11 +3,18 @@
 /** The menu panel beside a spaces rail: a card set into the rail's band, or flat against it with a line before the page. */
 export type SideNavigationPanelSurface = "card" | "flat";
 
+type SpacesGeometry = { paddingX: number; iconSize: number; spacesRailPaddingX: number; spacesPanelWidth: number; spacesPanelInset: number };
+
+/** The rail's cell: an icons-only menu row (padding, icon, padding) with the rail's padding on each side. */
+export function spacesRailCellWidth(geometry: Pick<SpacesGeometry, "paddingX" | "iconSize" | "spacesRailPaddingX">): number {
+  return geometry.paddingX * 2 + geometry.iconSize + geometry.spacesRailPaddingX * 2;
+}
+
 /** The column's width: the rail's cell, plus the panel (and a card's end inset) while the panel is open. */
-export function spacesColumnWidth(geometry: { spacesColumnWidth: number; spacesPanelWidth: number; spacesPanelInset: number },
-  surface: SideNavigationPanelSurface, panelCollapsed: boolean): number {
-  if (panelCollapsed) return geometry.spacesColumnWidth;
-  return geometry.spacesColumnWidth + geometry.spacesPanelWidth + (surface === "card" ? geometry.spacesPanelInset : 0);
+export function spacesColumnWidth(geometry: SpacesGeometry, surface: SideNavigationPanelSurface, panelCollapsed: boolean): number {
+  const rail = spacesRailCellWidth(geometry);
+  if (panelCollapsed) return rail;
+  return rail + geometry.spacesPanelWidth + (surface === "card" ? geometry.spacesPanelInset : 0);
 }
 
 /** Where focus goes after the panel opens or closes: to the rail's expand button when the panel closes around the focus

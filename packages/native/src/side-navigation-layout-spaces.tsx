@@ -1,9 +1,9 @@
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
 import { IconFallbacks } from "../../../shared/package-runtime/icon-context";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
-import { spacesColumnWidth, spacesFocusAfterChange, type SideNavigationPanelSurface } from "../../../shared/package-runtime/side-navigation-layout";
+import { spacesColumnWidth, spacesFocusAfterChange, spacesRailCellWidth, type SideNavigationPanelSurface } from "../../../shared/package-runtime/side-navigation-layout";
 import { tokens } from "@kjun-ui/tokens";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { AccessibilityInfo, Animated, findNodeHandle, Platform, ScrollView, View, type StyleProp, type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIcon } from "./button";
@@ -31,6 +31,7 @@ const web = Platform.OS === "web";
  * collapsed panel stays mounted (its menu keeps open groups) but leaves the screen reader once the column has narrowed. */
 export function SpacesLayout(p: SpacesLayoutProps) {
   const m = useKjunMessages(), { colors } = useKjunStyles(), reduced = useReducedMotion(), geometry = tokens.extensions.sideNavigation;
+  const panelId = "kjun-side-panel-" + useId().replace(/[^\w-]/g, "");
   const card = p.panelSurface === "card", panel = useRef<View>(null), expand = useRef<View>(null), collapse = useRef<View>(null);
   const target = spacesColumnWidth(geometry, p.panelSurface, p.panelCollapsed);
   const width = useRef(new Animated.Value(target)).current, first = useRef(true), byButton = useRef(false);
@@ -55,7 +56,7 @@ export function SpacesLayout(p: SpacesLayoutProps) {
   const request = (next: boolean) => { byButton.current = true; p.onPanelCollapsedChange?.(next); };
   const render = (slot: Slot, state: State) => typeof slot === "function" ? slot(state) : slot;
   const button = (label: string, icon: string, onPress: () => void, ref?: typeof expand, expanded?: boolean) =>
-    <Pressable ref={ref} focusRingInset accessibilityRole="button" accessibilityLabel={label} accessibilityState={expanded === undefined ? undefined : { expanded }} onPress={onPress}
+    <Pressable ref={ref} focusRingInset accessibilityRole="button" accessibilityLabel={label} accessibilityState={expanded === undefined ? undefined : { expanded }} aria-controls={expanded === undefined ? undefined : panelId} onPress={onPress}
       style={({ pressed, hovered }: PressState) => ({ width: geometry.toggleSize, height: geometry.toggleSize, borderRadius: geometry.toggleRadius, alignItems: "center",
         justifyContent: "center", backgroundColor: pressed ? colors.active : hovered ? colors.hover : "transparent" })}>
       {(state: PressState) => <IconFallbacks icons={componentIcons}><KjunIcon name={icon} size={geometry.iconSize} color={state.pressed ? colors.text : colors.textSecondary} /></IconFallbacks>}
@@ -68,11 +69,11 @@ export function SpacesLayout(p: SpacesLayoutProps) {
   const band = (drawer: boolean) => {
     const closed = !drawer && p.panelCollapsed, hidden = closed && settled;
     return <>
-      <View style={{ width: geometry.spacesColumnWidth, flexShrink: 0, alignItems: "center", paddingVertical: geometry.columnPaddingY }} {...part("spaces")}>
+      <View style={{ width: spacesRailCellWidth(geometry), flexShrink: 0, alignItems: "center", paddingVertical: geometry.columnPaddingY }} {...part("spaces")}>
         <View style={{ ...head, alignSelf: "stretch", justifyContent: "center" }}>{closed && <View>{toggle(false, expand)}</View>}</View>
         <SpacesRailSelectedFill.Provider value={colors.background}>{render(p.spaces, { collapsed: true, drawer, closeDrawer: p.closeDrawer })}</SpacesRailSelectedFill.Provider>
       </View>
-      <View ref={panel} accessibilityLabel={p.panelLabel ?? m.spacesPanel} accessibilityElementsHidden={hidden} importantForAccessibility={hidden ? "no-hide-descendants" : "auto"}
+      <View ref={panel} role="region" nativeID={panelId} accessibilityLabel={p.panelLabel ?? m.spacesPanel} accessibilityElementsHidden={hidden} importantForAccessibility={hidden ? "no-hide-descendants" : "auto"}
         style={{ width: geometry.spacesPanelWidth, flexShrink: 0, display: hidden ? "none" : "flex", backgroundColor: colors.background,
           paddingHorizontal: geometry.spacesPanelInset, paddingBottom: geometry.columnPaddingY,
           ...(card ? { marginVertical: geometry.spacesPanelInset, marginEnd: geometry.spacesPanelInset, borderRadius: geometry.spacesPanelRadius,
@@ -80,7 +81,7 @@ export function SpacesLayout(p: SpacesLayoutProps) {
             : { paddingTop: geometry.columnPaddingY, borderEndWidth: tokens.border.defaultWidth, borderEndColor: colors.divider }) }} {...part("panel")}>
         <View style={{ ...head, gap: geometry.itemGap, paddingStart: geometry.paddingX, paddingEnd: (geometry.spacesPanelHeadHeight - geometry.toggleSize) / 2 }}>
           {p.spacesTitle != null && p.spacesTitle !== false && <KText numberOfLines={1} style={{ flex: 1, minWidth: 0, color: colors.text, ...typeStyle("cardTitle") }}>{p.spacesTitle}</KText>}
-          <View style={{ marginStart: "auto" }}>{drawer ? button(m.close, "x", p.closeDrawer) : !closed && toggle(true, collapse)}</View>
+          <View style={{ marginStart: "auto" }}>{drawer ? button(m.close, "x", p.closeDrawer) : (!closed || !settled) && toggle(true, collapse)}</View>
         </View>
         {render(p.nav, { collapsed: false, drawer, closeDrawer: p.closeDrawer })}
       </View>
