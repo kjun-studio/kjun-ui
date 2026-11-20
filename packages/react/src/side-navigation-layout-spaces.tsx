@@ -34,7 +34,7 @@ export interface SpacesLayoutProps {
  * carries the space's name and the collapse button; the rail's top cell holds the expand button while the panel is
  * collapsed. Below the breakpoint the whole band opens in the drawer, the panel always open there. */
 export function SpacesLayout(p: SpacesLayoutProps) {
-  const m = useKjunMessages(), reduced = useReducedMotion(), panelId = useId() + "-panel";
+  const m = useKjunMessages(), reduced = useReducedMotion(), panelId = "kjun-side-panel-" + useId().replace(/[^\w-]/g, "");
   const panel = useRef<HTMLElement>(null), expand = useRef<HTMLButtonElement>(null), collapse = useRef<HTMLButtonElement>(null);
   // A collapsing panel stays in the page while the column narrows, then leaves the tab order and the accessibility tree.
   const [settled, setSettled] = useState(p.panelCollapsed);
