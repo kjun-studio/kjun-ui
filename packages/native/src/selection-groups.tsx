@@ -241,7 +241,10 @@ export function KjunFilterGroup({
               <KText
                 numberOfLines={1}
                 style={{
-                  position: 'absolute', top: 0,
+                  // As in ButtonGroupLabel: the box reaches over the chip's side padding, so Yoga does not hold the
+                  // label to the reserved width, where Android's text rounding can cut it to an ellipsis.
+                  position: 'absolute', top: 0, left: -tokens.extensions.selection.paddingX[size],
+                  right: -tokens.extensions.selection.paddingX[size], textAlign: 'center',
                   ...selectionTypeStyle(size, active),
                   // One disabled rule, like Button and fields: the chip keeps its fill and its ink takes the disabled-text role.
                   color: ink,

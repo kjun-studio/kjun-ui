@@ -56,15 +56,17 @@ export function ButtonGroupLabel({ label, active, size, reduced, disabled = fals
   const resolveFont = useResolveFont();
   // The cell takes the wider of the selected and unselected labels: with per-weight faces (Android, Expo)
   // the lighter face can be the wider one. The height-0 copy adds its width without adding a line.
-  // The shown label keeps its own width, centred over the cell: Android rounds text widths, and a label
-  // squeezed to the reserved width can lose about a pixel and wrap or clip.
+  // Yoga fits an absolute child with no width to its parent's width, so the shown label would be held to the reserved
+  // width, and Android's rounding of text widths can leave it a pixel short and cut it to an ellipsis. Its box reaches
+  // over the segment's side padding instead, centred, so it keeps its own width inside the segment.
+  const slack = -tokens.buttonGroup.itemPaddingX[size];
   return <View style={{ alignItems: 'center' }}>
     <KText accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
       style={{ ...selectionTypeStyle(size, true), opacity: 0 }}>{label}</KText>
     <View style={{ height: 0, overflow: 'hidden' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       <KText accessible={false} style={{ ...selectionTypeStyle(size, false), opacity: 0 }}>{label}</KText>
     </View>
-    <Animated.Text numberOfLines={1} style={{ position: 'absolute', top: 0, textAlign: 'center',
+    <Animated.Text numberOfLines={1} style={{ position: 'absolute', top: 0, left: slack, right: slack, textAlign: 'center',
       ...StyleSheet.flatten(resolveFont({ fontFamily, ...selectionTypeStyle(size, active) })),
       // One disabled rule, like Button and fields: a disabled segment's ink takes the disabled-text role.
       color: disabled ? colors.textDisabled : interpolate ? progress.interpolate({ inputRange: [0, 1], outputRange: [colors.textSecondary as string, colors.text as string] }) : active ? colors.text : colors.textSecondary,
