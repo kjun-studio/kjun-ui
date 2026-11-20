@@ -26,7 +26,7 @@ const Page = defineComponent({ setup() {
 const Spaces = defineComponent({ setup() {
   const space = ref('projects'), value = ref('board'), closed = ref(spacesCase.closed), navOpen = ref(false);
   (window as any).__collapse = () => { closed.value = true; };
-  return () => <K.KjunSideNavigationLayout spacesTitle={spacesCase.title} panelSurface={spacesCase.surface} panelCollapsed={closed.value}
+  return () => <K.KjunSideNavigationLayout spacesTitle={spacesCase.title} panelSurface={spacesCase.surface} sticky={layoutCase.sticky} panelCollapsed={closed.value}
     collapsed={layoutCase.collapsed} railLabels={layoutCase.labels} width={layoutCase.width} {...(layoutCase.breakpoint !== undefined ? { breakpoint: layoutCase.breakpoint } : {})}
     railBreakpoint={layoutCase.railBreakpoint} navOpen={navOpen.value}
     {...{ 'onUpdate:navOpen': (next: boolean) => { navOpen.value = next; }, 'onUpdate:panelCollapsed': (next: boolean) => { closed.value = next; } }}>

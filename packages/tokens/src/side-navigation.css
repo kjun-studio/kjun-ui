@@ -69,6 +69,9 @@
 .kjun-side-navigation[data-collapsed] > .kjun-side-navigation-footer{flex-direction:column-reverse}
 .kjun-side-navigation[data-collapsed] > .kjun-side-navigation-footer > .kjun-side-navigation-toggle{margin-inline-start:0}
 .kjun-side-navigation-toggle{display:flex;align-items:center;justify-content:center;flex:none;width:var(--_kjun-extension-side-navigation-toggle-size);height:var(--_kjun-extension-side-navigation-toggle-size);padding:0;border:0;border-radius:var(--_kjun-extension-side-navigation-toggle-radius);background:transparent;color:var(--_kjun-color-text-secondary);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color var(--_kjun-motion-control) var(--_kjun-ease-out),color var(--_kjun-motion-control) var(--_kjun-ease-out)}
+/* On touch screens a toggle's press area grows to the minimum touch target (the menu's and the layout panel's). */
+.kjun-side-navigation-toggle{position:relative}
+@media (pointer:coarse){.kjun-side-navigation-toggle::after{content:"";position:absolute;inset:min(0%,calc((100% - var(--_kjun-geometry-native-minimum-touch-target)) / 2))}}
 .kjun-side-navigation[data-collapsed] .kjun-side-navigation-toggle{width:var(--_kjun-side-navigation-rail-width);height:var(--_kjun-extension-side-navigation-item-height);border-radius:var(--_kjun-extension-side-navigation-radius)}
 /* Collapsible groups: a title is a toggle row the height of a small button in caption type, so a heading never reads as
    a row. Its end holds what a parent row's end holds: a dot for a badge inside a closed group, or (groupCounts) how many
@@ -152,6 +155,8 @@
 .kjun-side-navigation-layout[data-collapsed][data-rail-labels]{--_kjun-side-navigation-layout-padding-x:var(--_kjun-extension-side-navigation-rail-column-padding-x);--_kjun-side-navigation-layout-column:calc(var(--_kjun-extension-side-navigation-rail-item-width) + var(--_kjun-side-navigation-layout-padding-x) * 2)}
 .kjun-side-navigation-layout-nav{position:sticky;top:var(--_kjun-side-navigation-layout-top,0vh);align-self:start;display:flex;flex-direction:column;height:calc(100vh - var(--_kjun-side-navigation-layout-top,0vh));height:calc(100dvh - var(--_kjun-side-navigation-layout-top,0vh));min-width:0;padding:var(--_kjun-extension-side-navigation-column-padding-y) var(--_kjun-side-navigation-layout-padding-x);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
 .kjun-side-navigation-layout[data-sticky=false] > .kjun-side-navigation-layout-nav{position:static;height:auto;overflow-y:visible}
+/* A band that scrolls away with the page still runs the page's full height, as on Native. */
+.kjun-side-navigation-layout[data-spaces][data-sticky=false] > .kjun-side-navigation-layout-nav{align-self:stretch}
 .kjun-side-navigation-layout-nav > .kjun-side-navigation{flex:1 1 auto}
 .kjun-side-navigation-layout-main{min-width:0}
 /* Below the layout's breakpoint the column goes away and the menu opens in a drawer from the start edge. */

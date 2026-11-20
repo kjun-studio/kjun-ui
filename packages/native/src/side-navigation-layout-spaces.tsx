@@ -1,6 +1,7 @@
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
 import { IconFallbacks } from "../../../shared/package-runtime/icon-context";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
+import { tintColor } from "../../../shared/package-runtime/alert-tone";
 import { spacesColumnWidth, spacesFocusAfterChange, spacesRailCellWidth, type SideNavigationPanelSurface } from "../../../shared/package-runtime/side-navigation-layout";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
@@ -54,11 +55,14 @@ export function SpacesLayout(p: SpacesLayoutProps) {
     return () => motion.stop();
   }, [target, reduced]);
   const request = (next: boolean) => { byButton.current = true; p.onPanelCollapsedChange?.(next); };
+  // Like the menu's rows and the web toggles: half the app's hover fill, and a press area of the minimum touch target.
+  const hover = (typeof colors.hover === "string" && tintColor(colors.hover, tokens.states.opacity.hoverSoft)) || colors.hover;
+  const reach = Math.max(0, (tokens.native.minimumTouchTarget - geometry.toggleSize) / 2);
   const render = (slot: Slot, state: State) => typeof slot === "function" ? slot(state) : slot;
   const button = (label: string, icon: string, onPress: () => void, ref?: typeof expand, expanded?: boolean) =>
-    <Pressable ref={ref} focusRingInset accessibilityRole="button" accessibilityLabel={label} accessibilityState={expanded === undefined ? undefined : { expanded }} aria-controls={expanded === undefined ? undefined : panelId} onPress={onPress}
+    <Pressable ref={ref} focusRingInset hitSlop={reach} accessibilityRole="button" accessibilityLabel={label} accessibilityState={expanded === undefined ? undefined : { expanded }} aria-controls={expanded === undefined ? undefined : panelId} onPress={onPress}
       style={({ pressed, hovered }: PressState) => ({ width: geometry.toggleSize, height: geometry.toggleSize, borderRadius: geometry.toggleRadius, alignItems: "center",
-        justifyContent: "center", backgroundColor: pressed ? colors.active : hovered ? colors.hover : "transparent" })}>
+        justifyContent: "center", backgroundColor: pressed ? colors.active : hovered ? hover : "transparent" })}>
       {(state: PressState) => <IconFallbacks icons={componentIcons}><KjunIcon name={icon} size={geometry.iconSize} color={state.pressed ? colors.text : colors.textSecondary} /></IconFallbacks>}
     </Pressable>;
   const toggle = (next: boolean, ref: typeof expand) => {
@@ -80,7 +84,7 @@ export function SpacesLayout(p: SpacesLayoutProps) {
             paddingTop: geometry.columnPaddingY - geometry.spacesPanelInset }
             : { paddingTop: geometry.columnPaddingY, borderEndWidth: tokens.border.defaultWidth, borderEndColor: colors.divider }) }} {...part("panel")}>
         <View style={{ ...head, gap: geometry.itemGap, paddingStart: geometry.paddingX, paddingEnd: (geometry.spacesPanelHeadHeight - geometry.toggleSize) / 2 }}>
-          {p.spacesTitle != null && p.spacesTitle !== false && <KText numberOfLines={1} style={{ flex: 1, minWidth: 0, color: colors.text, ...typeStyle("cardTitle") }}>{p.spacesTitle}</KText>}
+          {p.spacesTitle != null && p.spacesTitle !== false && p.spacesTitle !== "" && <KText numberOfLines={1} style={{ flex: 1, minWidth: 0, color: colors.text, ...typeStyle("cardTitle") }}>{p.spacesTitle}</KText>}
           <View style={{ marginStart: "auto" }}>{drawer ? button(m.close, "x", p.closeDrawer) : (!closed || !settled) && toggle(true, collapse)}</View>
         </View>
         {render(p.nav, { collapsed: false, drawer, closeDrawer: p.closeDrawer })}

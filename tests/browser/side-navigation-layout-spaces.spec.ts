@@ -183,3 +183,42 @@ for (const platform of ['react', 'vue3']) {
     await expect.poll(() => collapse.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
   });
 }
+
+for (const platform of ['react', 'vue3']) {
+  test(`${platform}: a spaces band that scrolls with the page runs the page's full height`, async ({ page }) => {
+    await page.setViewportSize({ width: 1200, height: 800 });
+    await open(page, platform, '&static=1');
+    const nav = (await column(page).boundingBox())!, main = (await page.locator('.kjun-side-navigation-layout-main').boundingBox())!;
+    expect(Math.round(nav.height)).toBe(Math.round(main.height));
+  });
+
+  test(`${platform}: on a touch screen the panel and menu toggles reach the minimum touch target`, async ({ browser }) => {
+    const context = await browser.newContext({ hasTouch: true, isMobile: true, viewport: { width: 1200, height: 800 } });
+    const page = await context.newPage();
+    await open(page, platform, '');
+    const after = await page.getByRole('button', { name: '메뉴 패널 접기' }).evaluate(el => {
+      const s = getComputedStyle(el, '::after'), box = el.getBoundingClientRect();
+      return { content: s.content, width: box.width - parseFloat(s.left) - parseFloat(s.right), height: box.height - parseFloat(s.top) - parseFloat(s.bottom) };
+    });
+    expect(after.content).not.toBe('none');
+    expect(Math.round(after.width)).toBe(44);
+    expect(Math.round(after.height)).toBe(44);
+    await context.close();
+  });
+}
+
+test('native: the panel toggle takes half the hover fill as a menu row does, and an empty title draws nothing', async ({ page }) => {
+  await page.setViewportSize({ width: 1200, height: 800 });
+  await open(page, 'native', '&title=empty');
+  const collapse = page.getByRole('button', { name: '메뉴 패널 접기' });
+  await collapse.hover();
+  await expect.poll(() => collapse.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
+  const toggle = await collapse.evaluate(el => getComputedStyle(el).backgroundColor);
+  // A row that is not the current page, under the mouse.
+  const row = menu(page).getByRole('link', { name: '브랜드 웹사이트' });
+  await row.hover();
+  await expect.poll(() => row.evaluate(el => getComputedStyle(el).backgroundColor)).toBe(toggle);
+  // The head holds only the collapse button's wrapper.
+  const head = page.locator('[data-kjun-side-navigation-layout-part="panel"] > div').first();
+  await expect(head.locator(':scope > *')).toHaveCount(1);
+});

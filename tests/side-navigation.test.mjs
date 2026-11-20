@@ -65,9 +65,12 @@ test("the current item is a fill and a weight, never an accent stripe", async ()
   const lines = rules.filter(boundary);
   assert.equal(lines.length, 1);
   assert.match(lines[0], /height:var\(--_kjun-border-default-width\);background:var\(--_kjun-color-divider\)/);
+  // The toggles' touch area on coarse pointers is an empty, unfilled press area, not a mark.
+  const touchArea = (rule) => /\.kjun-side-navigation-toggle::after\s*\{content:"";position:absolute;inset:[^;]*$/.test(rule.trim());
+  assert.equal(rules.filter(touchArea).length, 1);
   for (const rule of rules) {
     assert.doesNotMatch(rule, /border-(left|inline-start)/, rule.trim().slice(0, 60));
-    if (!boundary(rule)) assert.doesNotMatch(rule, /::before|::after/, rule.trim().slice(0, 60));
+    if (!boundary(rule) && !touchArea(rule)) assert.doesNotMatch(rule, /::before|::after/, rule.trim().slice(0, 60));
     assert.doesNotMatch(rule.split("{")[1] ?? "", /\d+px/, rule.trim().slice(0, 60));
   }
 });

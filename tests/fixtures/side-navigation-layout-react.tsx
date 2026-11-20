@@ -25,7 +25,7 @@ function Spaces() {
   (window as any).__collapse = () => setClosed(true);
   return <KjunSideNavigationLayout spaces={<KjunSideNavigation ariaLabel="공간" items={spaceItems as any} value={space} collapsed
       onNavigate={(key, event) => { event.preventDefault(); setSpace(key); }} />}
-    spacesTitle={spacesCase.title} panelSurface={spacesCase.surface} panelCollapsed={closed} onPanelCollapsedChange={setClosed}
+    spacesTitle={spacesCase.title} panelSurface={spacesCase.surface} sticky={layoutCase.sticky} panelCollapsed={closed} onPanelCollapsedChange={setClosed}
     collapsed={layoutCase.collapsed} railLabels={layoutCase.labels} width={layoutCase.width} breakpoint={layoutCase.breakpoint} railBreakpoint={layoutCase.railBreakpoint}
     navOpen={navOpen} onNavOpenChange={setNavOpen}
     nav={({ closeDrawer }) => <KjunSideNavigation ariaLabel="메뉴" items={panelItems as any} value={value} density="compact"
