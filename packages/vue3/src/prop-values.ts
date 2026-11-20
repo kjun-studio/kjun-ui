@@ -282,6 +282,7 @@ export const kjunPropValues = Object.freeze({
     rail: Object.freeze(["groups","items"] as const),
   }),
   KjunSideNavigationLayout: Object.freeze({
+    panelSurface: Object.freeze(["card","flat"] as const),
     width: Object.freeze(["sm","md","lg"] as const),
   }),
   KjunSignedValue: Object.freeze({

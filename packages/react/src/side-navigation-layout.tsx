@@ -1,3 +1,4 @@
+import { developmentMode } from "../../../shared/package-runtime/development";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { sideNavigationRailRequest, type SideNavigationWidth } from "../../../shared/package-runtime/side-navigation";
 import { tokens } from "@kjun-ui/tokens";
@@ -85,7 +86,7 @@ export function KjunSideNavigationLayout({ nav, children, collapsed = false, onC
   const latest = useRef({ collapsed: folded, navOpen, onCollapsedChange: onFold, onNavOpenChange }); latest.current = { collapsed: folded, navOpen, onCollapsedChange: onFold, onNavOpenChange };
   const warned = useRef(false);
   useEffect(() => {
-    if (!spaced || warned.current || process.env.NODE_ENV === "production") return;
+    if (!spaced || warned.current || !developmentMode()) return;
     const ignored = spacesIgnoredProps({ collapsed, railLabels, width });
     if (ignored.length > 0) { warned.current = true; console.warn(`KjunSideNavigationLayout: ${ignored.join(", ")} do not apply with spaces.`); }
   }, [spaced, collapsed, railLabels, width]);

@@ -25612,6 +25612,34 @@
         "required": false,
         "default": "—",
         "description": "The drawer's name for assistive technology; the menu's name by default."
+      },
+      {
+        "name": "spacesTitle",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "The chosen space's name at the top of the menu panel, on one line (or the spacesTitle slot). Applies with the spaces slot."
+      },
+      {
+        "name": "panelSurface",
+        "type": "SideNavigationPanelSurface",
+        "required": false,
+        "default": "\"card\"",
+        "description": "The panel beside the spaces slot: a card set into the band (\"card\", default) or flat against it with a line before the page."
+      },
+      {
+        "name": "panelCollapsed",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "v-model:panelCollapsed: the panel is collapsed and only the spaces rail stays; the rail's top cell then holds the expand button."
+      },
+      {
+        "name": "panelLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "The panel's name for assistive technology; \"메뉴 패널\" by default."
       }
     ],
     "events": [
@@ -25621,6 +25649,10 @@
       },
       {
         "name": "update:collapsed",
+        "source": "packages/vue3/src/side-navigation-layout.tsx"
+      },
+      {
+        "name": "update:panelCollapsed",
         "source": "packages/vue3/src/side-navigation-layout.tsx"
       }
     ],
@@ -25632,6 +25664,20 @@
           "drawer",
           "closeDrawer"
         ],
+        "source": "packages/vue3/src/side-navigation-layout.tsx"
+      },
+      {
+        "name": "spaces",
+        "data": [
+          "collapsed",
+          "drawer",
+          "closeDrawer"
+        ],
+        "source": "packages/vue3/src/side-navigation-layout.tsx"
+      },
+      {
+        "name": "spacesTitle",
+        "data": [],
         "source": "packages/vue3/src/side-navigation-layout.tsx"
       },
       {
