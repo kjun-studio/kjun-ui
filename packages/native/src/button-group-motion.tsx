@@ -41,6 +41,11 @@ export function useButtonGroupMotion(selected: ChoiceOption | undefined) {
   return { x, width, layout, measure, updateLayout, reduced };
 }
 
+// The shown label sits in a box a little wider than the reserved width. Yoga fits an absolute child with no width to
+// its parent's width, and Android rounds text widths, so a label held to exactly the reserved width can come out a
+// pixel short and end in an ellipsis. A View carries the box: Native Web caps a one-line Text at its parent's width.
+export const labelRoom = { position: 'absolute', top: 0, left: -tokens.dimension.value2, right: -tokens.dimension.value2 } as const;
+
 export function ButtonGroupLabel({ label, active, size, reduced, disabled = false }: {
   label: string; active: boolean; size: ButtonSize; reduced: boolean; disabled?: boolean;
 }) {
@@ -56,20 +61,16 @@ export function ButtonGroupLabel({ label, active, size, reduced, disabled = fals
   const resolveFont = useResolveFont();
   // The cell takes the wider of the selected and unselected labels: with per-weight faces (Android, Expo)
   // the lighter face can be the wider one. The height-0 copy adds its width without adding a line.
-  // Yoga fits an absolute child with no width to its parent's width, so the shown label would be held to the reserved
-  // width, and Android's rounding of text widths can leave it a pixel short and cut it to an ellipsis. Its box reaches
-  // over the segment's side padding instead, centred, so it keeps its own width inside the segment.
-  const slack = -tokens.buttonGroup.itemPaddingX[size];
   return <View style={{ alignItems: 'center' }}>
     <KText accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
       style={{ ...selectionTypeStyle(size, true), opacity: 0 }}>{label}</KText>
     <View style={{ height: 0, overflow: 'hidden' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       <KText accessible={false} style={{ ...selectionTypeStyle(size, false), opacity: 0 }}>{label}</KText>
     </View>
-    <Animated.Text numberOfLines={1} style={{ position: 'absolute', top: 0, left: slack, right: slack, textAlign: 'center',
+    <View style={labelRoom}><Animated.Text numberOfLines={1} style={{ textAlign: 'center',
       ...StyleSheet.flatten(resolveFont({ fontFamily, ...selectionTypeStyle(size, active) })),
       // One disabled rule, like Button and fields: a disabled segment's ink takes the disabled-text role.
       color: disabled ? colors.textDisabled : interpolate ? progress.interpolate({ inputRange: [0, 1], outputRange: [colors.textSecondary as string, colors.text as string] }) : active ? colors.text : colors.textSecondary,
-    }}>{label}</Animated.Text>
+    }}>{label}</Animated.Text></View>
   </View>;
 }

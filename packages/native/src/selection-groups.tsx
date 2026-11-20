@@ -13,7 +13,7 @@ import { KjunTooltip } from "./popover";
 import { ChoiceOption,ChoiceValue } from "./choice-controls";
 import { KText, finePointer } from "./internal";
 import { useKjunStyles } from "./provider";
-import { ButtonGroupLabel, useButtonGroupMotion } from "./button-group-motion";
+import { ButtonGroupLabel, labelRoom, useButtonGroupMotion } from "./button-group-motion";
 import { ScrollFadeEdge } from "./scroll-fade-edge";
 import { useFilterRow } from "./use-filter-row";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
@@ -238,20 +238,19 @@ export function KjunFilterGroup({
               <View style={{ height: 0, overflow: 'hidden' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
                 <KText accessible={false} style={{ ...selectionTypeStyle(size, false), opacity: 0 }}>{option.label}</KText>
               </View>
-              <KText
-                numberOfLines={1}
-                style={{
-                  // As in ButtonGroupLabel: the box reaches over the chip's side padding, so Yoga does not hold the
-                  // label to the reserved width, where Android's text rounding can cut it to an ellipsis.
-                  position: 'absolute', top: 0, left: -tokens.extensions.selection.paddingX[size],
-                  right: -tokens.extensions.selection.paddingX[size], textAlign: 'center',
-                  ...selectionTypeStyle(size, active),
-                  // One disabled rule, like Button and fields: the chip keeps its fill and its ink takes the disabled-text role.
-                  color: ink,
-                }}
-              >
-                {option.label}
-              </KText>
+              <View style={labelRoom}>
+                <KText
+                  numberOfLines={1}
+                  style={{
+                    textAlign: 'center',
+                    ...selectionTypeStyle(size, active),
+                    // One disabled rule, like Button and fields: the chip keeps its fill and its ink takes the disabled-text role.
+                    color: ink,
+                  }}
+                >
+                  {option.label}
+                </KText>
+              </View>
               </View>
               {counted && (
                 // Outside the label's reserved width, so a changing count never shifts the weight swap; Web's count style.

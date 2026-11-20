@@ -55,12 +55,12 @@ for (const platform of ['react', 'vue3', 'native']) {
       expect(await badgeRing(page, 'Card home')).toBe(await paintBehind(page, 'Card home'));
     });
 
-    test('group labels have room beyond the reserved cell, centred, so device text rounding cannot cut them', async ({ page }) => {
+    test('group labels have room beyond the reserved width, centred, so device text rounding cannot cut them', async ({ page }) => {
       test.skip(platform !== 'native', 'Native label overlay');
       const area = section(page, 'group-fonts');
-      // Yoga fits an absolute label with no width to the reserved cell; the label's box reaches over the side padding
-      // instead, so a pixel of Android rounding leaves the text whole. The text stays centred in that box.
-      const room = Math.min(tokens.buttonGroup.itemPaddingX.md, tokens.extensions.selection.paddingX.md);
+      // Yoga fits an absolute label with no width to the reserved width; the label's box is a little wider instead,
+      // so a pixel of Android rounding leaves the text whole. The text stays centred in that box.
+      const room = tokens.dimension.value2;
       const fits = await area.getByText(/^(Wishlist 3|Achieved 1)$/).evaluateAll(all => all
         .filter(n => getComputedStyle(n).opacity !== '0')
         .map(n => {
@@ -70,7 +70,7 @@ for (const platform of ['react', 'vue3', 'native']) {
         }));
       expect(fits.length).toBeGreaterThanOrEqual(4);
       for (const { left, right } of fits) {
-        expect(Math.min(left, right)).toBeGreaterThanOrEqual(room - 1);
+        expect(Math.min(left, right)).toBeGreaterThanOrEqual(room - 0.5);
         expect(Math.abs(left - right)).toBeLessThan(1);
       }
     });

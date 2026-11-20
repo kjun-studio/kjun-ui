@@ -4,7 +4,7 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
 
 ## 미배포
 
-- **Native `KjunButtonGroup`·`KjunFilterGroup` 라벨이 Android에서 줄임표로 잘리던 문제 (수정)**: 360dp 폭 기기에서 칸이 충분히 넓은데도 "네이버 지도"가 "네이버 지…"로 보이던 문제를 고쳤습니다. 보이는 라벨이 두 굵기 중 넓은 쪽의 예약 폭에 묶여 있어, Android가 글자 폭을 반올림하면 1px쯤 모자랐습니다. 0.17.0의 수정은 RN 레이아웃 엔진(Yoga)이 폭 없는 절대 위치 자식을 부모 폭에 맞추는 규칙 때문에 기기에서는 효과가 없었습니다. 이제 라벨 상자가 칸의 좌우 안쪽 여백까지 넓어지고 글자는 가운데에 놓입니다. 칸 크기와 모양은 같습니다. RN Web에서만 확인했습니다.
+- **Native `KjunButtonGroup`·`KjunFilterGroup` 라벨이 Android에서 줄임표로 잘리던 문제 (수정)**: 360dp 폭 기기에서 칸이 충분히 넓은데도 "네이버 지도"가 "네이버 지…"로 보이던 문제를 고쳤습니다. 보이는 라벨이 두 굵기 중 넓은 쪽의 예약 폭에 묶여 있어, Android가 글자 폭을 반올림하면 1px쯤 모자랐습니다. 0.17.0의 수정은 RN 레이아웃 엔진(Yoga)이 폭 없는 절대 위치 자식을 부모 폭에 맞추는 규칙 때문에 기기에서는 효과가 없었습니다. 이제 라벨 상자가 예약 폭보다 좌우 2px씩 넓고 글자는 가운데에 놓입니다. 칸 크기와 모양은 같습니다. RN Web에서만 확인했습니다.
 - **`KjunSideNavigationLayout` 공간 레일과 메뉴 패널 (`spaces`)**: 공간을 고르는 아이콘 레일(`spaces`)과 그 공간의 메뉴(`nav`)를 한 띠에 둡니다(Vue 3·React·Native). 패널 머리에 공간 이름(`spacesTitle`)과 접기 버튼이 있고, `panelCollapsed`·`onPanelCollapsedChange`(Vue `v-model:panelCollapsed`)로 패널을 접으면 60px 레일만 남습니다. `panelSurface`는 `card`(기본, 띠 안의 카드, 열 284px)와 `flat`(띠에 붙은 패널과 페이지 쪽 구분선, 열 276px)입니다. 좁은 화면 서랍에는 레일과 패널이 함께 들어갑니다. 새 색 역할 `navigationRailBg`(`--kjun-navigation-rail-bg`, 기본 `secondary`)와 `tokens.extensions.sideNavigation.spaces*` 토큰을 추가했습니다. 레일과 메뉴 두 개를 `div` 폭으로 직접 붙여 쓰던 앱은 `spaces`·`nav`로 옮기고 폭·색 지정을 지우면 됩니다. Native는 RN Web에서만 확인했습니다.
 
 ## 0.22.0 — 2026-11-19
