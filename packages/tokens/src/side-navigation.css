@@ -156,6 +156,25 @@
 .kjun-side-navigation-layout-main{min-width:0}
 /* Below the layout's breakpoint the column goes away and the menu opens in a drawer from the start edge. */
 .kjun-side-navigation-layout[data-drawer]{display:block}
+/* Spaces: a band in the rail colour holds the spaces rail and the menu panel (a card set into the band, or flat with a line before
+   the page). The column is the rail's cell, plus the panel and a card's inset while the panel is open. The page is untouched. */
+.kjun-side-navigation-layout[data-spaces]{--_kjun-side-navigation-layout-column:calc(var(--_kjun-extension-side-navigation-spaces-column-width) + var(--_kjun-extension-side-navigation-spaces-panel-width) + var(--_kjun-extension-side-navigation-spaces-panel-inset))}
+.kjun-side-navigation-layout[data-spaces][data-panel-surface=flat]{--_kjun-side-navigation-layout-column:calc(var(--_kjun-extension-side-navigation-spaces-column-width) + var(--_kjun-extension-side-navigation-spaces-panel-width))}
+.kjun-side-navigation-layout[data-spaces][data-panel-collapsed]{--_kjun-side-navigation-layout-column:var(--_kjun-extension-side-navigation-spaces-column-width)}
+:is(.kjun-side-navigation-layout[data-spaces] > .kjun-side-navigation-layout-nav,.kjun-side-navigation-layout-band){flex-direction:row;align-items:stretch;padding:0;overflow:hidden;background:var(--_kjun-color-navigation-rail-bg)}
+.kjun-side-navigation-layout-band{display:flex;height:100%;min-height:0}
+.kjun-side-navigation-layout-spaces{display:flex;flex-direction:column;align-items:center;flex:none;width:var(--_kjun-extension-side-navigation-spaces-column-width);min-height:0;padding:var(--_kjun-extension-side-navigation-column-padding-y) 0;box-sizing:border-box;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
+:is(.kjun-side-navigation-layout-spaces-top,.kjun-side-navigation-layout-panel-head){display:flex;align-items:center;flex:none;height:var(--_kjun-extension-side-navigation-spaces-panel-head-height);margin-bottom:var(--_kjun-extension-side-navigation-group-gap)}
+.kjun-side-navigation-layout-spaces-top{justify-content:center;align-self:stretch}
+.kjun-side-navigation-layout-spaces .kjun-side-navigation-item:is([aria-current],[data-current-within]){background:var(--_kjun-color-background);--_kjun-navigation-ring:var(--_kjun-color-background)}
+.kjun-side-navigation-layout-panel{display:flex;flex-direction:column;flex:none;width:var(--_kjun-extension-side-navigation-spaces-panel-width);min-width:0;min-height:0;padding:var(--_kjun-extension-side-navigation-column-padding-y) var(--_kjun-extension-side-navigation-spaces-panel-inset);box-sizing:border-box;background:var(--_kjun-color-background);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
+.kjun-side-navigation-layout-panel[hidden]{display:none}
+.kjun-side-navigation-layout-panel > .kjun-side-navigation{flex:1 1 auto}
+[data-panel-surface=card] .kjun-side-navigation-layout-panel{margin:var(--_kjun-extension-side-navigation-spaces-panel-inset) var(--_kjun-extension-side-navigation-spaces-panel-inset) var(--_kjun-extension-side-navigation-spaces-panel-inset) 0;padding-top:calc(var(--_kjun-extension-side-navigation-column-padding-y) - var(--_kjun-extension-side-navigation-spaces-panel-inset));border-radius:var(--_kjun-extension-side-navigation-spaces-panel-radius)}
+[data-panel-surface=flat] .kjun-side-navigation-layout-panel{border-inline-end:var(--_kjun-border-default-width) solid var(--_kjun-color-divider)}
+.kjun-side-navigation-layout-panel-head{gap:var(--_kjun-extension-side-navigation-item-gap);padding-inline:var(--_kjun-extension-side-navigation-padding-x) calc((var(--_kjun-extension-side-navigation-spaces-panel-head-height) - var(--_kjun-extension-side-navigation-toggle-size)) / 2)}
+.kjun-side-navigation-layout-panel-title{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--_kjun-color-text);font-size:var(--_kjun-type-card-title-size);line-height:var(--_kjun-type-card-title-line);font-weight:var(--_kjun-type-card-title-weight);letter-spacing:var(--_kjun-type-card-title-tracking)}
+.kjun-side-navigation-layout-panel-head > .kjun-side-navigation-toggle{margin-inline-start:auto}
 /* Widening: the app grows the column; names, titles and trailing marks wait for it and then fade in, so they are never
    cut off by a column still on its way. Narrowing hides them at once. */
 @keyframes kjun-side-navigation-reveal{from{opacity:0}}
