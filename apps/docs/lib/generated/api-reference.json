@@ -8275,7 +8275,7 @@
         "props": [
           {
             "name": "type",
-            "type": "\"text\" | \"block\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+            "type": "\"text\" | \"card\" | \"block\" | \"line\" | \"avatar\" | \"table\" | \"stat\" | undefined",
             "required": false,
             "default": "\"text\"",
             "description": "\"line\" is one line of text: a bar in the line box of `role` (default body).",
@@ -11945,7 +11945,7 @@
           },
           {
             "name": "responsive",
-            "type": "\"none\" | \"compact\" | \"list\" | \"card\" | null | undefined",
+            "type": "\"none\" | \"compact\" | \"card\" | \"list\" | null | undefined",
             "required": false,
             "default": "null",
             "description": "",
@@ -14436,7 +14436,7 @@
           },
           {
             "name": "skeletonType",
-            "type": "\"text\" | \"block\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+            "type": "\"text\" | \"card\" | \"block\" | \"line\" | \"avatar\" | \"table\" | \"stat\" | undefined",
             "required": false,
             "default": "\"text\"",
             "description": "",
@@ -38936,6 +38936,42 @@
             "description": "The drawer's name for assistive technology; the menu's name by default.",
             "summary": "서랍의 접근 가능한 이름입니다. 생략하면 메뉴의 기본 이름(주요 탐색)입니다.",
             "source": "packages/vue3/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "spacesTitle",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The chosen space's name at the top of the menu panel, on one line (or the spacesTitle slot). Applies with the spaces slot.",
+            "summary": "spaces와 함께 쓸 때 메뉴 패널 머리에 보일 지금 공간의 이름입니다. 한 줄로 보이고 길면 말줄임합니다.",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "panelSurface",
+            "type": "SideNavigationPanelSurface",
+            "required": false,
+            "default": "\"card\"",
+            "description": "The panel beside the spaces slot: a card set into the band (\"card\", default) or flat against it with a line before the page.",
+            "summary": "spaces와 함께 쓸 때 메뉴 패널의 모양입니다. card는 레일 띠 안에 8px 띄운 카드(모서리 12, 열 284px), flat은 띠에 붙은 패널과 페이지 쪽 1px 구분선(열 276px)입니다.",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "panelCollapsed",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "v-model:panelCollapsed: the panel is collapsed and only the spaces rail stays; the rail's top cell then holds the expand button.",
+            "summary": "spaces와 함께 쓸 때 메뉴 패널을 접어 60px 레일만 남깁니다(Vue v-model:panelCollapsed). 레일 맨 위의 펼치기 버튼과 패널 머리의 접기 버튼이 바꿔 달라고 요청합니다. 좁은 화면 서랍에서는 늘 펼쳐집니다.",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "panelLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "The panel's name for assistive technology; \"메뉴 패널\" by default.",
+            "summary": "메뉴 패널 영역의 접근 가능한 이름입니다. 생략하면 \"메뉴 패널\"입니다.",
+            "source": "packages/vue3/src/side-navigation-layout.tsx"
           }
         ],
         "events": [
@@ -38950,6 +38986,12 @@
             "source": "packages/vue3/src/side-navigation-layout.tsx",
             "type": "이벤트",
             "summary": "update:collapsed 이벤트를 통지합니다."
+          },
+          {
+            "name": "update:panelCollapsed",
+            "source": "packages/vue3/src/side-navigation-layout.tsx",
+            "type": "이벤트",
+            "summary": "update:panelCollapsed 이벤트를 통지합니다."
           }
         ],
         "slots": [
@@ -38963,6 +39005,24 @@
             "source": "packages/vue3/src/side-navigation-layout.tsx",
             "type": "{ collapsed, drawer, closeDrawer }",
             "summary": "nav 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "spaces",
+            "data": [
+              "collapsed",
+              "drawer",
+              "closeDrawer"
+            ],
+            "source": "packages/vue3/src/side-navigation-layout.tsx",
+            "type": "{ collapsed, drawer, closeDrawer }",
+            "summary": "spaces 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "spacesTitle",
+            "data": [],
+            "source": "packages/vue3/src/side-navigation-layout.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "spacesTitle 영역의 기본 내용을 교체합니다."
           },
           {
             "name": "default",
@@ -39095,6 +39155,60 @@
             "source": "packages/react/src/side-navigation-layout.tsx"
           },
           {
+            "name": "spaces",
+            "type": "ReactNode | ((state: SideNavigationLayoutState) => ReactNode)",
+            "required": false,
+            "default": "—",
+            "description": "A rail of spaces, usually a collapsed KjunSideNavigation, before a menu panel that holds nav. The rail and the panel sit\nin a band in the navigation-rail-bg colour; the panel's head shows spacesTitle and a collapse button, and below the\nbreakpoint the drawer holds both. With spaces, collapsed, railLabels and width do not apply, and railBreakpoint asks\nonPanelCollapsedChange instead. A function receives where it is drawn (collapsed is true: the rail is a collapsed menu).",
+            "summary": "공간을 고르는 레일입니다. 보통 collapsed인 KjunSideNavigation입니다. 주면 레일과 nav의 메뉴가 navigationRailBg 띠에 함께 놓이고 collapsed·railLabels·width는 쓰지 않습니다. 함수로 주면 { collapsed: true, drawer, closeDrawer }를 받습니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "spacesTitle",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "The chosen space's name at the top of the panel, on one line.",
+            "summary": "spaces와 함께 쓸 때 메뉴 패널 머리에 보일 지금 공간의 이름입니다. 한 줄로 보이고 길면 말줄임합니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "panelSurface",
+            "type": "SideNavigationPanelSurface | undefined",
+            "required": false,
+            "default": "\"card\"",
+            "description": "The panel: a card set into the band (\"card\", default) or flat against it with a line before the page (\"flat\").",
+            "summary": "spaces와 함께 쓸 때 메뉴 패널의 모양입니다. card는 레일 띠 안에 8px 띄운 카드(모서리 12, 열 284px), flat은 띠에 붙은 패널과 페이지 쪽 1px 구분선(열 276px)입니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "panelCollapsed",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The panel is collapsed and only the rail stays; the rail's top cell then holds the expand button. Default false.",
+            "summary": "spaces와 함께 쓸 때 메뉴 패널을 접어 60px 레일만 남깁니다(Vue v-model:panelCollapsed). 레일 맨 위의 펼치기 버튼과 패널 머리의 접기 버튼이 바꿔 달라고 요청합니다. 좁은 화면 서랍에서는 늘 펼쳐집니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "onPanelCollapsedChange",
+            "type": "((collapsed: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "패널의 접기·펼치기 버튼을 누르거나 railBreakpoint를 넘나들 때 다음 값으로 호출합니다. 받은 값을 panelCollapsed에 반영하세요.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "panelLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The panel's name for assistive technology; \"메뉴 패널\" by default.",
+            "summary": "메뉴 패널 영역의 접근 가능한 이름입니다. 생략하면 \"메뉴 패널\"입니다.",
+            "source": "packages/react/src/side-navigation-layout.tsx"
+          },
+          {
             "name": "className",
             "type": "string | undefined",
             "required": false,
@@ -39208,6 +39322,60 @@
             "default": "—",
             "description": "The drawer's name for assistive technology; the menu's name by default.",
             "summary": "서랍의 접근 가능한 이름입니다. 생략하면 메뉴의 기본 이름(주요 탐색)입니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "spaces",
+            "type": "ReactNode | ((state: SideNavigationLayoutState) => ReactNode)",
+            "required": false,
+            "default": "—",
+            "description": "A rail of spaces, usually a collapsed KjunSideNavigation, before a menu panel that holds nav, both in a band in the\nnavigationRailBg colour; the panel's head shows spacesTitle and a collapse button, and below the breakpoint the drawer\nholds both. With spaces, collapsed, railLabels and width do not apply, and railBreakpoint asks onPanelCollapsedChange.\nA function receives where it is drawn (collapsed is true: the rail is a collapsed menu).",
+            "summary": "공간을 고르는 레일입니다. 보통 collapsed인 KjunSideNavigation입니다. 주면 레일과 nav의 메뉴가 navigationRailBg 띠에 함께 놓이고 collapsed·railLabels·width는 쓰지 않습니다. 함수로 주면 { collapsed: true, drawer, closeDrawer }를 받습니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "spacesTitle",
+            "type": "ReactNode",
+            "required": false,
+            "default": "—",
+            "description": "The chosen space's name at the top of the panel, on one line.",
+            "summary": "spaces와 함께 쓸 때 메뉴 패널 머리에 보일 지금 공간의 이름입니다. 한 줄로 보이고 길면 말줄임합니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "panelSurface",
+            "type": "SideNavigationPanelSurface | undefined",
+            "required": false,
+            "default": "\"card\"",
+            "description": "The panel: a card set into the band (\"card\", default) or flat against it with a line before the page (\"flat\").",
+            "summary": "spaces와 함께 쓸 때 메뉴 패널의 모양입니다. card는 레일 띠 안에 8px 띄운 카드(모서리 12, 열 284px), flat은 띠에 붙은 패널과 페이지 쪽 1px 구분선(열 276px)입니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "panelCollapsed",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "The panel is collapsed and only the rail stays; the rail's top cell then holds the expand button. Default false. The\ncollapsed panel stays mounted, so its menu keeps its open groups.",
+            "summary": "spaces와 함께 쓸 때 메뉴 패널을 접어 60px 레일만 남깁니다(Vue v-model:panelCollapsed). 레일 맨 위의 펼치기 버튼과 패널 머리의 접기 버튼이 바꿔 달라고 요청합니다. 좁은 화면 서랍에서는 늘 펼쳐집니다.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "onPanelCollapsedChange",
+            "type": "((collapsed: boolean) => void) | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "패널의 접기·펼치기 버튼을 누르거나 railBreakpoint를 넘나들 때 다음 값으로 호출합니다. 받은 값을 panelCollapsed에 반영하세요.",
+            "source": "packages/native/src/side-navigation-layout.tsx"
+          },
+          {
+            "name": "panelLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "The panel's name for assistive technology; \"메뉴 패널\" by default.",
+            "summary": "메뉴 패널 영역의 접근 가능한 이름입니다. 생략하면 \"메뉴 패널\"입니다.",
             "source": "packages/native/src/side-navigation-layout.tsx"
           },
           {

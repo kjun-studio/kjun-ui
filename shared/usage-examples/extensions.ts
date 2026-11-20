@@ -107,6 +107,7 @@ export function generate(input: UsageInput) {
       break;
     }
     case 'KjunSideNavigationLayout': {
+      if (s.spaces) { content = sideNavigationSpaces(b, s); break; }
       // The layout keeps the column (open, collapsed, or a drawer below the breakpoint); pass collapsed to both, and close
       // the drawer when a page is chosen.
       const menu = b.node('KjunSideNavigation', { ariaLabel: '작업 공간', value: b.state('destination', 'home'), collapsed: b.state('collapsed', !!s.collapsed), ...(s.railLabels ? { railLabels: true } : {}),
@@ -277,12 +278,13 @@ export function generate(input: UsageInput) {
   return b.finish(content);
 }
 
-// Spaces and a menu panel: one side navigation collapsed to icons picks the space (its names show as tooltips), a second one
-// lists that space's pages densely; together they stay within one column's width. The app keeps both values; choosing a
-// space opens its first page.
-function sideNavigationSpaces(b: UsageBuilder) {
+// Spaces and a menu panel: KjunSideNavigationLayout's spaces slot holds a side navigation collapsed to icons (its names show
+// as tooltips) and nav lists that space's pages densely; the layout draws the band, the panel's head with the space's name
+// and the collapse button, and the drawer on a narrow screen. The app keeps both values; choosing a space opens its first page.
+function sideNavigationSpaces(b: UsageBuilder, s: Record<string, any> = {}) {
   const spaces = b.data('spaces', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'projects', label: '프로젝트', href: '#projects', icon: 'folder' },
     { key: 'team', label: '팀', href: '#team', icon: 'building', badge: true }, { key: 'settings', label: '설정', href: '#settings', icon: 'settings' }]);
+  b.data('names', { home: '홈', projects: '프로젝트', team: '팀', settings: '설정' });
   b.data('pages', {
     home: [{ key: 'overview', label: '개요', href: '#overview', icon: 'chart-bar' }, { key: 'requests', label: '받은 요청', href: '#requests', icon: 'bell', badge: 4 }],
     projects: [{ key: 'board', label: '보드', href: '#board', icon: 'clipboard-list' },
@@ -292,11 +294,11 @@ function sideNavigationSpaces(b: UsageBuilder) {
     settings: [{ key: 'profile', label: '프로필', href: '#profile', icon: 'user' }, { key: 'billing', label: '결제', href: '#billing', icon: 'wallet' }],
   });
   const plain = b.native ? '' : 'event.preventDefault();\n';
-  const column = (width: number, child: string) => b.node(b.native ? 'View' : 'div', { style: { width: b.vue ? width + 'px' : width } }, child);
-  return b.group([b.node(b.native ? 'View' : 'div', { style: b.native ? { flexDirection: 'row', alignItems: 'flex-start', gap: 8 } : { display: 'flex', alignItems: 'flex-start', gap: b.vue ? '8px' : 8 } }, [
-    column(44, b.node('KjunSideNavigation', { ariaLabel: '공간', items: spaces, value: b.state('space', 'projects'), collapsed: true,
-      onNavigate: b.handler('chooseSpace', 'key, event', plain + b.set('space', 'key') + '\n' + b.set('destination', 'pages[key][0].key')) })),
-    column(200, b.node('KjunSideNavigation', { ariaLabel: '메뉴', items: expr('pages[state.space]'), value: b.state('destination', 'board'), density: 'compact',
-      onNavigate: b.handler('navigate', 'key, event', plain + b.set('destination', 'key')) })),
-  ].join('\n')), b.text(expr('"현재 위치: " + state.space + " / " + state.destination'))]);
+  const rail = b.node('KjunSideNavigation', { ariaLabel: '공간', items: spaces, value: b.state('space', 'projects'), collapsed: true,
+    onNavigate: b.handler('chooseSpace', 'key, event', plain + b.set('space', 'key') + '\n' + b.set('destination', 'pages[key][0].key')) });
+  const menu = b.node('KjunSideNavigation', { ariaLabel: '메뉴', items: expr('pages[state.space]'), value: b.state('destination', 'board'), density: 'compact',
+    onNavigate: b.handler('navigate', 'key, event', plain + b.set('destination', 'key') + '\n' + b.set('navOpen', 'false')) });
+  return b.node('KjunSideNavigationLayout', { spacesTitle: expr('names[state.space]'), ...(s.panelSurface === 'flat' ? { panelSurface: 'flat' } : {}),
+    panelCollapsed: b.state('panelCollapsed', !!s.panelCollapsed), onPanelCollapsedChange: b.update('panelCollapsed'),
+    navOpen: b.state('navOpen', false), onNavOpenChange: b.update('navOpen') }, b.text(expr('"현재 위치: " + state.space + " / " + state.destination')), { spaces: rail, nav: menu });
 }

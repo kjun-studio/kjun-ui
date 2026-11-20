@@ -2,6 +2,10 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
+## 미배포
+
+- **`KjunSideNavigationLayout` 공간 레일과 메뉴 패널 (`spaces`)**: 공간을 고르는 아이콘 레일(`spaces`)과 그 공간의 메뉴(`nav`)를 한 띠에 둡니다(Vue 3·React·Native). 패널 머리에 공간 이름(`spacesTitle`)과 접기 버튼이 있고, `panelCollapsed`·`onPanelCollapsedChange`(Vue `v-model:panelCollapsed`)로 패널을 접으면 60px 레일만 남습니다. `panelSurface`는 `card`(기본, 띠 안의 카드, 열 284px)와 `flat`(띠에 붙은 패널과 페이지 쪽 구분선, 열 276px)입니다. 좁은 화면 서랍에는 레일과 패널이 함께 들어갑니다. 새 색 역할 `navigationRailBg`(`--kjun-navigation-rail-bg`, 기본 `secondary`)와 `tokens.extensions.sideNavigation.spaces*` 토큰을 추가했습니다. 레일과 메뉴 두 개를 `div` 폭으로 직접 붙여 쓰던 앱은 `spaces`·`nav`로 옮기고 폭·색 지정을 지우면 됩니다. Native는 RN Web에서만 확인했습니다.
+
 ## 0.22.0 — 2026-11-19
 
 적용 프로젝트 네 곳의 0.21.0 사용 기록에서 나온 수정과 추가입니다.

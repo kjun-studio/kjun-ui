@@ -63,20 +63,21 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       // A sidebar column of a fixed width, as an app would give it; "활동" carries a badge, "문서" opens its children and
       // "도움말" opens in a new tab. Icons only, the column narrows and widens again when a parent or group is pressed;
       // groups carry icons for a rail of groups, and with collapsibleGroups their titles open and close them.
-      // Spaces and a menu panel: an icon-only collapsed side navigation picks the space (names in its tooltips), a compact
-      // one lists that space's pages, together no wider than one column. Choosing a space opens its first page; both values
-      // are the app's. Kept inline: the example build copies a
-      // case's body and the consts of example-tools.ts, not other functions in this file.
+      // Spaces and a menu panel: KjunSideNavigationLayout puts an icon-only collapsed side navigation (the spaces) and a
+      // compact one (that space's pages) in one band, the panel a card with the space's name and a collapse button.
+      // Choosing a space opens its first page; both values are the app's. Kept inline: the example build copies a case's
+      // body and the consts of example-tools.ts, not other functions in this file.
       if (settings.spaces) {
-        const space = get("space", "projects"), destination = get("destination", "board");
-        return h("Stack", {}, [h("Group", { style: { alignItems: "flex-start", flexWrap: "nowrap" } }, [
-          h("Box", { width: 44 }, h("KjunSideNavigation", { ariaLabel: "공간", value: space, collapsed: true, items: [
+        const space = get("space", "projects"), destination = get("destination", "board"), names: Record<string, string> = { home: "홈", projects: "프로젝트", team: "팀", settings: "설정" };
+        return h("Stack", {}, [h("Box", { width: 640 }, h("KjunSideNavigationLayout", { spacesTitle: names[space], breakpoint: 0, ...(platform === "native" ? {} : { sticky: false }),
+          panelCollapsed: get("panelCollapsed", false), onPanelCollapsedChange: change("panelCollapsed") }, h("Text", {}, "현재 위치: " + space + " / " + destination), {
+          spaces: () => h("KjunSideNavigation", { ariaLabel: "공간", value: space, collapsed: true, items: [
             { key: "home", label: "홈", href: "#home", icon: "home" }, { key: "projects", label: "프로젝트", href: "#projects", icon: "folder" },
             { key: "team", label: "팀", href: "#team", icon: "building", badge: true }, { key: "settings", label: "설정", href: "#settings", icon: "settings" },
-          ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("space", key); set("destination", sidePages[key][0].key); } })),
-          h("Box", { width: 200 }, h("KjunSideNavigation", { ariaLabel: "메뉴", value: destination, density: "compact", items: sidePages[space],
-            onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); } })),
-        ]), h("Text", {}, "현재 위치: " + space + " / " + destination)]);
+          ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("space", key); set("destination", sidePages[key][0].key); } }),
+          nav: () => h("KjunSideNavigation", { ariaLabel: "메뉴", value: destination, density: "compact", items: sidePages[space],
+            onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); } }),
+        }))]);
       }
       // chrome: a header and a footer with the collapse toggle, which narrows and widens the column itself.
       const collapsed = settings.chrome ? get("narrow", !!settings.collapsed) : !!settings.collapsed && !get("widened", false);
@@ -104,6 +105,20 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       // The layout keeps the column's width (open, collapsed, or a drawer on a narrow screen); the page is the app's.
       // drawer: the breakpoint is set above this frame's width, so the menu opens from a button instead.
       const narrow = !!settings.drawer, collapsed = !!settings.collapsed;
+      // spaces: a rail of spaces and the menu panel in one band; panelSurface and panelCollapsed shape the panel.
+      if (settings.spaces) {
+        const space = get("space", "projects"), destination = get("destination", "board"), names: Record<string, string> = { home: "홈", projects: "프로젝트", team: "팀", settings: "설정" };
+        return h("Box", { width: 640 }, h(name, { spacesTitle: names[space], panelSurface: settings.panelSurface, breakpoint: narrow ? 100000 : 0, ...(platform === "native" ? {} : { sticky: false }),
+          panelCollapsed: get("panelCollapsed", !!settings.panelCollapsed), onPanelCollapsedChange: change("panelCollapsed"), navOpen: get("navOpen", false), onNavOpenChange: change("navOpen") },
+          h("Stack", {}, [narrow ? button("메뉴 열기", () => set("navOpen", true)) : null, h("Text", {}, "현재 위치: " + space + " / " + destination)]), {
+          spaces: () => h("KjunSideNavigation", { ariaLabel: "공간", value: space, collapsed: true, items: [
+            { key: "home", label: "홈", href: "#home", icon: "home" }, { key: "projects", label: "프로젝트", href: "#projects", icon: "folder" },
+            { key: "team", label: "팀", href: "#team", icon: "building", badge: true }, { key: "settings", label: "설정", href: "#settings", icon: "settings" },
+          ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("space", key); set("destination", sidePages[key][0].key); } }),
+          nav: (state: any) => h("KjunSideNavigation", { ariaLabel: "메뉴", value: destination, density: "compact", items: sidePages[space],
+            onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); state.closeDrawer(); } }),
+        }));
+      }
       const menu = (state: any) => h("KjunSideNavigation", { ariaLabel: "작업 공간", value: get("destination", "home"), collapsed: state.collapsed, railLabels: settings.railLabels, items: [
         { key: "home", label: "홈", href: "#home", icon: "home" },
         { key: "activity", label: "활동", href: "#activity", icon: "list", badge: 3, badgeTone: "neutral" },

@@ -109,7 +109,11 @@
       "stickyOffset",
       "breakpoint",
       "navOpen",
-      "drawerLabel"
+      "drawerLabel",
+      "spacesTitle",
+      "panelSurface",
+      "panelCollapsed",
+      "panelLabel"
     ],
     "react": [
       "nav",
@@ -125,6 +129,12 @@
       "navOpen",
       "onNavOpenChange",
       "drawerLabel",
+      "spaces",
+      "spacesTitle",
+      "panelSurface",
+      "panelCollapsed",
+      "onPanelCollapsedChange",
+      "panelLabel",
       "className"
     ],
     "native": [
@@ -139,6 +149,12 @@
       "navOpen",
       "onNavOpenChange",
       "drawerLabel",
+      "spaces",
+      "spacesTitle",
+      "panelSurface",
+      "panelCollapsed",
+      "onPanelCollapsedChange",
+      "panelLabel",
       "style"
     ]
   },

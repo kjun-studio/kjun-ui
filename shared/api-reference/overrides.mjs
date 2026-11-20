@@ -794,7 +794,15 @@ set("SideNavigationLayout", {
   breakpoint: { default: "768", summary: "화면 폭이 이 값(px)보다 좁으면 열을 없애고 메뉴를 시작 쪽 서랍에서 엽니다. 0이면 늘 열을 둡니다. 기본값은 tokens.responsive.sideNavigationLayout입니다." },
   navOpen: { default: "false", summary: "좁은 화면에서 메뉴 서랍이 열렸는지입니다. 앱의 메뉴 버튼으로 열고, 메뉴의 onNavigate에서 nav의 closeDrawer()로 닫으세요(Vue v-model:navOpen). 서랍이 열린 채 화면이 breakpoint보다 넓어지면 서랍을 닫아 달라고(false) 요청하므로, 다시 좁아져도 서랍이 저절로 열리지 않습니다." },
   drawerLabel: { summary: "서랍의 접근 가능한 이름입니다. 생략하면 메뉴의 기본 이름(주요 탐색)입니다." },
+  spacesTitle: { summary: "spaces와 함께 쓸 때 메뉴 패널 머리에 보일 지금 공간의 이름입니다. 한 줄로 보이고 길면 말줄임합니다." },
+  panelSurface: { default: '"card"', summary: "spaces와 함께 쓸 때 메뉴 패널의 모양입니다. card는 레일 띠 안에 8px 띄운 카드(모서리 12, 열 284px), flat은 띠에 붙은 패널과 페이지 쪽 1px 구분선(열 276px)입니다." },
+  panelCollapsed: { default: "false", summary: "spaces와 함께 쓸 때 메뉴 패널을 접어 60px 레일만 남깁니다(Vue v-model:panelCollapsed). 레일 맨 위의 펼치기 버튼과 패널 머리의 접기 버튼이 바꿔 달라고 요청합니다. 좁은 화면 서랍에서는 늘 펼쳐집니다." },
+  panelLabel: { summary: "메뉴 패널 영역의 접근 가능한 이름입니다. 생략하면 \"메뉴 패널\"입니다." },
 });
+for (const platform of ["react", "native"]) set("SideNavigationLayout", {
+  spaces: { summary: "공간을 고르는 레일입니다. 보통 collapsed인 KjunSideNavigation입니다. 주면 레일과 nav의 메뉴가 navigationRailBg 띠에 함께 놓이고 collapsed·railLabels·width는 쓰지 않습니다. 함수로 주면 { collapsed: true, drawer, closeDrawer }를 받습니다." },
+  onPanelCollapsedChange: "패널의 접기·펼치기 버튼을 누르거나 railBreakpoint를 넘나들 때 다음 값으로 호출합니다. 받은 값을 panelCollapsed에 반영하세요.",
+}, platform);
 for (const platform of ["react", "vue3"]) set("SideNavigationLayout", {
   sticky: { default: "true", summary: "열을 화면 높이로 고정해 페이지와 따로 스크롤합니다. false면 열이 페이지와 함께 스크롤됩니다." },
   stickyOffset: { default: "0", summary: "고정된 열을 화면 위에서 이만큼(px) 내려 둡니다. 위에 고정된 상단 바가 있으면 그 높이를 주세요. 열의 높이는 화면 높이에서 이 값을 뺀 만큼이라 아래가 잘리지 않습니다." },
