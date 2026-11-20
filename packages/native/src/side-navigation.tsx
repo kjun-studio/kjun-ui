@@ -7,7 +7,7 @@ import { checkSideNavigation, isTitledSection, sideFlyoutKey, sideGroupState, si
   type SideNavigationEntry as Entry, type SideNavigationGroup as Group } from "../../../shared/package-runtime/side-navigation";
 import { useSideNavigationState } from "../../../shared/package-runtime/use-side-navigation-state";
 import { tokens } from "@kjun-ui/tokens";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { Animated, Platform, View, type GestureResponderEvent, type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIcon } from "./button";
@@ -16,7 +16,7 @@ import { content, KText, useReducedMotion } from "./internal";
 import { motionOut } from "./motion";
 import { KjunTooltip } from "./popover";
 import { useKjunStyles } from "./provider";
-import { FLYOUT, sideNavigationRows, type Navigate, type PressState, type SideNavigationDestination } from "./side-navigation-parts";
+import { FLYOUT, SpacesRailSelectedFill, sideNavigationRows, type Navigate, type PressState, type SideNavigationDestination } from "./side-navigation-parts";
 import { typeStyle } from "./typography";
 export type { SideNavigationAction, SideNavigationBadgeTone, SideNavigationCollapsedParent, SideNavigationHeadingLevel, SideNavigationRail } from "../../../shared/package-runtime/side-navigation";
 export type { SideNavigationDestination, SideNavigationItem, SideNavigationParent, SideNavigationSubParent } from "./side-navigation-parts";
@@ -125,7 +125,8 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
   // With names under the icons (railLabels) a collapsed row is 72 wide, an indicator around the icon over a one-line name;
   // the fill moves from the row to the indicator.
   const labelled = collapsed && railLabels;
-  const r = sideNavigationRows({ m, styles, value, collapsed, labelled, flyoutMode, density, fadeIn, open, setParent, reveal, flyout, setFlyout, allShown, updateShowAll,
+  const railSelected = useContext(SpacesRailSelectedFill);
+  const r = sideNavigationRows({ railSelected, m, styles, value, collapsed, labelled, flyoutMode, density, fadeIn, open, setParent, reveal, flyout, setFlyout, allShown, updateShowAll,
     onNavigate, onReselect, onAction });
   const { base, railWidth } = r;
   // A group title is a heading for assistive technology; Native Web also reads its level.

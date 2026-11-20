@@ -104,7 +104,8 @@
       "packages/tokens/src/layout.css",
       "packages/tokens/src/side-navigation.css",
       "packages/native/src/app-navigation.tsx",
-      "packages/native/src/layout-primitives.tsx"
+      "packages/native/src/layout-primitives.tsx",
+      "packages/native/src/side-navigation-layout-spaces.tsx"
     ]
   },
   {
@@ -264,6 +265,7 @@
       "packages/native/src/quantity-stepper.tsx",
       "packages/native/src/select-options.tsx",
       "packages/native/src/selection-groups.tsx",
+      "packages/native/src/side-navigation-layout-spaces.tsx",
       "packages/native/src/side-navigation-parts.tsx",
       "packages/native/src/split-pane.tsx",
       "packages/native/src/steps.tsx",
@@ -306,6 +308,7 @@
       "packages/native/src/file-upload.tsx",
       "packages/native/src/kpi-row.tsx",
       "packages/native/src/list.tsx",
+      "packages/native/src/side-navigation-layout-spaces.tsx",
       "packages/native/src/side-navigation-parts.tsx",
       "packages/native/src/steps.tsx",
       "packages/native/src/table-cards.tsx",
@@ -418,6 +421,7 @@
       "packages/native/src/progress.tsx",
       "packages/native/src/range-input.tsx",
       "packages/native/src/selection-groups.tsx",
+      "packages/native/src/side-navigation-layout-spaces.tsx",
       "packages/native/src/side-navigation-parts.tsx",
       "packages/native/src/side-navigation.tsx",
       "packages/native/src/skeletons.tsx",
@@ -499,6 +503,7 @@
       "packages/native/src/pagination.tsx",
       "packages/native/src/progress.tsx",
       "packages/native/src/selection-groups.tsx",
+      "packages/native/src/side-navigation-layout-spaces.tsx",
       "packages/native/src/side-navigation-parts.tsx",
       "packages/native/src/skeletons.tsx",
       "packages/native/src/stacked-bar.tsx",
@@ -1404,6 +1409,7 @@
       "packages/native/src/market-skeleton.tsx",
       "packages/native/src/market-table.tsx",
       "packages/native/src/navigation.tsx",
+      "packages/native/src/side-navigation-layout-spaces.tsx",
       "packages/native/src/side-navigation.tsx",
       "packages/native/src/skeleton-base.tsx",
       "packages/native/src/skeletons.tsx",
@@ -1825,7 +1831,8 @@
       "--navigation-rail-bg"
     ],
     "implementationFiles": [
-      "packages/tokens/src/side-navigation.css"
+      "packages/tokens/src/side-navigation.css",
+      "packages/native/src/side-navigation-layout-spaces.tsx"
     ]
   },
   {

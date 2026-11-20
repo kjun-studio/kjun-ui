@@ -6437,7 +6437,7 @@
       },
       {
         "name": "skeletonType",
-        "type": "\"text\" | \"block\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+        "type": "\"text\" | \"card\" | \"block\" | \"line\" | \"avatar\" | \"table\" | \"stat\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -25907,6 +25907,48 @@
         "description": "The drawer's name for assistive technology; the menu's name by default."
       },
       {
+        "name": "spaces",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((state: import(\"/workspace/.superpowers/spaces-layout/packages/native/src/side-navigation-layout\").SideNavigationLayoutState) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
+        "required": false,
+        "default": "—",
+        "description": "A rail of spaces, usually a collapsed KjunSideNavigation, before a menu panel that holds nav, both in a band in the\nnavigationRailBg colour; the panel's head shows spacesTitle and a collapse button, and below the breakpoint the drawer\nholds both. With spaces, collapsed, railLabels and width do not apply, and railBreakpoint asks onPanelCollapsedChange.\nA function receives where it is drawn (collapsed is true: the rail is a collapsed menu)."
+      },
+      {
+        "name": "spacesTitle",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
+        "required": false,
+        "default": "—",
+        "description": "The chosen space's name at the top of the panel, on one line."
+      },
+      {
+        "name": "panelSurface",
+        "type": "import(\"/workspace/.superpowers/spaces-layout/shared/package-runtime/side-navigation-layout\").SideNavigationPanelSurface | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The panel: a card set into the band (\"card\", default) or flat against it with a line before the page (\"flat\")."
+      },
+      {
+        "name": "panelCollapsed",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The panel is collapsed and only the rail stays; the rail's top cell then holds the expand button. Default false. The\ncollapsed panel stays mounted, so its menu keeps its open groups."
+      },
+      {
+        "name": "onPanelCollapsedChange",
+        "type": "((collapsed: boolean) => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "panelLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "The panel's name for assistive technology; \"메뉴 패널\" by default."
+      },
+      {
         "name": "style",
         "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
         "required": false,
@@ -26292,7 +26334,7 @@
     "native": [
       {
         "name": "type",
-        "type": "\"text\" | \"block\" | \"line\" | \"avatar\" | \"card\" | \"table\" | \"stat\" | undefined",
+        "type": "\"text\" | \"card\" | \"block\" | \"line\" | \"avatar\" | \"table\" | \"stat\" | undefined",
         "required": false,
         "default": "—",
         "description": "\"line\" is one line of text: a bar in the line box of `role` (default body)."
@@ -29948,7 +29990,7 @@
       },
       {
         "name": "responsive",
-        "type": "\"none\" | \"compact\" | \"list\" | \"card\" | null | undefined",
+        "type": "\"none\" | \"compact\" | \"card\" | \"list\" | null | undefined",
         "required": false,
         "default": "—",
         "description": ""

@@ -117,3 +117,42 @@ for (const platform of ['react', 'vue3']) {
     });
   });
 }
+
+test.describe('native: SideNavigationLayout spaces (Native Web)', () => {
+  const band = (page: Page) => page.locator('[data-kjun-side-navigation-layout-part="nav"]');
+  const bandWidth = async (page: Page) => Math.round((await band(page).boundingBox())!.width);
+  test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: 1200, height: 800 }); });
+
+  test('the band is 284 with a card panel, 276 flat, 60 collapsed, with the page after it', async ({ page }) => {
+    await open(page, 'native', '');
+    await expect.poll(() => bandWidth(page)).toBe(284);
+    const main = (await page.locator('[data-kjun-side-navigation-layout-part="main"]').boundingBox())!;
+    expect(Math.round(main.x - (await band(page).boundingBox())!.x)).toBe(284);
+    await open(page, 'native', '&flat=1');
+    await expect.poll(() => bandWidth(page)).toBe(276);
+    await open(page, 'native', '&closed=1');
+    await expect.poll(() => bandWidth(page)).toBe(60);
+  });
+
+  test('collapsing keeps the menu mounted, so an open parent stays open', async ({ page }) => {
+    await open(page, 'native', '');
+    await menu(page).getByRole('button', { name: /문서/ }).click();
+    await expect(menu(page).getByText('가이드')).toBeVisible();
+    await page.getByRole('button', { name: '메뉴 패널 접기' }).click();
+    await expect.poll(() => bandWidth(page)).toBe(60);
+    await page.getByRole('button', { name: '메뉴 패널 펼치기' }).click();
+    await expect.poll(() => bandWidth(page)).toBe(284);
+    await expect(menu(page).getByText('가이드')).toBeVisible();
+  });
+
+  test('the drawer holds the rail and the panel with a close button', async ({ page }) => {
+    await page.setViewportSize({ width: 600, height: 800 });
+    await openFixture(page, 'native', '?spaces=1&drawer=1&closed=1', 'side-navigation-layout');
+    await page.getByTestId('open').click();
+    await expect(rail(page)).toBeVisible();
+    await expect(menu(page)).toBeVisible();
+    await expect(page.getByRole('button', { name: '메뉴 패널 접기' })).toHaveCount(0);
+    await page.getByRole('button', { name: '닫기' }).click();
+    await expect(menu(page)).toBeHidden();
+  });
+});

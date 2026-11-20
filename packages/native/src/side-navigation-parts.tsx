@@ -5,7 +5,7 @@ import { isPlainNavigationClick, isSideParent, sideFlyoutKey, sideNavigationInit
   sideNavigationToggleName, sideParentState, sideSectionEmpty, sideSectionRows, toggleSideParent, type SideNavigationAction, type SideNavigationBadgeTone, type SideNavigationDestination as WebDestination,
   type SideNavigationItem as Item, type SideNavigationParent as Parent, type SideNavigationSection, type SideNavigationSubParent as SubParent } from "../../../shared/package-runtime/side-navigation";
 import { tokens } from "@kjun-ui/tokens";
-import type { ReactElement, ReactNode } from "react";
+import { createContext, type ReactElement, type ReactNode } from "react";
 import { Animated, I18nManager, Platform, View, type ColorValue, type GestureResponderEvent, type TextStyle, type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { NavigationBadgeMark } from "./app-navigation";
@@ -25,6 +25,8 @@ export type SideNavigationParent = Parent<SideNavigationDestination>;
 export type SideNavigationItem = Item<SideNavigationDestination>;
 export type Navigate = (key: string, event: GestureResponderEvent) => void;
 export type PressState = { pressed: boolean; hovered?: boolean };
+/** The current space's fill in KjunSideNavigationLayout's spaces rail (the panel's background); null elsewhere. */
+export const SpacesRailSelectedFill = createContext<ColorValue | null>(null);
 export type Mode = { collapsed: boolean; labelled: boolean; flyout?: boolean; flat?: boolean };
 // A flyout shows rows as a full menu does; a parent's flyout starts its children at the edge.
 export const FLYOUT: Mode = { collapsed: false, labelled: false, flyout: true }, FLAT: Mode = { ...FLYOUT, flat: true };
@@ -59,6 +61,8 @@ export function OpensMarker({ ring }: { ring: ColorValue }) {
 }
 
 export interface SideRowsContext {
+  /** The current row's fill inside a layout's spaces rail (SpacesRailSelectedFill). */
+  railSelected?: ColorValue | null;
   m: ReturnType<typeof useKjunMessages>; styles: ReturnType<typeof useKjunStyles>; value: string | null; collapsed: boolean; labelled: boolean; flyoutMode: boolean;
   density: "default" | "compact"; fadeIn: Animated.Value; open: readonly string[]; setParent: (key: string, next: boolean) => void; reveal: (key: string) => void;
   flyout: string | null; setFlyout: (key: string | null) => void; allShown: readonly string[]; updateShowAll: (next: string[]) => void;
@@ -92,8 +96,10 @@ export function sideNavigationRows(ctx: SideRowsContext) {
   // turns full weight instead) and half of it while only icons show, where there is no name to strengthen.
   const soft = (color: ColorValue, amount: number) => (typeof color === "string" && tintColor(color, amount)) || color;
   const hover = soft(colors.hover, tokens.states.opacity.hoverSoft), withinFill = soft(colors.selectedBg, tokens.states.opacity.selectedWithin);
+  // In a layout's spaces rail the current space takes the panel's background instead, on the band's colour.
+  const railSelected = ctx.railSelected ?? null;
   const fill = (mode: Mode, level: Level, disabled: boolean | undefined, { pressed, hovered }: PressState): ColorValue =>
-    level === "page" ? colors.selectedBg : level === "within" && mode.collapsed ? withinFill : disabled ? "transparent" : pressed ? colors.active : hovered ? hover : "transparent";
+    level === "page" ? railSelected ?? colors.selectedBg : level === "within" && mode.collapsed ? railSelected ?? withinFill : disabled ? "transparent" : pressed ? colors.active : hovered ? hover : "transparent";
   // Icons are a step lighter than names, and join them in full ink on the current page, a row over it and under a press.
   const ink = (lit: boolean) => lit ? colors.text : colors.textSecondary;
   // Names are in full ink; under a labelled rail's icons they stay a step lighter until lit.

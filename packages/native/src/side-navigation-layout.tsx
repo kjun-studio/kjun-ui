@@ -4,9 +4,13 @@ import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useRef, type ReactNode } from "react";
 import { Animated, Platform, useWindowDimensions, View, type StyleProp, type ViewStyle } from "react-native";
 import { KjunDrawer } from "./drawer";
+import { SpacesLayout } from "./side-navigation-layout-spaces";
+import { developmentMode } from "../../../shared/package-runtime/development";
+import { spacesIgnoredProps, type SideNavigationPanelSurface } from "../../../shared/package-runtime/side-navigation-layout";
 import { useReducedMotion } from "./internal";
 import { motionOut } from "./motion";
 export type { SideNavigationWidth } from "../../../shared/package-runtime/side-navigation";
+export type { SideNavigationPanelSurface } from "../../../shared/package-runtime/side-navigation-layout";
 
 /** Where the menu is drawn: in the column (collapsed or open) or in the drawer of a narrow screen, which is always open.
  * closeDrawer closes that drawer, e.g. in the menu's onNavigate; in the column it does nothing. */
@@ -37,6 +41,21 @@ export interface KjunSideNavigationLayoutProps {
   onNavOpenChange?: (open: boolean) => void;
   /** The drawer's name for assistive technology; the menu's name by default. */
   drawerLabel?: string;
+  /** A rail of spaces, usually a collapsed KjunSideNavigation, before a menu panel that holds nav, both in a band in the
+   * navigationRailBg colour; the panel's head shows spacesTitle and a collapse button, and below the breakpoint the drawer
+   * holds both. With spaces, collapsed, railLabels and width do not apply, and railBreakpoint asks onPanelCollapsedChange.
+   * A function receives where it is drawn (collapsed is true: the rail is a collapsed menu). */
+  spaces?: ReactNode | ((state: SideNavigationLayoutState) => ReactNode);
+  /** The chosen space's name at the top of the panel, on one line. */
+  spacesTitle?: ReactNode;
+  /** The panel: a card set into the band ("card", default) or flat against it with a line before the page ("flat"). */
+  panelSurface?: SideNavigationPanelSurface;
+  /** The panel is collapsed and only the rail stays; the rail's top cell then holds the expand button. Default false. The
+   * collapsed panel stays mounted, so its menu keeps its open groups. */
+  panelCollapsed?: boolean;
+  onPanelCollapsedChange?: (collapsed: boolean) => void;
+  /** The panel's name for assistive technology; "메뉴 패널" by default. */
+  panelLabel?: string;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -48,10 +67,20 @@ const part = (name: "nav" | "main") => (Platform.OS === "web" ? { dataSet: { kju
  * Native form: the layout fills the space the app gives it, and the app owns scrolling (a ScrollView inside the menu's
  * column or around the page), so Web's stickyOffset has none either. */
 export function KjunSideNavigationLayout({ nav, children, collapsed = false, onCollapsedChange, railBreakpoint = 0, railLabels = false, width = "md",
-  breakpoint = tokens.responsive.sideNavigationLayout, navOpen = false, onNavOpenChange, drawerLabel, style }: KjunSideNavigationLayoutProps) {
+  breakpoint = tokens.responsive.sideNavigationLayout, navOpen = false, onNavOpenChange, drawerLabel, spaces, spacesTitle, panelSurface = "card", panelCollapsed = false,
+  onPanelCollapsedChange, panelLabel, style }: KjunSideNavigationLayoutProps) {
   const m = useKjunMessages(), screen = useWindowDimensions(), reduced = useReducedMotion(), geometry = tokens.extensions.sideNavigation;
   const narrow = breakpoint > 0 && screen.width < breakpoint, below = railBreakpoint > 0 && screen.width < railBreakpoint;
-  const latest = useRef({ collapsed, navOpen, onCollapsedChange, onNavOpenChange }); latest.current = { collapsed, navOpen, onCollapsedChange, onNavOpenChange };
+  // With spaces the rail is the collapsed column, so railBreakpoint folds the panel instead.
+  const spaced = spaces != null && spaces !== false;
+  const folded = spaced ? panelCollapsed : collapsed, onFold = spaced ? onPanelCollapsedChange : onCollapsedChange;
+  const latest = useRef({ collapsed: folded, navOpen, onCollapsedChange: onFold, onNavOpenChange }); latest.current = { collapsed: folded, navOpen, onCollapsedChange: onFold, onNavOpenChange };
+  const warned = useRef(false);
+  useEffect(() => {
+    if (!spaced || warned.current || !developmentMode()) return;
+    const ignored = spacesIgnoredProps({ collapsed, railLabels, width });
+    if (ignored.length > 0) { warned.current = true; console.warn(`KjunSideNavigationLayout: ${ignored.join(", ")} do not apply with spaces.`); }
+  }, [spaced, collapsed, railLabels, width]);
   // Widening past the breakpoint takes the drawer away, so it closes rather than opening again on the next narrowing.
   const wasNarrow = useRef(narrow);
   useEffect(() => {
@@ -78,6 +107,9 @@ export function KjunSideNavigationLayout({ nav, children, collapsed = false, onC
     motion.start();
     return () => motion.stop();
   }, [target, reduced]);
+  if (spaced) return <SpacesLayout spaces={spaces} nav={nav} spacesTitle={spacesTitle} panelSurface={panelSurface} panelCollapsed={panelCollapsed}
+    onPanelCollapsedChange={onPanelCollapsedChange} panelLabel={panelLabel} narrow={narrow} navOpen={navOpen} onNavOpenChange={onNavOpenChange}
+    closeDrawer={closeDrawer} drawerLabel={drawerLabel} style={style}>{children}</SpacesLayout>;
   if (narrow) return <View style={[{ flex: 1, minWidth: 0 }, style]}>
     <View style={{ flex: 1, minWidth: 0 }} {...part("main")}>{children}</View>
     <KjunDrawer open={navOpen} onOpenChange={next => onNavOpenChange?.(next)} position="left" ariaLabel={drawerLabel ?? m.mainNavigation}
