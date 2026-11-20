@@ -17,6 +17,8 @@ function vueProps(name, props) {
     if (key === "value" && "modelValue" in declared) mapped.modelValue = value;
     else if (key === "onValueChange") mapped["onUpdate:" + ("modelValue" in declared ? "modelValue" : "value")] = value;
     else if (key === "onOpenChange") mapped["onUpdate:open"] = value;
+    else if (key === "onNavOpenChange") mapped["onUpdate:navOpen"] = value;
+    else if (key === "onPanelCollapsedChange") mapped["onUpdate:panelCollapsed"] = value;
     else if (key === "onMonthChange") mapped["onUpdate:month"] = value;
     else if (key === "onWeekChange") mapped["onUpdate:week"] = value;
     else if (key === "onIndexChange") mapped["onUpdate:index"] = value;

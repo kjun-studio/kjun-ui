@@ -4,7 +4,7 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { spacesColumnWidth, spacesFocusAfterChange, type SideNavigationPanelSurface } from "../../../shared/package-runtime/side-navigation-layout";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { AccessibilityInfo, Animated, findNodeHandle, Platform, View, type StyleProp, type ViewStyle } from "react-native";
+import { AccessibilityInfo, Animated, findNodeHandle, Platform, ScrollView, View, type StyleProp, type ViewStyle } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { KjunIcon } from "./button";
 import { KjunDrawer } from "./drawer";
@@ -69,7 +69,7 @@ export function SpacesLayout(p: SpacesLayoutProps) {
     const closed = !drawer && p.panelCollapsed, hidden = closed && settled;
     return <>
       <View style={{ width: geometry.spacesColumnWidth, flexShrink: 0, alignItems: "center", paddingVertical: geometry.columnPaddingY }} {...part("spaces")}>
-        <View style={{ ...head, alignSelf: "stretch", justifyContent: "center" }}>{closed && toggle(false, expand)}</View>
+        <View style={{ ...head, alignSelf: "stretch", justifyContent: "center" }}>{closed && <View>{toggle(false, expand)}</View>}</View>
         <SpacesRailSelectedFill.Provider value={colors.background}>{render(p.spaces, { collapsed: true, drawer, closeDrawer: p.closeDrawer })}</SpacesRailSelectedFill.Provider>
       </View>
       <View ref={panel} accessibilityLabel={p.panelLabel ?? m.spacesPanel} accessibilityElementsHidden={hidden} importantForAccessibility={hidden ? "no-hide-descendants" : "auto"}
@@ -89,7 +89,9 @@ export function SpacesLayout(p: SpacesLayoutProps) {
   if (p.narrow) return <View style={[{ flex: 1, minWidth: 0 }, p.style]}>
     <View style={{ flex: 1, minWidth: 0 }} {...part("main")}>{p.children}</View>
     <KjunDrawer open={p.navOpen} onOpenChange={next => p.onNavOpenChange?.(next)} position="left" ariaLabel={p.drawerLabel ?? m.mainNavigation}
-      width={spacesColumnWidth(geometry, p.panelSurface, false)} closable={false} noPadding>
+      width={spacesColumnWidth(geometry, p.panelSurface, false)} closable={false} noPadding
+      // The band's colour reaches the drawer's foot under a short menu.
+      renderScrollView={props => <ScrollView {...props} contentContainerStyle={[props.contentContainerStyle, { flexGrow: 1 }]} />}>
       <View style={{ flex: 1, flexDirection: "row", backgroundColor: colors.navigationRailBg }}>{band(true)}</View>
     </KjunDrawer>
   </View>;

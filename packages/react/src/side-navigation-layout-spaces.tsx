@@ -69,7 +69,7 @@ export function SpacesLayout(p: SpacesLayoutProps) {
       </div>
       <section ref={panel} id={panelId} className="kjun-side-navigation-layout-panel" aria-label={p.panelLabel ?? m.spacesPanel} hidden={closed && settled}>
         <div className="kjun-side-navigation-layout-panel-head">
-          {p.spacesTitle != null && p.spacesTitle !== false && <div className="kjun-side-navigation-layout-panel-title">{p.spacesTitle}</div>}
+          {p.spacesTitle != null && p.spacesTitle !== false && p.spacesTitle !== "" && <div className="kjun-side-navigation-layout-panel-title">{p.spacesTitle}</div>}
           {drawer
             ? <button type="button" className="kjun-side-navigation-toggle kjun-side-navigation-layout-panel-toggle" aria-label={m.close} onClick={p.closeDrawer}>
                 <KjunIcon name="x" size={tokens.extensions.sideNavigation.iconSize} /></button>

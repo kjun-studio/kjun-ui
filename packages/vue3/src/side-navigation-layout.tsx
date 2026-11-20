@@ -11,6 +11,7 @@ import { KjunIcon } from "./button";
 import { KjunTooltip } from "./popover";
 import { provideFallbackIcons } from "./runtime/icons";
 import { useReducedMotion } from "./runtime/presence";
+import { hasContent } from "./runtime/slots";
 export type { SideNavigationWidth } from "../../../shared/package-runtime/side-navigation";
 export type { SideNavigationPanelSurface } from "../../../shared/package-runtime/side-navigation-layout";
 
@@ -134,7 +135,7 @@ export const KjunSideNavigationLayout = defineComponent({
       </KjunTooltip>;
     };
     const band = (drawer: boolean) => {
-      const closed = !drawer && props.panelCollapsed, title = slots.spacesTitle?.() ?? props.spacesTitle;
+      const closed = !drawer && props.panelCollapsed, title = slots.spacesTitle ? slots.spacesTitle() : props.spacesTitle;
       return [
         <div class="kjun-side-navigation-layout-spaces">
           <div class="kjun-side-navigation-layout-spaces-top">{closed ? toggle(false) : null}</div>
@@ -142,7 +143,7 @@ export const KjunSideNavigationLayout = defineComponent({
         </div>,
         <section ref={panel} id={panelId} class="kjun-side-navigation-layout-panel" aria-label={props.panelLabel ?? m.value.spacesPanel} hidden={closed && settled.value}>
           <div class="kjun-side-navigation-layout-panel-head">
-            {title != null && title !== "" ? <div class="kjun-side-navigation-layout-panel-title">{title}</div> : null}
+            {(typeof title === "string" ? title !== "" : hasContent(title)) ? <div class="kjun-side-navigation-layout-panel-title">{title}</div> : null}
             {drawer
               ? <button type="button" class="kjun-side-navigation-toggle kjun-side-navigation-layout-panel-toggle" aria-label={m.value.close} onClick={closeDrawer}>
                   <KjunIcon name="x" size={tokens.extensions.sideNavigation.iconSize} /></button>

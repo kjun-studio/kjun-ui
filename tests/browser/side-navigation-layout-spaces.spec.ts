@@ -156,3 +156,13 @@ test.describe('native: SideNavigationLayout spaces (Native Web)', () => {
     await expect(menu(page)).toBeHidden();
   });
 });
+
+for (const platform of ['react', 'vue3']) {
+  test(`${platform}: SideNavigationLayout spaces toggles take the menu's hover fill`, async ({ page }) => {
+    await page.setViewportSize({ width: 1200, height: 800 });
+    await open(page, platform, '');
+    const collapse = page.getByRole('button', { name: '메뉴 패널 접기' });
+    await collapse.hover();
+    await expect.poll(() => collapse.evaluate(el => getComputedStyle(el).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)');
+  });
+}

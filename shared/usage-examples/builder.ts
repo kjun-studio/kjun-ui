@@ -124,7 +124,7 @@ export class UsageBuilder {
         if (key === 'value' && vueModelComponents.has(name)) key = 'modelValue';
         if (value instanceof Handler) {
           const events: Record<string, string> = { onValueChange: vueModelComponents.has(name) ? 'update:model-value' : 'update:value', onOpenChange: 'update:open', onChangeCommit: 'change', onSizeChange: 'update:size',
-            onSelectionChange: 'update:selected', onExpandedRowsChange: 'update:expanded-rows', onExpandedGroupsChange: 'update:expanded-groups', onRecentColorsChange: 'update:recent-colors', onSortChange: 'update:sort', onPageSizeChange: 'update:page-size', onExpandedChange: 'update:expanded', onCollapsedChange: 'update:collapsed', onIndexChange: 'update:index' };
+            onSelectionChange: 'update:selected', onExpandedRowsChange: 'update:expanded-rows', onExpandedGroupsChange: 'update:expanded-groups', onRecentColorsChange: 'update:recent-colors', onSortChange: 'update:sort', onNavOpenChange: 'update:nav-open', onPanelCollapsedChange: 'update:panel-collapsed', onPageSizeChange: 'update:page-size', onExpandedChange: 'update:expanded', onCollapsedChange: 'update:collapsed', onIndexChange: 'update:index' };
           if (name === 'KjunPagination') events.onPageChange = 'update:page';
           attributes.push(`@${events[key] || kebab(key.slice(2)).slice(1)}="${attribute(vueCode(value.code))}"`);
         } else if (typeof value === 'string' && !/[\n\r]/.test(value)) attributes.push(`${kebab(key)}="${attribute(value)}"`);
