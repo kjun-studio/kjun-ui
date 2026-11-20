@@ -13,6 +13,8 @@ test('react: a Tooltip trigger first drawn in a hidden section does not warn and
   await expect(trigger).toBeVisible();
   // The trigger takes its handlers back in the frame after it gets a box; Focusable's tabIndex shows that it has.
   await expect(trigger).toHaveAttribute('tabindex', '0');
+  // react-aria counts a hover as a pointer hover only after a pointer move, as in tooltip-behavior.
+  await page.mouse.move(1, 1);
   await trigger.hover();
   await expect(page.locator('[role="tooltip"]')).toHaveText('숨김 설명');
   await page.mouse.move(800, 600);
