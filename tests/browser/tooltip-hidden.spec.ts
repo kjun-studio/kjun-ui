@@ -11,6 +11,8 @@ test('react: a Tooltip trigger first drawn in a hidden section does not warn and
   await page.evaluate(() => (window as any).showHiddenSection());
   const trigger = page.getByTestId('trigger');
   await expect(trigger).toBeVisible();
+  // The trigger takes its handlers back in the frame after it gets a box; Focusable's tabIndex shows that it has.
+  await expect(trigger).toHaveAttribute('tabindex', '0');
   await trigger.hover();
   await expect(page.locator('[role="tooltip"]')).toHaveText('숨김 설명');
   await page.mouse.move(800, 600);

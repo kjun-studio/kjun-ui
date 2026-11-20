@@ -729,7 +729,7 @@ set("BottomNavigation", {
   surface: { default: "true", summary: "표면색 바탕을 그립니다. 각진 바에 위쪽으로 옅은 그림자를 던져 위의 콘텐츠와 구분합니다. false면 바탕·그림자 없이 부모 배경이 그대로 보입니다." },
 });
 for (const name of ["BottomNavigation", "FloatingNavigation", "BottomActionBar"]) {
-  set(name, { sticky: { default: "false", summary: "페이지를 스크롤하는 동안 바를 화면 아래 가장자리에 붙여 둡니다(position: sticky). 바는 페이지 흐름 끝에서 자기 높이만큼 자리를 그대로 차지하므로, 높이를 재거나 아래 여백을 따로 주지 않아도 마지막 내용이 바에 가리지 않습니다. 라벨·아이콘·안전 영역·설명 줄 수가 바뀌어도 맞고, 키보드로 숨으면 자리도 사라집니다. 바는 페이지 내용 맨 끝에 두고, 화면 높이 이상인 세로 flex 열(min-height: 100dvh) 안에 두면 짧은 페이지에서도 맨 아래에 놓입니다. 바와 페이지 스크롤 사이의 조상은 overflow를 visible(또는 clip)로 둡니다. hidden·auto인 조상이 있으면 그 상자에 붙습니다. floating 모양은 띄움 간격을 유지한 채 붙습니다." } });
+  set(name, { sticky: { default: "false", summary: "페이지를 스크롤하는 동안 바를 화면 아래 가장자리에 붙여 둡니다(position: sticky). 바는 페이지 흐름 끝에서 자기 높이만큼 자리를 그대로 차지하므로, 높이를 재거나 아래 여백을 따로 주지 않아도 마지막 내용이 바에 가리지 않습니다. 라벨·아이콘·안전 영역·설명 줄 수가 바뀌어도 맞고, 키보드로 숨으면 자리도 사라집니다. 바는 페이지 내용 맨 끝에 두고(바를 감싼 요소의 아래 안쪽 여백이나 바 뒤의 내용은 스크롤 끝에서 바 아래 빈 자리로 남으므로, 여백은 바 앞의 본문에 줍니다), 화면 높이 이상인 세로 flex 열(min-height: 100dvh) 안에 두면 짧은 페이지에서도 맨 아래에 놓입니다. 바와 페이지 스크롤 사이의 조상은 overflow를 visible(또는 clip)로 둡니다. hidden·auto인 조상이 있으면 그 상자에 붙습니다. floating 모양은 띄움 간격을 유지한 채 붙습니다." } });
   set(name, { sticky: { default: "false", summary: "Native Web에서 웹과 같이 바를 화면 아래 가장자리에 붙이고 페이지 흐름 끝에서 자기 자리를 차지합니다. iOS·Android에는 스스로 고정되는 뷰가 없습니다. 그곳에서는 바를 화면 세로 열에서 앱의 ScrollView 다음에 두면 이미 내용 아래에 놓여 가리지 않으므로 이 값은 효과가 없습니다." } }, "native");
 }
 for (const name of ["BottomNavigation", "FloatingNavigation", "BottomActionBar"]) set(name, { keyboardVisible:{ default: "기기 키보드", summary: "키보드 표시 여부입니다. 생략하면 iOS·Android의 키보드 이벤트를 따르고, 넘기면 그 값을 씁니다. Native Web에는 키보드 이벤트가 없어 앱이 넘깁니다." } }, "native");
