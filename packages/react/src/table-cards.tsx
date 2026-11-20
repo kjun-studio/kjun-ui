@@ -148,7 +148,7 @@ function CardSkeleton<Row extends object>({ layout }: { layout: TableCardsProps<
       {highlight && (
         <div className="kjun-table-card-highlight">
           <KjunSkeleton type="line" role="caption" width="20%" />
-          <KjunSkeleton type="line" role="sectionTitle" width="45%" />
+          <KjunSkeleton type="line" role="numberLg" width="45%" />
         </div>
       )}
       <div className="kjun-table-card-section">

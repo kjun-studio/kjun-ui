@@ -65,7 +65,7 @@ function cardSkeleton(layout: TableLayout, key: number) {
       {highlight && (
         <div class="kjun-table-card-highlight">
           <KjunSkeleton type="line" role="caption" width="20%" />
-          <KjunSkeleton type="line" role="sectionTitle" width="45%" />
+          <KjunSkeleton type="line" role="numberLg" width="45%" />
         </div>
       )}
       <div class="kjun-table-card-section">

@@ -44,3 +44,12 @@ test("bodyLong is body with a roomier line on the 4px rhythm", () => {
   assert.equal(typography.bodyLong.lineHeightPx, 24);
   assert.equal(typography.bodyLong.lineHeightPx % 4, 0);
 });
+
+test("a table card's highlighted value draws at numberLg on Web and Native, as does its loading line", async () => {
+  const css = await read("packages/tokens/src/table-narrow.css");
+  const rule = css.match(/\.kjun-table-card-highlight > \.kjun-table-card-value \{([^}]*)\}/)[1];
+  for (const part of ["size", "line", "weight"]) assert.match(rule, new RegExp(`var\\(--_kjun-type-number-lg-${part}\\)`));
+  assert.match(await read("packages/native/src/table-view.tsx"), /role === "cardHighlight" \? "numberLg"/);
+  for (const file of ["packages/react/src/table-cards.tsx", "packages/vue3/src/table-narrow.tsx", "packages/native/src/table-cards.tsx"])
+    assert.match(await read(file), /role="numberLg" width="45%"/, file);
+});

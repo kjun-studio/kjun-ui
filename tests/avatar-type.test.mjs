@@ -22,3 +22,8 @@ test('Native AvatarGroup overflow uses the Web short and two-digit type steps', 
     assert.equal(compact, kebab(avatarCompactType[size]), size);
   }
 });
+
+test('lg initials and the xl compact count keep the 20px figure step, not the 18px sectionTitle', () => {
+  assert.equal(avatarType.lg, 'numberLg');
+  assert.equal(avatarCompactType.xl, 'numberLg');
+});

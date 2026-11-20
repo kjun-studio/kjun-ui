@@ -114,7 +114,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
     if (role === "cardSubtitle") return content(body, { ...typeStyle("caption"), color: colors.textSecondary });
     if (role === "tileTitle") return content(body, { ...typeStyle("control"), color: colors.text });
     if (role === "cardHighlight" || role === "tileHighlight")
-      return content(body, { ...typeStyle(role === "cardHighlight" ? "sectionTitle" : "control"), color: colors.text, fontVariant: ["tabular-nums"] as const });
+      return content(body, { ...typeStyle(role === "cardHighlight" ? "numberLg" : "control"), color: colors.text, fontVariant: ["tabular-nums"] as const });
     return content(body, {
       ...typeStyle(role === "title" ? "cardTitle" : col.secondary ? "caption" : "body"),
       color: (col.secondary && role !== "title") || role === "merged" ? colors.textSecondary : colors.text,

@@ -196,7 +196,7 @@ function CardSkeleton<Row extends object>({ layout }: { layout: TableCardsProps<
       {highlight ? (
         <View style={{ marginTop: card.sectionGap, gap: card.valueGap }}>
           <KjunSkeleton type="line" role="meta" width="20%" />
-          <KjunSkeleton type="line" role="sectionTitle" width="45%" />
+          <KjunSkeleton type="line" role="numberLg" width="45%" />
         </View>
       ) : null}
       <View style={{ marginTop: card.sectionGap, flexDirection: rows ? "column" : "row", flexWrap: rows ? "nowrap" : "wrap", gap: rows ? card.metricGap : card.sectionGap }}>
