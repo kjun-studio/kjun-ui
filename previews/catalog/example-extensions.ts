@@ -70,7 +70,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       if (settings.spaces) {
         const space = get("space", "projects"), destination = get("destination", "board"), names: Record<string, string> = { home: "홈", projects: "프로젝트", team: "팀", settings: "설정" };
         return h("Stack", {}, [h("Box", { width: 640 }, h("KjunSideNavigationLayout", { spacesTitle: names[space], breakpoint: 0, ...(platform === "native" ? {} : { sticky: false }),
-          panelCollapsed: get("panelCollapsed", false), onPanelCollapsedChange: change("panelCollapsed") }, h("Text", {}, "현재 위치: " + space + " / " + destination), {
+          panelCollapsed: get("panelCollapsed", false), onPanelCollapsedChange: change("panelCollapsed") }, h("KjunStack", { padding: "lg" }, h("Text", {}, "현재 위치: " + space + " / " + destination)), {
           spaces: () => h("KjunSideNavigation", { ariaLabel: "공간", value: space, collapsed: true, items: [
             { key: "home", label: "홈", href: "#home", icon: "home" }, { key: "projects", label: "프로젝트", href: "#projects", icon: "folder" },
             { key: "team", label: "팀", href: "#team", icon: "building", badge: true }, { key: "settings", label: "설정", href: "#settings", icon: "settings" },
@@ -110,7 +110,8 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         const space = get("space", "projects"), destination = get("destination", "board"), names: Record<string, string> = { home: "홈", projects: "프로젝트", team: "팀", settings: "설정" };
         return h("Box", { width: 640 }, h(name, { spacesTitle: names[space], panelSurface: settings.panelSurface, breakpoint: narrow ? 100000 : 0, ...(platform === "native" ? {} : { sticky: false }),
           panelCollapsed: get("panelCollapsed", !!settings.panelCollapsed), onPanelCollapsedChange: change("panelCollapsed"), navOpen: get("navOpen", false), onNavOpenChange: change("navOpen") },
-          h("Stack", {}, [narrow ? button("메뉴 열기", () => set("navOpen", true)) : null, h("Text", {}, "현재 위치: " + space + " / " + destination)]), {
+          // The layout leaves the page as it is, so the page keeps its own inner space from the band.
+          h("KjunStack", { padding: "lg", gap: "md" }, [narrow ? button("메뉴 열기", () => set("navOpen", true)) : null, h("Text", {}, "현재 위치: " + space + " / " + destination)]), {
           spaces: () => h("KjunSideNavigation", { ariaLabel: "공간", value: space, collapsed: true, items: [
             { key: "home", label: "홈", href: "#home", icon: "home" }, { key: "projects", label: "프로젝트", href: "#projects", icon: "folder" },
             { key: "team", label: "팀", href: "#team", icon: "building", badge: true }, { key: "settings", label: "설정", href: "#settings", icon: "settings" },
@@ -125,7 +126,7 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
         { title: "문서", icon: "file-text", items: [{ key: "projects", label: "프로젝트", href: "#projects", icon: "folder" }, { key: "archive", label: "보관함", href: "#archive", icon: "box" }] },
       ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); state.closeDrawer(); } });
       return h("Box", { width: 640 }, h(name, { collapsed, railLabels: settings.railLabels, width: settings.width, breakpoint: narrow ? 100000 : 0, ...(platform === "native" ? {} : { sticky: false }),
-        navOpen: get("navOpen", false), onNavOpenChange: change("navOpen") }, h("Stack", {}, [
+        navOpen: get("navOpen", false), onNavOpenChange: change("navOpen") }, h("KjunStack", { padding: "lg", gap: "md" }, [
         narrow ? button("메뉴 열기", () => set("navOpen", true)) : null,
         h("Text", {}, "현재 위치: " + get("destination", "home")),
       ]), { nav: menu }));
