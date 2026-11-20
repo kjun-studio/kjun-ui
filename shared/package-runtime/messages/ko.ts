@@ -157,6 +157,9 @@ export const kjunMessagesKo = {
   mainNavigation: "주요 탐색",
   collapseNavigation: "메뉴 접기",
   expandNavigation: "메뉴 펼치기",
+  spacesPanel: "메뉴 패널",
+  collapseSpacesPanel: "메뉴 패널 접기",
+  expandSpacesPanel: "메뉴 패널 펼치기",
   // 사이드 내비게이션 묶음의 처음 행 다음에 오는 행과, 다시 접는 행.
   showMoreItems: (count: number) => `${count}개 더 보기`,
   showFewerItems: "접기",

@@ -146,6 +146,9 @@ export const kjunMessagesEn: KjunMessages = {
   mainNavigation: "Main navigation",
   collapseNavigation: "Collapse menu",
   expandNavigation: "Expand menu",
+  spacesPanel: "Menu panel",
+  collapseSpacesPanel: "Collapse menu panel",
+  expandSpacesPanel: "Expand menu panel",
   // The row after a side navigation group's first rows, and the row that folds them again.
   showMoreItems: (count: number) => `Show ${count} more`,
   showFewerItems: "Show less",

@@ -85,7 +85,8 @@
     "onDanger",
     "onSuccess",
     "onWarning",
-    "navigationInactive"
+    "navigationInactive",
+    "navigationRailBg"
   ],
   "domainColorRoles": [
     "priceUp",
@@ -192,7 +193,8 @@
     "on-danger": "onDanger",
     "on-success": "onSuccess",
     "on-warning": "onWarning",
-    "navigation-inactive": "navigationInactive"
+    "navigation-inactive": "navigationInactive",
+    "navigation-rail-bg": "navigationRailBg"
   },
   "coreColorRoles": [
     "brand",
@@ -282,7 +284,8 @@
     "onDanger": "inverse",
     "onSuccess": "inverse",
     "onWarning": "inverse",
-    "navigationInactive": "textTertiary"
+    "navigationInactive": "textTertiary",
+    "navigationRailBg": "secondary"
   },
   "cardSurfaces": {
     "default": {

@@ -86,6 +86,7 @@
   --_kjun-color-on-success: var(--kjun-on-success, var(--kjun-inverse));
   --_kjun-color-on-warning: var(--kjun-on-warning, var(--kjun-inverse));
   --_kjun-color-navigation-inactive: var(--kjun-navigation-inactive, var(--kjun-text-tertiary));
+  --_kjun-color-navigation-rail-bg: var(--kjun-navigation-rail-bg, var(--kjun-secondary));
   --_kjun-color-price-up: var(--kjun-price-up);
   --_kjun-color-price-up-light: var(--kjun-price-up-light);
   --_kjun-color-price-up-bg: var(--kjun-price-up-bg);
@@ -189,6 +190,7 @@
   --_kjun-on-success: var(--_kjun-color-on-success);
   --_kjun-on-warning: var(--_kjun-color-on-warning);
   --_kjun-navigation-inactive: var(--_kjun-color-navigation-inactive);
+  --_kjun-navigation-rail-bg: var(--_kjun-color-navigation-rail-bg);
   --_kjun-font-numeric: var(--kjun-font-numeric, var(--kjun-font));
   --_kjun-control-label-size: var(--_kjun-type-control-size);
   --_kjun-radius-card: 12px;
@@ -446,6 +448,11 @@
   --_kjun-extension-side-navigation-column-padding-x: 12px;
   --_kjun-extension-side-navigation-column-padding-y: 12px;
   --_kjun-extension-side-navigation-rail-column-padding-x: 4px;
+  --_kjun-extension-side-navigation-spaces-column-width: 60px;
+  --_kjun-extension-side-navigation-spaces-panel-width: 216px;
+  --_kjun-extension-side-navigation-spaces-panel-inset: 8px;
+  --_kjun-extension-side-navigation-spaces-panel-radius: 12px;
+  --_kjun-extension-side-navigation-spaces-panel-head-height: 40px;
   --_kjun-extension-floating-navigation-item-size: 52px;
   --_kjun-extension-floating-navigation-icon-size: 24px;
   --_kjun-extension-floating-navigation-padding: 6px;
