@@ -103,11 +103,13 @@ export function KjunListSkeleton({
 function ListRowSkeleton({ rows, avatar, avatarSize, description, trailing, divider }: {
   rows: number; avatar: boolean; avatarSize: DimensionValue; description: boolean; trailing?: "value" | "switch" | "chevron"; divider: KjunListDivider;
 }) {
-  const list = tokens.extensions.list, o = list.open, { open, compact } = useContext(ListShapeContext), m = listRowMetrics({ open, compact });
-  const inset = list.padding + (avatar ? list.leadingWidth + list.gap : 0);
+  const list = tokens.extensions.list, o = list.open, { open, compact, inset: sectionInset } = useContext(ListShapeContext), m = listRowMetrics({ open, compact });
+  // In a bleeding section the rows take its inset, like ListRow.
+  const paddingX = sectionInset ?? m.paddingX, edge = sectionInset ?? list.padding;
+  const inset = edge + (avatar ? list.leadingWidth + list.gap : 0);
   // Like Web: in an open KjunListSection the rows take the open row's shape (larger lines, a rounded leading square,
   // inset from the edges, no dividers), and in a compact one the compact row's height.
-  const shape = { gap: m.gap, minHeight: m.minimumHeight, paddingVertical: m.paddingY, paddingHorizontal: m.paddingX, ...(open ? { marginHorizontal: o.rowInset } : {}) };
+  const shape = { gap: m.gap, minHeight: m.minimumHeight, paddingVertical: m.paddingY, paddingHorizontal: paddingX, ...(open ? { marginHorizontal: o.rowInset } : {}) };
   // Like ListRow: without a description the leading square and a switch reach into the padding, keeping the minimum height.
   const bleed = description ? {} : { marginVertical: listRowBleed(m.paddingY) };
   return (

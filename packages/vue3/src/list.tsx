@@ -174,6 +174,11 @@ const kjunListSectionProps = {
   ariaLabel: { type: String, default: undefined },
   /** Paints the surface background (default true); false lets the page background show through; "muted" paints the muted fill, which sets rows apart inside a white card or modal. */
   surface: { type: [Boolean, String] as PropType<ListSectionSurface>, default: true },
+  /** Runs the section past its container's content edge to the container's edge: inside a KjunCard body by the card's
+   * padding, elsewhere by the rows' 16px. Rows, heading and footer take that inset, so their text stays on the content line
+   * around the section while row fills and dividers reach the edge. The section is flat (radius does not apply); an open
+   * section keeps its own inset. Leave room for the overhang: a parent that clips its overflow cuts it off. */
+  bleed: { type: Boolean, default: false },
   /** Draws dividers between rows (default true; false in a details section). An open section draws none; giving it true warns in development. */
   divider: { type: Boolean, default: undefined },
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. A details section keeps its own 32px rows. */
@@ -228,7 +233,7 @@ export const KjunListSection = defineComponent({
     const note = () => props.reorderable && props.reorderDisabled && props.reorderDisabledText ? id + "-reorder" : undefined;
     const reorder = useReorder({ reorderable: () => props.reorderable, order: () => props.order, disabled: () => props.reorderDisabled, controls: () => props.reorderControls, noteId: note, list: () => list.value,
       onOrderChange: order => emit("update:order", order), onReorder: move => emit("reorder", move) });
-    const shape = computed(() => listSectionShape({ radius: props.radius, group: group?.value, variant: props.variant, title: props.title, description: props.description, titleVariant: props.titleVariant }));
+    const shape = computed(() => listSectionShape({ radius: props.radius, group: group?.value, variant: props.variant, title: props.title, description: props.description, titleVariant: props.titleVariant, bleed: props.bleed }));
     provide(kjunListSelectionKey, computed<ListRowSelection>(() => ({ mode: props.selectionMode, value: props.modelValue, onValueChange: ((value: ListChoiceValue | ListChoiceValue[]) => emit("update:modelValue", value)) as ListSelection["onValueChange"] })));
     watchEffect(onCleanup => { if (choice.value && list.value) onCleanup(bindRadioKeyboard(list.value)); }, { flush: "post" });
     watchEffect(() => warnListSectionProps({ open: shape.value.open, divider: props.divider, details: shape.value.details, compact: props.density === "compact" }));
@@ -239,7 +244,7 @@ export const KjunListSection = defineComponent({
     return () => {
       const actions = slots.actions?.(), badge = props.title ? slots.badge?.() : undefined, hasBadge = hasContent(badge), children = slots.default?.(), loading = slots.loading?.(), empty = slots.empty?.(), footer = slots.footer?.();
       // Like React: a rounded section is a card of rows only; its title, actions and footer stay on the page around it.
-      const { open, details, corner, bare, outside } = shape.value, look = open ? "open" : details ? "details" : undefined;
+      const { open, details, corner, bare, outside, bleed } = shape.value, look = open ? "open" : details ? "details" : undefined;
       const rounded = corner === "none" ? undefined : { borderRadius: `var(--_kjun-geometry-card-radii-${corner})` };
       const Heading = `h${props.headingLevel}` as "h3", compact = props.density === "compact" && !details ? "compact" : undefined;
       // The list carries the name and the description; a named section would make every settings group a page landmark.
@@ -250,7 +255,7 @@ export const KjunListSection = defineComponent({
         ? <ul ref={list} class="kjun-list" role={choice.value ? "radiogroup" : undefined} aria-label={props.ariaLabel || undefined} aria-labelledby={props.ariaLabel || !props.title ? undefined : hasBadge ? id + " " + id + "-badge" : id} aria-describedby={describedBy} data-divider={props.divider ?? !details ? undefined : "false"} data-density={compact} data-variant={look}>{children}</ul>
         : hasContent(empty) ? <div class="kjun-list-empty" data-density={compact}>{empty}</div> : null;
       return (
-        <section class="kjun-list-section" data-surface={listSectionSurface(props.surface).attribute} data-outside={outside || undefined} data-variant={look}>
+        <section class="kjun-list-section" data-surface={listSectionSurface(props.surface).attribute} data-outside={outside || undefined} data-bleed={bleed || undefined} data-variant={look}>
           {(props.title || props.description || hasContent(actions)) && (
             <div class="kjun-list-heading" data-bare={bare ? "" : undefined}><div>{hasBadge ? <div class="kjun-list-heading-title"><Heading id={id}>{props.title}</Heading><span id={id + "-badge"} class="kjun-list-heading-badge">{badge}</span></div> : props.title && <Heading id={id}>{props.title}</Heading>}{props.description && <p id={id + "-description"}>{props.description}</p>}</div>{hasContent(actions) && <div ref={actionsBox} class="kjun-list-heading-actions">{actions}</div>}</div>
           )}

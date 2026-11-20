@@ -8,7 +8,7 @@ import { useKjunStyles } from "./provider";
 import { hasContent as present } from "../../../shared/package-runtime/content-presence";
 import { CardActionsContext } from "./card-actions-context";
 import { KjunIcon } from "./button";
-import { CardBrandContext, CardTintContext } from "./card-surface-context";
+import { CardBodyInsetContext, CardBrandContext, CardTintContext } from "./card-surface-context";
 import { TileCellContext } from "./tiles-context";
 import { linkRel } from "../../../shared/package-runtime/list-row";
 import { cardLayout, warnCardDeviceLink, type CardHeadingLevel, type CardMediaAspect, type CardMediaPosition } from "../../../shared/package-runtime/card-layout";
@@ -101,7 +101,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
   const actionRow = <CardActionsContext.Provider value={true}><View style={{ flexDirection: "row", flexWrap: "wrap", minWidth: 0, maxWidth: "100%", marginStart: layout.heading ? 0 : "auto", alignItems: "center", justifyContent: "flex-end", gap: tokens.card.titleGap }}>{content(headerActions, { color: foreground })}</View></CardActionsContext.Provider>;
   // Header actions without a title sit at the end of the body's row; too narrow for the body's minimum width, they wrap above it.
   const beside = layout.actionsBeside && <View style={{ flexDirection: "row", flexWrap: "wrap-reverse", alignItems: "center" }}>
-    <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: tokens.card.titleMinWidth, minWidth: 0, padding: bodyInset }}>{content(children, { color: foreground, ...words })}</View>
+    <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: tokens.card.titleMinWidth, minWidth: 0, padding: bodyInset }}><CardBodyInsetContext.Provider value={bodyInset}>{content(children, { color: foreground, ...words })}</CardBodyInsetContext.Provider></View>
     <View style={{ flexShrink: 1, minWidth: 0, marginStart: "auto", padding: inset, paddingStart: 0 }}>{actionRow}</View>
   </View>;
   const sections = beside || <>
@@ -127,7 +127,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
         <KjunIcon name="chevron-right" size={tokens.iconSizes.large} color={colors.textTertiary} /></View>}
     </View>}
     {has.body && <View style={{ minWidth: 0, padding: bodyInset, paddingTop: layout.header && !dividers ? 0 : bodyInset }}>
-      {content(children, { color: foreground, ...words })}
+      <CardBodyInsetContext.Provider value={bodyInset}>{content(children, { color: foreground, ...words })}</CardBodyInsetContext.Provider>
     </View>}
     {!!has.footer && <View style={{
       padding: inset, paddingTop: !dividers && (has.body ? bodyPadding !== "none" : layout.header) ? 0 : inset,

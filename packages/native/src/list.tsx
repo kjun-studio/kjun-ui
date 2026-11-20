@@ -1,11 +1,11 @@
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { nodeText } from "../../../shared/package-runtime/node-text";
 import { KjunSpinnerGlyph } from "./spinner-glyph";
-import { CardBrandContext, CardTintContext } from "./card-surface-context";
+import { CardBodyInsetContext, CardBrandContext, CardTintContext } from "./card-surface-context";
 import { typeStyle } from "./typography";
 import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { Children, Fragment, cloneElement, createContext, isValidElement, useContext, useEffect, useId, useLayoutEffect, useMemo, useState, type ReactElement, type ReactNode } from "react";
-import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowExpandable, listRowKind, listRowMetrics, listSectionShape, listSectionSurface, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionSurface, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
+import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowExpandable, listRowKind, listRowMetrics, listSectionInset, listSectionShape, listSectionSurface, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionSurface, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { ListShapeContext } from "./list-context";
 import { ReorderContext, ReorderControls, useReorder, type KjunListReorderMove } from "./reorder-controls";
 import { reorderPlace } from "../../../shared/package-runtime/reorder";
@@ -115,7 +115,7 @@ function ChoiceMark({ checkbox, on }: { checkbox: boolean; on: boolean }) {
   </View>;
 }
 export function KjunListRow({ title, description, badge, icon, leadingSize, iconColor, iconBackground, leading, trailing, trailingPosition = "side", actions, href, target, rel, disabled = false, destructive = false, emphasized = false, chevron = false, current = false, selected: ownSelected, checked, onCheckedChange, busy = false, value, onPress: ownPress, ariaLabel, children, titleLines, descriptionLines, expanded, onExpandedChange, expandedContent }: KjunListRowProps) {
-  const { colors } = useKjunStyles(), { divider, selection, ringRadius, column: sharedColumn = 0, closes = false } = useContext(ListRowContext), { open, details = false, compact, muted = false } = useContext(ListShapeContext);
+  const { colors } = useKjunStyles(), { divider, selection, ringRadius, column: sharedColumn = 0, closes = false } = useContext(ListRowContext), { open, details = false, compact, muted = false, inset: sectionInset } = useContext(ListShapeContext);
   const choice = listRowChoice(selection, value, ownSelected), selected = choice.selected;
   const id = "kjun-" + useId().replace(/[^\w-]/g, "");
   // In a reorderable section a row its order lists draws move buttons after its own actions.
@@ -134,7 +134,9 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   // Like Web's row variables: an open row has a larger title, body description, and its own padding and height.
   // A details row reads its label in the secondary body type and its value in the text color; an emphasized row (any
   // section) takes the title one weight up and the value in the large number type.
-  const m = listRowMetrics({ open, compact, details }), { paddingY, paddingX, gap } = m, minHeight = m.minimumHeight;
+  const m = listRowMetrics({ open, compact, details }), { paddingY, gap } = m, minHeight = m.minimumHeight;
+  // A bleeding section hands its rows the card body's inset, so their text stays on the card's content line.
+  const paddingX = sectionInset ?? m.paddingX, actionsPadding = sectionInset ?? m.actionsPadding;
   const titleType = { ...typeStyle(m.title), fontWeight: typeStyle(emphasized ? "labelStrong" : details ? "body" : "label").fontWeight, ...(details && !emphasized ? { color: colors.textSecondary } : {}) };
   const descriptionType = typeStyle(m.description), trailingType = typeStyle(emphasized ? "numberLg" : m.trailing), valueColor = details || emphasized ? colors.text : colors.textSecondary;
   const band = titleType.lineHeight + list.descriptionGap + descriptionType.lineHeight;
@@ -224,7 +226,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
       // Like Web: a static row dims as a whole when disabled, so nothing in it reads as available.
       : <View {...(Platform.OS === "web" && now ? { "aria-current": now } : {})} style={{ ...style, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{parts}</View>}
     {/* A disabled row disables its actions too, so the row never reads as partly available. */}
-    {(hasContent(actions) || movable) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: `${list.actionsMaxPercent}%`, flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: m.actionsPadding,
+    {(hasContent(actions) || movable) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: `${list.actionsMaxPercent}%`, flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: actionsPadding,
       // Like Web: with a description, actions center on the title and first description line instead of a long row's middle.
       ...(description ? { alignSelf: "flex-start", alignItems: "center", alignContent: "center", minHeight: band, marginTop: paddingY + lift } : {}), opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}{movable && <ReorderControls value={value!} name={title} />}</View>}
   </>;
@@ -246,6 +248,11 @@ export interface KjunListSectionProps {
   style?: StyleProp<ViewStyle>; testID?: string;
   /** Paints the surface background (default true); false lets the page background show through; "muted" paints the muted fill, which sets rows apart inside a white card or modal. */
   surface?: ListSectionSurface;
+  /** Runs the section past its container's content edge to the container's edge: inside a KjunCard body by the card's
+   * padding, elsewhere by the rows' 16. Rows, heading and footer take that inset, so their text stays on the content line
+   * around the section while row fills and dividers reach the edge. The section is flat (radius does not apply); an open
+   * section keeps its own inset. A parent that clips its overflow cuts the overhang off. */
+  bleed?: boolean;
   /** Draws dividers between rows (default true; false in a details section). An open section draws none; giving it true warns in development. */
   divider?: boolean;
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. A details section keeps its own 32px rows. */
@@ -310,14 +317,16 @@ function actionsHeight(actions: ReactNode, line: number) {
   }, line);
 }
 const ListGroupContext = createContext<ListGroupVariant | null>(null);
-export function KjunListSection({ title, description, badge, style, testID, actions, children, ariaLabel, surface = true, divider: dividerProp, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant, reorderable = false, order, onOrderChange, onReorder, reorderDisabled = false, reorderDisabledText }: KjunListSectionProps) {
+export function KjunListSection({ title, description, badge, style, testID, actions, children, ariaLabel, surface = true, bleed: bleedProp = false, divider: dividerProp, density = "default", radius, titleVariant, headingLevel = 3, empty, footer, loading, selectionMode = "none", value, onValueChange, variant, reorderable = false, order, onOrderChange, onReorder, reorderDisabled = false, reorderDisabledText }: KjunListSectionProps) {
   const { colors } = useKjunStyles();
   const id = "kjun-" + useId().replace(/[^\w-]/g, ""), noteText = reorderable && reorderDisabled && reorderDisabledText ? reorderDisabledText : undefined;
   // Like Web: the badge sits beside the heading text, outside it, and its text joins the list's name.
   const hasBadge = !!title && hasContent(badge), badgeText = hasBadge ? nodeText(badge) : undefined;
   const reorder = useReorder({ reorderable, order, disabled: reorderDisabled, note: noteText ? { id: id + "-reorder", text: noteText } : undefined, onOrderChange, onReorder });
   // Like Web: a rounded section is a card of rows only; its title, actions and footer stay on the page around it.
-  const { open, details, corner, bare, outside } = listSectionShape({ radius, group: useContext(ListGroupContext), variant, title, description, titleVariant });
+  const { open, details, corner, bare, outside, bleed } = listSectionShape({ radius, group: useContext(ListGroupContext), variant, title, description, titleVariant, bleed: bleedProp });
+  // Like Web: a bleeding section reaches past the card body's padding (or the rows' 16 elsewhere) and its rows take it.
+  const { inset, margin } = listSectionInset(bleed, useContext(CardBodyInsetContext), list.padding);
   const divider = dividerProp ?? !details;
   useEffect(() => warnListSectionProps({ open, divider: dividerProp, details, compact: density === "compact" }), [open, dividerProp, details, density]);
   useEffect(() => warnListSelection({ mode: selectionMode, value, handled: !!onValueChange }), [selectionMode, Array.isArray(value), value === undefined, !!onValueChange]);
@@ -337,7 +346,7 @@ export function KjunListSection({ title, description, badge, style, testID, acti
   // Memoized, so a section drawing again for its own state (its measured heading actions or list) does not hand every
   // row a new context and redraw it.
   const fill = listSectionSurface(surface), muted = fill.muted;
-  const shape = useMemo(() => ({ open, details, compact, muted }), [open, details, compact, muted]);
+  const shape = useMemo(() => ({ open, details, compact, muted, ...(bleed ? { inset } : {}) }), [open, details, compact, muted, bleed, inset]);
   const selection = useMemo(() => ({ mode: selectionMode, value, onValueChange }), [selectionMode, value, onValueChange]);
   const count = items.length;
   // Like Web, rows that lead with something share the list's widest leading column, so titles start on one line.
@@ -358,14 +367,14 @@ export function KjunListSection({ title, description, badge, style, testID, acti
         {...(Platform.OS === "web" && describedBy ? { "aria-describedby": describedBy } : {})}>
       <ReorderContext.Provider value={reorder.context}>{items.map((row, i) => <ListRowContext.Provider key={row.key ?? i} value={contexts[i]}>{row}</ListRowContext.Provider>)}</ReorderContext.Provider>
     </View>
-    : hasContent(empty) ? <View style={{ minHeight: compact ? list.compactMinimumHeight : list.minimumHeight, justifyContent: "center", paddingHorizontal: list.padding }}><ListEmptyContext.Provider value={density}>{content(empty)}</ListEmptyContext.Provider></View> : null;
+    : hasContent(empty) ? <View style={{ minHeight: compact ? list.compactMinimumHeight : list.minimumHeight, justifyContent: "center", paddingHorizontal: inset }}><ListEmptyContext.Provider value={density}>{content(empty)}</ListEmptyContext.Provider></View> : null;
   const heading = <KText {...wordProps} accessibilityRole="header" {...(Platform.OS === "web" ? { "aria-level": headingLevel } : {})} style={{ flexShrink: 1, ...(bare ? { ...typeStyle('controlSmall'), color: colors.textSecondary } : typeStyle('cardTitle')), ...words }}>{title}</KText>;
   const tint = useContext(CardTintContext), brand = useContext(CardBrandContext);
   const card = { backgroundColor: muted ? colors.secondary : fill.painted ? colors.surface : "transparent", ...(radiusValue === undefined ? {} : { borderRadius: radiusValue, overflow: "hidden" as const }) };
   // A section on the plain surface drops a tinted card's badge fill, so its badges keep their own tone; on the muted fill
   // badges take the plain surface, as inside a tinted card (only the rows' card when the heading sits outside it).
-  return <CardTintContext.Provider value={muted && !outside || (fill.painted ? false : tint)}><CardBrandContext.Provider value={fill.painted ? false : brand}><ListShapeContext.Provider value={shape}><View testID={testID} style={[{ minWidth: 0, ...(outside ? {} : card) }, style]}>
-    {!!(title || description || hasContent(actions)) && <View style={{ flexDirection: "row", alignItems: "flex-start", gap: list.gap, padding: list.padding,
+  return <CardTintContext.Provider value={muted && !outside || (fill.painted ? false : tint)}><CardBrandContext.Provider value={fill.painted ? false : brand}><ListShapeContext.Provider value={shape}><View testID={testID} style={[{ minWidth: 0, ...(outside ? {} : card), ...(bleed ? { marginHorizontal: margin } : {}) }, style]}>
+    {!!(title || description || hasContent(actions)) && <View style={{ flexDirection: "row", alignItems: "flex-start", gap: list.gap, padding: list.padding, paddingHorizontal: inset,
       // A title without a description is a small group header that sits close to its rows; outside a card it starts at the top.
       // Like Web: 8px under a heading (4px under a small group header), so it reads with its rows.
       paddingBottom: bare ? list.bareHeadingPaddingBottom : list.headingPaddingBottom, ...(outside ? { paddingTop: overflow, paddingBottom: list.outsideLabelGap } : {}) }}>
@@ -377,9 +386,9 @@ export function KjunListSection({ title, description, badge, style, testID, acti
       </View>}
     </View>}
     {outside ? <View style={card}>{muted ? <CardTintContext.Provider value>{rows}</CardTintContext.Provider> : rows}</View> : rows}
-    {!!noteText && <View nativeID={id + "-reorder"} style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside || hasFooter ? 0 : list.padding }}><KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{noteText}</KText></View>}
+    {!!noteText && <View nativeID={id + "-reorder"} style={{ paddingTop: list.footerGap, paddingHorizontal: inset, paddingBottom: outside || hasFooter ? 0 : list.padding }}><KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{noteText}</KText></View>}
     {reorder.status}
-    {hasFooter && <View nativeID={id + "-footer"} style={{ paddingTop: list.footerGap, paddingHorizontal: list.padding, paddingBottom: outside ? 0 : list.padding }}>{typeof footer === "string" ? <KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{String(footer)}</KText> : content(footer, { ...typeStyle("caption"), color: colors.textTertiary })}</View>}
+    {hasFooter && <View nativeID={id + "-footer"} style={{ paddingTop: list.footerGap, paddingHorizontal: inset, paddingBottom: outside ? 0 : list.padding }}>{typeof footer === "string" ? <KText {...wordProps} style={{ ...typeStyle("caption"), color: colors.textTertiary, ...words }}>{String(footer)}</KText> : content(footer, { ...typeStyle("caption"), color: colors.textTertiary })}</View>}
   </View></ListShapeContext.Provider></CardBrandContext.Provider></CardTintContext.Provider>;
 }
 export interface KjunListGroupProps {
@@ -396,7 +405,7 @@ export function KjunListGroup({ variant = "inset", children, style, testID }: Kj
 export interface KjunListItemProps { children: ReactNode }
 /** Non-row content inside a KjunListSection (a theme switcher, a note) on the rows' inset and dividers. */
 export function KjunListItem({ children }: KjunListItemProps) {
-  const { divider, selection } = useContext(ListRowContext), { open, compact } = useContext(ListShapeContext);
-  return <View role={selection.mode === "single" ? undefined : "listitem"} style={{ padding: tokens.extensions.list.padding, ...(compact ? { paddingVertical: tokens.extensions.list.compactPaddingY } : {}),
-    ...(open ? { marginHorizontal: list.open.rowInset, paddingHorizontal: list.open.paddingX } : {}), minWidth: 0 }}>{content(children)}{divider && <Divider inset={list.padding} />}</View>;
+  const { divider, selection } = useContext(ListRowContext), { open, compact, inset: sectionInset } = useContext(ListShapeContext), itemInset = sectionInset ?? tokens.extensions.list.padding;
+  return <View role={selection.mode === "single" ? undefined : "listitem"} style={{ padding: tokens.extensions.list.padding, paddingHorizontal: itemInset, ...(compact ? { paddingVertical: tokens.extensions.list.compactPaddingY } : {}),
+    ...(open ? { marginHorizontal: list.open.rowInset, paddingHorizontal: list.open.paddingX } : {}), minWidth: 0 }}>{content(children)}{divider && <Divider inset={itemInset} />}</View>;
 }

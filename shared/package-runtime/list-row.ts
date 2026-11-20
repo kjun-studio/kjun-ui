@@ -144,15 +144,28 @@ export type ListTrailingPosition = "side" | "title" | "below";
  * How a section draws, the same on every platform: whether it is open (rows on the page with no card or dividers; the
  * section's variant, or the KjunListGroup's) or details (read-only rows; only its own variant), its card corner (the group's when unset; none when open), whether its title
  * is the small label (a title without a description, unless titleVariant says otherwise) and whether its rows form a card
- * with the heading and footer outside it.
+ * with the heading and footer outside it. A bleeding section (not an open one, whose rows keep their own inset) is flat: it
+ * runs to its container's edge, so it has no corner and keeps its heading and footer with the rows.
  */
-export function listSectionShape<R extends ListSectionCorner>({ radius, group, variant, title, description, titleVariant }: {
-  radius?: R; group?: ListGroupVariant | null; variant?: ListSectionVariant; title?: string; description?: string; titleVariant?: "title" | "label";
+export function listSectionShape<R extends ListSectionCorner>({ radius, group, variant, title, description, titleVariant, bleed: wantsBleed = false }: {
+  radius?: R; group?: ListGroupVariant | null; variant?: ListSectionVariant; title?: string; description?: string; titleVariant?: "title" | "label"; bleed?: boolean;
 }) {
   const resolved = variant ?? (group === "open" ? "open" : "default"), open = resolved === "open", details = resolved === "details";
-  const corner: R | "lg" | "none" = open ? "none" : radius ?? (group === "inset" ? "lg" : "none");
+  const bleed = wantsBleed && !open;
+  const corner: R | "lg" | "none" = open || bleed ? "none" : radius ?? (group === "inset" ? "lg" : "none");
   const bare = !!title && (titleVariant ? titleVariant === "label" : !description);
-  return { open, details, corner, bare, outside: corner !== "none" };
+  return { open, details, corner, bare, outside: corner !== "none", bleed };
+}
+
+/**
+ * How far a bleeding section reaches past its container and the inset its rows, heading and footer take: the container's
+ * own inset (a KjunCard body's padding) when it gives one, otherwise the rows' standard inset, so text keeps to the
+ * content line around the section while fills and dividers run to the container's edge. Native reads it; the web
+ * stylesheet does the same with the card's --_kjun-card-body-padding.
+ */
+export function listSectionInset(bleed: boolean, containerInset: number | null | undefined, rowInset: number) {
+  const inset = bleed && containerInset != null && Number.isFinite(containerInset) && containerInset >= 0 ? containerInset : rowInset;
+  return { inset, margin: bleed ? -inset : 0 };
 }
 
 /**

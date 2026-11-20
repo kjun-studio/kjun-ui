@@ -1,6 +1,7 @@
 import test from 'node:test';
+import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
-import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowKind, listRowMetrics, listSectionShape, listSectionSurface, warnListRowProps, warnListSectionProps, warnListSelection } from '../shared/package-runtime/list-row.ts';
+import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowKind, listRowMetrics, listSectionInset, listSectionShape, listSectionSurface, warnListRowProps, warnListSectionProps, warnListSelection } from '../shared/package-runtime/list-row.ts';
 import { listLeadingGeometry, listRowBleed } from '../shared/package-runtime/list-leading.ts';
 import { nodeText } from '../shared/package-runtime/node-text.ts';
 
@@ -33,9 +34,9 @@ test('a section that owns its value selects rows by value and reports the next v
 });
 
 test('an open section has no card; its group or its own variant opens it', () => {
-  assert.deepEqual(listSectionShape({ group: 'open', title: 'a' }), { open: true, details: false, corner: 'none', bare: true, outside: false });
+  assert.deepEqual(listSectionShape({ group: 'open', title: 'a' }), { open: true, details: false, corner: 'none', bare: true, outside: false, bleed: false });
   assert.equal(listSectionShape({ variant: 'open', group: 'inset', radius: 'md' }).corner, 'none');
-  assert.deepEqual(listSectionShape({ group: 'open', variant: 'default', radius: 'md' }), { open: false, details: false, corner: 'md', bare: false, outside: true });
+  assert.deepEqual(listSectionShape({ group: 'open', variant: 'default', radius: 'md' }), { open: false, details: false, corner: 'md', bare: false, outside: true, bleed: false });
   assert.equal(listSectionShape({ group: 'inset' }).open, false);
 });
 
@@ -102,8 +103,8 @@ test('a details section reads its rows: 32 tall, body label, label-weight value,
 });
 
 test('details is a section variant of its own: never open, a card in an inset group, not inherited from the group', () => {
-  assert.deepEqual(listSectionShape({ variant: 'details', title: 'a' }), { open: false, details: true, corner: 'none', bare: true, outside: false });
-  assert.deepEqual(listSectionShape({ variant: 'details', group: 'inset' }), { open: false, details: true, corner: 'lg', bare: false, outside: true });
+  assert.deepEqual(listSectionShape({ variant: 'details', title: 'a' }), { open: false, details: true, corner: 'none', bare: true, outside: false, bleed: false });
+  assert.deepEqual(listSectionShape({ variant: 'details', group: 'inset' }), { open: false, details: true, corner: 'lg', bare: false, outside: true, bleed: false });
   assert.equal(listSectionShape({ variant: 'details', group: 'open' }).open, false);
   assert.equal(listSectionShape({ group: 'flush' }).details, false);
 });
@@ -183,4 +184,41 @@ test('a section paints the surface by default, nothing when false, and the muted
   assert.deepEqual(listSectionSurface(true), { painted: true, muted: false, attribute: undefined });
   assert.deepEqual(listSectionSurface(false), { painted: false, muted: false, attribute: 'false' });
   assert.deepEqual(listSectionSurface('muted'), { painted: true, muted: true, attribute: 'muted' });
+});
+
+test('a bleeding section is flat, keeps its heading with the rows, and an open one does not bleed', () => {
+  assert.deepEqual(listSectionShape({ bleed: true, radius: 'md', title: 'a' }), { open: false, details: false, corner: 'none', bare: true, outside: false, bleed: true });
+  assert.deepEqual(listSectionShape({ bleed: true, group: 'inset' }), { open: false, details: false, corner: 'none', bare: false, outside: false, bleed: true });
+  assert.equal(listSectionShape({ bleed: true, variant: 'open' }).bleed, false);
+  assert.equal(listSectionShape({ bleed: true, variant: 'details' }).bleed, true);
+});
+test('a bleeding section reaches past the card body padding, or the rows\' own inset outside a card', () => {
+  assert.deepEqual(listSectionInset(true, 24, 16), { inset: 24, margin: -24 });
+  assert.deepEqual(listSectionInset(true, 12, 16), { inset: 12, margin: -12 });
+  assert.deepEqual(listSectionInset(true, null, 16), { inset: 16, margin: -16 });
+  assert.deepEqual(listSectionInset(true, Number.NaN, 16), { inset: 16, margin: -16 });
+  assert.deepEqual(listSectionInset(false, 24, 16), { inset: 16, margin: 0 });
+});
+test('web list paddings follow the section inset, which bleed takes from the card body', () => {
+  const css = readFileSync(new URL('../packages/tokens/src/list.css', import.meta.url), 'utf8');
+  const inset = 'var(--_kjun-list-inset,var(--_kjun-extension-list-padding))';
+  assert.match(css, /\.kjun-list-section\{--_kjun-list-inset:var\(--_kjun-extension-list-padding\);/);
+  assert.ok(css.includes('.kjun-list-section[data-bleed]{--_kjun-list-inset:var(--_kjun-card-body-padding,var(--_kjun-extension-list-padding));margin-inline:calc(-1 * var(--_kjun-list-inset));max-width:none;border-radius:0}'));
+  for (const rule of ['--_kjun-list-padding-x:' + inset, '.kjun-list-item{padding:var(--_kjun-extension-list-padding) ' + inset, 'padding-inline:' + inset + '}', '.kjun-list-footer{padding:var(--_kjun-extension-list-footer-gap) ' + inset, 'inset-inline:var(--_kjun-list-divider-inset,' + inset + ') 0'])
+    assert.ok(css.includes(rule), rule);
+  assert.doesNotMatch(css.replace(/--_kjun-list-inset:var\(--_kjun-extension-list-padding\)/g, ''), /padding-inline:var\(--_kjun-extension-list-padding\)|padding:var\(--_kjun-extension-list-padding\);/);
+  const skeleton = readFileSync(new URL('../packages/tokens/src/skeleton.css', import.meta.url), 'utf8');
+  assert.equal(skeleton.split(inset).length - 1, 3);
+});
+test('React, Vue 3 and Native pass bleed to the shared shape; Native rows read the card body inset', () => {
+  for (const file of ['packages/react/src/list.tsx', 'packages/vue3/src/list.tsx', 'packages/native/src/list.tsx']) {
+    const source = readFileSync(new URL('../' + file, import.meta.url), 'utf8');
+    assert.match(source, /bleed: (bleedProp|props\.bleed) \}\)/, file);
+  }
+  for (const file of ['packages/react/src/list.tsx', 'packages/vue3/src/list.tsx']) assert.match(readFileSync(new URL('../' + file, import.meta.url), 'utf8'), /data-bleed=\{bleed \|\| undefined\}/, file);
+  const native = readFileSync(new URL('../packages/native/src/list.tsx', import.meta.url), 'utf8');
+  assert.match(native, /listSectionInset\(bleed, useContext\(CardBodyInsetContext\), list\.padding\)/);
+  assert.match(native, /const paddingX = sectionInset \?\? m\.paddingX/);
+  const card = readFileSync(new URL('../packages/native/src/card.tsx', import.meta.url), 'utf8');
+  assert.equal(card.split('<CardBodyInsetContext.Provider value={bodyInset}>').length - 1, 2);
 });
