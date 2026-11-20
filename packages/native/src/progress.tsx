@@ -1,5 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { progressCircle, progressPercent, progressState } from "../../../shared/package-runtime/progress-circle";
+import { progressColorKey } from "../../../shared/package-runtime/progress-tone";
 import { progressMarker, progressMarkerInset } from "../../../shared/package-runtime/progress-marker";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
@@ -11,6 +12,7 @@ import { useKjunStyles } from "./provider";
 import { nativeDriver } from "./motion";
 import type { SemanticTone } from "./display-primitives";
 
+export type KjunProgressVariant = SemanticTone | "neutral";
 export interface KjunProgressProps {
   /** null is missing data; omission keeps the zero default. */
   value?: number | null;
@@ -18,7 +20,8 @@ export interface KjunProgressProps {
   indeterminate?: boolean;
   max?: number;
   size?: "sm" | "md" | "lg";
-  variant?: SemanticTone;
+  /** neutral draws the fill in the tertiary text colour, for a stale or reference reading that should not call for attention. */
+  variant?: KjunProgressVariant;
   showLabel?: boolean;
   /** Shown and read in place of the rounded percent while the value is known, e.g. "37.4%" or "3.2 / 8 GB". */
   valueText?: string;
@@ -81,7 +84,7 @@ export function KjunProgress({
   // (Android, Native Web); the generic name stays as the fallback.
   const labelId = "kjun-progress-label-" + useId().replace(/:/g, ""), linked = !!label && typeof label !== "string" && state !== "missing";
   const named = (node: ReactNode) => (linked ? <View nativeID={labelId}>{node}</View> : node);
-  const name = typeof label === "string" ? label : m.progress, color = variant === "primary" ? colors.brand : colors[variant];
+  const name = typeof label === "string" ? label : m.progress, color = colors[progressColorKey(variant)];
   // Missing data is an image named "no data", not a 0% bar. RN Web drops accessibilityValue, so values also go out as aria-*.
   const semantics = state === "missing"
     ? { accessibilityRole: "image" as const, accessibilityLabel: `${name}: ${m.noData}` }

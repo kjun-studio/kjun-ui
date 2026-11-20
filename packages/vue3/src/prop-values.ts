@@ -238,7 +238,7 @@ export const kjunPropValues = Object.freeze({
   KjunProgress: Object.freeze({
     shape: Object.freeze(["bar","circle"] as const),
     size: Object.freeze(["sm","md","lg"] as const),
-    variant: Object.freeze(["danger","info","primary","success","warning"] as const),
+    variant: Object.freeze(["danger","info","neutral","primary","success","warning"] as const),
   }),
   KjunProgressCell: Object.freeze({
     color: Object.freeze(["auto","brand","custom","danger","success","warning"] as const),

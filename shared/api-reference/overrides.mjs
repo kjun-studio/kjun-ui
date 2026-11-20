@@ -33,7 +33,7 @@ set("TabPane", { badge: { type: "string | number | null", summary: "null·undefi
 set("KpiRow", { items: "KpiRowItem 배열입니다. value가 null·undefined 또는 유한하지 않은 숫자면 missingText(기본 —)를 표시합니다. loading 중에는 스켈레톤이 우선하며 실제 0은 숫자로 표시합니다. badge=null은 숨김이고, 배지는 라벨 바로 뒤에 놓입니다. clickable 또는 href 항목은 값 줄 끝에 chevron을 그립니다. href 항목은 실제 링크(Native는 RN Web에서만 링크, 기기에서는 버튼)로 그리고, 클릭 콜백·item-click에 세 번째 인자로 이벤트를 넘겨 라우터가 preventDefault할 수 있게 합니다. Enter는 한 번만(자동 반복 무시), Space는 키를 뗄 때 동작합니다. 숫자는 표시 자릿수로 반올림한 값으로 방향 색을 정합니다. mobileSecondary: true인 항목만 모바일 요약의 인라인 줄로 내려갑니다." });
 set("Progress", {
   value: { type: "number | null", summary: "진행 값입니다. null·유한하지 않은 값·유효하지 않은 max는 데이터 없음이며 0%로 바꾸지 않습니다. 생략 또는 undefined는 기존 기본값 0을 유지합니다." },
-  indeterminate: "실행 중이지만 진행률을 모를 때 사용합니다. 수치와 aria-valuenow를 생략하고 진행 중 상태를 표시합니다. 데이터 없음(null)과 구분합니다.",
+  indeterminate: "실행 중이지만 진행률을 모를 때 사용합니다. 수치와 aria-valuenow를 생략하고 진행 중 상태를 표시합니다. 데이터 없음(null)과 구분합니다.",  variant: "채움 색입니다. primary는 브랜드 색, success·warning·danger·info는 각 상태 색, neutral은 3차 글자색입니다. neutral은 이전 측정값이나 참고용 값처럼 주의를 끌지 않아야 하는 막대에 씁니다.",
 });
 set("Input Textarea Select Combobox DatePicker DateRangePicker SearchInput", {
   error: "필드를 오류 상태로 표시합니다. 오류 설명과 검증 결과는 소비자가 별도로 제공합니다.",

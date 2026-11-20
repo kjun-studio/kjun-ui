@@ -26,7 +26,7 @@ Card uses `surface` for its background/foreground roles, `padding` for section i
 
 ## Geometry and state roles
 
-`extensions.form.itemGap` is 20px for normal form flow; Web flex/grid parents own their gap. Checkbox radii for sm/md/lg are 6/6/8px and the Switch inset (`extensions.switch.padding`) is 2px. `dimension.value80` serves large state messages. These are shared KJUN rules, not per-project overrides.
+`extensions.form.itemGap` is 20px for normal form flow. A Web form group drops it inside `KjunStack`/`KjunInline` or a parent marked `data-kjun-layout="form"`, so an app's own flex/grid parent needs that attribute to own the gap. Checkbox radii for sm/md/lg are 6/6/8px and the Switch inset (`extensions.switch.padding`) is 2px. `dimension.value80` serves large state messages. These are shared KJUN rules, not per-project overrides.
 
 `states.opacity` defines disabled (0.5), disabledStrong (0.4 for filters and unavailable dates), pressed (0.8), and pending (0.55 for retained content during refresh). `states.focus` defines the 2px outline, 2px outer offset, 3px choice-control offset, -2px inset offset, and 3px shadow ring. `border.defaultWidth/controlWidth` define 1/2px strokes. Colors remain app-owned. `effects.glassBlur` is independent of spacing.
 

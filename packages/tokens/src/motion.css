@@ -12,7 +12,7 @@
 [data-variant="underline"] :has(> .kjun-tab[aria-selected="true"]:is([aria-disabled="true"], :disabled)) ~ .kjun-tab-indicator { background: var(--_kjun-color-text-disabled); }
 .kjun-tabs-track .kjun-tab { z-index: 1; background: transparent !important; }
 .kjun-tabs-track .kjun-tab::after { display: none; }
-.kjun-tabs[data-variant="pills"] .kjun-tab { transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), color var(--_kjun-motion-control) var(--_kjun-ease-out); }
+.kjun-tabs[data-variant="pills"] > .kjun-tabs-header .kjun-tab { transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out), color var(--_kjun-motion-control) var(--_kjun-ease-out); }
 .kjun-bottom-navigation > a::before, .kjun-floating-navigation > a { transition: background-color var(--_kjun-motion-control) var(--_kjun-ease-out); }
 .kjun-accordion-trigger svg { transition: transform var(--_kjun-motion-collapse) var(--_kjun-ease-out); }
 .kjun-motion-collapse { overflow: hidden; }
@@ -41,7 +41,7 @@
 @keyframes kjun-tooltip-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes kjun-tooltip-out { from { opacity: 1; } to { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .kjun-tab-indicator[data-animate="true"], .kjun-tabs[data-variant="pills"] .kjun-tab, .kjun-accordion-trigger svg,
+  .kjun-tab-indicator[data-animate="true"], .kjun-tabs[data-variant="pills"] > .kjun-tabs-header .kjun-tab, .kjun-accordion-trigger svg,
   .kjun-bottom-navigation > a::before, .kjun-floating-navigation > a { transition: none; }
   .kjun-scope[data-motion], .kjun-scope[data-motion]::before, .kjun-scope[data-motion] .kjun-modal, .kjun-scope[data-motion] .kjun-drawer { transition: none !important; }
   .kjun-tooltip[data-entering], .kjun-tooltip[data-exiting] { animation-duration: 0s; }

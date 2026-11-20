@@ -1,5 +1,6 @@
 import { useKjunMessages } from "./runtime/messages";
 import { spinnerGlyph } from "./spinner-glyph";
+import { progressColorRole } from "../../../shared/package-runtime/progress-tone";
 import { spinnerStacked } from "../../../shared/package-runtime/spinner-geometry";
 import { badgeCount } from "../../../shared/package-runtime/navigation-badge";
 import { skeletonLineBox, skeletonRange, skeletonTableWidth, skeletonTextWidths } from "../../../shared/package-runtime/skeleton-text";
@@ -26,6 +27,7 @@ import { css } from "./runtime/style";
 
 export type DisplaySize = "xs" | "sm" | "md" | "lg" | "xl";
 export type SemanticTone = "primary" | "success" | "warning" | "danger" | "info";
+export type KjunProgressVariant = SemanticTone | "neutral";
 const role = (name: string) => `var(--_kjun-color-${name})`;
 
 const kjunBadgeProps = {
@@ -216,7 +218,8 @@ const kjunProgressProps = {
   indeterminate: { type: Boolean, default: false },
   max: { type: Number, default: 100 },
   size: { type: String as PropType<"sm" | "md" | "lg">, default: "md" },
-  variant: { type: String as PropType<SemanticTone>, default: "primary" },
+  /** neutral draws the fill in the tertiary text colour, for a stale or reference reading that should not call for attention. */
+  variant: { type: String as PropType<KjunProgressVariant>, default: "primary" },
   showLabel: { type: Boolean, default: false },
   /** Shown and read in place of the rounded percent while the value is known, e.g. "37.4%" or "3.2 / 8 GB". */
   valueText: { type: String, default: undefined },
@@ -258,7 +261,7 @@ export const KjunProgress = defineComponent({
         "aria-valuetext": state === "indeterminate" ? m.value.loadingEllipsis : state === "determinate" ? props.valueText : undefined,
         "aria-busy": state === "indeterminate" || undefined,
       };
-      const color = role(props.variant === "primary" ? "brand" : props.variant);
+      const color = role(progressColorRole(props.variant));
       if (props.shape === "circle") {
         const c = progressCircle(props.size, state === "indeterminate" ? 25 : percentage);
         return (

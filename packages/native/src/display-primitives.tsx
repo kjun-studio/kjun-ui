@@ -422,4 +422,4 @@ export function KjunAlert({
     </Animated.View>
   );
 }
-export { KjunProgress, type KjunProgressProps } from "./progress";
+export { KjunProgress, type KjunProgressProps, type KjunProgressVariant } from "./progress";

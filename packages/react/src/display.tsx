@@ -29,6 +29,7 @@ type ReactNode,
 import { KjunIcon } from "./button";
 import { useSkeletonPhase } from "./skeleton-phase";
 import { useReducedMotion } from "./use-reduced-motion";
+import { progressColorRole } from "../../../shared/package-runtime/progress-tone";
 import { ActionSizeContext, alertActionSizes } from "../../../shared/package-runtime/action-size";
 export type DisplaySize = "xs" | "sm" | "md" | "lg" | "xl";
 export type SemanticTone =
@@ -239,6 +240,7 @@ export function KjunAlert({
     </div>
   );
 }
+export type KjunProgressVariant = SemanticTone | "neutral";
 export interface KjunProgressProps {
   /** null is missing data; omission keeps the zero default. */
   value?: number | null;
@@ -246,7 +248,8 @@ export interface KjunProgressProps {
   indeterminate?: boolean;
   max?: number;
   size?: "sm" | "md" | "lg";
-  variant?: SemanticTone;
+  /** neutral draws the fill in the tertiary text colour, for a stale or reference reading that should not call for attention. */
+  variant?: KjunProgressVariant;
   showLabel?: boolean;
   /** Shown and read in place of the rounded percent while the value is known, e.g. "37.4%" or "3.2 / 8 GB". */
   valueText?: string;
@@ -278,7 +281,7 @@ export function KjunProgress({
   const state = progressState(value, max, indeterminate);
   const percentage = state === "determinate" ? progressPercent(value!, max) : 0;
   const text = state === "indeterminate" ? m.loadingEllipsis : state === "missing" ? "—" : valueText ?? `${percentage}%`;
-  const name = typeof label === "string" ? label : m.progress, color = role(variant === "primary" ? "brand" : variant);
+  const name = typeof label === "string" ? label : m.progress, color = role(progressColorRole(variant));
   const accessibility = {
     role: state === "missing" ? "img" : "progressbar",
     "aria-label": labelId ? undefined : state === "missing" ? `${name}: ${m.noData}` : name,

@@ -29,9 +29,13 @@ const ownership = [
   "입력값·검증·요청·비활성 상태: 소비자가 자식 입력과 업무 코드에서 관리합니다. FormGroup에는 value prop이나 값 변경 이벤트가 없습니다.",
   "라벨·도움말·오류 연결: FormGroup이 필드 맥락과 설명 요소를 제공하고 KJUN 입력이 이를 소비합니다.",
 ];
+const webOwnership = [
+  ...ownership,
+  "아래 간격: 일반 문서 흐름에서는 마지막 그룹이 아니면 아래에 form itemGap(20px)을 둡니다. KjunStack·KjunInline 바로 안에서는 이 간격 없이 gap만 따릅니다. 앱 CSS의 flex·grid로 나란히 둘 때는 부모 요소에 data-kjun-layout=\"form\"을 붙이면 바로 아래 그룹의 아래 간격이 사라지고 부모 gap만 남습니다.",
+];
 export default {
   vue3: {
-    ownership,
+    ownership: webOwnership,
     props: {
       ...common,
       id: detail("라벨의 for와 자식 입력에 사용할 명시적 필드 ID입니다.", {
@@ -52,7 +56,7 @@ export default {
     },
   },
   react: {
-    ownership,
+    ownership: webOwnership,
     props: {
       ...common,
       id: {
