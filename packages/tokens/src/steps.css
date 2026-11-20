@@ -27,7 +27,10 @@
   padding: 0;
   list-style: none;
 }
-.kjun-steps-item:is([data-status="complete"], [data-status="current"], [data-status="error"]) {
+/* The connector into a step takes the brand colour once both of its ends are reached, so steps finished out of order
+   never run a coloured line into or out of an upcoming one. */
+.kjun-steps-item:is([data-status="complete"], [data-status="current"], [data-status="error"])
+  + .kjun-steps-item:is([data-status="complete"], [data-status="current"], [data-status="error"]) {
   --_kjun-steps-line: var(--_kjun-color-brand);
 }
 
@@ -365,7 +368,7 @@
   font-family: var(--_kjun-font-numeric);
   font-variant-numeric: tabular-nums;
 }
-/* The line belongs to the step above and takes the colour of the step below. */
+/* The line belongs to the step above and takes the brand colour once that step and the one below are both reached. */
 .kjun-steps[data-orientation="vertical"] .kjun-steps-item:not(:last-child)::after {
   content: "";
   position: absolute;
@@ -376,7 +379,7 @@
   width: var(--_kjun-extension-steps-connector);
   background: var(--_kjun-color-secondary);
 }
-.kjun-steps[data-orientation="vertical"] .kjun-steps-item:has(+ .kjun-steps-item:is([data-status="complete"], [data-status="current"], [data-status="error"]))::after {
+.kjun-steps[data-orientation="vertical"] .kjun-steps-item:is([data-status="complete"], [data-status="current"], [data-status="error"]):has(+ .kjun-steps-item:is([data-status="complete"], [data-status="current"], [data-status="error"]))::after {
   background: var(--_kjun-color-brand);
 }
 /* A pickable row shows its button; the static copy stays hidden at every width. */

@@ -2,7 +2,7 @@ import { useKjunMessages } from "./runtime/messages";
 import { getCurrentInstance, watch, type ExtractPublicPropTypes, type PropType } from "vue";
 import { defineComponent } from "./runtime/component";
 import { developmentMode } from "../../../shared/package-runtime/development";
-import { clampCurrent, stepDetail, stepSelectable, stepSpoken, stepStatus, stepsHead, stepsRootStatus, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout, type KjunStepsSelectable } from "../../../shared/package-runtime/steps";
+import { stepDetail, stepSelectable, stepSpoken, stepsCurrent, stepsHead, stepsRootStatus, stepsStatuses, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout, type KjunStepsSelectable } from "../../../shared/package-runtime/steps";
 import { KjunIcon } from "./button";
 
 export type { KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLayout, KjunStepsSelectable };
@@ -10,8 +10,9 @@ export type { KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLay
 const kjunStepsProps = {
   /** The steps in order. Two or more. */
   items: { type: Array as PropType<KjunStepItem[]>, required: true },
-  /** Index of the current step, counted from 0. items.length means every step is complete. */
-  current: { type: Number, required: true },
+  /** Index of the current step, counted from 0. items.length means every step is complete. Optional when the items carry
+   * their own status: the first step marked current or error is then the current one. */
+  current: { type: Number, default: undefined },
   /** error marks the current step as failed (a failed payment, a failed delivery). */
   currentStatus: { type: String as PropType<KjunStepsCurrentStatus>, default: "active" },
   orientation: { type: String as PropType<"horizontal" | "vertical">, default: "horizontal" },
@@ -41,13 +42,13 @@ export const KjunSteps = defineComponent({
     return () => {
       const { items, orientation, layout, currentStatus } = props;
       const count = items.length;
-      const at = clampCurrent(props.current, count);
+      const at = stepsCurrent(items, props.current), statuses = stepsStatuses(items, at, currentStatus);
       const vertical = orientation === "vertical";
       const selectable = !!(instance?.vnode.props?.onStepSelect || instance?.vnode.props?.["onStep-select"]);
       const head = stepsHead(m.value, items, at);
 
       return (
-        <div class="kjun-steps" data-orientation={orientation} data-layout={layout} data-count={count} data-status={stepsRootStatus(at, count, currentStatus)}>
+        <div class="kjun-steps" data-orientation={orientation} data-layout={layout} data-count={count} data-status={stepsRootStatus(statuses)}>
           {!vertical && head.item && (
             <div class="kjun-steps-head" aria-hidden="true">
               <span class="kjun-steps-head-title" aria-hidden="true">{head.item.label}</span>
@@ -57,7 +58,7 @@ export const KjunSteps = defineComponent({
           )}
           <ol class="kjun-steps-list" aria-label={props.ariaLabel ?? m.value.steps}>
             {items.map((item, i) => {
-              const status = stepStatus(i, at, currentStatus);
+              const status = statuses[i];
               const detail = stepDetail(item, vertical), spoken = stepSpoken(m.value, i, item, status, detail);
               const body = [
                 // steps.css sizes the icon from extensions.steps.markerIcon.
@@ -75,9 +76,9 @@ export const KjunSteps = defineComponent({
                 ) : null,
               ];
               return (
-                <li key={item.key ?? i} class="kjun-steps-item" data-status={status} aria-current={status === "current" || status === "error" ? "step" : undefined}>
+                <li key={item.key ?? i} class="kjun-steps-item" data-status={status} data-disabled={item.disabled || undefined} aria-current={status === "current" || status === "error" ? "step" : undefined}>
                   <span class="kjun-steps-static">{body}<span class="kjun-sr-only">{spoken}</span></span>
-                  {selectable && stepSelectable(status, props.selectable) && (
+                  {selectable && stepSelectable(status, props.selectable, item.disabled) && (
                     <button type="button" class="kjun-steps-hit" aria-label={spoken} onClick={() => emit("step-select", i)}>{body}</button>
                   )}
                 </li>

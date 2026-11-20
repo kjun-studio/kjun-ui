@@ -1,6 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { developmentMode } from "../../../shared/package-runtime/development";
-import { clampCurrent, stepDetail, stepSelectable, stepSpoken, stepStatus, stepsHead, stepsRootStatus, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout, type KjunStepsSelectable } from "../../../shared/package-runtime/steps";
+import { stepDetail, stepSelectable, stepSpoken, stepsCurrent, stepsHead, stepsRootStatus, stepsStatuses, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout, type KjunStepsSelectable } from "../../../shared/package-runtime/steps";
 import { useEffect, type CSSProperties } from "react";
 import { KjunIcon } from "./button";
 
@@ -9,8 +9,9 @@ export type { KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLay
 export interface KjunStepsProps {
   /** The steps in order. Two or more. */
   items: KjunStepItem[];
-  /** Index of the current step, counted from 0. items.length means every step is complete. */
-  current: number;
+  /** Index of the current step, counted from 0. items.length means every step is complete. Optional when the items carry
+   * their own status: the first step marked current or error is then the current one. */
+  current?: number;
   /** error marks the current step as failed (a failed payment, a failed delivery). */
   currentStatus?: KjunStepsCurrentStatus;
   orientation?: "horizontal" | "vertical";
@@ -36,13 +37,13 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
   useEffect(() => {
     if (count < 2 && developmentMode()) console.warn("[KJUN] KjunSteps expects two or more items.");
   }, [count]);
-  const at = clampCurrent(current, count);
+  const at = stepsCurrent(items, current), statuses = stepsStatuses(items, at, currentStatus);
   const vertical = orientation === "vertical";
   const head = stepsHead(m, items, at);
 
   return (
     <div {...rest} id={id} className={"kjun-steps" + (className ? " " + className : "")} style={style}
-      data-orientation={orientation} data-layout={layout} data-count={count} data-status={stepsRootStatus(at, count, currentStatus)}>
+      data-orientation={orientation} data-layout={layout} data-count={count} data-status={stepsRootStatus(statuses)}>
       {!vertical && head.item && (
         <div className="kjun-steps-head" aria-hidden="true">
           <span className="kjun-steps-head-title" aria-hidden="true">{head.item.label}</span>
@@ -52,7 +53,7 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
       )}
       <ol className="kjun-steps-list" aria-label={ariaLabel ?? m.steps}>
         {items.map((item, i) => {
-          const status = stepStatus(i, at, currentStatus);
+          const status = statuses[i];
           const detail = stepDetail(item, vertical), spoken = stepSpoken(m, i, item, status, detail);
           const body = (
             <>
@@ -72,9 +73,9 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
             </>
           );
           return (
-            <li key={item.key ?? i} className="kjun-steps-item" data-status={status} aria-current={status === "current" || status === "error" ? "step" : undefined}>
+            <li key={item.key ?? i} className="kjun-steps-item" data-status={status} data-disabled={item.disabled || undefined} aria-current={status === "current" || status === "error" ? "step" : undefined}>
               <span className="kjun-steps-static">{body}<span className="kjun-sr-only">{spoken}</span></span>
-              {onStepSelect && stepSelectable(status, selectable) && (
+              {onStepSelect && stepSelectable(status, selectable, item.disabled) && (
                 <button type="button" className="kjun-steps-hit" aria-label={spoken} onClick={() => onStepSelect(i)}>{body}</button>
               )}
             </li>

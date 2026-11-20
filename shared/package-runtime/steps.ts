@@ -1,4 +1,4 @@
-// Shared by the Vue 3, React and Native KjunSteps: each step's status from `current`, when the row folds to compact,
+// Shared by the Vue 3, React and Native KjunSteps: each step's status from `current` or its own status, when the row folds to compact,
 // which steps are buttons, and the words a screen reader and the compact heading row use.
 import type { KjunMessages } from "./messages";
 export type KjunStepStatus = "complete" | "current" | "error" | "upcoming";
@@ -12,6 +12,11 @@ export interface KjunStepItem {
   label: string;
   description?: string;
   meta?: string;
+  /** This step's own status, over the one `current` gives it: a flow whose steps finish out of order, such as a later step
+   * approved while an earlier one is reopened. */
+  status?: KjunStepStatus;
+  /** The step is not a button even when onStepSelect would make it one (work in progress locks every step). */
+  disabled?: boolean;
 }
 
 /** Narrowest column a step gets in the wide layout; mirrors `extensions.steps.minColumn`. */
@@ -25,27 +30,47 @@ export function clampCurrent(current: number, count: number): number {
   return Math.min(Math.max(0, count), Math.max(0, Math.floor(current)));
 }
 
-export function stepStatus(index: number, current: number, currentStatus: KjunStepsCurrentStatus): KjunStepStatus {
+/** Where the flow stands. A given `current` wins (clamped); without it, the first step marked current or error, then the
+ * first step not marked complete, and items.length once every step is. */
+export function stepsCurrent(items: readonly KjunStepItem[], current?: number): number {
+  if (current !== undefined && current !== null) return clampCurrent(current, items.length);
+  const marked = items.findIndex(item => item.status === "current" || item.status === "error");
+  if (marked >= 0) return marked;
+  const open = items.findIndex(item => item.status !== "complete");
+  return open < 0 ? items.length : open;
+}
+
+/** A step's own status wins; otherwise steps before `current` are complete, the one at it current (or error), the rest upcoming. */
+export function stepStatus(index: number, current: number, currentStatus: KjunStepsCurrentStatus, item?: KjunStepItem): KjunStepStatus {
+  if (item?.status) return item.status;
   if (index < current) return "complete";
   if (index === current) return currentStatus === "error" ? "error" : "current";
   return "upcoming";
 }
 
-export function stepsRootStatus(
-  current: number,
-  count: number,
-  currentStatus: KjunStepsCurrentStatus,
-): "current" | "error" | "complete" {
-  if (current >= count) return "complete";
-  return currentStatus === "error" ? "error" : "current";
+export function stepsStatuses(items: readonly KjunStepItem[], current: number, currentStatus: KjunStepsCurrentStatus): KjunStepStatus[] {
+  return items.map((item, i) => stepStatus(i, current, currentStatus, item));
+}
+
+/** The whole flow: complete once every step is, error while any step failed, otherwise current. */
+export function stepsRootStatus(statuses: readonly KjunStepStatus[]): "current" | "error" | "complete" {
+  if (statuses.every(status => status === "complete")) return "complete";
+  return statuses.includes("error") ? "error" : "current";
+}
+
+/** The connector between two neighbouring steps takes the reached colour only when both ends are reached, so a line never
+ * runs coloured into or out of a step that is still upcoming. */
+export function stepLineReached(from: KjunStepStatus | undefined, to: KjunStepStatus | undefined): boolean {
+  return !!from && !!to && from !== "upcoming" && to !== "upcoming";
 }
 
 export function stepsLayout(width: number, count: number): "full" | "compact" {
   return count > STEPS_AUTO_MAX || width < count * STEPS_MIN_COLUMN ? "compact" : "full";
 }
 
-/** A step is a button when someone listens and it is not the step the user is on. */
-export function stepSelectable(status: KjunStepStatus, selectable: KjunStepsSelectable = "complete"): boolean {
+/** A step is a button when someone listens, it is not the step the user is on, and it is not disabled. */
+export function stepSelectable(status: KjunStepStatus, selectable: KjunStepsSelectable = "complete", disabled = false): boolean {
+  if (disabled) return false;
   return selectable === "all" ? status === "complete" || status === "upcoming" : status === "complete";
 }
 

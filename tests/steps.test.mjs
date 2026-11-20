@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { clampCurrent, stepStatus, stepsRootStatus, stepsLayout, stepSelectable, stepDetail, stepSpoken, stepsHead, STEPS_MIN_COLUMN } from '../shared/package-runtime/steps.ts';
+import { clampCurrent, stepStatus, stepsCurrent, stepsStatuses, stepsRootStatus, stepLineReached, stepsLayout, stepSelectable, stepDetail, stepSpoken, stepsHead, STEPS_MIN_COLUMN } from '../shared/package-runtime/steps.ts';
 import { kjunMessagesKo as ko } from '../shared/package-runtime/messages/ko.ts';
 import { kjunMessagesEn as en } from '../shared/package-runtime/messages/en.ts';
 
@@ -15,9 +15,46 @@ test('stepStatus derives each step from current', () => {
 });
 test('all complete ignores error', () => {
   assert.deepEqual([0,1,2].map(i => stepStatus(i, 3, 'error')), ['complete','complete','complete']);
-  assert.equal(stepsRootStatus(3, 3, 'error'), 'complete');
-  assert.equal(stepsRootStatus(1, 3, 'error'), 'error');
-  assert.equal(stepsRootStatus(1, 3, 'active'), 'current');
+  const root = (at, status) => stepsRootStatus(stepsStatuses([{ label: 'a' }, { label: 'b' }, { label: 'c' }], at, status));
+  assert.equal(root(3, 'error'), 'complete');
+  assert.equal(root(1, 'error'), 'error');
+  assert.equal(root(1, 'active'), 'current');
+});
+test('a step status wins over current, and current falls back to the marked step', () => {
+  const items = [{ label: '모션', status: 'complete' }, { label: '장면' }, { label: '자막', status: 'complete' }, { label: '최종' }];
+  assert.equal(stepsCurrent(items), 1);
+  assert.deepEqual(stepsStatuses(items, stepsCurrent(items), 'active'), ['complete', 'current', 'complete', 'upcoming']);
+  assert.equal(stepsCurrent([{ label: 'a', status: 'complete' }, { label: 'b', status: 'error' }, { label: 'c', status: 'current' }]), 1);
+  assert.equal(stepsCurrent([{ label: 'a', status: 'complete' }, { label: 'b', status: 'complete' }]), 2);
+  assert.equal(stepsCurrent([{ label: 'a' }, { label: 'b' }]), 0);
+  assert.equal(stepsCurrent(items, 3.5), 3, 'a given current is clamped and wins');
+  assert.equal(stepStatus(3, 1, 'active', { label: 'x', status: 'error' }), 'error');
+  assert.equal(stepsRootStatus(['complete', 'upcoming', 'complete']), 'current');
+  assert.equal(stepsRootStatus(['complete', 'error', 'upcoming']), 'error');
+});
+test('a connector is reached only when both of its steps are', () => {
+  assert.equal(stepLineReached('complete', 'current'), true);
+  assert.equal(stepLineReached('upcoming', 'complete'), false);
+  assert.equal(stepLineReached('complete', 'upcoming'), false);
+  assert.equal(stepLineReached('complete', undefined), false);
+});
+test('a disabled step is never a button', () => {
+  assert.equal(stepSelectable('complete', 'complete', true), false);
+  assert.equal(stepSelectable('upcoming', 'all', true), false);
+  assert.equal(stepSelectable('complete', 'complete', false), true);
+});
+test('React, Vue 3 and Native read per-step status and disabled through the shared helpers', () => {
+  for (const file of ['packages/react/src/steps.tsx', 'packages/vue3/src/steps.tsx', 'packages/native/src/steps.tsx']) {
+    const source = readFileSync(new URL('../' + file, import.meta.url), 'utf8');
+    assert.match(source, /stepsCurrent\(items, (props\.)?current\), statuses = stepsStatuses\(items, at, currentStatus\)/, file);
+    assert.match(source, /stepsRootStatus\(statuses\)/, file);
+    assert.match(source, /stepSelectable\(status, [\w.]+, item\.disabled\)/, file);
+    assert.doesNotMatch(source, /clampCurrent/, file);
+  }
+  const css = readFileSync(new URL('../packages/tokens/src/steps.css', import.meta.url), 'utf8');
+  const reached = ':is([data-status="complete"], [data-status="current"], [data-status="error"])';
+  assert.ok(css.includes(`.kjun-steps-item${reached}\n  + .kjun-steps-item${reached} {\n  --_kjun-steps-line: var(--_kjun-color-brand);`));
+  assert.ok(css.includes(`.kjun-steps[data-orientation="vertical"] .kjun-steps-item${reached}:has(+ .kjun-steps-item${reached})::after`));
 });
 test('stepsLayout switches at count × 80 and above 10 steps', () => {
   assert.equal(stepsLayout(400, 5), 'full'); assert.equal(stepsLayout(399, 5), 'compact');

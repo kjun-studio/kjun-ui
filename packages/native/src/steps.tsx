@@ -1,6 +1,6 @@
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { developmentMode } from "../../../shared/package-runtime/development";
-import { clampCurrent, stepDetail, stepSelectable, stepSpoken, stepStatus, stepsHead, stepsLayout, stepsRootStatus, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout, type KjunStepsSelectable } from "../../../shared/package-runtime/steps";
+import { stepDetail, stepLineReached, stepSelectable, stepSpoken, stepsCurrent, stepsHead, stepsLayout, stepsRootStatus, stepsStatuses, type KjunStepItem, type KjunStepStatus, type KjunStepsCurrentStatus, type KjunStepsLayout, type KjunStepsSelectable } from "../../../shared/package-runtime/steps";
 import { tokens } from "@kjun-ui/tokens";
 import { useEffect, useState } from "react";
 import { Platform, View, type LayoutChangeEvent, type StyleProp, type TextStyle, type ViewStyle } from "react-native";
@@ -15,8 +15,9 @@ export type { KjunStepItem, KjunStepStatus, KjunStepsCurrentStatus, KjunStepsLay
 export interface KjunStepsProps {
   /** The steps in order. Two or more. */
   items: KjunStepItem[];
-  /** Index of the current step, counted from 0. items.length means every step is complete. */
-  current: number;
+  /** Index of the current step, counted from 0. items.length means every step is complete. Optional when the items carry
+   * their own status: the first step marked current or error is then the current one. */
+  current?: number;
   /** error marks the current step as failed (a failed payment, a failed delivery). */
   currentStatus?: KjunStepsCurrentStatus;
   orientation?: "horizontal" | "vertical";
@@ -46,16 +47,15 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
   useEffect(() => {
     if (count < 2 && developmentMode()) console.warn("[KJUN] KjunSteps expects two or more items.");
   }, [count]);
-  const at = clampCurrent(current, count);
+  const at = stepsCurrent(items, current), statuses = stepsStatuses(items, at, currentStatus);
   const vertical = orientation === "vertical";
   // Only a horizontal auto layout reads the width and stays invisible until the first measurement. The width is always tracked, so switching to auto later has one.
   const measuring = !vertical && layout === "auto";
   const waiting = measuring && width === undefined;
   const compact = !vertical && (layout === "compact" || (measuring && stepsLayout(width ?? 0, count) === "compact"));
   const head = stepsHead(m, items, at), headItem = head.item, next = head.next;
-  const failed = stepsRootStatus(at, count, currentStatus) === "error";
+  const failed = stepsRootStatus(statuses) === "error";
   const titleLine = tokens.typography.label.lineHeightPx, bigMarker = geometry.markerLarge, smallMarker = geometry.markerSmall;
-  const reached = (status: KjunStepStatus) => status !== "upcoming";
   // How far a horizontal connector stops short of a marker's centre: half the marker, its halo when it has one, and a 4px gap.
   const lineEnd = (status: KjunStepStatus) => bigMarker / 2 + (status === "current" || status === "error" ? geometry.halo : 0) + tokens.dimension.value4;
   const numeric = { fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"] as TextStyle["fontVariant"] };
@@ -105,19 +105,19 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
   );
 
   const list = items.map((item, i) => {
-    const status = stepStatus(i, at, currentStatus);
+    const status = statuses[i];
     const detail = stepDetail(item, vertical), spoken = stepSpoken(m, i, item, status, detail);
     const body = vertical ? verticalBody(item, status, i, detail) : horizontalBody(item, status, i);
-    const selectable = !!onStepSelect && stepSelectable(status, selectableSteps) && !compact;
+    const selectable = !!onStepSelect && stepSelectable(status, selectableSteps, item.disabled) && !compact;
     const marked = status === "current" || status === "error";
-    // The line from the previous marker's centre to this one's, coloured by this step; in a column it belongs to the step above.
+    // The line from the previous marker's centre to this one's, coloured once both ends are reached; in a column it belongs to the step above.
     const line = vertical
       ? i < count - 1 && { left: (bigMarker - geometry.connector) / 2, top: (titleLine + smallMarker) / 2, width: geometry.connector,
-          bottom: -(geometry.rowGap + (titleLine - smallMarker) / 2), backgroundColor: reached(stepStatus(i + 1, at, currentStatus)) ? colors.brand : colors.secondary }
+          bottom: -(geometry.rowGap + (titleLine - smallMarker) / 2), backgroundColor: stepLineReached(status, statuses[i + 1]) ? colors.brand : colors.secondary }
       // Previous centre to this centre, then cut back a 4px gap from each marker (from its halo on the current or failed step), like Web.
       : i > 0 && { left: "-50%" as const, right: "50%" as const, top: (bigMarker - geometry.connector) / 2, height: geometry.connector,
-          marginLeft: lineEnd(stepStatus(i - 1, at, currentStatus)), marginRight: lineEnd(status),
-          backgroundColor: reached(status) ? colors.brand : colors.secondary };
+          marginLeft: lineEnd(statuses[i - 1]), marginRight: lineEnd(status),
+          backgroundColor: stepLineReached(statuses[i - 1], status) ? colors.brand : colors.secondary };
     const pad = vertical ? tokens.space.inline.xs : tokens.space.stack.sm, side = vertical ? tokens.space.inline.sm : tokens.space.inline.xs;
     const slop = Math.max(0, (tokens.native.minimumTouchTarget - (vertical ? titleLine + 2 * pad : 0)) / 2);
     return (
