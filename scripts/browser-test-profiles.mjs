@@ -21,7 +21,7 @@ const componentGroups = {
   'search-input': [...files('search-input', 'elevation-inputs'), ...fields, ...contracts],
   input: [...files('input-design', 'input-features', 'input-plain', 'textarea-design', 'date-picker-design', 'interaction-states', 'search-input', 'quantity', 'number-input', 'feedback-input', 'elevation-inputs'), ...fields, ...contracts, ...visuals],
   'avatar-group': files('avatar-group'),
-  'side-navigation': files('side-navigation', 'side-navigation-variants', 'side-navigation-features', 'side-navigation-review', 'side-navigation-layout'),
+  'side-navigation': files('side-navigation', 'side-navigation-variants', 'side-navigation-features', 'side-navigation-review', 'side-navigation-layout', 'side-navigation-layout-spaces'),
   button: [...files('button-design', 'interaction-states', 'button-group-motion', 'form-actions', 'bottom-action-bar-design', 'floating-bar', 'menu-button', 'fab', 'refresh-button', 'copy-button-feedback', 'icon-toggle', 'accessibility-components', 'action-attributes', 'button-group-icon-only'), ...visuals],
   form: [...files('form-actions', 'root-class', 'layout-primitives', 'input-design', 'interaction-states', 'feedback-input', 'quantity', 'number-input', 'bottom-action-bar-design'), ...fields, ...contracts],
   tabs: [...files('tabs-contract', 'tabs-design', 'accessibility-tabs', 'controlled-state', 'live-updates', 'component-motion', 'expanded', 'react-tabs-actions'), ...visuals],

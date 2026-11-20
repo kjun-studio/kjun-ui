@@ -102,6 +102,7 @@
     "implementationFiles": [
       "packages/tokens/src/extensions.css",
       "packages/tokens/src/layout.css",
+      "packages/tokens/src/side-navigation.css",
       "packages/native/src/app-navigation.tsx",
       "packages/native/src/layout-primitives.tsx"
     ]
@@ -1812,6 +1813,19 @@
     "implementationFiles": [
       "packages/tokens/src/extensions.css",
       "packages/native/src/app-navigation.tsx"
+    ]
+  },
+  {
+    "role": "navigationRailBg",
+    "contract": "common",
+    "required": false,
+    "fallback": "secondary",
+    "variable": "--kjun-navigation-rail-bg",
+    "upstreamAliases": [
+      "--navigation-rail-bg"
+    ],
+    "implementationFiles": [
+      "packages/tokens/src/side-navigation.css"
     ]
   },
   {
