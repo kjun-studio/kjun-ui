@@ -63,17 +63,18 @@ export function renderExtensionExample(name: string, tools: ExampleTools): any {
       // A sidebar column of a fixed width, as an app would give it; "활동" carries a badge, "문서" opens its children and
       // "도움말" opens in a new tab. Icons only, the column narrows and widens again when a parent or group is pressed;
       // groups carry icons for a rail of groups, and with collapsibleGroups their titles open and close them.
-      // Spaces and a menu panel: a collapsed side navigation with names picks the space, a compact one lists that space's
-      // pages. Choosing a space opens its first page; both values are the app's. Kept inline: the example build copies a
+      // Spaces and a menu panel: an icon-only collapsed side navigation picks the space (names in its tooltips), a compact
+      // one lists that space's pages, together no wider than one column. Choosing a space opens its first page; both values
+      // are the app's. Kept inline: the example build copies a
       // case's body and the consts of example-tools.ts, not other functions in this file.
       if (settings.spaces) {
         const space = get("space", "projects"), destination = get("destination", "board");
         return h("Stack", {}, [h("Group", { style: { alignItems: "flex-start", flexWrap: "nowrap" } }, [
-          h("Box", { width: 72 }, h("KjunSideNavigation", { ariaLabel: "공간", value: space, collapsed: true, railLabels: true, items: [
+          h("Box", { width: 44 }, h("KjunSideNavigation", { ariaLabel: "공간", value: space, collapsed: true, items: [
             { key: "home", label: "홈", href: "#home", icon: "home" }, { key: "projects", label: "프로젝트", href: "#projects", icon: "folder" },
             { key: "team", label: "팀", href: "#team", icon: "building", badge: true }, { key: "settings", label: "설정", href: "#settings", icon: "settings" },
           ], onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("space", key); set("destination", sidePages[key][0].key); } })),
-          h("Box", { width: 240 }, h("KjunSideNavigation", { ariaLabel: "메뉴", value: destination, density: "compact", items: sidePages[space],
+          h("Box", { width: 200 }, h("KjunSideNavigation", { ariaLabel: "메뉴", value: destination, density: "compact", items: sidePages[space],
             onNavigate: (key: string, event: any) => { event.preventDefault?.(); set("destination", key); } })),
         ]), h("Text", {}, "현재 위치: " + space + " / " + destination)]);
       }

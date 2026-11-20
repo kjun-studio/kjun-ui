@@ -277,8 +277,9 @@ export function generate(input: UsageInput) {
   return b.finish(content);
 }
 
-// Spaces and a menu panel: one side navigation collapsed with names (railLabels) picks the space, a second one lists that
-// space's pages densely. The app keeps both values; choosing a space opens its first page.
+// Spaces and a menu panel: one side navigation collapsed to icons picks the space (its names show as tooltips), a second one
+// lists that space's pages densely; together they stay within one column's width. The app keeps both values; choosing a
+// space opens its first page.
 function sideNavigationSpaces(b: UsageBuilder) {
   const spaces = b.data('spaces', [{ key: 'home', label: '홈', href: '#home', icon: 'home' }, { key: 'projects', label: '프로젝트', href: '#projects', icon: 'folder' },
     { key: 'team', label: '팀', href: '#team', icon: 'building', badge: true }, { key: 'settings', label: '설정', href: '#settings', icon: 'settings' }]);
@@ -293,9 +294,9 @@ function sideNavigationSpaces(b: UsageBuilder) {
   const plain = b.native ? '' : 'event.preventDefault();\n';
   const column = (width: number, child: string) => b.node(b.native ? 'View' : 'div', { style: { width: b.vue ? width + 'px' : width } }, child);
   return b.group([b.node(b.native ? 'View' : 'div', { style: b.native ? { flexDirection: 'row', alignItems: 'flex-start', gap: 8 } : { display: 'flex', alignItems: 'flex-start', gap: b.vue ? '8px' : 8 } }, [
-    column(72, b.node('KjunSideNavigation', { ariaLabel: '공간', items: spaces, value: b.state('space', 'projects'), collapsed: true, railLabels: true,
+    column(44, b.node('KjunSideNavigation', { ariaLabel: '공간', items: spaces, value: b.state('space', 'projects'), collapsed: true,
       onNavigate: b.handler('chooseSpace', 'key, event', plain + b.set('space', 'key') + '\n' + b.set('destination', 'pages[key][0].key')) })),
-    column(240, b.node('KjunSideNavigation', { ariaLabel: '메뉴', items: expr('pages[state.space]'), value: b.state('destination', 'board'), density: 'compact',
+    column(200, b.node('KjunSideNavigation', { ariaLabel: '메뉴', items: expr('pages[state.space]'), value: b.state('destination', 'board'), density: 'compact',
       onNavigate: b.handler('navigate', 'key, event', plain + b.set('destination', 'key')) })),
   ].join('\n')), b.text(expr('"현재 위치: " + state.space + " / " + state.destination'))]);
 }
