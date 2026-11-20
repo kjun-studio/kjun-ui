@@ -15301,18 +15301,6 @@
                 "description": "메뉴 옆의 앱 내용입니다. 배경과 구분선은 앱이 정합니다.",
                 "target": ".kjun-side-navigation-layout-main, [data-kjun-side-navigation-layout-part=\"main\"]",
                 "optional": false
-              },
-              {
-                "label": "공간 레일 칸",
-                "description": "spaces를 주면 navigationRailBg 띠 안의 60px 칸입니다. 현재 공간은 바탕색 타일로 표시하고, 패널이 접히면 맨 위에 펼치기 버튼이 생깁니다.",
-                "target": ".kjun-side-navigation-layout-spaces, [data-kjun-side-navigation-layout-part=\"spaces\"]",
-                "optional": false
-              },
-              {
-                "label": "메뉴 패널",
-                "description": "216px 패널입니다. card는 띠 안에 8px 띄운 카드(모서리 12), flat은 띠에 붙고 페이지 쪽에 1px 선을 둡니다. 머리에 공간 이름과 접기 버튼이 있습니다.",
-                "target": ".kjun-side-navigation-layout-panel, [data-kjun-side-navigation-layout-part=\"panel\"]",
-                "optional": false
               }
             ]
           }
@@ -15396,18 +15384,6 @@
                 "description": "메뉴 옆의 앱 내용입니다. 배경과 구분선은 앱이 정합니다.",
                 "target": ".kjun-side-navigation-layout-main, [data-kjun-side-navigation-layout-part=\"main\"]",
                 "optional": false
-              },
-              {
-                "label": "공간 레일 칸",
-                "description": "spaces를 주면 navigationRailBg 띠 안의 60px 칸입니다. 현재 공간은 바탕색 타일로 표시하고, 패널이 접히면 맨 위에 펼치기 버튼이 생깁니다.",
-                "target": ".kjun-side-navigation-layout-spaces, [data-kjun-side-navigation-layout-part=\"spaces\"]",
-                "optional": false
-              },
-              {
-                "label": "메뉴 패널",
-                "description": "216px 패널입니다. card는 띠 안에 8px 띄운 카드(모서리 12), flat은 띠에 붙고 페이지 쪽에 1px 선을 둡니다. 머리에 공간 이름과 접기 버튼이 있습니다.",
-                "target": ".kjun-side-navigation-layout-panel, [data-kjun-side-navigation-layout-part=\"panel\"]",
-                "optional": false
               }
             ]
           }
@@ -15490,18 +15466,6 @@
                 "label": "페이지",
                 "description": "메뉴 옆의 앱 내용입니다. 배경과 구분선은 앱이 정합니다.",
                 "target": ".kjun-side-navigation-layout-main, [data-kjun-side-navigation-layout-part=\"main\"]",
-                "optional": false
-              },
-              {
-                "label": "공간 레일 칸",
-                "description": "spaces를 주면 navigationRailBg 띠 안의 60px 칸입니다. 현재 공간은 바탕색 타일로 표시하고, 패널이 접히면 맨 위에 펼치기 버튼이 생깁니다.",
-                "target": ".kjun-side-navigation-layout-spaces, [data-kjun-side-navigation-layout-part=\"spaces\"]",
-                "optional": false
-              },
-              {
-                "label": "메뉴 패널",
-                "description": "216px 패널입니다. card는 띠 안에 8px 띄운 카드(모서리 12), flat은 띠에 붙고 페이지 쪽에 1px 선을 둡니다. 머리에 공간 이름과 접기 버튼이 있습니다.",
-                "target": ".kjun-side-navigation-layout-panel, [data-kjun-side-navigation-layout-part=\"panel\"]",
                 "optional": false
               }
             ]
