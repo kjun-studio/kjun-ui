@@ -79,7 +79,8 @@ for (const platform of ['react', 'vue3']) {
     test('ignores collapsed and width with spaces, warning once', async ({ page }) => {
       const warnings: string[] = [];
       page.on('console', message => { if (message.type() === 'warning' && message.text().includes('do not apply with spaces')) warnings.push(message.text()); });
-      await open(page, platform, '&collapsed=1&width=lg');
+      // The warning is development-only, so this fixture is built in development mode.
+      await openFixture(page, platform, '?spaces=1&wide=1&collapsed=1&width=lg', 'side-navigation-layout', 'development');
       await expect.poll(() => width(page)).toBe(284);
       expect(warnings).toHaveLength(1);
       expect(warnings[0]).toContain('collapsed');
