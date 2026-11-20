@@ -2,6 +2,7 @@ import { useKjunMessages } from "./runtime/messages";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { inputEdge, type InputVariant } from "../../../shared/package-runtime/input-variant";
 import { inputCount, inputReveal, inputShowsClear } from "../../../shared/package-runtime/input-field";
+import { claimGroupField, groupFieldOwner, releaseGroupField, type FieldGroupClaim, type FormGroupElement } from "../../../shared/package-runtime/field-group";
 import { computed, inject, mergeProps, onBeforeUnmount, onMounted, provide, reactive, ref, useId, watch,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
 import { defineComponent } from "./runtime/component";
@@ -19,12 +20,33 @@ export interface FieldContextValue {
   setControlId?: (id: string | undefined) => void;
   /** A control's own message (NumberInput's range) shown in the group's error slot; "" clears it. The group's error wins. */
   reportError?: (owner: string, message: string) => void;
+  /** Set by a fieldset FormGroup: the choice controls inside claim the group's id, and the owner wears it. */
+  group?: { owner?: string; claim: (key: string, disabled: boolean) => void; release: (key: string) => void };
 }
 // Internal boundary for composite fields; index.ts exports only public controls.
 export const kjunFieldKey: InjectionKey<Readonly<{ value: FieldContextValue | null }>> = Symbol("kjunField");
 export const useKjunField = () => inject(kjunFieldKey, { value: null });
 /** A Vue useId value without the characters that are awkward in id references. */
 export const useKjunId = (prefix: string) => prefix + useId().replace(/[^\w-]/g, "");
+/** The Vue form of React's useGroupFieldId: in a fieldset FormGroup, the group's id for the first enabled choice control
+ * (field-group.ts), so app code can focus the group by that id; elsewhere, or with its own id, the control's own id. */
+export function useGroupFieldId(disabled: () => boolean, own: () => string | undefined) {
+  const field = useKjunField(), key = useKjunId("kjun-claim-");
+  const group = () => (own() == null ? field.value?.group : undefined);
+  let held: FieldContextValue["group"];
+  const sync = () => {
+    const next = group();
+    if (held && held !== next) held.release(key);
+    held = next;
+    held?.claim(key, disabled());
+  };
+  onMounted(() => watch([() => group()?.claim, disabled], sync, { immediate: true }));
+  onBeforeUnmount(() => { held?.release(key); held = undefined; });
+  return computed(() => {
+    const current = group();
+    return current && current.owner === key ? field.value!.id : own();
+  });
+}
 
 // Some IMEs end composition before delivering the confirming Enter (keyCode 229).
 export function useCompositionGuard() {
@@ -46,6 +68,9 @@ const kjunFormGroupProps = {
   hint: { type: String, default: "" },
   /** Hides the label visually while it still names the field. */
   labelHidden: { type: Boolean, default: false },
+  /** "fieldset" groups several choices (checkboxes, radios, FilterGroup, ButtonGroup) under one name: the root is a fieldset
+   * whose legend is the label and which the hint or error describes, and the id goes to the first enabled choice. */
+  as: { type: String as PropType<FormGroupElement>, default: "div" },
 } as const;
 export type KjunFormGroupProps = ExtractPublicPropTypes<typeof kjunFormGroupProps>;
 export const KjunFormGroup = defineComponent({
@@ -65,29 +90,42 @@ export const KjunFormGroup = defineComponent({
     // An error takes the hint's slot instead of stacking under it, so the field keeps its height; the control is
     // then described by the error alone.
     const shownError = computed(() => props.error || Object.values(controlErrors.value).find(Boolean) || "");
+    const claims = ref<FieldGroupClaim[]>([]);
+    const groupApi = {
+      claim: (key: string, disabled: boolean) => { claims.value = claimGroupField(claims.value, key, disabled); },
+      release: (key: string) => { claims.value = releaseGroupField(claims.value, key); },
+    };
     const field = computed<FieldContextValue>(() => {
       const id = props.id || uid;
       return {
         id, labelId: props.label ? id + "-label" : undefined,
         describedBy: mergeIds(props.hint && !shownError.value ? id + "-hint" : undefined, shownError.value ? id + "-error" : undefined),
         error: props.error, required: props.required, setControlId, reportError,
+        group: props.as === "fieldset" ? { ...groupApi, owner: groupFieldOwner(claims.value) } : undefined,
       };
     });
     provide(kjunFieldKey, field);
     return () => {
-      const { id, labelId } = field.value;
-      const error = shownError.value;
-      const label = props.label && (
-        <label class={"kjun-form-label" + (props.labelHidden ? " kjun-sr-only" : "")} id={labelId} for={controlId.value || id}>
-          {props.label}
-          {/* The input's required state already says it; the star is only drawn. */}
-          {props.required && <span class="kjun-form-required" aria-hidden="true"> *</span>}
-          {props.optional && !props.required && <span class="kjun-form-optional"> {m.value.optional}</span>}
-        </label>
-      );
+      const { id, labelId, describedBy } = field.value;
+      const error = shownError.value, grouped = props.as === "fieldset", hasEnd = !!slots.labelEnd;
+      const marks = () => [
+        /* The input's required state already says it; the star is only drawn. */
+        props.required && <span class="kjun-form-required" aria-hidden="true"> *</span>,
+        props.optional && !props.required && <span class="kjun-form-optional"> {m.value.optional}</span>,
+      ];
+      // A legend names its fieldset only as the fieldset's own child, so with labelEnd it is read but not drawn, and the
+      // label row draws an unread copy beside labelEnd.
+      const label = props.label && (grouped
+        ? <legend class={"kjun-form-label" + (props.labelHidden || hasEnd ? " kjun-sr-only" : "")} id={labelId}>{props.label}{marks()}</legend>
+        : <label class={"kjun-form-label" + (props.labelHidden ? " kjun-sr-only" : "")} id={labelId} for={controlId.value || id}>{props.label}{marks()}</label>);
+      const shownLabel = grouped && hasEnd
+        ? props.label && !props.labelHidden && <span class="kjun-form-label" aria-hidden="true">{props.label}{marks()}</span>
+        : label;
+      const Root = (grouped ? "fieldset" : "div") as "div";
       return (
-        <div class="kjun-form-group">
-          {slots.labelEnd ? <div class="kjun-form-label-row">{label}<span class="kjun-form-label-end">{slots.labelEnd()}</span></div> : label}
+        <Root class="kjun-form-group" aria-describedby={grouped ? describedBy : undefined}>
+          {grouped && hasEnd && label}
+          {hasEnd ? <div class="kjun-form-label-row">{shownLabel}<span class="kjun-form-label-end">{slots.labelEnd!()}</span></div> : label}
           {slots.default?.()}
           {props.hint && !error && <p id={id + "-hint"} class="kjun-form-hint">{props.hint}</p>}
           {error && (
@@ -96,7 +134,7 @@ export const KjunFormGroup = defineComponent({
               {error}
             </p>
           )}
-        </div>
+        </Root>
       );
     };
   },

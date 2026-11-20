@@ -270,6 +270,11 @@ button.kjun-avatar-group:disabled{cursor:not-allowed;opacity:var(--_kjun-state-o
 .kjun-top-navigation .kjun-button-label { display:block; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
 .kjun-bottom-navigation { display:flex; flex-shrink:0; justify-content:center; }
+/* sticky: a bottom bar keeps its own room at the end of the page flow and stays on the viewport's bottom edge while the page
+   scrolls, so the last content is never under it and nothing is measured. In a column at least the viewport tall it also sits
+   at the bottom of a short page (margin-block-start:auto). Every ancestor up to the page's scroller must leave overflow visible
+   (clip is fine); a scroll container in between becomes the edge it sticks to. A floating capsule sets its own bottom inline. */
+.kjun-bottom-navigation[data-sticky],.kjun-floating-navigation[data-sticky],.kjun-bottom-action-bar[data-sticky]{position:sticky;bottom:0;z-index:var(--_kjun-layer-page-navigation);margin-block-start:auto}
 /* A square bar across the screen's bottom edge: a hairline shadow along its top edge keeps it apart from the content above it.
    A bar without a surface stays seamless. */
 .kjun-bottom-navigation:not([data-surface="false"]) { box-shadow:var(--_kjun-bottom-navigation-elevation); }

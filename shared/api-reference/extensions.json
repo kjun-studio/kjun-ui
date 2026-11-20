@@ -220,7 +220,8 @@
       "hideOnKeyboard",
       "surface",
       "iconStyle",
-      "showLabels"
+      "showLabels",
+      "sticky"
     ],
     "react": [
       "items",
@@ -233,7 +234,8 @@
       "surface",
       "onReselect",
       "iconStyle",
-      "showLabels"
+      "showLabels",
+      "sticky"
     ],
     "native": [
       "items",
@@ -246,7 +248,8 @@
       "surface",
       "onReselect",
       "iconStyle",
-      "showLabels"
+      "showLabels",
+      "sticky"
     ]
   },
   "KjunFloatingNavigation": {
@@ -256,7 +259,8 @@
       "ariaLabel",
       "safeArea",
       "keyboardVisible",
-      "hideOnKeyboard"
+      "hideOnKeyboard",
+      "sticky"
     ],
     "react": [
       "items",
@@ -266,7 +270,8 @@
       "keyboardVisible",
       "hideOnKeyboard",
       "onNavigate",
-      "onReselect"
+      "onReselect",
+      "sticky"
     ],
     "native": [
       "items",
@@ -276,7 +281,8 @@
       "keyboardVisible",
       "hideOnKeyboard",
       "onNavigate",
-      "onReselect"
+      "onReselect",
+      "sticky"
     ]
   },
   "KjunBottomActionBar": {
@@ -287,7 +293,8 @@
       "hideOnKeyboard",
       "surface",
       "variant",
-      "ariaLabel"
+      "ariaLabel",
+      "sticky"
     ],
     "react": [
       "description",
@@ -297,7 +304,8 @@
       "hideOnKeyboard",
       "surface",
       "variant",
-      "ariaLabel"
+      "ariaLabel",
+      "sticky"
     ],
     "native": [
       "description",
@@ -307,7 +315,8 @@
       "hideOnKeyboard",
       "surface",
       "variant",
-      "ariaLabel"
+      "ariaLabel",
+      "sticky"
     ]
   },
   "KjunImage": {
@@ -1097,6 +1106,7 @@
       "allowNegative",
       "min",
       "max",
+      "step",
       "prefix",
       "suffix",
       "readingAid",
@@ -1118,6 +1128,7 @@
       "allowNegative",
       "min",
       "max",
+      "step",
       "prefix",
       "suffix",
       "readingAid",
@@ -1143,6 +1154,7 @@
       "allowNegative",
       "min",
       "max",
+      "step",
       "prefix",
       "suffix",
       "readingAid",

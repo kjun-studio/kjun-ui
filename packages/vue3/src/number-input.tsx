@@ -2,7 +2,7 @@ import { computed, nextTick, onBeforeUnmount, ref, shallowRef, watch, watchEffec
 import { isComposingKey, type InputSize } from "@kjun-ui/tokens";
 import {
   addsTooManyDigits, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage,
-  readingAid as readNumber, resolveNumberInput, sameNumber, sanitizeNumber, type NumberInputFormat,
+  readingAid as readNumber, resolveNumberInput, sameNumber, sanitizeNumber, snapNumber, stepNumber, type NumberInputFormat,
 } from "../../../shared/package-runtime/number-input";
 import { defineComponent } from "./runtime/component";
 import { useKjunMessageScope } from "./runtime/messages";
@@ -17,6 +17,8 @@ const kjunNumberInputProps = {
   allowNegative: { type: Boolean, default: undefined },
   min: { type: Number, default: undefined },
   max: { type: Number, default: undefined },
+  /** Unit the committed value lands on, counted from `min` (or 0); ArrowUp/ArrowDown move by it. */
+  step: { type: Number, default: undefined },
   prefix: { type: String, default: undefined },
   suffix: { type: String, default: undefined },
   /** Shows "1억 2,003만 5,000 원" under the field for integers of 10,000 or more. */
@@ -49,7 +51,7 @@ export const KjunNumberInput = defineComponent({
     // Only a text suffix reaches the messages; a slot suffix is decoration (null keeps it from falling back to the preset).
     const o = computed(() => resolveNumberInput({
       format: props.format, decimals: props.decimals, grouping: props.grouping, allowNegative: props.allowNegative,
-      min: props.min, max: props.max, suffix: slots.suffix ? null : props.suffix,
+      min: props.min, max: props.max, step: props.step, suffix: slots.suffix ? null : props.suffix,
     }));
     const shown = (raw: string) => formatNumber(sanitizeNumber(raw, o.value), o.value);
     const outOfRange = (raw: string) => rangeIssue(sanitizeNumber(raw, o.value), o.value);
@@ -130,10 +132,14 @@ export const KjunNumberInput = defineComponent({
     };
     const commit = (text = view.value.text) => {
       if (composing || !dirty || props.disabled || props.readOnly) return;
+      accept(snapNumber(commitNumber(sanitizeNumber(text, o.value), o.value), o.value), null);
+    };
+    // Takes a committed value: the text, the range message, the reported and the accepted value all follow it.
+    const accept = (next: string, caret: "end" | null) => {
       dirty = false;
-      const next = commitNumber(sanitizeNumber(text, o.value), o.value);
       const found = rangeIssue(next, o.value);
-      void apply({ text: formatNumber(next, o.value), caret: null });
+      const text = formatNumber(next, o.value);
+      void apply({ text, caret: caret === "end" ? text.length : null });
       issue.value = found;
       acceptedIssue = found;
       report(next);
@@ -148,6 +154,14 @@ export const KjunNumberInput = defineComponent({
         void apply({ text: shown(accepted), caret: null });
         issue.value = acceptedIssue;
         report(accepted);
+        return;
+      }
+      // With a step, ArrowUp/ArrowDown move the value by it and commit at once, like a stepper.
+      if ((event.key === "ArrowUp" || event.key === "ArrowDown") && o.value.step !== undefined && !event.altKey && !event.ctrlKey && !event.metaKey) {
+        const next = stepNumber(sanitizeNumber((event.currentTarget as HTMLInputElement).value, o.value), event.key === "ArrowUp" ? 1 : -1, o.value);
+        if (next === null) return;
+        event.preventDefault();
+        accept(next, "end");
         return;
       }
       if ((event.key !== "Backspace" && event.key !== "Delete") || event.altKey || event.ctrlKey || event.metaKey) return;

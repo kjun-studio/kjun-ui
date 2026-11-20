@@ -31,6 +31,7 @@ const App = defineComponent(() => {
     </K.KjunFormGroup>)}
     {section('end', <K.KjunNumberInput {...bind('end')} format="amount" align="end" ariaLabel="오른쪽 정렬" />)}
     {section('disabled', <K.KjunNumberInput {...bind('disabled')} format="amount" disabled ariaLabel="비활성" />)}
+    {section('stepped', <K.KjunNumberInput {...bind('stepped')} step={100} min={2700} max={6500} suffix="K" ariaLabel="색온도" />)}
     {section('reference', <K.KjunInput modelValue="1,234" ariaLabel="기준" />)}
   </div> }}</K.KjunProvider>;
 });

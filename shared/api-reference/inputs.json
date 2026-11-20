@@ -286,7 +286,8 @@
       "error",
       "hint",
       "labelHidden",
-      "optional"
+      "optional",
+      "as"
     ],
     "react": [
       "label",
@@ -298,7 +299,8 @@
       "labelHidden",
       "optional",
       "className",
-      "labelEnd"
+      "labelEnd",
+      "as"
     ],
     "native": [
       "label",
@@ -310,7 +312,8 @@
       "style",
       "labelHidden",
       "optional",
-      "labelEnd"
+      "labelEnd",
+      "as"
     ]
   },
   "KjunInput": {

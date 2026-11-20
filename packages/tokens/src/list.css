@@ -1,6 +1,13 @@
 /* KjunListSection, KjunListRow, KjunListItem and KjunListGroup. */
 .kjun-list-section{min-width:0;max-width:100%;color:var(--_kjun-color-text);background:var(--_kjun-color-surface)}
 .kjun-list-section[data-surface="false"]{background:transparent}
+/* surface="muted": the muted fill sets rows apart inside a white card or modal (KjunCard's muted surface). On it a badge
+   takes the plain surface, as in a tinted card, dividers the border role and an open row's icon square the surface, so
+   none of them dissolves into the fill. A heading outside the rows' card stays on the page. */
+.kjun-list-section[data-surface="muted"]{background:var(--_kjun-color-secondary)}
+.kjun-list-section[data-surface="muted"]:not([data-outside]),.kjun-list-panel[data-surface="muted"]{--_kjun-badge-fill:var(--_kjun-color-surface)}
+:is(.kjun-list-section[data-surface="muted"]:not([data-outside]),.kjun-list-panel[data-surface="muted"]) .kjun-list>:is(.kjun-list-row,.kjun-list-item)::after{background:var(--_kjun-color-border)}
+:is(.kjun-list-section[data-surface="muted"]:not([data-outside]),.kjun-list-panel[data-surface="muted"]) .kjun-list[data-variant=open]>.kjun-list-row:not([data-destructive]) .kjun-list-icon-background{background-color:var(--_kjun-color-surface)}
 
 /* Heading: the title takes the remaining width; actions sit at the end, centered on the title's first line. */
 .kjun-list-heading{
@@ -52,6 +59,7 @@
 .kjun-list-section[data-outside] > .kjun-list-heading{padding-top:var(--_kjun-list-action-overflow);padding-bottom:var(--_kjun-extension-list-outside-label-gap)}
 .kjun-list-panel{background:var(--_kjun-color-surface);overflow:hidden;overflow:clip}
 .kjun-list-panel[data-surface="false"]{background:transparent}
+.kjun-list-panel[data-surface="muted"]{background:var(--_kjun-color-secondary)}
 /* The first and last rows follow the card's corners, for their pressed background and focus ring. */
 .kjun-list-panel > .kjun-list,.kjun-list-panel > .kjun-list > .kjun-list-row{border-radius:inherit}
 .kjun-list-panel > .kjun-list > .kjun-list-row:not(:first-child){border-top-left-radius:0;border-top-right-radius:0}

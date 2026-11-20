@@ -220,6 +220,27 @@ function TooltipPanel(props: ComponentProps<typeof Tooltip>) {
   if (state && !state.isOpen && state.shouldSkipAnimation) return null;
   return <Tooltip {...props} />;
 }
+/**
+ * Whether a tooltip trigger has been drawn with a box. react-aria's Focusable checks in development, on mount and again when
+ * its isDisabled changes, that its child is focusable, and it counts an element under a hidden (display: none) ancestor as
+ * not focusable, so a trigger first drawn in a hidden section (a view or tab panel not shown yet) warns though it is fine.
+ * The trigger is held disabled until it has a box: a hidden trigger cannot be hovered or focused anyway, and the check then
+ * runs once it is shown. The first measure is a layout effect, so a visible trigger is enabled before it is painted.
+ */
+function useTriggerShown() {
+  const ref = useRef<HTMLElement | null>(null);
+  const [shown, setShown] = useState(false);
+  useLayoutEffect(() => {
+    const element = ref.current;
+    const visible = () => !element || element.getClientRects().length > 0;
+    if (visible() || typeof ResizeObserver === "undefined") { setShown(true); return; }
+    const observer = new ResizeObserver(() => { if (visible()) { observer.disconnect(); setShown(true); } });
+    observer.observe(element!);
+    return () => observer.disconnect();
+  }, []);
+  return [ref, shown] as const;
+}
+
 export function KjunTooltip({
   content = "",
   title,
@@ -239,9 +260,10 @@ export function KjunTooltip({
   useEffect(() => { if (!hasContent) setInternal(false); }, [hasContent]);
   const setOpen = (value: boolean) => { setInternal(value); onOpenChange?.(value); };
   const layer = useLayer(open, open, "tooltip", () => setOpen(false));
+  const [trigger, shown] = useTriggerShown();
   return (
     <TooltipTrigger isOpen={open && !layer.blocked} onOpenChange={setOpen} delay={delay} closeDelay={0} isDisabled={!hasContent || !layer.scopeActive}>
-      <Focusable>
+      <Focusable ref={trigger} isDisabled={!shown}>
         {children as ComponentProps<typeof Focusable>["children"]}
       </Focusable>
       {container !== null && hasContent && (

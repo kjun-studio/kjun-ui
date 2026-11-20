@@ -1767,6 +1767,13 @@
         "required": false,
         "default": "—",
         "description": "Names the bar as a region (landmark) that screen readers can jump to, e.g. \"Order summary\"."
+      },
+      {
+        "name": "sticky",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Pins the bar to the viewport's bottom edge while the page scrolls (default false). It keeps its own room at the end of the page flow, so the last content is never under it and nothing is measured; give it the page's end, under a parent with overflow visible."
       }
     ],
     "events": [],
@@ -1833,6 +1840,13 @@
         "required": false,
         "default": "—",
         "description": "Names the bar as a region (landmark) that screen readers can jump to, e.g. \"Order summary\"."
+      },
+      {
+        "name": "sticky",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Pins the bar to the viewport's bottom edge while the page scrolls (default false). It keeps its own room at the end of the page flow, so the last content is never under it and nothing is measured; give it the page's end, under a parent with overflow visible."
       }
     ],
     "native": [
@@ -1891,6 +1905,13 @@
         "required": false,
         "default": "—",
         "description": "Names the bar as a region (landmark) that screen readers can jump to, e.g. \"Order summary\"."
+      },
+      {
+        "name": "sticky",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Native Web: pins the bar to the viewport's bottom edge while the page scrolls, keeping its own room at the end of the page flow (default false), as on Web. iOS and Android have no sticky view; there the bar already sits in the layout after the app's ScrollView, so the content is never under it."
       }
     ]
   },
@@ -1958,6 +1979,13 @@
         "required": false,
         "default": "true",
         "description": "Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels."
+      },
+      {
+        "name": "sticky",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Pins the bar to the viewport's bottom edge while the page scrolls (default false). It keeps its own room at the end of the page flow, so the last content is never under it and nothing is measured; give it the page's end, under a parent with overflow visible."
       }
     ],
     "events": [
@@ -2048,6 +2076,13 @@
         "required": false,
         "default": "—",
         "description": "Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels."
+      },
+      {
+        "name": "sticky",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Pins the bar to the viewport's bottom edge while the page scrolls (default false). It keeps its own room at the end of the page flow, so the last content is never under it and nothing is measured; give it the page's end, under a parent with overflow visible."
       }
     ],
     "native": [
@@ -2127,6 +2162,13 @@
         "required": false,
         "default": "—",
         "description": "Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels."
+      },
+      {
+        "name": "sticky",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Native Web: pins the bar to the viewport's bottom edge while the page scrolls, keeping its own room at the end of the page flow (default false), as on Web. iOS and Android have no sticky view; there the bar already sits in the layout after the app's ScrollView, so the content is never under it."
       }
     ]
   },
@@ -10794,6 +10836,13 @@
         "required": false,
         "default": "true",
         "description": ""
+      },
+      {
+        "name": "sticky",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Pins the bar to the viewport's bottom edge while the page scrolls (default false). It keeps its own room at the end of the page flow, so the last content is never under it and nothing is measured; give it the page's end, under a parent with overflow visible."
       }
     ],
     "events": [
@@ -10863,6 +10912,13 @@
         "required": false,
         "default": "—",
         "description": "The current destination was pressed again, e.g. to scroll its page back to the top."
+      },
+      {
+        "name": "sticky",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Pins the bar to the viewport's bottom edge while the page scrolls (default false). It keeps its own room at the end of the page flow, so the last content is never under it and nothing is measured; give it the page's end, under a parent with overflow visible."
       }
     ],
     "native": [
@@ -10921,6 +10977,13 @@
         "required": false,
         "default": "—",
         "description": "The current destination was pressed again, e.g. to scroll its page back to the top."
+      },
+      {
+        "name": "sticky",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Native Web: pins the bar to the viewport's bottom edge while the page scrolls, keeping its own room at the end of the page flow (default false), as on Web. iOS and Android have no sticky view; there the bar already sits in the layout after the app's ScrollView, so the content is never under it."
       }
     ]
   },
@@ -11266,6 +11329,13 @@
         "required": false,
         "default": "false",
         "description": "Hides the label visually while it still names the field."
+      },
+      {
+        "name": "as",
+        "type": "FormGroupElement",
+        "required": false,
+        "default": "\"div\"",
+        "description": "\"fieldset\" groups several choices (checkboxes, radios, FilterGroup, ButtonGroup) under one name: the root is a fieldset\nwhose legend is the label and which the hint or error describes, and the id goes to the first enabled choice."
       }
     ],
     "events": [],
@@ -11346,6 +11416,13 @@
         "description": "Extra class on the group root, for placement in the page layout."
       },
       {
+        "name": "as",
+        "type": "import(\"/workspace/shared/package-runtime/field-group\").FormGroupElement | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"fieldset\" groups several choices (checkboxes, radios, FilterGroup, ButtonGroup) under one name: the root is a fieldset\nwhose legend is the label and which the hint or error describes, and the id goes to the first enabled choice."
+      },
+      {
         "name": "children",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": true,
@@ -11423,6 +11500,13 @@
         "required": false,
         "default": "—",
         "description": "The group keeps a bottom gap (form itemGap) even when it is the last child; Stack, Inline and FormLayout remove it, or pass\n{ marginBottom: 0 } here."
+      },
+      {
+        "name": "as",
+        "type": "import(\"/workspace/shared/package-runtime/field-group\").FormGroupElement | undefined",
+        "required": false,
+        "default": "—",
+        "description": "\"fieldset\" groups several choices under one name, as on the web: the view is a group named by the label (Native Web\nalso points it at the hint or error). Native has no element ids, so the id is not handed to a choice."
       }
     ]
   },
@@ -14918,10 +15002,10 @@
       },
       {
         "name": "surface",
-        "type": "boolean",
+        "type": "ListSectionSurface",
         "required": false,
         "default": "true",
-        "description": "Paints the surface background (default true); false lets the page background show through."
+        "description": "Paints the surface background (default true); false lets the page background show through; \"muted\" paints the muted fill, which sets rows apart inside a white card or modal."
       },
       {
         "name": "divider",
@@ -15127,10 +15211,10 @@
       },
       {
         "name": "surface",
-        "type": "boolean | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListSectionSurface | undefined",
         "required": false,
         "default": "—",
-        "description": "Paints the surface background (default true); false lets the page background show through."
+        "description": "Paints the surface background (default true); false lets the page background show through; \"muted\" paints the muted fill, which sets rows apart inside a white card or modal."
       },
       {
         "name": "divider",
@@ -15325,10 +15409,10 @@
       },
       {
         "name": "surface",
-        "type": "boolean | undefined",
+        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListSectionSurface | undefined",
         "required": false,
         "default": "—",
-        "description": "Paints the surface background (default true); false lets the page background show through."
+        "description": "Paints the surface background (default true); false lets the page background show through; \"muted\" paints the muted fill, which sets rows apart inside a white card or modal."
       },
       {
         "name": "divider",
@@ -19828,6 +19912,13 @@
         "description": ""
       },
       {
+        "name": "step",
+        "type": "number",
+        "required": false,
+        "default": "—",
+        "description": "Unit the committed value lands on, counted from `min` (or 0); ArrowUp/ArrowDown move by it."
+      },
+      {
         "name": "prefix",
         "type": "string",
         "required": false,
@@ -20095,6 +20186,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "step",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Unit the committed value lands on, counted from `min` (or 0); ArrowUp/ArrowDown move by it."
       }
     ],
     "native": [
@@ -20244,6 +20342,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "step",
+        "type": "number | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Unit the committed value lands on, counted from `min` (or 0); ArrowUp/ArrowDown move by it."
       }
     ]
   },
@@ -21328,10 +21433,10 @@
       },
       {
         "name": "variant",
-        "type": "SemanticTone",
+        "type": "KjunProgressVariant",
         "required": false,
         "default": "\"primary\"",
-        "description": ""
+        "description": "neutral draws the fill in the tertiary text colour, for a stale or reference reading that should not call for attention."
       },
       {
         "name": "showLabel",
@@ -21427,10 +21532,10 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/packages/react/src/display\").SemanticTone | undefined",
+        "type": "import(\"/workspace/packages/react/src/display\").KjunProgressVariant | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "neutral draws the fill in the tertiary text colour, for a stale or reference reading that should not call for attention."
       },
       {
         "name": "showLabel",
@@ -21513,10 +21618,10 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/packages/native/src/display-primitives\").SemanticTone | undefined",
+        "type": "import(\"/workspace/packages/native/src/progress\").KjunProgressVariant | undefined",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "neutral draws the fill in the tertiary text colour, for a stale or reference reading that should not call for attention."
       },
       {
         "name": "showLabel",
@@ -28148,9 +28253,9 @@
       {
         "name": "current",
         "type": "number",
-        "required": true,
+        "required": false,
         "default": "—",
-        "description": "Index of the current step, counted from 0. items.length means every step is complete."
+        "description": "Index of the current step, counted from 0. items.length means every step is complete. Optional when the items carry\ntheir own status: the first step marked current or error is then the current one."
       },
       {
         "name": "currentStatus",
@@ -28205,10 +28310,10 @@
       },
       {
         "name": "current",
-        "type": "number",
-        "required": true,
+        "type": "number | undefined",
+        "required": false,
         "default": "—",
-        "description": "Index of the current step, counted from 0. items.length means every step is complete."
+        "description": "Index of the current step, counted from 0. items.length means every step is complete. Optional when the items carry\ntheir own status: the first step marked current or error is then the current one."
       },
       {
         "name": "currentStatus",
@@ -28284,10 +28389,10 @@
       },
       {
         "name": "current",
-        "type": "number",
-        "required": true,
+        "type": "number | undefined",
+        "required": false,
         "default": "—",
-        "description": "Index of the current step, counted from 0. items.length means every step is complete."
+        "description": "Index of the current step, counted from 0. items.length means every step is complete. Optional when the items carry\ntheir own status: the first step marked current or error is then the current one."
       },
       {
         "name": "currentStatus",

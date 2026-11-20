@@ -237,6 +237,52 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(field(page, 'disabled')).toBeDisabled();
     });
 
+    test('step snaps on commit', async ({ page }) => {
+      const stepped = field(page, 'stepped');
+      await stepped.pressSequentially('4237');
+      await expect(value(page, 'stepped')).toHaveText('4237');
+      await stepped.press('Tab');
+      await expect(stepped).toHaveValue('4,200');
+      await expect(value(page, 'stepped')).toHaveText('4200');
+      await expect(commit(page, 'stepped')).toHaveText('4200');
+      // Counted from min (2700): 4,250 lands on 4,300; past max stays past it and shows the range message.
+      await stepped.fill('');
+      await stepped.pressSequentially('7040');
+      await stepped.press('Enter');
+      await expect(stepped).toHaveValue('7,000');
+      await expect(page.getByTestId('stepped')).toContainText('6,500K 이하로 입력해 주세요');
+    });
+
+    test('step arrows move and commit', async ({ page }) => {
+      const stepped = field(page, 'stepped');
+      await stepped.focus();
+      // Empty starts at min.
+      await page.keyboard.press('ArrowUp');
+      await expect(stepped).toHaveValue('2,700');
+      await expect(commit(page, 'stepped')).toHaveText('2700');
+      await page.keyboard.press('ArrowUp');
+      await expect(stepped).toHaveValue('2,800');
+      await expect(value(page, 'stepped')).toHaveText('2800');
+      await expect(commit(page, 'stepped')).toHaveText('2800');
+      expect(await caret(page, 'stepped')).toBe(5);
+      await page.keyboard.press('ArrowDown');
+      await page.keyboard.press('ArrowDown');
+      await expect(stepped).toHaveValue('2,700');
+      // A typed value between points moves to the next point that way; max holds.
+      await stepped.fill('');
+      await stepped.pressSequentially('6437');
+      await page.keyboard.press('ArrowUp');
+      await expect(stepped).toHaveValue('6,500');
+      await page.keyboard.press('ArrowUp');
+      await expect(stepped).toHaveValue('6,500');
+      await expect(commit(page, 'stepped')).toHaveText('6500');
+      // Without a step the arrows change nothing.
+      await field(page, 'amount').pressSequentially('1234');
+      await page.keyboard.press('ArrowUp');
+      await expect(field(page, 'amount')).toHaveValue('1,234');
+      await expect(commit(page, 'amount')).toHaveText('');
+    });
+
     test('range error takes the group error slot', async ({ page }) => {
       const grouped = page.getByRole('textbox', { name: '보낼 금액' }), section = page.getByTestId('in-group');
       await grouped.pressSequentially('5000000');

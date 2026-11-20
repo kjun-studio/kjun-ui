@@ -8,7 +8,7 @@ const output = await build({
   bundle: true, write: false, format: 'esm', platform: 'node',
 });
 const {
-  addsTooManyDigits, caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage, readingAid, resolveMessageScope, resolveNumberInput, sameNumber, sanitizeNumber, significantCount,
+  addsTooManyDigits, caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage, readingAid, resolveMessageScope, resolveNumberInput, sameNumber, sanitizeNumber, significantCount, snapNumber, stepNumber,
 } = await import('data:text/javascript;base64,' + Buffer.from(output.outputFiles[0].contents).toString('base64'));
 
 const r = (o = {}) => resolveNumberInput(o);
@@ -180,4 +180,63 @@ test('numberKeyboard', () => {
   assert.equal(numberKeyboard(r({ decimals: 1 })).inputMode, 'decimal');
   assert.equal(numberKeyboard(r({ format: 'amount' })).inputMode, 'numeric');
   assert.deepEqual(numberKeyboard(r({ allowNegative: true })), { inputMode: 'text', ios: 'numbers-and-punctuation', android: 'numeric' });
+});
+
+test('step resolves to a positive unit at the field decimals', () => {
+  assert.equal(r().step, undefined);
+  assert.equal(r({ step: 100 }).step, 100);
+  assert.equal(r({ step: 0 }).step, undefined);
+  assert.equal(r({ step: -5 }).step, undefined);
+  assert.equal(r({ step: Number.NaN }).step, undefined);
+  // A step finer than the decimals allow rounds to them, and is dropped when it rounds to 0.
+  assert.equal(r({ step: 2.5 }).step, 3);
+  assert.equal(r({ step: 0.4 }).step, undefined);
+  assert.equal(r({ decimals: 1, step: 0.25 }).step, 0.3);
+});
+
+test('snapNumber moves a committed value to the nearest step from min, or 0', () => {
+  const k = r({ step: 100 });
+  assert.equal(snapNumber('4237', k), '4200');
+  assert.equal(snapNumber('4250', k), '4300');
+  assert.equal(snapNumber('', k), '');
+  assert.equal(snapNumber('4237', r()), '4237');
+  // Counted from min: 2700 + n * 100.
+  assert.equal(snapNumber('4237', r({ step: 100, min: 2750 })), '4250');
+  // The range is not enforced: a value past max stays past it.
+  assert.equal(snapNumber('6537', r({ step: 100, max: 6500 })), '6500');
+  assert.equal(snapNumber('6580', r({ step: 100, max: 6500 })), '6600');
+  // Decimals: the value is written padded, with no float noise.
+  assert.equal(snapNumber('0.33', r({ decimals: 1, step: 0.1 })), '0.3');
+  assert.equal(snapNumber('1.27', r({ decimals: 2, step: 0.05 })), '1.25');
+  // Negative values snap when allowed; "-0" is written as "0"; one that cannot be negative goes up a step.
+  assert.equal(snapNumber('-7', r({ allowNegative: true, step: 5 })), '-5');
+  assert.equal(snapNumber('-2', r({ allowNegative: true, step: 5 })), '0');
+  assert.equal(snapNumber('3', r({ step: 10, min: -10 })), '0');
+  assert.equal(snapNumber('1', r({ step: 10, min: -25 })), '5');
+});
+
+test('stepNumber moves by one step, onto the grid, within range', () => {
+  const k = r({ step: 100, min: 2700, max: 6500 });
+  assert.equal(stepNumber('4200', 1, k), '4300');
+  assert.equal(stepNumber('4200', -1, k), '4100');
+  // Between points: the next point in that direction.
+  assert.equal(stepNumber('4237', 1, k), '4300');
+  assert.equal(stepNumber('4237', -1, k), '4200');
+  // Range: kept within min and max, an off-grid max included.
+  assert.equal(stepNumber('6500', 1, k), '6500');
+  assert.equal(stepNumber('2700', -1, k), '2700');
+  assert.equal(stepNumber('9000', -1, k), '6500');
+  assert.equal(stepNumber('6450', 1, r({ step: 100, max: 6480 })), '6480');
+  // Empty: starts at min, or 0 within range.
+  assert.equal(stepNumber('', 1, k), '2700');
+  assert.equal(stepNumber('', -1, r({ step: 5 })), '0');
+  assert.equal(stepNumber('-', 1, r({ step: 5, min: 10 })), '10');
+  // A field that cannot be negative stops at 0; one that can goes below.
+  assert.equal(stepNumber('0', -1, r({ step: 5 })), '0');
+  assert.equal(stepNumber('0', -1, r({ step: 5, allowNegative: true })), '-5');
+  // Decimals and float noise.
+  assert.equal(stepNumber('0.2', 1, r({ decimals: 1, step: 0.1 })), '0.3');
+  assert.equal(stepNumber('0.3', 1, r({ decimals: 2, step: 0.1 })), '0.40');
+  // No step: no stepping.
+  assert.equal(stepNumber('5', 1, r()), null);
 });

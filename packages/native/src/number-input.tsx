@@ -5,7 +5,7 @@ import { useKjunMessageScope } from "../../../shared/package-runtime/messages-co
 import { joinHints } from "../../../shared/package-runtime/aria-ids";
 import {
   addsTooManyDigits, caretAfterEdit, caretForCount, commitNumber, deleteAcrossSeparator, formatNumber, isPasteEdit, numberKeyboard, rangeIssue, rangeMessage,
-  readingAid as readNumber, resolveNumberInput, sameNumber, sanitizeNumber, type NumberInputOptions,
+  readingAid as readNumber, resolveNumberInput, sameNumber, sanitizeNumber, snapNumber, stepNumber, type NumberInputOptions,
 } from "../../../shared/package-runtime/number-input";
 import { KjunInput, useKjunField } from "./input";
 import type { KjunTextInputHandle } from "./handles";
@@ -42,7 +42,7 @@ type Issue = "min" | "max" | null;
 const web = Platform.OS === "web";
 
 export function KjunNumberInput({
-  value, format, decimals, grouping, allowNegative, min, max, prefix, suffix, readingAid = false, align = "start",
+  value, format, decimals, grouping, allowNegative, min, max, step, prefix, suffix, readingAid = false, align = "start",
   size = "md", disabled = false, readOnly = false, error = false, id, ariaLabel, placeholder,
   onValueChange, onChangeCommit, style,
 }: KjunNumberInputProps) {
@@ -51,8 +51,8 @@ export function KjunNumberInput({
   const { colors, fontFamily, numericFontFamily } = useKjunStyles();
   // Only a text suffix reaches the messages; a node suffix is decoration (null keeps it from falling back to the preset).
   const suffixText = suffix === undefined || typeof suffix === "string" ? suffix : null;
-  const o = useMemo(() => resolveNumberInput({ format, decimals, grouping, allowNegative, min, max, suffix: suffixText }),
-    [format, decimals, grouping, allowNegative, min, max, suffixText]);
+  const o = useMemo(() => resolveNumberInput({ format, decimals, grouping, allowNegative, min, max, step, suffix: suffixText }),
+    [format, decimals, grouping, allowNegative, min, max, step, suffixText]);
   const shown = (raw: string) => formatNumber(sanitizeNumber(raw, o), o);
   const outOfRange = (raw: string) => rangeIssue(sanitizeNumber(raw, o), o);
   const [view, setView] = useState<Shown>(() => ({ text: shown(value) }));
@@ -147,8 +147,11 @@ export function KjunNumberInput({
   };
   const commit = (typed = text.current) => {
     if (composing.current || !dirty.current || disabled || readOnly) return;
+    accept(snapNumber(commitNumber(sanitizeNumber(typed, o), o), o));
+  };
+  // Takes a committed value: the text (caret at its end), the range message, the reported and the accepted value all follow it.
+  const accept = (next: string) => {
     dirty.current = false;
-    const next = commitNumber(sanitizeNumber(typed, o), o);
     const found = rangeIssue(next, o);
     put({ text: formatNumber(next, o) });
     setIssue(found);
@@ -180,6 +183,14 @@ export function KjunNumberInput({
       return;
     }
     if (event.key === "Enter") { commit(); return; }
+    // With a step, ArrowUp/ArrowDown move the value by it and commit at once, like a stepper (web keyboards only).
+    if ((event.key === "ArrowUp" || event.key === "ArrowDown") && o.step !== undefined && !event.altKey && !event.ctrlKey && !event.metaKey) {
+      const next = stepNumber(sanitizeNumber(text.current, o), event.key === "ArrowUp" ? 1 : -1, o);
+      if (next === null) return;
+      event.preventDefault();
+      accept(next);
+      return;
+    }
     if ((event.key !== "Backspace" && event.key !== "Delete") || event.altKey || event.ctrlKey || event.metaKey) return;
     const el = event.currentTarget as HTMLInputElement;
     if (removeSeparator(event.key, el.selectionStart ?? 0, el.selectionEnd ?? 0)) event.preventDefault();

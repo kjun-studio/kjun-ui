@@ -9,7 +9,7 @@ export type { NavigationIconStyle };
 import { typeStyle } from "./typography";
 import { tokens } from "@kjun-ui/tokens";
 import { Children, Fragment, isValidElement, useEffect, useRef, useState, type ReactNode } from "react";
-import { ScrollView, View, Platform, type ColorValue, type TextStyle, type GestureResponderEvent, type LayoutChangeEvent } from "react-native";
+import { ScrollView, View, Platform, type ColorValue, type TextStyle, type ViewStyle, type GestureResponderEvent, type LayoutChangeEvent } from "react-native";
 import { AccessiblePressable as Pressable } from "./a11y";
 import { IconBase, KjunIcon } from "./button";
 import { KText, content } from "./internal";
@@ -91,6 +91,9 @@ const pressDestination = (item: NavigationDestination, selected: boolean, onNavi
   onNavigate?.(item.key, event);
   if (selected) onReselect?.(item.key, event);
 };
+/** Native Web's sticky bottom bar (like Web's data-sticky rule); nothing elsewhere. */
+const stickyBar = (sticky: boolean) => sticky && Platform.OS === "web"
+  ? ({ position: "sticky", bottom: 0, zIndex: tokens.layers.page.navigation, marginTop: "auto" } as unknown as ViewStyle) : {};
 export interface KjunBottomNavigationProps { items: NavigationDestination[]; value: string; ariaLabel?: string;
   /** Keeps clear of the screen's safe area from KjunProvider (default true); false where the app already reserved it. */
   safeArea?: boolean;
@@ -103,8 +106,10 @@ export interface KjunBottomNavigationProps { items: NavigationDestination[]; val
   /** "auto" (default) draws outline icons and fills the selected one; "filled" or "outline" keeps one style for every destination, the selection then carried by colour (and stroke weight). */
   iconStyle?: NavigationIconStyle;
   /** Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels. */
-  showLabels?: boolean }
-export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible: keyboardGiven, hideOnKeyboard = true, onNavigate, onReselect, surface = true, iconStyle = "auto", showLabels = true }: KjunBottomNavigationProps) {
+  showLabels?: boolean;
+  /** Native Web: pins the bar to the viewport's bottom edge while the page scrolls, keeping its own room at the end of the page flow (default false), as on Web. iOS and Android have no sticky view; there the bar already sits in the layout after the app's ScrollView, so the content is never under it. */
+  sticky?: boolean }
+export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible: keyboardGiven, hideOnKeyboard = true, onNavigate, onReselect, surface = true, iconStyle = "auto", showLabels = true, sticky = false }: KjunBottomNavigationProps) {
   const m = useKjunMessages();
   ariaLabel ??= m.mainNavigation;
   const { colors } = useKjunStyles(), insets = useKjunSafeArea();
@@ -115,7 +120,7 @@ export function KjunBottomNavigation({ items, value, ariaLabel, safeArea = true,
   if (keyboardVisible && hideOnKeyboard) return null;
   // Like Web: a square bar with a hairline shadow along its top edge, apart from the content above it.
   return <View role="navigation" accessibilityLabel={ariaLabel} onLayout={reportHeight} style={{ flexShrink: 0, flexDirection: "row", justifyContent: "center", backgroundColor: surface ? colors.surface : "transparent", paddingBottom: (safeArea ? insets.bottom : 0),
-    ...(surface ? { boxShadow: shadowLayers(geometry.elevation, colors) } : {}) }}>
+    ...(surface ? { boxShadow: shadowLayers(geometry.elevation, colors) } : {}), ...stickyBar(sticky) }}>
     {items.map(item => <BottomDestination key={item.key} item={item} selected={item.key === value} parts={layout.parts(item)} iconOnly={layout.iconOnly} hasIcons={layout.hasIcons}
       iconStyle={iconStyle} surface={surface} onNavigate={onNavigate} onReselect={onReselect} />)}
   </View>;
@@ -165,9 +170,11 @@ export interface KjunFloatingNavigationProps { items: NavigationDestination[]; v
   /** Whether the on-screen keyboard is up. Leave it out to follow the device's keyboard events (iOS, Android); Native Web has none, so pass it there. */
   keyboardVisible?: boolean; hideOnKeyboard?: boolean; onNavigate?: Navigate;
   /** The current destination was pressed again, e.g. to scroll its page back to the top. */
-  onReselect?: Navigate }
+  onReselect?: Navigate;
+  /** Native Web: pins the bar to the viewport's bottom edge while the page scrolls, keeping its own room at the end of the page flow (default false), as on Web. iOS and Android have no sticky view; there the bar already sits in the layout after the app's ScrollView, so the content is never under it. */
+  sticky?: boolean }
 /** A capsule detached from the screen edge. Destinations with an icon show only the icon; the label stays their accessible name. */
-export function KjunFloatingNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible: keyboardGiven, hideOnKeyboard = true, onNavigate, onReselect }: KjunFloatingNavigationProps) {
+export function KjunFloatingNavigation({ items, value, ariaLabel, safeArea = true, keyboardVisible: keyboardGiven, hideOnKeyboard = true, onNavigate, onReselect, sticky = false }: KjunFloatingNavigationProps) {
   const m = useKjunMessages();
   ariaLabel ??= m.mainNavigation;
   const { colors } = useKjunStyles(), insets = useKjunSafeArea();
@@ -188,7 +195,7 @@ export function KjunFloatingNavigation({ items, value, ariaLabel, safeArea = tru
   if (keyboardVisible && hideOnKeyboard) return null;
   // The capsule keeps the edge offset on both sides, as on Web; destinations that do not fit scroll inside it.
   // The outline is a border inside the box (a ring outside it on Web), so the padding gives it back.
-  return <View onLayout={reportHeight} style={{ flexShrink: 0, alignSelf: "stretch", alignItems: "center", paddingHorizontal: geometry.offset }}>
+  return <View onLayout={reportHeight} style={{ flexShrink: 0, alignSelf: "stretch", alignItems: "center", paddingHorizontal: geometry.offset, ...stickyBar(sticky) }}>
     <View role="navigation" accessibilityLabel={ariaLabel} style={{
       maxWidth: "100%", marginBottom: geometry.offset + (safeArea ? insets.bottom : 0), borderRadius: geometry.radius, borderWidth: border, borderColor: colors.border,
       backgroundColor: colors.surface, boxShadow: shadowLayers(geometry.elevation, colors),
@@ -234,8 +241,10 @@ export interface KjunBottomActionBarProps { description?: string; children: Reac
   /** "floating" is a capsule detached from the screen edge, like KjunFloatingNavigation: the description and the actions sit on one line and unsized buttons in it are lg pills. */
   variant?: "docked" | "floating";
   /** Names the bar as a region (landmark) that screen readers can jump to, e.g. "Order summary". */
-  ariaLabel?: string }
-export function KjunBottomActionBar({ description, children, safeArea = true, keyboardVisible: keyboardGiven, hideOnKeyboard = false, surface = true, variant = "docked", ariaLabel }: KjunBottomActionBarProps) {
+  ariaLabel?: string;
+  /** Native Web: pins the bar to the viewport's bottom edge while the page scrolls, keeping its own room at the end of the page flow (default false), as on Web. iOS and Android have no sticky view; there the bar already sits in the layout after the app's ScrollView, so the content is never under it. */
+  sticky?: boolean }
+export function KjunBottomActionBar({ description, children, safeArea = true, keyboardVisible: keyboardGiven, hideOnKeyboard = false, surface = true, variant = "docked", ariaLabel, sticky = false }: KjunBottomActionBarProps) {
   const { colors } = useKjunStyles(), insets = useKjunSafeArea();
   const [width, setWidth] = useState(0);
   const geometry = tokens.extensions.navigation;
@@ -250,7 +259,7 @@ export function KjunBottomActionBar({ description, children, safeArea = true, ke
     // at the bottom and paints nothing around the capsule; the description and the actions always share one line.
     const capsule = tokens.extensions.floatingNavigation, border = tokens.border.defaultWidth;
     return <BottomActionBarContext.Provider value={description ? false : "fill"}>
-      <View {...region} onLayout={reportHeight} style={{ flexShrink: 0, minWidth: 0, maxWidth: "100%", paddingHorizontal: capsule.offset, paddingBottom: capsule.offset + (safeArea ? insets.bottom : 0) }}>
+      <View {...region} onLayout={reportHeight} style={{ flexShrink: 0, minWidth: 0, maxWidth: "100%", paddingHorizontal: capsule.offset, paddingBottom: capsule.offset + (safeArea ? insets.bottom : 0), ...stickyBar(sticky) }}>
         {/* The outline is a border inside the box (a ring outside it on Web), so the padding gives it back. */}
         <View style={{ flexDirection: "row", alignItems: "center", gap: geometry.actionsGap, padding: capsule.padding - border, borderRadius: capsule.radius,
           borderWidth: border, borderColor: colors.border, backgroundColor: colors.surface, boxShadow: shadowLayers(capsule.elevation, colors) }}>
@@ -266,7 +275,7 @@ export function KjunBottomActionBar({ description, children, safeArea = true, ke
     <View {...region} onLayout={event => { setWidth(event.nativeEvent.layout.width); reportHeight(event); }} style={{
       flexShrink: 0, minWidth: 0, maxWidth: "100%", backgroundColor: surface ? colors.surface : "transparent",
       padding: geometry.padding, paddingBottom: geometry.padding + (safeArea ? insets.bottom : 0),
-      gap: geometry.actionGap, flexDirection: wide ? "row" : "column", alignItems: wide ? "center" : "stretch",
+      gap: geometry.actionGap, flexDirection: wide ? "row" : "column", alignItems: wide ? "center" : "stretch", ...stickyBar(sticky),
     }}>
       {!!description && <KText style={{ ...typeStyle('body'), ...wrapping, color: colors.textSecondary, flex: wide ? 1 : undefined, minWidth: 0 }}>{description}</KText>}
       <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "flex-end", alignItems: "center", gap: geometry.actionsGap, minWidth: 0, maxWidth: "100%", flexShrink: 1 }}>{content(children)}</View>

@@ -1,7 +1,7 @@
 import { webSafeBottom, webSafeTop } from "../../../shared/package-runtime/safe-area";
 import { useKjunMessages } from "./runtime/messages";
 import { navigationBadge, navigationLabel, type NavigationBadge } from "../../../shared/package-runtime/navigation-badge";
-import { bottomNavigationLayout, navigationIconFilled, revealDelta, type NavigationIconStyle } from "../../../shared/package-runtime/bottom-navigation";
+import { bottomNavigationLayout, floatingBarEdge, navigationIconFilled, revealDelta, type NavigationIconStyle } from "../../../shared/package-runtime/bottom-navigation";
 import { isPlainNavigationClick } from "../../../shared/package-runtime/side-navigation";
 export type { NavigationIconStyle };
 import type { KjunMessages } from "../../../shared/package-runtime/messages";
@@ -69,6 +69,8 @@ const kjunBottomNavigationProps = {
   iconStyle: { type: String as PropType<NavigationIconStyle>, default: "auto" },
   /** Shows each label under its icon (default true); false draws icons alone on a lower bar, each label staying the destination's accessible name. Destinations without icons always show their labels. */
   showLabels: { type: Boolean, default: true },
+  /** Pins the bar to the viewport's bottom edge while the page scrolls (default false). It keeps its own room at the end of the page flow, so the last content is never under it and nothing is measured; give it the page's end, under a parent with overflow visible. */
+  sticky: { type: Boolean, default: false },
 } as const;
 export type KjunBottomNavigationProps = ExtractPublicPropTypes<typeof kjunBottomNavigationProps>;
 /** One destination link's attributes, shared by the bottom and floating bars. Events (plain clicks only): navigate(key, event),
@@ -104,7 +106,7 @@ export const KjunBottomNavigation = defineComponent({
       const layout = bottomNavigationLayout(props.items, props.showLabels);
       if (props.keyboardVisible && props.hideOnKeyboard) return null;
       return (
-        <nav ref={bar} class="kjun-bottom-navigation" data-icons={layout.hasIcons || undefined} data-icon-style={props.iconStyle} data-labels={layout.iconOnly ? "false" : undefined} data-surface={props.surface ? undefined : "false"} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ paddingBottom: webSafeBottom(props.safeArea) }}>
+        <nav ref={bar} class="kjun-bottom-navigation" data-icons={layout.hasIcons || undefined} data-icon-style={props.iconStyle} data-labels={layout.iconOnly ? "false" : undefined} data-surface={props.surface ? undefined : "false"} data-sticky={props.sticky || undefined} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ paddingBottom: webSafeBottom(props.safeArea) }}>
           {props.items.map(item => {
             const selected = props.value === item.key, parts = layout.parts(item);
             const badge = badgeMark(item.badge);
@@ -129,6 +131,8 @@ const kjunFloatingNavigationProps = {
   safeArea: { type: Boolean, default: true },
   keyboardVisible: { type: Boolean, default: false },
   hideOnKeyboard: { type: Boolean, default: true },
+  /** Pins the bar to the viewport's bottom edge while the page scrolls (default false). It keeps its own room at the end of the page flow, so the last content is never under it and nothing is measured; give it the page's end, under a parent with overflow visible. */
+  sticky: { type: Boolean, default: false },
 } as const;
 export type KjunFloatingNavigationProps = ExtractPublicPropTypes<typeof kjunFloatingNavigationProps>;
 /** A capsule detached from the screen edge. Destinations with an icon show only the icon; the label stays their accessible name.
@@ -151,8 +155,9 @@ export const KjunFloatingNavigation = defineComponent({
     return () => {
       const geometry = tokens.extensions.floatingNavigation;
       if (props.keyboardVisible && props.hideOnKeyboard) return null;
+      const edge = floatingBarEdge(geometry.offset, webSafeBottom(props.safeArea));
       return (
-        <nav ref={bar} class="kjun-floating-navigation" aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ marginBottom: `calc(${geometry.offset}px + ${webSafeBottom(props.safeArea)})` }}>
+        <nav ref={bar} class="kjun-floating-navigation" data-sticky={props.sticky || undefined} aria-label={(props.ariaLabel ?? m.value.mainNavigation)} style={{ marginBottom: edge, bottom: props.sticky ? edge : undefined }}>
           {props.items.map(item => {
             const selected = props.value === item.key;
             const badge = badgeMark(item.badge);
@@ -182,6 +187,8 @@ const kjunBottomActionBarProps = {
   variant: { type: String as PropType<"docked" | "floating">, default: "docked" },
   /** Names the bar as a region (landmark) that screen readers can jump to, e.g. "Order summary". */
   ariaLabel: { type: String, default: undefined },
+  /** Pins the bar to the viewport's bottom edge while the page scrolls (default false). It keeps its own room at the end of the page flow, so the last content is never under it and nothing is measured; give it the page's end, under a parent with overflow visible. */
+  sticky: { type: Boolean, default: false },
 } as const;
 export type KjunBottomActionBarProps = ExtractPublicPropTypes<typeof kjunBottomActionBarProps>;
 export const KjunBottomActionBar = defineComponent({
@@ -195,7 +202,7 @@ export const KjunBottomActionBar = defineComponent({
       const floating = props.variant === "floating", inset = floating ? tokens.extensions.floatingNavigation.offset : tokens.extensions.navigation.padding;
       const actions = <div class="kjun-navigation-actions">{slots.default?.()}</div>;
       return (
-        <div ref={bar} class="kjun-bottom-action-bar" role={props.ariaLabel ? "region" : undefined} aria-label={props.ariaLabel} data-variant={floating ? "floating" : undefined} data-surface={props.surface ? undefined : "false"} style={{ paddingBottom: `calc(${inset}px + ${webSafeBottom(props.safeArea)})` }}>
+        <div ref={bar} class="kjun-bottom-action-bar" role={props.ariaLabel ? "region" : undefined} aria-label={props.ariaLabel} data-variant={floating ? "floating" : undefined} data-surface={props.surface ? undefined : "false"} data-sticky={props.sticky || undefined} style={{ paddingBottom: `calc(${inset}px + ${webSafeBottom(props.safeArea)})` }}>
           <div class="kjun-bottom-action-content">{props.description && <p>{props.description}</p>}{floating ? <KjunActionSize size="lg" shape="pill">{actions}</KjunActionSize> : actions}</div>
         </div>
       );

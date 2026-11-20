@@ -728,7 +728,11 @@ set("BottomNavigation", {
   showLabels: { default: "true", summary: "아이콘 아래에 라벨을 보입니다. false면 아이콘만 56px 높이로 그리고 label은 접근성 이름으로 남습니다. 아이콘이 없는 글자 전용 바는 항상 라벨을 보입니다." },
   surface: { default: "true", summary: "표면색 바탕을 그립니다. 각진 바에 위쪽으로 옅은 그림자를 던져 위의 콘텐츠와 구분합니다. false면 바탕·그림자 없이 부모 배경이 그대로 보입니다." },
 });
-for (const name of ["BottomNavigation", "FloatingNavigation", "BottomActionBar"]) set(name, { keyboardVisible: { default: "기기 키보드", summary: "키보드 표시 여부입니다. 생략하면 iOS·Android의 키보드 이벤트를 따르고, 넘기면 그 값을 씁니다. Native Web에는 키보드 이벤트가 없어 앱이 넘깁니다." } }, "native");
+for (const name of ["BottomNavigation", "FloatingNavigation", "BottomActionBar"]) {
+  set(name, { sticky: { default: "false", summary: "페이지를 스크롤하는 동안 바를 화면 아래 가장자리에 붙여 둡니다(position: sticky). 바는 페이지 흐름 끝에서 자기 높이만큼 자리를 그대로 차지하므로, 높이를 재거나 아래 여백을 따로 주지 않아도 마지막 내용이 바에 가리지 않습니다. 라벨·아이콘·안전 영역·설명 줄 수가 바뀌어도 맞고, 키보드로 숨으면 자리도 사라집니다. 바는 페이지 내용 맨 끝에 두고, 화면 높이 이상인 세로 flex 열(min-height: 100dvh) 안에 두면 짧은 페이지에서도 맨 아래에 놓입니다. 바와 페이지 스크롤 사이의 조상은 overflow를 visible(또는 clip)로 둡니다. hidden·auto인 조상이 있으면 그 상자에 붙습니다. floating 모양은 띄움 간격을 유지한 채 붙습니다." } });
+  set(name, { sticky: { default: "false", summary: "Native Web에서 웹과 같이 바를 화면 아래 가장자리에 붙이고 페이지 흐름 끝에서 자기 자리를 차지합니다. iOS·Android에는 스스로 고정되는 뷰가 없습니다. 그곳에서는 바를 화면 세로 열에서 앱의 ScrollView 다음에 두면 이미 내용 아래에 놓여 가리지 않으므로 이 값은 효과가 없습니다." } }, "native");
+}
+for (const name of ["BottomNavigation", "FloatingNavigation", "BottomActionBar"]) set(name, { keyboardVisible:{ default: "기기 키보드", summary: "키보드 표시 여부입니다. 생략하면 iOS·Android의 키보드 이벤트를 따르고, 넘기면 그 값을 씁니다. Native Web에는 키보드 이벤트가 없어 앱이 넘깁니다." } }, "native");
 set("BottomActionBar", { ariaLabel: "바를 화면 낭독기가 찾아 이동할 수 있는 영역(region)으로 만들고 그 이름을 붙입니다(예: 주문 요약). 생략하면 영역으로 알리지 않습니다." });
 set("BottomActionBar", { variant: { default: '"docked"', summary: "floating이면 화면 가장자리에서 떨어진 알약 모양 바가 됩니다. KjunFloatingNavigation과 같은 띄움·여백·테두리·그림자를 씁니다. 설명과 작업은 항상 한 줄에 놓이고 긴 설명은 말줄임합니다. 안의 버튼은 size를 주지 않으면 lg, 모양은 알약이 됩니다. 설명이 없으면 글자가 있는 버튼들이 폭을 나눠 채웁니다. 바는 화면 맨 아래 자리를 그대로 차지하고 둘레만 투명하므로, 내용 위에 겹쳐 띄우려면 앱이 배치합니다." } });
 set("Text", {

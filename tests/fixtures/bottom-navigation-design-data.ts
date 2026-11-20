@@ -1,7 +1,9 @@
 import { demoPalettes } from '../../shared/demo-colors';
 import { cssValues } from './style-values';
 export const navigationColors = demoPalettes[(new URLSearchParams(location.search).get('palette') || 'default') as keyof typeof demoPalettes];
-export const navigationConfig = { value: 'home', badge: 3 as string | number | boolean | null, floating: false, icons: true, mixed: false, long: false, count: 3, safeAreaBottom: 0, keyboardVisible: false, hideOnKeyboard: true, acceptNavigation: true, iconStyle: 'auto' as 'auto' | 'filled' | 'outline', showLabels: true, surface: true };
+export const navigationConfig = { value: 'home', badge: 3 as string | number | boolean | null, floating: false, icons: true, mixed: false, long: false, count: 3, safeAreaBottom: 0, keyboardVisible: false, hideOnKeyboard: true, acceptNavigation: true, iconStyle: 'auto' as 'auto' | 'filled' | 'outline', showLabels: true, surface: true, sticky: false, page: 0 };
+/** Tall page rows ahead of the bar, so a sticky bar has a page to stick over. */
+export const pageRows = (count: number) => Array.from({ length: count }, (_, index) => '본문 ' + (index + 1));
 export function navigationItems(config: typeof navigationConfig) {
   return [
     { key: 'home', label: '홈', href: '#home', icon: 'home' },

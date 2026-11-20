@@ -13,7 +13,7 @@ import {
   Switch as AriaSwitch,
 } from "react-aria-components";
 import { KjunIcon } from "./button";
-import { useKjunField } from "./input";
+import { useGroupFieldId, useKjunField } from "./input";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { componentIcons } from "../../../shared/package-runtime/component-icons";
@@ -88,7 +88,7 @@ export function KjunCheckbox<T = ChoiceValue>({
 }: KjunCheckboxProps<T>) {
   const checked = Array.isArray(value) ? value.includes(val!) : value;
   // Inside a FormGroup the box keeps its own label but takes the group's hint, error and required state.
-  const field = useKjunField(), descriptionId = useDescriptionId();
+  const field = useKjunField(), descriptionId = useDescriptionId(), inputId = useGroupFieldId(disabled, id);
   return (
     <AriaCheckbox
       isSelected={checked}
@@ -96,7 +96,7 @@ export function KjunCheckbox<T = ChoiceValue>({
       isDisabled={disabled}
       name={name}
       value={formValue}
-      id={id}
+      id={inputId}
       inputRef={inputRef}
       aria-label={ariaLabel}
       aria-labelledby={namedBy(description, children || label, ariaLabel, descriptionId)}
@@ -174,7 +174,7 @@ export function KjunSwitch({
   onValueChange,
   onChange,
 }: KjunSwitchProps) {
-  const field = useKjunField(), m = useKjunMessages();
+  const field = useKjunField(), m = useKjunMessages(), inputId = useGroupFieldId(disabled, id);
   const descriptionId = useDescriptionId(), savingId = descriptionId.replace(/-description$/, "-saving");
   const invalid = !!field?.error, required = !!field?.required;
   // react-aria's Switch takes no validation props; mark the input directly (and clear stale marks).
@@ -192,7 +192,7 @@ export function KjunSwitch({
       data-loading={loading || undefined}
       name={name}
       value={formValue}
-      id={id}
+      id={inputId}
       autoFocus={autoFocus}
       onFocus={onFocus}
       onBlur={onBlur}
@@ -265,14 +265,14 @@ export function KjunRadio({
 }: KjunRadioProps) {
   const group = useContext(RadioContext), field = useKjunField(), descriptionId = useDescriptionId();
   const selected = (group ? group.value : value) === val;
-  const blocked = disabled || !!group?.disabled, scale = size || group?.size || "md";
+  const blocked = disabled || !!group?.disabled, scale = size || group?.size || "md", inputId = useGroupFieldId(blocked, id);
   // A lone radio in a FormGroup takes the group's hint, error and required state; inside a RadioGroup the group carries them.
   const own = group ? null : field, invalid = group ? group.invalid : !!field?.error;
   return (
     <label className={choiceClass(blocked)} data-invalid={invalid || undefined}>
       <input
         ref={inputRef}
-        id={id}
+        id={inputId}
         type="radio"
         className="kjun-sr-only"
         name={group?.name || name}

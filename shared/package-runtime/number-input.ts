@@ -2,8 +2,12 @@ import type { KjunMessageScope } from "./messages";
 import { defaultMessageScope } from "./messages";
 
 export type NumberInputFormat = "number" | "amount" | "percent";
-export interface NumberInputOptions { format?: NumberInputFormat; decimals?: number; grouping?: boolean; allowNegative?: boolean; min?: number; max?: number; suffix?: unknown }
-export interface ResolvedNumberInput { format: NumberInputFormat; decimals: number; grouping: boolean; allowNegative: boolean; min?: number; max?: number; suffix?: string; maxIntegerDigits: number }
+export interface NumberInputOptions { format?: NumberInputFormat; decimals?: number; grouping?: boolean; allowNegative?: boolean; min?: number; max?: number; suffix?: unknown;
+  /** Unit the committed value lands on, counted from `min` (or 0); ArrowUp/ArrowDown move by it. */
+  step?: number }
+export interface ResolvedNumberInput { format: NumberInputFormat; decimals: number; grouping: boolean; allowNegative: boolean; min?: number; max?: number; suffix?: string; maxIntegerDigits: number;
+  /** A positive step rounded to `decimals`; undefined when not given or when it rounds to 0. */
+  step?: number }
 
 const presets: Record<NumberInputFormat, { decimals: number; grouping: boolean; allowNegative: boolean; suffix?: string }> = {
   number: { decimals: 0, grouping: true, allowNegative: false },
@@ -28,7 +32,52 @@ export function resolveNumberInput(options: NumberInputOptions): ResolvedNumberI
     max: finite(options.max),
     suffix: options.suffix === undefined ? preset.suffix : typeof options.suffix === "string" ? options.suffix : undefined,
     maxIntegerDigits: totalDigits - decimals,
+    step: resolveStep(finite(options.step), decimals),
   };
+}
+
+function resolveStep(step: number | undefined, decimals: number): number | undefined {
+  if (step === undefined || step <= 0) return undefined;
+  const rounded = Number(step.toFixed(decimals));
+  return rounded > 0 ? rounded : undefined;
+}
+
+/** The value written with `decimals` digits, "-0" dropped: the committed form. */
+function written(value: number, o: ResolvedNumberInput): string {
+  const text = value.toFixed(o.decimals);
+  return /^-0(\.0*)?$/.test(text) ? text.slice(1) : text;
+}
+const stepBase = (o: ResolvedNumberInput) => o.min ?? 0;
+
+/** A committed value moved to the nearest multiple of step from `min` (or 0); one that cannot be negative goes up a step instead.
+ * The range is not enforced: a value past min/max stays past it and shows the range message. No step, or "", returns `raw`. */
+export function snapNumber(raw: string, o: ResolvedNumberInput): string {
+  const value = Number(raw);
+  if (o.step === undefined || raw === "" || !Number.isFinite(value)) return raw;
+  const base = stepBase(o);
+  let snapped = base + Math.round((value - base) / o.step) * o.step;
+  if (!o.allowNegative && snapped < 0) snapped += o.step;
+  return written(snapped, o);
+}
+
+/** ArrowUp (1) / ArrowDown (-1): the next multiple of step from `min` (or 0) in that direction, kept within min/max (and 0 when the
+ * value cannot be negative). An empty field starts at `min`, or 0 kept within range. Null when there is no step. */
+export function stepNumber(raw: string, direction: 1 | -1, o: ResolvedNumberInput): string | null {
+  if (o.step === undefined) return null;
+  const base = stepBase(o), value = Number(raw);
+  const empty = /^-?\.?$/.test(raw) || !Number.isFinite(value);
+  let next: number;
+  if (empty) next = base;
+  else {
+    const units = (value - base) / o.step, near = Math.round(units);
+    // A value on the grid (within float noise) moves a whole step; one between points moves to the next point that way.
+    const onGrid = Math.abs(units - near) < 1e-9;
+    next = base + (onGrid ? near + direction : direction > 0 ? Math.ceil(units) : Math.floor(units)) * o.step;
+  }
+  const low = o.allowNegative ? o.min : Math.max(o.min ?? 0, 0);
+  if (o.max !== undefined && next > o.max) next = o.max;
+  if (low !== undefined && next < low) next = low;
+  return written(next, o);
 }
 
 export interface SanitizeOptions {

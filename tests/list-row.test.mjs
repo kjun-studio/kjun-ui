@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowKind, listRowMetrics, listSectionShape, warnListRowProps, warnListSectionProps, warnListSelection } from '../shared/package-runtime/list-row.ts';
+import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowKind, listRowMetrics, listSectionShape, listSectionSurface, warnListRowProps, warnListSectionProps, warnListSelection } from '../shared/package-runtime/list-row.ts';
 import { listLeadingGeometry, listRowBleed } from '../shared/package-runtime/list-leading.ts';
 import { nodeText } from '../shared/package-runtime/node-text.ts';
 
@@ -176,4 +176,11 @@ test('a Native row reads the text of element badges and values, a badge by its l
   assert.equal(nodeText(el({ count: 0 })), undefined);
   assert.equal(nodeText(el({ name: 'check' })), undefined);
   assert.equal(nodeText(null), undefined);
+});
+
+test('a section paints the surface by default, nothing when false, and the muted fill when asked', () => {
+  assert.deepEqual(listSectionSurface(), { painted: true, muted: false, attribute: undefined });
+  assert.deepEqual(listSectionSurface(true), { painted: true, muted: false, attribute: undefined });
+  assert.deepEqual(listSectionSurface(false), { painted: false, muted: false, attribute: 'false' });
+  assert.deepEqual(listSectionSurface('muted'), { painted: true, muted: true, attribute: 'muted' });
 });

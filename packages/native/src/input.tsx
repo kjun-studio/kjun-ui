@@ -2,6 +2,7 @@ import { useKjunMessages } from "../../../shared/package-runtime/messages-contex
 import { FieldClear, FieldReveal } from "./field-clear";
 import { inputCount, inputReveal, inputShowsClear } from "../../../shared/package-runtime/input-field";
 import { joinHints, mergeIds } from "../../../shared/package-runtime/aria-ids";
+import type { FormGroupElement } from "../../../shared/package-runtime/field-group";
 import { inputEdge, type InputVariant } from "../../../shared/package-runtime/input-variant";
 import { FieldTextInput, fieldTarget, useFieldSurface } from "./field-surface";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
@@ -63,6 +64,9 @@ export interface KjunFormGroupProps {
   /** The group keeps a bottom gap (form itemGap) even when it is the last child; Stack, Inline and FormLayout remove it, or pass
    * { marginBottom: 0 } here. */
   style?: StyleProp<ViewStyle>;
+  /** "fieldset" groups several choices under one name, as on the web: the view is a group named by the label (Native Web
+   * also points it at the hint or error). Native has no element ids, so the id is not handed to a choice. */
+  as?: FormGroupElement;
 }
 export function KjunFormGroup({
   label,
@@ -75,6 +79,7 @@ export function KjunFormGroup({
   labelEnd,
   children,
   style,
+  as = "div",
 }: KjunFormGroupProps) {
   const m = useKjunMessages();
   const uid = useId().replace(/:/g, "");
@@ -87,7 +92,8 @@ export function KjunFormGroup({
   // described by the error alone.
   const shownError = error || Object.values(controlErrors).find(Boolean) || "";
   const shownHint = shownError ? "" : hint;
-  const showLabel = !!label && !labelHidden, hasEnd = labelEnd != null && labelEnd !== false;
+  const showLabel = !!label && !labelHidden, hasEnd = labelEnd != null && labelEnd !== false, group = as === "fieldset";
+  const describedBy = mergeIds(shownHint ? fieldId + "-hint" : undefined, shownError ? fieldId + "-error" : undefined);
   const labelText = showLabel && (
     <FontText
       nativeID={fieldId + "-label"}
@@ -101,10 +107,14 @@ export function KjunFormGroup({
   );
   return (
     <FieldContext.Provider
-      value={{ id: fieldId, label, error, hint: shownHint, required, labelHidden, reportError,
-        describedBy: mergeIds(shownHint ? fieldId + "-hint" : undefined, shownError ? fieldId + "-error" : undefined) }}
+      value={{ id: fieldId, label, error, hint: shownHint, required, labelHidden, reportError, describedBy }}
     >
-      <View style={[{ minWidth: 0, marginBottom: tokens.extensions.form.itemGap }, style]}>
+      <View
+        style={[{ minWidth: 0, marginBottom: tokens.extensions.form.itemGap }, style]}
+        role={group ? "group" : undefined}
+        aria-label={group ? label : undefined}
+        {...(group && Platform.OS === "web" ? { "aria-describedby": describedBy } : {})}
+      >
         {hasEnd ? (
           <View style={{ flexDirection: "row", alignItems: "baseline", justifyContent: showLabel ? "space-between" : "flex-end",
             gap: tokens.extensions.form.messageGap, marginBottom: tokens.extensions.form.labelGap }}>

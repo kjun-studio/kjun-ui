@@ -5,13 +5,13 @@ import { warnNestedControls } from "../../../shared/package-runtime/nested-contr
 import { hasContent } from "../../../shared/package-runtime/content-presence";
 import { KjunIcon } from "./button";
 import { Collapse } from "./collapse";
-import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowExpandable, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
+import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowExpandable, listRowKind, listSectionShape, listSectionSurface, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionSurface, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { ListShapeContext } from "./list-context";
 import { ReorderContext, ReorderControls, useReorder, type KjunListReorderControls, type KjunListReorderMove } from "./reorder-controls";
 import { reorderPlace } from "../../../shared/package-runtime/reorder";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
 import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
-export type { ListChoiceValue, ListGroupVariant, ListSectionVariant, ListTrailingPosition } from "../../../shared/package-runtime/list-row";
+export type { ListChoiceValue, ListGroupVariant, ListSectionSurface, ListSectionVariant, ListTrailingPosition } from "../../../shared/package-runtime/list-row";
 export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 export type { KjunListReorderControls, KjunListReorderMove } from "./reorder-controls";
 // The section's selection mode and, when it owns the value, that value (a single-choice list is a radiogroup). Whether
@@ -128,8 +128,8 @@ export interface KjunListSectionProps {
   badge?: ReactNode;
   /** id, class and style of the root section. */
   id?: string; className?: string; style?: CSSProperties;
-  /** Paints the surface background (default true); false lets the page background show through. */
-  surface?: boolean;
+  /** Paints the surface background (default true); false lets the page background show through; "muted" paints the muted fill, which sets rows apart inside a white card or modal. */
+  surface?: ListSectionSurface;
   /** Draws dividers between rows (default true; false in a details section). An open section draws none; giving it true warns in development. */
   divider?: boolean;
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. A details section keeps its own 32px rows. */
@@ -195,9 +195,9 @@ export function KjunListSection({ title, description, badge, id: rootId, classNa
     : hasContent(children)
     ? <ul ref={setList} className="kjun-list" role={choice ? "radiogroup" : undefined} aria-label={ariaLabel || undefined} aria-labelledby={ariaLabel || !title ? undefined : hasBadge ? id + " " + id + "-badge" : id} aria-describedby={describedBy} data-divider={divider ? undefined : "false"} data-density={compact} data-variant={look}><ListSelectionContext.Provider value={selection}><ReorderContext.Provider value={reorder.context}>{children}</ReorderContext.Provider></ListSelectionContext.Provider></ul>
     : hasContent(empty) ? <div className="kjun-list-empty" data-density={compact}>{empty}</div> : null;
-  return <ListShapeContext.Provider value={shape}><section id={rootId} className={"kjun-list-section" + (className ? " " + className : "")} style={style} data-surface={surface ? undefined : "false"} data-outside={outside || undefined} data-variant={look}>
+  return <ListShapeContext.Provider value={shape}><section id={rootId} className={"kjun-list-section" + (className ? " " + className : "")} style={style} data-surface={listSectionSurface(surface).attribute} data-outside={outside || undefined} data-variant={look}>
     {(title || description || hasContent(actions)) && <div className="kjun-list-heading" data-bare={bare ? "" : undefined}><div>{hasBadge ? <div className="kjun-list-heading-title"><Heading id={id}>{title}</Heading><span id={id + "-badge"} className="kjun-list-heading-badge">{badge}</span></div> : title && <Heading id={id}>{title}</Heading>}{description && <p id={id + "-description"}>{description}</p>}</div>{hasContent(actions) && <div ref={setActionsBox} className="kjun-list-heading-actions">{actions}</div>}</div>}
-    {outside ? <div className="kjun-list-panel" data-surface={surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
+    {outside ? <div className="kjun-list-panel" data-surface={listSectionSurface(surface).attribute} style={rounded}>{rows}</div> : rows}
     {note && <div id={note} className="kjun-list-footer">{reorderDisabledText}</div>}
     {hasFooter && <div id={id + "-footer"} className="kjun-list-footer">{footer}</div>}
     {/* Each move is announced: the row and its new place. */}

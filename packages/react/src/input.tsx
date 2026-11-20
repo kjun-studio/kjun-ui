@@ -3,6 +3,7 @@ import { tokens,type InputSize } from "@kjun-ui/tokens";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
 import { inputEdge, type InputVariant } from "../../../shared/package-runtime/input-variant";
 import { inputCount, inputReveal, inputShowsClear } from "../../../shared/package-runtime/input-field";
+import { claimGroupField, groupFieldOwner, releaseGroupField, type FieldGroupClaim, type FormGroupElement } from "../../../shared/package-runtime/field-group";
 import {
 createContext,
 forwardRef,
@@ -28,10 +29,22 @@ interface FieldContextValue {
   setControlId?: (id: string | undefined) => void;
   /** A control's own message (NumberInput's range) shown in the group's error slot; "" clears it. The group's error wins. */
   reportError?: (owner: string, message: string) => void;
+  /** Set by a fieldset FormGroup: the choice controls inside claim the group's id, and the owner wears it. */
+  group?: { owner?: string; claim: (key: string, disabled: boolean) => void; release: (key: string) => void };
 }
 // Internal boundary for composite fields; index.ts exports only public controls.
 export const FieldContext = createContext<FieldContextValue | null>(null);
 export const useKjunField = () => useContext(FieldContext);
+/** In a fieldset FormGroup, the group's id for the first enabled choice control (field-group.ts), so app code can focus the
+ * group by that id; elsewhere, or when the control has its own id, the control's own id. */
+export function useGroupFieldId(disabled: boolean, own?: string): string | undefined {
+  const field = useContext(FieldContext), key = useId(), group = own == null ? field?.group : undefined;
+  const claim = group?.claim, release = group?.release;
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- the claim keeps its place; the next effect updates disabled.
+  useLayoutEffect(() => { if (!claim || !release) return; claim(key, disabled); return () => release(key); }, [claim, release, key]);
+  useLayoutEffect(() => { claim?.(key, disabled); }, [claim, key, disabled]);
+  return group && group.owner === key ? field!.id : own;
+}
 export interface KjunFormGroupProps {
   label?: string;
   id?: string;
@@ -46,6 +59,9 @@ export interface KjunFormGroupProps {
   labelEnd?: ReactNode;
   /** Extra class on the group root, for placement in the page layout. */
   className?: string;
+  /** "fieldset" groups several choices (checkboxes, radios, FilterGroup, ButtonGroup) under one name: the root is a fieldset
+   * whose legend is the label and which the hint or error describes, and the id goes to the first enabled choice. */
+  as?: FormGroupElement;
   children: ReactNode;
 }
 export function KjunFormGroup({
@@ -58,6 +74,7 @@ export function KjunFormGroup({
   labelHidden = false,
   labelEnd,
   className,
+  as = "div",
   children,
 }: KjunFormGroupProps) {
   const m = useKjunMessages();
@@ -74,21 +91,33 @@ export function KjunFormGroup({
   const hintId = shownHint ? fieldId + "-hint" : undefined, errorId = shownError ? fieldId + "-error" : undefined;
   const describedBy = mergeIds(hintId, errorId);
   const [controlId, setControlId] = useState<string>();
-  const labelNode = label && (
-    <label className={"kjun-form-label" + (labelHidden ? " kjun-sr-only" : "")} id={labelId} htmlFor={controlId || fieldId}>
-      {label}
-      {/* The input's required state already says it; the star is only drawn. */}
-      {required && <span className="kjun-form-required" aria-hidden="true"> *</span>}
-      {optional && !required && <span className="kjun-form-optional"> {m.optional}</span>}
-    </label>
-  );
+  const grouped = as === "fieldset", hasEnd = labelEnd != null && labelEnd !== false;
+  const [claims, setClaims] = useState<FieldGroupClaim[]>([]);
+  const [groupApi] = useState(() => ({
+    claim: (key: string, disabled: boolean) => setClaims(old => claimGroupField(old, key, disabled)),
+    release: (key: string) => setClaims(old => releaseGroupField(old, key)),
+  }));
+  const marks = <>
+    {/* The input's required state already says it; the star is only drawn. */}
+    {required && <span className="kjun-form-required" aria-hidden="true"> *</span>}
+    {optional && !required && <span className="kjun-form-optional"> {m.optional}</span>}
+  </>;
+  // A legend names its fieldset only as the fieldset's own child, so with labelEnd it is read but not drawn, and the label
+  // row draws an unread copy beside labelEnd.
+  const labelNode = label && (grouped
+    ? <legend className={"kjun-form-label" + (labelHidden || hasEnd ? " kjun-sr-only" : "")} id={labelId}>{label}{marks}</legend>
+    : <label className={"kjun-form-label" + (labelHidden ? " kjun-sr-only" : "")} id={labelId} htmlFor={controlId || fieldId}>{label}{marks}</label>);
+  const shownLabel = grouped && hasEnd ? label && !labelHidden && <span className="kjun-form-label" aria-hidden="true">{label}{marks}</span> : labelNode;
+  const Root = grouped ? "fieldset" : "div";
   return (
     <FieldContext.Provider
-      value={{ id: fieldId, labelId, describedBy, error, required, setControlId, reportError }}
+      value={{ id: fieldId, labelId, describedBy, error, required, setControlId, reportError,
+        group: grouped ? { ...groupApi, owner: groupFieldOwner(claims) } : undefined }}
     >
-      <div className={className ? "kjun-form-group " + className : "kjun-form-group"}>
-        {labelEnd != null && labelEnd !== false ? (
-          <div className="kjun-form-label-row">{labelNode}<span className="kjun-form-label-end">{labelEnd}</span></div>
+      <Root className={className ? "kjun-form-group " + className : "kjun-form-group"} aria-describedby={grouped ? describedBy : undefined}>
+        {grouped && hasEnd && labelNode}
+        {hasEnd ? (
+          <div className="kjun-form-label-row">{shownLabel}<span className="kjun-form-label-end">{labelEnd}</span></div>
         ) : labelNode}
         {children}
         {shownHint && (
@@ -102,7 +131,7 @@ export function KjunFormGroup({
             {shownError}
           </p>
         )}
-      </div>
+      </Root>
     </FieldContext.Provider>
   );
 }

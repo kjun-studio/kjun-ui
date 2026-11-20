@@ -7,6 +7,8 @@ import { groupKeydown } from "../../../shared/package-runtime/group-keyboard";
 import { filterSelected, nextFilterValue } from "../../../shared/package-runtime/filter-value";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useFilterScroll } from "./use-filter-scroll";
+import { useGroupFieldId } from "./input";
+import { firstEnabledIndex } from "../../../shared/package-runtime/field-group";
 export * from "./choice-controls";
 import type { ChoiceOption, ChoiceValue } from "./choice-controls";
 export { KjunTextarea } from "./textarea";
@@ -33,6 +35,8 @@ export function KjunButtonGroup({
   onChange,
 }: KjunButtonGroupProps) {
   const { group, indicator } = useSelectionIndicator();
+  // In a fieldset FormGroup the group's id goes on the first enabled segment, so the group can be focused by that id.
+  const first = firstEnabledIndex(options, disabled), groupId = useGroupFieldId(first < 0 || disabled || !!options[first]?.disabled);
   return (
     <div
       ref={group}
@@ -49,11 +53,12 @@ export function KjunButtonGroup({
     >
       <span ref={indicator} className="kjun-button-group-indicator" aria-hidden="true" hidden
         style={{ borderRadius: tokens.buttonGroup.itemRadii[size] }} />
-      {options.map((option) => {
+      {options.map((option, index) => {
         const iconOnly = !!(option.iconOnly && option.icon), blocked = disabled || option.disabled;
         const segment = (
           <button
             key={String(option.value)}
+            id={index === first ? groupId : undefined}
             type="button"
             aria-pressed={value === option.value}
             aria-label={iconOnly ? option.label : undefined}
@@ -112,6 +117,7 @@ export function KjunFilterGroup({
 }: KjunFilterGroupProps) {
   const m = useKjunMessages();
   const root = useFilterScroll(scroll, multiple, value);
+  const first = firstEnabledIndex(options, disabled), groupId = useGroupFieldId(first < 0 || disabled || !!options[first]?.disabled);
   return (
     <div
       ref={root}
@@ -121,11 +127,12 @@ export function KjunFilterGroup({
       data-scroll={scroll}
       onKeyDown={groupKeydown}
     >
-      {options.map((option) => {
+      {options.map((option, index) => {
         const on = filterSelected(value, option.value, multiple), counted = option.count != null && option.count !== "";
         return (
           <button
             key={String(option.value)}
+            id={index === first ? groupId : undefined}
             type="button"
             className="kjun-filter-chip"
             // Corners follow the button scale with the height, so every size keeps the same shape.

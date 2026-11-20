@@ -35,3 +35,9 @@ export function revealDelta(itemStart: number, itemEnd: number, viewStart: numbe
   if (itemEnd > viewEnd) return itemEnd - viewEnd;
   return 0;
 }
+
+/**
+ * Web: how far a floating bar (the capsule, or a floating action bar's content) stands off the screen's bottom edge — its
+ * margin in the page flow and, with sticky, its distance from the viewport's bottom while it sticks, so both agree.
+ */
+export const floatingBarEdge = (offset: number, safeBottom: string) => `calc(${offset}px + ${safeBottom})`;

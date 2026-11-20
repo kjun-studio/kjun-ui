@@ -145,6 +145,9 @@ export const kjunPropValues = Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),
     variant: Object.freeze(["danger","primary","success"] as const),
   }),
+  KjunFormGroup: Object.freeze({
+    as: Object.freeze(["div","fieldset"] as const),
+  }),
   KjunFormSkeleton: Object.freeze({
     size: Object.freeze(["sm","md","lg"] as const),
   }),
@@ -192,6 +195,7 @@ export const kjunPropValues = Object.freeze({
     radius: Object.freeze(["none","sm","md","lg","xl"] as const),
     reorderControls: Object.freeze(["both","buttons","handle"] as const),
     selectionMode: Object.freeze(["multiple","none","single"] as const),
+    surface: Object.freeze([false,true,"muted"] as const),
     titleVariant: Object.freeze(["label","title"] as const),
     variant: Object.freeze(["default","details","open"] as const),
   }),

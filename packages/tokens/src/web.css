@@ -184,6 +184,10 @@
   font-weight: var(--_kjun-type-label-weight);
   letter-spacing: var(--_kjun-type-label-tracking);
 }
+/* as="fieldset": the group drops the browser's frame, and its legend is the label with the label's gap to the choices. */
+fieldset.kjun-form-group { border: 0; padding: 0; margin-inline: 0; margin-top: 0; min-inline-size: 0; }
+.kjun-form-group > legend.kjun-form-label { padding: 0; }
+.kjun-form-group > legend.kjun-form-label:not(.kjun-sr-only) { width: 100%; }
 .kjun-form-hint,
 .kjun-form-error {
   font-size: var(--_kjun-type-caption-size);

@@ -30,3 +30,9 @@ test('a text-only bar always shows its labels and never becomes the lower icon b
     assert.deepEqual(layout.parts({}), { showLabel: true, iconBox: false, badgeOnIcon: false });
   }
 });
+
+test('a floating bar stands off the bottom edge by its offset plus the safe area, in flow and while it sticks', async () => {
+  const { floatingBarEdge } = await import('../shared/package-runtime/bottom-navigation.ts');
+  assert.equal(floatingBarEdge(16, 'var(--_kjun-safe-area-bottom)'), 'calc(16px + var(--_kjun-safe-area-bottom))');
+  assert.equal(floatingBarEdge(16, '0px'), 'calc(16px + 0px)');
+});

@@ -20,6 +20,12 @@ const common = {
   hint: detail("입력 도움말입니다.", {
     "표시 조건": "error가 있으면 숨기고 그 자리에 오류를 표시해 필드 높이를 유지합니다. 입력의 접근성 설명도 그동안 error만 가리킵니다.",
   }),
+  as: { default: '"div"', ...detail("\"fieldset\"이면 여러 선택지(체크박스 여러 개, 라디오, FilterGroup, ButtonGroup)를 한 이름으로 묶습니다.", {
+    "웹 구조": "React·Vue 3에서 바깥 요소가 fieldset이 되고 label이 legend로 그려집니다. 모양과 legend 아래 간격은 일반 라벨과 같고 브라우저 기본 테두리·여백은 지웁니다. hint·error는 fieldset의 aria-describedby로 연결되며, 안의 체크박스·라디오·스위치는 지금처럼 오류일 때 aria-invalid를 받습니다. labelEnd가 있으면 legend는 낭독용으로 숨기고 같은 줄에 보이는 라벨을 따로 그립니다.",
+    "id와 포커스": "id는 묶음 안에서 처음 등록된 활성 선택지가 받습니다. 체크박스·라디오·스위치는 그 입력에, FilterGroup·ButtonGroup은 첫 활성 항목 버튼에 붙습니다. 그래서 저장 오류 뒤 document.getElementById(id)?.focus()로 첫 선택지에 포커스를 옮길 수 있습니다. 자기 id를 준 선택지는 받지 않습니다. 묶음 안의 텍스트 입력은 지금처럼 id를 그대로 쓰므로 묶음에는 선택지만 두세요.",
+    "Native": "fieldset이 없으므로 그룹 역할(role=\"group\")과 label 이름을 가진 View로 묶습니다. Native Web은 hint·error도 연결합니다. Native 컨트롤에는 요소 id가 없어 id를 선택지에 넘기지 않습니다.",
+    "기본값": "\"div\"는 지금처럼 컨트롤 하나에 label을 연결합니다.",
+  }) },
 };
 const labelEnd = (type) => ({ type, ...detail("라벨 줄 끝에 둘 보조 내용입니다. 글자 수나 \"전액\" 같은 작은 동작에 씁니다.", {
   배치: "라벨과 같은 줄 오른쪽 끝에 caption 크기로 둡니다. 오류가 생겨도 자리가 바뀌지 않고 라벨과 입력 사이 간격도 그대로입니다.",

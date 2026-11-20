@@ -11,7 +11,8 @@ import { filterSelected, nextFilterValue } from "../../../shared/package-runtime
 import { trackFilterScroll } from "../../../shared/package-runtime/filter-scroll";
 import { KjunIcon } from "./button";
 import { KjunTooltip } from "./popover";
-import { useKjunField, useKjunId } from "./input";
+import { useGroupFieldId, useKjunField, useKjunId } from "./input";
+import { firstEnabledIndex } from "../../../shared/package-runtime/field-group";
 import { useFocusVisible } from "./runtime/focus-visible";
 import { css } from "./runtime/style";
 import { mergeIds } from "../../../shared/package-runtime/aria-ids";
@@ -80,6 +81,7 @@ export const KjunCheckbox = defineComponent({
     const focus = useFocusVisible();
     const input = useChoiceInput(expose);
     const descriptionId = useKjunId("kjun-checkbox-description-");
+    const inputId = useGroupFieldId(() => props.disabled, () => props.id);
     // The mixed state's minus is not in every app's icon set.
     provideFallbackIcons(componentIcons);
     return () => {
@@ -88,7 +90,7 @@ export const KjunCheckbox = defineComponent({
       const invalid = !!field.value?.error;
       return (
         <label class={choiceClass(props.disabled)} data-focus-visible={focus.visible.value || undefined} data-invalid={invalid || undefined}>
-          <input ref={input} id={props.id} type="checkbox" class="kjun-sr-only" checked={checked} indeterminate={props.indeterminate} disabled={props.disabled}
+          <input ref={input} id={inputId.value} type="checkbox" class="kjun-sr-only" checked={checked} indeterminate={props.indeterminate} disabled={props.disabled}
             name={props.name} value={props.formValue} aria-label={props.ariaLabel}
             aria-labelledby={namedBy(props.description, !!(props.label || slots.default), props.ariaLabel, descriptionId)}
             // Inside a FormGroup the box keeps its own label but takes the group's hint, error and required state.
@@ -143,11 +145,12 @@ export const KjunSwitch = defineComponent({
     const focus = useFocusVisible();
     const input = useChoiceInput(expose);
     const descriptionId = useKjunId("kjun-switch-description-"), savingId = useKjunId("kjun-switch-saving-");
+    const inputId = useGroupFieldId(() => props.disabled, () => props.id);
     const m = useKjunMessages();
     return () => (
       <label class={choiceClass(props.disabled)} data-focus-visible={focus.visible.value || undefined} data-loading={props.loading || undefined}>
         {props.loading && <span id={savingId} hidden>{m.value.saving}</span>}
-        <input ref={input} id={props.id} type="checkbox" role="switch" class="kjun-sr-only" checked={props.modelValue} disabled={props.disabled} name={props.name} value={props.formValue}
+        <input ref={input} id={inputId.value} type="checkbox" role="switch" class="kjun-sr-only" checked={props.modelValue} disabled={props.disabled} name={props.name} value={props.formValue}
           aria-label={props.ariaLabel || props.label}
           aria-labelledby={namedBy(props.description, !props.ariaLabel && !props.label && !!slots.default, undefined, descriptionId)}
           // aria-busy alone is not read on form controls, so the saving state is also a description.
@@ -198,6 +201,7 @@ export const KjunRadio = defineComponent({
     const focus = useFocusVisible();
     const input = useChoiceInput(expose);
     const descriptionId = useKjunId("kjun-radio-description-");
+    const inputId = useGroupFieldId(() => props.disabled || !!group?.value?.disabled, () => props.id);
     return () => {
       const context = group?.value;
       const selected = (context ? context.value : props.modelValue) === props.val;
@@ -206,7 +210,7 @@ export const KjunRadio = defineComponent({
       const own = context ? null : field.value, invalid = context ? context.invalid : !!own?.error;
       return (
         <label class={choiceClass(blocked)} data-focus-visible={focus.visible.value || undefined} data-invalid={invalid || undefined}>
-          <input ref={input} id={props.id} type="radio" class="kjun-sr-only" name={context?.name || props.name}
+          <input ref={input} id={inputId.value} type="radio" class="kjun-sr-only" name={context?.name || props.name}
             // A form submits the chosen radio's val, not the browser's default "on".
             value={String(props.val)} checked={selected} disabled={blocked} aria-label={props.ariaLabel}
             aria-labelledby={namedBy(props.description, !!(props.label || slots.default), props.ariaLabel, descriptionId)}
@@ -298,17 +302,20 @@ export const KjunButtonGroup = defineComponent({
   emits: { "update:modelValue": (_value: ChoiceValue) => true, change: (_value: ChoiceValue) => true },
   setup(props, { emit }) {
     const { group, indicator } = useSelectionIndicator();
+    // In a fieldset FormGroup the group's id goes on the first enabled segment, so the group can be focused by that id.
+    const first = computed(() => firstEnabledIndex(props.options, props.disabled));
+    const groupId = useGroupFieldId(() => first.value < 0 || props.disabled || !!props.options[first.value]?.disabled, () => undefined);
     return () => {
       const size = props.size, metrics = tokens.buttonGroup;
       return (
         <div ref={group} role="group" aria-label={props.ariaLabel} class="kjun-button-group" onKeydown={groupKeydown}
           style={css({ height: metrics.heights[size], padding: metrics.padding[size], borderRadius: metrics.radii[size], width: props.fullWidth ? "100%" : "fit-content" })}>
           <span ref={indicator} class="kjun-button-group-indicator" aria-hidden="true" hidden style={css({ borderRadius: metrics.itemRadii[size] })} />
-          {props.options.map(option => {
+          {props.options.map((option, index) => {
             const active = props.modelValue === option.value;
             const iconOnly = !!(option.iconOnly && option.icon), blocked = props.disabled || option.disabled;
             const segment = (
-              <button key={String(option.value)} type="button" aria-pressed={active} aria-label={iconOnly ? option.label : undefined} disabled={blocked}
+              <button key={String(option.value)} id={index === first.value ? groupId.value : undefined} type="button" aria-pressed={active} aria-label={iconOnly ? option.label : undefined} disabled={blocked}
                 // An icon-only segment is square: as wide as the segment is tall.
                 style={css({ flex: props.fullWidth ? 1 : undefined, width: iconOnly && !props.fullWidth ? metrics.heights[size] - 2 * metrics.padding[size] : undefined,
                   // Full width, every segment keeps the item padding, so icon-only and labelled segments share the track equally.
@@ -344,6 +351,8 @@ export const KjunFilterGroup = defineComponent({
   emits: { "update:modelValue": (_value: ChoiceValue | ChoiceValue[]) => true, change: (_value: ChoiceValue | ChoiceValue[]) => true },
   setup(props, { emit }) {
     const m = useKjunMessages(), root = ref<HTMLElement | null>(null);
+    const first = computed(() => firstEnabledIndex(props.options, props.disabled));
+    const groupId = useGroupFieldId(() => first.value < 0 || props.disabled || !!props.options[first.value]?.disabled, () => undefined);
     // Scroll mode, as React's useFilterScroll: fade the clipped edges and keep the selected chip in view
     // (in multiple mode only on mount, so turning a chip off does not pull the row elsewhere).
     let tracker: ReturnType<typeof trackFilterScroll> | undefined;
@@ -359,10 +368,10 @@ export const KjunFilterGroup = defineComponent({
       const value = props.modelValue, size = props.size;
       return (
         <div ref={root} role="group" aria-label={props.ariaLabel} class="kjun-filter-group" data-scroll={String(props.scroll)} onKeydown={groupKeydown}>
-          {props.options.map(option => {
+          {props.options.map((option, index) => {
             const on = filterSelected(value, option.value, props.multiple), counted = option.count != null && option.count !== "";
             return (
-              <button key={String(option.value)} type="button" class="kjun-filter-chip"
+              <button key={String(option.value)} id={index === first.value ? groupId.value : undefined} type="button" class="kjun-filter-chip"
                 // Corners follow the button scale with the height, so every size keeps the same shape.
                 style={css({ borderRadius: tokens.button.radii[size] })} aria-pressed={on}
                 aria-label={counted ? m.value.filterCount(option.label, String(option.count)) : undefined}

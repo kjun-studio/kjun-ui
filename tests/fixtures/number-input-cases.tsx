@@ -33,6 +33,7 @@ export function NumberInputCases({ K, native = false, providerProps = {} }: { K:
     </K.KjunFormGroup>)}
     {section('end', <K.KjunNumberInput {...bind('end')} format="amount" align="end" ariaLabel="오른쪽 정렬" />)}
     {section('disabled', <K.KjunNumberInput {...bind('disabled')} format="amount" disabled ariaLabel="비활성" />)}
+    {section('stepped', <K.KjunNumberInput {...bind('stepped')} step={100} min={2700} max={6500} suffix="K" ariaLabel="색온도" />)}
     {section('reference', native
       ? <K.KjunInput value="1,234" ariaLabel="기준" onChangeText={() => {}} />
       : <K.KjunInput value="1,234" ariaLabel="기준" onValueChange={() => {}} />)}

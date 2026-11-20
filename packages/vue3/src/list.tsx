@@ -8,13 +8,13 @@ import { useKjunId } from "./input";
 import { hasContent } from "./runtime/slots";
 import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
-import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowExpandable, listRowKind, listSectionShape, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
+import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowExpandable, listRowKind, listSectionShape, listSectionSurface, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionSurface, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
 import { kjunListShapeKey } from "./runtime/list-context";
 import { kjunReorderKey, renderReorderControls, useReorder, type KjunListReorderControls, type KjunListReorderMove } from "./reorder-controls";
 import { reorderPlace } from "../../../shared/package-runtime/reorder";
 import { useKjunMessages } from "./runtime/messages";
 import { bindRadioKeyboard } from "../../../shared/package-runtime/radio-keyboard";
-export type { ListChoiceValue, ListGroupVariant, ListSectionVariant, ListTrailingPosition } from "../../../shared/package-runtime/list-row";
+export type { ListChoiceValue, ListGroupVariant, ListSectionSurface, ListSectionVariant, ListTrailingPosition } from "../../../shared/package-runtime/list-row";
 export type { ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 export type { KjunListReorderControls, KjunListReorderMove } from "./reorder-controls";
 
@@ -172,8 +172,8 @@ const kjunListSectionProps = {
   title: { type: String, default: undefined },
   description: { type: String, default: undefined },
   ariaLabel: { type: String, default: undefined },
-  /** Paints the surface background (default true); false lets the page background show through. */
-  surface: { type: Boolean, default: true },
+  /** Paints the surface background (default true); false lets the page background show through; "muted" paints the muted fill, which sets rows apart inside a white card or modal. */
+  surface: { type: [Boolean, String] as PropType<ListSectionSurface>, default: true },
   /** Draws dividers between rows (default true; false in a details section). An open section draws none; giving it true warns in development. */
   divider: { type: Boolean, default: undefined },
   /** "compact" rows keep the 16px inset but are 44 tall (the touch minimum) instead of 56. A details section keeps its own 32px rows. */
@@ -250,11 +250,11 @@ export const KjunListSection = defineComponent({
         ? <ul ref={list} class="kjun-list" role={choice.value ? "radiogroup" : undefined} aria-label={props.ariaLabel || undefined} aria-labelledby={props.ariaLabel || !props.title ? undefined : hasBadge ? id + " " + id + "-badge" : id} aria-describedby={describedBy} data-divider={props.divider ?? !details ? undefined : "false"} data-density={compact} data-variant={look}>{children}</ul>
         : hasContent(empty) ? <div class="kjun-list-empty" data-density={compact}>{empty}</div> : null;
       return (
-        <section class="kjun-list-section" data-surface={props.surface ? undefined : "false"} data-outside={outside || undefined} data-variant={look}>
+        <section class="kjun-list-section" data-surface={listSectionSurface(props.surface).attribute} data-outside={outside || undefined} data-variant={look}>
           {(props.title || props.description || hasContent(actions)) && (
             <div class="kjun-list-heading" data-bare={bare ? "" : undefined}><div>{hasBadge ? <div class="kjun-list-heading-title"><Heading id={id}>{props.title}</Heading><span id={id + "-badge"} class="kjun-list-heading-badge">{badge}</span></div> : props.title && <Heading id={id}>{props.title}</Heading>}{props.description && <p id={id + "-description"}>{props.description}</p>}</div>{hasContent(actions) && <div ref={actionsBox} class="kjun-list-heading-actions">{actions}</div>}</div>
           )}
-          {outside ? <div class="kjun-list-panel" data-surface={props.surface ? undefined : "false"} style={rounded}>{rows}</div> : rows}
+          {outside ? <div class="kjun-list-panel" data-surface={listSectionSurface(props.surface).attribute} style={rounded}>{rows}</div> : rows}
           {note() && <div id={note()} class="kjun-list-footer">{props.reorderDisabledText}</div>}
           {hasFooter && <div id={id + "-footer"} class="kjun-list-footer">{footer}</div>}
           {/* Each move is announced: the row and its new place. */}

@@ -126,6 +126,18 @@ export type ListGroupVariant = "inset" | "flush" | "open";
 /** "details": rows that are read, not pressed, such as "Payment method / Visa": 32 tall, no dividers by default, the
  * label in the secondary body type and the value in the text color, given the room the label leaves. */
 export type ListSectionVariant = "default" | "open" | "details";
+/** A section's fill: true paints the surface, false none, "muted" the muted (secondary) fill that sets rows apart inside a white card or modal. */
+export type ListSectionSurface = boolean | "muted";
+/**
+ * How a section's fill draws, the same on every platform: whether it paints at all, whether it is the muted fill, and the
+ * web data-surface value (none for the plain surface, "false" for no fill, "muted"). On the muted fill a badge takes the
+ * plain surface like inside a tinted card, dividers take the border role and an open row's icon square the surface, so
+ * none of them dissolves into the fill.
+ */
+export function listSectionSurface(surface: ListSectionSurface = true) {
+  const muted = surface === "muted", painted = muted || surface === true;
+  return { painted, muted, attribute: muted ? "muted" as const : painted ? undefined : "false" as const };
+}
 /** Where a row's trailing value sits: beside the text, on the title line, or on its own line under the title. */
 export type ListTrailingPosition = "side" | "title" | "below";
 /**
