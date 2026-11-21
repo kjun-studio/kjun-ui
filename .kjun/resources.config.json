@@ -11045,6 +11045,134 @@
         "candidates": [
           {"id": "revised", "name": "오른쪽 열의 스피너 제안", "fileIds": ["comparison", "design-source"], "reproduction": "편집 원본의 비교 구성을 확인합니다."}
         ]
+      },
+      {
+        "id": "gap-r05-press-filter-group",
+        "name": "KjunFilterGroup · R-05 · 칩 눌림 배경",
+        "entryType": "proposal",
+        "kind": "ui",
+        "collectionIds": ["components"],
+        "targetResourceId": "filter-group",
+        "origin": {"name": "KJUN UI 프로젝트 내부 검토 · honeyWhaleBot KJUN UI 대기 항목"},
+        "files": [
+          {"id": "comparison", "path": "outputs/proposals/gap-r05-press-filter-group/comparison.png", "role": "preview", "mediaType": "image/png", "label": "비교 보드 전체 (기본·다크 팔레트)"},
+          {"id": "preview-a", "path": "outputs/proposals/gap-r05-press-filter-group/a.png", "role": "preview", "mediaType": "image/png", "label": "안 A — active 역할로 채움 (권장)"},
+          {"id": "preview-b", "path": "outputs/proposals/gap-r05-press-filter-group/b.png", "role": "preview", "mediaType": "image/png", "label": "안 B — 글자색 16% 겹침"},
+          {"id": "harness", "path": "output/proposals-work/harness.tsx", "role": "source", "label": "편집 가능한 렌더 하네스 (@kjun-ui/react)"},
+          {"id": "capture", "path": "output/proposals-work/capture.mjs", "role": "source", "label": "상태 강제·후보 CSS 캡처 스크립트"},
+          {"id": "board-source", "path": "output/proposals-work/board.mjs", "role": "source", "label": "비교 보드 생성 스크립트"}
+        ],
+        "previewFileId": "comparison",
+        "candidates": [
+          {"id": "a", "name": "안 A — active 역할로 채움 (권장)", "fileIds": ["preview-a", "harness", "capture", "board-source"], "reproduction": "kjun_ui_dev 컨테이너에서 output/proposals-work의 capture.mjs, board.mjs 순서로 실행합니다."},
+          {"id": "b", "name": "안 B — 글자색 16% 겹침", "fileIds": ["preview-b", "harness", "capture", "board-source"], "reproduction": "kjun_ui_dev 컨테이너에서 output/proposals-work의 capture.mjs, board.mjs 순서로 실행합니다."}
+        ]
+      },
+      {
+        "id": "gap-r05-press-tabs",
+        "name": "KjunTabs · R-05 · pills 탭 눌림 배경",
+        "entryType": "proposal",
+        "kind": "ui",
+        "collectionIds": ["components"],
+        "targetResourceId": "tabs",
+        "origin": {"name": "KJUN UI 프로젝트 내부 검토 · honeyWhaleBot KJUN UI 대기 항목"},
+        "files": [
+          {"id": "comparison", "path": "outputs/proposals/gap-r05-press-tabs/comparison.png", "role": "preview", "mediaType": "image/png", "label": "비교 보드 전체 (기본·다크 팔레트)"},
+          {"id": "preview-a", "path": "outputs/proposals/gap-r05-press-tabs/a.png", "role": "preview", "mediaType": "image/png", "label": "안 A — active 역할로 채움 (권장)"},
+          {"id": "preview-b", "path": "outputs/proposals/gap-r05-press-tabs/b.png", "role": "preview", "mediaType": "image/png", "label": "안 B — 글자색 16% 겹침"},
+          {"id": "harness", "path": "output/proposals-work/harness.tsx", "role": "source", "label": "편집 가능한 렌더 하네스 (@kjun-ui/react)"},
+          {"id": "capture", "path": "output/proposals-work/capture.mjs", "role": "source", "label": "상태 강제·후보 CSS 캡처 스크립트"},
+          {"id": "board-source", "path": "output/proposals-work/board.mjs", "role": "source", "label": "비교 보드 생성 스크립트"}
+        ],
+        "previewFileId": "comparison",
+        "candidates": [
+          {"id": "a", "name": "안 A — active 역할로 채움 (권장)", "fileIds": ["preview-a", "harness", "capture", "board-source"], "reproduction": "kjun_ui_dev 컨테이너에서 output/proposals-work의 capture.mjs, board.mjs 순서로 실행합니다."},
+          {"id": "b", "name": "안 B — 글자색 16% 겹침", "fileIds": ["preview-b", "harness", "capture", "board-source"], "reproduction": "kjun_ui_dev 컨테이너에서 output/proposals-work의 capture.mjs, board.mjs 순서로 실행합니다."}
+        ]
+      },
+      {
+        "id": "gap-r05-press-menu",
+        "name": "KjunMenuButton · R-05 · 메뉴 항목 눌림 배경",
+        "entryType": "proposal",
+        "kind": "ui",
+        "collectionIds": ["components"],
+        "targetResourceId": "menu-button",
+        "origin": {"name": "KJUN UI 프로젝트 내부 검토 · honeyWhaleBot KJUN UI 대기 항목"},
+        "files": [
+          {"id": "comparison", "path": "outputs/proposals/gap-r05-press-menu/comparison.png", "role": "preview", "mediaType": "image/png", "label": "비교 보드 전체 (기본·다크 팔레트)"},
+          {"id": "preview-a", "path": "outputs/proposals/gap-r05-press-menu/a.png", "role": "preview", "mediaType": "image/png", "label": "안 A — active 역할로 채움 (권장)"},
+          {"id": "preview-b", "path": "outputs/proposals/gap-r05-press-menu/b.png", "role": "preview", "mediaType": "image/png", "label": "안 B — 글자색 16% 겹침"},
+          {"id": "harness", "path": "output/proposals-work/harness.tsx", "role": "source", "label": "편집 가능한 렌더 하네스 (@kjun-ui/react)"},
+          {"id": "capture", "path": "output/proposals-work/capture.mjs", "role": "source", "label": "상태 강제·후보 CSS 캡처 스크립트"},
+          {"id": "board-source", "path": "output/proposals-work/board.mjs", "role": "source", "label": "비교 보드 생성 스크립트"}
+        ],
+        "previewFileId": "comparison",
+        "candidates": [
+          {"id": "a", "name": "안 A — active 역할로 채움 (권장)", "fileIds": ["preview-a", "harness", "capture", "board-source"], "reproduction": "kjun_ui_dev 컨테이너에서 output/proposals-work의 capture.mjs, board.mjs 순서로 실행합니다."},
+          {"id": "b", "name": "안 B — 글자색 16% 겹침", "fileIds": ["preview-b", "harness", "capture", "board-source"], "reproduction": "kjun_ui_dev 컨테이너에서 output/proposals-work의 capture.mjs, board.mjs 순서로 실행합니다."}
+        ]
+      },
+      {
+        "id": "gap-r06-list-row-title",
+        "name": "KjunListRow · R-06 · 제목 노드",
+        "entryType": "proposal",
+        "kind": "ui",
+        "collectionIds": ["components"],
+        "targetResourceId": "list-row",
+        "origin": {"name": "KJUN UI 프로젝트 내부 검토 · honeyWhaleBot KJUN UI 대기 항목"},
+        "files": [
+          {"id": "comparison", "path": "outputs/proposals/gap-r06-list-row-title/comparison.png", "role": "preview", "mediaType": "image/png", "label": "비교 보드 전체 (기본·다크 팔레트)"},
+          {"id": "preview-a", "path": "outputs/proposals/gap-r06-list-row-title/a.png", "role": "preview", "mediaType": "image/png", "label": "안 A — title 노드·Vue #title 슬롯 (권장)"},
+          {"id": "harness", "path": "output/proposals-work/harness.tsx", "role": "source", "label": "편집 가능한 렌더 하네스 (@kjun-ui/react)"},
+          {"id": "capture", "path": "output/proposals-work/capture.mjs", "role": "source", "label": "상태 강제·후보 CSS 캡처 스크립트"},
+          {"id": "board-source", "path": "output/proposals-work/board.mjs", "role": "source", "label": "비교 보드 생성 스크립트"}
+        ],
+        "previewFileId": "comparison",
+        "candidates": [
+          {"id": "a", "name": "안 A — title 노드·Vue #title 슬롯 (권장)", "fileIds": ["preview-a", "harness", "capture", "board-source"], "reproduction": "kjun_ui_dev 컨테이너에서 output/proposals-work의 capture.mjs, board.mjs 순서로 실행합니다."}
+        ]
+      },
+      {
+        "id": "gap-r06-filter-group-count",
+        "name": "KjunFilterGroup · R-06 · 이름과 인원",
+        "entryType": "proposal",
+        "kind": "ui",
+        "collectionIds": ["components"],
+        "targetResourceId": "filter-group",
+        "origin": {"name": "KJUN UI 프로젝트 내부 검토 · honeyWhaleBot KJUN UI 대기 항목"},
+        "files": [
+          {"id": "comparison", "path": "outputs/proposals/gap-r06-filter-group-count/comparison.png", "role": "preview", "mediaType": "image/png", "label": "비교 보드 전체 (기본·다크 팔레트)"},
+          {"id": "preview-a", "path": "outputs/proposals/gap-r06-filter-group-count/a.png", "role": "preview", "mediaType": "image/png", "label": "안 A — 기존 count 사용, 변경 없음 (권장)"},
+          {"id": "preview-b", "path": "outputs/proposals/gap-r06-filter-group-count/b.png", "role": "preview", "mediaType": "image/png", "label": "안 B — 개수 600, 전체 변경"},
+          {"id": "harness", "path": "output/proposals-work/harness.tsx", "role": "source", "label": "편집 가능한 렌더 하네스 (@kjun-ui/react)"},
+          {"id": "capture", "path": "output/proposals-work/capture.mjs", "role": "source", "label": "상태 강제·후보 CSS 캡처 스크립트"},
+          {"id": "board-source", "path": "output/proposals-work/board.mjs", "role": "source", "label": "비교 보드 생성 스크립트"}
+        ],
+        "previewFileId": "comparison",
+        "candidates": [
+          {"id": "a", "name": "안 A — 기존 count 사용, 변경 없음 (권장)", "fileIds": ["preview-a", "harness", "capture", "board-source"], "reproduction": "kjun_ui_dev 컨테이너에서 output/proposals-work의 capture.mjs, board.mjs 순서로 실행합니다."},
+          {"id": "b", "name": "안 B — 개수 600, 전체 변경", "fileIds": ["preview-b", "harness", "capture", "board-source"], "reproduction": "kjun_ui_dev 컨테이너에서 output/proposals-work의 capture.mjs, board.mjs 순서로 실행합니다."}
+        ]
+      },
+      {
+        "id": "gap-r08-top-navigation-row",
+        "name": "KjunTopNavigation · R-08 · 320px 한 줄",
+        "entryType": "proposal",
+        "kind": "ui",
+        "collectionIds": ["components"],
+        "targetResourceId": "top-navigation",
+        "origin": {"name": "KJUN UI 프로젝트 내부 검토 · honeyWhaleBot KJUN UI 대기 항목"},
+        "files": [
+          {"id": "comparison", "path": "outputs/proposals/gap-r08-top-navigation-row/comparison.png", "role": "preview", "mediaType": "image/png", "label": "비교 보드 전체 (기본·다크 팔레트)"},
+          {"id": "preview-a", "path": "outputs/proposals/gap-r08-top-navigation-row/a.png", "role": "preview", "mediaType": "image/png", "label": "안 A — 0.22.0 그대로 사용, 변경 없음 (권장)"},
+          {"id": "harness", "path": "output/proposals-work/harness.tsx", "role": "source", "label": "편집 가능한 렌더 하네스 (@kjun-ui/react)"},
+          {"id": "capture", "path": "output/proposals-work/capture.mjs", "role": "source", "label": "상태 강제·후보 CSS 캡처 스크립트"},
+          {"id": "board-source", "path": "output/proposals-work/board.mjs", "role": "source", "label": "비교 보드 생성 스크립트"}
+        ],
+        "previewFileId": "comparison",
+        "candidates": [
+          {"id": "a", "name": "안 A — 0.22.0 그대로 사용, 변경 없음 (권장)", "fileIds": ["preview-a", "harness", "capture", "board-source"], "reproduction": "kjun_ui_dev 컨테이너에서 output/proposals-work의 capture.mjs, board.mjs 순서로 실행합니다."}
+        ]
       }
     ],
     "groups": [
