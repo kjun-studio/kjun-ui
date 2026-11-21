@@ -328,7 +328,7 @@ export function KjunButton(input: KjunButtonProps) {
             {busy && !prefixIcon ? <KjunSpinnerGlyph size={iconSize} color={color} /> : suffixNode ? media(suffix) : <KjunIcon name={suffixName!}
               filled={!busy && suffixIconFilled} size={iconSize} color={color} />}
           </View>}
-          {overlayLoading && <View pointerEvents="none" accessible={false} style={{
+          {overlayLoading && <View accessible={false} style={{ pointerEvents: "none",
             position: "absolute", top: 0, bottom: 0, left: 0, right: 0,
             alignItems: "center", justifyContent: "center",
           }}><KjunSpinnerGlyph size={iconSize} color={color} /></View>}

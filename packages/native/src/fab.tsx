@@ -66,7 +66,7 @@ export function KjunFab({ icon, label, collapsed = false, ariaLabel, size = "md"
       boxShadow: shadowLayers(geometry.elevation, colors),
       ...(Platform.OS === "web" && busy ? { cursor: "auto" as const } : {}),
     })}>
-    {disabled && <View pointerEvents="none" style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: colors.brand, opacity: tokens.states.opacity.disabled }} />}
+    {disabled && <View style={{ pointerEvents: "none", position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: colors.brand, opacity: tokens.states.opacity.disabled }} />}
     <Animated.View style={{ flexDirection: "row", alignItems: "center", flexShrink: 1, maxWidth: "100%",
       ...(label ? { gap: between(geometry.labelGaps[size]), paddingStart: between(geometry.paddingStart[size]), paddingEnd: between(geometry.paddingEnd[size]) } : {}) }}>
       {busy ? <KjunSpinnerGlyph size={iconSize} color={colors.onBrand} /> : <KjunIcon name={icon} size={iconSize} color={colors.onBrand} />}

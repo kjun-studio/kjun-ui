@@ -10,7 +10,7 @@ import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 export function ScrollFadeEdge({ edge, horizontal, color }: { edge: "start" | "end"; horizontal: boolean; color: ColorValue }) {
   const id = "kjun-scroll-fade-" + useId().replace(/:/g, "") + edge, width = tokens.extensions.scrollFade.width;
   return (
-    <View pointerEvents="none" style={{ position: "absolute", ...(horizontal
+    <View style={{ pointerEvents: "none", position: "absolute", ...(horizontal
       ? { top: 0, bottom: 0, width, ...(edge === "start" ? { left: 0 } : { right: 0 }) }
       : { left: 0, right: 0, height: width, ...(edge === "start" ? { top: 0 } : { bottom: 0 }) }) }}>
       <Svg width="100%" height="100%">

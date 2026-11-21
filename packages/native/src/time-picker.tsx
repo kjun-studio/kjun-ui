@@ -154,9 +154,9 @@ export function KjunTimePicker({ value, precision = "minute", min, max, minuteSt
         ? <View style={{ marginVertical: Math.min(0, (spec.height - tokens.native.minimumTouchTarget) / 2) }}><FieldClear size={size} label={m.clearValue(ariaLabel)} onPress={() => { change(null); segmentViews.current[0]?.focus?.(); }} /></View>
         : <View aria-hidden={true} importantForAccessibility="no-hide-descendants" {...fieldTarget(() => openAt(0, segmentViews.current[0]), blocked || readOnly)}
             style={{ width: tokens.native.minimumTouchTarget, alignSelf: "stretch", alignItems: "center", justifyContent: "center" }}>
-            <View pointerEvents="none"><KjunIcon name="clock" size={spec.iconSize} color={blocked ? colors.textDisabled : colors.textTertiary} /></View></View>}
+            <View style={{ pointerEvents: "none" }}><KjunIcon name="clock" size={spec.iconSize} color={blocked ? colors.textDisabled : colors.textTertiary} /></View></View>}
       {/* Focus and an open wheel draw Input's inner border; an error keeps the danger border. */}
-      {!!(invalid || ((focused || open) && !blocked)) && <View pointerEvents="none" aria-hidden={true} style={{ position: "absolute", inset: 0, borderRadius: spec.radius,
+      {!!(invalid || ((focused || open) && !blocked)) && <View aria-hidden={true} style={{ pointerEvents: "none", position: "absolute", inset: 0, borderRadius: spec.radius,
         borderWidth: tokens.border.controlWidth, borderColor: invalid ? colors.danger : colors.inputBorderFocus }} />}
     </View>
     {panel}

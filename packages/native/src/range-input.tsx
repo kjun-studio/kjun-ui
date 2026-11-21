@@ -214,8 +214,8 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
               backgroundColor: colors.switchTrack ?? colors.border }} />
           </View>
           <View
-            pointerEvents="none"
-            style={{
+           
+            style={{ pointerEvents: "none",
               position: "absolute",
               ...(vertical ? { left: (targetSize - geometry.track) / 2, width: geometry.track } : { top: (targetSize - geometry.track) / 2, height: geometry.track }),
               // Like Web: square at the fill origin, where the origin tick sits.
@@ -228,7 +228,7 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
           {dots.filter((dot) => dot.dot).map((dot) => {
             // The fill origin is a tick across the band, like Web; other marks are dots.
             const [across, along_] = dot.origin ? [slider.originTick.length, slider.originTick.width] : [slider.markSize, slider.markSize];
-            return <View key={dot.value} pointerEvents="none" style={{ position: "absolute", ...along(dot.fraction),
+            return <View key={dot.value} style={{ pointerEvents: "none", position: "absolute", ...along(dot.fraction),
               ...(vertical
                 ? { left: (targetSize - across) / 2, marginTop: -along_ / 2, width: across, height: along_ }
                 : { top: (targetSize - across) / 2, marginStart: -along_ / 2, width: along_, height: across }),
@@ -298,8 +298,8 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
               }}
             >
               <View
-                pointerEvents="none"
-                style={{
+               
+                style={{ pointerEvents: "none",
                   width: !blocked && dragging === index ? geometry.pressedThumb : geometry.thumb,
                   height: !blocked && dragging === index ? geometry.pressedThumb : geometry.thumb,
                   borderRadius: tokens.radius.radius9999,
@@ -316,13 +316,13 @@ function RangeInput(props: KjunSliderProps | KjunRangeSliderProps) {
               />
               {/* Like Web: pressing adds a brand halo (hover a lighter one) behind the lifted white thumb, which grows to pressedThumb. */}
               {!blocked && (dragging === index || hovered === index) ? (
-                <View pointerEvents="none" style={{ position: "absolute", zIndex: -1, width: geometry.thumb + slider.haloSize * 2, height: geometry.thumb + slider.haloSize * 2,
+                <View style={{ pointerEvents: "none", position: "absolute", zIndex: -1, width: geometry.thumb + slider.haloSize * 2, height: geometry.thumb + slider.haloSize * 2,
                   borderRadius: tokens.radius.radius9999, backgroundColor: colors.brand,
                   opacity: dragging === index ? tokens.states.opacity.tintActive : tokens.states.opacity.tintControl }} />
               ) : null}
               {/* Like Web .kjun-slider-value-label: the value in a tooltip-styled bubble above the thumb (beside it when vertical). */}
               {valueLabel === "always" || (valueLabel === "drag" && !blocked && (dragging === index || focused === index)) ? (
-                <View aria-hidden pointerEvents="none" style={{ position: "absolute",
+                <View aria-hidden style={{ pointerEvents: "none", position: "absolute",
                   ...(vertical ? { start: targetSize / 2 + geometry.thumb / 2 + slider.valueLabelGap } : { bottom: targetSize / 2 + geometry.thumb / 2 + slider.valueLabelGap }),
                   paddingVertical: tokens.extensions.tooltip.paddingY, paddingHorizontal: tokens.extensions.tooltip.paddingX,
                   borderRadius: tokens.radius.radius6, backgroundColor: colors.chartTooltipBg }}>

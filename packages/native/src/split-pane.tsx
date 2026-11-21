@@ -209,7 +209,7 @@ export function KjunSplitPane({ direction = "horizontal", sizeUnit = "ratio", si
             // The browser's own focus outline (style auto) would ring the whole handle; the ring goes round the bar below.
             ...(Platform.OS === "web" ? ({ outlineStyle: "none", outlineWidth: 0, cursor: "inherit" } as unknown as ViewStyle) : {}) }}>
           {/* Like Web: the keyboard ring goes round the bar, not the whole handle. */}
-          <View pointerEvents="none" style={{ [across]: barLength, [along]: geometry.barWidth, borderRadius: tokens.radius.radius9999,
+          <View style={{ pointerEvents: "none", [across]: barLength, [along]: geometry.barWidth, borderRadius: tokens.radius.radius9999,
             ...(Platform.OS === "web" ? ({ outlineStyle: "solid", outlineWidth: focused ? tokens.states.focus.width : 0,
               outlineOffset: tokens.states.focus.offset, outlineColor: colors.focusRing } as unknown as ViewStyle) : {}),
             backgroundColor: disabled ? colors.border : dragging || focused ? colors.text : hovered ? colors.textTertiary : colors.borderStrong ?? colors.border }} />

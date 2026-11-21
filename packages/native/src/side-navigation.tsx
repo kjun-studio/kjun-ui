@@ -165,7 +165,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
     </Animated.View>;
   };
   // Icons only, a group's title stays a heading for assistive technology (Web's kjun-sr-only) but takes no room.
-  const hiddenTitle = (section: Titled) => <View style={{ position: "absolute", top: 0, start: 0, end: 0, opacity: 0 }} pointerEvents="none">
+  const hiddenTitle = (section: Titled) => <View style={{ pointerEvents: "none", position: "absolute", top: 0, start: 0, end: 0, opacity: 0 }}>
     <KText {...heading} numberOfLines={1}>{section.title}</KText>
   </View>;
   const section = (entry: SideNavigationSection<SideNavigationDestination>, index: number) => {
@@ -177,7 +177,7 @@ export function KjunSideNavigation({ items, value, ariaLabel, onNavigate, onRese
     return <View key={titled ? "group:" + titled.key : "loose:" + (entry.items[0]?.key ?? index)} role={titled ? "group" : undefined} accessibilityLabel={entry.title}
       style={{ gap: geometry.itemGap, marginTop }}>
       {/* Icons only, the titles are hidden and the gap marks the boundary; railDividers adds a hairline the icon's width in it. */}
-      {!!index && collapsed && railDividers && <View pointerEvents="none" style={{ position: "absolute", top: -(geometry.titlePaddingTop + tokens.border.defaultWidth) / 2,
+      {!!index && collapsed && railDividers && <View style={{ pointerEvents: "none", position: "absolute", top: -(geometry.titlePaddingTop + tokens.border.defaultWidth) / 2,
         start: labelled ? (geometry.railItemWidth - geometry.railIndicatorWidth) / 2 : geometry.paddingX,
         width: labelled ? geometry.railIndicatorWidth : geometry.iconSize, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
       {titled && toggled ? groupToggle(titled, rows) : <>

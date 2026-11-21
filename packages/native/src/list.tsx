@@ -34,7 +34,7 @@ const list = tokens.extensions.list;
 function Divider({ inset }: { inset: number }) {
   const { colors } = useKjunStyles(), { muted } = useContext(ListShapeContext);
   // On the muted fill the divider role (close to it in most palettes) would vanish, so it takes the border role, like Web.
-  return <View pointerEvents="none" style={{ position: "absolute", left: inset, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: muted ? colors.border : colors.divider }} />;
+  return <View style={{ pointerEvents: "none", position: "absolute", left: inset, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: muted ? colors.border : colors.divider }} />;
 }
 export interface KjunListRowProps {
   title: string; description?: string;
@@ -182,9 +182,9 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
       : endMark === "mark" ? <View style={end(list.markSize)}><ChoiceMark checkbox={kind === "checkbox"} on={!!selected} /></View>
       : endMark === "check" && <View style={description ? end(endIcon) : undefined}><KjunIcon name="check" size={endIcon} color={colors.brand} /></View>}
     {/* A switch row is one switch control: the drawn switch is decoration and the row carries role and state. */}
-    {toggle && <View pointerEvents="none" accessible={false} aria-hidden importantForAccessibility="no-hide-descendants" accessibilityElementsHidden
+    {toggle && <View accessible={false} aria-hidden importantForAccessibility="no-hide-descendants" accessibilityElementsHidden
       // The row is the touch target, so the drawn switch keeps only its own height, like Web.
-      style={{ height: switchHeight, justifyContent: "center", ...end(switchHeight) }}><SwitchMark on={!!checked} busy={busy} /></View>}
+      style={{ pointerEvents: "none", height: switchHeight, justifyContent: "center", ...end(switchHeight) }}><SwitchMark on={!!checked} busy={busy} /></View>}
     {/* Like Web: an expandable row ends with a chevron that points down and turns over when open. */}
     {expandable && endMark !== "spinner" && <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={[description ? end(endIcon) : undefined, expanded ? { transform: [{ rotate: "180deg" }] } : null]}><KjunIcon name="chevron-down" size={endIcon} color={colors.textTertiary} /></View>}
     {chevron && !expandable && endMark !== "spinner" && <View accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={description ? end(endIcon) : undefined}><KjunIcon name="chevron-right" size={endIcon} color={colors.textTertiary} /></View>}
@@ -226,7 +226,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
       // Like Web: a static row dims as a whole when disabled, so nothing in it reads as available.
       : <View {...(Platform.OS === "web" && now ? { "aria-current": now } : {})} style={{ ...style, opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{parts}</View>}
     {/* A disabled row disables its actions too, so the row never reads as partly available. */}
-    {(hasContent(actions) || movable) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: `${list.actionsMaxPercent}%`, flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: actionsPadding,
+    {(hasContent(actions) || movable) && <View {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ pointerEvents: disabled ? "none" : "auto", maxWidth: `${list.actionsMaxPercent}%`, flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: actionsPadding,
       // Like Web: with a description, actions center on the title and first description line instead of a long row's middle.
       ...(description ? { alignSelf: "flex-start", alignItems: "center", alignContent: "center", minHeight: band, marginTop: paddingY + lift } : {}), opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}{movable && <ReorderControls value={value!} name={title || ariaLabel || ""} />}</View>}
   </>;

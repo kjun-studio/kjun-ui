@@ -339,8 +339,8 @@ export function KjunChartSkeleton({
               role={status}
               // iOS and Android do not treat role="status" as a live region; Android needs it explicitly.
               accessibilityLiveRegion={status ? "polite" : undefined}
-              pointerEvents="none"
-              style={[fill, { opacity: 0 }]}
+             
+              style={[{ pointerEvents: "none" }, fill, { opacity: 0 }]}
             >
               <KText style={typeStyle("caption")}>{loadingText}</KText>
             </View>

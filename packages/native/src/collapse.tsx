@@ -28,10 +28,10 @@ export function Collapse({ open, keepMounted = false, onSettled, children }: { o
     first.current = false;
     return () => { version.current++; value.stopAnimation(); };
   }, [open, height, reduced, value]);
-  return open || retained || (keepMounted && opened.current) ? <Animated.View pointerEvents={open ? 'auto' : 'none'}
+  return open || retained || (keepMounted && opened.current) ? <Animated.View
     accessibilityElementsHidden={!open} importantForAccessibility={open ? 'auto' : 'no-hide-descendants'}
     {...(!open ? { inert: true, 'aria-hidden': true } : {})}
-    style={{ height: settled && open ? undefined : value, overflow: 'hidden' }}>
+    style={{ pointerEvents: open ? 'auto' : 'none', height: settled && open ? undefined : value, overflow: 'hidden' }}>
     <View onLayout={event => setHeight(event.nativeEvent.layout.height)}>{children}</View>
   </Animated.View> : null;
 }

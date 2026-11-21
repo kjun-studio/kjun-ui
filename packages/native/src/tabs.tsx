@@ -186,8 +186,8 @@ export function KjunTabs({
             paddingVertical: (underline ? 0 : geometry.pillsPaddingY) + roomY,
           }}
         >
-          {underline && selection.layout && <Animated.View testID="kjun-tab-indicator" pointerEvents="none" accessible={false}
-            style={{ position: 'absolute', left: 0,
+          {underline && selection.layout && <Animated.View testID="kjun-tab-indicator" accessible={false}
+            style={{ pointerEvents: "none", position: 'absolute', left: 0,
               top: selection.layout.y,
               height: selection.layout.height,
               width: selection.width,
@@ -306,9 +306,8 @@ export function KjunTabPane({ name, children }: KjunTabPaneProps) {
   usePanelFocus(root);
   const hidden = value !== name;
   // Hiding a panel preserves its children's state; removing it releases them.
-  return <View ref={root} style={hidden ? { display: 'none' } : undefined}
-    accessibilityElementsHidden={hidden} importantForAccessibility={hidden ? 'no-hide-descendants' : 'auto'}
-    pointerEvents={hidden ? 'none' : 'auto'} {...(Platform.OS === 'web' && !hidden ? {
+  return <View ref={root} style={hidden ? { display: 'none', pointerEvents: 'none' } : { pointerEvents: 'auto' }}
+    accessibilityElementsHidden={hidden} importantForAccessibility={hidden ? 'no-hide-descendants' : 'auto'} {...(Platform.OS === 'web' && !hidden ? {
     // Only the shown panel is a tabpanel, as React Aria and Vue draw it; its tab points here.
     role: 'tabpanel' as const, nativeID: `${id}-panel-${name}`,
     'aria-labelledby': names.includes(name) ? `${id}-tab-${name}` : undefined,

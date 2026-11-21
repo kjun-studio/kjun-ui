@@ -46,7 +46,7 @@ export const KjunPressable: ForwardRefExoticComponent<KjunPressableProps & RefAt
         onHoverOut={event => { setHovered(false); onHoverOut?.(event); }}
         style={[style, disabled ? { opacity: tokens.states.opacity.disabled } : null]}>
         {content(children)}
-        {tint > 0 && <View pointerEvents="none" style={[StyleSheet.absoluteFill, Object.fromEntries(corners.filter(key => flat[key] != null).map(key => [key, flat[key]])), { backgroundColor: colors.text, opacity: tint }]} />}
+        {tint > 0 && <View style={[{ pointerEvents: "none" }, StyleSheet.absoluteFill, Object.fromEntries(corners.filter(key => flat[key] != null).map(key => [key, flat[key]])), { backgroundColor: colors.text, opacity: tint }]} />}
       </AccessiblePressable>
     );
   }

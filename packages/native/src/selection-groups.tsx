@@ -72,9 +72,9 @@ export function KjunButtonGroup({
           flexGrow: fullWidth ? 1 : 0,
         }}
       >
-        {motion.layout && <Animated.View testID="kjun-button-group-indicator" pointerEvents="none" accessible={false}
+        {motion.layout && <Animated.View testID="kjun-button-group-indicator" accessible={false}
           accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
-          style={{ position: 'absolute', left: 0, top: motion.layout.y, height: motion.layout.height,
+          style={{ pointerEvents: "none", position: 'absolute', left: 0, top: motion.layout.y, height: motion.layout.height,
             width: motion.width, transform: [{ translateX: motion.x }], borderRadius: itemRadius,
             // A surface fill on the secondary track with no edge, like Web: in-flow controls are fill-only.
             backgroundColor: colors.surface,

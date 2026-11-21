@@ -66,6 +66,6 @@ export function useReorder({ reorderable, order, shown, disabled, note, onOrderC
   } : null, [reorderable, order, shown, disabled, note?.id, note?.text]);
   // Native Web has no announce call, so the move is spoken from a polite live region that takes no room.
   const status = reorderable && Platform.OS === "web"
-    ? <View role="status" pointerEvents="none" style={{ position: "absolute", opacity: 0 }}><KText>{said}</KText></View> : null;
+    ? <View role="status" style={{ pointerEvents: "none", position: "absolute", opacity: 0 }}><KText>{said}</KText></View> : null;
   return { context, status };
 }

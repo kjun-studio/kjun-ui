@@ -87,8 +87,8 @@ export function KjunFormActions({
         width: "100%", maxWidth: "100%", minWidth: 0,
       }}
     >
-      <View pointerEvents="none" accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
-        style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: 0, overflow: 'hidden', opacity: 0, flexDirection: 'row' }}>
+      <View accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants"
+        style={{ pointerEvents: "none", position: 'absolute', left: 0, top: 0, width: '100%', height: 0, overflow: 'hidden', opacity: 0, flexDirection: 'row' }}>
         {labels.map((label, index) => <FontText key={index + keyFor(label.text)} numberOfLines={1}
           onLayout={event => { const value = event.nativeEvent.layout.width; setMeasurements(old => old[keyFor(label.text)] === value ? old : { ...old, [keyFor(label.text)]: value }); }}
           style={{ fontFamily, ...typeStyle(tokens.button.typography[size]), flexShrink: 0 }}>{label.text}</FontText>)}
@@ -254,7 +254,7 @@ export function KjunModal({
           paddingBottom: tokens.modal.mobileInset + insets.bottom,
         }}
       >
-        <Animated.View pointerEvents={open ? "auto" : "none"} style={{ ...screenCover(), opacity: backdrop.opacity }}>
+        <Animated.View style={{ pointerEvents: open ? "auto" : "none", ...screenCover(), opacity: backdrop.opacity }}>
         <LayerBackdrop
           onPress={() => {
             if (closeOnOverlay) close();
@@ -270,7 +270,7 @@ export function KjunModal({
         />
         </Animated.View>
         <Animated.View
-          pointerEvents={open ? "auto" : "none"}
+         
           accessibilityElementsHidden={!open}
           importantForAccessibility={open ? "auto" : "no-hide-descendants"}
           {...(!open ? { inert: true } : {})}
@@ -281,7 +281,7 @@ export function KjunModal({
           {...(Platform.OS === "web"
             ? { role: "dialog", "aria-modal": true, ...(ariaDescribedBy ? { "aria-describedby": ariaDescribedBy } : {}) }
             : {})}
-          style={{
+          style={{ pointerEvents: open ? "auto" : "none",
             opacity: motion.opacity,
             transform: [{ translateY: offset }],
             width,

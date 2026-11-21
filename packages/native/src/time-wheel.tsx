@@ -173,11 +173,11 @@ export function TimeWheel({ columns, label, inline = false, disabled = false, re
     // A sheet is as wide as the screen; the wheel keeps the web's width, four columns at most, in its middle.
     <View role="group" accessibilityLabel={label} style={{ flexDirection: "row", justifyContent: "center", gap: geometry.wheelColumnGap, height: rowHeight * visible,
       alignSelf: "center", width: "100%", maxWidth: 4 * geometry.wheelColumnWidth + 6 * geometry.wheelColumnGap }}>
-      <View aria-hidden={true} pointerEvents="none" style={{ position: "absolute", left: 0, right: 0, top: rowHeight * edge, height: rowHeight,
+      <View aria-hidden={true} style={{ pointerEvents: "none", position: "absolute", left: 0, right: 0, top: rowHeight * edge, height: rowHeight,
         borderRadius: tokens.radius.radius8, backgroundColor: inline ? colors.surface : colors.active }} />
       {columns.map((column, index) => <Fragment key={column.key}>
         {/* A ":" between digit columns sits in the gap on the band, so the band reads "09:30" like the field; it takes no width. */}
-        {wheelSeparated(columns, index) && <View aria-hidden={true} pointerEvents="none" style={{ width: 0, marginHorizontal: -geometry.wheelColumnGap / 2, alignSelf: "center", alignItems: "center" }}>
+        {wheelSeparated(columns, index) && <View aria-hidden={true} style={{ pointerEvents: "none", width: 0, marginHorizontal: -geometry.wheelColumnGap / 2, alignSelf: "center", alignItems: "center" }}>
           <KText style={{ ...inputTypeStyle("md"), fontWeight: typeStyle("control").fontWeight, color: disabled ? colors.textDisabled : colors.text }}>:</KText></View>}
         <WheelColumnView column={column} disabled={disabled} readOnly={readOnly} autoFocus={focusColumn === index} touched={touched}
           focusRef={view => { views.current[index] = view; }} onMove={direction => views.current[index + direction]?.focus?.()} onFocus={() => onFocusColumn?.(index)}

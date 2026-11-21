@@ -41,7 +41,7 @@ export interface KjunProgressProps {
  */
 export function ProgressMarker({ percent }: { percent: number }) {
   const { colors } = useKjunStyles(), spec = tokens.extensions.progress.marker;
-  return <View pointerEvents="none" style={{ position: "absolute", top: -spec.overhang - spec.gap, bottom: -spec.overhang - spec.gap, left: `${percent}%`,
+  return <View style={{ pointerEvents: "none", position: "absolute", top: -spec.overhang - spec.gap, bottom: -spec.overhang - spec.gap, left: `${percent}%`,
     marginLeft: -progressMarkerInset(percent) - spec.gap, width: spec.width + 2 * spec.gap, borderWidth: spec.gap, borderColor: colors.surface,
     borderRadius: tokens.radius.radius9999, backgroundColor: colors.text }} />;
 }

@@ -190,8 +190,8 @@ export function KjunSelect<T extends SelectOption = SelectOption>({
                 <View style={{ flex: 1, minWidth: 0 }} onLayout={event => setRoom(event.nativeEvent.layout.width)}>
                   <KText numberOfLines={1} style={{ ...inputTypeStyle(size), color: surface.ink }}>{label}</KText>
                   {/* Each name measured on its own; their running sum is where each would end on the line. */}
-                  <View key={labelsKey} aria-hidden={true} importantForAccessibility="no-hide-descendants" pointerEvents="none"
-                    style={{ position: "absolute", left: 0, right: 0, top: 0, opacity: 0 }}>
+                  <View key={labelsKey} aria-hidden={true} importantForAccessibility="no-hide-descendants"
+                    style={{ pointerEvents: "none", position: "absolute", left: 0, right: 0, top: 0, opacity: 0 }}>
                     {labels.map((text, index) => (
                       <KText key={index} style={{ ...inputTypeStyle(size), alignSelf: "flex-start" }} onLayout={event => {
                         const { width } = event.nativeEvent.layout;

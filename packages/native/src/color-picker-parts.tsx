@@ -60,7 +60,7 @@ export function useChipEdge() {
 export function ColorChip({ value, size, opacity = 1 }: { value: string | null; size: number; opacity?: number }) {
   const { colors } = useKjunStyles(), edge = useChipEdge(), radius = picker.swatchRadius;
   return (
-    <View pointerEvents="none" style={{ width: size, height: size, borderRadius: radius, overflow: "hidden", backgroundColor: colors.surface }}>
+    <View style={{ pointerEvents: "none", width: size, height: size, borderRadius: radius, overflow: "hidden", backgroundColor: colors.surface }}>
       {value ? <Checker radius={radius} /> : (
         <Svg style={{ position: "absolute", top: 0, left: 0 }} width={size} height={size}>
           <Rect x={0} y={0} width={size} height={size} fill={colors.surface} />
@@ -112,7 +112,7 @@ function Thumb({ color, x, y, focused, children }: { color?: string; x: number; 
   const { colors } = useKjunStyles(), size = picker.thumbSize, inner = size - 2 * (picker.ringWidth + picker.ringGap);
   const ring = focused ? ringShadow(colors.surface, colors.brand) : undefined;
   return (
-    <View pointerEvents="none" style={{ position: "absolute", left: `${x * 100}%`, top: `${(y ?? 0.5) * 100}%`, width: size, height: size,
+    <View style={{ pointerEvents: "none", position: "absolute", left: `${x * 100}%`, top: `${(y ?? 0.5) * 100}%`, width: size, height: size,
       marginLeft: thumbOffset(x, size), marginTop: y === null ? -size / 2 : thumbOffset(y, size),
       borderRadius: size / 2, backgroundColor: colors.switchThumb, alignItems: "center", justifyContent: "center",
       boxShadow: [...(ring ?? []), ...shadowLayers(tokens.extensions.slider.elevation, colors)] } as ViewStyle}>
@@ -263,9 +263,9 @@ export function SwatchGroup({ caption, ...grid }: { caption: string } & Paramete
 function Affix({ text, side, onWidth }: { text: string; side: "left" | "right"; onWidth: (width: number) => void }) {
   const { colors } = useKjunStyles();
   return (
-    <KText accessible={false} importantForAccessibility="no" {...(Platform.OS === "web" ? { "aria-hidden": true } : null)} pointerEvents="none"
+    <KText accessible={false} importantForAccessibility="no" {...(Platform.OS === "web" ? { "aria-hidden": true } : null)}
       onLayout={event => onWidth(event.nativeEvent.layout.width)}
-      style={{ position: "absolute", [side]: tokens.input.sm.padding, top: 0, ...inputTypeStyle("sm"), lineHeight: tokens.input.sm.height,
+      style={{ pointerEvents: "none", position: "absolute", [side]: tokens.input.sm.padding, top: 0, ...inputTypeStyle("sm"), lineHeight: tokens.input.sm.height,
         color: colors.textTertiary, fontVariant: ["tabular-nums"] } as object}>{text}</KText>
   );
 }

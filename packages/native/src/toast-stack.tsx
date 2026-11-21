@@ -37,9 +37,9 @@ function ToastSlot({ item, controller, boxes, placement, narrow }: { item: Prese
   }} style={{ zIndex: 1, transform: [{ translateY: offset }], ...(item.exiting && box ? {
     position: 'absolute', left: box.x, top: box.y, width: box.width, height: box.height,
   } : {}) }}>
-    <Animated.View pointerEvents={item.exiting ? 'none' : 'auto'} accessibilityElementsHidden={item.exiting}
+    <Animated.View accessibilityElementsHidden={item.exiting}
       importantForAccessibility={item.exiting ? 'no-hide-descendants' : 'auto'} {...(item.exiting ? { inert: true } : {})}
-      style={{ opacity: motion.opacity, transform: [{ translateY: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [toastEdgeShift(placement), 0] }) }] }}>
+      style={{ pointerEvents: item.exiting ? 'none' : 'auto', opacity: motion.opacity, transform: [{ translateY: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [toastEdgeShift(placement), 0] }) }] }}>
       <ToastView toast={item.toast} controller={controller} narrow={narrow} />
     </Animated.View>
   </Animated.View>;
@@ -50,14 +50,14 @@ function ToastMore({ behind, expanded, placement, onPress }: { behind: number; e
   const { colors } = useKjunStyles(), m = useKjunMessages(), spec = tokens.extensions.toast;
   const depth = expanded ? 0 : toastPeekDepth(behind), reachDepth = Math.max(1, depth), bottom = placement === "bottom";
   // Each edge starts behind the far card's rounded end and shows one peek offset beyond the one in front.
-  const edge = (layer: number) => <View key={layer} pointerEvents="none" style={{
+  const edge = (layer: number) => <View key={layer} style={{ pointerEvents: "none",
     position: 'absolute', left: spec.peekInset * layer, right: spec.peekInset * layer, height: spec.radius + spec.peekOffset * layer,
     ...(bottom ? { bottom: -spec.radius } : { top: -spec.radius }),
     zIndex: -layer, backgroundColor: colors.surface, borderWidth: tokens.border.defaultWidth, borderColor: colors.border,
     borderRadius: spec.radius, boxShadow: shadowLayers(spec.elevation, colors),
   }} />;
   const reach = spec.peekOffset * reachDepth - typeStyle('meta').lineHeight / 2 - tokens.dimension.value2;
-  const badge = <View pointerEvents="none" style={{ position: 'absolute', right: spec.peekInset, zIndex: 2,
+  const badge = <View style={{ pointerEvents: "none", position: 'absolute', right: spec.peekInset, zIndex: 2,
     ...(bottom ? { bottom: reach } : { top: reach }), paddingHorizontal: tokens.dimension.value8,
     paddingVertical: tokens.dimension.value2, borderRadius: spec.compact.radius, backgroundColor: colors.text }}>
     <KText style={{ ...typeStyle('meta'), fontWeight: typeStyle('control').fontWeight, color: colors.surface }}>{expanded ? m.collapseNotifications : `+${behind}`}</KText>
@@ -96,9 +96,9 @@ export function ToastStack({ items, controller, placement = "top", offset = 0 }:
     {/* A device has no page-wide press to watch, so a press outside an expanded stack lands on this layer and folds it. */}
     {expanded && Platform.OS !== 'web' && <Pressable accessible={false} onPress={() => setExpanded(false)}
       style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex }} />}
-    <View ref={root} pointerEvents="box-none"
+    <View ref={root}
       {...(items.length ? { accessibilityLabel: m.notifications, ...(Platform.OS === 'web' ? { role: 'region' as const } : {}) } : {})}
-      style={{ position: 'absolute', ...(placement === "bottom" ? { bottom: edge } : { top: edge }), right: tokens.extensions.toast.inset, left: tokens.extensions.toast.inset, gap: tokens.extensions.toast.stackGap,
+      style={{ pointerEvents: "box-none", position: 'absolute', ...(placement === "bottom" ? { bottom: edge } : { top: edge }), right: tokens.extensions.toast.inset, left: tokens.extensions.toast.inset, gap: tokens.extensions.toast.stackGap,
       minHeight: items.some(item => item.exiting) ? Math.max(0, ...[...boxes.values()].map(box => box.y + box.height)) : undefined,
       zIndex,
     }}>
@@ -106,7 +106,7 @@ export function ToastStack({ items, controller, placement = "top", offset = 0 }:
       {stack.items.map(item => <ToastSlot key={item.toast.id} item={item} controller={controller} boxes={boxes} placement={placement} narrow={narrow} />)}
       {placement !== "bottom" && more}
       {/* Off-screen but still in the accessibility tree: a zero box with clipped overflow carries the live text. */}
-      {!!items.length && <View pointerEvents="none" accessibilityLiveRegion="polite" style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 0, overflow: 'hidden', opacity: 0 }}>
+      {!!items.length && <View accessibilityLiveRegion="polite" style={{ pointerEvents: "none", position: 'absolute', top: 0, left: 0, right: 0, height: 0, overflow: 'hidden', opacity: 0 }}>
         <KText>{announcement}</KText>
       </View>}
     </View>

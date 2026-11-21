@@ -42,7 +42,7 @@ export function SideBadge({ badge, tone, ring, iconSize }: { badge: NavigationBa
   const geometry = tokens.extensions.navigationBadge, width = ring === undefined ? 0 : tokens.border.controlWidth, mark = navigationBadge(badge);
   if (!mark) return null;
   const size = mark.dot ? geometry.dotSize : geometry.minimumSize;
-  return <View pointerEvents="none" aria-hidden={true} style={{
+  return <View aria-hidden={true} style={{ pointerEvents: "none",
     ...(iconSize !== undefined ? { position: "absolute" as const, top: (mark.dot ? 0 : -geometry.offset) - width, start: iconSize - (mark.dot ? geometry.dotOverlap : geometry.overlap) - width }
       : { alignSelf: mark.dot ? "flex-start" as const : "center" as const }),
     minWidth: size + 2 * width, minHeight: size + 2 * width, paddingHorizontal: mark.dot ? 0 : geometry.paddingX, borderRadius: geometry.radius,
@@ -54,7 +54,7 @@ export function SideBadge({ badge, tone, ring, iconSize }: { badge: NavigationBa
  * looks like a link. The disc takes the fill under it, like a badge's ring; the chevron turns over right to left. */
 export function OpensMarker({ ring }: { ring: ColorValue }) {
   const { colors } = useKjunStyles(), geometry = tokens.extensions.sideNavigation, size = geometry.opensMarkerSize;
-  return <View pointerEvents="none" aria-hidden={true} importantForAccessibility="no-hide-descendants" style={{ position: "absolute", end: -(geometry.opensMarkerOffset + size / 2),
+  return <View aria-hidden={true} importantForAccessibility="no-hide-descendants" style={{ pointerEvents: "none", position: "absolute", end: -(geometry.opensMarkerOffset + size / 2),
     bottom: -geometry.opensMarkerOffset, width: size, height: size, borderRadius: size / 2, backgroundColor: ring, alignItems: "center", justifyContent: "center" }}>
     <View style={I18nManager.isRTL ? { transform: [{ scaleX: -1 }] } : undefined}><KjunIcon name="chevron-right" size={size} color={colors.textTertiary} /></View>
   </View>;

@@ -112,7 +112,7 @@ export function KjunDataState({
       accessibilityState={{ busy: !!query.loading || refreshing }}
     >
       {/* The refresh pill floats over the content's top centre, so a refresh never moves the content. */}
-      <View pointerEvents="none" style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1, alignItems: "center", paddingHorizontal: tokens.dimension.value12 }}>
+      <View style={{ pointerEvents: "none", position: "absolute", top: 0, left: 0, right: 0, zIndex: 1, alignItems: "center", paddingHorizontal: tokens.dimension.value12 }}>
         {(refreshing || state.queryRefreshing) && (
           <View
             // Polite like the Web role="status"; Android announces only with an explicit live region.
@@ -195,10 +195,10 @@ export function KjunDataState({
           key="content"
           accessibilityElementsHidden={concealed}
           importantForAccessibility={concealed ? "no-hide-descendants" : "auto"}
-          pointerEvents={concealed ? "none" : "auto"}
           style={
             concealed
               ? {
+                  pointerEvents: "none",
                   position: "absolute",
                   top: 0,
                   left: 0,
@@ -208,7 +208,7 @@ export function KjunDataState({
                     ? ({ visibility: "hidden" } as ViewStyle)
                     : {}),
                 }
-              : { opacity: query.loading && !state.usesQueryState ? tokens.states.opacity.pending : 1 }
+              : { pointerEvents: "auto", opacity: query.loading && !state.usesQueryState ? tokens.states.opacity.pending : 1 }
           }
         >
           {content(children)}

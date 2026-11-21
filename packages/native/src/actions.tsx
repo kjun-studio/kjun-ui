@@ -205,7 +205,7 @@ export function KjunCopyButton({
           )}
         </>}
       </Pressable>
-      {Platform.OS === "web" ? <View role="status" pointerEvents="none" style={{ position: "absolute", opacity: 0 }}><KText>{said}</KText></View> : null}
+      {Platform.OS === "web" ? <View role="status" style={{ pointerEvents: "none", position: "absolute", opacity: 0 }}><KText>{said}</KText></View> : null}
     </View>
   );
 }

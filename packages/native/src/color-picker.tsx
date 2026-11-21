@@ -127,8 +127,8 @@ export function KjunColorPicker({
   if (inline) return (
     <View testID={testID} role="group" accessibilityLabel={ariaLabel || field?.label || m.colorPlaceholder} accessibilityHint={field?.error || field?.hint}
       {...(Platform.OS === "web" ? { "aria-describedby": field?.describedBy, "aria-disabled": disabled || undefined } : {})}
-      pointerEvents={disabled || readOnly ? "none" : "auto"}
-      style={[{ alignSelf: "flex-start", maxWidth: "100%", backgroundColor: colors.inputBg, borderRadius: tokens.input.md.radius, opacity: disabled ? tokens.states.opacity.disabled : 1 }, style]}>
+     
+      style={[{ pointerEvents: disabled || readOnly ? "none" : "auto" }, { alignSelf: "flex-start", maxWidth: "100%", backgroundColor: colors.inputBg, borderRadius: tokens.input.md.radius, opacity: disabled ? tokens.states.opacity.disabled : 1 }, style]}>
       {/* The panel padding without a border: body() takes the border back out of the width. */}
       <View style={{ margin: tokens.border.defaultWidth }}>{body(picker.width)}</View>
     </View>

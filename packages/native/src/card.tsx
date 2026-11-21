@@ -143,7 +143,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
     {mediaFrame}
     {/* Media at the start: the header, body and footer stack in the column beside it. */}
     {layout.sideMedia ? <View style={{ flex: 1, minWidth: 0 }}>{sections}</View> : sections}
-    {border && <View pointerEvents="none" aria-hidden={true} style={{
+    {border && <View aria-hidden={true} style={{ pointerEvents: "none",
       position: "absolute", inset: 0, borderRadius: corner,
       boxShadow: [{ offsetX: 0, offsetY: 0, blurRadius: 0, spreadDistance: tokens.card.borderWidth, inset: true, color: borderColor }],
     }} />}

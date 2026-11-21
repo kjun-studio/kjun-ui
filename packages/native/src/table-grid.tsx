@@ -318,7 +318,7 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
             </ScrollView>
           </ScrollView>
           {fade && (
-            <View pointerEvents="none" style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: tokens.extensions.scrollFade.width }}>
+            <View style={{ pointerEvents: "none", position: "absolute", top: 0, right: 0, bottom: 0, width: tokens.extensions.scrollFade.width }}>
               <Svg width="100%" height="100%">
                 <Defs><LinearGradient id={fadeId} x1="0%" y1="0%" x2="100%" y2="0%">
                   <Stop offset="0" stopColor={colors.surface} stopOpacity={0} />

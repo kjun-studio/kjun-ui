@@ -105,11 +105,11 @@ export function KjunPriceCell({
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: tokens.extensions.financial.statusGap }}>
       <View style={pill}>
-        {kind === "background" && direction && <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, { borderRadius: tokens.radius.radius9999, backgroundColor: domainColor(domainColors, `${tone}Bg`), opacity }]} />}
+        {kind === "background" && direction && <Animated.View style={[{ pointerEvents: "none" }, StyleSheet.absoluteFill, { borderRadius: tokens.radius.radius9999, backgroundColor: domainColor(domainColors, `${tone}Bg`), opacity }]} />}
         {number(stale ? colors.textTertiary : colors.text)}
         {/* The text flash is the same number in the move's colour over the plain one, fading out; both count together. */}
-        {kind === "text" && <Animated.View pointerEvents="none" aria-hidden importantForAccessibility="no-hide-descendants"
-          style={[StyleSheet.absoluteFill, pill, { opacity: direction ? opacity : 0 }]}>{number(domainColor(domainColors, tone))}</Animated.View>}
+        {kind === "text" && <Animated.View aria-hidden importantForAccessibility="no-hide-descendants"
+          style={[{ pointerEvents: "none" }, StyleSheet.absoluteFill, pill, { opacity: direction ? opacity : 0 }]}>{number(domainColor(domainColors, tone))}</Animated.View>}
       </View>
       <PriceStatus status={status} />
     </View>

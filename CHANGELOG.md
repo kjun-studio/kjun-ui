@@ -21,6 +21,7 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
 - **Native 떠 있는 패널이 고른 쪽의 남은 높이로 줄어듦 (수정)**: `KjunPopover`·`KjunDropdown`·`KjunTooltip` 패널이 화면 높이 전체로만 제한되어, 트리거 아래(또는 위) 공간이 모자라면 패널이 트리거를 덮던 문제를 고쳤습니다. 웹처럼 `flip`과 관계없이 고른 쪽의 남은 높이로 줄이고 본문만 스크롤합니다. 웹(Vue 3·React)은 이미 그렇게 동작합니다. Native는 RN Web에서만 확인했습니다.
 - **`KjunButton shape="circle"` 글자 라벨**: 아이콘 없이 날짜·개수처럼 한두 글자 라벨만 있으면 높이와 같은 폭의 원형 버튼이 됩니다(Vue 3·React·Native). 지금까지는 라벨 최소 폭과 좌우 여백이 남아 원이 되지 않았습니다. 라벨에 아이콘이 함께 있으면 폭을 그대로 둡니다. 주간 날짜 선택처럼 `style`로 최소 폭과 여백을 덮어쓰던 코드는 `shape="circle"`만 주면 됩니다.
 - **Native 날짜 선택기가 좁은 패널에서 6열로 줄바꿈되던 문제 (수정)**: 폭 320 화면에서 패널이 304로 줄면 날짜 칸 7개(40×7)가 들어가지 않아 토요일이 다음 줄로 넘어가고 요일과 날짜가 어긋났습니다. 이제 패널 안쪽 폭에 맞춰 날짜 칸과 요일 칸을 함께 줄여(최대 40) 한 주가 늘 한 줄에 놓입니다. 웹은 이미 이렇게 동작했습니다.
+- **Native 웹 번들의 `props.pointerEvents is deprecated` 경고 (수정)**: 내부 View가 `pointerEvents`를 prop으로 넘겨 React Native Web 미리보기 화면마다 개발 모드 경고가 나던 문제를 고쳤습니다. 모두 `style.pointerEvents`로 옮겼고 동작은 같습니다(`react-native-svg`의 `Svg`는 prop을 유지).
 
 ## 0.22.0 — 2026-11-19
 

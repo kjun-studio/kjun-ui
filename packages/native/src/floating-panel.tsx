@@ -262,10 +262,10 @@ export function FloatingPanel({
       <Animated.View
         {...{ role: "tooltip" as const }}
         accessibilityLabel={ariaLabel}
-        pointerEvents="none"
         onLayout={(event) => { setPanel(event.nativeEvent.layout); setSized(true); }}
         style={
           {
+            pointerEvents: "none",
             opacity: anchored && sized ? motion.opacity : 0,
             position: "fixed",
             top,
@@ -325,12 +325,12 @@ export function FloatingPanel({
             setPanel(previous => previous.width === layout.width && previous.height === layout.height
               ? previous : { width: layout.width, height: layout.height });
           } : undefined}
-          pointerEvents={open && anchored && sized ? "auto" : "none"}
+         
           accessibilityElementsHidden={!open || !anchored || !sized}
           {...(!open || !anchored || !sized ? { inert: true } : {})}
           accessibilityViewIsModal={!nonModal}
           accessibilityLabel={ariaLabel}
-          style={{
+          style={{ pointerEvents: open && anchored && sized ? "auto" : "none",
             opacity: anchored && sized ? motion.opacity : 0,
             transform: tooltip ? undefined : [{ translateX: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [sideOf === "left" ? tokens.motionDistance.popup : sideOf === "right" ? -tokens.motionDistance.popup : 0, 0] }) },
               { translateY: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [beside ? 0 : above ? tokens.motionDistance.popup : -tokens.motionDistance.popup, 0] }) }],
@@ -364,7 +364,7 @@ export function FloatingPanel({
             >
               {content(header, typeStyle("control"))}
               {/* Like Web: once the body has scrolled, the fixed header draws a divider over it. */}
-              {scrolled && <View pointerEvents="none" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
+              {scrolled && <View style={{ pointerEvents: "none", position: "absolute", left: 0, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
             </View>
           )}
           <ScrollView
@@ -392,7 +392,7 @@ export function FloatingPanel({
             {children}
           </ScrollView>
           {footer != null && more && (
-            <View pointerEvents="none" style={{ position: "absolute", left: 0, right: 0, bottom: footerHeight, height: tokens.extensions.scrollFade.width }}>
+            <View style={{ pointerEvents: "none", position: "absolute", left: 0, right: 0, bottom: footerHeight, height: tokens.extensions.scrollFade.width }}>
               <Svg width="100%" height="100%">
                 <Defs><LinearGradient id={fadeId} x1="0%" y1="0%" x2="0%" y2="100%">
                   <Stop offset="0" stopColor={colors.surface} stopOpacity={0} />

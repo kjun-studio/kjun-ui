@@ -183,7 +183,7 @@ export function KjunDrawer({
           alignItems: !sideways ? "center" : position === "right" ? "flex-end" : "flex-start",
         }}
       >
-        <Animated.View pointerEvents={open ? "auto" : "none"} style={{ ...screenCover(), opacity: grab ? Animated.multiply(backdrop.opacity, dragFade) : backdrop.opacity }}>
+        <Animated.View style={{ pointerEvents: open ? "auto" : "none", ...screenCover(), opacity: grab ? Animated.multiply(backdrop.opacity, dragFade) : backdrop.opacity }}>
         <LayerBackdrop
           onPress={() => {
             if (closeOnOverlay) close();
@@ -196,7 +196,7 @@ export function KjunDrawer({
         />
         </Animated.View>
         <Animated.View
-          pointerEvents={open ? "auto" : "none"}
+         
           accessibilityElementsHidden={!open}
           importantForAccessibility={open ? "auto" : "no-hide-descendants"}
           {...(!open ? { inert: true } : {})}
@@ -207,7 +207,7 @@ export function KjunDrawer({
             ? { role: "dialog", "aria-modal": true, ...(ariaDescribedBy ? { "aria-describedby": ariaDescribedBy } : {}) }
             : {})}
           onLayout={event => setPanelHeight(event.nativeEvent.layout.height)}
-          style={{
+          style={{ pointerEvents: open ? "auto" : "none",
             opacity: sideways || panelHeight > 0 ? 1 : 0,
             transform: sideways ? [{ translateX: motion.progress.interpolate({ inputRange: [0, 1], outputRange: [(position === "left" ? -1 : 1) * panelWidth, 0] }) }]
               : [{ translateY: Animated.add(motion.progress.interpolate({ inputRange: [0, 1], outputRange: [(position === "top" ? -1 : 1) * panelHeight, 0] }), grab ? drag : 0) }],

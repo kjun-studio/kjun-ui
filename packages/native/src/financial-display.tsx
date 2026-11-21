@@ -115,8 +115,8 @@ export function KjunDeviation({
     >
       {variant === "pill" && (
         <View
-          pointerEvents="none"
-          style={{
+         
+          style={{ pointerEvents: "none",
             position: "absolute",
             inset: 0,
             borderRadius: tokens.extensions.financial.cellRadius,
@@ -172,7 +172,7 @@ export function KjunHeatmapCell({
   };
   // The fill is a layer behind the text, as on Web and for a present value.
   const layer = (backgroundColor: ColorValue, opacity?: number) => (
-    <View pointerEvents="none" style={{ position: "absolute", inset: 0, borderRadius: tokens.extensions.financial.cellRadius, backgroundColor, opacity }} />
+    <View style={{ pointerEvents: "none", position: "absolute", inset: 0, borderRadius: tokens.extensions.financial.cellRadius, backgroundColor, opacity }} />
   );
   // Like Web: a missing value keeps the neutral fill, so a grid keeps its rhythm, and shows a dash.
   if (cell.missing) return <View style={box}>{layer(colors.secondary)}<KText style={{ ...numeric, color: colors.textDisabled }}>—</KText></View>;

@@ -71,7 +71,7 @@ export function NavigationBadgeMark({ badge, ring, iconSize }: { badge: Navigati
   const mark = navigationBadge(badge);
   if (!mark) return null;
   const size = mark.dot ? geometry.dotSize : geometry.minimumSize;
-  return <View pointerEvents="none" aria-hidden={true} style={{
+  return <View aria-hidden={true} style={{ pointerEvents: "none",
     ...(iconSize !== undefined ? {
       position: "absolute" as const, top: (mark.dot ? 0 : -geometry.offset) - width,
       // Counts and dots overlap only the icon's outer edge, clear of most of the glyph.
@@ -151,7 +151,7 @@ function BottomDestination({ item, selected, parts, iconOnly, hasIcons, iconStyl
       justifyContent: hasIcons && !iconOnly ? "flex-start" : "center", gap: geometry.itemGap,
       paddingHorizontal: geometry.itemPaddingX, paddingVertical: geometry.itemPaddingY }}>
     {(state: PressState) => <>
-      <View pointerEvents="none" style={{ position: "absolute", top: geometry.pressInset, bottom: geometry.pressInset, left: geometry.pressInset, right: geometry.pressInset, borderRadius: geometry.pressRadius, backgroundColor: press(state) }} />
+      <View style={{ pointerEvents: "none", position: "absolute", top: geometry.pressInset, bottom: geometry.pressInset, left: geometry.pressInset, right: geometry.pressInset, borderRadius: geometry.pressRadius, backgroundColor: press(state) }} />
       {parts.iconBox && <View style={{ width: geometry.iconSize, height: geometry.iconSize, flexShrink: 0 }}>
         {/* Outline glyphs draw a thinner stroke at this size; when every icon stays an outline, the selected one takes the full stroke. */}
         {!!item.icon && <IconBase name={item.icon} filled={navigationIconFilled(iconStyle, selected)} size={geometry.iconSize} color={ink}

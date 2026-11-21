@@ -54,7 +54,7 @@ export function KjunAvatarGroup({ items, max, total, size = "md", shape = "circl
   // Like KjunPressable and Web: hover and press tint each avatar, so the tint follows the circles, never the group's box.
   const [pressed, setPressed] = useState(false), [hovered, setHovered] = useState(false);
   const tint = !pressable || disabled ? 0 : pressed ? tokens.states.opacity.tintActive : hovered ? tokens.states.opacity.tintControl : 0;
-  const overlay = tint > 0 ? <View pointerEvents="none" style={{ position: "absolute", top: ring, left: ring, width: side, height: side, borderRadius: radius, backgroundColor: colors.text, opacity: tint }} /> : null;
+  const overlay = tint > 0 ? <View style={{ pointerEvents: "none", position: "absolute", top: ring, left: ring, width: side, height: side, borderRadius: radius, backgroundColor: colors.text, opacity: tint }} /> : null;
   const hidden = { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants" as const, "aria-hidden": true };
   const slot = (index: number, zIndex: number): ViewStyle => ({
     width: side + ring * 2, height: side + ring * 2, borderRadius: radius, alignItems: "center", justifyContent: "center", zIndex,

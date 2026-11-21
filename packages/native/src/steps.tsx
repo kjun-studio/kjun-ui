@@ -125,7 +125,7 @@ export function KjunSteps({ items, current, currentStatus = "active", orientatio
         {...(selectable ? {} : { accessible: true, accessibilityLabel: spoken, ...(marked && Platform.OS !== "web" ? { accessibilityState: { selected: true } } : {}) })}
         {...(Platform.OS === "web" && marked ? { "aria-current": "step" } : {})}
         style={{ flex: vertical ? undefined : 1, minWidth: !vertical && layout === "full" ? geometry.minColumn : 0 }}>
-        {line ? <View testID={`steps-line-${i}`} pointerEvents="none" style={[{ position: "absolute", zIndex: 0 }, line]} /> : null}
+        {line ? <View testID={`steps-line-${i}`} style={[{ pointerEvents: "none" }, { position: "absolute", zIndex: 0 }, line]} /> : null}
         {selectable ? (
           <Pressable accessibilityRole="button" accessibilityLabel={spoken} onPress={() => onStepSelect?.(i)}
             hitSlop={{ top: slop, bottom: slop }} focusRingRadius={tokens.radius.radius8}

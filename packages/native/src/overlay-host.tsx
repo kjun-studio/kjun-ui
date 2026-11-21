@@ -40,14 +40,14 @@ export function ScopedNativeModal({ children, visible, ...props }: ModalProps) {
     <ModalWindow generation={generation} {...props} visible={visible}
       accessibilityElementsHidden={inactive} importantForAccessibility={inactive ? "no-hide-descendants" : "auto"}
       // RN Web drops `inert`; an exiting or covered window must still let presses through.
-      pointerEvents={inactive ? "none" : undefined}
+      style={{ pointerEvents: inactive ? "none" : undefined }}
       {...(Platform.OS === "web" ? { inert: inactive, "aria-hidden": inactive || undefined } : {})}
     >
       {children}
       {host?.top === id && (
         <View
-          pointerEvents="box-none"
-          style={{ position: "absolute", inset: 0 }}
+         
+          style={{ pointerEvents: "box-none", position: "absolute", inset: 0 }}
         >
           {host.render()}
         </View>

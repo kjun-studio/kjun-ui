@@ -75,11 +75,11 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
           backgroundColor: selected ? colors.brand : pressed && !day.blocked ? colors.hover : "transparent" }}>
       {({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => <>
         {/* The selected (or pressed) square wraps the number and marks: full cell height, inset at the sides. */}
-        {event && <View pointerEvents="none" collapsable={false} {...data({ kjunPart: "square" })}
-          style={{ position: "absolute", top: 0, bottom: 0, left: calendar.eventSelectedInset, right: calendar.eventSelectedInset, borderRadius: calendar.dayRadius,
+        {event && <View collapsable={false} {...data({ kjunPart: "square" })}
+          style={{ pointerEvents: "none", position: "absolute", top: 0, bottom: 0, left: calendar.eventSelectedInset, right: calendar.eventSelectedInset, borderRadius: calendar.dayRadius,
             backgroundColor: selected ? colors.active : pressed || hovered ? colors.hover : "transparent" }} />}
-        <View pointerEvents="none" collapsable={false} {...data({ kjunPart: "pill" })}
-          style={{ minWidth: calendar.todayPillMinWidth, height: calendar.todayPillHeight, borderRadius: calendar.todayPillCorner,
+        <View collapsable={false} {...data({ kjunPart: "pill" })}
+          style={{ pointerEvents: "none", minWidth: calendar.todayPillMinWidth, height: calendar.todayPillHeight, borderRadius: calendar.todayPillCorner,
             // The fade sits on the pill, which owns both the fill and the number, as on the web.
             alignItems: "center", justifyContent: "center", backgroundColor: pill, opacity: numberDim }}>
           <KText {...data({ kjunPart: "number" })} style={{ ...typeStyle("numberMd"), fontFamily: numericFontFamily || fontFamily, fontVariant: ["tabular-nums"],
@@ -87,7 +87,7 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
             textDecorationLine: day.blocked ? "line-through" : "none", textDecorationColor: colors.borderStrong }}>{day.day}</KText>
         </View>
         {event && (icon || dots.length > 0) && (
-          <View pointerEvents="none" {...data({ kjunPart: "marks" })} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center",
+          <View {...data({ kjunPart: "marks" })} style={{ pointerEvents: "none", flexDirection: "row", alignItems: "center", justifyContent: "center",
             gap: calendar.eventDotGap, height: calendar.eventMarkHeight, opacity: dim,
             // Under the bar's lane, at the same height whether or not the day has a bar.
             marginTop: calendar.eventMarkSpace + calendar.eventSpanHeight + calendar.eventMarkSpace }}>
@@ -100,8 +100,8 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
         )}
         {/* The span bar crosses the whole cell right under the number, above the square; a continuing piece reaches one overlap under the next cell, an end piece stops at its edge.
             It keeps its colour on past days and steps back to the past fade on outside days. */}
-        {span && segment ? <View pointerEvents="none" {...data({ kjunPart: "span", start: segment.start || undefined, end: segment.end || undefined })}
-          style={{ position: "absolute", left: 0, right: segment.end ? 0 : -calendar.eventSpanOverlap,
+        {span && segment ? <View {...data({ kjunPart: "span", start: segment.start || undefined, end: segment.end || undefined })}
+          style={{ pointerEvents: "none", position: "absolute", left: 0, right: segment.end ? 0 : -calendar.eventSpanOverlap,
             top: calendar.eventDayPaddingTop + calendar.todayPillHeight + calendar.eventMarkSpace, height: calendar.eventSpanHeight, backgroundColor: span.color,
             opacity: day.outside ? calendar.pastOpacity : undefined,
             borderTopLeftRadius: segment.start ? calendar.eventSpanCorner : 0, borderBottomLeftRadius: segment.start ? calendar.eventSpanCorner : 0,
@@ -114,7 +114,7 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
     <View style={{ width: size, height: size }}>
       {/* A range joins its ends with a quiet band under the days between them; it ends under the squared ends. */}
       {/* At the week's edges it stops at the cell and closes with the day's corner, so the row reads as finished. */}
-      {band && <View pointerEvents="none" style={{ position: "absolute", top: 0, bottom: 0, backgroundColor: colors.brandSubtleBg,
+      {band && <View style={{ pointerEvents: "none", position: "absolute", top: 0, bottom: 0, backgroundColor: colors.brandSubtleBg,
         left: day.rangeStart ? size / 2 : column === 0 ? 0 : -calendar.rangeBleed, right: day.rangeEnd ? size / 2 : column === 6 ? 0 : -calendar.rangeBleed,
         ...(column === 0 && !day.rangeStart ? { borderTopLeftRadius: calendar.dayRadius, borderBottomLeftRadius: calendar.dayRadius } : {}),
         ...(column === 6 && !day.rangeEnd ? { borderTopRightRadius: calendar.dayRadius, borderBottomRightRadius: calendar.dayRadius } : {}) }} />}

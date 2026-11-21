@@ -102,7 +102,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
   } : {};
   // Once scrolled, the last pinned column casts a soft edge over the columns passing under it, like Web's box-shadow.
   const pinEdge = pinned && scroll.x > 0 ? (
-    <View pointerEvents="none" style={{ position: "absolute", top: 0, bottom: 0, right: -tokens.dimension.value8, width: tokens.dimension.value8 }}>
+    <View style={{ pointerEvents: "none", position: "absolute", top: 0, bottom: 0, right: -tokens.dimension.value8, width: tokens.dimension.value8 }}>
       <Svg width="100%" height="100%">
         <Defs><LinearGradient id={edgeId} x1="0%" y1="0%" x2="100%" y2="0%">
           <Stop offset="0" stopColor={colors.shadow} stopOpacity={1} />

@@ -238,7 +238,7 @@ export function KjunFileUpload({
             </View>
           </View>
         )}
-        {web ? <View role="status" pointerEvents="none" style={{ position: "absolute", opacity: 0 }}><KText>{said}</KText></View> : null}
+        {web ? <View role="status" style={{ pointerEvents: "none", position: "absolute", opacity: 0 }}><KText>{said}</KText></View> : null}
       </View>
     </IconFallbacks>
   );

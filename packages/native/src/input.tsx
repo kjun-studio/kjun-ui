@@ -304,8 +304,8 @@ export const KjunInput: ForwardRefExoticComponent<KjunInputProps & RefAttributes
         {!!(prefix || prefixIcon) && (
           <View
             onLayout={(event) => setPrefixWidth(event.nativeEvent.layout.width)}
-            pointerEvents="none"
-            style={{
+           
+            style={{ pointerEvents: "none",
               position: "absolute",
               left: edge.padding,
               top: 0,

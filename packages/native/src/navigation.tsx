@@ -259,7 +259,7 @@ export function KjunAccordionItem({
           {content(children, { ...typeStyle("body"), ...wrapping, color: colors.text })}
         </View>
       </Collapse>
-      {layout.divider && <View pointerEvents="none" style={{ position: "absolute", left: inset, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
+      {layout.divider && <View style={{ pointerEvents: "none", position: "absolute", left: inset, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: colors.divider }} />}
     </View>
   );
 }

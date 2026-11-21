@@ -25,11 +25,11 @@ export function FieldClear({ size, disabled, label, onPress, mark = false }: {
     onPress={event => { event.stopPropagation(); if (!disabled) onPress(); }}
     style={{ width: tokens.native.minimumTouchTarget, height: tokens.native.minimumTouchTarget,
       alignSelf: "center", alignItems: "center", justifyContent: "center", borderRadius: spec.clearSize / 2 }}>
-    {({ pressed, hovered }: any) => mark ? <View pointerEvents="none" style={{ width: spec.clearMarkSize, height: spec.clearMarkSize,
+    {({ pressed, hovered }: any) => mark ? <View style={{ pointerEvents: "none", width: spec.clearMarkSize, height: spec.clearMarkSize,
       borderRadius: tokens.radius.radius9999, alignItems: "center", justifyContent: "center",
       backgroundColor: !disabled && (pressed || hovered) ? colors.textTertiary : colors.border }}>
       <KjunIcon name="x" size={spec.clearMarkIconSize} color={colors.surface} />
-    </View> : <View pointerEvents="none" style={{ width: spec.clearSize, height: spec.clearSize,
+    </View> : <View style={{ pointerEvents: "none", width: spec.clearSize, height: spec.clearSize,
       borderRadius: spec.clearSize / 2, alignItems: "center", justifyContent: "center",
       backgroundColor: disabled ? "transparent" : pressed ? colors.active : hovered ? colors.hover : "transparent" }}>
       <KjunIcon name="x" size={spec.iconSize} color={disabled ? colors.textDisabled : colors.textSecondary} />
@@ -53,7 +53,7 @@ export function FieldReveal({ size, disabled, revealed, label, show, hide,onPres
     accessibilityState={{ disabled: !!disabled }} disabled={disabled}
     onPress={event => { event.stopPropagation(); if (!disabled) onPress(); }}
     style={{ minHeight: tokens.native.minimumTouchTarget, alignSelf: "center", justifyContent: "center" }}>
-    {({ pressed, hovered }: any) => <View pointerEvents="none" style={{ height: spec.clearSize, paddingHorizontal: tokens.space.inline.sm,
+    {({ pressed, hovered }: any) => <View style={{ pointerEvents: "none", height: spec.clearSize, paddingHorizontal: tokens.space.inline.sm,
       borderRadius: tokens.button.radii.sm, justifyContent: "center", alignItems: "center",
       backgroundColor: disabled ? "transparent" : pressed ? colors.active : hovered ? colors.hover : "transparent" }}>
       <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>

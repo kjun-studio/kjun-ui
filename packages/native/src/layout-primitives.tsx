@@ -88,7 +88,7 @@ export function KjunText({ variant = "body", tone = "default", align, maxLines, 
       <Root {...rest} accessibilityRole={role} numberOfLines={clamped} ellipsizeMode={clamped ? "tail" : undefined} style={textStyle}
         onLayout={(event: LayoutChangeEvent) => { measure("shown")(event); rest.onLayout?.(event); }}>{children}</Root>
       {/* The full text at the same width, invisible, tells whether the clamp hides lines. */}
-      {!open && <View pointerEvents="none" aria-hidden={true} importantForAccessibility="no-hide-descendants" style={{ position: "absolute", top: 0, left: 0, right: 0, opacity: 0 }}>
+      {!open && <View aria-hidden={true} importantForAccessibility="no-hide-descendants" style={{ pointerEvents: "none", position: "absolute", top: 0, left: 0, right: 0, opacity: 0 }}>
         <Root style={textStyle} onLayout={measure("full")}>{children}</Root>
       </View>}
       {(open || overflows) && <AccessiblePressable accessibilityRole="button" accessibilityState={{ expanded: open }} onPress={() => change(!open)}

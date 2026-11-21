@@ -214,11 +214,11 @@ export function KjunKpiRow({
           >
             {!!(dividerLeft || dividerTop) && (
               <View
-                pointerEvents="none"
+               
                 accessible={false}
                 accessibilityElementsHidden
                 importantForAccessibility="no-hide-descendants"
-                style={{
+                style={{ pointerEvents: "none",
                   position: "absolute",
                   top: -dividerTop,
                   left: -dividerLeft,
