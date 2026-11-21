@@ -28911,7 +28911,7 @@
             "required": false,
             "default": "\"default\"",
             "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
-            "summary": "\"circle\"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
+            "summary": "\"circle\"이면 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 아이콘 하나만 있거나 날짜·개수처럼 한두 글자 라벨만 있을 때 씁니다. 라벨에 아이콘이 함께 있으면 폭을 유지합니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
             "source": "packages/vue3/src/button.tsx"
           },
           {
@@ -29074,7 +29074,7 @@
             "required": false,
             "default": "\"default\"",
             "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
-            "summary": "\"circle\"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
+            "summary": "\"circle\"이면 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 아이콘 하나만 있거나 날짜·개수처럼 한두 글자 라벨만 있을 때 씁니다. 라벨에 아이콘이 함께 있으면 폭을 유지합니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
             "source": "packages/react/src/button.tsx"
           },
           {
@@ -29316,7 +29316,7 @@
             "required": false,
             "default": "\"default\"",
             "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
-            "summary": "\"circle\"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
+            "summary": "\"circle\"이면 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 아이콘 하나만 있거나 날짜·개수처럼 한두 글자 라벨만 있을 때 씁니다. 라벨에 아이콘이 함께 있으면 폭을 유지합니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
             "source": "packages/native/src/button.tsx"
           },
           {
@@ -33125,7 +33125,7 @@
             "required": false,
             "default": "\"default\"",
             "description": "",
-            "summary": "\"circle\"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
+            "summary": "\"circle\"이면 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 아이콘 하나만 있거나 날짜·개수처럼 한두 글자 라벨만 있을 때 씁니다. 라벨에 아이콘이 함께 있으면 폭을 유지합니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
             "source": "packages/vue3/src/actions.tsx"
           },
           {
@@ -33349,7 +33349,7 @@
             "required": false,
             "default": "\"default\"",
             "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
-            "summary": "\"circle\"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
+            "summary": "\"circle\"이면 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 아이콘 하나만 있거나 날짜·개수처럼 한두 글자 라벨만 있을 때 씁니다. 라벨에 아이콘이 함께 있으면 폭을 유지합니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
             "source": "packages/react/src/actions.tsx"
           },
           {
@@ -33582,7 +33582,7 @@
             "required": false,
             "default": "\"default\"",
             "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
-            "summary": "\"circle\"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
+            "summary": "\"circle\"이면 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 아이콘 하나만 있거나 날짜·개수처럼 한두 글자 라벨만 있을 때 씁니다. 라벨에 아이콘이 함께 있으면 폭을 유지합니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
             "source": "packages/native/src/actions.tsx"
           },
           {

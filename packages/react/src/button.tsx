@@ -59,7 +59,8 @@ export interface KjunButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size" | "prefix"> {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  /** "circle" makes an icon-only button round: as wide as its height with a full radius. "pill" rounds a button with a label
+  /** "circle" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone
+   * (one or two characters, such as a day number); a label with an icon keeps its width. "pill" rounds a button with a label
    * fully and keeps its width, for a button inside a rounded bar. */
   shape?: "default" | "circle" | "pill";
   loading?: boolean;
@@ -118,6 +119,8 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
     // Either form of a side item takes the icon's place, inset and loading rules.
     const prefixIcon = prefixNode || !!prefixName, suffixIcon = suffixNode || !!suffixName;
     const iconOnly = !hasContent && !!(prefixIcon || suffixIcon || busy);
+    // A circle with a short label alone (a day number, a count) is a round button as wide as its height: no label minimum or inset.
+    const roundLabel = shape === "circle" && hasContent && !prefixIcon && !suffixIcon && !block && variant !== "link";
     const navigation = useContext(TopNavigationContext);
     const height = Math.max(tokens.button.heights[size], navigation?.controlSize ?? 0);
     const iconSize = navigation?.iconSize ?? tokens.button.iconSizes[size];
@@ -154,12 +157,12 @@ export const KjunButton = forwardRef<HTMLButtonElement, KjunButtonProps>(
           minHeight: height,
           width: block ? "100%" : iconOnly || shape === "circle" ? height : undefined,
           // A width set by the caller (fixed square controls) wins over the label minimum.
-          minWidth: hasContent && !block && style?.width == null ? tokens.button.minWidths[size] : undefined,
-          padding: iconOnly ? 0 : `0 ${suffixIcon ? iconSide : paddingX}px 0 ${prefixIcon ? iconSide : paddingX}px`,
+          minWidth: hasContent && !block && !roundLabel && style?.width == null ? tokens.button.minWidths[size] : undefined,
+          padding: iconOnly || roundLabel ? 0 : `0 ${suffixIcon ? iconSide : paddingX}px 0 ${prefixIcon ? iconSide : paddingX}px`,
           ...typeStyle(tokens.button.typography[size]),
           borderRadius: pill ? tokens.shape.pill : tokens.button.radii[size],
           gap: hasContent ? tokens.button.contentGaps[size] : 0,
-          ...(navigation || wrap ? {
+          ...((navigation || wrap) && !roundLabel ? {
             height: 'auto', maxWidth: '100%',
             paddingBlock: Math.max(0, (height - contentHeight) / 2),
           } : {}),

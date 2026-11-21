@@ -8,7 +8,7 @@ import { KText } from "./internal";
 import { useKjunStyles } from "./provider";
 import { typeStyle } from "./typography";
 
-// One day of the date picker (compact, 40×40) or of the event calendar (comfortable, full column × 49), drawn as the web's
+// One day of the date picker (compact, 40×40 or less in a narrow panel) or of the event calendar (comfortable, full column × 49), drawn as the web's
 // .kjun-calendar-day rules in calendar.css and event-calendar.css. Internal: not exported from the package index.
 export interface CalendarDayCellProps {
   day: CalendarDay; density: "compact" | "comfortable"; emphasis: "picker" | "event";
@@ -22,6 +22,8 @@ export interface CalendarDayCellProps {
   /** Picker: today inside a range band shows a bare brand number instead of the pill. */
   inRangeToday?: boolean;
   marks?: DayMarks<ColorValue>; column?: number;
+  /** Picker: the side of the day square. The grid shrinks it below the token when its panel is narrower than seven days. */
+  size?: number;
   /** Web: the roving tab stop, 0 on the focused day. */
   tabIndex?: 0 | -1;
   /** Web: the keyboard long press, e.g. "Shift+Enter". */
@@ -35,7 +37,7 @@ const data = (set: Record<string, string | number | boolean | undefined>) => Pla
 const longPress = "longpress";
 
 export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim, past = false, inRangeToday = false, marks, column = 0, loading = false,
-  onPress, onLongPress, longPressLabel, tabIndex, keyShortcuts }: CalendarDayCellProps) {
+  size = calendar.daySize, onPress, onLongPress, longPressLabel, tabIndex, keyShortcuts }: CalendarDayCellProps) {
   const { colors, fontFamily, numericFontFamily } = useKjunStyles();
   const event = emphasis === "event";
   const selected = day.selected;
@@ -69,7 +71,7 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
       collapsable={false}
       style={({ pressed }) => event
         ? { flex: 1, height: calendar.eventDayHeight, paddingTop: calendar.eventDayPaddingTop, paddingBottom: calendar.eventDayPaddingBottom, alignItems: "center", borderRadius: calendar.dayRadius }
-        : { width: calendar.daySize, height: calendar.daySize, borderRadius: calendar.dayRadius, alignItems: "center", justifyContent: "center",
+        : { width: size, height: size, borderRadius: calendar.dayRadius, alignItems: "center", justifyContent: "center",
           backgroundColor: selected ? colors.brand : pressed && !day.blocked ? colors.hover : "transparent" }}>
       {({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => <>
         {/* The selected (or pressed) square wraps the number and marks: full cell height, inset at the sides. */}
@@ -109,11 +111,11 @@ export function CalendarDayCell({ day, density, emphasis, tone, label, hint, dim
   );
   if (event) return cell;
   return (
-    <View style={{ width: calendar.daySize, height: calendar.daySize }}>
+    <View style={{ width: size, height: size }}>
       {/* A range joins its ends with a quiet band under the days between them; it ends under the squared ends. */}
       {/* At the week's edges it stops at the cell and closes with the day's corner, so the row reads as finished. */}
       {band && <View pointerEvents="none" style={{ position: "absolute", top: 0, bottom: 0, backgroundColor: colors.brandSubtleBg,
-        left: day.rangeStart ? calendar.daySize / 2 : column === 0 ? 0 : -calendar.rangeBleed, right: day.rangeEnd ? calendar.daySize / 2 : column === 6 ? 0 : -calendar.rangeBleed,
+        left: day.rangeStart ? size / 2 : column === 0 ? 0 : -calendar.rangeBleed, right: day.rangeEnd ? size / 2 : column === 6 ? 0 : -calendar.rangeBleed,
         ...(column === 0 && !day.rangeStart ? { borderTopLeftRadius: calendar.dayRadius, borderBottomLeftRadius: calendar.dayRadius } : {}),
         ...(column === 6 && !day.rangeEnd ? { borderTopRightRadius: calendar.dayRadius, borderBottomRightRadius: calendar.dayRadius } : {}) }} />}
       {cell}

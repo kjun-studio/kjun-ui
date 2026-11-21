@@ -139,7 +139,8 @@ export interface KjunButtonProps
   children?: ReactNode;
   variant?: ButtonVariant;
   size?: ButtonSize;
-  /** "circle" makes an icon-only button round: as wide as its height with a full radius. "pill" rounds a button with a label
+  /** "circle" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone
+   * (one or two characters, such as a day number); a label with an icon keeps its width. "pill" rounds a button with a label
    * fully and keeps its width, for a button inside a rounded bar. */
   shape?: "default" | "circle" | "pill";
   loading?: boolean;
@@ -209,6 +210,8 @@ export function KjunButton(input: KjunButtonProps) {
   // Either form of a side item takes the icon's place, inset and loading rules.
   const prefixIcon = prefixNode || !!prefixName, suffixIcon = suffixNode || !!suffixName;
   const iconOnly = !hasContent && !!(prefixIcon || suffixIcon || busy);
+  // A circle with a short label alone (a day number, a count) is a round button as wide as its height: no label minimum or inset.
+  const roundLabel = shape === "circle" && hasContent && !prefixIcon && !suffixIcon && !block && variant !== "link";
   const positive = ["primary", "danger", "success", "warning"].includes(
     variant
   );
@@ -276,8 +279,8 @@ export function KjunButton(input: KjunButtonProps) {
           flexGrow: compactActionBar === "fill" ? (hasContent ? 1 : undefined) : compactActionBar && positive && hasContent ? 1 : undefined,
           ...(compactActionBar === "fill" && hasContent ? { flexBasis: 0, minWidth: 0 } : {}),
           // A width set by the caller (fixed square controls) wins over the label minimum.
-          minWidth: hasContent && !block && StyleSheet.flatten(style)?.width == null ? tokens.button.minWidths[size] : undefined,
-          paddingHorizontal: iconOnly ? 0 : tokens.button.paddingX[size],
+          minWidth: hasContent && !block && !roundLabel && StyleSheet.flatten(style)?.width == null ? tokens.button.minWidths[size] : undefined,
+          paddingHorizontal: iconOnly || roundLabel ? 0 : tokens.button.paddingX[size],
           // Icon glyphs carry their own side bearing, so the icon side takes a tighter inset.
           ...(!iconOnly && prefixIcon ? { paddingLeft: tokens.button.iconSidePaddingX[size] } : {}),
           ...(!iconOnly && suffixIcon ? { paddingRight: tokens.button.iconSidePaddingX[size] } : {}),
@@ -295,7 +298,7 @@ export function KjunButton(input: KjunButtonProps) {
             outlineColor: c.focusRing, outlineWidth: 0, outlineOffset: tokens.states.focus.offset,
           } : {}),
           transform: [{ scale: pressed && !disabled && !busy ? tokens.states.scale.pressed : 1 }],
-          ...(multiline ? {
+          ...(multiline && !roundLabel ? {
             height: 'auto' as const, maxWidth: '100%' as const,
             paddingVertical: Math.max(0, (height - Math.max(tokens.button.typography[size].lineHeightPx,
               navigation && (prefixIcon || suffixIcon || !hasContent) ? iconSize : 0)) / 2),
@@ -314,7 +317,7 @@ export function KjunButton(input: KjunButtonProps) {
           {busy && !!prefixIcon && !spinPrefix && <KjunSpinnerGlyph size={iconSize} color={color} />}
           {before && (prefixNode ? media(prefix) : <KjunIcon name={prefixName!} filled={!busy && prefixIconFilled}
             size={iconSize} color={color} spin={busy} />)}
-          {hasContent && <FontText numberOfLines={navigation?.slot ? 1 : undefined} ellipsizeMode="tail" style={{ fontFamily,
+          {hasContent && <FontText numberOfLines={navigation?.slot || roundLabel ? 1 : undefined} ellipsizeMode="tail" style={{ fontFamily,
             ...typeStyle(tokens.button.typography[size]),
             color, opacity: overlayLoading ? 0 : 1,
             // A link is underlined at rest, like KjunExternalLink, so it reads as one in body text of the same colour.

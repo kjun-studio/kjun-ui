@@ -71,7 +71,8 @@ export function useActionSize(requested: () => ButtonSize | undefined, fallback:
 const kjunButtonProps = {
   variant: { type: String as PropType<ButtonVariant>, default: "primary" },
   size: { type: String as PropType<ButtonSize>, default: undefined },
-  /** "circle" makes an icon-only button round: as wide as its height with a full radius. "pill" rounds a button with a label
+  /** "circle" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone
+   * (one or two characters, such as a day number); a label with an icon keeps its width. "pill" rounds a button with a label
    * fully and keeps its width, for a button inside a rounded bar. */
   shape: { type: String as PropType<"default" | "circle" | "pill">, default: "default" },
   loading: { type: Boolean, default: false },
@@ -110,6 +111,8 @@ export const KjunButton = defineComponent({
       const prefixNode = hasContent(prefixSlot), suffixNode = hasContent(suffixSlot);
       const prefixIcon = prefixNode || !!props.prefixIcon, suffixIcon = suffixNode || !!props.suffixIcon;
       const iconOnly = !content && !!(prefixIcon || suffixIcon || loading);
+      // A circle with a short label alone (a day number, a count) is a round button as wide as its height: no label minimum or inset.
+      const roundLabel = props.shape === "circle" && content && !prefixIcon && !suffixIcon && !props.block && props.variant !== "link";
       const height = Math.max(tokens.button.heights[s], navigation?.controlSize ?? 0);
       const iconSize = navigation?.iconSize ?? tokens.button.iconSizes[s];
       const contentHeight = Math.max(content ? tokens.button.typography[s].lineHeightPx : 0,
@@ -143,12 +146,12 @@ export const KjunButton = defineComponent({
             minHeight: height,
             width: props.block ? "100%" : iconOnly || props.shape === "circle" ? height : undefined,
             // A width set by the caller (fixed square controls) wins over the label minimum.
-            minWidth: content && !props.block && appWidth == null ? tokens.button.minWidths[s] : undefined,
-            padding: iconOnly ? 0 : `0 ${suffixIcon ? iconSide : paddingX}px 0 ${prefixIcon ? iconSide : paddingX}px`,
+            minWidth: content && !props.block && !roundLabel && appWidth == null ? tokens.button.minWidths[s] : undefined,
+            padding: iconOnly || roundLabel ? 0 : `0 ${suffixIcon ? iconSide : paddingX}px 0 ${prefixIcon ? iconSide : paddingX}px`,
             ...typeStyle(tokens.button.typography[s]),
             borderRadius: props.shape !== "default" || inheritedShape?.value === "pill" ? tokens.shape.pill : tokens.button.radii[s],
             gap: content ? tokens.button.contentGaps[s] : 0,
-          }, (navigation || props.wrap || cardActions) && { height: "auto", maxWidth: "100%", paddingBlock: Math.max(0, (height - contentHeight) / 2) },
+          }, (navigation || props.wrap || cardActions) && !roundLabel && { height: "auto", maxWidth: "100%", paddingBlock: Math.max(0, (height - contentHeight) / 2) },
             props.variant === "link" && { height: "auto", minHeight: 0, minWidth: 0, width: "auto", padding: 0, borderRadius: 0 })}
           onClick={(event: MouseEvent) => {
             // While loading the click does nothing, a submit button included. It still bubbles, like any click.

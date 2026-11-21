@@ -553,7 +553,7 @@ set("Modal", { header: "제목 자리를 대신하는 내용입니다. 제목 �
 set("Modal", { ariaDescribedBy: "대화상자를 설명하는 요소의 id입니다(React Native Web의 aria-describedby). 기기에서는 ariaDescription을 쓰세요." }, "native");
 set("Drawer", { avoidKeyboard: { default:"true", summary:"화면 키보드가 패널을 가리지 않게 합니다. 아래 Drawer는 키보드 위로 올라가고 다른 위치는 높이를 줄입니다. 기기에서만 동작합니다." } }, "native");
 // 0.13.0 additions.
-set("Button RefreshButton", { shape: { default:'"default"', summary:'"circle"이면 아이콘만 있는 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 글자가 있는 버튼에는 쓰지 않습니다. "pill"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).' } });
+set("Button RefreshButton", { shape: { default:'"default"', summary:'"circle"이면 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 아이콘 하나만 있거나 날짜·개수처럼 한두 글자 라벨만 있을 때 씁니다. 라벨에 아이콘이 함께 있으면 폭을 유지합니다. "pill"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).' } });
 for (const platform of ["vue3", "react", "native"]) set("FormActions", { fill: "버튼이 줄 폭을 나눠 채웁니다. true는 두 버튼을 같은 폭으로, \"primary\"는 확인 버튼을 취소 버튼의 두 배 폭으로 둡니다. 두 버튼이 한 줄에 들어가지 않아 세로로 쌓이면 어느 쪽이든 각 버튼이 줄 전체를 채웁니다." }, platform);
 for (const platform of ["vue3", "react"]) set("FormActions Modal", { form: "페이지의 다른 곳에 있는 <form>의 id입니다. 확인 버튼이 그 폼을 제출하고, 입력칸에서 Enter를 눌러도 제출됩니다. 모달 본문의 폼에 숨은 제출 버튼을 둘 필요가 없습니다. 저장은 폼의 submit 이벤트에서 처리하세요." }, platform);
 set("ListRow", { expanded: { summary: "행이 자기 내용을 펼치게 합니다. 행 머리가 버튼이 되어 누르면 다음 상태를 알리고(React·Native onExpandedChange, Vue v-model:expanded), 끝에 아래 방향 꺾쇠가 붙어 펼치면 위로 뒤집힙니다. 펼친 내용은 제목이 시작하는 선에서 시작합니다. href·checked·selected·chevron과 함께 쓰지 않습니다." } });

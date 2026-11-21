@@ -103,8 +103,9 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
 
     test('circle buttons are as wide as they are tall and fully round', async ({ page }) => {
-      for (const [name, height] of [['Add sm', 32], ['Add md', 40]] as const) {
-        const button = section(page, 'circle-buttons').getByRole('button', { name });
+      // A short label alone (a day number) makes the same circle: no label minimum width or side inset.
+      for (const [name, height] of [['Add sm', 32], ['Add md', 40], ['7', 32], ['28', 40]] as const) {
+        const button = section(page, 'circle-buttons').getByRole('button', { name, exact: true });
         const box = (await button.boundingBox())!;
         expect(Math.round(box.width)).toBe(height);
         expect(Math.round(box.height)).toBe(height);

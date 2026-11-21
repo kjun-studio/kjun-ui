@@ -58,6 +58,8 @@ export function AdditionCases({ K, native = false, providerProps = {} }: { K: an
     <K.KjunProvider {...providerProps}><div data-testid="circle-buttons" style={{ display: 'flex', flexDirection: 'row', gap: 8 }}>
       <K.KjunButton shape="circle" size="sm" prefixIcon="plus" ariaLabel="Add sm" />
       <K.KjunButton shape="circle" size="md" prefixIcon="plus" ariaLabel="Add md" />
+      <K.KjunButton shape="circle" size="sm">7</K.KjunButton>
+      <K.KjunButton shape="circle" size="md">28</K.KjunButton>
       <K.KjunButton shape="pill" size="md">모음에 담기</K.KjunButton>
       <K.KjunButton size="md">모음에 담기 기본</K.KjunButton>
     </div></K.KjunProvider>

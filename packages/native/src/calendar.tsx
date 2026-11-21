@@ -57,6 +57,9 @@ export function CalendarView({ value, range, min, max, clearable = false, weekSt
   const [focusRequest, setFocusRequest] = useState(1);
   const go = (iso: string, moveFocus = false) => { setFocus(clampDate(iso, min, max)); if (moveFocus) setFocusRequest(n => n + 1); };
   const grid = useRef<View>(null);
+  // Seven days always share one row: in a panel narrower than seven token days (a 320 screen) each day shrinks to fit,
+  // as the web grid's minmax(0, day) columns do. Whole pixels, so rounding never pushes the seventh day to the next row.
+  const [daySize, setDaySize] = useState<number>(geometry.daySize);
   useEffect(() => {
     if (!web || mode !== "days") return;
     // The panel takes presses only once it is placed; focus the day then.
@@ -141,6 +144,7 @@ export function CalendarView({ value, range, min, max, clearable = false, weekSt
       )}
       {days ? (
         <View ref={grid} style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: geometry.rowGap }}
+          onLayout={event => setDaySize(Math.min(geometry.daySize, Math.floor(event.nativeEvent.layout.width / 7)))}
           {...(web ? { onKeyDown: (event: KeyboardEvent) => {
             const next = moveDate(focus, event.key, event.shiftKey, weekStart);
             if (!next) return;
@@ -149,14 +153,14 @@ export function CalendarView({ value, range, min, max, clearable = false, weekSt
           } } : {})}>
           {orderWeekdays(labels.weekdays, weekStart).map((day, index) => {
             const t = tone((index + weekStart) % 7);
-            return <View key={day} aria-hidden={true} style={{ width: geometry.daySize, height: geometry.weekdayHeight, alignItems: "center", justifyContent: "center" }}>
+            return <View key={day} aria-hidden={true} style={{ width: daySize, height: geometry.weekdayHeight, alignItems: "center", justifyContent: "center" }}>
               <KText {...(Platform.OS === "web" ? { dataSet: { kjunPart: "weekday", tone: t === "text" ? undefined : t } } : {})}
                 style={{ ...typeStyle("meta"), color: t === "danger" ? colors.danger : t === "info" ? colors.info : colors.textTertiary }}>{day}</KText>
             </View>;
           })}
           {calendarDays(shown.year, shown.month, { value, range, min, max, today, weekStart, unavailable: isDateUnavailable, limits }).map(day => {
             const role = range ? rangeRole(day) : null;
-            return <CalendarDayCell key={day.iso} day={day} density="compact" emphasis="picker" tone={tone(day.weekday)} column={(day.weekday - weekStart + 7) % 7}
+            return <CalendarDayCell key={day.iso} day={day} density="compact" emphasis="picker" tone={tone(day.weekday)} column={(day.weekday - weekStart + 7) % 7} size={daySize}
               // Devices have no "current date" state, so today joins the name.
               label={dateLabel(day.iso, scope) + (day.today && Platform.OS !== "web" ? ", " + m.today : "")}
               hint={role === "start" ? m.rangeStartDay : role === "end" ? m.rangeEndDay : role === "between" ? m.inRangeDay : undefined}

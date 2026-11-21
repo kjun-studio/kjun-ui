@@ -249,6 +249,20 @@ for (const platform of ['react', 'vue3']) {
   });
 }
 
+// Native (React Native Web only): the day grid wraps, so a too-narrow panel once pushed Saturday to the next row.
+test('native: a panel narrower than seven days shrinks the days and keeps each week on one row', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 720 });
+  await openFixture(page, 'native', '', 'date-picker-design');
+  await open(page, 'date');
+  const week = await Promise.all([6, 7, 8, 9, 10, 11, 12].map(async (date, index) =>
+    (await day(page, `2026년 9월 ${date}일 ${'일월화수목금토'[index]}요일`).boundingBox())!));
+  for (const box of week) {
+    expect(box.width).toBeLessThan(40); expect(box.width).toBe(box.height);
+    expect(box.y).toBe(week[0].y);
+  }
+  for (let i = 1; i < week.length; i++) expect(week[i].x).toBeGreaterThan(week[i - 1].x);
+});
+
 for (const platform of NEW_CELLS) {
   test.describe(`${platform}: picker cells, redesigned`, () => {
     test.beforeEach(async ({ page }) => {
