@@ -48,6 +48,22 @@ for (const platform of ['react', 'vue3', 'native']) {
     await expect(tip(page, '둘째 설명')).toBeVisible({ timeout: 400 });
   });
 
+  if (platform !== 'native') test(`${platform}: Escape keeps a hovered tooltip closed until the pointer leaves and comes back`, async ({ page }) => {
+    await openFixture(page, platform, '', 'tooltip-behavior');
+    await enter(page);
+    await button(page, '첫째').hover();
+    await expect(tip(page, '첫째 설명')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(tip(page, '첫째 설명')).toHaveCount(0);
+    // A second enter while the pointer still rests there (a browser can send one after the page changes) is not a new hover.
+    await button(page, '첫째').evaluate(el => el.dispatchEvent(new PointerEvent('pointerenter', { pointerType: 'mouse' })));
+    await page.waitForTimeout(900);
+    await expect(tip(page, '첫째 설명')).toHaveCount(0);
+    await page.mouse.move(900, 700);
+    await button(page, '첫째').hover();
+    await expect(tip(page, '첫째 설명')).toBeVisible();
+  });
+
   test(`${platform}: width lg widens the tooltip to 320`, async ({ page }) => {
     await openFixture(page, platform, '', 'tooltip-behavior');
     await enter(page);

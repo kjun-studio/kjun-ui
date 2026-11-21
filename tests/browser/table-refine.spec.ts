@@ -15,9 +15,9 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(page.locator('th', { hasText: '담당자' }).locator('svg')).toHaveCount(0);
       await page.getByRole('button', { name: '금액' }).click();
       await expect(page.locator('th', { hasText: '금액' })).toHaveAttribute('aria-sort', 'ascending');
-      const sorted = await page.locator('th', { hasText: '금액' }).locator('button').evaluate(el => getComputedStyle(el).color);
       const quiet = await page.locator('th', { hasText: '이름' }).locator('button').evaluate(el => getComputedStyle(el).color);
-      expect(sorted).not.toBe(quiet);
+      // Reduced motion still leaves a 0.01ms colour transition, so the sorted colour settles a frame after the click.
+      await expect.poll(() => page.locator('th', { hasText: '금액' }).locator('button').evaluate(el => getComputedStyle(el).color)).not.toBe(quiet);
     }
     // Only sortable headers are buttons; the plain column reads as text on every platform.
     await expect(page.getByRole('button', { name: '담당자', exact: true })).toHaveCount(0);

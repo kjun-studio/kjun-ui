@@ -210,7 +210,8 @@ export const KjunTooltip = defineComponent({
       if (next === open.value) return;
       internal.value = next; emit("update:open", next);
     } });
-    const layer = useLayer(() => open.value, () => open.value, "tooltip", () => { open.value = false; });
+    // Escape (the layer's close) also drops a pending hover delay, so a pointer resting on the trigger cannot reopen it.
+    const layer = useLayer(() => open.value, () => open.value, "tooltip", () => hide());
     const reduced = useReducedMotion();
     const motion = usePresence(() => open.value && !layer.blocked.value && !!(props.content || props.title), () => reduced.value, tokens.motion.tooltipExit);
     const target = usePortalTarget();
@@ -218,7 +219,7 @@ export const KjunTooltip = defineComponent({
     const anchor = ref<Element | null>(null), tip = ref<HTMLElement | null>(null);
     const position = reactive({ top: 0, left: 0, side: props.placement as string, arrow: 0 });
     const disabled = () => (!props.content && !props.title) || !layer.scopeActive.value;
-    let timer: ReturnType<typeof setTimeout> | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined, hovered = false;
     const show = (immediate: boolean) => {
       if (disabled()) return;
       clearTimeout(timer);
@@ -266,8 +267,9 @@ export const KjunTooltip = defineComponent({
     onUpdated(update);
     const handlers = {
       // Pointer hover only: a touch tap is a press, and the mouse events a browser emulates after it must not open the tooltip.
-      onPointerenter: (event: PointerEvent) => { if (event.pointerType !== "touch") show(false); },
-      onPointerleave: (event: PointerEvent) => { if (event.pointerType !== "touch") hide(); },
+      // Like react-aria, one hover opens it once: after Escape the pointer has to leave and come back.
+      onPointerenter: (event: PointerEvent) => { if (event.pointerType === "touch" || hovered) return; hovered = true; show(false); },
+      onPointerleave: (event: PointerEvent) => { if (event.pointerType === "touch") return; hovered = false; hide(); },
       // A layer returning keyboard focus is not a new request for its trigger's tooltip.
       onFocus: (event: FocusEvent) => { if (isFocusVisible() && !layer.state.isRestoredFocus(event.target as HTMLElement)) show(true); },
       // Keep suppression for this focus visit only; a later Tab visit may show the hint again.
