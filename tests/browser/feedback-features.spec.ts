@@ -35,10 +35,10 @@ for (const platform of ['react', 'vue3', 'native']) {
   test(`${platform}: Alert actions sit beside an untitled message and under a titled one`, async ({ page }) => {
     await openFixture(page, platform, '', 'alert-design');
     const alert = page.getByTestId('alert').locator(':scope > *');
-    for (const [size, height, padding] of [['sm', 40, 14], ['md', 52, 16], ['lg', 64, 20]] as const) {
+    for (const [size, height, padding] of [['sm', 40, 14], ['md', 52, 16], ['lg', 60, 20]] as const) {
       await update(page, { size, title: '', body: 'Alert body', actions: true, closable: false });
       const action = alert.getByRole('button', { name: 'Slot action', exact: true });
-      // Beside the message the alert keeps its one-line height.
+      // Beside the message the alert keeps its one-line height; untitled, that line is the message's own (lg 20, so 60px).
       await expect(alert).toHaveCSS('height', height + 'px');
       const [frame, button, icon] = [await box(alert), await box(action), await box(alert.locator('svg').first())];
       expect(frame.x + frame.width - (button.x + button.width)).toBeCloseTo(padding, 0);

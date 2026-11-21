@@ -7,7 +7,7 @@ useId,
 useRef,
 type ReactNode,
 } from "react";
-import { Platform,View,type ModalProps } from "react-native";
+import { Platform,StyleSheet,View,type ModalProps } from "react-native";
 import { ModalWindow } from './modal-window';
 export interface FeedbackOverlayHost {
   top: string | undefined;
@@ -45,13 +45,13 @@ export function ScopedNativeModal({ children, visible, ...props }: ModalProps) {
     >
       {children}
       {host?.top === id && (
-        <View
-         
-          style={{ pointerEvents: "box-none", position: "absolute", inset: 0 }}
-        >
+        <View style={styles.host}>
           {host.render()}
         </View>
       )}
     </ModalWindow>
   );
 }
+
+// RN Web turns box-none into its own rules only in a compiled StyleSheet; inline, the value is not CSS and the host swallows presses.
+const styles = StyleSheet.create({ host: { pointerEvents: "box-none", position: "absolute", inset: 0 } });

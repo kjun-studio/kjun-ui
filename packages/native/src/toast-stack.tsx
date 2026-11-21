@@ -1,7 +1,7 @@
 import { useLayerState } from "../../../shared/package-runtime/use-layer";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { useEffect, useLayoutEffect, useRef } from 'react';
-import { AccessibilityInfo, Animated, Platform, Pressable, View, useWindowDimensions, type LayoutRectangle } from 'react-native';
+import { AccessibilityInfo, Animated, Platform, Pressable, StyleSheet, View, useWindowDimensions, type LayoutRectangle } from 'react-native';
 import { tokens, type createFeedbackController } from '@kjun-ui/tokens';
 import type { PresentedToast } from '../../../shared/package-runtime/feedback-motion';
 import { useNativePresence, motionOut, nativeDriver } from './motion';
@@ -98,10 +98,10 @@ export function ToastStack({ items, controller, placement = "top", offset = 0 }:
       style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex }} />}
     <View ref={root}
       {...(items.length ? { accessibilityLabel: m.notifications, ...(Platform.OS === 'web' ? { role: 'region' as const } : {}) } : {})}
-      style={{ pointerEvents: "box-none", position: 'absolute', ...(placement === "bottom" ? { bottom: edge } : { top: edge }), right: tokens.extensions.toast.inset, left: tokens.extensions.toast.inset, gap: tokens.extensions.toast.stackGap,
+      style={[styles.boxNone, { position: 'absolute', ...(placement === "bottom" ? { bottom: edge } : { top: edge }), right: tokens.extensions.toast.inset, left: tokens.extensions.toast.inset, gap: tokens.extensions.toast.stackGap,
       minHeight: items.some(item => item.exiting) ? Math.max(0, ...[...boxes.values()].map(box => box.y + box.height)) : undefined,
       zIndex,
-    }}>
+    }]}>
       {placement === "bottom" && more}
       {stack.items.map(item => <ToastSlot key={item.toast.id} item={item} controller={controller} boxes={boxes} placement={placement} narrow={narrow} />)}
       {placement !== "bottom" && more}
@@ -112,3 +112,6 @@ export function ToastStack({ items, controller, placement = "top", offset = 0 }:
     </View>
   </>;
 }
+
+// RN Web turns box-none into its own rules only in a compiled StyleSheet; inline, the value is not CSS and the stack swallows presses.
+const styles = StyleSheet.create({ boxNone: { pointerEvents: "box-none" } });
