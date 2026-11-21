@@ -216,8 +216,8 @@ export function KjunFilterGroup({
                 paddingHorizontal: tokens.extensions.selection.paddingX[size],
                 // Corners follow the button scale with the height, so every size keeps the same shape.
                 borderRadius: tokens.button.radii[size],
-                // An unselected chip darkens to the hover surface while pressed, as Web does under the pointer.
-                backgroundColor: active ? colors.filterSelectedBg : pressed && !blocked ? colors.hover : colors.secondary,
+                // Like Web: an unselected chip takes the active surface while pressed, as ListRow presses.
+                backgroundColor: active ? colors.filterSelectedBg : pressed && !blocked ? colors.active : colors.secondary,
               }}
             >
               {option.dot && (

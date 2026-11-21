@@ -240,6 +240,7 @@ function MenuRow({ variant = "default", icon, disabled = false, check = null, de
   const iconColor = disabled ? colors.textDisabled : danger ? colors.danger : colors.textSecondary;
   // Danger keeps a light tint of its own colour in both themes instead of a heavy fill.
   const dangerTint = typeof colors.danger === "string" ? tintColor(colors.danger, tokens.states.opacity.tintHover) : undefined;
+  const dangerPressed = typeof colors.danger === "string" ? tintColor(colors.danger, tokens.states.opacity.tintActive) : undefined;
   return (
     <Pressable
       focusRingInset
@@ -269,8 +270,9 @@ function MenuRow({ variant = "default", icon, disabled = false, check = null, de
         minHeight: menu.compact ? geometry.compactOptionHeight : Math.max(geometry.itemHeight, tokens.native.minimumTouchTarget),
         borderRadius: geometry.optionRadius,
         // A chosen row is marked by its check alone, like a toggle; the fill stays for the current row.
-        backgroundColor: !disabled && (pressed || hovered)
-          ? danger ? dangerTint ?? colors.dangerBg : colors.hover : undefined,
+        // Like Web: the pointer's row takes the hover surface and a pressed row the active one; danger deepens its own tint.
+        backgroundColor: disabled ? undefined : pressed ? danger ? dangerPressed ?? colors.dangerBg : colors.active
+          : hovered ? danger ? dangerTint ?? colors.dangerBg : colors.hover : undefined,
       })}
     >
       {check != null ? <View style={{ opacity: check ? 1 : 0 }} accessible={false}><KjunIcon name="check" size={geometry.iconSize} color={disabled ? colors.textDisabled : colors.brand} /></View>

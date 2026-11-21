@@ -37,7 +37,8 @@ function Divider({ inset }: { inset: number }) {
   return <View style={{ pointerEvents: "none", position: "absolute", left: inset, right: 0, bottom: 0, height: tokens.border.defaultWidth, backgroundColor: muted ? colors.border : colors.divider }} />;
 }
 export interface KjunListRowProps {
-  title: string; description?: string;
+  /** The row's title. A node can add a short mark in the title's own place and type, such as a ticker in the tertiary text colour; a screen reader hears its text, and without text give ariaLabel. On Native a node is text (strings and KjunText), nested in the title's text. */
+  title: ReactNode; description?: string;
   /** Content after the title, centered on its first line, such as a KjunBadge ("New", a count); its text (or a badge's label or count) is heard with the title. */
   badge?: ReactNode;
   /** Icon name drawn in a 24px column (on a 40px rounded square in an open section); custom `leading` content uses a minimum 40px column and takes priority. */
@@ -204,7 +205,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
   // The default name reads the title, a text badge, the description and a text value at the row's end, like the web
   // row's name (title, badge and value) and description.
   // An element (a KjunBadge, a KjunText value) reads its text too, since the label replaces what its children would say.
-  const spoken = [title, nodeText(badge), description, nodeText(trailing)].filter(Boolean).join(", ");
+  const spoken = [nodeText(title), nodeText(badge), description, nodeText(trailing)].filter(Boolean).join(", ");
   // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
   const role = selection.mode === "single" ? undefined : "listitem" as const, inset = paddingX + (front ? column + gap : 0);
   const shape = open ? { marginHorizontal: list.open.rowInset, borderRadius: list.open.rowRadius } : {};
@@ -228,7 +229,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
     {/* A disabled row disables its actions too, so the row never reads as partly available. */}
     {(hasContent(actions) || movable) && <View {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ pointerEvents: disabled ? "none" : "auto", maxWidth: `${list.actionsMaxPercent}%`, flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: actionsPadding,
       // Like Web: with a description, actions center on the title and first description line instead of a long row's middle.
-      ...(description ? { alignSelf: "flex-start", alignItems: "center", alignContent: "center", minHeight: band, marginTop: paddingY + lift } : {}), opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}{movable && <ReorderControls value={value!} name={title || ariaLabel || ""} />}</View>}
+      ...(description ? { alignSelf: "flex-start", alignItems: "center", alignContent: "center", minHeight: band, marginTop: paddingY + lift } : {}), opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}{movable && <ReorderControls value={value!} name={nodeText(title) || ariaLabel || ""} />}</View>}
   </>;
   const rule = divider && <Divider inset={inset} />;
   if (!expandable) return <View role={role} style={{ ...head, ...shape }}>{row}{rule}</View>;

@@ -179,10 +179,11 @@ const childProps = {
   footer: slot("행 아래 둘 보조 안내문입니다.", "ReactNode", "12px 3차 글자색으로 표시합니다. 둥근 섹션에서는 카드 밖 아래에 놓입니다."),
   fallback: slot("이미지가 없거나 실패했을 때 표시할 콘텐츠입니다.", "ReactNode", "실패해도 이미지 컨테이너의 비율과 대체 텍스트를 유지합니다."),
 };
+const listRowTitle = slot("제목 자리에 그리는 내용입니다. 이름 뒤에 티커 같은 짧은 표시를 붙일 때 씁니다.", "ReactNode", "제목과 같은 자리·글씨(크기·굵기·색)를 물려받으므로 글씨를 따로 고정하지 마세요. 보조 표시는 3차 글자색 span처럼 색만 바꿉니다. 화면 낭독기와 이동 버튼 이름은 그 안의 글자를 읽고, 글자가 없으면 ariaLabel을 씁니다.");
 const listRowContent = slot("제목·설명 아래 같은 시작선에 놓는 표시용 내용입니다(예산·진행 막대, 보조 수치).", "ReactNode", "누르는 행에서는 행 버튼 안에 들어가므로 버튼·링크·입력을 넣지 마세요(웹 개발 모드 경고). 웹에서는 행의 설명(aria-describedby)으로 함께 읽지만 Native는 읽지 않으니, 꼭 들려야 할 금액·진행률은 ariaLabel에 넣으세요.");
 const topNavigationSlots = {
   leading: slot("뒤로 가기 등 앞쪽 탐색 행동입니다.", "ReactNode", "가용 폭의 최대 40%를 사용합니다. 내부 Button의 긴 라벨은 한 줄 말줄임하며, ariaLabel로 전체 목적을 제공하세요."),
-  actions: slot("화면의 보조 행동 묶음입니다.", "ReactNode", "제목의 120px 기준 폭을 확보하기 어려우면 묶음 전체를 다음 줄로 배치합니다. 긴 Button 문구는 영역 안에서 줄바꿈합니다. Button·MenuButton·RefreshButton·IconToggle의 아이콘은 24px이며 최소 44px 컨트롤 영역을 사용합니다."),
+  actions: slot("화면의 보조 행동 묶음입니다.", "ReactNode", "막대는 항상 한 줄입니다. 아이콘 행동은 크기를 지킨 채 다음 줄로 넘어가지 않고, 남는 폭은 제목이 써서 넘치면 말줄임합니다. 문구 행동은 제목의 120px 기준 폭을 남기는 데까지만 넓어지고 넘치면 한 줄 말줄임합니다. Button·MenuButton·RefreshButton·IconToggle의 아이콘은 24px이며 최소 44px 컨트롤 영역을 사용합니다."),
 };
 const numberInputSummaries = platform => ({
   format: { summary: "기본값 묶음을 고릅니다. number는 천 단위 쉼표·정수, amount는 같은 규칙에 앱이 suffix를 지정하는 금액, percent는 쉼표 없이 소수 1자리·음수 허용·\"%\"입니다. 동작은 갈라지지 않고 아래 개별 prop이 항상 프리셋을 덮습니다.", default: '"number"' },
@@ -383,6 +384,9 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     else if (key.startsWith("on")) entry = callback(name, key, platform);
     else if (name === "KjunTopNavigation" && topNavigationSlots[key]) entry = topNavigationSlots[key];
     else if (name === "KjunListRow" && key === "children") entry = listRowContent;
+    else if (name === "KjunListRow" && key === "title") entry = platform === "vue3"
+      ? { type: "string", default: '""', summary: "행의 제목입니다. title 슬롯을 주면 그 내용이 이 자리에 들어갑니다." }
+      : { type: "ReactNode", summary: "행의 제목입니다. 노드를 주면 이름 뒤에 티커 같은 짧은 표시를 제목의 자리·글씨 그대로 붙일 수 있습니다. 화면 낭독기와 이동 버튼 이름은 노드 안의 글자를 읽고, 글자가 없으면 ariaLabel을 씁니다." + (platform === "native" ? " Native의 노드는 문자열과 KjunText로, 제목 글자 안에 들어갑니다." : "") };
     else if (name === "KjunListSection" && key === "badge") entry = listSectionBadge;
     else if ((name === "KjunListSection" || name === "KjunListGroup") && ["id", "className", "style", "testID"].includes(key)) entry = { ...listRoots(name, platform)[key] };
     else if (name === "KjunListRow" && key === "selected") entry = detail("하나를 고르는 목록의 선택지입니다.", { "표시": "true면 행 끝에 강조색 체크를 그립니다. open 섹션에서는 고르지 않은 행에 빈 원을, 고른 행에 채운 체크와 selectedBg 면을 그리고, multiple 섹션에서는 행마다 체크칸을 그립니다. 누를 수 있는 행에 selected(true·false)를 주면 모든 플랫폼에서 radio로 읽히고 고른 행이 checked입니다. 고른 값은 앱이 관리합니다." });
@@ -451,10 +455,10 @@ export const extensionContracts = Object.fromEntries(Object.entries(bindings).ma
     const eventKeys = name === "KjunSplitPane" ? { "update:size": "onSizeChange", change: "onChangeCommit", "update:collapsed": "onCollapsedChange" } : name === "KjunColorPicker" ? { "update:modelValue": "onValueChange", change: "onChangeCommit", "update:open": "onOpenChange", "update:recentColors": "onRecentColorsChange" } : name.includes("Slider") || ["KjunTimePicker", "KjunQuantityStepper", "KjunNumberInput"].includes(name) ? { "update:modelValue": "onValueChange", change: "onChangeCommit", ...(name === "KjunQuantityStepper" ? { "invalid-input": "onInvalidInput" } : {}) } : ["KjunBottomNavigation", "KjunFloatingNavigation"].includes(name) ? { navigate: "onNavigate", reselect: "onReselect" } : name === "KjunChip" ? { remove: "onRemove" } : name === "KjunAvatarGroup" ? { click: "onClick" } : ["KjunImage", "KjunAvatar"].includes(name) ? { load: "onLoad", error: "onError" } : name === "KjunCarousel" ? { "update:index": "onIndexChange" } : name === "KjunSteps" ? { "step-select": "onStepSelect" } : name === "KjunListRow" ? { "update:checked": "onCheckedChange", "update:expanded": "onExpandedChange" } : name === "KjunListSection" ? { "update:modelValue": "onValueChange", "update:order": "onOrderChange", reorder: "onReorder" } : {};
     for (const [eventName, key] of Object.entries(eventKeys)) events[eventName] = callback(name, key, platform);
     if (name === "KjunEventCalendar") Object.assign(events, eventCalendarEvents);
-    const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["default", "badge", "leading", "trailing", "actions", "expanded"], KjunListSection: ["badge", "actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default", "action"], KjunNumberInput: ["prefix", "suffix"] }[name] || [];
+    const slotNames = { KjunSplitPane: ["first", "second"], KjunColorPicker: ["trigger"], KjunListRow: ["title", "default", "badge", "leading", "trailing", "actions", "expanded"], KjunListSection: ["badge", "actions", "default", "loading", "empty", "footer"], KjunListGroup: ["default"], KjunListItem: ["default"], KjunTopNavigation: ["leading", "actions"], KjunBottomActionBar: ["default"], KjunImage: ["fallback"], KjunAvatar: ["fallback"], KjunCarousel: ["default", "action"], KjunNumberInput: ["prefix", "suffix"] }[name] || [];
     for (const key of slotNames) {
       if (name === "KjunColorPicker") { slots[key] = colorTriggerSlot; continue; }
-      const definition = name === "KjunSplitPane" ? splitPaneSlots[key] : name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunCarousel" ? (key === "action" ? carouselAction : carouselSlides) : name === "KjunListRow" && key === "default" ? listRowContent : name === "KjunListSection" && key === "badge" ? listSectionBadge : childProps[key === "default" ? "children" : key];
+      const definition = name === "KjunSplitPane" ? splitPaneSlots[key] : name === "KjunTopNavigation" ? topNavigationSlots[key] : name === "KjunCarousel" ? (key === "action" ? carouselAction : carouselSlides) : name === "KjunListRow" && key === "default" ? listRowContent : name === "KjunListRow" && key === "title" ? listRowTitle : name === "KjunListSection" && key === "badge" ? listSectionBadge : childProps[key === "default" ? "children" : key];
       slots[key] = { ...definition, details: definition.details.map(row => row.label === "슬롯 데이터" ? { ...row, text: "제공 데이터 없음" } : row) };
     }
   }

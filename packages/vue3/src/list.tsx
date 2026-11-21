@@ -5,7 +5,7 @@ import { tokens, type CardRadius } from "@kjun-ui/tokens";
 import { KjunIcon } from "./button";
 import { KjunCollapse } from "./collapse";
 import { useKjunId } from "./input";
-import { hasContent } from "./runtime/slots";
+import { hasContent, slotText } from "./runtime/slots";
 import { listLeadingGeometry, type ListLeadingSize } from "../../../shared/package-runtime/list-leading";
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowExpandable, listRowKind, listSectionShape, listSectionSurface, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionSurface, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
@@ -25,7 +25,8 @@ const kjunListSelectionKey = Symbol("kjunListSelection");
 const noSelection: ListRowSelection = { mode: "none" };
 
 const kjunListRowProps = {
-  title: { type: String, required: true },
+  /** The row's title; the title slot takes its place. */
+  title: { type: String, default: "" },
   description: { type: String, default: undefined },
   /** Icon name drawn in a 24px column (on a 40px rounded square in an open section); custom leading slot content uses a minimum 40px column and takes priority. */
   icon: { type: String, default: undefined },
@@ -75,13 +76,15 @@ const kjunListRowProps = {
   descriptionLines: { type: Number, default: undefined },
 } as const;
 export type KjunListRowProps = ExtractPublicPropTypes<typeof kjunListRowProps>;
-/** Slots: default (display-only content under the description), badge (after the title, centered on its first line; heard with the title), leading, trailing, actions,
+/** Slots: title (in place of the title prop, in the title's own place and type, such as a name and a ticker in the tertiary text colour;
+ * a screen reader hears its text, and without text give ariaLabel), default (display-only content under the description), badge (after the title, centered on its first line; heard with the title), leading, trailing, actions,
  * expanded (shown under the row while expanded, outside the button, so it may hold buttons and links). Events: update:checked, update:expanded. */
 export const KjunListRow = defineComponent({
   name: "KjunListRow",
   props: kjunListRowProps,
   emits: { "update:checked": (_checked: boolean) => true, "update:expanded": (_expanded: boolean) => true },
   slots: Object as SlotsType<{
+    title?: () => VNodeChild;
     default?: () => VNodeChild;
     badge?: () => VNodeChild;
     leading?: () => VNodeChild;
@@ -119,6 +122,8 @@ export const KjunListRow = defineComponent({
       const { selected, onClick, kind, mode, open, expandable } = state.value;
       const now = listRowCurrent(kind, props.current);
       const slotted = slots.leading?.(), trailing = slots.trailing?.(), actions = slots.actions?.(), body = slots.default?.(), badge = slots.badge?.();
+      // Like React's node title: the title slot takes the title's place and type; its text names the move buttons.
+      const titleSlot = slots.title?.(), titled = hasContent(titleSlot), title = titled ? titleSlot : props.title, titleName = titled ? slotText(titleSlot) : props.title;
       const hasLeading = hasContent(slotted);
       const geometry = listLeadingGeometry({ size: props.leadingSize, custom: hasLeading, background: props.iconBackground != null, open });
       const glyph = props.icon ? <KjunIcon name={props.icon} class="kjun-list-icon" size={geometry.iconSize} style={{ color: props.iconColor }} /> : null;
@@ -135,7 +140,7 @@ export const KjunListRow = defineComponent({
       const names = props.ariaLabel ? undefined : [id + "-title", hasBadge && id + "-badge", hasTrailing && id + "-trailing"].filter(Boolean).join(" ");
       const notes = [props.description && id + "-description", hasBody && id + "-content"].filter(Boolean).join(" ") || undefined;
       const label = { "aria-label": props.ariaLabel, "aria-labelledby": names, "aria-describedby": notes };
-      const titleText = <span id={id + "-title"} class="kjun-list-title" data-clamp={props.titleLines ? "" : undefined} style={props.titleLines ? { WebkitLineClamp: props.titleLines } : undefined}>{props.title}</span>;
+      const titleText = <span id={id + "-title"} class="kjun-list-title" data-clamp={props.titleLines ? "" : undefined} style={props.titleLines ? { WebkitLineClamp: props.titleLines } : undefined}>{title}</span>;
       const titleBlock = hasBadge ? <span class="kjun-list-title-row">{titleText}<span id={id + "-badge"} class="kjun-list-badge">{badge}</span></span> : titleText;
       const endValue = hasTrailing && <span id={id + "-trailing"} class="kjun-list-trailing">{trailing}</span>, onTitle = hasTrailing && props.trailingPosition === "title", below = hasTrailing && props.trailingPosition === "below";
       const contents = <>
@@ -163,7 +168,7 @@ export const KjunListRow = defineComponent({
       // A disabled row disables its actions too, so the row never reads as partly available.
       // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
       const place = reorder?.value ? reorderPlace(reorder.value.order, props.value) : null;
-      return <li class="kjun-list-row" role={mode === "single" ? "none" : undefined} data-leading={leading ? (hasLeading ? "" : "icon") : undefined} data-leading-size={leading ? geometry.size : undefined} style={leadingStyle} data-destructive={props.destructive || undefined} data-emphasized={props.emphasized || undefined} data-current={now ? "" : undefined} data-trailing={below ? "below" : undefined} data-disabled={props.disabled || undefined} data-reordering={place && reorder!.value!.grabbed === props.value || undefined} data-expandable={expandable ? "" : undefined}>{main}{(hasContent(actions) || place) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}{place && renderReorderControls(reorder!.value!, place, props.value!, props.title || props.ariaLabel || "", messages.value)}</div>}{expandable && <div id={id + "-expanded"} class="kjun-list-expanded"><KjunCollapse open={!!props.expanded}><div class="kjun-list-expanded-body">{slots.expanded?.()}</div></KjunCollapse></div>}</li>;
+      return <li class="kjun-list-row" role={mode === "single" ? "none" : undefined} data-leading={leading ? (hasLeading ? "" : "icon") : undefined} data-leading-size={leading ? geometry.size : undefined} style={leadingStyle} data-destructive={props.destructive || undefined} data-emphasized={props.emphasized || undefined} data-current={now ? "" : undefined} data-trailing={below ? "below" : undefined} data-disabled={props.disabled || undefined} data-reordering={place && reorder!.value!.grabbed === props.value || undefined} data-expandable={expandable ? "" : undefined}>{main}{(hasContent(actions) || place) && <div class="kjun-list-actions" data-disabled={props.disabled || undefined} inert={props.disabled || undefined}>{actions}{place && renderReorderControls(reorder!.value!, place, props.value!, titleName || props.ariaLabel || "", messages.value)}</div>}{expandable && <div id={id + "-expanded"} class="kjun-list-expanded"><KjunCollapse open={!!props.expanded}><div class="kjun-list-expanded-body">{slots.expanded?.()}</div></KjunCollapse></div>}</li>;
     };
   },
 });

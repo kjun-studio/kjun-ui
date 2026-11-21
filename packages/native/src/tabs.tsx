@@ -243,7 +243,8 @@ export function KjunTabs({
                 delayLongPress={500}
                 onHoverIn={() => setHoveredTab(tab.name)}
                 onHoverOut={() => setHoveredTab(current => current === tab.name ? null : current)}
-                style={{
+                // Like Web: an unselected pill takes the active surface while pressed; underline tabs keep their ink only.
+                style={({ pressed }: { pressed: boolean }) => ({
                   height,
                   ...(fullWidth ? { flexGrow: 1, flexBasis: 0, justifyContent: "center" as const } : {}),
                   flexDirection: "row",
@@ -252,8 +253,8 @@ export function KjunTabs({
                   paddingLeft: underline && index === 0 && !fullWidth ? 0 : paddingX,
                   paddingRight: paddingX,
                   borderRadius: underline ? geometry.radius : geometry.pillsRadius,
-                  backgroundColor: fill,
-                }}
+                  backgroundColor: pressed && fill && !active && !tab.disabled ? colors.active : fill,
+                })}
               >
 
                 {!!tab.icon && (

@@ -3,6 +3,7 @@ import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { createContext, useContext, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from "react";
 import { warnNestedControls } from "../../../shared/package-runtime/nested-controls";
 import { hasContent } from "../../../shared/package-runtime/content-presence";
+import { nodeText } from "../../../shared/package-runtime/node-text";
 import { KjunIcon } from "./button";
 import { Collapse } from "./collapse";
 import { linkRel, listRowChoice, listRowCurrent, listRowEnd, listRowExpandable, listRowKind, listSectionShape, listSectionSurface, observeListHeadingActions, warnListRowProps, warnListSectionProps, warnListSelection, type ListChoiceValue, type ListGroupVariant, type ListSectionSurface, type ListSectionVariant, type ListSelection, type ListSelectionMode } from "../../../shared/package-runtime/list-row";
@@ -18,7 +19,8 @@ export type { KjunListReorderControls, KjunListReorderMove } from "./reorder-con
 // the section is open, which changes how a row draws its icon and its choice, comes from ListShapeContext.
 const ListSelectionContext = createContext<ListSelection>({ mode: "none" });
 export interface KjunListRowProps {
-  title: string;
+  /** The row's title. A node can add a short mark in the title's own place and type, such as a ticker in the tertiary text colour; a screen reader hears its text, and without text give ariaLabel. */
+  title: ReactNode;
   description?: string;
   /** Content after the title, centered on its first line, such as a KjunBadge ("New", a count); a screen reader hears it with the title. */
   badge?: ReactNode;
@@ -120,7 +122,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
     : href ? <a className="kjun-list-main" href={disabled ? undefined : href} role={disabled ? "link" : undefined} target={target} rel={linkRel(target, rel)} {...label} aria-current={now} aria-disabled={disabled || undefined} aria-busy={busy || undefined} onClick={disabled ? e => e.preventDefault() : onClick}>{contents}</a>
     : onClick ? <button className="kjun-list-main" type="button" {...label} aria-current={now} aria-expanded={expandable ? expanded : undefined} aria-controls={expandable ? id + "-expanded" : undefined} aria-busy={busy || undefined} disabled={disabled} onClick={onClick}>{contents}</button> : <div className="kjun-list-main" aria-current={now}>{contents}</div>;
   // In a single-choice section the list is a radiogroup, so its items drop their listitem role.
-  return <li className="kjun-list-row" role={selection.mode === "single" ? "none" : undefined} data-leading={front ? (custom ? "" : "icon") : undefined} data-leading-size={front ? geometry.size : undefined} style={leadingStyle} data-destructive={destructive || undefined} data-emphasized={emphasized || undefined} data-current={now ? "" : undefined} data-trailing={below ? "below" : undefined} data-disabled={disabled || undefined} data-reordering={movable && reorder!.grabbed === value || undefined} data-expandable={expandable ? "" : undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{(hasContent(actions) || movable) && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}{movable && <ReorderControls value={value!} name={title || ariaLabel || ""} />}</div>}{expandable && <div id={id + "-expanded"} className="kjun-list-expanded"><Collapse open={!!expanded}><div className="kjun-list-expanded-body">{expandedContent}</div></Collapse></div>}</li>;
+  return <li className="kjun-list-row" role={selection.mode === "single" ? "none" : undefined} data-leading={front ? (custom ? "" : "icon") : undefined} data-leading-size={front ? geometry.size : undefined} style={leadingStyle} data-destructive={destructive || undefined} data-emphasized={emphasized || undefined} data-current={now ? "" : undefined} data-trailing={below ? "below" : undefined} data-disabled={disabled || undefined} data-reordering={movable && reorder!.grabbed === value || undefined} data-expandable={expandable ? "" : undefined}>{main}{/* A disabled row disables its actions too, so the row never reads as partly available. */}{(hasContent(actions) || movable) && <div className="kjun-list-actions" data-disabled={disabled || undefined} inert={disabled || undefined}>{actions}{movable && <ReorderControls value={value!} name={nodeText(title) || ariaLabel || ""} />}</div>}{expandable && <div id={id + "-expanded"} className="kjun-list-expanded"><Collapse open={!!expanded}><div className="kjun-list-expanded-body">{expandedContent}</div></Collapse></div>}</li>;
 }
 export interface KjunListSectionProps {
   title?: string; description?: string; actions?: ReactNode; children?: ReactNode; ariaLabel?: string;

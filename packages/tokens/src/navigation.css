@@ -76,6 +76,11 @@
 .kjun-tabs[data-variant="pills"] > .kjun-tabs-header .kjun-tabs-track .kjun-tab:hover:not([aria-selected="true"]):not([aria-disabled="true"]):not(:disabled) {
   background:var(--_kjun-color-hover) !important;
 }
+/* While pressed they take the active surface, as ListRow and SideNavigation press. Underline tabs keep their ink change only:
+   they have no inset, so a fill would hug the text and read as a selection. */
+.kjun-tabs[data-variant="pills"] > .kjun-tabs-header .kjun-tabs-track .kjun-tab:is(:active, [data-pressed]):not([aria-selected="true"]):not([aria-disabled="true"]):not(:disabled) {
+  background:var(--_kjun-color-active) !important;
+}
 .kjun-tab-badge { font-variant-numeric:tabular-nums; }
 .kjun-tab-content { margin-top:var(--_kjun-extension-tabs-content-gap); }
 .kjun-tab-panel { outline:none; }

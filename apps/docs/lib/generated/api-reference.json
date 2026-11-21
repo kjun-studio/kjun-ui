@@ -28910,7 +28910,7 @@
             "type": "\"default\" | \"circle\" | \"pill\"",
             "required": false,
             "default": "\"default\"",
-            "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
+            "description": "\"circle\" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone\n(one or two characters, such as a day number); a label with an icon keeps its width. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
             "summary": "\"circle\"이면 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 아이콘 하나만 있거나 날짜·개수처럼 한두 글자 라벨만 있을 때 씁니다. 라벨에 아이콘이 함께 있으면 폭을 유지합니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
             "source": "packages/vue3/src/button.tsx"
           },
@@ -29073,7 +29073,7 @@
             "type": "\"default\" | \"circle\" | \"pill\" | undefined",
             "required": false,
             "default": "\"default\"",
-            "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
+            "description": "\"circle\" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone\n(one or two characters, such as a day number); a label with an icon keeps its width. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
             "summary": "\"circle\"이면 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 아이콘 하나만 있거나 날짜·개수처럼 한두 글자 라벨만 있을 때 씁니다. 라벨에 아이콘이 함께 있으면 폭을 유지합니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
             "source": "packages/react/src/button.tsx"
           },
@@ -29315,7 +29315,7 @@
             "type": "\"default\" | \"circle\" | \"pill\" | undefined",
             "required": false,
             "default": "\"default\"",
-            "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
+            "description": "\"circle\" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone\n(one or two characters, such as a day number); a label with an icon keeps its width. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
             "summary": "\"circle\"이면 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 아이콘 하나만 있거나 날짜·개수처럼 한두 글자 라벨만 있을 때 씁니다. 라벨에 아이콘이 함께 있으면 폭을 유지합니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
             "source": "packages/native/src/button.tsx"
           },
@@ -33348,7 +33348,7 @@
             "type": "\"default\" | \"circle\" | \"pill\" | undefined",
             "required": false,
             "default": "\"default\"",
-            "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
+            "description": "\"circle\" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone\n(one or two characters, such as a day number); a label with an icon keeps its width. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
             "summary": "\"circle\"이면 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 아이콘 하나만 있거나 날짜·개수처럼 한두 글자 라벨만 있을 때 씁니다. 라벨에 아이콘이 함께 있으면 폭을 유지합니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
             "source": "packages/react/src/actions.tsx"
           },
@@ -33581,7 +33581,7 @@
             "type": "\"default\" | \"circle\" | \"pill\" | undefined",
             "required": false,
             "default": "\"default\"",
-            "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
+            "description": "\"circle\" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone\n(one or two characters, such as a day number); a label with an icon keeps its width. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar.",
             "summary": "\"circle\"이면 버튼을 원형으로 그립니다. 폭은 크기별 높이와 같고 모서리는 완전히 둥급니다. 아이콘 하나만 있거나 날짜·개수처럼 한두 글자 라벨만 있을 때 씁니다. 라벨에 아이콘이 함께 있으면 폭을 유지합니다. \"pill\"은 글자가 있는 버튼의 모서리를 완전히 둥글게 하고 폭은 그대로 둡니다(둥근 작업 바 안의 버튼).",
             "source": "packages/native/src/actions.tsx"
           },
@@ -33821,10 +33821,10 @@
           {
             "name": "title",
             "type": "string",
-            "required": true,
-            "default": "—",
-            "description": "",
-            "summary": "영역이나 행의 제목입니다. 긴 문구는 줄바꿈합니다.",
+            "required": false,
+            "default": "\"\"",
+            "description": "The row's title; the title slot takes its place.",
+            "summary": "행의 제목입니다. title 슬롯을 주면 그 내용이 이 자리에 들어갑니다.",
             "source": "packages/vue3/src/list.tsx"
           },
           {
@@ -34208,6 +34208,24 @@
         ],
         "slots": [
           {
+            "name": "title",
+            "data": [],
+            "source": "packages/vue3/src/list.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "제목 자리에 그리는 내용입니다. 이름 뒤에 티커 같은 짧은 표시를 붙일 때 씁니다.",
+            "details": [
+              {
+                "label": "슬롯 데이터",
+                "text": "제공 데이터 없음"
+              },
+              {
+                "label": "사용 계약",
+                "text": "제목과 같은 자리·글씨(크기·굵기·색)를 물려받으므로 글씨를 따로 고정하지 마세요. 보조 표시는 3차 글자색 span처럼 색만 바꿉니다. 화면 낭독기와 이동 버튼 이름은 그 안의 글자를 읽고, 글자가 없으면 ariaLabel을 씁니다."
+              }
+            ],
+            "example": "/components/list-row#preview"
+          },
+          {
             "name": "default",
             "data": [],
             "source": "packages/vue3/src/list.tsx",
@@ -34326,11 +34344,11 @@
         "props": [
           {
             "name": "title",
-            "type": "string",
+            "type": "ReactNode",
             "required": true,
             "default": "—",
-            "description": "",
-            "summary": "영역이나 행의 제목입니다. 긴 문구는 줄바꿈합니다.",
+            "description": "The row's title. A node can add a short mark in the title's own place and type, such as a ticker in the tertiary text colour; a screen reader hears its text, and without text give ariaLabel.",
+            "summary": "행의 제목입니다. 노드를 주면 이름 뒤에 티커 같은 짧은 표시를 제목의 자리·글씨 그대로 붙일 수 있습니다. 화면 낭독기와 이동 버튼 이름은 노드 안의 글자를 읽고, 글자가 없으면 ariaLabel을 씁니다.",
             "source": "packages/react/src/list.tsx"
           },
           {
@@ -34837,11 +34855,11 @@
         "props": [
           {
             "name": "title",
-            "type": "string",
+            "type": "ReactNode",
             "required": true,
             "default": "—",
-            "description": "",
-            "summary": "영역이나 행의 제목입니다. 긴 문구는 줄바꿈합니다.",
+            "description": "The row's title. A node can add a short mark in the title's own place and type, such as a ticker in the tertiary text colour; a screen reader hears its text, and without text give ariaLabel. On Native a node is text (strings and KjunText), nested in the title's text.",
+            "summary": "행의 제목입니다. 노드를 주면 이름 뒤에 티커 같은 짧은 표시를 제목의 자리·글씨 그대로 붙일 수 있습니다. 화면 낭독기와 이동 버튼 이름은 노드 안의 글자를 읽고, 글자가 없으면 ariaLabel을 씁니다. Native의 노드는 문자열과 KjunText로, 제목 글자 안에 들어갑니다.",
             "source": "packages/native/src/list.tsx"
           },
           {
@@ -37172,7 +37190,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "제목의 120px 기준 폭을 확보하기 어려우면 묶음 전체를 다음 줄로 배치합니다. 긴 Button 문구는 영역 안에서 줄바꿈합니다. Button·MenuButton·RefreshButton·IconToggle의 아이콘은 24px이며 최소 44px 컨트롤 영역을 사용합니다."
+                "text": "막대는 항상 한 줄입니다. 아이콘 행동은 크기를 지킨 채 다음 줄로 넘어가지 않고, 남는 폭은 제목이 써서 넘치면 말줄임합니다. 문구 행동은 제목의 120px 기준 폭을 남기는 데까지만 넓어지고 넘치면 한 줄 말줄임합니다. Button·MenuButton·RefreshButton·IconToggle의 아이콘은 24px이며 최소 44px 컨트롤 영역을 사용합니다."
               }
             ],
             "example": "/components/top-navigation#preview"
@@ -37238,7 +37256,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "제목의 120px 기준 폭을 확보하기 어려우면 묶음 전체를 다음 줄로 배치합니다. 긴 Button 문구는 영역 안에서 줄바꿈합니다. Button·MenuButton·RefreshButton·IconToggle의 아이콘은 24px이며 최소 44px 컨트롤 영역을 사용합니다."
+                "text": "막대는 항상 한 줄입니다. 아이콘 행동은 크기를 지킨 채 다음 줄로 넘어가지 않고, 남는 폭은 제목이 써서 넘치면 말줄임합니다. 문구 행동은 제목의 120px 기준 폭을 남기는 데까지만 넓어지고 넘치면 한 줄 말줄임합니다. Button·MenuButton·RefreshButton·IconToggle의 아이콘은 24px이며 최소 44px 컨트롤 영역을 사용합니다."
               }
             ],
             "source": "packages/react/src/app-navigation.tsx",
@@ -37325,7 +37343,7 @@
               },
               {
                 "label": "사용 계약",
-                "text": "제목의 120px 기준 폭을 확보하기 어려우면 묶음 전체를 다음 줄로 배치합니다. 긴 Button 문구는 영역 안에서 줄바꿈합니다. Button·MenuButton·RefreshButton·IconToggle의 아이콘은 24px이며 최소 44px 컨트롤 영역을 사용합니다."
+                "text": "막대는 항상 한 줄입니다. 아이콘 행동은 크기를 지킨 채 다음 줄로 넘어가지 않고, 남는 폭은 제목이 써서 넘치면 말줄임합니다. 문구 행동은 제목의 120px 기준 폭을 남기는 데까지만 넓어지고 넘치면 한 줄 말줄임합니다. Button·MenuButton·RefreshButton·IconToggle의 아이콘은 24px이며 최소 44px 컨트롤 영역을 사용합니다."
               }
             ],
             "source": "packages/native/src/app-navigation.tsx",

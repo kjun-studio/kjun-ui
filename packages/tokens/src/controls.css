@@ -186,6 +186,10 @@
 .kjun-filter-chip:hover:not(:disabled):not([aria-pressed="true"]) > span {
   background: var(--_kjun-color-hover);
 }
+/* While pressed an unselected chip takes the active surface, as ListRow and SideNavigation press; a selected chip stays. */
+.kjun-filter-chip:active:not(:disabled):not([aria-pressed="true"]) > span {
+  background: var(--_kjun-color-active);
+}
 .kjun-filter-chip i {
   width: var(--_kjun-extension-selection-dot-size);
   height: var(--_kjun-extension-selection-dot-size);
@@ -363,6 +367,14 @@
 /* Danger keeps a light tint of its own colour in both themes instead of a heavy fill. */
 .kjun-menu-item[data-variant="danger"][data-focused]:not([data-disabled]) {
   background: color-mix(in srgb, var(--_kjun-color-danger) calc(var(--_kjun-state-opacity-tint-hover) * 100%), transparent);
+}
+/* While pressed the row takes the active surface, as ListRow and SideNavigation press (react-aria marks it data-pressed);
+   danger deepens its own tint. A chosen row's check does not change. */
+.kjun-menu-item:is(:active, [data-pressed]):not([data-disabled]) {
+  background: var(--_kjun-color-active);
+}
+.kjun-menu-item[data-variant="danger"]:is(:active, [data-pressed]):not([data-disabled]) {
+  background: color-mix(in srgb, var(--_kjun-color-danger) calc(var(--_kjun-state-opacity-tint-active) * 100%), transparent);
 }
 /* A chosen row is marked by its check alone, like a toggle; the fill stays for the current row. */
 .kjun-menu-check { color: var(--_kjun-color-brand); }

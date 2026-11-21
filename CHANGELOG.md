@@ -22,6 +22,9 @@ KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같�
 - **`KjunButton shape="circle"` 글자 라벨**: 아이콘 없이 날짜·개수처럼 한두 글자 라벨만 있으면 높이와 같은 폭의 원형 버튼이 됩니다(Vue 3·React·Native). 지금까지는 라벨 최소 폭과 좌우 여백이 남아 원이 되지 않았습니다. 라벨에 아이콘이 함께 있으면 폭을 그대로 둡니다. 주간 날짜 선택처럼 `style`로 최소 폭과 여백을 덮어쓰던 코드는 `shape="circle"`만 주면 됩니다.
 - **Native 날짜 선택기가 좁은 패널에서 6열로 줄바꿈되던 문제 (수정)**: 폭 320 화면에서 패널이 304로 줄면 날짜 칸 7개(40×7)가 들어가지 않아 토요일이 다음 줄로 넘어가고 요일과 날짜가 어긋났습니다. 이제 패널 안쪽 폭에 맞춰 날짜 칸과 요일 칸을 함께 줄여(최대 40) 한 주가 늘 한 줄에 놓입니다. 웹은 이미 이렇게 동작했습니다.
 - **Native 웹 번들의 `props.pointerEvents is deprecated` 경고 (수정)**: 내부 View가 `pointerEvents`를 prop으로 넘겨 React Native Web 미리보기 화면마다 개발 모드 경고가 나던 문제를 고쳤습니다. 모두 `style.pointerEvents`로 옮겼고 동작은 같습니다(`react-native-svg`의 `Svg`는 prop을 유지).
+- **FilterGroup 칩·pills 탭·메뉴 항목의 눌림 채움**: 선택되지 않은 칩과 pills 탭, 메뉴 항목이 누르는 동안 `active` 역할로 채워집니다(Vue 3·React·Native). ListRow·SideNavigation·BottomNavigation과 같은 규칙이며, 이전에는 hover와 구분되지 않았습니다. 위험 메뉴 항목은 자기 색 틴트를 한 단계 진하게 하고, 선택된 칩·탭과 underline 탭은 그대로입니다. 새 색 역할은 없습니다. 선택 배경을 눌림과 다르게 하려면 지금처럼 `selectedBg`를 따로 줍니다.
+- **`KjunListRow` 제목 노드**: React·Native는 `title`에 노드를, Vue 3는 `#title` 슬롯을 받습니다. 이름 뒤에 티커 같은 짧은 표시를 제목의 자리와 글씨 그대로 붙입니다. `title=""`과 기본 슬롯으로 우회하면 내용이 설명 아래로 내려가던 문제를 대신합니다. 화면 낭독기와 이동 버튼 이름은 노드의 글자를 읽습니다. Vue 3의 `title` prop은 이제 생략할 수 있습니다.
+- **TopNavigation API 설명 (수정)**: `actions` 설명이 "제목 폭이 모자라면 동작 묶음이 다음 줄로 내려간다"고 적혀 있었지만, 막대는 이미 한 줄을 유지하고 제목이 말줄임됩니다. 설명을 동작에 맞췄습니다.
 
 ## 0.22.0 — 2026-11-19
 

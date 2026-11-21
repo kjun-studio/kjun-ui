@@ -2364,7 +2364,7 @@
         "type": "\"default\" | \"circle\" | \"pill\"",
         "required": false,
         "default": "\"default\"",
-        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
+        "description": "\"circle\" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone\n(one or two characters, such as a day number); a label with an icon keeps its width. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
       },
       {
         "name": "loading",
@@ -2487,7 +2487,7 @@
         "type": "\"default\" | \"circle\" | \"pill\" | undefined",
         "required": false,
         "default": "—",
-        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
+        "description": "\"circle\" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone\n(one or two characters, such as a day number); a label with an icon keeps its width. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
       },
       {
         "name": "loading",
@@ -2671,7 +2671,7 @@
         "type": "\"default\" | \"circle\" | \"pill\" | undefined",
         "required": false,
         "default": "—",
-        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
+        "description": "\"circle\" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone\n(one or two characters, such as a day number); a label with an icon keeps its width. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
       },
       {
         "name": "loading",
@@ -14386,9 +14386,9 @@
       {
         "name": "title",
         "type": "string",
-        "required": true,
-        "default": "—",
-        "description": ""
+        "required": false,
+        "default": "\"\"",
+        "description": "The row's title; the title slot takes its place."
       },
       {
         "name": "description",
@@ -14564,6 +14564,11 @@
     ],
     "slots": [
       {
+        "name": "title",
+        "data": [],
+        "source": "packages/vue3/src/list.tsx"
+      },
+      {
         "name": "default",
         "data": [],
         "source": "packages/vue3/src/list.tsx"
@@ -14597,10 +14602,10 @@
     "react": [
       {
         "name": "title",
-        "type": "string",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": true,
         "default": "—",
-        "description": ""
+        "description": "The row's title. A node can add a short mark in the title's own place and type, such as a ticker in the tertiary text colour; a screen reader hears its text, and without text give ariaLabel."
       },
       {
         "name": "description",
@@ -14823,10 +14828,10 @@
     "native": [
       {
         "name": "title",
-        "type": "string",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": true,
         "default": "—",
-        "description": ""
+        "description": "The row's title. A node can add a short mark in the title's own place and type, such as a ticker in the tertiary text colour; a screen reader hears its text, and without text give ariaLabel. On Native a node is text (strings and KjunText), nested in the title's text."
       },
       {
         "name": "description",
@@ -23727,7 +23732,7 @@
         "type": "\"default\" | \"circle\" | \"pill\" | undefined",
         "required": false,
         "default": "—",
-        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
+        "description": "\"circle\" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone\n(one or two characters, such as a day number); a label with an icon keeps its width. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
       },
       {
         "name": "loading",
@@ -23904,7 +23909,7 @@
         "type": "\"default\" | \"circle\" | \"pill\" | undefined",
         "required": false,
         "default": "—",
-        "description": "\"circle\" makes an icon-only button round: as wide as its height with a full radius. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
+        "description": "\"circle\" makes a button round: as wide as its height with a full radius. It takes an icon alone or a short label alone\n(one or two characters, such as a day number); a label with an icon keeps its width. \"pill\" rounds a button with a label\nfully and keeps its width, for a button inside a rounded bar."
       },
       {
         "name": "loading",
