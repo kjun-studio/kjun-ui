@@ -38,7 +38,7 @@ export const useKjunField = () => useContext(FieldContext);
 /** In a fieldset FormGroup, the group's id for the first enabled choice control (field-group.ts), so app code can focus the
  * group by that id; elsewhere, or when the control has its own id, the control's own id. */
 export function useGroupFieldId(disabled: boolean, own?: string): string | undefined {
-  const field = useContext(FieldContext), key = useId(), group = own == null ? field?.group : undefined;
+  const field = useContext(FieldContext), key = "kjun-choice-" + useId(), group = own == null ? field?.group : undefined;
   const claim = group?.claim, release = group?.release;
   // eslint-disable-next-line react-hooks/exhaustive-deps -- the claim keeps its place; the next effect updates disabled.
   useLayoutEffect(() => { if (!claim || !release) return; claim(key, disabled); return () => release(key); }, [claim, release, key]);
