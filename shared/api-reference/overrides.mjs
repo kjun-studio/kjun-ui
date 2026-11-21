@@ -511,6 +511,13 @@ set("Button", {
   suffix: { type: "ReactNode", summary: "뒤 아이콘 자리에 둘 노드입니다. 칸·여백·로딩 규칙은 suffixIcon과 같고 suffixIcon보다 우선합니다." },
 }, "native");
 set("RefreshButton", { wrap: { default:"false", summary:"Button의 wrap과 같습니다. 텍스트 모드의 긴 문구를 줄바꿈합니다." } });
+set("Alert", { size: "sm은 12px/16px 본문과 24px 닫기, md는 14px/20px 본문, lg는 md 본문에 더 큰 제목 줄(16px/24px)과 여백을 씁니다. 제목이 없으면 아이콘·닫기·옆 버튼이 본문 첫 줄 가운데에 맞춰집니다." });
+set("Alert", {
+  className: "바깥 요소의 class입니다. 닫히면 알림과 함께 사라집니다.",
+  style: "바깥 요소의 style입니다(여백·너비). 종류별 배경 위에 합칩니다.",
+  id: "바깥 요소의 id입니다. 다른 HTML 속성(tabIndex·aria-*·data-*)과 ref도 바깥 요소로 갑니다. 오류 요약처럼 알림으로 포커스를 옮길 때 tabIndex={-1}과 ref를 함께 쓰세요.",
+}, "react");
+set("Alert", { style: "바깥 View의 style입니다(여백·너비). ref도 바깥 View로 갑니다.", testID: "테스트에서 알림을 찾는 ID입니다." }, "native");
 set("Alert", { live: { summary:"보조기기 알림 방식입니다. assertive는 role=alert, polite는 status, off는 알리지 않습니다. 생략하면 danger는 alert, 나머지는 status입니다." } });
 set("Alert", {
   type: "호환용 종류입니다. 새 코드는 variant를 쓰세요. error는 danger와 같고, variant가 있으면 variant가 우선합니다.",

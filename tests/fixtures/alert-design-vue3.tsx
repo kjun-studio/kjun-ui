@@ -1,10 +1,11 @@
-import { createApp, defineComponent, reactive } from 'vue';
+import { createApp, defineComponent, reactive, ref } from 'vue';
 import * as K from '@kjun-ui/vue3';
 import { applyDemoColors } from '../../shared/demo-colors';
 import { alertConfig } from './alert-design-cases';
 applyDemoColors(location.search.includes('dark') ? 'dark' : 'default');
 const state = reactive({ config: { ...alertConfig } as any, closed: 0, actions: 0 });
-Object.assign(window, { configureAlert: (next: object) => { state.config = { ...state.config, ...next }; } });
+const root = ref<any>(null);
+Object.assign(window, { configureAlert: (next: object) => { state.config = { ...state.config, ...next }; }, alertRoot: () => root.value?.$el });
 createApp(defineComponent(() => () => {
   const c = state.config;
   const button = () => <K.KjunButton size="sm" variant="secondary" onClick={() => state.actions++}>{{ default: () => 'Retry' }}</K.KjunButton>;
@@ -13,9 +14,10 @@ createApp(defineComponent(() => () => {
     <div style={{ padding: '24px', display: 'grid', gap: '24px', justifyItems: 'start' }}>
       <button data-testid="before">Before</button>
       <div data-testid="alert" style={{ width: c.width + 'px' }}>
-        <K.KjunAlert key={c.generation} variant={c.variant} size={c.size} title={c.emptyFragment ? ' ' : String(c.title ?? '')}
+        <K.KjunAlert ref={root} {...(c.extra ? { id: 'alert-root', style: { marginTop: '4px' }, tabindex: -1, 'data-extra': 'yes' } : {})} key={c.generation} variant={c.variant} size={c.size} title={c.emptyFragment ? ' ' : String(c.title ?? '')}
           closable={c.closable} {...(c.icon !== undefined ? { icon: c.icon } : {})} onClose={() => state.closed++}>
-          {{ default: () => c.action ? button() : c.emptyFragment ? null : String(c.body ?? ''),
+          {{ default: () => c.action ? button() : c.emptyFragment ? null
+            : c.link ? [<span>Terms changed. </span>, <a href="#terms">Read changes</a>, <ul><li>First change</li></ul>] : String(c.body ?? ''),
             ...(c.actions ? { actions: () => action() } : {}) }}
         </K.KjunAlert>
       </div>

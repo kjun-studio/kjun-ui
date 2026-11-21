@@ -102,7 +102,7 @@
       },
       {
         "name": "headingLevel",
-        "type": "import(\"/workspace/packages/react/src/navigation\").AccordionHeadingLevel | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/navigation\").AccordionHeadingLevel | undefined",
         "required": false,
         "default": "—",
         "description": "The heading level wrapping each header (default 3), or false for none, so headers join the page's outline."
@@ -195,7 +195,7 @@
       },
       {
         "name": "headingLevel",
-        "type": "import(\"/workspace/packages/native/src/navigation\").AccordionHeadingLevel | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/navigation\").AccordionHeadingLevel | undefined",
         "required": false,
         "default": "—",
         "description": "The heading level wrapping each header on the web (default 3), or false for none, so headers join the page's outline.\nOn a device a header is one button, which cannot also be a heading."
@@ -683,7 +683,7 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/packages/react/src/display\").SemanticTone | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/display\").SemanticTone | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -718,7 +718,7 @@
       },
       {
         "name": "live",
-        "type": "import(\"/workspace/shared/package-runtime/alert-live\").AlertLive | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/alert-live\").AlertLive | undefined",
         "required": false,
         "default": "—",
         "description": "How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise."
@@ -750,6 +750,48 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "autoFocus",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").CSSProperties | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onChange",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ChangeEventHandler<HTMLDivElement, Element> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onKeyDown",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").KeyboardEventHandler<HTMLDivElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "onClick",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").MouseEventHandler<HTMLDivElement> | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
       }
     ],
     "native": [
@@ -762,7 +804,7 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/packages/native/src/display-primitives\").SemanticTone | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/display-primitives\").SemanticTone | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -797,7 +839,7 @@
       },
       {
         "name": "live",
-        "type": "import(\"/workspace/shared/package-runtime/alert-live\").AlertLive | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/alert-live\").AlertLive | undefined",
         "required": false,
         "default": "—",
         "description": "How screen readers announce it: assertive (role alert), polite (status) or off; defaults to alert for danger, status otherwise."
@@ -819,6 +861,20 @@
       {
         "name": "onClose",
         "type": "(() => void) | undefined",
+        "required": false,
+        "default": "—",
+        "description": ""
+      },
+      {
+        "name": "testID",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "A test id and outer style for the alert root (margins, width); the ref reaches the root view."
+      },
+      {
+        "name": "style",
+        "type": "import(\"/workspace/node_modules/react-native/types/index\").StyleProp<import(\"/workspace/node_modules/react-native/types/index\").ViewStyle>",
         "required": false,
         "default": "—",
         "description": ""
@@ -1314,7 +1370,7 @@
     "react": [
       {
         "name": "items",
-        "type": "import(\"/workspace/packages/react/src/avatar-group\").KjunAvatarGroupItem[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/avatar-group\").KjunAvatarGroupItem[]",
         "required": true,
         "default": "—",
         "description": "The people shown, front first."
@@ -1414,7 +1470,7 @@
     "native": [
       {
         "name": "items",
-        "type": "import(\"/workspace/packages/native/src/avatar-group\").KjunAvatarGroupItem[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/avatar-group\").KjunAvatarGroupItem[]",
         "required": true,
         "default": "—",
         "description": "The people shown, front first."
@@ -1547,14 +1603,14 @@
     "react": [
       {
         "name": "variant",
-        "type": "\"secondary\" | \"default\" | import(\"/workspace/packages/react/src/display\").SemanticTone | \"price-up\" | \"price-down\" | undefined",
+        "type": "\"secondary\" | \"default\" | import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/display\").SemanticTone | \"price-up\" | \"price-down\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "size",
-        "type": "import(\"/workspace/packages/react/src/display\").DisplaySize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/display\").DisplaySize | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -1647,14 +1703,14 @@
     "native": [
       {
         "name": "variant",
-        "type": "\"secondary\" | \"default\" | import(\"/workspace/packages/native/src/display-primitives\").SemanticTone | \"price-up\" | \"price-down\" | undefined",
+        "type": "\"secondary\" | \"default\" | import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/display-primitives\").SemanticTone | \"price-up\" | \"price-down\" | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "size",
-        "type": "import(\"/workspace/packages/native/src/display-primitives\").DisplaySize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/display-primitives\").DisplaySize | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -2002,7 +2058,7 @@
     "react": [
       {
         "name": "items",
-        "type": "import(\"/workspace/packages/react/src/app-navigation\").NavigationDestination[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/app-navigation\").NavigationDestination[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -2065,7 +2121,7 @@
       },
       {
         "name": "iconStyle",
-        "type": "import(\"/workspace/shared/package-runtime/bottom-navigation\").NavigationIconStyle | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/bottom-navigation\").NavigationIconStyle | undefined",
         "required": false,
         "default": "—",
         "description": "\"auto\" (default) draws outline icons and fills the selected one; \"filled\" or \"outline\" keeps one style for every destination, the selection then carried by colour (and stroke weight)."
@@ -2088,7 +2144,7 @@
     "native": [
       {
         "name": "items",
-        "type": "import(\"/workspace/packages/native/src/app-navigation\").NavigationDestination[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/app-navigation\").NavigationDestination[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -2151,7 +2207,7 @@
       },
       {
         "name": "iconStyle",
-        "type": "import(\"/workspace/shared/package-runtime/bottom-navigation\").NavigationIconStyle | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/bottom-navigation\").NavigationIconStyle | undefined",
         "required": false,
         "default": "—",
         "description": "\"auto\" (default) draws outline icons and fills the selected one; \"filled\" or \"outline\" keeps one style for every destination, the selection then carried by colour (and stroke weight)."
@@ -2215,21 +2271,21 @@
     "react": [
       {
         "name": "items",
-        "type": "import(\"/workspace/shared/package-runtime/breadcrumb\").BreadcrumbItem[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/breadcrumb\").BreadcrumbItem[]",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "renderLink",
-        "type": "((item: import(\"/workspace/shared/package-runtime/breadcrumb\").BreadcrumbItem, children: import(\"/workspace/node_modules/@types/react/index\").ReactNode) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((item: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/breadcrumb\").BreadcrumbItem, children: import(\"/workspace/node_modules/@types/react/index\").ReactNode) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onNavigate",
-        "type": "((item: import(\"/workspace/shared/package-runtime/breadcrumb\").BreadcrumbItem, event?: import(\"/workspace/node_modules/@types/react/index\").MouseEvent<HTMLAnchorElement>) => void) | undefined",
+        "type": "((item: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/breadcrumb\").BreadcrumbItem, event?: import(\"/workspace/node_modules/@types/react/index\").MouseEvent<HTMLAnchorElement>) => void) | undefined",
         "required": false,
         "default": "—",
         "description": "A step with `to` was chosen. Trail links keep their href and pass the click: call event.preventDefault() to route in the app.\nSteps folded into the \"…\" menu call it without an event and no longer follow their href, so a router reaches them too."
@@ -2252,21 +2308,21 @@
     "native": [
       {
         "name": "items",
-        "type": "import(\"/workspace/shared/package-runtime/breadcrumb\").BreadcrumbItem[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/breadcrumb\").BreadcrumbItem[]",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "renderLink",
-        "type": "((item: import(\"/workspace/shared/package-runtime/breadcrumb\").BreadcrumbItem, children: import(\"/workspace/node_modules/@types/react/index\").ReactNode) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((item: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/breadcrumb\").BreadcrumbItem, children: import(\"/workspace/node_modules/@types/react/index\").ReactNode) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onNavigate",
-        "type": "((item: import(\"/workspace/shared/package-runtime/breadcrumb\").BreadcrumbItem) => void) | undefined",
+        "type": "((item: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/breadcrumb\").BreadcrumbItem) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -2783,14 +2839,14 @@
     "react": [
       {
         "name": "value",
-        "type": "import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "options",
-        "type": "import(\"/workspace/packages/react/src/choice-controls\").ChoiceOption<import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue>[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceOption<import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue>[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -2825,14 +2881,14 @@
       },
       {
         "name": "onValueChange",
-        "type": "((value: import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((value: import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -2841,14 +2897,14 @@
     "native": [
       {
         "name": "value",
-        "type": "import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "options",
-        "type": "import(\"/workspace/packages/native/src/choice-controls\").ChoiceOption<import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue>[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceOption<import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue>[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -2883,14 +2939,14 @@
       },
       {
         "name": "onValueChange",
-        "type": "((value: import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((value: import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -3109,7 +3165,7 @@
       },
       {
         "name": "mediaPosition",
-        "type": "import(\"/workspace/shared/package-runtime/card-layout\").CardMediaPosition | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/card-layout\").CardMediaPosition | undefined",
         "required": false,
         "default": "—",
         "description": "top (default) puts the media above the header; start puts it in a fixed column beside the content, such as a thumbnail."
@@ -3221,7 +3277,7 @@
       },
       {
         "name": "headingLevel",
-        "type": "import(\"/workspace/shared/package-runtime/card-layout\").CardHeadingLevel | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/card-layout\").CardHeadingLevel | undefined",
         "required": false,
         "default": "—",
         "description": "Title level in the page outline (h2–h6, default 3); false keeps plain text. A pressable card's title is never a heading."
@@ -3328,7 +3384,7 @@
       },
       {
         "name": "mediaPosition",
-        "type": "import(\"/workspace/shared/package-runtime/card-layout\").CardMediaPosition | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/card-layout\").CardMediaPosition | undefined",
         "required": false,
         "default": "—",
         "description": "top (default) puts the media above the header; start puts it in a fixed column beside the content, such as a thumbnail. Style the media child to fill its frame (flex 1 or 100%)."
@@ -3475,7 +3531,7 @@
       },
       {
         "name": "headingLevel",
-        "type": "import(\"/workspace/shared/package-runtime/card-layout\").CardHeadingLevel | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/card-layout\").CardHeadingLevel | undefined",
         "required": false,
         "default": "—",
         "description": "Marks the title as a header (aria-level on the web; default 3); false keeps plain text. A pressable card's title is never a header."
@@ -3625,7 +3681,7 @@
       },
       {
         "name": "titleAs",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselTitleTag | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselTitleTag | undefined",
         "required": false,
         "default": "—",
         "description": "The title's heading level (default h2)."
@@ -3646,7 +3702,7 @@
       },
       {
         "name": "slideSize",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselSlideSize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselSlideSize | undefined",
         "required": false,
         "default": "—",
         "description": "full: as wide as the carousel; peek: the next slide shows at the edge; auto: each slide keeps its own width."
@@ -3660,7 +3716,7 @@
       },
       {
         "name": "gap",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselGap | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselGap | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -3688,7 +3744,7 @@
       },
       {
         "name": "indicators",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselIndicators | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselIndicators | undefined",
         "required": false,
         "default": "—",
         "description": "Dots under the slides (true or \"dots\"), the position as \"3 / 24\" text (\"count\") for many slides, or none (false)."
@@ -3702,21 +3758,21 @@
       },
       {
         "name": "snapAlign",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselSnapAlign | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselSnapAlign | undefined",
         "required": false,
         "default": "—",
         "description": "start lines each slide up with the start edge; center keeps the current slide centred (with peek, a neighbour shows on each side)."
       },
       {
         "name": "bleed",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselBleed | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselBleed | undefined",
         "required": false,
         "default": "—",
         "description": "Reaches past the page's side padding by this inset (12, 16 or 24) while the first slide lines up with the content."
       },
       {
         "name": "indicatorPlacement",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselIndicatorPlacement | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselIndicatorPlacement | undefined",
         "required": false,
         "default": "—",
         "description": "below: under the slides; overlay: on the slides, in a scrim pill that stays legible over images."
@@ -3781,7 +3837,7 @@
       },
       {
         "name": "slideSize",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselSlideSize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselSlideSize | undefined",
         "required": false,
         "default": "—",
         "description": "full: as wide as the carousel; peek: the next slide shows at the edge; auto: each slide keeps its own width."
@@ -3795,7 +3851,7 @@
       },
       {
         "name": "gap",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselGap | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselGap | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -3823,28 +3879,28 @@
       },
       {
         "name": "indicators",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselIndicators | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselIndicators | undefined",
         "required": false,
         "default": "—",
         "description": "Dots under the slides (true or \"dots\"), the position as \"3 / 24\" text (\"count\") for many slides, or none (false).\nScreen readers meet them as one adjustable control that swipes up and down through the slides."
       },
       {
         "name": "snapAlign",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselSnapAlign | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselSnapAlign | undefined",
         "required": false,
         "default": "—",
         "description": "start lines each slide up with the start edge; center keeps the current slide centred (with peek, a neighbour shows on each side)."
       },
       {
         "name": "bleed",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselBleed | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselBleed | undefined",
         "required": false,
         "default": "—",
         "description": "Reaches past the screen's side padding by this inset (12, 16 or 24) while the first slide lines up with the content."
       },
       {
         "name": "indicatorPlacement",
-        "type": "import(\"/workspace/shared/package-runtime/carousel\").CarouselIndicatorPlacement | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/carousel\").CarouselIndicatorPlacement | undefined",
         "required": false,
         "default": "—",
         "description": "below: under the slides; overlay: on the slides, in a scrim pill that stays legible over images."
@@ -3943,7 +3999,7 @@
     "react": [
       {
         "name": "kind",
-        "type": "import(\"/workspace/shared/package-runtime/chart-skeleton\").KjunChartSkeletonKind | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/chart-skeleton\").KjunChartSkeletonKind | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -4036,7 +4092,7 @@
     "native": [
       {
         "name": "kind",
-        "type": "import(\"/workspace/shared/package-runtime/chart-skeleton\").KjunChartSkeletonKind | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/chart-skeleton\").KjunChartSkeletonKind | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -4925,7 +4981,7 @@
       },
       {
         "name": "swatches",
-        "type": "import(\"/workspace/shared/package-runtime/color-picker\").ColorSwatchInput[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/color-picker\").ColorSwatchInput[] | undefined",
         "required": false,
         "default": "—",
         "description": "Colors the app offers; strings or { value, label }. A label names the color on the trigger and in the swatch's tooltip."
@@ -4960,7 +5016,7 @@
       },
       {
         "name": "recentColors",
-        "type": "import(\"/workspace/shared/package-runtime/color-picker\").ColorSwatchInput[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/color-picker\").ColorSwatchInput[] | undefined",
         "required": false,
         "default": "—",
         "description": "Recent colors the app keeps (strings or { value, label }); giving it shows a \"recent\" row of up to 8 under the swatches,\nleaving out colors the swatches already offer."
@@ -5130,7 +5186,7 @@
       },
       {
         "name": "swatches",
-        "type": "import(\"/workspace/shared/package-runtime/color-picker\").ColorSwatchInput[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/color-picker\").ColorSwatchInput[] | undefined",
         "required": false,
         "default": "—",
         "description": "Colors the app offers; strings or { value, label }. A label names the color on the trigger."
@@ -5165,7 +5221,7 @@
       },
       {
         "name": "recentColors",
-        "type": "import(\"/workspace/shared/package-runtime/color-picker\").ColorSwatchInput[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/color-picker\").ColorSwatchInput[] | undefined",
         "required": false,
         "default": "—",
         "description": "Recent colors the app keeps (strings or { value, label }); giving it shows a \"recent\" row of up to 8 under the swatches,\nleaving out colors the swatches already offer."
@@ -5430,7 +5486,7 @@
     "react": [
       {
         "name": "value",
-        "type": "import(\"/workspace/shared/package-runtime/options\").OptionValue | null",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | null",
         "required": true,
         "default": "—",
         "description": ""
@@ -5535,14 +5591,14 @@
       },
       {
         "name": "onValueChange",
-        "type": "((v: import(\"/workspace/shared/package-runtime/options\").OptionValue | null) => void) | undefined",
+        "type": "((v: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | null) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((v: import(\"/workspace/shared/package-runtime/options\").OptionValue | null) => void) | undefined",
+        "type": "((v: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | null) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -5563,7 +5619,7 @@
       },
       {
         "name": "returnFocus",
-        "type": "import(\"/workspace/packages/react/src/floating-panel\").FocusReturn | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/floating-panel\").FocusReturn | undefined",
         "required": false,
         "default": "—",
         "description": "Where focus goes after choosing an option or Escape. Closing while typing keeps focus in the input. Web only."
@@ -5572,7 +5628,7 @@
     "native": [
       {
         "name": "value",
-        "type": "import(\"/workspace/shared/package-runtime/options\").OptionValue | null",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | null",
         "required": true,
         "default": "—",
         "description": ""
@@ -5677,14 +5733,14 @@
       },
       {
         "name": "onValueChange",
-        "type": "((v: import(\"/workspace/shared/package-runtime/options\").OptionValue | null) => void) | undefined",
+        "type": "((v: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | null) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((v: import(\"/workspace/shared/package-runtime/options\").OptionValue | null) => void) | undefined",
+        "type": "((v: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | null) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -6822,7 +6878,7 @@
       },
       {
         "name": "weekStart",
-        "type": "import(\"/workspace/shared/package-runtime/calendar\").WeekStart | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").WeekStart | undefined",
         "required": false,
         "default": "—",
         "description": "The first column of the week: 0 Sunday (default), 1 Monday."
@@ -6843,7 +6899,7 @@
       },
       {
         "name": "isDateUnavailable",
-        "type": "import(\"/workspace/shared/package-runtime/calendar\").DateUnavailable | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").DateUnavailable | undefined",
         "required": false,
         "default": "—",
         "description": "Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one."
@@ -6950,7 +7006,7 @@
       },
       {
         "name": "weekStart",
-        "type": "import(\"/workspace/shared/package-runtime/calendar\").WeekStart | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").WeekStart | undefined",
         "required": false,
         "default": "—",
         "description": "The first column of the week: 0 Sunday (default), 1 Monday."
@@ -6971,7 +7027,7 @@
       },
       {
         "name": "isDateUnavailable",
-        "type": "import(\"/workspace/shared/package-runtime/calendar\").DateUnavailable | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").DateUnavailable | undefined",
         "required": false,
         "default": "—",
         "description": "Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one."
@@ -7146,28 +7202,28 @@
     "react": [
       {
         "name": "value",
-        "type": "import(\"/workspace/shared/package-runtime/calendar\").DateRange",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").DateRange",
         "required": true,
         "default": "—",
         "description": "Start and end as YYYY-MM-DD; empty strings while unset. A reversed or out-of-bounds range is shown in order and inside the bounds."
       },
       {
         "name": "onValueChange",
-        "type": "((value: import(\"/workspace/shared/package-runtime/calendar\").DateRange) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").DateRange) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((value: import(\"/workspace/shared/package-runtime/calendar\").DateRange) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").DateRange) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "presets",
-        "type": "readonly import(\"/workspace/packages/react/src/calendar\").DateRangePreset[] | undefined",
+        "type": "readonly import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/calendar\").DateRangePreset[] | undefined",
         "required": false,
         "default": "—",
         "description": "Ready-made ranges shown as chips above the days, such as \"최근 7일\"."
@@ -7286,7 +7342,7 @@
       },
       {
         "name": "weekStart",
-        "type": "import(\"/workspace/shared/package-runtime/calendar\").WeekStart | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").WeekStart | undefined",
         "required": false,
         "default": "—",
         "description": "The first column of the week: 0 Sunday (default), 1 Monday."
@@ -7307,7 +7363,7 @@
       },
       {
         "name": "isDateUnavailable",
-        "type": "import(\"/workspace/shared/package-runtime/calendar\").DateUnavailable | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").DateUnavailable | undefined",
         "required": false,
         "default": "—",
         "description": "Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one."
@@ -7316,28 +7372,28 @@
     "native": [
       {
         "name": "value",
-        "type": "import(\"/workspace/shared/package-runtime/calendar\").DateRange",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").DateRange",
         "required": true,
         "default": "—",
         "description": "Start and end as YYYY-MM-DD; empty strings while unset. A reversed or out-of-bounds range is shown in order and inside the bounds."
       },
       {
         "name": "onValueChange",
-        "type": "((value: import(\"/workspace/shared/package-runtime/calendar\").DateRange) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").DateRange) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((value: import(\"/workspace/shared/package-runtime/calendar\").DateRange) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").DateRange) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "presets",
-        "type": "readonly import(\"/workspace/packages/native/src/calendar\").DateRangePreset[] | undefined",
+        "type": "readonly import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/calendar\").DateRangePreset[] | undefined",
         "required": false,
         "default": "—",
         "description": "Ready-made ranges shown as chips above the days, such as \"최근 7일\"."
@@ -7442,7 +7498,7 @@
       },
       {
         "name": "weekStart",
-        "type": "import(\"/workspace/shared/package-runtime/calendar\").WeekStart | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").WeekStart | undefined",
         "required": false,
         "default": "—",
         "description": "The first column of the week: 0 Sunday (default), 1 Monday."
@@ -7463,7 +7519,7 @@
       },
       {
         "name": "isDateUnavailable",
-        "type": "import(\"/workspace/shared/package-runtime/calendar\").DateUnavailable | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").DateUnavailable | undefined",
         "required": false,
         "default": "—",
         "description": "Days that cannot be picked inside the bounds, such as holidays; a range cannot run across one."
@@ -7844,7 +7900,7 @@
       },
       {
         "name": "returnFocus",
-        "type": "import(\"/workspace/packages/react/src/floating-panel\").FocusReturn | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/floating-panel\").FocusReturn | undefined",
         "required": false,
         "default": "—",
         "description": "Read after the exit finishes; a missing target falls back to the opener or parent window."
@@ -8200,7 +8256,7 @@
       },
       {
         "name": "returnFocus",
-        "type": "import(\"/workspace/packages/react/src/floating-panel\").FocusReturn | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/floating-panel\").FocusReturn | undefined",
         "required": false,
         "default": "—",
         "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only."
@@ -8911,7 +8967,7 @@
       },
       {
         "name": "size",
-        "type": "import(\"/workspace/shared/package-runtime/empty-geometry\").EmptySize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/empty-geometry\").EmptySize | undefined",
         "required": false,
         "default": "—",
         "description": "md for pages and panels; sm for cards and list areas."
@@ -9011,7 +9067,7 @@
       },
       {
         "name": "size",
-        "type": "import(\"/workspace/shared/package-runtime/empty-geometry\").EmptySize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/empty-geometry\").EmptySize | undefined",
         "required": false,
         "default": "—",
         "description": "md for pages and panels; sm for cards and list areas."
@@ -9119,7 +9175,7 @@
       },
       {
         "name": "fallback",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((props: import(\"/workspace/packages/react/src/data-state\").KjunErrorFallbackProps) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((props: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/data-state\").KjunErrorFallbackProps) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
         "required": false,
         "default": "—",
         "description": "Replaces the default fallback; a function receives the caught error and reset, like Vue's fallback slot."
@@ -9170,7 +9226,7 @@
       },
       {
         "name": "fallback",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((props: import(\"/workspace/packages/native/src/data-state\").KjunErrorFallbackProps) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((props: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/data-state\").KjunErrorFallbackProps) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
         "required": false,
         "default": "—",
         "description": "Replaces the default fallback; a function receives the caught error and reset, like Vue's fallback slot."
@@ -9405,14 +9461,14 @@
       },
       {
         "name": "marks",
-        "type": "((iso: string) => import(\"/workspace/shared/package-runtime/event-calendar\").DayMarks | undefined) | undefined",
+        "type": "((iso: string) => import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/event-calendar\").DayMarks | undefined) | undefined",
         "required": false,
         "default": "—",
         "description": "What a day shows under its number: the first span, an icon and up to three dots; count is spoken only."
       },
       {
         "name": "isHoliday",
-        "type": "import(\"/workspace/shared/package-runtime/event-calendar\").HolidayTest | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/event-calendar\").HolidayTest | undefined",
         "required": false,
         "default": "—",
         "description": "Holidays draw a danger number; a string also names the day for screen readers."
@@ -9426,7 +9482,7 @@
       },
       {
         "name": "weekStart",
-        "type": "import(\"/workspace/shared/package-runtime/calendar\").WeekStart | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").WeekStart | undefined",
         "required": false,
         "default": "—",
         "description": "The first column of the week: 0 Sunday (default), 1 Monday."
@@ -9554,14 +9610,14 @@
       },
       {
         "name": "marks",
-        "type": "((iso: string) => import(\"/workspace/packages/native/src/event-calendar\").DayMarks | undefined) | undefined",
+        "type": "((iso: string) => import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/event-calendar\").DayMarks | undefined) | undefined",
         "required": false,
         "default": "—",
         "description": "What a day shows under its number: the first span, an icon and up to three dots; count is spoken only."
       },
       {
         "name": "isHoliday",
-        "type": "import(\"/workspace/shared/package-runtime/event-calendar\").HolidayTest | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/event-calendar\").HolidayTest | undefined",
         "required": false,
         "default": "—",
         "description": "Holidays draw a danger number; a string also names the day for screen readers."
@@ -9575,7 +9631,7 @@
       },
       {
         "name": "weekStart",
-        "type": "import(\"/workspace/shared/package-runtime/calendar\").WeekStart | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/calendar\").WeekStart | undefined",
         "required": false,
         "default": "—",
         "description": "The first column of the week: 0 Sunday (default), 1 Monday."
@@ -9667,7 +9723,7 @@
       },
       {
         "name": "size",
-        "type": "import(\"/workspace/packages/react/src/display\").DisplaySize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/display\").DisplaySize | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -9690,7 +9746,7 @@
       },
       {
         "name": "size",
-        "type": "import(\"/workspace/packages/native/src/display-primitives\").DisplaySize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/display-primitives\").DisplaySize | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -9955,7 +10011,7 @@
       },
       {
         "name": "size",
-        "type": "import(\"/workspace/packages/react/src/fab\").KjunFabSize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/fab\").KjunFabSize | undefined",
         "required": false,
         "default": "—",
         "description": "\"md\" (default) is 56, \"sm\" is 48. Both take a label, loading and every state."
@@ -10062,7 +10118,7 @@
       },
       {
         "name": "size",
-        "type": "import(\"/workspace/packages/native/src/fab\").KjunFabSize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/fab\").KjunFabSize | undefined",
         "required": false,
         "default": "—",
         "description": "\"md\" (default) is 56, \"sm\" is 48. Both take a label, loading and every state."
@@ -10160,14 +10216,14 @@
       },
       {
         "name": "controller",
-        "type": "import(\"/workspace/packages/tokens/dist/feedback\").KjunFeedback | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/tokens/dist/feedback\").KjunFeedback | undefined",
         "required": false,
         "default": "—",
         "description": "A feedback API from createKjunFeedback(), for calls outside components."
       },
       {
         "name": "placement",
-        "type": "import(\"/workspace/shared/package-runtime/toast-placement\").ToastPlacement | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/toast-placement\").ToastPlacement | undefined",
         "required": false,
         "default": "—",
         "description": "Stacks toasts at the top (default) or the bottom of the screen, right-aligned on wide screens; both keep clear of the safe area."
@@ -10204,14 +10260,14 @@
       },
       {
         "name": "controller",
-        "type": "import(\"/workspace/packages/tokens/dist/feedback\").KjunFeedback | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/tokens/dist/feedback\").KjunFeedback | undefined",
         "required": false,
         "default": "—",
         "description": "A feedback API from createKjunFeedback(), for calls outside components."
       },
       {
         "name": "placement",
-        "type": "import(\"/workspace/shared/package-runtime/toast-placement\").ToastPlacement | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/toast-placement\").ToastPlacement | undefined",
         "required": false,
         "default": "—",
         "description": "Stacks toasts at the top (default) or the bottom of the screen; both keep clear of KjunProvider's safe area."
@@ -10352,7 +10408,7 @@
     "react": [
       {
         "name": "files",
-        "type": "import(\"/workspace/shared/package-runtime/file-upload\").KjunUploadFile[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunUploadFile[] | undefined",
         "required": false,
         "default": "—",
         "description": "The app's files. Empty shows the pick zone; any file folds it into a list with an add row."
@@ -10401,28 +10457,28 @@
       },
       {
         "name": "size",
-        "type": "import(\"/workspace/shared/package-runtime/file-upload\").KjunUploadSize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunUploadSize | undefined",
         "required": false,
         "default": "—",
         "description": "\"compact\": the empty field is the one-line add row (80px card) instead of the tall zone."
       },
       {
         "name": "trigger",
-        "type": "import(\"/workspace/shared/package-runtime/file-upload\").KjunUploadTrigger | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunUploadTrigger | undefined",
         "required": false,
         "default": "—",
         "description": "\"button\": a \"Choose files\" button at the end of a text line picks instead of a pressable area; drops still land on the card."
       },
       {
         "name": "layout",
-        "type": "import(\"/workspace/shared/package-runtime/file-upload\").KjunUploadLayout | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunUploadLayout | undefined",
         "required": false,
         "default": "—",
         "description": "\"grid\": files show as square tiles (photos) with an add tile, instead of rows."
       },
       {
         "name": "onSelect",
-        "type": "(accepted: File[], rejected: import(\"/workspace/shared/package-runtime/file-upload\").KjunRejectedFile<File>[]) => void",
+        "type": "(accepted: File[], rejected: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunRejectedFile<File>[]) => void",
         "required": true,
         "default": "—",
         "description": "Picks that passed the pre-screen, and the ones that did not. The app adds `accepted` to `files` and uploads them."
@@ -10480,7 +10536,7 @@
     "native": [
       {
         "name": "files",
-        "type": "import(\"/workspace/shared/package-runtime/file-upload\").KjunUploadFile[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunUploadFile[] | undefined",
         "required": false,
         "default": "—",
         "description": "The app's files. Empty shows the pick zone; any file folds it into a list with an add row."
@@ -10529,35 +10585,35 @@
       },
       {
         "name": "size",
-        "type": "import(\"/workspace/shared/package-runtime/file-upload\").KjunUploadSize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunUploadSize | undefined",
         "required": false,
         "default": "—",
         "description": "\"compact\": the empty field is the one-line add row instead of the tall zone."
       },
       {
         "name": "trigger",
-        "type": "import(\"/workspace/shared/package-runtime/file-upload\").KjunUploadTrigger | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunUploadTrigger | undefined",
         "required": false,
         "default": "—",
         "description": "\"button\": a \"Choose files\" button at the end of a text line picks instead of a pressable area."
       },
       {
         "name": "layout",
-        "type": "import(\"/workspace/shared/package-runtime/file-upload\").KjunUploadLayout | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunUploadLayout | undefined",
         "required": false,
         "default": "—",
         "description": "\"grid\": files show as square tiles (photos) with an add tile, instead of rows."
       },
       {
         "name": "onPick",
-        "type": "() => Promise<import(\"/workspace/shared/package-runtime/file-upload\").KjunPickedFile[] | null>",
+        "type": "() => Promise<import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunPickedFile[] | null>",
         "required": true,
         "default": "—",
         "description": "The app's file picker (expo-document-picker or any other); KJUN depends on none. Resolve null when the user cancels."
       },
       {
         "name": "onSelect",
-        "type": "(accepted: import(\"/workspace/shared/package-runtime/file-upload\").KjunPickedFile[], rejected: import(\"/workspace/shared/package-runtime/file-upload\").KjunRejectedFile<import(\"/workspace/shared/package-runtime/file-upload\").KjunPickedFile>[]) => void",
+        "type": "(accepted: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunPickedFile[], rejected: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunRejectedFile<import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/file-upload\").KjunPickedFile>[]) => void",
         "required": true,
         "default": "—",
         "description": ""
@@ -10658,7 +10714,7 @@
     "react": [
       {
         "name": "value",
-        "type": "import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue | import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue | import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -10686,14 +10742,14 @@
       },
       {
         "name": "onValueChange",
-        "type": "((value: import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue | import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue[]) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue | import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue[]) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((value: import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue | import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue[]) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue | import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue[]) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -10721,7 +10777,7 @@
       },
       {
         "name": "options",
-        "type": "import(\"/workspace/packages/react/src/choice-controls\").ChoiceOption<import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue>[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceOption<import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue>[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -10730,7 +10786,7 @@
     "native": [
       {
         "name": "value",
-        "type": "import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue | import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue | import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -10751,14 +10807,14 @@
       },
       {
         "name": "onValueChange",
-        "type": "((value: import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue | import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue[]) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue | import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue[]) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((value: import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue | import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue[]) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue | import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue[]) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -10786,7 +10842,7 @@
       },
       {
         "name": "options",
-        "type": "import(\"/workspace/packages/native/src/choice-controls\").ChoiceOption<import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue>[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceOption<import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue>[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -10859,7 +10915,7 @@
     "react": [
       {
         "name": "items",
-        "type": "import(\"/workspace/packages/react/src/app-navigation\").NavigationDestination[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/app-navigation\").NavigationDestination[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -10924,7 +10980,7 @@
     "native": [
       {
         "name": "items",
-        "type": "import(\"/workspace/packages/native/src/app-navigation\").NavigationDestination[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/app-navigation\").NavigationDestination[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -11417,7 +11473,7 @@
       },
       {
         "name": "as",
-        "type": "import(\"/workspace/shared/package-runtime/field-group\").FormGroupElement | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/field-group\").FormGroupElement | undefined",
         "required": false,
         "default": "—",
         "description": "\"fieldset\" groups several choices (checkboxes, radios, FilterGroup, ButtonGroup) under one name: the root is a fieldset\nwhose legend is the label and which the hint or error describes, and the id goes to the first enabled choice."
@@ -11503,7 +11559,7 @@
       },
       {
         "name": "as",
-        "type": "import(\"/workspace/shared/package-runtime/field-group\").FormGroupElement | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/field-group\").FormGroupElement | undefined",
         "required": false,
         "default": "—",
         "description": "\"fieldset\" groups several choices under one name, as on the web: the view is a group named by the label (Native Web\nalso points it at the hint or error). Native has no element ids, so the id is not handed to a choice."
@@ -11758,14 +11814,14 @@
       },
       {
         "name": "mode",
-        "type": "import(\"/workspace/shared/package-runtime/data-cells\").HeatCellMode | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/data-cells\").HeatCellMode | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "color",
-        "type": "import(\"/workspace/shared/package-runtime/data-cells\").HeatCellColor | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/data-cells\").HeatCellColor | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -11809,14 +11865,14 @@
       },
       {
         "name": "mode",
-        "type": "import(\"/workspace/shared/package-runtime/data-cells\").HeatCellMode | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/data-cells\").HeatCellMode | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "color",
-        "type": "import(\"/workspace/shared/package-runtime/data-cells\").HeatCellColor | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/data-cells\").HeatCellColor | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -12494,7 +12550,7 @@
       },
       {
         "name": "shape",
-        "type": "import(\"/workspace/packages/react/src/media\").KjunImageShape | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/media\").KjunImageShape | undefined",
         "required": false,
         "default": "—",
         "description": "square (default), rounded corners, or a circle."
@@ -12713,21 +12769,21 @@
     "react": [
       {
         "name": "gap",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineGapValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").InlineGapValue | undefined",
         "required": false,
         "default": "—",
         "description": "Space between children: space.inline (xs·sm·md·lg). An object changes it with the width like Stack's gap."
       },
       {
         "name": "rowGap",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineRowGapValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").InlineRowGapValue | undefined",
         "required": false,
         "default": "—",
         "description": "The space between wrapped lines: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24); absent, the lines keep the gap. Takes an object per width."
       },
       {
         "name": "align",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineAlignValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").InlineAlignValue | undefined",
         "required": false,
         "default": "—",
         "description": "Cross-axis alignment; an object changes it with the width."
@@ -12741,56 +12797,56 @@
       },
       {
         "name": "direction",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").DirectionValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").DirectionValue | undefined",
         "required": false,
         "default": "—",
         "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }."
       },
       {
         "name": "padding",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
         "required": false,
         "default": "—",
         "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap."
       },
       {
         "name": "paddingX",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "paddingY",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "divider",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackDivider | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").StackDivider | undefined",
         "required": false,
         "default": "—",
         "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness."
       },
       {
         "name": "dividerInset",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InsetStep | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").InsetStep | undefined",
         "required": false,
         "default": "—",
         "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md."
       },
       {
         "name": "responsive",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").ResponsiveBasis | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").ResponsiveBasis | undefined",
         "required": false,
         "default": "—",
         "description": "What the responsive values follow: viewport (default, CSS media queries) or container, the element's own width, measured."
       },
       {
         "name": "justify",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").JustifyValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").JustifyValue | undefined",
         "required": false,
         "default": "—",
         "description": "Main-axis distribution; takes an object per width like gap."
@@ -12862,21 +12918,21 @@
     "native": [
       {
         "name": "gap",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineGapValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").InlineGapValue | undefined",
         "required": false,
         "default": "—",
         "description": "Space between children: space.inline (xs·sm·md·lg). An object changes it with the width like Stack's gap."
       },
       {
         "name": "rowGap",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineRowGapValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").InlineRowGapValue | undefined",
         "required": false,
         "default": "—",
         "description": "The space between wrapped lines: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24); absent, the lines keep the gap. Takes an object per width."
       },
       {
         "name": "align",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InlineAlignValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").InlineAlignValue | undefined",
         "required": false,
         "default": "—",
         "description": "Cross-axis alignment; an object changes it with the width."
@@ -12890,56 +12946,56 @@
       },
       {
         "name": "direction",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").DirectionValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").DirectionValue | undefined",
         "required": false,
         "default": "—",
         "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }."
       },
       {
         "name": "padding",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
         "required": false,
         "default": "—",
         "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap."
       },
       {
         "name": "paddingX",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "paddingY",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "divider",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackDivider | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").StackDivider | undefined",
         "required": false,
         "default": "—",
         "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness."
       },
       {
         "name": "dividerInset",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InsetStep | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").InsetStep | undefined",
         "required": false,
         "default": "—",
         "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md."
       },
       {
         "name": "responsive",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").ResponsiveBasis | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").ResponsiveBasis | undefined",
         "required": false,
         "default": "—",
         "description": "What the responsive values follow: viewport (default, the window width) or container, the stack's own width from onLayout."
       },
       {
         "name": "justify",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").JustifyValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").JustifyValue | undefined",
         "required": false,
         "default": "—",
         "description": "Main-axis distribution; takes an object per width like gap."
@@ -13132,7 +13188,7 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/shared/package-runtime/input-variant\").InputVariant | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/input-variant\").InputVariant | undefined",
         "required": false,
         "default": "—",
         "description": "\"plain\" drops the surface, side border and side inset for text edited in place, such as a document title."
@@ -13365,7 +13421,7 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/shared/package-runtime/input-variant\").InputVariant | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/input-variant\").InputVariant | undefined",
         "required": false,
         "default": "—",
         "description": "\"plain\" drops the surface, side border and side inset for text edited in place, such as a document title."
@@ -13763,7 +13819,7 @@
       },
       {
         "name": "secondary",
-        "type": "import(\"/workspace/packages/react/src/kpi-hero\").KpiValue[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/kpi-hero\").KpiValue[] | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -13840,7 +13896,7 @@
       },
       {
         "name": "renderSecondary",
-        "type": "((item: import(\"/workspace/packages/react/src/kpi-hero\").KpiValue, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((item: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/kpi-hero\").KpiValue, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -13926,7 +13982,7 @@
       },
       {
         "name": "secondary",
-        "type": "import(\"/workspace/packages/native/src/kpi-hero\").KpiValue[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/kpi-hero\").KpiValue[] | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -14003,7 +14059,7 @@
       },
       {
         "name": "renderSecondary",
-        "type": "((item: import(\"/workspace/packages/native/src/kpi-hero\").KpiValue, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((item: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/kpi-hero\").KpiValue, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -14089,7 +14145,7 @@
       },
       {
         "name": "items",
-        "type": "import(\"/workspace/packages/react/src/kpi-row\").KpiRowItem[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/kpi-row\").KpiRowItem[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -14124,14 +14180,14 @@
       },
       {
         "name": "onItemClick",
-        "type": "((item: import(\"/workspace/packages/react/src/kpi-row\").KpiRowItem, index: number, event: import(\"/workspace/node_modules/@types/react/index\").MouseEvent | import(\"/workspace/node_modules/@types/react/index\").KeyboardEvent) => void) | undefined",
+        "type": "((item: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/kpi-row\").KpiRowItem, index: number, event: import(\"/workspace/node_modules/@types/react/index\").MouseEvent | import(\"/workspace/node_modules/@types/react/index\").KeyboardEvent) => void) | undefined",
         "required": false,
         "default": "—",
         "description": "The event lets a link cell's router call preventDefault."
       },
       {
         "name": "renderValue",
-        "type": "((item: import(\"/workspace/packages/react/src/kpi-row\").KpiRowItem, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((item: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/kpi-row\").KpiRowItem, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -14147,7 +14203,7 @@
       },
       {
         "name": "items",
-        "type": "import(\"/workspace/packages/native/src/kpi-row\").KpiRowItem[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/kpi-row\").KpiRowItem[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -14182,14 +14238,14 @@
       },
       {
         "name": "onItemClick",
-        "type": "((item: import(\"/workspace/packages/native/src/kpi-row\").KpiRowItem, index: number, event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
+        "type": "((item: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/kpi-row\").KpiRowItem, index: number, event: import(\"/workspace/node_modules/react-native/types/index\").GestureResponderEvent) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "renderValue",
-        "type": "((item: import(\"/workspace/packages/native/src/kpi-row\").KpiRowItem, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((item: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/kpi-row\").KpiRowItem, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -14238,7 +14294,7 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListGroupVariant | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListGroupVariant | undefined",
         "required": false,
         "default": "—",
         "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart; \"open\" puts every section's rows on the page with no card or dividers, 20px apart."
@@ -14268,7 +14324,7 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListGroupVariant | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListGroupVariant | undefined",
         "required": false,
         "default": "—",
         "description": "\"inset\" (default) rounds every section and keeps them 24px apart; \"flush\" keeps square sections 8px apart; \"open\" puts every section's rows on the page with no card or dividers, 20px apart."
@@ -14555,7 +14611,7 @@
       },
       {
         "name": "leadingSize",
-        "type": "import(\"/workspace/shared/package-runtime/list-leading\").ListLeadingSize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-leading\").ListLeadingSize | undefined",
         "required": false,
         "default": "—",
         "description": "Leading square/icon sizes: xs 24/16, sm 32/20, md 40/24, lg 56/28. Custom content keeps its own size."
@@ -14688,7 +14744,7 @@
       },
       {
         "name": "value",
-        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue | undefined",
         "required": false,
         "default": "—",
         "description": "This row's value in a section that owns its selection (`value` on the section): it is selected when the section's value holds it."
@@ -14781,7 +14837,7 @@
       },
       {
         "name": "leadingSize",
-        "type": "import(\"/workspace/shared/package-runtime/list-leading\").ListLeadingSize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-leading\").ListLeadingSize | undefined",
         "required": false,
         "default": "—",
         "description": "Leading square/icon sizes: xs 24/16, sm 32/20, md 40/24, lg 56/28. Custom content keeps its own size."
@@ -14914,7 +14970,7 @@
       },
       {
         "name": "value",
-        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue | undefined",
         "required": false,
         "default": "—",
         "description": "This row's value in a section that owns its selection (`value` on the section): it is selected when the section's value holds it."
@@ -15218,7 +15274,7 @@
       },
       {
         "name": "surface",
-        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListSectionSurface | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListSectionSurface | undefined",
         "required": false,
         "default": "—",
         "description": "Paints the surface background (default true); false lets the page background show through; \"muted\" paints the muted fill, which sets rows apart inside a white card or modal."
@@ -15253,7 +15309,7 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListSectionVariant | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListSectionVariant | undefined",
         "required": false,
         "default": "—",
         "description": "\"open\" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default \"default\", or \"open\" in an open KjunListGroup).\n\"details\" is for rows that are read, not pressed (\"Payment method / Visa\"): 32 tall, no dividers, the label secondary and the value in the text color with the room the label leaves."
@@ -15295,21 +15351,21 @@
       },
       {
         "name": "selectionMode",
-        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListSelectionMode | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListSelectionMode | undefined",
         "required": false,
         "default": "—",
         "description": "\"single\": the rows are one choice and the list a radio group with one Tab stop and arrow keys; \"multiple\": each row is a checkbox. Rows are choices when given `selected`, or a `value` with the section's `value`."
       },
       {
         "name": "value",
-        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue | import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue[] | null | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue | import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue[] | null | undefined",
         "required": false,
         "default": "—",
         "description": "The chosen rows' values, owned by the app: one value (null for none) with \"single\", a list with \"multiple\"."
       },
       {
         "name": "onValueChange",
-        "type": "((value: import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue | import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue[]) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue | import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue[]) => void) | undefined",
         "required": false,
         "default": "—",
         "description": "Called with the next value (a list with \"multiple\") when a row with a `value` is pressed."
@@ -15323,28 +15379,28 @@
       },
       {
         "name": "order",
-        "type": "readonly import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue[] | undefined",
+        "type": "readonly import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue[] | undefined",
         "required": false,
         "default": "—",
         "description": "The row values in the order shown; a row whose value is not listed cannot move."
       },
       {
         "name": "onOrderChange",
-        "type": "((order: import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue[]) => void) | undefined",
+        "type": "((order: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue[]) => void) | undefined",
         "required": false,
         "default": "—",
         "description": "Called with the next order when a row moves; the app applies it."
       },
       {
         "name": "onReorder",
-        "type": "((move: import(\"/workspace/packages/react/src/reorder-controls\").KjunListReorderMove) => void) | undefined",
+        "type": "((move: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/reorder-controls\").KjunListReorderMove) => void) | undefined",
         "required": false,
         "default": "—",
         "description": "The same move in detail: the row's value, where it was and where it went."
       },
       {
         "name": "reorderControls",
-        "type": "import(\"/workspace/packages/react/src/reorder-controls\").KjunListReorderControls | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/reorder-controls\").KjunListReorderControls | undefined",
         "required": false,
         "default": "—",
         "description": "\"buttons\" (default): up and down buttons; \"handle\": a grip that drags with a pointer and is grabbed with Enter or Space, then moved with the arrow keys; \"both\"."
@@ -15423,7 +15479,7 @@
       },
       {
         "name": "surface",
-        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListSectionSurface | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListSectionSurface | undefined",
         "required": false,
         "default": "—",
         "description": "Paints the surface background (default true); false lets the page background show through; \"muted\" paints the muted fill, which sets rows apart inside a white card or modal."
@@ -15458,7 +15514,7 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListSectionVariant | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListSectionVariant | undefined",
         "required": false,
         "default": "—",
         "description": "\"open\" puts the rows on the page with no card or dividers: larger titles, icons on rounded squares, and a filled mark for the chosen row (default \"default\", or \"open\" in an open KjunListGroup).\n\"details\" is for rows that are read, not pressed (\"Payment method / Visa\"): 32 tall, no dividers, the label secondary and the value in the text color with the room the label leaves."
@@ -15500,21 +15556,21 @@
       },
       {
         "name": "selectionMode",
-        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListSelectionMode | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListSelectionMode | undefined",
         "required": false,
         "default": "—",
         "description": "\"single\": the rows are one choice and the list a radio group (with arrow keys on Native Web); \"multiple\": each row is a checkbox. Rows are choices when given `selected`, or a `value` with the section's `value`."
       },
       {
         "name": "value",
-        "type": "import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue | import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue[] | null | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue | import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue[] | null | undefined",
         "required": false,
         "default": "—",
         "description": "The chosen rows' values, owned by the app: one value (null for none) with \"single\", a list with \"multiple\"."
       },
       {
         "name": "onValueChange",
-        "type": "((value: import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue | import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue[]) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue | import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue[]) => void) | undefined",
         "required": false,
         "default": "—",
         "description": "Called with the next value (a list with \"multiple\") when a row with a `value` is pressed."
@@ -15528,21 +15584,21 @@
       },
       {
         "name": "order",
-        "type": "readonly import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue[] | undefined",
+        "type": "readonly import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue[] | undefined",
         "required": false,
         "default": "—",
         "description": "The row values in the order shown; a row whose value is not listed cannot move."
       },
       {
         "name": "onOrderChange",
-        "type": "((order: import(\"/workspace/shared/package-runtime/list-row\").ListChoiceValue[]) => void) | undefined",
+        "type": "((order: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/list-row\").ListChoiceValue[]) => void) | undefined",
         "required": false,
         "default": "—",
         "description": "Called with the next order when a row moves; the app applies it."
       },
       {
         "name": "onReorder",
-        "type": "((move: import(\"/workspace/packages/native/src/reorder-controls\").KjunListReorderMove) => void) | undefined",
+        "type": "((move: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/reorder-controls\").KjunListReorderMove) => void) | undefined",
         "required": false,
         "default": "—",
         "description": "The same move in detail: the row's value, where it was and where it went."
@@ -16121,7 +16177,7 @@
       },
       {
         "name": "columns",
-        "type": "import(\"/workspace/packages/react/src/market-model\").MarketColumn[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/market-model\").MarketColumn[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -16163,7 +16219,7 @@
       },
       {
         "name": "formatMetric",
-        "type": "import(\"/workspace/packages/react/src/market-model\").MarketFormatter<Row> | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/market-model\").MarketFormatter<Row> | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -16177,7 +16233,7 @@
       },
       {
         "name": "renderList",
-        "type": "((state: { selectedKey: string; selectedPill: import(\"/workspace/shared/package-runtime/market-cards\").MarketMetric | undefined; metricDisplay: (row: Row) => string; }) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((state: { selectedKey: string; selectedPill: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/market-cards\").MarketMetric | undefined; metricDisplay: (row: Row) => string; }) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -16212,7 +16268,7 @@
       },
       {
         "name": "pagination",
-        "type": "import(\"/workspace/packages/react/src/market-model\").MarketPagination | null | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/market-model\").MarketPagination | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -16394,7 +16450,7 @@
       },
       {
         "name": "metricConfig",
-        "type": "Record<string, import(\"/workspace/shared/package-runtime/market-cards\").MarketMetric>",
+        "type": "Record<string, import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/market-cards\").MarketMetric>",
         "required": true,
         "default": "—",
         "description": ""
@@ -16415,7 +16471,7 @@
       },
       {
         "name": "storage",
-        "type": "import(\"/workspace/shared/package-runtime/market-cards\").MetricStorage | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/market-cards\").MetricStorage | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -16452,7 +16508,7 @@
       },
       {
         "name": "columns",
-        "type": "import(\"/workspace/packages/native/src/market-model\").MarketColumn[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/market-model\").MarketColumn[]",
         "required": true,
         "default": "—",
         "description": ""
@@ -16494,7 +16550,7 @@
       },
       {
         "name": "formatMetric",
-        "type": "import(\"/workspace/packages/native/src/market-model\").MarketFormatter<Row> | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/market-model\").MarketFormatter<Row> | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -16508,7 +16564,7 @@
       },
       {
         "name": "renderList",
-        "type": "((state: { selectedKey: string; selectedPill: import(\"/workspace/shared/package-runtime/market-cards\").MarketMetric | undefined; metricDisplay: (row: Row) => string; }) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((state: { selectedKey: string; selectedPill: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/market-cards\").MarketMetric | undefined; metricDisplay: (row: Row) => string; }) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -16543,7 +16599,7 @@
       },
       {
         "name": "pagination",
-        "type": "import(\"/workspace/packages/native/src/market-model\").MarketPagination | null | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/market-model\").MarketPagination | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -16725,7 +16781,7 @@
       },
       {
         "name": "metricConfig",
-        "type": "Record<string, import(\"/workspace/shared/package-runtime/market-cards\").MarketMetric>",
+        "type": "Record<string, import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/market-cards\").MarketMetric>",
         "required": true,
         "default": "—",
         "description": ""
@@ -16746,7 +16802,7 @@
       },
       {
         "name": "storage",
-        "type": "import(\"/workspace/shared/package-runtime/market-cards\").MetricStorage | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/market-cards\").MetricStorage | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -17166,7 +17222,7 @@
       },
       {
         "name": "pagination",
-        "type": "import(\"/workspace/packages/react/src/market-model\").MarketPagination | null | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/market-model\").MarketPagination | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -17427,7 +17483,7 @@
       },
       {
         "name": "pagination",
-        "type": "import(\"/workspace/packages/native/src/market-model\").MarketPagination | null | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/market-model\").MarketPagination | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -17952,14 +18008,14 @@
     "react": [
       {
         "name": "columns",
-        "type": "import(\"/workspace/packages/react/src/market-model\").MarketColumn[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/market-model\").MarketColumn[]",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "cellLoading",
-        "type": "((row: Row, column: import(\"/workspace/packages/react/src/market-model\").MarketColumn) => boolean) | undefined",
+        "type": "((row: Row, column: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/market-model\").MarketColumn) => boolean) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -18043,14 +18099,14 @@
       },
       {
         "name": "formatMetric",
-        "type": "import(\"/workspace/packages/react/src/market-model\").MarketFormatter<Row> | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/market-model\").MarketFormatter<Row> | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "renderCell",
-        "type": "((row: Row, column: import(\"/workspace/packages/react/src/market-model\").MarketColumn) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((row: Row, column: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/market-model\").MarketColumn) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -18113,7 +18169,7 @@
       },
       {
         "name": "pagination",
-        "type": "import(\"/workspace/packages/react/src/market-model\").MarketPagination | null | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/market-model\").MarketPagination | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -18297,14 +18353,14 @@
     "native": [
       {
         "name": "columns",
-        "type": "import(\"/workspace/packages/native/src/market-model\").MarketColumn[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/market-model\").MarketColumn[]",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "cellLoading",
-        "type": "((row: Row, column: import(\"/workspace/packages/native/src/market-model\").MarketColumn) => boolean) | undefined",
+        "type": "((row: Row, column: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/market-model\").MarketColumn) => boolean) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -18395,14 +18451,14 @@
       },
       {
         "name": "formatMetric",
-        "type": "import(\"/workspace/packages/native/src/market-model\").MarketFormatter<Row> | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/market-model\").MarketFormatter<Row> | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "renderCell",
-        "type": "((row: Row, column: import(\"/workspace/packages/native/src/market-model\").MarketColumn) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((row: Row, column: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/market-model\").MarketColumn) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -18465,7 +18521,7 @@
       },
       {
         "name": "pagination",
-        "type": "import(\"/workspace/packages/native/src/market-model\").MarketPagination | null | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/market-model\").MarketPagination | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -19111,7 +19167,7 @@
       },
       {
         "name": "returnFocus",
-        "type": "import(\"/workspace/packages/react/src/floating-panel\").FocusReturn | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/floating-panel\").FocusReturn | undefined",
         "required": false,
         "default": "—",
         "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only."
@@ -19669,7 +19725,7 @@
       },
       {
         "name": "returnFocus",
-        "type": "import(\"/workspace/packages/react/src/floating-panel\").FocusReturn | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/floating-panel\").FocusReturn | undefined",
         "required": false,
         "default": "—",
         "description": "Read after the exit finishes; a missing target falls back to the opener or parent window."
@@ -20168,7 +20224,7 @@
       },
       {
         "name": "format",
-        "type": "import(\"/workspace/shared/package-runtime/number-input\").NumberInputFormat | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/number-input\").NumberInputFormat | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -20324,7 +20380,7 @@
       },
       {
         "name": "format",
-        "type": "import(\"/workspace/shared/package-runtime/number-input\").NumberInputFormat | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/number-input\").NumberInputFormat | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -20555,7 +20611,7 @@
       },
       {
         "name": "layout",
-        "type": "import(\"/workspace/packages/react/src/navigation\").KjunPaginationLayout | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/navigation\").KjunPaginationLayout | undefined",
         "required": false,
         "default": "—",
         "description": "\"auto\" switches to the short form below the pagination breakpoint; \"full\" and \"compact\" keep one form."
@@ -20669,7 +20725,7 @@
       },
       {
         "name": "layout",
-        "type": "import(\"/workspace/packages/native/src/pagination\").KjunPaginationLayout | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/pagination\").KjunPaginationLayout | undefined",
         "required": false,
         "default": "—",
         "description": "\"auto\" switches to the short form below the pagination breakpoint; \"full\" and \"compact\" keep one form."
@@ -20928,7 +20984,7 @@
       },
       {
         "name": "placement",
-        "type": "import(\"/workspace/packages/react/src/popover\").PopoverPlacement | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/popover\").PopoverPlacement | undefined",
         "required": false,
         "default": "—",
         "description": "A side, or a side with an aligned edge: \"bottom-start\" lines the panel up with the trigger's start edge."
@@ -20963,7 +21019,7 @@
       },
       {
         "name": "anchorRect",
-        "type": "import(\"/workspace/shared/package-runtime/anchor-rect\").AnchorSource | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/anchor-rect\").AnchorSource | undefined",
         "required": false,
         "default": "—",
         "description": "Attach to this screen rectangle (or a function read every frame while open) instead of the trigger. Web only.\nThe trigger becomes optional; presses inside it still count as inside a non-modal Popover."
@@ -21357,7 +21413,7 @@
       },
       {
         "name": "flash",
-        "type": "import(\"/workspace/shared/package-runtime/data-cells\").PriceFlash | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/data-cells\").PriceFlash | undefined",
         "required": false,
         "default": "—",
         "description": "Flash when the value moves: true or \"text\" colours the digits up or down, \"background\" fills the cell's pill.\nOff under reduced motion."
@@ -21408,7 +21464,7 @@
       },
       {
         "name": "flash",
-        "type": "import(\"/workspace/shared/package-runtime/data-cells\").PriceFlash | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/data-cells\").PriceFlash | undefined",
         "required": false,
         "default": "—",
         "description": "Flash when the value moves: true or \"text\" colours the digits up or down, \"background\" fills the cell's pill.\nOff under reduced motion."
@@ -21553,7 +21609,7 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/packages/react/src/display\").KjunProgressVariant | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/display\").KjunProgressVariant | undefined",
         "required": false,
         "default": "—",
         "description": "neutral draws the fill in the tertiary text colour, for a stale or reference reading that should not call for attention."
@@ -21639,7 +21695,7 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/packages/native/src/progress\").KjunProgressVariant | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/progress\").KjunProgressVariant | undefined",
         "required": false,
         "default": "—",
         "description": "neutral draws the fill in the tertiary text colour, for a stale or reference reading that should not call for attention."
@@ -21794,7 +21850,7 @@
       },
       {
         "name": "color",
-        "type": "import(\"/workspace/shared/package-runtime/data-cells\").ProgressCellColor | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/data-cells\").ProgressCellColor | undefined",
         "required": false,
         "default": "—",
         "description": "\"custom\" (or customColor alone) takes customColor; without one \"custom\" falls back to the auto colours."
@@ -21866,7 +21922,7 @@
       },
       {
         "name": "color",
-        "type": "import(\"/workspace/shared/package-runtime/data-cells\").ProgressCellColor | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/data-cells\").ProgressCellColor | undefined",
         "required": false,
         "default": "—",
         "description": "\"custom\" (or customColor alone) takes customColor; without one \"custom\" falls back to the auto colours."
@@ -21964,7 +22020,7 @@
       },
       {
         "name": "icons",
-        "type": "Readonly<Record<string, import(\"/workspace/packages/icons/dist/index\").KjunIconDefinition>> | undefined",
+        "type": "Readonly<Record<string, import(\"/workspace/.superpowers/wt-review-alert-r2/packages/icons/dist/index\").KjunIconDefinition>> | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -21985,7 +22041,7 @@
       },
       {
         "name": "safeArea",
-        "type": "import(\"/workspace/shared/package-runtime/safe-area\").KjunSafeArea | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/safe-area\").KjunSafeArea | undefined",
         "required": false,
         "default": "—",
         "description": "Screen insets in px for toasts, modals, menus and edge components; without it the browser's env(safe-area-inset-*) applies."
@@ -22043,21 +22099,21 @@
     "native": [
       {
         "name": "fontFamily",
-        "type": "import(\"/workspace/packages/native/src/fonts\").KjunFontFamily | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/fonts\").KjunFontFamily | undefined",
         "required": false,
         "default": "—",
         "description": "A family name, or names by weight ({ 400: \"Pretendard-Regular\", 700: \"Pretendard-Bold\" }) for Android and Expo."
       },
       {
         "name": "numericFontFamily",
-        "type": "import(\"/workspace/packages/native/src/fonts\").KjunFontFamily | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/fonts\").KjunFontFamily | undefined",
         "required": false,
         "default": "—",
         "description": "Same as fontFamily, for numbers."
       },
       {
         "name": "icons",
-        "type": "Readonly<Record<string, import(\"/workspace/packages/icons/dist/index\").KjunIconDefinition>> | undefined",
+        "type": "Readonly<Record<string, import(\"/workspace/.superpowers/wt-review-alert-r2/packages/icons/dist/index\").KjunIconDefinition>> | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -22078,14 +22134,14 @@
       },
       {
         "name": "colors",
-        "type": "import(\"/workspace/packages/tokens/dist/colors\").KjunColors<import(\"/workspace/node_modules/react-native/types/index\").ColorValue> | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/tokens/dist/colors\").KjunColors<import(\"/workspace/node_modules/react-native/types/index\").ColorValue> | undefined",
         "required": false,
         "default": "—",
         "description": "Project colors; a nested provider may leave them out to inherit its parent's (e.g. to change only safeArea)."
       },
       {
         "name": "safeArea",
-        "type": "import(\"/workspace/shared/package-runtime/safe-area\").KjunSafeArea | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/safe-area\").KjunSafeArea | undefined",
         "required": false,
         "default": "—",
         "description": "Screen insets in px (e.g. from react-native-safe-area-context) for toasts, modals, menus and edge components."
@@ -22509,14 +22565,14 @@
     "react": [
       {
         "name": "value",
-        "type": "import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "val",
-        "type": "import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue",
         "required": true,
         "default": "—",
         "description": ""
@@ -22586,14 +22642,14 @@
       },
       {
         "name": "onValueChange",
-        "type": "((value: import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((value: import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -22602,14 +22658,14 @@
     "native": [
       {
         "name": "value",
-        "type": "import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "val",
-        "type": "import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue",
         "required": true,
         "default": "—",
         "description": ""
@@ -22665,14 +22721,14 @@
       },
       {
         "name": "onValueChange",
-        "type": "((value: import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((value: import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -22751,14 +22807,14 @@
     "react": [
       {
         "name": "value",
-        "type": "import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "options",
-        "type": "import(\"/workspace/packages/react/src/choice-controls\").ChoiceOption<import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue>[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceOption<import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue>[] | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -22807,14 +22863,14 @@
       },
       {
         "name": "onValueChange",
-        "type": "((value: import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((value: import(\"/workspace/packages/react/src/choice-controls\").ChoiceValue) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/choice-controls\").ChoiceValue) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -22823,14 +22879,14 @@
     "native": [
       {
         "name": "value",
-        "type": "import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "options",
-        "type": "import(\"/workspace/packages/native/src/choice-controls\").ChoiceOption<import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue>[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceOption<import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue>[] | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -22879,14 +22935,14 @@
       },
       {
         "name": "onValueChange",
-        "type": "((value: import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((value: import(\"/workspace/packages/native/src/choice-controls\").ChoiceValue) => void) | undefined",
+        "type": "((value: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/choice-controls\").ChoiceValue) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -23169,14 +23225,14 @@
       },
       {
         "name": "marks",
-        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderMarks | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/slider-view\").SliderMarks | undefined",
         "required": false,
         "default": "—",
         "description": "Dots on the rail: true for every step (up to 24), or values with optional labels beside the rail. Pressing a label moves the nearer thumb there."
       },
       {
         "name": "orientation",
-        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderOrientation | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/slider-view\").SliderOrientation | undefined",
         "required": false,
         "default": "—",
         "description": "vertical: the rail runs bottom (min) to top (max), `length` px long."
@@ -23190,7 +23246,7 @@
       },
       {
         "name": "valueLabel",
-        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderValueLabel | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/slider-view\").SliderValueLabel | undefined",
         "required": false,
         "default": "—",
         "description": "The value in a bubble on the thumb: \"drag\" while dragging or keyboard-focused, \"always\", or \"off\" (default). Follows formatValue."
@@ -23318,14 +23374,14 @@
       },
       {
         "name": "marks",
-        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderMarks | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/slider-view\").SliderMarks | undefined",
         "required": false,
         "default": "—",
         "description": "Like Web: true for a dot on every step (up to 24), or values with optional labels beside the rail."
       },
       {
         "name": "orientation",
-        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderOrientation | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/slider-view\").SliderOrientation | undefined",
         "required": false,
         "default": "—",
         "description": "vertical: the rail runs bottom (min) to top (max), `length` pt long."
@@ -23339,7 +23395,7 @@
       },
       {
         "name": "valueLabel",
-        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderValueLabel | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/slider-view\").SliderValueLabel | undefined",
         "required": false,
         "default": "—",
         "description": "Like Web: the value in a bubble on the thumb, \"drag\" while dragging or keyboard-focused, \"always\", or \"off\" (default)."
@@ -23881,7 +23937,7 @@
       },
       {
         "name": "direction",
-        "type": "import(\"/workspace/shared/package-runtime/scroll-fade\").ScrollFadeDirection | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/scroll-fade\").ScrollFadeDirection | undefined",
         "required": false,
         "default": "—",
         "description": "Which way the content scrolls; vertical needs a height (style or class) to scroll within."
@@ -23939,7 +23995,7 @@
       },
       {
         "name": "direction",
-        "type": "import(\"/workspace/shared/package-runtime/scroll-fade\").ScrollFadeDirection | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/scroll-fade\").ScrollFadeDirection | undefined",
         "required": false,
         "default": "—",
         "description": "Which way the content scrolls; vertical needs a height (style) to scroll within."
@@ -24694,7 +24750,7 @@
     "react": [
       {
         "name": "value",
-        "type": "import(\"/workspace/shared/package-runtime/options\").OptionValue | import(\"/workspace/shared/package-runtime/options\").OptionValue[] | null",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue[] | null",
         "required": true,
         "default": "—",
         "description": ""
@@ -24820,7 +24876,7 @@
       },
       {
         "name": "multipleDisplay",
-        "type": "import(\"/workspace/shared/package-runtime/options\").SelectMultipleDisplay | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").SelectMultipleDisplay | undefined",
         "required": false,
         "default": "—",
         "description": "With multiple: \"count\" shows \"N selected\" for two or more, \"labels\" names them and counts the ones that do not fit."
@@ -24848,21 +24904,21 @@
       },
       {
         "name": "renderSelected",
-        "type": "((option: T | undefined, value: import(\"/workspace/shared/package-runtime/options\").OptionValue | import(\"/workspace/shared/package-runtime/options\").OptionValue[] | null) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((option: T | undefined, value: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue[] | null) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": "`value` lets a value whose option has not loaded yet still show something."
       },
       {
         "name": "onValueChange",
-        "type": "((v: import(\"/workspace/shared/package-runtime/options\").OptionValue | import(\"/workspace/shared/package-runtime/options\").OptionValue[] | null) => void) | undefined",
+        "type": "((v: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue[] | null) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((v: import(\"/workspace/shared/package-runtime/options\").OptionValue | import(\"/workspace/shared/package-runtime/options\").OptionValue[] | null) => void) | undefined",
+        "type": "((v: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue[] | null) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -24904,7 +24960,7 @@
       },
       {
         "name": "returnFocus",
-        "type": "import(\"/workspace/packages/react/src/floating-panel\").FocusReturn | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/floating-panel\").FocusReturn | undefined",
         "required": false,
         "default": "—",
         "description": "Where focus goes when the menu closes by choosing or Escape, instead of the trigger (e.g. an edited cell). Web only."
@@ -24913,7 +24969,7 @@
     "native": [
       {
         "name": "value",
-        "type": "import(\"/workspace/shared/package-runtime/options\").OptionValue | import(\"/workspace/shared/package-runtime/options\").OptionValue[] | null",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue[] | null",
         "required": true,
         "default": "—",
         "description": ""
@@ -25039,7 +25095,7 @@
       },
       {
         "name": "multipleDisplay",
-        "type": "import(\"/workspace/shared/package-runtime/options\").SelectMultipleDisplay | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").SelectMultipleDisplay | undefined",
         "required": false,
         "default": "—",
         "description": "With multiple: \"count\" shows \"N selected\" for two or more, \"labels\" names them and counts the ones that do not fit."
@@ -25067,21 +25123,21 @@
       },
       {
         "name": "renderSelected",
-        "type": "((option: T | undefined, value: import(\"/workspace/shared/package-runtime/options\").OptionValue | import(\"/workspace/shared/package-runtime/options\").OptionValue[] | null) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((option: T | undefined, value: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue[] | null) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": "`value` lets a value whose option has not loaded yet still show something."
       },
       {
         "name": "onValueChange",
-        "type": "((v: import(\"/workspace/shared/package-runtime/options\").OptionValue | import(\"/workspace/shared/package-runtime/options\").OptionValue[] | null) => void) | undefined",
+        "type": "((v: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue[] | null) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "onChange",
-        "type": "((v: import(\"/workspace/shared/package-runtime/options\").OptionValue | import(\"/workspace/shared/package-runtime/options\").OptionValue[] | null) => void) | undefined",
+        "type": "((v: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue | import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/options\").OptionValue[] | null) => void) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -25308,7 +25364,7 @@
     "react": [
       {
         "name": "items",
-        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationEntry[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/side-navigation\").SideNavigationEntry[]",
         "required": true,
         "default": "—",
         "description": "Destinations, parents with up to two levels under them, and titled groups of either. A destination has the bottom\nnavigation's shape."
@@ -25413,7 +25469,7 @@
       },
       {
         "name": "rail",
-        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationRail | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/side-navigation\").SideNavigationRail | undefined",
         "required": false,
         "default": "—",
         "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon).\nLoose items between groups keep their own row."
@@ -25427,7 +25483,7 @@
       },
       {
         "name": "collapsedParent",
-        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationCollapsedParent | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/side-navigation\").SideNavigationCollapsedParent | undefined",
         "required": false,
         "default": "—",
         "description": "While collapsed, pressing a parent or a rail group: \"widen\" asks for the full width with it open (onCollapsedChange);\n\"flyout\" shows its rows in a panel beside the icon and keeps the column narrow."
@@ -25448,21 +25504,21 @@
       },
       {
         "name": "headingLevel",
-        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationHeadingLevel | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/side-navigation\").SideNavigationHeadingLevel | undefined",
         "required": false,
         "default": "—",
         "description": "The level of the group titles' headings (default 2), to fit the page's outline."
       },
       {
         "name": "header",
-        "type": "import(\"/workspace/packages/react/src/side-navigation\").SideNavigationSlot",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/side-navigation\").SideNavigationSlot",
         "required": false,
         "default": "—",
         "description": "Above the list, such as a logo, a workspace switcher or search. With a header or footer only the list scrolls."
       },
       {
         "name": "footer",
-        "type": "import(\"/workspace/packages/react/src/side-navigation\").SideNavigationSlot",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/side-navigation\").SideNavigationSlot",
         "required": false,
         "default": "—",
         "description": "Below the list, such as the account."
@@ -25499,7 +25555,7 @@
     "native": [
       {
         "name": "items",
-        "type": "import(\"/workspace/packages/native/src/side-navigation\").SideNavigationEntry[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/side-navigation\").SideNavigationEntry[]",
         "required": true,
         "default": "—",
         "description": "Destinations, parents with up to two levels under them, and titled groups of either. A destination has the bottom\nnavigation's shape."
@@ -25520,14 +25576,14 @@
       },
       {
         "name": "onNavigate",
-        "type": "import(\"/workspace/packages/native/src/side-navigation-parts\").Navigate | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/side-navigation-parts\").Navigate | undefined",
         "required": false,
         "default": "—",
         "description": "A press on a destination. On Native Web, modified clicks (new tab) and target links are left to the browser."
       },
       {
         "name": "onReselect",
-        "type": "import(\"/workspace/packages/native/src/side-navigation-parts\").Navigate | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/side-navigation-parts\").Navigate | undefined",
         "required": false,
         "default": "—",
         "description": "The current destination was pressed again, e.g. to scroll its page back to the top."
@@ -25604,7 +25660,7 @@
       },
       {
         "name": "rail",
-        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationRail | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/side-navigation\").SideNavigationRail | undefined",
         "required": false,
         "default": "—",
         "description": "While collapsed: one icon per top-level item (\"items\"), or one per group (\"groups\", from the group's icon).\nLoose items between groups keep their own row."
@@ -25618,7 +25674,7 @@
       },
       {
         "name": "collapsedParent",
-        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationCollapsedParent | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/side-navigation\").SideNavigationCollapsedParent | undefined",
         "required": false,
         "default": "—",
         "description": "While collapsed, pressing a parent or a rail group: \"widen\" asks for the full width with it open (onCollapsedChange);\n\"flyout\" shows its rows in a panel beside the icon and keeps the column narrow."
@@ -25639,21 +25695,21 @@
       },
       {
         "name": "headingLevel",
-        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationHeadingLevel | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/side-navigation\").SideNavigationHeadingLevel | undefined",
         "required": false,
         "default": "—",
         "description": "The level of the group titles' headings (default 2; aria-level on Native Web), to fit the page's outline."
       },
       {
         "name": "header",
-        "type": "import(\"/workspace/packages/native/src/side-navigation\").SideNavigationSlot",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/side-navigation\").SideNavigationSlot",
         "required": false,
         "default": "—",
         "description": "Above the list, such as a logo, a workspace switcher or search. The navigation does not scroll itself: put it in the\napp's ScrollView, or let the app scroll the list between a fixed header and footer."
       },
       {
         "name": "footer",
-        "type": "import(\"/workspace/packages/native/src/side-navigation\").SideNavigationSlot",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/side-navigation\").SideNavigationSlot",
         "required": false,
         "default": "—",
         "description": "Below the list, such as the account."
@@ -25815,7 +25871,7 @@
     "react": [
       {
         "name": "nav",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((state: import(\"/workspace/packages/react/src/side-navigation-layout\").SideNavigationLayoutState) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((state: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/side-navigation-layout\").SideNavigationLayoutState) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
         "required": true,
         "default": "—",
         "description": "The menu, usually a KjunSideNavigation. A function receives where it is drawn, so it can pass collapsed on, show\nthe full menu in the drawer and close the drawer after navigating."
@@ -25857,7 +25913,7 @@
       },
       {
         "name": "width",
-        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationWidth | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/side-navigation\").SideNavigationWidth | undefined",
         "required": false,
         "default": "—",
         "description": "The open column's width: sm 224, md 256 (default), lg 288."
@@ -25906,7 +25962,7 @@
       },
       {
         "name": "spaces",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((state: import(\"/workspace/packages/react/src/side-navigation-layout\").SideNavigationLayoutState) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((state: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/side-navigation-layout\").SideNavigationLayoutState) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
         "required": false,
         "default": "—",
         "description": "A rail of spaces, usually a collapsed KjunSideNavigation, before a menu panel that holds nav. The rail and the panel sit\nin a band in the navigation-rail-bg colour; the panel's head shows spacesTitle and a collapse button, and below the\nbreakpoint the drawer holds both. With spaces, collapsed, railLabels and width do not apply, and railBreakpoint asks\nonPanelCollapsedChange instead. A function receives where it is drawn (collapsed is true: the rail is a collapsed menu)."
@@ -25920,7 +25976,7 @@
       },
       {
         "name": "panelSurface",
-        "type": "import(\"/workspace/shared/package-runtime/side-navigation-layout\").SideNavigationPanelSurface | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/side-navigation-layout\").SideNavigationPanelSurface | undefined",
         "required": false,
         "default": "—",
         "description": "The panel: a card set into the band (\"card\", default) or flat against it with a line before the page (\"flat\")."
@@ -25957,7 +26013,7 @@
     "native": [
       {
         "name": "nav",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((state: import(\"/workspace/packages/native/src/side-navigation-layout\").SideNavigationLayoutState) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((state: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/side-navigation-layout\").SideNavigationLayoutState) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
         "required": true,
         "default": "—",
         "description": "The menu, usually a KjunSideNavigation. A function receives where it is drawn, so it can pass collapsed on, show\nthe full menu in the drawer and close the drawer after navigating."
@@ -25999,7 +26055,7 @@
       },
       {
         "name": "width",
-        "type": "import(\"/workspace/shared/package-runtime/side-navigation\").SideNavigationWidth | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/side-navigation\").SideNavigationWidth | undefined",
         "required": false,
         "default": "—",
         "description": "The open column's width: sm 224, md 256 (default), lg 288."
@@ -26034,7 +26090,7 @@
       },
       {
         "name": "spaces",
-        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((state: import(\"/workspace/packages/native/src/side-navigation-layout\").SideNavigationLayoutState) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode | ((state: import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/side-navigation-layout\").SideNavigationLayoutState) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)",
         "required": false,
         "default": "—",
         "description": "A rail of spaces, usually a collapsed KjunSideNavigation, before a menu panel that holds nav, both in a band in the\nnavigationRailBg colour; the panel's head shows spacesTitle and a collapse button, and below the breakpoint the drawer\nholds both. With spaces, collapsed, railLabels and width do not apply, and railBreakpoint asks onPanelCollapsedChange.\nA function receives where it is drawn (collapsed is true: the rail is a collapsed menu)."
@@ -26048,7 +26104,7 @@
       },
       {
         "name": "panelSurface",
-        "type": "import(\"/workspace/shared/package-runtime/side-navigation-layout\").SideNavigationPanelSurface | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/side-navigation-layout\").SideNavigationPanelSurface | undefined",
         "required": false,
         "default": "—",
         "description": "The panel: a card set into the band (\"card\", default) or flat against it with a line before the page (\"flat\")."
@@ -26722,7 +26778,7 @@
       },
       {
         "name": "marks",
-        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderMarks | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/slider-view\").SliderMarks | undefined",
         "required": false,
         "default": "—",
         "description": "Dots on the rail: true for every step (up to 24), or values with optional labels beside the rail. Pressing a label moves the nearer thumb there."
@@ -26736,7 +26792,7 @@
       },
       {
         "name": "orientation",
-        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderOrientation | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/slider-view\").SliderOrientation | undefined",
         "required": false,
         "default": "—",
         "description": "vertical: the rail runs bottom (min) to top (max), `length` px long."
@@ -26750,7 +26806,7 @@
       },
       {
         "name": "valueLabel",
-        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderValueLabel | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/slider-view\").SliderValueLabel | undefined",
         "required": false,
         "default": "—",
         "description": "The value in a bubble on the thumb: \"drag\" while dragging or keyboard-focused, \"always\", or \"off\" (default). Follows formatValue."
@@ -26871,7 +26927,7 @@
       },
       {
         "name": "marks",
-        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderMarks | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/slider-view\").SliderMarks | undefined",
         "required": false,
         "default": "—",
         "description": "Like Web: true for a dot on every step (up to 24), or values with optional labels beside the rail."
@@ -26885,7 +26941,7 @@
       },
       {
         "name": "orientation",
-        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderOrientation | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/slider-view\").SliderOrientation | undefined",
         "required": false,
         "default": "—",
         "description": "vertical: the rail runs bottom (min) to top (max), `length` pt long."
@@ -26899,7 +26955,7 @@
       },
       {
         "name": "valueLabel",
-        "type": "import(\"/workspace/shared/package-runtime/slider-view\").SliderValueLabel | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/slider-view\").SliderValueLabel | undefined",
         "required": false,
         "default": "—",
         "description": "Like Web: the value in a bubble on the thumb, \"drag\" while dragging or keyboard-focused, \"always\", or \"off\" (default)."
@@ -27077,7 +27133,7 @@
     "react": [
       {
         "name": "data",
-        "type": "import(\"/workspace/shared/package-runtime/sparkline\").SparklineData | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/sparkline\").SparklineData | undefined",
         "required": false,
         "default": "—",
         "description": "Values in time order. null, undefined and non-finite numbers are gaps: the line breaks there."
@@ -27198,7 +27254,7 @@
     "native": [
       {
         "name": "data",
-        "type": "import(\"/workspace/shared/package-runtime/sparkline\").SparklineData | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/sparkline\").SparklineData | undefined",
         "required": false,
         "default": "—",
         "description": "Values in time order. null, undefined and non-finite numbers are gaps: the line breaks there."
@@ -27325,7 +27381,7 @@
     "react": [
       {
         "name": "size",
-        "type": "import(\"/workspace/packages/react/src/display\").DisplaySize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/display\").DisplaySize | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -27341,7 +27397,7 @@
     "native": [
       {
         "name": "size",
-        "type": "import(\"/workspace/packages/native/src/display-primitives\").DisplaySize | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/display-primitives\").DisplaySize | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -27471,14 +27527,14 @@
     "react": [
       {
         "name": "direction",
-        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitDirection | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/split-pane\").SplitDirection | undefined",
         "required": false,
         "default": "—",
         "description": "horizontal puts the panes side by side; vertical stacks them and needs a height from its parent."
       },
       {
         "name": "sizeUnit",
-        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitUnit | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/split-pane\").SplitUnit | undefined",
         "required": false,
         "default": "—",
         "description": "\"ratio\": sizes are the first pane's share (0–1) of the room beside the handle, so the split keeps its proportion as\nthe container resizes. \"px\": sizes are the first pane's pixels, so a side list keeps its width."
@@ -27499,14 +27555,14 @@
       },
       {
         "name": "minSize",
-        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitMin | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/split-pane\").SplitMin | undefined",
         "required": false,
         "default": "—",
         "description": "Smallest pixels of the first and second pane. A minimum beats the size and the maximums."
       },
       {
         "name": "maxSize",
-        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitMax | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/split-pane\").SplitMax | undefined",
         "required": false,
         "default": "—",
         "description": "Largest pixels of the first and second pane; null leaves a pane unlimited."
@@ -27613,14 +27669,14 @@
     "native": [
       {
         "name": "direction",
-        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitDirection | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/split-pane\").SplitDirection | undefined",
         "required": false,
         "default": "—",
         "description": "horizontal puts the panes side by side; vertical stacks them and needs a height from its parent."
       },
       {
         "name": "sizeUnit",
-        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitUnit | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/split-pane\").SplitUnit | undefined",
         "required": false,
         "default": "—",
         "description": "\"ratio\": sizes are the first pane's share (0–1) of the room beside the handle, so the split keeps its proportion as\nthe container resizes. \"px\": sizes are the first pane's points, so a side list keeps its width."
@@ -27641,14 +27697,14 @@
       },
       {
         "name": "minSize",
-        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitMin | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/split-pane\").SplitMin | undefined",
         "required": false,
         "default": "—",
         "description": "Smallest points of the first and second pane. A minimum beats the size and the maximums."
       },
       {
         "name": "maxSize",
-        "type": "import(\"/workspace/shared/package-runtime/split-pane\").SplitMax | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/split-pane\").SplitMax | undefined",
         "required": false,
         "default": "—",
         "description": "Largest points of the first and second pane; null leaves a pane unlimited."
@@ -27830,70 +27886,70 @@
     "react": [
       {
         "name": "gap",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackGapValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").StackGapValue | undefined",
         "required": false,
         "default": "—",
         "description": "Space between children: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24) or space.section (sectionSm 32 · sectionMd 48 · sectionLg 64).\nAn object changes it with the width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up)."
       },
       {
         "name": "align",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackAlignValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").StackAlignValue | undefined",
         "required": false,
         "default": "—",
         "description": "Cross-axis alignment. With stretch (the default) blocks fill the width while buttons, badges, chips and other\ncontent-width controls keep their own; a full-width button says so with block. An object changes it with the width."
       },
       {
         "name": "direction",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").DirectionValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").DirectionValue | undefined",
         "required": false,
         "default": "—",
         "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }."
       },
       {
         "name": "padding",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
         "required": false,
         "default": "—",
         "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap."
       },
       {
         "name": "paddingX",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "paddingY",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "divider",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackDivider | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").StackDivider | undefined",
         "required": false,
         "default": "—",
         "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness."
       },
       {
         "name": "dividerInset",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InsetStep | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").InsetStep | undefined",
         "required": false,
         "default": "—",
         "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md."
       },
       {
         "name": "responsive",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").ResponsiveBasis | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").ResponsiveBasis | undefined",
         "required": false,
         "default": "—",
         "description": "What the responsive values follow: viewport (default, CSS media queries) or container, the element's own width, measured."
       },
       {
         "name": "justify",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").JustifyValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").JustifyValue | undefined",
         "required": false,
         "default": "—",
         "description": "Main-axis distribution; takes an object per width like gap."
@@ -27965,70 +28021,70 @@
     "native": [
       {
         "name": "gap",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackGapValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").StackGapValue | undefined",
         "required": false,
         "default": "—",
         "description": "Space between children: space.stack (xs 4 · sm 8 · smMd 12 · md 16 · lg 24) or space.section (sectionSm 32 · sectionMd 48 · sectionLg 64).\nAn object changes it with the width, e.g. { base: \"sm\", medium: \"lg\" } (compact 640, medium 768, wide 1024 and up)."
       },
       {
         "name": "align",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackAlignValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").StackAlignValue | undefined",
         "required": false,
         "default": "—",
         "description": "Cross-axis alignment. Buttons, badges, chips and other content-width controls keep their own width under stretch (the default),\nas on Web. An object changes it with the width."
       },
       {
         "name": "direction",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").DirectionValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").DirectionValue | undefined",
         "required": false,
         "default": "—",
         "description": "Lay the children out as a column or a row; an object changes it with the width, e.g. { base: \"column\", medium: \"row\" }."
       },
       {
         "name": "padding",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
         "required": false,
         "default": "—",
         "description": "Inner space from space.inset (sm 12 · md 16 · lg 24) on every side; paddingX and paddingY replace one axis. Takes an object per width like gap."
       },
       {
         "name": "paddingX",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "paddingY",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").PaddingValue | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "divider",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").StackDivider | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").StackDivider | undefined",
         "required": false,
         "default": "—",
         "description": "A divider between children: true or \"full\" a hairline, \"inset\" a hairline that starts after dividerInset, \"strong\" a band\nfor sections. A hairline sits inside the gap, so the distance between children stays the gap; a band adds its thickness."
       },
       {
         "name": "dividerInset",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").InsetStep | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").InsetStep | undefined",
         "required": false,
         "default": "—",
         "description": "Where an inset divider starts: space.inset (sm 12 · md 16 · lg 24). Default md."
       },
       {
         "name": "responsive",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").ResponsiveBasis | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").ResponsiveBasis | undefined",
         "required": false,
         "default": "—",
         "description": "What the responsive values follow: viewport (default, the window width) or container, the stack's own width from onLayout."
       },
       {
         "name": "justify",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").JustifyValue | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").JustifyValue | undefined",
         "required": false,
         "default": "—",
         "description": "Main-axis distribution; takes an object per width like gap."
@@ -28120,7 +28176,7 @@
     "react": [
       {
         "name": "items",
-        "type": "readonly import(\"/workspace/shared/package-runtime/distribution\").StackedItem[] | null | undefined",
+        "type": "readonly import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/distribution\").StackedItem[] | null | undefined",
         "required": true,
         "default": "—",
         "description": "The parts in order. No items, or only missing values, draws the empty rail with the missing mark and no legend; values that add up to 0 draw the empty rail."
@@ -28199,7 +28255,7 @@
     "native": [
       {
         "name": "items",
-        "type": "readonly import(\"/workspace/packages/native/src/stacked-bar\").KjunStackedBarItem[] | null | undefined",
+        "type": "readonly import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/stacked-bar\").KjunStackedBarItem[] | null | undefined",
         "required": true,
         "default": "—",
         "description": "The parts in order. No items, or only missing values, draws the empty rail with the missing mark and no legend; values that add up to 0 draw the empty rail."
@@ -28324,7 +28380,7 @@
     "react": [
       {
         "name": "items",
-        "type": "import(\"/workspace/shared/package-runtime/steps\").KjunStepItem[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/steps\").KjunStepItem[]",
         "required": true,
         "default": "—",
         "description": "The steps in order. Two or more."
@@ -28338,7 +28394,7 @@
       },
       {
         "name": "currentStatus",
-        "type": "import(\"/workspace/shared/package-runtime/steps\").KjunStepsCurrentStatus | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/steps\").KjunStepsCurrentStatus | undefined",
         "required": false,
         "default": "—",
         "description": "error marks the current step as failed (a failed payment, a failed delivery)."
@@ -28352,7 +28408,7 @@
       },
       {
         "name": "layout",
-        "type": "import(\"/workspace/shared/package-runtime/steps\").KjunStepsLayout | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/steps\").KjunStepsLayout | undefined",
         "required": false,
         "default": "—",
         "description": "Horizontal only. auto folds to a compact header and bare markers when the container is narrower than 80px per step."
@@ -28373,7 +28429,7 @@
       },
       {
         "name": "selectable",
-        "type": "import(\"/workspace/shared/package-runtime/steps\").KjunStepsSelectable | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/steps\").KjunStepsSelectable | undefined",
         "required": false,
         "default": "—",
         "description": "\"complete\" (default) lets onStepSelect go back only; \"all\" also lets it skip ahead to a later step."
@@ -28403,7 +28459,7 @@
     "native": [
       {
         "name": "items",
-        "type": "import(\"/workspace/shared/package-runtime/steps\").KjunStepItem[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/steps\").KjunStepItem[]",
         "required": true,
         "default": "—",
         "description": "The steps in order. Two or more."
@@ -28417,7 +28473,7 @@
       },
       {
         "name": "currentStatus",
-        "type": "import(\"/workspace/shared/package-runtime/steps\").KjunStepsCurrentStatus | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/steps\").KjunStepsCurrentStatus | undefined",
         "required": false,
         "default": "—",
         "description": "error marks the current step as failed (a failed payment, a failed delivery)."
@@ -28431,7 +28487,7 @@
       },
       {
         "name": "layout",
-        "type": "import(\"/workspace/shared/package-runtime/steps\").KjunStepsLayout | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/steps\").KjunStepsLayout | undefined",
         "required": false,
         "default": "—",
         "description": "Horizontal only. auto folds to a compact header and bare markers when the width is under 80 per step."
@@ -28452,7 +28508,7 @@
       },
       {
         "name": "selectable",
-        "type": "import(\"/workspace/shared/package-runtime/steps\").KjunStepsSelectable | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/steps\").KjunStepsSelectable | undefined",
         "required": false,
         "default": "—",
         "description": "\"complete\" (default) lets onStepSelect go back only; \"all\" also lets it skip ahead to a later step."
@@ -29400,21 +29456,21 @@
     "react": [
       {
         "name": "columns",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableColumn<Row>[]",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "columnGroups",
-        "type": "import(\"/workspace/shared/package-runtime/table-columns\").TableColumnGroup[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table-columns\").TableColumnGroup[] | undefined",
         "required": false,
         "default": "—",
         "description": "Labels over runs of columns, by column key: the header gets a second row. Narrow cards use them as sections when cardSections is empty."
       },
       {
         "name": "cellSpan",
-        "type": "((row: Row, column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>) => number | null | undefined) | undefined",
+        "type": "((row: Row, column: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableColumn<Row>) => number | null | undefined) | undefined",
         "required": false,
         "default": "—",
         "description": "How many columns a row's cell covers, counting itself (2 merges it with the next column). The covered cells are not drawn."
@@ -29519,7 +29575,7 @@
       },
       {
         "name": "sort",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TableSort | null | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableSort | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -29589,7 +29645,7 @@
       },
       {
         "name": "pagination",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TablePagination | null | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TablePagination | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -29652,7 +29708,7 @@
       },
       {
         "name": "cardSections",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TableCardSection[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableCardSection[] | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -29743,14 +29799,14 @@
       },
       {
         "name": "summary",
-        "type": "Partial<Record<string, import(\"/workspace/shared/package-runtime/table-groups\").TableSummaryKind | ((rows: Row[], column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)>> | undefined",
+        "type": "Partial<Record<string, import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table-groups\").TableSummaryKind | ((rows: Row[], column: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableColumn<Row>) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)>> | undefined",
         "required": false,
         "default": "—",
         "description": "Per column key: a subtotal under each group and a total row at the end."
       },
       {
         "name": "summaryFormat",
-        "type": "((value: number | null, column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>, kind: import(\"/workspace/shared/package-runtime/table-groups\").TableSummaryKind) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((value: number | null, column: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableColumn<Row>, kind: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table-groups\").TableSummaryKind) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": "Shows computed summaries, for columns whose cells are drawn by renderCell rather than a column format."
@@ -29771,14 +29827,14 @@
       },
       {
         "name": "renderCell",
-        "type": "((value: unknown, column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>, row: Row, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((value: unknown, column: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableColumn<Row>, row: Row, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "formatValue",
-        "type": "((value: unknown, column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>, row: Row) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((value: unknown, column: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableColumn<Row>, row: Row) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -29892,21 +29948,21 @@
     "native": [
       {
         "name": "columns",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>[]",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableColumn<Row>[]",
         "required": true,
         "default": "—",
         "description": ""
       },
       {
         "name": "columnGroups",
-        "type": "import(\"/workspace/shared/package-runtime/table-columns\").TableColumnGroup[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table-columns\").TableColumnGroup[] | undefined",
         "required": false,
         "default": "—",
         "description": "Labels over runs of columns, by column key: the header gets a second row. Narrow cards use them as sections when cardSections is empty."
       },
       {
         "name": "cellSpan",
-        "type": "((row: Row, column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>) => number | null | undefined) | undefined",
+        "type": "((row: Row, column: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableColumn<Row>) => number | null | undefined) | undefined",
         "required": false,
         "default": "—",
         "description": "How many columns a row's cell covers, counting itself (2 merges it with the next column). The covered cells are not drawn."
@@ -30011,7 +30067,7 @@
       },
       {
         "name": "sort",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TableSort | null | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableSort | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -30081,7 +30137,7 @@
       },
       {
         "name": "pagination",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TablePagination | null | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TablePagination | null | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -30144,7 +30200,7 @@
       },
       {
         "name": "cardSections",
-        "type": "import(\"/workspace/shared/package-runtime/table\").TableCardSection[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableCardSection[] | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -30235,14 +30291,14 @@
       },
       {
         "name": "summary",
-        "type": "Partial<Record<string, import(\"/workspace/shared/package-runtime/table-groups\").TableSummaryKind | ((rows: Row[], column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)>> | undefined",
+        "type": "Partial<Record<string, import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table-groups\").TableSummaryKind | ((rows: Row[], column: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableColumn<Row>) => import(\"/workspace/node_modules/@types/react/index\").ReactNode)>> | undefined",
         "required": false,
         "default": "—",
         "description": "Per column key: a subtotal under each group and a total row at the end."
       },
       {
         "name": "summaryFormat",
-        "type": "((value: number | null, column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>, kind: import(\"/workspace/shared/package-runtime/table-groups\").TableSummaryKind) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((value: number | null, column: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableColumn<Row>, kind: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table-groups\").TableSummaryKind) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": "Shows computed summaries, for columns whose cells are drawn by renderCell rather than a column format."
@@ -30263,14 +30319,14 @@
       },
       {
         "name": "renderCell",
-        "type": "((value: unknown, column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>, row: Row, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((value: unknown, column: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableColumn<Row>, row: Row, index: number) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
       },
       {
         "name": "formatValue",
-        "type": "((value: unknown, column: import(\"/workspace/shared/package-runtime/table\").TableColumn<Row>, row: Row) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
+        "type": "((value: unknown, column: import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/table\").TableColumn<Row>, row: Row) => import(\"/workspace/node_modules/@types/react/index\").ReactNode) | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -30487,7 +30543,7 @@
       },
       {
         "name": "items",
-        "type": "import(\"/workspace/packages/react/src/tabs\").TabItem[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/react/src/tabs\").TabItem[] | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -30587,7 +30643,7 @@
       },
       {
         "name": "items",
-        "type": "import(\"/workspace/packages/native/src/tabs\").TabItem[] | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/tabs\").TabItem[] | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -30760,28 +30816,28 @@
     "react": [
       {
         "name": "variant",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextVariant | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").TextVariant | undefined",
         "required": false,
         "default": "—",
         "description": "Typography role; every size, line height and weight comes from tokens.typography."
       },
       {
         "name": "tone",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextTone | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").TextTone | undefined",
         "required": false,
         "default": "—",
         "description": "Text color role; default follows the surrounding text color."
       },
       {
         "name": "as",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextTag | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").TextTag | undefined",
         "required": false,
         "default": "—",
         "description": "Document tag. Size comes from variant, meaning from as."
       },
       {
         "name": "align",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextAlign | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").TextAlign | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -30902,21 +30958,21 @@
     "native": [
       {
         "name": "variant",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextVariant | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").TextVariant | undefined",
         "required": false,
         "default": "—",
         "description": "Typography role; every size, line height and weight comes from tokens.typography.\n\"inherit\" is for a KjunText nested in another: it keeps the outer text's size, weight and, with the default tone, color."
       },
       {
         "name": "tone",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextTone | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").TextTone | undefined",
         "required": false,
         "default": "—",
         "description": "Text color role."
       },
       {
         "name": "align",
-        "type": "import(\"/workspace/shared/package-runtime/layout-primitives\").TextAlign | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/layout-primitives\").TextAlign | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -31156,7 +31212,7 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/shared/package-runtime/input-variant\").InputVariant | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/input-variant\").InputVariant | undefined",
         "required": false,
         "default": "—",
         "description": "\"plain\" drops the surface, side border and side inset for text edited in place, such as a note body."
@@ -31184,7 +31240,7 @@
       },
       {
         "name": "maxRows",
-        "type": "import(\"/workspace/shared/package-runtime/textarea\").TextareaMaxRows | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/textarea\").TextareaMaxRows | undefined",
         "required": false,
         "default": "—",
         "description": "The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed). \"none\" grows without a limit."
@@ -31226,7 +31282,7 @@
       },
       {
         "name": "submitOn",
-        "type": "import(\"/workspace/shared/package-runtime/textarea\").TextareaSubmitKey | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/textarea\").TextareaSubmitKey | undefined",
         "required": false,
         "default": "—",
         "description": "\"mod-enter\" (default) sends on Ctrl/⌘+Enter; \"enter\" sends on Enter, and Shift+Enter starts a new line."
@@ -31354,7 +31410,7 @@
       },
       {
         "name": "variant",
-        "type": "import(\"/workspace/shared/package-runtime/input-variant\").InputVariant | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/input-variant\").InputVariant | undefined",
         "required": false,
         "default": "—",
         "description": "\"plain\" drops the surface, side border and side inset for text edited in place, such as a note body."
@@ -31382,7 +31438,7 @@
       },
       {
         "name": "maxRows",
-        "type": "import(\"/workspace/shared/package-runtime/textarea\").TextareaMaxRows | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/textarea\").TextareaMaxRows | undefined",
         "required": false,
         "default": "—",
         "description": "The field grows with its text from rows up to maxRows, then scrolls (default 6; rows keeps it fixed). \"none\" grows without a limit."
@@ -31424,7 +31480,7 @@
       },
       {
         "name": "submitOn",
-        "type": "import(\"/workspace/shared/package-runtime/textarea\").TextareaSubmitKey | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/textarea\").TextareaSubmitKey | undefined",
         "required": false,
         "default": "—",
         "description": "\"mod-enter\" (default) sends on Ctrl/⌘+Enter; \"enter\" sends on Enter, and Shift+Enter starts a new line. A device\nkeyboard reports no modifier keys, so there only \"enter\" sends, from its return key."
@@ -31557,21 +31613,21 @@
     "react": [
       {
         "name": "gap",
-        "type": "import(\"/workspace/shared/package-runtime/tiles\").TilesGap | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/tiles\").TilesGap | undefined",
         "required": false,
         "default": "—",
         "description": "Space between cells. auto is compact (16) in a container narrower than 768 and regular (24) from it."
       },
       {
         "name": "minItem",
-        "type": "import(\"/workspace/shared/package-runtime/tiles\").TilesMinItem | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/tiles\").TilesMinItem | undefined",
         "required": false,
         "default": "—",
         "description": "A cell's narrowest width before a column is dropped: sm 160, md 240, lg 320."
       },
       {
         "name": "maxColumns",
-        "type": "import(\"/workspace/shared/package-runtime/tiles\").TilesMaxColumns | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/tiles\").TilesMaxColumns | undefined",
         "required": false,
         "default": "—",
         "description": "The most columns in a wide container."
@@ -31643,21 +31699,21 @@
     "native": [
       {
         "name": "gap",
-        "type": "import(\"/workspace/shared/package-runtime/tiles\").TilesGap | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/tiles\").TilesGap | undefined",
         "required": false,
         "default": "—",
         "description": "Space between cells. auto is compact (16) in a container narrower than 768 and regular (24) from it."
       },
       {
         "name": "minItem",
-        "type": "import(\"/workspace/shared/package-runtime/tiles\").TilesMinItem | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/tiles\").TilesMinItem | undefined",
         "required": false,
         "default": "—",
         "description": "A cell's narrowest width before a column is dropped: sm 160, md 240, lg 320."
       },
       {
         "name": "maxColumns",
-        "type": "import(\"/workspace/shared/package-runtime/tiles\").TilesMaxColumns | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/tiles\").TilesMaxColumns | undefined",
         "required": false,
         "default": "—",
         "description": "The most columns in a wide container."
@@ -31842,7 +31898,7 @@
       },
       {
         "name": "precision",
-        "type": "import(\"/workspace/packages/tokens/dist/input-contract\").TimePrecision | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/tokens/dist/input-contract\").TimePrecision | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -31912,21 +31968,21 @@
       },
       {
         "name": "hourCycle",
-        "type": "import(\"/workspace/shared/package-runtime/time-segments\").HourCycle | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/time-segments\").HourCycle | undefined",
         "required": false,
         "default": "—",
         "description": "24 (default) shows 00–23; 12 adds an AM/PM column and shows 1–12. The value stays \"HH:mm\"."
       },
       {
         "name": "layout",
-        "type": "import(\"/workspace/shared/package-runtime/time-wheel\").TimeLayout | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/time-wheel\").TimeLayout | undefined",
         "required": false,
         "default": "—",
         "description": "Where the wheel opens: auto (default) takes a popover on a mouse screen and a bottom sheet on a touch screen;\ninline shows the wheel in place with no field."
       },
       {
         "name": "trigger",
-        "type": "import(\"/workspace/shared/package-runtime/time-wheel\").TimeTrigger | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/time-wheel\").TimeTrigger | undefined",
         "required": false,
         "default": "—",
         "description": "The field that opens the wheel: segments (typing digits works; the popover default) or a one-line button (the sheet default)."
@@ -31984,7 +32040,7 @@
       },
       {
         "name": "precision",
-        "type": "import(\"/workspace/packages/tokens/dist/input-contract\").TimePrecision | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/packages/tokens/dist/input-contract\").TimePrecision | undefined",
         "required": false,
         "default": "—",
         "description": ""
@@ -32054,21 +32110,21 @@
       },
       {
         "name": "hourCycle",
-        "type": "import(\"/workspace/shared/package-runtime/time-segments\").HourCycle | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/time-segments\").HourCycle | undefined",
         "required": false,
         "default": "—",
         "description": "24 (default) shows 00–23; 12 adds an AM/PM column and shows 1–12. The value stays \"HH:mm\"."
       },
       {
         "name": "layout",
-        "type": "import(\"/workspace/shared/package-runtime/time-wheel\").TimeLayout | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/time-wheel\").TimeLayout | undefined",
         "required": false,
         "default": "—",
         "description": "Where the wheel opens: auto (default) takes a bottom sheet on devices and touch screens and a popover under a mouse;\ninline shows the wheel in place with no field."
       },
       {
         "name": "trigger",
-        "type": "import(\"/workspace/shared/package-runtime/time-wheel\").TimeTrigger | undefined",
+        "type": "import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/time-wheel\").TimeTrigger | undefined",
         "required": false,
         "default": "—",
         "description": "The field that opens the wheel: segments (typing digits works on the web preview; the popover default) or a one-line button (the sheet default)."
@@ -32566,7 +32622,7 @@
       },
       {
         "name": "zones",
-        "type": "readonly import(\"/workspace/shared/package-runtime/distribution\").GaugeZone[]",
+        "type": "readonly import(\"/workspace/.superpowers/wt-review-alert-r2/shared/package-runtime/distribution\").GaugeZone[]",
         "required": true,
         "default": "—",
         "description": "The axis from min to max in order: each zone ends at `to`, with the app's label and colour."
@@ -32666,7 +32722,7 @@
       },
       {
         "name": "zones",
-        "type": "readonly import(\"/workspace/packages/native/src/zone-gauge\").KjunGaugeZone[]",
+        "type": "readonly import(\"/workspace/.superpowers/wt-review-alert-r2/packages/native/src/zone-gauge\").KjunGaugeZone[]",
         "required": true,
         "default": "—",
         "description": "The axis from min to max in order: each zone ends at `to`, with the app's label and colour."

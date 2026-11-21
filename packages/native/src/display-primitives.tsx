@@ -8,7 +8,8 @@ import { alertActionsWrap } from "../../../shared/package-runtime/alert-actions"
 import { typeStyle } from "./typography";
 import { tokens, type TypographyRole } from "@kjun-ui/tokens";
 import { badgeGeometry, badgeToneRoles, type BadgeToneRoles } from "../../../shared/package-runtime/badge-tone";
-import { createContext,useContext,useEffect,useRef,useState,type ReactElement,type ReactNode } from "react";
+import { createContext,forwardRef,useCallback,useContext,useEffect,useRef,useState,type ForwardRefExoticComponent,type ReactElement,type ReactNode,type RefAttributes } from "react";
+import type { KjunViewHandle } from "./handles";
 import { DataStateContentContext } from "./data-state-context";
 import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { spinnerStacked } from "../../../shared/package-runtime/spinner-geometry";
@@ -287,10 +288,13 @@ export interface KjunAlertProps {
   /** Buttons for the alert, under the message when it has a title, beside it otherwise (under it when the alert is too narrow for both); unsized KjunButtons follow the alert size. */
   actions?: ReactNode;
   onClose?: () => void;
+  /** A test id and outer style for the alert root (margins, width); the ref reaches the root view. */
+  testID?: string;
+  style?: StyleProp<ViewStyle>;
 }
 // Each size steps the title line: sm 12/16, md 14/20, lg 16/24 (description stays caption on sm, body otherwise).
 const titleType = { sm: "controlSmall", md: "control", lg: "controlLarge" } as const;
-export function KjunAlert({
+export const KjunAlert: ForwardRefExoticComponent<KjunAlertProps & RefAttributes<KjunViewHandle>> = forwardRef<KjunViewHandle, KjunAlertProps>(function KjunAlert({
   type = "info",
   variant,
   size = "md",
@@ -301,20 +305,29 @@ export function KjunAlert({
   children,
   actions,
   onClose,
-}: KjunAlertProps) {
+  testID,
+  style,
+}, forward) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles();
   const [visible, setVisible] = useState(true);
   const reduced = useReducedMotion();
   const fade = useRef(new Animated.Value(1)).current, closing = useRef(false), root = useRef<any>(null);
+  const attach = useCallback((node: any) => {
+    root.current = node;
+    if (typeof forward === "function") forward(node);
+    else if (forward) forward.current = node;
+  }, [forward]);
   // Widths of the content row and the beside actions, to tell whether the actions wrapped under the message.
   const [widths, setWidths] = useState<{ content?: number; actions?: number }>({});
   if (!visible) return null;
   const tone = variant || (type === "error" ? "danger" : type),
     small = size === "sm", scale = size === "sm" || size === "lg" ? size : "md";
   const geometry = tokens.extensions.alert;
-  const lineHeight = tokens.typography[titleType[scale]].lineHeightPx;
   const titled = hasContent(title);
+  // The first line the icon, close button and beside actions centre on: the title's, or without one the message's
+  // own (lg's body line is 20, not its 24px title line).
+  const lineHeight = tokens.typography[titled ? titleType[scale] : small ? "caption" : "body"].lineHeightPx;
   const closeSize = small ? geometry.sm.closeSize : geometry.closeSize;
   const paint = alertToneRoles(tone);
   const pick = (name: string) => colors[name.replace(/-(\w)/g, (_, c: string) => c.toUpperCase()) as keyof typeof colors];
@@ -363,10 +376,11 @@ export function KjunAlert({
   };
   return (
     <Animated.View
-      ref={root}
+      ref={attach}
+      testID={testID}
       role={alertRole(tone, live)}
       accessibilityLiveRegion={alertLiveRegion(tone, live)}
-      style={{
+      style={[{
         opacity: fade,
         flexDirection: "row",
         alignItems: "flex-start",
@@ -375,7 +389,7 @@ export function KjunAlert({
         paddingVertical: geometry[scale].paddingY,
         paddingHorizontal: geometry[scale].paddingX,
         backgroundColor: paint.bg ? pick(paint.bg) : textTint(colors.text, "tintFill", colors.secondary),
-      }}
+      }, style]}
     >
       {icon !== false && (
         <View style={{ height: lineHeight, justifyContent: "center", flexShrink: 0,
@@ -421,5 +435,5 @@ export function KjunAlert({
       )}
     </Animated.View>
   );
-}
+});
 export { KjunProgress, type KjunProgressProps, type KjunProgressVariant } from "./progress";

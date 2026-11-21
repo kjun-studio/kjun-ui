@@ -13101,7 +13101,7 @@
             "required": false,
             "default": "\"md\"",
             "description": "",
-            "summary": "sm은 조밀한 12px/16px 본문, md는 제목 유무와 관계없이 14px/20px 본문을 사용합니다. lg는 호환성을 위해 md와 동일합니다.",
+            "summary": "sm은 12px/16px 본문과 24px 닫기, md는 14px/20px 본문, lg는 md 본문에 더 큰 제목 줄(16px/24px)과 여백을 씁니다. 제목이 없으면 아이콘·닫기·옆 버튼이 본문 첫 줄 가운데에 맞춰집니다.",
             "source": "packages/vue3/src/display.tsx"
           },
           {
@@ -13201,7 +13201,7 @@
             "required": false,
             "default": "\"md\"",
             "description": "",
-            "summary": "sm은 조밀한 12px/16px 본문, md는 제목 유무와 관계없이 14px/20px 본문을 사용합니다. lg는 호환성을 위해 md와 동일합니다.",
+            "summary": "sm은 12px/16px 본문과 24px 닫기, md는 14px/20px 본문, lg는 md 본문에 더 큰 제목 줄(16px/24px)과 여백을 씁니다. 제목이 없으면 아이콘·닫기·옆 버튼이 본문 첫 줄 가운데에 맞춰집니다.",
             "source": "packages/react/src/display.tsx"
           },
           {
@@ -13264,7 +13264,7 @@
             "required": false,
             "default": "—",
             "description": "Extra class on the alert root, for placement in the page layout; it leaves with the alert when closed.",
-            "summary": "기본 웹 요소에 추가할 CSS 클래스입니다.",
+            "summary": "바깥 요소의 class입니다. 닫히면 알림과 함께 사라집니다.",
             "source": "packages/react/src/display.tsx"
           },
           {
@@ -13274,6 +13274,60 @@
             "default": "—",
             "description": "",
             "summary": "알림을 내부에서 숨긴 다음 호출합니다. 외부 목록 정리는 소비자가 수행합니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "autoFocus",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "마운트 시 기본 요소에 포커스를 요청합니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "id",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 id입니다. 다른 HTML 속성(tabIndex·aria-*·data-*)과 ref도 바깥 요소로 갑니다. 오류 요약처럼 알림으로 포커스를 옮길 때 tabIndex={-1}과 ref를 함께 쓰세요.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "style",
+            "type": "CSSProperties | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 요소의 style입니다(여백·너비). 종류별 배경 위에 합칩니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "onChange",
+            "type": "ChangeEventHandler<HTMLDivElement, Element> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "값 변경 또는 기본 요소의 change 이벤트를 전달합니다. 인자 타입을 확인하세요.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "onKeyDown",
+            "type": "KeyboardEventHandler<HTMLDivElement> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소의 키보드 이벤트를 전달합니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
+            "name": "onClick",
+            "type": "MouseEventHandler<HTMLDivElement> | undefined",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "기본 웹 요소의 클릭 이벤트를 전달합니다.",
             "source": "packages/react/src/display.tsx"
           }
         ],
@@ -13308,7 +13362,7 @@
             "required": false,
             "default": "\"md\"",
             "description": "",
-            "summary": "sm은 조밀한 12px/16px 본문, md는 제목 유무와 관계없이 14px/20px 본문을 사용합니다. lg는 호환성을 위해 md와 동일합니다.",
+            "summary": "sm은 12px/16px 본문과 24px 닫기, md는 14px/20px 본문, lg는 md 본문에 더 큰 제목 줄(16px/24px)과 여백을 씁니다. 제목이 없으면 아이콘·닫기·옆 버튼이 본문 첫 줄 가운데에 맞춰집니다.",
             "source": "packages/native/src/display-primitives.tsx"
           },
           {
@@ -13372,6 +13426,24 @@
             "default": "—",
             "description": "",
             "summary": "알림을 내부에서 숨긴 다음 호출합니다. 외부 목록 정리는 소비자가 수행합니다.",
+            "source": "packages/native/src/display-primitives.tsx"
+          },
+          {
+            "name": "testID",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "A test id and outer style for the alert root (margins, width); the ref reaches the root view.",
+            "summary": "테스트에서 알림을 찾는 ID입니다.",
+            "source": "packages/native/src/display-primitives.tsx"
+          },
+          {
+            "name": "style",
+            "type": "StyleProp<ViewStyle>",
+            "required": false,
+            "default": "—",
+            "description": "",
+            "summary": "바깥 View의 style입니다(여백·너비). ref도 바깥 View로 갑니다.",
             "source": "packages/native/src/display-primitives.tsx"
           }
         ],

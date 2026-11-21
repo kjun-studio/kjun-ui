@@ -196,8 +196,9 @@ export const KjunAlert = defineComponent({
             </span>
           )}
           <div ref={beside ? body : undefined} class="kjun-alert-content">
-            {titled && <div class="kjun-alert-title">{title}</div>}
-            {hasContent(children) && <div class="kjun-alert-description">{children}</div>}
+            {/* App links, lists and emphasis inside keep their own styles, as in KjunText. */}
+            {titled && <div class="kjun-alert-title" data-kjun-content="">{title}</div>}
+            {hasContent(children) && <div class="kjun-alert-description" data-kjun-content="">{children}</div>}
             {actionBox}
           </div>
           {props.closable && (

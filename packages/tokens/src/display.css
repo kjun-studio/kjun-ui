@@ -271,6 +271,10 @@
   gap: var(--_kjun-extension-alert-lg-gap);
   padding: var(--_kjun-extension-alert-lg-padding-y) var(--_kjun-extension-alert-lg-padding-x);
 }
+/* Without a title the first line is the message's own (sm caption, md and lg body), so the icon, close button and
+   beside actions centre on the text that is there; lg would otherwise sit them 2px low on its 24px title line. */
+.kjun-alert:not(:has(> .kjun-alert-content > .kjun-alert-title)) { --_kjun-alert-line: var(--_kjun-type-body-line); }
+.kjun-alert[data-size="sm"]:not(:has(> .kjun-alert-content > .kjun-alert-title)) { --_kjun-alert-line: var(--_kjun-type-caption-line); }
 .kjun-alert-icon {
   display: flex;
   align-items: center;
@@ -301,6 +305,20 @@
   font-weight: var(--_kjun-type-body-weight);
   letter-spacing: var(--_kjun-type-body-tracking);
 }
+/* App links and lists in the title or message (data-kjun-content) fit the alert: links take the text colour with the
+   toast action's underline, lists start one small step below the line with a short indent. Zero specificity, so an
+   app's own link and list styles win. */
+:where(.kjun-alert-title, .kjun-alert-description) :where(a) {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: var(--_kjun-border-default-width);
+  text-underline-offset: var(--_kjun-geometry-dimension-value3);
+}
+:where(.kjun-alert-title, .kjun-alert-description) :where(ul, ol) {
+  margin: var(--_kjun-geometry-dimension-value4) 0 0;
+  padding-inline-start: var(--_kjun-geometry-dimension-value20);
+}
+:where(.kjun-alert-description) :where(p) { margin: 0; }
 .kjun-alert-title + .kjun-alert-description { margin-top: var(--_kjun-extension-alert-description-gap); }
 .kjun-alert[data-size="sm"] .kjun-alert-title {
   font-size: var(--_kjun-type-control-small-size);

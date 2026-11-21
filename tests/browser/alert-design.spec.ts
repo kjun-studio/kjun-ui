@@ -23,7 +23,13 @@ for (const platform of ['react', 'vue3', 'native']) {
         for (const closable of [true, false]) {
           await update(page, { size, emptyFragment: false, ...parts, closable });
           // Each size has its own height: padding and the title line step up from sm to md to lg.
-          await expect(alert).toHaveCSS('height', ({ sm: 40, md: 52, lg: 64 } as Record<string, number>)[size] + (parts.title.trim() && parts.body.trim() ? size === 'sm' ? 18 : 22 : 0) + 'px');
+          // Without a title lg's first line is the message's 20px body line, not its 24px title line.
+          await expect(alert).toHaveCSS('height', ({ sm: 40, md: 52, lg: parts.title.trim() ? 64 : 60 } as Record<string, number>)[size] + (parts.title.trim() && parts.body.trim() ? size === 'sm' ? 18 : 22 : 0) + 'px');
+          if (parts.body.trim() && !parts.title.trim()) {
+            // The status icon centres on the message's first line.
+            const icon = (await alert.locator('svg').first().boundingBox())!, text = (await alert.getByText('Alert body', { exact: true }).boundingBox())!;
+            expect(Math.abs(icon.y + icon.height / 2 - (text.y + text.height / 2))).toBeLessThanOrEqual(0.5);
+          }
           if (parts.body.trim()) {
             await expect(alert.getByText('Alert body', { exact: true })).toHaveCSS('font-size', size === 'sm' ? '12px' : '14px');
             await expect(alert.getByText('Alert body', { exact: true })).toHaveCSS('line-height', size === 'sm' ? '16px' : '20px');
@@ -96,6 +102,40 @@ for (const platform of ['react', 'vue3', 'native']) {
       // Wide again: back beside the message.
       await update(page, { width: 520 });
       await expect(alert).toHaveCSS('height', '52px');
+    }
+    expect(errors).toEqual([]);
+  });
+  test(`${platform}: Alert root takes page attributes and a ref, and app links and lists keep their styles`, async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await openFixture(page, platform, '', 'alert-design');
+    await update(page, { extra: true, link: true, title: '' });
+    const alert = page.getByTestId('alert').locator(':scope > *');
+    await expect(alert).toHaveCSS('margin-top', '4px');
+    expect(await page.evaluate(() => (window as any).alertRoot() != null)).toBe(true);
+    if (platform === 'native') {
+      await expect(alert).toHaveAttribute('data-testid', 'alert-root');
+    } else {
+      await expect(alert).toHaveAttribute('id', 'alert-root');
+      await expect(alert).toHaveAttribute('data-extra', 'yes');
+      await expect(alert).toHaveClass(/(^| )kjun-alert( |$)/);
+      // A page moves focus to the alert, as an error summary does after a failed submit.
+      await page.evaluate(() => (window as any).alertRoot().focus());
+      await expect(alert).toBeFocused();
+      // Links and lists in the message are the app's: the KJUN reset does not strip them.
+      // Without app styles they take the alert's shape: text-colour underlined links, a short-indent list one step down.
+      const link = alert.getByRole('link', { name: 'Read changes' });
+      await expect(link).toHaveCSS('text-decoration-line', 'underline');
+      await expect(link).toHaveCSS('text-underline-offset', '3px');
+      expect(await link.evaluate(el => getComputedStyle(el).color)).toBe(await alert.locator('.kjun-alert-description').evaluate(el => getComputedStyle(el).color));
+      const list = alert.locator('ul');
+      await expect(list).toHaveCSS('list-style-type', 'disc');
+      await expect(list).toHaveCSS('margin-top', '4px');
+      await expect(list).toHaveCSS('margin-bottom', '0px');
+      await expect(list).toHaveCSS('padding-inline-start', '20px');
+      // An app's own link style wins over the alert's zero-specificity rule.
+      await page.addStyleTag({ content: 'a { color: rgb(0, 102, 204); }' });
+      await expect(link).toHaveCSS('color', 'rgb(0, 102, 204)');
     }
     expect(errors).toEqual([]);
   });

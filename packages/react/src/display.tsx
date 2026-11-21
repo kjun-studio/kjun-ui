@@ -17,6 +17,7 @@ import { KjunSpinnerGlyph } from "./spinner-glyph";
 import { spinnerStacked } from "../../../shared/package-runtime/spinner-geometry";
 import {
 forwardRef,
+useCallback,
 useId,
 useLayoutEffect,
 useRef,
@@ -152,7 +153,7 @@ export function KjunSpinner({ size = "md", text }: KjunSpinnerProps) {
     </span>
   );
 }
-export interface KjunAlertProps {
+export interface KjunAlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title" | "children" | "role"> {
   type?: "info" | "success" | "warning" | "danger" | "error";
   variant?: SemanticTone;
   size?: "sm" | "md" | "lg";
@@ -169,7 +170,8 @@ export interface KjunAlertProps {
   className?: string;
   onClose?: () => void;
 }
-export function KjunAlert({
+/** Other HTML attributes (id, style, tabIndex, aria-*, data-*) and the ref go to the root, so a page can point at the alert or move focus to it. */
+export const KjunAlert = forwardRef<HTMLDivElement, KjunAlertProps>(function KjunAlert({
   type = "info",
   variant,
   size = "md",
@@ -181,11 +183,18 @@ export function KjunAlert({
   actions,
   className,
   onClose,
-}: KjunAlertProps) {
+  style,
+  ...rest
+}, forward) {
   const m = useKjunMessages();
   const [visible, setVisible] = useState(true);
-  const root = useRef<HTMLDivElement>(null), body = useRef<HTMLDivElement>(null), closing = useRef(false);
+  const root = useRef<HTMLDivElement | null>(null), body = useRef<HTMLDivElement>(null), closing = useRef(false);
   const reduced = useReducedMotion();
+  const attach = useCallback((node: HTMLDivElement | null) => {
+    root.current = node;
+    if (typeof forward === "function") forward(node);
+    else if (forward) forward.current = node;
+  }, [forward]);
   // Without a title the actions sit beside the message, centred on its first line, like a toast's; when the message
   // would be narrower than its minimum width they wrap under it, as under a title.
   const beside = !hasContent(title) && hasContent(actions);
@@ -203,12 +212,13 @@ export function KjunAlert({
   );
   return (
     <div
-      ref={root}
+      {...rest}
+      ref={attach}
       role={alertRole(tone, live)}
       className={className ? "kjun-alert " + className : "kjun-alert"}
       data-size={scale}
       data-tone={tone}
-      style={paint.bg ? { background: role(paint.bg) } : undefined}
+      style={paint.bg ? { background: role(paint.bg), ...style } : style}
     >
       {icon !== false && (
         <span className="kjun-alert-icon" data-icon={icon ? "custom" : undefined} style={{ color: role(paint.icon) }}>
@@ -216,8 +226,9 @@ export function KjunAlert({
         </span>
       )}
       <div ref={body} className="kjun-alert-content">
-        {titled && <div className="kjun-alert-title">{title}</div>}
-        {hasContent(children) && <div className="kjun-alert-description">{children}</div>}
+        {/* App links, lists and emphasis inside keep their own styles, as in KjunText. */}
+        {titled && <div className="kjun-alert-title" data-kjun-content="">{title}</div>}
+        {hasContent(children) && <div className="kjun-alert-description" data-kjun-content="">{children}</div>}
         {actionBox}
       </div>
       {closable && (
@@ -239,7 +250,7 @@ export function KjunAlert({
       )}
     </div>
   );
-}
+});
 export type KjunProgressVariant = SemanticTone | "neutral";
 export interface KjunProgressProps {
   /** null is missing data; omission keeps the zero default. */

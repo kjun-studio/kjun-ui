@@ -4,4 +4,4 @@ import { applyDemoColors, demoFont, demoPalettes } from '../../shared/demo-color
 import { AlertCases } from './alert-design-cases';
 const palette = location.search.includes('dark') ? 'dark' : 'default';
 applyDemoColors(palette);
-createRoot(document.getElementById('root')!).render(<K.KjunProvider colors={demoPalettes[palette]} fontFamily={demoFont}><AlertCases K={K} /></K.KjunProvider>);
+createRoot(document.getElementById('root')!).render(<K.KjunProvider colors={demoPalettes[palette]} fontFamily={demoFont}><AlertCases K={K} native /></K.KjunProvider>);

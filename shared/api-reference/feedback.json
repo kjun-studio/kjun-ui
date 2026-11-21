@@ -20,7 +20,13 @@
       "actions",
       "onClose",
       "live",
-      "className"
+      "autoFocus",
+      "className",
+      "id",
+      "style",
+      "onChange",
+      "onKeyDown",
+      "onClick"
     ],
     "native": [
       "type",
@@ -32,7 +38,9 @@
       "children",
       "actions",
       "onClose",
-      "live"
+      "live",
+      "style",
+      "testID"
     ]
   },
   "KjunChartSkeleton": {
