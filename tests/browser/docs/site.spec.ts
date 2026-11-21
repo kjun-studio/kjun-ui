@@ -124,8 +124,11 @@ for (const platform of platforms) {
       await expect(button).toBeDisabled();
       await page.getByRole("switch", { name: "비활성", exact: true }).locator('xpath=ancestor::label').click();
       await page.getByRole("switch", { name: "로딩", exact: true }).locator('xpath=ancestor::label').click();
-      await expect(button).toBeDisabled();
+      // Loading keeps focus: aria-disabled on the web, aria-busy alone on React Native Web.
+      await expect(button).toHaveAttribute("aria-busy", "true");
+      if (platform !== "React Native") await expect(button).toBeDisabled();
       await page.getByRole("switch", { name: "로딩", exact: true }).locator('xpath=ancestor::label').click();
+      await expect(button).not.toHaveAttribute("aria-busy", "true");
       await expect(button).toBeEnabled();
       await page
         .getByRole("switch", { name: "아이콘 전용", exact: true }).locator('xpath=ancestor::label').click();
