@@ -106,7 +106,7 @@ export interface TableRowsContext {
 }
 
 export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; columnGroups?: TableColumnGroup[]; cellSpan?: (row: any, column: TableColumn<any>) => number | null | undefined; maxHeight?: number | string; stickyHeader: boolean;
-  sortable?: boolean; compact: boolean; striped: boolean; hoverable: boolean; edgeInset?: "default" | "none"; stuck: { value: boolean }; stickyOffset: number;
+  sortable?: boolean; compact: boolean; striped: boolean; hoverable: boolean; edgeInset?: "default" | "none"; layout?: "auto" | "fixed"; stuck: { value: boolean }; stickyOffset: number;
   groups: TableRowGroup<Row>[] | null; collapsed: string[]; toggleGroup: (key: string) => void;
   groupLabel: (group: TableRowGroup<Row>) => VNodeChild; summary: ((column: TableColumn<any>, rows: Row[]) => VNodeChild) | null }) {
   const { state, visible, selectable, expandable } = c, m = c.messages;
@@ -195,7 +195,14 @@ export function tableGrid(c: TableRowsContext & { visible: TableColumn<any>[]; c
     <div class="kjun-table-scroll" style={css({ maxHeight: c.maxHeight, visibility: c.skeletonHidden ? "hidden" : undefined })} aria-hidden={c.skeletonHidden ? "true" : undefined}
       data-stuck={c.stickyHeader && c.stuck.value ? "true" : undefined} data-page-sticky={pageSticky ? "true" : undefined}
       onScroll={c.stickyHeader && !pageSticky ? (event: Event) => { c.stuck.value = (event.currentTarget as HTMLElement).scrollTop > 0; } : undefined}>
-      <table class="kjun-table" aria-label={c.ariaLabel} data-compact={String(c.compact)} data-hoverable={String(c.hoverable)} data-striped={String(c.striped)} data-edge-inset={c.edgeInset === "none" ? "none" : undefined}>
+      <table class="kjun-table" aria-label={c.ariaLabel} data-compact={String(c.compact)} data-hoverable={String(c.hoverable)} data-striped={String(c.striped)} data-edge-inset={c.edgeInset === "none" ? "none" : undefined} data-layout={c.layout === "fixed" ? "fixed" : undefined}>
+        {/* A fixed layout reads widths from the first row; with grouped headers that row holds the groups, so the columns carry them. */}
+        {c.layout === "fixed" && <colgroup>
+          {selectable && <col class="kjun-table-action-cell" />}
+          {visible.map(col => <col key={col.key} style={css({ width: col.width })} />)}
+          {expandable && <col class="kjun-table-action-cell" />}
+          {mover && <col class="kjun-table-action-cell kjun-table-reorder-cell" />}
+        </colgroup>}
         <thead data-sticky={c.stickyHeader || undefined} style={c.stickyHeader ? { top: (pageSticky ? c.stickyOffset : 0) + "px" } : undefined}>
           <tr>
             {selectable && (

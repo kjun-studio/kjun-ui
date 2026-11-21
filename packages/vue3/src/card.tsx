@@ -85,7 +85,8 @@ export const KjunCard = defineComponent({
         href: props.disabled ? undefined : props.href, target: props.target, rel: linkRel(props.target, props.rel), role: props.disabled ? "link" : undefined,
         "aria-disabled": props.disabled || undefined, "aria-label": name, "data-pressable": "", onKeydown: userKeydown, onKeyup: userKeyup,
       } : props.pressable ? {
-        role: "button", tabindex: props.disabled ? -1 : 0, "aria-disabled": props.disabled || undefined,
+        // A caller's role (radio, checkbox, switch, as in a card picker) stays; the card still presses like a button.
+        role: (attrs as { role?: string }).role ?? "button", tabindex: props.disabled ? -1 : 0, "aria-disabled": props.disabled || undefined,
         "aria-label": name, "data-pressable": "",
         onKeydown: (event: KeyboardEvent) => {
           userKeydown?.(event);

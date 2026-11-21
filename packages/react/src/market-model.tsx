@@ -53,6 +53,8 @@ export interface MarketColumn {
   baselineKey?: string;
   /** Sparkline columns: every row shares one vertical range, for series on a common scale (such as percent changes). */
   sharedRange?: boolean;
+  /** MarketTable: draws this column's cells, while the other columns keep the built-in ones. renderCell wins over it. */
+  render?: (row: any, column: MarketColumn) => ReactNode;
 }
 export type MarketFormatter<Row extends object> = (
   value: unknown,

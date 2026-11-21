@@ -1,4 +1,5 @@
 import { menuButtonChevron, menuButtonIcon } from "../../../shared/package-runtime/menu-button";
+import { hasContent } from "./runtime/slots";
 import { useKjunMessages } from "./runtime/messages";
 import { cloneVNode, computed, inject, isVNode, mergeProps, onUpdated, provide, ref, shallowRef, watch, nextTick,
   type ExtractPublicPropTypes, type InjectionKey, type PropType, type SlotsType, type VNodeChild } from "vue";
@@ -366,24 +367,29 @@ const kjunMenuButtonProps = {
   ariaLabel: { type: String, default: undefined },
 } as const;
 export type KjunMenuButtonProps = ExtractPublicPropTypes<typeof kjunMenuButtonProps>;
-/** Default slot: menu items. Events: open, close. */
+/** Slots: default (menu items), label (the visible label in place of the label prop, e.g. a colour swatch and its name; without readable text give ariaLabel). Events: open, close. */
 export const KjunMenuButton = defineComponent({
   name: "KjunMenuButton",
   props: kjunMenuButtonProps,
   emits: { "update:open": (_open: boolean) => true, open: () => true, close: () => true },
-  slots: Object as SlotsType<{ default?: () => VNodeChild }>,
+  slots: Object as SlotsType<{ default?: () => VNodeChild; label?: () => VNodeChild }>,
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
     const open = ref(false);
     return () => {
-      const button = () => (
-        <KjunButton class="kjun-menu-button" size={props.size} variant={props.variant} disabled={props.disabled} loading={props.loading}
-          prefixIcon={menuButtonIcon(props.icon, props.compact, props.label)}
-          suffixIcon={menuButtonChevron(props.chevron, props.compact, props.label, open.value)}
-          ariaLabel={props.ariaLabel || props.label || props.tooltip || m.value.menu}>
-          {{ default: () => props.compact ? undefined : props.label }}
-        </KjunButton>
-      );
+      const button = () => {
+        const slotted = slots.label?.(), custom = hasContent(slotted), label = custom ? slotted : props.label;
+        // A slot label names the button by its own text unless ariaLabel says otherwise.
+        const name = props.ariaLabel || props.label || (custom && !props.compact ? undefined : props.tooltip || m.value.menu);
+        return (
+          <KjunButton class="kjun-menu-button" size={props.size} variant={props.variant} disabled={props.disabled} loading={props.loading}
+            prefixIcon={menuButtonIcon(props.icon, props.compact, custom || props.label)}
+            suffixIcon={menuButtonChevron(props.chevron, props.compact, custom || props.label, open.value)}
+            ariaLabel={name}>
+            {{ default: () => props.compact ? undefined : label }}
+          </KjunButton>
+        );
+      };
       return (
         <KjunDropdown open={props.open} onUpdate:open={(value: boolean) => emit("update:open", value)} disabled={props.disabled} placement={props.placement} menuId={props.menuId} triggerId={props.triggerId} menuClass={props.menuClass} density={props.density} returnFocus={props.returnFocus}
           onOpen={() => { open.value = true; emit("open"); }} onClose={() => { open.value = false; emit("close"); }}>

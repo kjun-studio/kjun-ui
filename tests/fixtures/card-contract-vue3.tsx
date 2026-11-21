@@ -3,7 +3,7 @@ import { KjunProvider, KjunCard, KjunButton, KjunImage } from '@kjun-ui/vue3';
 import { applyDemoColors } from '../../shared/demo-colors';
 import { cardMediaSource } from '../../previews/catalog/example-tools';
 applyDemoColors('default');
-const state = reactive({ options: {} as Record<string, any>, parts: { title: true, custom: false, media: false }, actions: 0 });
+const state = reactive({ options: {} as Record<string, any>, parts: { title: true, custom: false, media: false }, actions: 0, amount: '1만' });
 Object.assign(window, { setCardContract: (next: Record<string, any>, content = {}) => { state.options = next; state.parts = { ...state.parts, ...content }; } });
 createApp(defineComponent(() => () => (
   <KjunProvider>{{ default: () => [
@@ -17,5 +17,7 @@ createApp(defineComponent(() => () => (
       }}</KjunCard>
     </div>,
     <output data-testid="actions">{String(state.actions)}</output>,
+    <div role="radiogroup" aria-label="금액" data-testid="card-picker">{['1만', '5만'].map(name =>
+      <KjunCard key={name} pressable title={name} role="radio" aria-checked={state.amount === name} onClick={() => { state.amount = name; }} />)}</div>,
   ] }}</KjunProvider>
 ))).mount('#root');

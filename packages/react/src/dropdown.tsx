@@ -1,4 +1,5 @@
 import { menuButtonChevron, menuButtonIcon } from "../../../shared/package-runtime/menu-button";
+import { hasContent as present } from "../../../shared/package-runtime/content-presence";
 import { useKjunMessages } from "../../../shared/package-runtime/messages-context";
 import { tokens } from "@kjun-ui/tokens";
 import { cloneElement, createContext, isValidElement, useCallback, useContext, useEffect, useId, useRef, useState, type ReactNode, type ReactElement } from "react";
@@ -328,7 +329,8 @@ export function KjunDropdownDivider() {
   return useShown() ? <Separator className="kjun-menu-divider" /> : null;
 }
 export interface KjunMenuButtonProps extends Omit<KjunDropdownProps, "trigger"> {
-  label?: string;
+  /** The visible label; a node can carry an icon or a colour swatch. Without readable text in it, give ariaLabel. */
+  label?: ReactNode;
   size?: KjunButtonProps["size"];
   variant?: KjunButtonProps["variant"];
   /** Show a square dots-vertical button; label remains its accessible name. */
@@ -370,7 +372,8 @@ export function KjunMenuButton({
       loading={loading}
       prefixIcon={menuButtonIcon(icon, compact, label)}
       suffixIcon={menuButtonChevron(chevron, compact, label, open)}
-      ariaLabel={ariaLabel || label || tooltip || m.menu}
+      // A node label names the button by its own text unless ariaLabel says otherwise.
+      ariaLabel={ariaLabel || (typeof label === "string" ? label : undefined) || (present(label) && !compact ? undefined : tooltip || m.menu)}
     >
       {compact ? undefined : label}
     </KjunButton>

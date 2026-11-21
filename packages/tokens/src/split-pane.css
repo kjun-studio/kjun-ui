@@ -35,6 +35,14 @@
 .kjun-split-pane-second {
   flex: 1 1 0;
 }
+/* secondHidden: the first pane takes the whole room; the handle and the second pane stay in the tree, undrawn. */
+.kjun-split-pane[data-second-hidden] > .kjun-split-pane-first {
+  flex: 1 1 0;
+}
+.kjun-split-pane[data-second-hidden] > .kjun-split-pane-handle,
+.kjun-split-pane[data-second-hidden] > .kjun-split-pane-second {
+  display: none;
+}
 .kjun-split-pane-handle {
   flex: 0 0 var(--_kjun-split-pane-hit);
   display: flex;

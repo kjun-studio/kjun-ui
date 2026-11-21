@@ -21,6 +21,9 @@ const App = defineComponent(() => {
     <div data-testid="rejected"><K.KjunListSection title="Fixed" reorderable order={stuck}>{{ default: () => rows(stuck) }}</K.KjunListSection></div>
     <div data-testid="partial"><K.KjunListSection title="Partial" reorderable order={['opus', 'sonnet']}>{{ default: () => [
       ...rows(['opus', 'sonnet']), <K.KjunListRow title="Pinned" />, <K.KjunListRow value="ghost" title="Unlisted" />] }}</K.KjunListSection></div>
+    <div data-testid="untitled"><K.KjunListSection title="Untitled" reorderable order={['x', 'y']}>{{ default: () => [
+      <K.KjunListRow value="x" title="" ariaLabel="Ethereum">{{ default: () => 'ETH' }}</K.KjunListRow>,
+      <K.KjunListRow value="y" title="" ariaLabel="Solana">{{ default: () => 'SOL' }}</K.KjunListRow>] }}</K.KjunListSection></div>
     <div data-testid="handle"><K.KjunListSection title="Handle" reorderable reorderControls="handle" order={held.value} onUpdate:order={(next: any) => { held.value = next; }}
       onReorder={(move: any) => { drops.value = [...drops.value, `${move.value}:${move.from}>${move.to}`]; }}>{{ default: () => rows(held.value) }}</K.KjunListSection></div>
     <output data-testid="held">{held.value.join(',')}</output>

@@ -419,7 +419,8 @@
       "formatValue",
       "onRowClick",
       "onRetry",
-      "edgeInset"
+      "edgeInset",
+      "layout"
     ],
     "react": [
       "columns",
@@ -491,7 +492,8 @@
       "loading",
       "error",
       "hasLoadedOnce",
-      "edgeInset"
+      "edgeInset",
+      "layout"
     ],
     "native": [
       "columns",
@@ -563,7 +565,8 @@
       "loading",
       "error",
       "hasLoadedOnce",
-      "edgeInset"
+      "edgeInset",
+      "layout"
     ]
   }
 }

@@ -59,3 +59,20 @@ for (const platform of ['vue3', 'react', 'native']) {
     expect(errors).toEqual([]);
   });
 }
+for (const platform of ['vue3', 'react', 'native']) {
+  test(`${platform}: a pressable Card keeps the role its caller gives it, as in a card picker`, async ({ page }) => {
+    await openFixture(page, platform, '', 'card-contract');
+    const group = page.getByRole('radiogroup', { name: '금액' });
+    await expect(group.getByRole('button')).toHaveCount(0);
+    const first = group.getByRole('radio', { name: '1만' }), second = group.getByRole('radio', { name: '5만' });
+    await expect(first).toBeChecked();
+    await expect(second).not.toBeChecked();
+    await second.click();
+    await expect(second).toBeChecked();
+    await expect(first).not.toBeChecked();
+    // It still presses like a button from the keyboard.
+    await first.focus();
+    await first.press('Enter');
+    await expect(first).toBeChecked();
+  });
+}

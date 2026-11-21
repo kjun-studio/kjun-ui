@@ -24,6 +24,10 @@ export function MenuButtonCases({ K, native = false }: { K: any; native?: boolea
       {config.compact ? undefined : config.label}
     </K.KjunButton></div>
     <div data-testid="group"><K.KjunButtonGroup size={config.size} value="week" options={menuChoices} ariaLabel="조회 기간" /></div>
+    {/* A node label: a colour swatch before its name; the name is read from the label's own text. */}
+    <div data-testid="swatch-menu"><K.KjunMenuButton label={native ? <K.KjunText>선 색 빨강</K.KjunText> : <span><span aria-hidden="true" data-swatch style={{ display: 'inline-block', width: 12, height: 12, borderRadius: 6, background: 'red', marginRight: 6 }} />선 색 빨강</span>}>
+      <K.KjunDropdownItem>파랑</K.KjunDropdownItem>
+    </K.KjunMenuButton></div>
     <button data-testid="outside">바깥 버튼</button>
     <output data-testid="events">{events.join(',')}</output>
     <output data-testid="config" hidden>{JSON.stringify(config)}</output>

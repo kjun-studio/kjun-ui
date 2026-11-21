@@ -133,3 +133,15 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect(fit.nameEnd).toBeLessThanOrEqual(fit.priceStart);
   });
 }
+for (const platform of ['react', 'vue3', 'native']) {
+  test(`${platform}: a column's own renderer (Vue 3: a cell-<key> slot) draws that column and leaves the built-in cells to the rest`, async ({ page }) => {
+    await openFixture(page, platform, '', 'market-table');
+    const table = page.getByTestId('custom-cell');
+    for (const id of ['a', 'b', 'c']) await expect(table.getByText('custom:' + id, { exact: true })).toBeVisible();
+    if (platform === 'vue3') await expect(table.getByText('render:a', { exact: true })).toBeVisible();
+    // The price column keeps its built-in cell with the app's formatter, and the identity its name.
+    // (Native Web also keeps a hidden copy of a flashing price, so the first visible one is enough.)
+    await expect(table.getByText('84,200', { exact: true }).first()).toBeVisible();
+    await expect(table.getByText('Alpha', { exact: true }).first()).toBeVisible();
+  });
+}

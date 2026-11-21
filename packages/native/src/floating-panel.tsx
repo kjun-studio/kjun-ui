@@ -218,16 +218,21 @@ export function FloatingPanel({
     );
   // The screen edges, past the safe area: a panel never covers the status bar or the home indicator.
   const edgeTop = tokens.extensions.floating.viewportInset + insets.top, edgeBottom = tokens.extensions.floating.viewportInset + insets.bottom;
-  const available = Math.min(maxHeight ?? (field ? tokens.extensions.menu.listMaxHeight : tokens.extensions.floating.maxHeight), Math.max(0, window.height - edgeTop - edgeBottom)),
+  const cap = Math.min(maxHeight ?? (field ? tokens.extensions.menu.listMaxHeight : tokens.extensions.floating.maxHeight), Math.max(0, window.height - edgeTop - edgeBottom)),
     // The scroll content leaves out the header and the panel border; both still take room when choosing a side.
     frame = tooltip || contentSizedMenu ? 0 : 2 * tokens.border.defaultWidth,
-    height = Math.min(panel.height + (header != null ? headerHeight : 0) + (footer != null ? footerHeight : 0) + frame, available),
+    natural = panel.height + (header != null ? headerHeight : 0) + (footer != null ? footerHeight : 0) + frame,
     roomAbove = anchor.y - gap - edgeTop,
     roomBelow = window.height - anchor.y - anchor.height - gap - edgeBottom,
     // Either side flips when the panel does not fit and the other side has more room, like Web.
     above = placement.startsWith("top")
-      ? !(flip && height > roomAbove && roomBelow > roomAbove)
-      : flip && height > roomBelow && roomAbove > roomBelow;
+      ? !(flip && Math.min(natural, cap) > roomAbove && roomBelow > roomAbove)
+      : flip && Math.min(natural, cap) > roomBelow && roomAbove > roomBelow,
+    beside = /^(left|right)/.test(placement),
+    // Like Web, the room on the chosen side caps the panel too, with or without flip: only the body scrolls, and
+    // the panel stays clear of its trigger instead of being pushed over it.
+    available = beside ? cap : Math.min(cap, Math.max(0, above ? roomAbove : roomBelow)),
+    height = Math.min(natural, available);
   // Like Web (react-aria, Vue), a bare top/bottom centers on the trigger; -start/-end align an edge.
   let left = placement.endsWith("end")
       ? anchor.x + anchor.width - width
@@ -236,7 +241,7 @@ export function FloatingPanel({
         : anchor.x,
     top = above ? anchor.y - height - gap : anchor.y + anchor.height + gap;
   // A side placement centres on the trigger; -start lines up the top edges and -end the bottom edges, like Web.
-  const [sideOf, alignOf] = placement.split("-") as [string, string | undefined], beside = sideOf === "left" || sideOf === "right";
+  const [sideOf, alignOf] = placement.split("-") as [string, string | undefined];
   if (beside) {
     left = sideOf === "left" ? anchor.x - width - gap : anchor.x + anchor.width + gap;
     top = alignOf === "start" ? anchor.y : alignOf === "end" ? anchor.y + anchor.height - height : anchor.y + (anchor.height - height) / 2;

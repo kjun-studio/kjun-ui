@@ -33,6 +33,8 @@ export interface KjunSplitPaneProps {
   collapsed?: boolean;
   defaultCollapsed?: boolean;
   onCollapsedChange?: (collapsed: boolean) => void;
+  /** Hides the second pane and the handle; the first pane takes the whole room and stays mounted, keeping its scroll, selection and focus (a list that opens its detail beside it). second stays mounted too. */
+  secondHidden?: boolean;
   /** Every step of a drag or key press. */
   onSizeChange?: (size: number) => void;
   /** Once when a drag ends or a key moves the handle; the place to save the size. */
@@ -47,7 +49,7 @@ export interface KjunSplitPaneProps {
 
 /** Two panes with a handle between them; dragging it or pressing arrow keys, Home, End or Enter resizes the first pane. */
 export function KjunSplitPane({ direction = "horizontal", sizeUnit = "ratio", size, defaultSize, minSize, maxSize, ariaLabel, disabled = false,
-  collapsible = false, collapsedSize, collapsed, defaultCollapsed = false, onCollapsedChange,
+  collapsible = false, collapsedSize, collapsed, defaultCollapsed = false, onCollapsedChange, secondHidden = false,
   onSizeChange, onChangeCommit, first, second, className, style, id }: KjunSplitPaneProps) {
   const root = useRef<HTMLDivElement>(null), handle = useRef<HTMLDivElement>(null);
   const firstId = "kjun-split-pane-" + useId().replace(/:/g, "");
@@ -65,7 +67,8 @@ export function KjunSplitPane({ direction = "horizontal", sizeUnit = "ratio", si
   foldedNow.current = folded;
   const measure = () => {
     const el = root.current, bar = handle.current;
-    return el && bar ? { total: vertical ? el.clientHeight : el.clientWidth, hit: vertical ? bar.offsetHeight : bar.offsetWidth } : null;
+    // A hidden handle measures nothing: the last shown sizes stay until it shows again.
+    return el && bar && !secondHidden ? { total: vertical ? el.clientHeight : el.clientWidth, hit: vertical ? bar.offsetHeight : bar.offsetWidth } : null;
   };
   useLayoutEffect(() => {
     const el = root.current;
@@ -79,7 +82,7 @@ export function KjunSplitPane({ direction = "horizontal", sizeUnit = "ratio", si
     const observer = new ResizeObserver(read);
     observer.observe(el);
     return () => observer.disconnect();
-  }, [vertical]);
+  }, [vertical, secondHidden]);
   const limits = box ? splitLimits(box.total, box.hit, minSize, maxSize) : null;
   // The first pane's pixels where it is drawn now: collapsed, or the wanted size inside the limits.
   const at = (now: { total: number; hit: number }, range = splitLimits(now.total, now.hit, minSize, maxSize)) => foldedNow.current
@@ -163,15 +166,15 @@ export function KjunSplitPane({ direction = "horizontal", sizeUnit = "ratio", si
     moveTo(resetPx(now), now);
     commit();
   };
-  const hidden = folded && px !== null ? px === 0 : folded && splitFoldedPx(collapsedSize, Infinity, 0) === 0;
+  const hidden = !secondHidden && (folded && px !== null ? px === 0 : folded && splitFoldedPx(collapsedSize, Infinity, 0) === 0);
   return (
     <div ref={root} id={id} className={"kjun-split-pane" + (className ? " " + className : "")} data-direction={direction}
-      data-dragging={dragging || undefined} data-collapsed={folded || undefined}
+      data-dragging={dragging || undefined} data-collapsed={folded || undefined} data-second-hidden={secondHidden || undefined}
       style={{ ...style, "--_kjun-split-pane-size": share, ...(basis ? { "--_kjun-split-pane-basis": basis } : {}) } as CSSProperties}>
       {/* A pane collapsed to nothing leaves the reading and tab order with its width. */}
       <div id={firstId} className="kjun-split-pane-first" inert={hidden || undefined} aria-hidden={hidden || undefined}>{first}</div>
       {/* A focusable separator is the window-splitter widget: it reports the first pane's share as a percentage. */}
-      <div ref={handle} className="kjun-split-pane-handle" role="separator" tabIndex={disabled ? undefined : 0} aria-label={ariaLabel} aria-controls={firstId}
+      <div ref={handle} className="kjun-split-pane-handle" role="separator" tabIndex={disabled || secondHidden ? undefined : 0} aria-label={ariaLabel} aria-controls={firstId}
         aria-orientation={vertical ? "horizontal" : "vertical"} aria-disabled={disabled || undefined} data-dragging={dragging || undefined}
         data-collapsed={folded || undefined}
         aria-valuenow={box && px !== null ? splitPercent(px, box.total, box.hit) : Math.round(share * 100)}
@@ -181,7 +184,7 @@ export function KjunSplitPane({ direction = "horizontal", sizeUnit = "ratio", si
         onKeyDown={onKeyDown} onDoubleClick={onDoubleClick}>
         <span className="kjun-split-pane-bar" />
       </div>
-      <div className="kjun-split-pane-second">{second}</div>
+      <div className="kjun-split-pane-second" inert={secondHidden || undefined}>{second}</div>
     </div>
   );
 }

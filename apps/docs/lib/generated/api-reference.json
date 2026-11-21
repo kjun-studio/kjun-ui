@@ -5435,7 +5435,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "표시할 열입니다. 가격 열(type: \"price\")의 flash에 true·\"text\"·\"background\"를 주면 값이 바뀔 때 PriceCell flash처럼 깜빡입니다. 예전 값 \"price\"는 true로 읽고 \"change\"는 효과가 없습니다.",
+            "summary": "표시할 열입니다. 가격 열(type: \"price\")의 flash에 true·\"text\"·\"background\"를 주면 값이 바뀔 때 PriceCell flash처럼 깜빡입니다. 예전 값 \"price\"는 true로 읽고 \"change\"는 효과가 없습니다. 열에 render(row, column)를 주면 그 열의 칸만 직접 그리고 다른 열은 기본 렌더러를 그대로 씁니다. 모든 열을 그리는 renderCell(Vue는 cell-<key>·cell 슬롯)이 render보다 우선합니다.",
             "source": "packages/vue3/src/market-table.tsx"
           },
           {
@@ -5638,6 +5638,16 @@
             "source": "packages/vue3/src/market-table.tsx",
             "type": "{ row }",
             "summary": "status 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "cell-<key>",
+            "data": [
+              "row",
+              "column"
+            ],
+            "source": "packages/vue3/src/market-table.tsx",
+            "type": "{ row, column }",
+            "summary": "cell-<key> 영역의 기본 내용을 교체합니다."
           }
         ],
         "ownership": [],
@@ -5651,7 +5661,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "표시할 열입니다. 가격 열(type: \"price\")의 flash에 true·\"text\"·\"background\"를 주면 값이 바뀔 때 PriceCell flash처럼 깜빡입니다. 예전 값 \"price\"는 true로 읽고 \"change\"는 효과가 없습니다.",
+            "summary": "표시할 열입니다. 가격 열(type: \"price\")의 flash에 true·\"text\"·\"background\"를 주면 값이 바뀔 때 PriceCell flash처럼 깜빡입니다. 예전 값 \"price\"는 true로 읽고 \"change\"는 효과가 없습니다. 열에 render(row, column)를 주면 그 열의 칸만 직접 그리고 다른 열은 기본 렌더러를 그대로 씁니다. 모든 열을 그리는 renderCell(Vue는 cell-<key>·cell 슬롯)이 render보다 우선합니다.",
             "source": "packages/react/src/market-table.tsx"
           },
           {
@@ -6100,7 +6110,7 @@
             "required": true,
             "default": "—",
             "description": "",
-            "summary": "표시할 열입니다. 가격 열(type: \"price\")의 flash에 true·\"text\"·\"background\"를 주면 값이 바뀔 때 PriceCell flash처럼 깜빡입니다. 예전 값 \"price\"는 true로 읽고 \"change\"는 효과가 없습니다.",
+            "summary": "표시할 열입니다. 가격 열(type: \"price\")의 flash에 true·\"text\"·\"background\"를 주면 값이 바뀔 때 PriceCell flash처럼 깜빡입니다. 예전 값 \"price\"는 true로 읽고 \"change\"는 효과가 없습니다. 열에 render(row, column)를 주면 그 열의 칸만 직접 그리고 다른 열은 기본 렌더러를 그대로 씁니다. 모든 열을 그리는 renderCell(Vue는 cell-<key>·cell 슬롯)이 render보다 우선합니다.",
             "source": "packages/native/src/market-table.tsx"
           },
           {
@@ -9198,6 +9208,15 @@
             "source": "packages/vue3/src/table.tsx"
           },
           {
+            "name": "layout",
+            "type": "\"auto\" | \"fixed\"",
+            "required": false,
+            "default": "\"auto\"",
+            "description": "fixed keeps every column at its given width (table-layout: fixed) instead of letting content widen it, so two tables with the same widths line up; columns without a width share what is left.",
+            "summary": "fixed면 열마다 지정한 width를 그대로 지키고(table-layout: fixed) 내용이 길어도 열을 넓히지 않습니다. 같은 width를 준 표 두 개의 열이 정확히 맞아야 할 때 씁니다. width가 없는 열은 남은 폭을 나눠 갖고, 넘치는 글자는 줄바꿈합니다. 카드·목록 배치에는 영향이 없습니다.",
+            "source": "packages/vue3/src/table.tsx"
+          },
+          {
             "name": "ariaLabel",
             "type": "string",
             "required": false,
@@ -10623,6 +10642,15 @@
             "source": "packages/react/src/table-view.tsx"
           },
           {
+            "name": "layout",
+            "type": "\"auto\" | \"fixed\" | undefined",
+            "required": false,
+            "default": "\"auto\"",
+            "description": "fixed keeps every column at its given width (table-layout: fixed) instead of letting content widen it, so two tables with the same widths line up; columns without a width share what is left. Native already keeps given widths.",
+            "summary": "fixed면 열마다 지정한 width를 그대로 지키고(table-layout: fixed) 내용이 길어도 열을 넓히지 않습니다. 같은 width를 준 표 두 개의 열이 정확히 맞아야 할 때 씁니다. width가 없는 열은 남은 폭을 나눠 갖고, 넘치는 글자는 줄바꿈합니다. 카드·목록 배치에는 영향이 없습니다.",
+            "source": "packages/react/src/table-view.tsx"
+          },
+          {
             "name": "ariaLabel",
             "type": "string | undefined",
             "required": false,
@@ -11932,6 +11960,15 @@
             "default": "\"default\"",
             "description": "\"none\" drops the first column's start padding and the last column's end padding in the grid, so the table lines up with text around it. For tables without row fills.",
             "summary": "none이면 격자 표에서 첫 열의 시작 쪽 여백과 끝 열의 끝 쪽 여백을 없애, 표의 글자와 구분선이 주변 글과 같은 선에 놓입니다. 머리글·본문·묶음 제목·펼친 내용·요약·빈 상태에 모두 적용하고, 열 사이 여백과 카드·목록 배치는 그대로입니다. 줄무늬·선택·hover처럼 줄에 배경이 깔리는 표에서는 배경이 글자에 붙으므로 배경 없는 표에 씁니다.",
+            "source": "packages/native/src/table-view.tsx"
+          },
+          {
+            "name": "layout",
+            "type": "\"auto\" | \"fixed\" | undefined",
+            "required": false,
+            "default": "\"auto\"",
+            "description": "fixed keeps every column at its given width (table-layout: fixed) instead of letting content widen it, so two tables with the same widths line up; columns without a width share what is left. Native already keeps given widths.",
+            "summary": "웹과 같은 계약을 위한 값입니다. Native 표는 이미 지정한 width를 내용과 관계없이 지키므로 auto와 fixed를 같게 그립니다.",
             "source": "packages/native/src/table-view.tsx"
           },
           {
@@ -15061,6 +15098,15 @@
             "source": "packages/vue3/src/display.tsx"
           },
           {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "default": "—",
+            "description": "Names the bar for screen readers without showing text, e.g. \"업로드 진행률\"; takes the place of a label's name.",
+            "summary": "화면에 보이지 않는 진행률 이름입니다(예: \"업로드 진행률\"). 화면 낭독기가 label 대신 이 값을 이름으로 읽습니다. 보이는 제목이 필요하면 label을 씁니다.",
+            "source": "packages/vue3/src/display.tsx"
+          },
+          {
             "name": "subLabel",
             "type": "string",
             "required": false,
@@ -15192,6 +15238,15 @@
             "source": "packages/react/src/display.tsx"
           },
           {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Names the bar for screen readers without showing text, e.g. \"업로드 진행률\"; takes the place of a label's name.",
+            "summary": "화면에 보이지 않는 진행률 이름입니다(예: \"업로드 진행률\"). 화면 낭독기가 label 대신 이 값을 이름으로 읽습니다. 보이는 제목이 필요하면 label을 씁니다.",
+            "source": "packages/react/src/display.tsx"
+          },
+          {
             "name": "subLabel",
             "type": "ReactNode",
             "required": false,
@@ -15305,6 +15360,15 @@
             "default": "—",
             "description": "",
             "summary": "진행률의 제목입니다. showLabel과 관계없이 표시하며 showLabel은 백분율을 더합니다.",
+            "source": "packages/native/src/progress.tsx"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string | undefined",
+            "required": false,
+            "default": "—",
+            "description": "Names the bar for screen readers without showing text, e.g. \"업로드 진행률\"; takes the place of a label's name.",
+            "summary": "화면에 보이지 않는 진행률 이름입니다(예: \"업로드 진행률\"). 화면 낭독기가 label 대신 이 값을 이름으로 읽습니다. 보이는 제목이 필요하면 label을 씁니다.",
             "source": "packages/native/src/progress.tsx"
           },
           {
@@ -23986,7 +24050,7 @@
             "required": false,
             "default": "false",
             "description": "Makes the whole card one button (click). Do not put buttons or links inside a pressable card.",
-            "summary": "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고).",
+            "summary": "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고). 웹에서 호출자가 role(radio·checkbox·switch)과 aria-checked를 주면 그 역할을 유지하므로, 카드로 고르는 선택지를 만들 수 있습니다(Native는 accessibilityRole·accessibilityState).",
             "source": "packages/vue3/src/card.tsx"
           },
           {
@@ -24258,7 +24322,7 @@
             "required": false,
             "default": "false",
             "description": "Makes the whole card one button (onClick). Do not put buttons or links inside a pressable card.",
-            "summary": "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고).",
+            "summary": "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고). 웹에서 호출자가 role(radio·checkbox·switch)과 aria-checked를 주면 그 역할을 유지하므로, 카드로 고르는 선택지를 만들 수 있습니다(Native는 accessibilityRole·accessibilityState).",
             "source": "packages/react/src/card.tsx"
           },
           {
@@ -24570,7 +24634,7 @@
             "required": false,
             "default": "false",
             "description": "Makes the whole card one button (onPress). Do not put buttons or links inside a pressable card.",
-            "summary": "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고).",
+            "summary": "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고). 웹에서 호출자가 role(radio·checkbox·switch)과 aria-checked를 주면 그 역할을 유지하므로, 카드로 고르는 선택지를 만들 수 있습니다(Native는 accessibilityRole·accessibilityState).",
             "source": "packages/native/src/card.tsx"
           },
           {
@@ -24616,6 +24680,24 @@
             "default": "—",
             "description": "Name of a pressable or link card; defaults to the title.",
             "summary": "pressable·링크 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "accessibilityRole",
+            "type": "\"button\" | \"radio\" | \"checkbox\" | \"switch\"",
+            "required": false,
+            "default": "\"button\"",
+            "description": "Role of a pressable card, e.g. radio, checkbox or switch in a card picker; button by default. A link card stays a link.",
+            "summary": "pressable 카드의 역할입니다. 카드로 하나를 고르는 선택지(radio)나 켜고 끄는 카드(checkbox·switch)에 씁니다. 누름 동작은 그대로이고 선택 상태는 accessibilityState로 알립니다. 링크 카드는 link 역할을 유지합니다.",
+            "source": "packages/native/src/card.tsx"
+          },
+          {
+            "name": "accessibilityState",
+            "type": "{ checked?: boolean | \"mixed\"; selected?: boolean; expanded?: boolean; busy?: boolean }",
+            "required": false,
+            "default": "—",
+            "description": "State read with that role, e.g. { checked: true } for a chosen card; disabled comes from disabled.",
+            "summary": "accessibilityRole과 함께 읽히는 상태입니다(예: 고른 카드에 { checked: true }). disabled는 disabled prop으로 정합니다.",
             "source": "packages/native/src/card.tsx"
           },
           {
@@ -32362,7 +32444,7 @@
             "required": false,
             "default": "—",
             "description": "",
-            "summary": "사용자에게 표시할 주된 라벨입니다.",
+            "summary": "트리거의 보이는 라벨이자 기본 접근성 이름입니다.",
             "source": "packages/vue3/src/dropdown.tsx"
           },
           {
@@ -32483,6 +32565,13 @@
             "source": "packages/vue3/src/dropdown.tsx",
             "type": "제공 데이터 없음",
             "summary": "default 영역의 기본 내용을 교체합니다."
+          },
+          {
+            "name": "label",
+            "data": [],
+            "source": "packages/vue3/src/dropdown.tsx",
+            "type": "제공 데이터 없음",
+            "summary": "label 영역의 기본 내용을 교체합니다."
           }
         ],
         "ownership": [],
@@ -32492,11 +32581,11 @@
         "props": [
           {
             "name": "label",
-            "type": "string | undefined",
+            "type": "ReactNode",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "사용자에게 표시할 주된 라벨입니다.",
+            "description": "The visible label; a node can carry an icon or a colour swatch. Without readable text in it, give ariaLabel.",
+            "summary": "트리거의 보이는 라벨입니다. 색 견본·아이콘이 든 노드도 받습니다. 문자열이면 접근성 이름으로도 쓰고, 노드면 그 안의 글자를 이름으로 읽으므로 읽을 글자가 없으면 ariaLabel을 주세요.",
             "source": "packages/react/src/dropdown.tsx"
           },
           {
@@ -32707,11 +32796,11 @@
         "props": [
           {
             "name": "label",
-            "type": "string | undefined",
+            "type": "ReactNode",
             "required": false,
             "default": "—",
-            "description": "",
-            "summary": "사용자에게 표시할 주된 라벨입니다.",
+            "description": "The visible label; a node can carry an icon or a colour swatch. Without readable text in it, give ariaLabel.",
+            "summary": "트리거의 보이는 라벨입니다. 색 견본·아이콘이 든 노드도 받습니다. 문자열이면 접근성 이름으로도 쓰고, 노드면 그 안의 글자를 이름으로 읽으므로 읽을 글자가 없으면 ariaLabel을 주세요.",
             "source": "packages/native/src/dropdown.tsx"
           },
           {
@@ -49804,6 +49893,15 @@
             "description": "",
             "summary": "제어하지 않을 때 접힌 채로 시작합니다. 기본값 false입니다.",
             "source": "packages/vue3/src/split-pane.tsx"
+          },
+          {
+            "name": "secondHidden",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Hides the second pane and the handle; the first pane takes the whole room and stays mounted, keeping its scroll, selection and focus (a list that opens its detail beside it). The second slot stays mounted too.",
+            "summary": "둘째 패널과 경계 손잡이를 숨기고 첫 패널이 공간 전체를 씁니다. 목록 옆에 상세를 열 때만 둘째 칸이 생기는 화면에 씁니다. 첫 패널은 다시 그리지 않으므로 스크롤·선택·초점이 그대로 남고, 둘째 패널 내용도 숨긴 채 유지합니다(키보드·화면 낭독기에서는 빠집니다). 숨긴 동안 첫 패널은 접히지 않고, 다시 보이면 이전 크기로 돌아갑니다. 기본값 false입니다.",
+            "source": "packages/vue3/src/split-pane.tsx"
           }
         ],
         "events": [
@@ -50064,6 +50162,15 @@
             ],
             "source": "packages/react/src/split-pane.tsx",
             "example": "/components/split-pane#preview"
+          },
+          {
+            "name": "secondHidden",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Hides the second pane and the handle; the first pane takes the whole room and stays mounted, keeping its scroll, selection and focus (a list that opens its detail beside it). second stays mounted too.",
+            "summary": "둘째 패널과 경계 손잡이를 숨기고 첫 패널이 공간 전체를 씁니다. 목록 옆에 상세를 열 때만 둘째 칸이 생기는 화면에 씁니다. 첫 패널은 다시 그리지 않으므로 스크롤·선택·초점이 그대로 남고, 둘째 패널 내용도 숨긴 채 유지합니다(키보드·화면 낭독기에서는 빠집니다). 숨긴 동안 첫 패널은 접히지 않고, 다시 보이면 이전 크기로 돌아갑니다. 기본값 false입니다.",
+            "source": "packages/react/src/split-pane.tsx"
           },
           {
             "name": "onSizeChange",
@@ -50334,6 +50441,15 @@
             ],
             "source": "packages/native/src/split-pane.tsx",
             "example": "/components/split-pane#preview"
+          },
+          {
+            "name": "secondHidden",
+            "type": "boolean | undefined",
+            "required": false,
+            "default": "false",
+            "description": "Hides the second pane and the handle; the first pane takes the whole room and stays mounted, keeping its scroll, selection and focus (a list that opens its detail beside it). second stays mounted too.",
+            "summary": "둘째 패널과 경계 손잡이를 숨기고 첫 패널이 공간 전체를 씁니다. 목록 옆에 상세를 열 때만 둘째 칸이 생기는 화면에 씁니다. 첫 패널은 다시 그리지 않으므로 스크롤·선택·초점이 그대로 남고, 둘째 패널 내용도 숨긴 채 유지합니다(키보드·화면 낭독기에서는 빠집니다). 숨긴 동안 첫 패널은 접히지 않고, 다시 보이면 이전 크기로 돌아갑니다. 기본값 false입니다.",
+            "source": "packages/native/src/split-pane.tsx"
           },
           {
             "name": "onSizeChange",

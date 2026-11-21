@@ -3509,6 +3509,20 @@
         "description": "Name of a pressable or link card; defaults to the title."
       },
       {
+        "name": "accessibilityRole",
+        "type": "\"button\" | \"radio\" | \"checkbox\" | \"switch\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Role of a pressable card, e.g. radio, checkbox or switch in a card picker; button by default. A link card stays a link."
+      },
+      {
+        "name": "accessibilityState",
+        "type": "Omit<import(\"/workspace/node_modules/react-native/types/index\").AccessibilityState, \"disabled\"> | undefined",
+        "required": false,
+        "default": "—",
+        "description": "State read with that role, e.g. { checked: true } for a chosen card; disabled comes from disabled."
+      },
+      {
         "name": "testID",
         "type": "string | undefined",
         "required": false,
@@ -18003,6 +18017,14 @@
           "row"
         ],
         "source": "packages/vue3/src/market-table.tsx"
+      },
+      {
+        "name": "cell-<key>",
+        "data": [
+          "row",
+          "column"
+        ],
+        "source": "packages/vue3/src/market-table.tsx"
       }
     ],
     "react": [
@@ -19008,15 +19030,20 @@
         "name": "default",
         "data": [],
         "source": "packages/vue3/src/dropdown.tsx"
+      },
+      {
+        "name": "label",
+        "data": [],
+        "source": "packages/vue3/src/dropdown.tsx"
       }
     ],
     "react": [
       {
         "name": "label",
-        "type": "string | undefined",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The visible label; a node can carry an icon or a colour swatch. Without readable text in it, give ariaLabel."
       },
       {
         "name": "size",
@@ -19176,10 +19203,10 @@
     "native": [
       {
         "name": "label",
-        "type": "string | undefined",
+        "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
         "default": "—",
-        "description": ""
+        "description": "The visible label; a node can carry an icon or a colour swatch. Without readable text in it, give ariaLabel."
       },
       {
         "name": "size",
@@ -21551,6 +21578,13 @@
         "description": ""
       },
       {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "default": "—",
+        "description": "Names the bar for screen readers without showing text, e.g. \"업로드 진행률\"; takes the place of a label's name."
+      },
+      {
         "name": "subLabel",
         "type": "string",
         "required": false,
@@ -21650,6 +21684,13 @@
         "description": ""
       },
       {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Names the bar for screen readers without showing text, e.g. \"업로드 진행률\"; takes the place of a label's name."
+      },
+      {
         "name": "subLabel",
         "type": "import(\"/workspace/node_modules/@types/react/index\").ReactNode",
         "required": false,
@@ -21734,6 +21775,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Names the bar for screen readers without showing text, e.g. \"업로드 진행률\"; takes the place of a label's name."
       },
       {
         "name": "subLabel",
@@ -27496,6 +27544,13 @@
         "required": false,
         "default": "false",
         "description": ""
+      },
+      {
+        "name": "secondHidden",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Hides the second pane and the handle; the first pane takes the whole room and stays mounted, keeping its scroll, selection and focus (a list that opens its detail beside it). The second slot stays mounted too."
       }
     ],
     "events": [
@@ -27615,6 +27670,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "secondHidden",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Hides the second pane and the handle; the first pane takes the whole room and stays mounted, keeping its scroll, selection and focus (a list that opens its detail beside it). second stays mounted too."
       },
       {
         "name": "onSizeChange",
@@ -27757,6 +27819,13 @@
         "required": false,
         "default": "—",
         "description": ""
+      },
+      {
+        "name": "secondHidden",
+        "type": "boolean | undefined",
+        "required": false,
+        "default": "—",
+        "description": "Hides the second pane and the handle; the first pane takes the whole room and stays mounted, keeping its scroll, selection and focus (a list that opens its detail beside it). second stays mounted too."
       },
       {
         "name": "onSizeChange",
@@ -29168,6 +29237,13 @@
         "description": "\"none\" drops the first column's start padding and the last column's end padding in the grid, so the table lines up with text around it. For tables without row fills."
       },
       {
+        "name": "layout",
+        "type": "\"auto\" | \"fixed\"",
+        "required": false,
+        "default": "\"auto\"",
+        "description": "fixed keeps every column at its given width (table-layout: fixed) instead of letting content widen it, so two tables with the same widths line up; columns without a width share what is left."
+      },
+      {
         "name": "ariaLabel",
         "type": "string",
         "required": false,
@@ -29672,6 +29748,13 @@
         "description": "\"none\" drops the first column's start padding and the last column's end padding in the grid, so the table lines up with text around it. For tables without row fills."
       },
       {
+        "name": "layout",
+        "type": "\"auto\" | \"fixed\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "fixed keeps every column at its given width (table-layout: fixed) instead of letting content widen it, so two tables with the same widths line up; columns without a width share what is left. Native already keeps given widths."
+      },
+      {
         "name": "ariaLabel",
         "type": "string | undefined",
         "required": false,
@@ -30162,6 +30245,13 @@
         "required": false,
         "default": "—",
         "description": "\"none\" drops the first column's start padding and the last column's end padding in the grid, so the table lines up with text around it. For tables without row fills."
+      },
+      {
+        "name": "layout",
+        "type": "\"auto\" | \"fixed\" | undefined",
+        "required": false,
+        "default": "—",
+        "description": "fixed keeps every column at its given width (table-layout: fixed) instead of letting content widen it, so two tables with the same widths line up; columns without a width share what is left. Native already keeps given widths."
       },
       {
         "name": "ariaLabel",

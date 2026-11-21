@@ -10,7 +10,7 @@ import { stickyHeaderStuck } from "../../../shared/package-runtime/table-model";
 import { tableHeaderRows, tableSpans } from "../../../shared/package-runtime/table-columns";
 import type { TableColumn } from "./table-model";
 type Props<Row extends object> = TableGridProps<Row, CSSProperties["maxHeight"]> & TableViewParts<Row, KeyboardEvent<HTMLElement>>;
-export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, groups, collapsed, toggleGroup, groupLabel, summary, edgeInset, stickyOffset = 0 }: Props<Row>) {
+export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, initialLoading, skeletonRows, skeletonHidden, state, onRowClick, selectable, checkbox, cell, expandable, expand, renderExpand, emptyContent, emptyText, visible, maxHeight, stickyHeader, sortable, compact, striped, hoverable, ariaLabel, customClass, rowKeyDown, groups, collapsed, toggleGroup, groupLabel, summary, edgeInset, layout, stickyOffset = 0 }: Props<Row>) {
   const m = useKjunMessages();
   // A reorderable table ends each row with its move buttons, after the expand toggle.
   const span = visible.length + Number(selectable) + Number(expandable) + Number(!!mover);
@@ -154,7 +154,15 @@ export function TableGrid<Row extends object>({ columnGroups, cellSpan, mover, i
               data-hoverable={hoverable}
               data-striped={striped}
               data-edge-inset={edgeInset === "none" ? "none" : undefined}
+              data-layout={layout === "fixed" ? "fixed" : undefined}
             >
+              {/* A fixed layout reads widths from the first row; with grouped headers that row holds the groups, so the columns carry them. */}
+              {layout === "fixed" && <colgroup>
+                {selectable && <col className="kjun-table-action-cell" />}
+                {visible.map((col) => <col key={col.key} style={{ width: col.width }} />)}
+                {expandable && <col className="kjun-table-action-cell" />}
+                {mover && <col className="kjun-table-action-cell kjun-table-reorder-cell" />}
+              </colgroup>}
               <thead data-sticky={stickyHeader || undefined} style={stickyHeader ? { top: pageSticky ? stickyOffset : 0 } : undefined}>
                 <tr>
                   {selectable && (

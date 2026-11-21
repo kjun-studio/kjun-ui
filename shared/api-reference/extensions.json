@@ -452,7 +452,8 @@
       "collapsible",
       "collapsedSize",
       "collapsed",
-      "defaultCollapsed"
+      "defaultCollapsed",
+      "secondHidden"
     ],
     "react": [
       "direction",
@@ -474,7 +475,8 @@
       "second",
       "className",
       "style",
-      "id"
+      "id",
+      "secondHidden"
     ],
     "native": [
       "direction",
@@ -494,7 +496,8 @@
       "onChangeCommit",
       "first",
       "second",
-      "style"
+      "style",
+      "secondHidden"
     ]
   },
   "KjunCarousel": {

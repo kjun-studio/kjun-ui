@@ -70,6 +70,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
     if (cellLoading(row, col))
       return <KjunSkeleton type="line" width={tokens.extensions.marketTable.valueSkeletonWidth} />;
     if (renderCell) return renderCell(row, col);
+    if (col.render) return col.render(row, col);
     const kind = marketCellKind(col), context = { currency, row, column: col };
     if (kind === "identity") return <MarketIdentity row={row} props={props} />;
     if (kind === "sparkline")

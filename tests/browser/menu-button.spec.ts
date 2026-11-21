@@ -164,3 +164,15 @@ for (const platform of ['react', 'vue3', 'native']) {
     expect((await paths())[0]).not.toBe(sort);
   });
 }
+for (const platform of ['react', 'vue3', 'native']) {
+  test(`${platform}: a node label (Vue 3: the label slot) draws inside the trigger and names it by its text`, async ({ page }) => {
+    await openFixture(page, platform, '', 'menu-button');
+    const button = page.getByTestId('swatch-menu').getByRole('button', { name: '선 색 빨강', exact: true });
+    await expect(button).toBeVisible();
+    if (platform !== 'native') await expect(button.locator('[data-swatch]')).toBeVisible();
+    // A visible label keeps the chevron and no dots icon, as with a text label.
+    await expect(button.locator('svg')).toHaveCount(1);
+    await button.click();
+    await expect(page.getByRole('menuitem', { name: '파랑' })).toBeVisible();
+  });
+}

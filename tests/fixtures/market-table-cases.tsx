@@ -22,5 +22,8 @@ export function MarketTableCases({ K }: { K: any }) {
     <div data-testid="long" style={{ width: 343 }}><K.KjunMarketTable {...common} rows={longRows} columns={marketColumns} /></div>
     <div data-testid="narrow" style={{ width: 343 }}><K.KjunMarketTable {...common} columns={wideColumns} onRowClick={() => {}} /></div>
     <div data-testid="narrow-off" style={{ width: 343 }}><K.KjunMarketTable {...common} columns={wideColumns} stickyIdentity={false} /></div>
+    {/* One column drawn by the app; the others keep the built-in cells. */}
+    <div data-testid="custom-cell" style={{ width: 640 }}><K.KjunMarketTable {...common}
+      columns={marketColumns.map(col => col.key === 'change' ? { ...col, render: (row: any) => 'custom:' + row.id } : col)} /></div>
   </div>;
 }

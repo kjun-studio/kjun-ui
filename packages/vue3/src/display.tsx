@@ -229,6 +229,8 @@ const kjunProgressProps = {
   /** Read by screen readers as the bar's description, e.g. "오늘 기준 53%". Put visible wording in subLabel. */
   markerLabel: { type: String, default: undefined },
   label: { type: String, default: undefined },
+  /** Names the bar for screen readers without showing text, e.g. "업로드 진행률"; takes the place of a label's name. */
+  ariaLabel: { type: String, default: undefined },
   subLabel: { type: String, default: undefined },
   shape: { type: String as PropType<"bar" | "circle">, default: "bar" },
 } as const;
@@ -249,9 +251,9 @@ export const KjunProgress = defineComponent({
       const text = state === "indeterminate" ? m.value.loadingEllipsis : state === "missing" ? "—" : props.valueText ?? `${percentage}%`;
       const label = slots.label ? slots.label() : props.label;
       const subLabel = slots.subLabel ? slots.subLabel() : props.subLabel;
-      const name = typeof props.label === "string" && !slots.label ? props.label : m.value.progress;
+      const name = props.ariaLabel || (typeof props.label === "string" && !slots.label ? props.label : m.value.progress);
       // A slot label is not plain text: it names the bar through aria-labelledby, so screen readers say what is shown.
-      const labelId = slots.label && hasContent(label) ? baseId + "-label" : undefined;
+      const labelId = !props.ariaLabel && slots.label && hasContent(label) ? baseId + "-label" : undefined;
       const accessibility = {
         role: state === "missing" ? "img" : "progressbar",
         "aria-label": labelId ? undefined : state === "missing" ? `${name}: ${m.value.noData}` : name,

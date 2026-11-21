@@ -464,7 +464,7 @@ set("MarketCards MarketSimpleList", { activeKey: "앱이 열어 둔 행의 rowKe
 set("MarketCards MarketSimpleList MarketTable", { totalCount: { default: "pagination.total ?? 행 수", summary: "푸터에 보이는 전체 개수입니다. 주지 않으면 pagination.total을, 그것도 없으면 표시한 행 수를 셉니다." } });
 set("MarketSimpleList MarketTable", { renderStatus: "행의 시세 상태(종가·지연 등)를 반환합니다. 목록은 등락률 앞, 표는 가격 칸 값 뒤에 둡니다. 문구와 배지 색은 앱이 정합니다." });
 set("MarketTable", {
-  columns: "표시할 열입니다. 가격 열(type: \"price\")의 flash에 true·\"text\"·\"background\"를 주면 값이 바뀔 때 PriceCell flash처럼 깜빡입니다. 예전 값 \"price\"는 true로 읽고 \"change\"는 효과가 없습니다.",
+  columns: "표시할 열입니다. 가격 열(type: \"price\")의 flash에 true·\"text\"·\"background\"를 주면 값이 바뀔 때 PriceCell flash처럼 깜빡입니다. 예전 값 \"price\"는 true로 읽고 \"change\"는 효과가 없습니다. 열에 render(row, column)를 주면 그 열의 칸만 직접 그리고 다른 열은 기본 렌더러를 그대로 씁니다. 모든 열을 그리는 renderCell(Vue는 cell-<key>·cell 슬롯)이 render보다 우선합니다.",
   stickyIdentity: { default: "true", summary: "첫 데이터 열이 이름(name·symbol·stock_name)일 때 가로로 스크롤해도 관심·즐겨찾기 열과 이름 열을 왼쪽에 고정합니다. 스크롤한 동안에만 이름 열 끝에 8px 그림자가 생기며 1px 선은 그리지 않습니다. 이름 열이 첫 열이 아니면 고정하지 않습니다." },
   divider: { default: "true", summary: "행 사이 구분선입니다. KjunTable처럼 행은 옅은 divider 색, 머리글 아래는 border 색으로 긋습니다. false면 행 사이 선을 없애고 머리글 선만 남기며 행 높이는 그대로입니다." },
   activeKey: "앱이 열어 둔 행의 rowKey 값입니다(표 옆 상세 화면 등). 그 행을 선택 배경(selectedBg)으로 채우고 웹은 aria-current=\"true\", 기기는 선택 상태로 알립니다.",
@@ -645,7 +645,7 @@ set("ExternalLink", {
 set("ExternalLink", { onClick: { summary:"링크를 열 때 호출합니다(분석 기록 등). 클릭은 부모로 전달되지 않습니다. 다른 a 속성(id·className·data-*)은 링크에 전달하며 href·target·rel은 KJUN이 정합니다." } }, "react");
 set("ExternalLink", { onPress: { summary:"링크를 누를 때 openUrl보다 먼저 호출합니다(분석 기록 등)." } }, "native");
 set("Card", {
-  pressable: { default: "false", summary: "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고)." },
+  pressable: { default: "false", summary: "카드 전체를 하나의 버튼으로 만듭니다. true일 때만 역할·키보드 포커스·Enter/Space·누름 상태가 생기며, 안에는 버튼·링크 같은 누르는 요소를 넣지 마세요(웹 개발 모드 경고). 웹에서 호출자가 role(radio·checkbox·switch)과 aria-checked를 주면 그 역할을 유지하므로, 카드로 고르는 선택지를 만들 수 있습니다(Native는 accessibilityRole·accessibilityState)." },
   disabled: { default: "false", summary: "pressable 카드의 누름을 막고 흐리게 표시합니다. pressable이 아니면 의미가 없습니다." },
   ariaLabel: "pressable 카드의 접근성 이름입니다. 생략하면 title을 사용합니다.",
   headingLevel: { default: "3", summary: "제목의 문서 제목 수준입니다(h2–h6, Native는 header 역할). false는 일반 문단입니다. pressable 카드는 카드 전체가 버튼이라 제목을 제목 요소로 그리지 않습니다." },
@@ -831,3 +831,12 @@ set("Drawer", {
   headerActions: "제목 줄의 보조 행동(초기화·편집 등)입니다. 닫기 버튼 앞에 4px 간격으로 놓이고 제목은 남은 폭에서 줄바꿈합니다. Vue는 headerActions 슬롯입니다.",
   handle: { default: "false", summary: "아래 Drawer 위쪽에 36×4px 손잡이를 둡니다. 손잡이나 헤더를 아래로 끌면 패널이 따라 내려오고, 64px 넘게 끌거나 빠르게 내리면 닫힙니다. 그보다 적게 끌면 제자리로 돌아갑니다. 닫기 버튼·Esc·뒤 화면 누르기는 그대로입니다. position이 bottom일 때만 그립니다." },
 });
+set("Progress", { ariaLabel: "화면에 보이지 않는 진행률 이름입니다(예: \"업로드 진행률\"). 화면 낭독기가 label 대신 이 값을 이름으로 읽습니다. 보이는 제목이 필요하면 label을 씁니다." });
+set("Table", { layout: { default: "\"auto\"", summary: "fixed면 열마다 지정한 width를 그대로 지키고(table-layout: fixed) 내용이 길어도 열을 넓히지 않습니다. 같은 width를 준 표 두 개의 열이 정확히 맞아야 할 때 씁니다. width가 없는 열은 남은 폭을 나눠 갖고, 넘치는 글자는 줄바꿈합니다. 카드·목록 배치에는 영향이 없습니다." } });
+set("Table", { layout: { default: "\"auto\"", summary: "웹과 같은 계약을 위한 값입니다. Native 표는 이미 지정한 width를 내용과 관계없이 지키므로 auto와 fixed를 같게 그립니다." } }, "native");
+set("Card", {
+  accessibilityRole: { type: "\"button\" | \"radio\" | \"checkbox\" | \"switch\"", default: "\"button\"", summary: "pressable 카드의 역할입니다. 카드로 하나를 고르는 선택지(radio)나 켜고 끄는 카드(checkbox·switch)에 씁니다. 누름 동작은 그대로이고 선택 상태는 accessibilityState로 알립니다. 링크 카드는 link 역할을 유지합니다." },
+  accessibilityState: { type: "{ checked?: boolean | \"mixed\"; selected?: boolean; expanded?: boolean; busy?: boolean }", summary: "accessibilityRole과 함께 읽히는 상태입니다(예: 고른 카드에 { checked: true }). disabled는 disabled prop으로 정합니다." },
+}, "native");
+set("MenuButton", { label: "트리거의 보이는 라벨이자 기본 접근성 이름입니다." }, "vue3");
+for (const platform of ["react", "native"]) set("MenuButton", { label: { type: "ReactNode", summary: "트리거의 보이는 라벨입니다. 색 견본·아이콘이 든 노드도 받습니다. 문자열이면 접근성 이름으로도 쓰고, 노드면 그 안의 글자를 이름으로 읽으므로 읽을 글자가 없으면 ariaLabel을 주세요." } }, platform);

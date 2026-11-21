@@ -41,13 +41,13 @@ const kjunMarketTableProps = {
 } as const;
 export type KjunMarketTableProps = ExtractPublicPropTypes<typeof kjunMarketTableProps>;
 /**
- * Slots: cell({ row, column }), status({ row }) — the row's quote status after the price column's value — plus the identity slots. Events: sort(key), toggle-interest(row), toggle-favorite(row), page-change(page).
+ * Slots: cell-<key>({ row, column }) for one column, cell({ row, column }) for every column (a column slot wins, then cell, then the column's render), status({ row }) — the row's quote status after the price column's value — plus the identity slots. Events: sort(key), toggle-interest(row), toggle-favorite(row), page-change(page).
  */
 export const KjunMarketTable = defineComponent({
   name: "KjunMarketTable",
   props: kjunMarketTableProps,
   emits: { sort: (_key: string) => true, "toggle-interest": (_row: any) => true, "toggle-favorite": (_row: any) => true, "page-change": (_page: number) => true },
-  slots: Object as SlotsType<MarketIdentitySlots & { cell?: (scope: { row: any; column: MarketColumn }) => VNodeChild; status?: (scope: { row: any }) => VNode[] }>,
+  slots: Object as SlotsType<MarketIdentitySlots & { [key: `cell-${string}`]: ((scope: { row: any; column: MarketColumn }) => VNodeChild) | undefined; cell?: (scope: { row: any; column: MarketColumn }) => VNodeChild; status?: (scope: { row: any }) => VNode[] }>,
   setup(props, { slots, emit }) {
     const m = useKjunMessages();
     // Like Native and React: the trailing edge fades while columns still overflow it, and pinned columns cast an edge once scrolled.
@@ -66,7 +66,9 @@ export const KjunMarketTable = defineComponent({
       const value = getValue(row, col.key), stale = !!getValue(row, "stale");
       if (props.cellLoading(row, col))
         return <KjunSkeleton type="line" width={tokens.extensions.marketTable.valueSkeletonWidth} />;
-      if (slots.cell) return slots.cell({ row, column: col });
+      const own = slots[`cell-${col.key}`] ?? slots.cell;
+      if (own) return own({ row, column: col });
+      if (col.render) return col.render(row, col);
       const kind = marketCellKind(col), context = { currency: props.currency, row, column: col };
       if (kind === "identity") return marketIdentity(row, props, slots);
       if (kind === "sparkline")

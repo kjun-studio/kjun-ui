@@ -24,5 +24,9 @@ createApp(defineComponent(() => () => {
     <div data-testid="long" style={{ width: '343px' }}><K.KjunMarketTable {...common} rows={longRows} columns={marketColumns} /></div>
     <div data-testid="narrow" style={{ width: '343px' }}><K.KjunMarketTable {...common} columns={wideColumns} onRowClick={() => {}} /></div>
     <div data-testid="narrow-off" style={{ width: '343px' }}><K.KjunMarketTable {...common} columns={wideColumns} stickyIdentity={false} /></div>
+    {/* A column slot draws one column; a column's render draws another; the rest keep the built-in cells. */}
+    <div data-testid="custom-cell" style={{ width: '640px' }}><K.KjunMarketTable {...common} columns={[...marketColumns, { key: 'volume', label: 'Volume', align: 'right', render: (row: any) => 'render:' + row.id }]}>{{
+      'cell-change': ({ row }: any) => 'custom:' + row.id,
+    }}</K.KjunMarketTable></div>
   </div></K.KjunProvider>;
 })).mount('#root');

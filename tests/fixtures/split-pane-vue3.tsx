@@ -6,7 +6,7 @@ applyDemoColors('default');
 const panes = (first = 'First', second = 'Second') => ({ first: () => <div>{first}</div>, second: () => <div>{second}</div> });
 const App = defineComponent(() => {
   const sizes = ref<number[]>([]), commits = ref<number[]>([]), controlled = ref(0.5), width = ref(700);
-  const pxWidth = ref(700), pxCommits = ref<number[]>([]), collapsed = ref(false);
+  const pxWidth = ref(700), pxCommits = ref<number[]>([]), collapsed = ref(false), alone = ref(true);
   const box = (id: string, width: number, height: number, node: any) => <div data-testid={id} style={{ display: "flex", width: width + "px", height: height + "px" }}>{node}</div>;
   return () => <K.KjunProvider>{{ default: () => <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '16px' }}>
     {box('basic', 700, 120, <K.KjunSplitPane ariaLabel="Basic" defaultSize={0.6} minSize={[200, 240]}
@@ -31,6 +31,8 @@ const App = defineComponent(() => {
       onUpdate:collapsed={(next: boolean) => { collapsed.value = next; }}>{panes(collapsed.value ? 'Rail' : 'List')}</K.KjunSplitPane>)}
     <output data-testid="collapsed">{String(collapsed.value)}</output>
     {box('folded', 700, 120, <K.KjunSplitPane ariaLabel="Folded" collapsible defaultCollapsed minSize={[160, 200]}>{panes('Hidden first')}</K.KjunSplitPane>)}
+    {box('detail', 700, 120, <K.KjunSplitPane ariaLabel="Detail" secondHidden={alone.value}>{{ first: () => <input aria-label="Kept" />, second: () => <div>Detail pane</div> }}</K.KjunSplitPane>)}
+    <K.KjunButton variant="secondary" onClick={() => { alone.value = !alone.value; }}>Toggle detail</K.KjunButton>
   </div> }}</K.KjunProvider>;
 });
 createApp(App).mount('#root');

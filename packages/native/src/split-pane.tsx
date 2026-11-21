@@ -38,6 +38,8 @@ export interface KjunSplitPaneProps {
   collapsed?: boolean;
   defaultCollapsed?: boolean;
   onCollapsedChange?: (collapsed: boolean) => void;
+  /** Hides the second pane and the handle; the first pane takes the whole room and stays mounted, keeping its scroll, selection and focus (a list that opens its detail beside it). second stays mounted too. */
+  secondHidden?: boolean;
   /** Every step of a drag, key press or screen reader adjustment. */
   onSizeChange?: (size: number) => void;
   /** Once when a drag ends or a key or screen reader action moves the handle; the place to save the size. */
@@ -53,7 +55,7 @@ const hit = Platform.OS === "web" ? geometry.handleHit : geometry.touchHandleHit
 
 /** Two panes with a handle between them; dragging it resizes the first pane, and screen readers adjust it in steps. */
 export function KjunSplitPane({ direction = "horizontal", sizeUnit = "ratio", size, defaultSize, minSize, maxSize, ariaLabel, disabled = false,
-  collapsible = false, collapsedSize, collapsed, defaultCollapsed = false, onCollapsedChange,
+  collapsible = false, collapsedSize, collapsed, defaultCollapsed = false, onCollapsedChange, secondHidden = false,
   onSizeChange, onChangeCommit, first, second, style }: KjunSplitPaneProps) {
   const m = useKjunMessages();
   const { colors } = useKjunStyles();
@@ -160,7 +162,7 @@ export function KjunSplitPane({ direction = "horizontal", sizeUnit = "ratio", si
   const pane: ViewStyle = { minWidth: 0, minHeight: 0, overflow: "hidden" };
   // A pane collapsed to nothing leaves the reading order with its width.
   const restFold = splitFoldedPx(collapsedSize, Infinity, 0);
-  const hidden = folded && (px === null ? restFold === 0 : px === 0);
+  const hidden = !secondHidden && folded && (px === null ? restFold === 0 : px === 0);
   // Before the first layout a ratio shares the room by flex; pixels and a collapsed pane take their points at once.
   const firstSize: ViewStyle = px !== null ? { [along]: px } : folded ? { [along]: restFold }
     : sizeUnit === "px" && wanted !== null ? { [along]: wanted } : { flexGrow: Math.max(0, sizeUnit === "ratio" && wanted !== null ? wanted : 0.5), flexBasis: 0 };
@@ -172,9 +174,9 @@ export function KjunSplitPane({ direction = "horizontal", sizeUnit = "ratio", si
       const next = event.nativeEvent.layout[along];
       if (Math.abs(next - total) > 0.5) setTotal(next);
     }} style={[{ flexDirection: vertical ? "column" : "row", width: "100%", height: "100%", minWidth: 0, minHeight: 0 }, style]}>
-      <View style={[pane, firstSize]} accessibilityElementsHidden={hidden} importantForAccessibility={hidden ? "no-hide-descendants" : "auto"}
+      <View style={[pane, secondHidden ? { flex: 1 } : firstSize]} accessibilityElementsHidden={hidden} importantForAccessibility={hidden ? "no-hide-descendants" : "auto"}
         {...(Platform.OS === "web" ? { nativeID: firstId } : {})}>{first}</View>
-      <View {...responder.panHandlers} style={{ [along]: hit, alignSelf: "stretch", borderRadius: tokens.radius.radius8,
+      <View {...responder.panHandlers} style={{ [along]: hit, alignSelf: "stretch", borderRadius: tokens.radius.radius8, ...(secondHidden ? { display: "none" as const } : {}),
         backgroundColor: dragging ? colors.hover : undefined,
         ...(Platform.OS === "web" ? ({ cursor: disabled ? "default" : vertical ? "row-resize" : "col-resize", touchAction: "none", userSelect: "none" } as unknown as ViewStyle) : {}) }}>
         <Pressable
@@ -213,7 +215,8 @@ export function KjunSplitPane({ direction = "horizontal", sizeUnit = "ratio", si
             backgroundColor: disabled ? colors.border : dragging || focused ? colors.text : hovered ? colors.textTertiary : colors.borderStrong ?? colors.border }} />
         </Pressable>
       </View>
-      <View style={[pane, growsBefore ? { flexGrow: Math.max(0, 1 - (sizeUnit === "ratio" && wanted !== null ? wanted : 0.5)), flexBasis: 0 } : { flex: 1 }]}>{second}</View>
+      <View style={[pane, growsBefore ? { flexGrow: Math.max(0, 1 - (sizeUnit === "ratio" && wanted !== null ? wanted : 0.5)), flexBasis: 0 } : { flex: 1 }, secondHidden ? { display: "none" } : null]}
+        accessibilityElementsHidden={secondHidden} importantForAccessibility={secondHidden ? "no-hide-descendants" : "auto"}>{second}</View>
     </View>
   );
 }

@@ -1,6 +1,6 @@
 import { tokens, type CardElevation, type CardPadding, type CardRadius, type CardSurface, type ColorRole } from "@kjun-ui/tokens";
 import { useContext, useEffect, type ReactNode } from "react";
-import { Platform, View, type GestureResponderEvent, type StyleProp, type TextStyle, type ViewStyle } from "react-native";
+import { Platform, View, type AccessibilityState, type GestureResponderEvent, type StyleProp, type TextStyle, type ViewStyle } from "react-native";
 import { AccessiblePressable } from "./a11y";
 import { typeStyle } from "./typography";
 import { KText, content } from "./internal";
@@ -50,6 +50,10 @@ export interface KjunCardProps {
   disabled?: boolean;
   /** Name of a pressable or link card; defaults to the title. */
   ariaLabel?: string;
+  /** Role of a pressable card, e.g. radio, checkbox or switch in a card picker; button by default. A link card stays a link. */
+  accessibilityRole?: "button" | "radio" | "checkbox" | "switch";
+  /** State read with that role, e.g. { checked: true } for a chosen card; disabled comes from disabled. */
+  accessibilityState?: Omit<AccessibilityState, "disabled">;
   /** Test identifier on the card's root view. */
   testID?: string;
   /** Native id of the card's root view (an element id on the web), e.g. for aria-labelledby. */
@@ -63,7 +67,7 @@ export interface KjunCardProps {
 export function KjunCard({ title, subtitle, header, headerActions, media, mediaPosition = "top", mediaAspect, footer,
   padding = "md", bodyPadding = padding, radius = "md", surface = "default",
   elevation = "flat", border = false, dividers = false, children, style,
-  pressable = false, href, target, rel, disabled = false, ariaLabel, onPress, headingLevel = 3, footerAlign = "start", testID, nativeID,
+  pressable = false, href, target, rel, disabled = false, ariaLabel, onPress, headingLevel = 3, footerAlign = "start", testID, nativeID, accessibilityRole, accessibilityState,
 }: KjunCardProps) {
   const { colors } = useKjunStyles();
   // In a KjunTiles cell the card fills the cell, so cards in a row share the tallest height (Web: the cell grid).
@@ -152,7 +156,7 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
   const lift = (hovered?: boolean) => hovered && !disabled
     ? { boxShadow: tokens.elevation[elevation === "raised" ? "lifted" : "raised"].map(({ colorRole, ...layer }) => ({ ...layer, color: colors[colorRole] })) } : null;
   return interactive
-    ? <AccessiblePressable {...ids} accessibilityRole={link ? "link" : "button"} accessibilityLabel={ariaLabel ?? (typeof title === "string" ? title : undefined)} accessibilityState={{ disabled }} disabled={disabled}
+    ? <AccessiblePressable {...ids} accessibilityRole={link ? "link" : accessibilityRole ?? "button"} accessibilityLabel={ariaLabel ?? (typeof title === "string" ? title : undefined)} accessibilityState={{ ...(link ? {} : accessibilityState), disabled }} disabled={disabled}
         {...(Platform.OS === "web" && link && !disabled ? { href, hrefAttrs: { target, rel: linkRel(target, rel) } } : {})}
         onPress={onPress} style={({ pressed, hovered }: { pressed: boolean; hovered?: boolean }) => [base, lift(hovered), pressed && !disabled ? { transform: [{ scale: tokens.states.scale.surfacePressed }] } : null, disabled ? { opacity: tokens.states.opacity.disabled } : null]}>{painted}</AccessiblePressable>
     : <View {...ids} style={base}>{painted}</View>;

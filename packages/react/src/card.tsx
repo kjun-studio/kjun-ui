@@ -67,7 +67,8 @@ export function KjunCard({ title, subtitle, header, headerActions, media, mediaP
     onClick: (event: MouseEvent<HTMLElement>) => { if (disabled) event.preventDefault(); else onClick?.(event as MouseEvent<HTMLDivElement>); },
     onKeyDown, onKeyUp,
   } : pressable ? {
-    role: "button", tabIndex: disabled ? -1 : 0, "aria-disabled": disabled || undefined,
+    // A caller's role (radio, checkbox, switch, as in a card picker) stays; the card still presses like a button.
+    role: props.role ?? "button", tabIndex: disabled ? -1 : 0, "aria-disabled": disabled || undefined,
     "aria-label": name, "data-pressable": "",
     onClick: (event: MouseEvent<HTMLDivElement>) => { if (!disabled) onClick?.(event); },
     onKeyDown: (event: KeyboardEvent<HTMLDivElement>) => {

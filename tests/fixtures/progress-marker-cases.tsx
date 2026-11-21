@@ -14,5 +14,7 @@ export function ProgressMarkerCases({ K, Box }: { K: any; Box: any }) {
     {row('circle', <K.KjunProgress value={40} marker={53} shape="circle" />)}
     {row('cell', <K.KjunProgressCell value={62} marker={53} markerLabel="오늘 기준 53%" />)}
     {row('cell-none', <K.KjunProgressCell value={62} />)}
+    {row('named', <K.KjunProgress value={30} ariaLabel="업로드 진행률" />)}
+    {row('named-circle', <K.KjunProgress value={30} shape="circle" ariaLabel="업로드 진행률" />)}
   </Box>;
 }

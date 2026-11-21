@@ -56,3 +56,12 @@ for (const platform of ['react', 'vue3']) {
     await expect(marker).toHaveCSS('box-shadow', /0px 0px 0px 1px/);
   });
 }
+for (const platform of ['react', 'vue3', 'native']) {
+  test(`${platform}: ariaLabel names a Progress without showing text`, async ({ page }) => {
+    await openFixture(page, platform, '', 'progress-marker');
+    for (const id of ['named', 'named-circle']) {
+      await expect(page.getByTestId(id).getByRole('progressbar', { name: '업로드 진행률', exact: true })).toBeVisible();
+      await expect(page.getByTestId(id).getByText('업로드 진행률')).toHaveCount(0);
+    }
+  });
+}

@@ -163,7 +163,7 @@ export function KjunTable<Row extends object = Record<string, unknown>>(
       >
         {card ? <TableCards {...narrow} /> : layout.list ? <TableList {...narrow} /> : (
           <TableGrid {...rows} visible={visible} columnGroups={props.columnGroups} cellSpan={props.cellSpan} maxHeight={maxHeight} stickyHeader={stickyHeader}
-            compact={compact} striped={striped} hoverable={hoverable} {...grouping} edgeInset={props.edgeInset} stickyOffset={props.stickyOffset} sortable={props.sortable} />
+            compact={compact} striped={striped} hoverable={hoverable} {...grouping} edgeInset={props.edgeInset} layout={props.layout} stickyOffset={props.stickyOffset} sortable={props.sortable} />
         )}
         {pagination && (
           <KjunPagination

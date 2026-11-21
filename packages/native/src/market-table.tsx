@@ -66,6 +66,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
     if (cellLoading(row, col))
       return <KjunSkeleton type="line" role="numberSm" width={tokens.extensions.marketTable.valueSkeletonWidth} />;
     if (renderCell) return content(renderCell(row, col));
+    if (col.render) return content(col.render(row, col));
     const kind = marketCellKind(col), context = { currency, row, column: col };
     if (kind === "identity") return <MarketIdentity row={row} props={props} table />;
     if (kind === "sparkline")
@@ -279,7 +280,7 @@ export function KjunMarketTable<Row extends object = Record<string, unknown>>(
                           // otherwise pull themselves to the start of a right-aligned cell.
                           // Like Web, the price column's status sits after the value on the same line, or under it on a phone.
                           // The identity keeps to its column, so a long name ends in an ellipsis instead of running over the price.
-                          const fitted = marketCellKind(col) === "identity" && !renderCell;
+                          const fitted = marketCellKind(col) === "identity" && !renderCell && !col.render;
                           const value = (
                             <View style={fitted ? { flexDirection: "row", alignItems: "center", minWidth: 0 } : {
                               alignSelf: col.align === "right" || col.align === "center" ? justify(col.align) : undefined,

@@ -13,4 +13,6 @@ createApp(() => <K.KjunProvider><div style={{ padding: '24px', width: '400px' }}
   <div data-testid="circle" style={{ marginBottom: '20px' }}><K.KjunProgress value={40} marker={53} shape="circle" /></div>
   <div data-testid="cell" style={{ marginBottom: '20px' }}><K.KjunProgressCell value={62} marker={53} markerLabel="오늘 기준 53%" /></div>
   <div data-testid="cell-none" style={{ marginBottom: '20px' }}><K.KjunProgressCell value={62} /></div>
+  <div data-testid="named" style={{ marginBottom: '20px' }}><K.KjunProgress value={30} ariaLabel="업로드 진행률" /></div>
+  <div data-testid="named-circle" style={{ marginBottom: '20px' }}><K.KjunProgress value={30} shape="circle" ariaLabel="업로드 진행률" /></div>
 </div></K.KjunProvider>).mount('#root');

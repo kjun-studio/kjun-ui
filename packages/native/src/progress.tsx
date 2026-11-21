@@ -30,6 +30,8 @@ export interface KjunProgressProps {
   /** Read by screen readers as the bar's hint, e.g. "오늘 기준 53%". Put visible wording in subLabel. */
   markerLabel?: string;
   label?: ReactNode;
+  /** Names the bar for screen readers without showing text, e.g. "업로드 진행률"; takes the place of a label's name. */
+  ariaLabel?: string;
   subLabel?: ReactNode;
   shape?: "bar" | "circle";
 }
@@ -69,6 +71,7 @@ export function KjunProgress({
   marker,
   markerLabel,
   label,
+  ariaLabel,
   subLabel,
   shape = "bar",
 }: KjunProgressProps) {
@@ -82,9 +85,9 @@ export function KjunProgress({
   const [trackWidth, setTrackWidth] = useState(0);
   // A label that is not plain text names the bar through aria-labelledby where the platform supports it
   // (Android, Native Web); the generic name stays as the fallback.
-  const labelId = "kjun-progress-label-" + useId().replace(/:/g, ""), linked = !!label && typeof label !== "string" && state !== "missing";
+  const labelId = "kjun-progress-label-" + useId().replace(/:/g, ""), linked = !ariaLabel && !!label && typeof label !== "string" && state !== "missing";
   const named = (node: ReactNode) => (linked ? <View nativeID={labelId}>{node}</View> : node);
-  const name = typeof label === "string" ? label : m.progress, color = colors[progressColorKey(variant)];
+  const name = ariaLabel || (typeof label === "string" ? label : m.progress), color = colors[progressColorKey(variant)];
   // Missing data is an image named "no data", not a 0% bar. RN Web drops accessibilityValue, so values also go out as aria-*.
   const semantics = state === "missing"
     ? { accessibilityRole: "image" as const, accessibilityLabel: `${name}: ${m.noData}` }

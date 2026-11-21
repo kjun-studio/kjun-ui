@@ -16,6 +16,10 @@ createApp(defineComponent(() => () => {
       <div data-testid="reference"><K.KjunButton size={c.size} variant={c.variant || 'secondary'} loading={c.loading} disabled={c.disabled}
         prefixIcon={iconOnly ? 'dots-vertical' : undefined} suffixIcon={iconOnly ? undefined : 'chevron-down'}>{{ default: () => iconOnly ? undefined : c.label }}</K.KjunButton></div>
       <div data-testid="group"><K.KjunButtonGroup size={c.size} modelValue="week" options={menuChoices} ariaLabel="조회 기간" /></div>
+      <div data-testid="swatch-menu"><K.KjunMenuButton>{{
+        label: () => <span><span aria-hidden="true" data-swatch style={{ display: 'inline-block', width: '12px', height: '12px', borderRadius: '6px', background: 'red', marginRight: '6px' }} />선 색 빨강</span>,
+        default: () => [<K.KjunDropdownItem>파랑</K.KjunDropdownItem>],
+      }}</K.KjunMenuButton></div>
       <button data-testid="outside">바깥 버튼</button>
       <output data-testid="events">{state.events.join(',')}</output>
       <output data-testid="config" hidden>{JSON.stringify(c)}</output>

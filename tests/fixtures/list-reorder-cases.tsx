@@ -25,6 +25,10 @@ export function ListReorderCases({ K, native = false, providerProps = {} }: { K:
     <div data-testid="rejected"><K.KjunListSection title="Fixed" reorderable order={stuck} onOrderChange={() => {}}>{rows(stuck)}</K.KjunListSection></div>
     <div data-testid="partial"><K.KjunListSection title="Partial" reorderable order={['opus', 'sonnet']} onOrderChange={() => {}}>
       {rows(['opus', 'sonnet'])}<K.KjunListRow title="Pinned" /><K.KjunListRow value="ghost" title="Unlisted" /></K.KjunListSection></div>
+    {/* Rows that draw their own title (an empty title) take the move buttons' names from ariaLabel. */}
+    <div data-testid="untitled"><K.KjunListSection title="Untitled" reorderable order={['x', 'y']} onOrderChange={() => {}}>
+      <K.KjunListRow value="x" title="" ariaLabel="Ethereum">{native ? <K.KjunText>ETH</K.KjunText> : 'ETH'}</K.KjunListRow>
+      <K.KjunListRow value="y" title="" ariaLabel="Solana">{native ? <K.KjunText>SOL</K.KjunText> : 'SOL'}</K.KjunListRow></K.KjunListSection></div>
     <div data-testid="handle"><K.KjunListSection title="Handle" reorderable reorderControls="handle" order={held} onOrderChange={setHeld}
       onReorder={(move: any) => setDrops(old => [...old, `${move.value}:${move.from}>${move.to}`])}>{rows(held)}</K.KjunListSection></div>
     <output data-testid="held">{held.join(',')}</output>

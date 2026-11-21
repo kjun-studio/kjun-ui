@@ -40,7 +40,7 @@ export type { KjunTopNavigationProps, NavigationDestination, NavigationIconStyle
 export type { KjunPressableProps } from "./pressable";
 export type { KjunSideNavigationProps, SideNavigationDestination, SideNavigationParent, SideNavigationSubParent, SideNavigationItem, SideNavigationGroup, SideNavigationEntry, SideNavigationAction, SideNavigationBadgeTone, SideNavigationCollapsedParent, SideNavigationHeadingLevel, SideNavigationRail } from "./side-navigation";
 export type { KjunSideNavigationLayoutProps, SideNavigationLayoutState, SideNavigationWidth } from "./side-navigation-layout";
-export type { KjunListGroupProps, KjunListItemProps, KjunListRowProps, KjunListSectionProps, ListChoiceValue, ListGroupVariant, ListLeadingSize, ListSectionSurface, ListSectionVariant } from "./list";
+export type { KjunListGroupProps, KjunListItemProps, KjunListReorderControls, KjunListReorderMove, KjunListRowProps, KjunListSectionProps, ListChoiceValue, ListGroupVariant, ListLeadingSize, ListSectionSurface, ListSectionVariant } from "./list";
 export type { KjunIconToggleProps, KjunCopyButtonProps, KjunRefreshButtonProps, KjunExternalLinkProps } from "./actions";
 export { safeExternalUrl } from "./actions";
 export type { KjunCarouselProps } from "./carousel";

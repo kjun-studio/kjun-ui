@@ -8,6 +8,7 @@ export function SplitPaneCases({ K, native = false, providerProps = {} }: { K: a
   const [pxWidth, setPxWidth] = useState(700);
   const [pxCommits, setPxCommits] = useState<number[]>([]);
   const [collapsed, setCollapsed] = useState(false);
+  const [alone, setAlone] = useState(true);
   const press = (action: () => void) => ({ [native ? 'onPress' : 'onClick']: action });
   const pane = (label: string) => native ? <K.KjunText>{label}</K.KjunText> : <div>{label}</div>;
   const box = (id: string, w: number, h: number, node: any) => <div data-testid={id} style={{ display: 'flex', width: w, height: h }}>{node}</div>;
@@ -34,5 +35,7 @@ export function SplitPaneCases({ K, native = false, providerProps = {} }: { K: a
       onCollapsedChange={setCollapsed} first={pane(collapsed ? 'Rail' : 'List')} second={pane('Second')} />)}
     <output data-testid="collapsed">{String(collapsed)}</output>
     {box('folded', 700, 120, <K.KjunSplitPane ariaLabel="Folded" collapsible defaultCollapsed minSize={[160, 200]} first={pane('Hidden first')} second={pane('Second')} />)}
+    {box('detail', 700, 120, <K.KjunSplitPane ariaLabel="Detail" secondHidden={alone} first={<input aria-label="Kept" />} second={pane('Detail pane')} />)}
+    <K.KjunButton variant="secondary" {...press(() => setAlone(value => !value))}>Toggle detail</K.KjunButton>
   </div></K.KjunProvider>;
 }

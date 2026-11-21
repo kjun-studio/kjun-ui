@@ -17,3 +17,7 @@ export function structureColumns(record: (text: string) => void) {
       cellProps: (row: any) => ({ 'data-target-cell': row.id, title: row.name + ' 목표가', style: { fontStyle: 'italic' } }) },
   ];
 }
+// layout="fixed": the same widths line up across two tables however long a cell is.
+export const fixedColumns = [{ key: 'name', label: '종목', width: 160 }, { key: 'sales', label: '매출', width: 120, align: 'right' }, { key: 'note', label: '메모' }];
+export const fixedRows = [{ id: 'a', name: 'KJUNFIXEDLAYOUTLONGUNBROKENNAME', sales: 1240, note: '짧음' }];
+export const fixedGroups = [{ label: '실적', columns: ['sales', 'note'] }];

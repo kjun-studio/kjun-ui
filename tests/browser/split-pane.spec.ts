@@ -245,5 +245,25 @@ for (const platform of ['react', 'vue3', 'native']) {
       await page.mouse.up();
       expect(await numbers(page, 'commits')).toHaveLength(1);
     });
+
+    test('secondHidden shows the first pane alone and keeps it mounted when the second pane comes and goes', async ({ page }) => {
+      const root = page.getByTestId('detail'), kept = root.getByRole('textbox', { name: 'Kept' });
+      const firstWidth = async () => Math.round((await kept.evaluate((node) => node.parentElement!.getBoundingClientRect().width)));
+      // Hidden: no handle, no second pane, and the first pane fills the 700 wide container.
+      await expect(handle(page, 'detail', 'Detail')).toHaveCount(0);
+      await expect(root.getByText('Detail pane')).toBeHidden();
+      await expect.poll(firstWidth).toBe(700);
+      await kept.fill('still here');
+      await page.getByRole('button', { name: 'Toggle detail' }).click();
+      // Shown: half of the 680 beside the 20 handle, and the field was not drawn again.
+      await expect(handle(page, 'detail', 'Detail')).toBeVisible();
+      await expect(root.getByText('Detail pane')).toBeVisible();
+      await expect.poll(() => firstSize(page, 'detail', 'Detail')).toBe(340);
+      await expect(kept).toHaveValue('still here');
+      await page.getByRole('button', { name: 'Toggle detail' }).click();
+      await expect(handle(page, 'detail', 'Detail')).toHaveCount(0);
+      await expect.poll(firstWidth).toBe(700);
+      await expect(kept).toHaveValue('still here');
+    });
   });
 }

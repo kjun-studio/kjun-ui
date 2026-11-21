@@ -1,4 +1,4 @@
-import { onMounted, ref, watch, type PropType } from "vue";
+import { onMounted, ref, watch, type PropType, type VNodeChild } from "vue";
 import type { MarketMetric, MetricStorage } from "../../../shared/package-runtime/market-cards";
 export type { MarketMetric, MetricStorage };
 
@@ -18,6 +18,8 @@ export interface MarketColumn {
   baselineKey?: string;
   /** Sparkline columns: every row shares one vertical range, for series on a common scale (such as percent changes). */
   sharedRange?: boolean;
+  /** MarketTable: draws this column's cells, while the other columns keep the built-in ones. a cell-<key> or cell slot wins over it. */
+  render?: (row: any, column: MarketColumn) => VNodeChild;
 }
 export type MarketFormatter<Row extends object = any> = (value: unknown, format: string, context: { currency: string; row: Row; column?: MarketColumn }) => string;
 

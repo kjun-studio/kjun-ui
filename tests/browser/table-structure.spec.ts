@@ -93,3 +93,20 @@ for (const platform of ['react', 'vue3', 'native']) {
     });
   });
 }
+for (const platform of ['react', 'vue3']) {
+  test(`${platform}: layout="fixed" keeps the given column widths, with or without grouped headers`, async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 1200 });
+    await openFixture(page, platform, '', 'table-structure');
+    const width = (id: string, index: number) => table(page, id).locator('tbody tr').first().locator('td').nth(index).evaluate(el => Math.round(el.getBoundingClientRect().width));
+    await expect(table(page, 'fixed').locator('table')).toHaveCSS('table-layout', 'fixed');
+    await expect(table(page, 'auto').locator('table')).toHaveCSS('table-layout', 'auto');
+    // The long name keeps its 160 instead of widening the column; the selectable table has its checkbox column first.
+    for (const [id, start] of [['fixed', 0], ['fixed-grouped', 1]] as const) {
+      expect(await width(id, start), id).toBe(160);
+      expect(await width(id, start + 1), id).toBe(120);
+    }
+    expect(await width('auto', 0)).toBeGreaterThan(160);
+    // The grouped table's first header row holds the group, so its widths come from the columns.
+    await expect(table(page, 'fixed-grouped').locator('colgroup col')).toHaveCount(4);
+  });
+}

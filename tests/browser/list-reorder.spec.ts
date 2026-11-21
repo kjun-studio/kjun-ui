@@ -160,5 +160,11 @@ for (const platform of ['react', 'vue3', 'native']) {
       await expect(page.getByTestId('partial').getByRole('button', { name: /Pinned|Unlisted/ })).toHaveCount(0);
       await expect(page.getByTestId('plain').getByRole('button')).toHaveCount(0);
     });
+
+    test('a row without a title names its move buttons after its ariaLabel', async ({ page }) => {
+      await expect(down(page, 'untitled', 'Ethereum')).toBeEnabled();
+      await expect(up(page, 'untitled', 'Solana')).toBeEnabled();
+      await expect(page.getByTestId('untitled').getByRole('button', { name: /^(위로|아래로) 이동$|^ 위로/ })).toHaveCount(0);
+    });
   });
 }

@@ -95,6 +95,8 @@ export interface TableProps<Row extends object = Record<string, unknown>, MaxHei
   striped?: boolean;
   /** "none" drops the first column's start padding and the last column's end padding in the grid, so the table lines up with text around it. For tables without row fills. */
   edgeInset?: "default" | "none";
+  /** fixed keeps every column at its given width (table-layout: fixed) instead of letting content widen it, so two tables with the same widths line up; columns without a width share what is left. Native already keeps given widths. */
+  layout?: "auto" | "fixed";
   ariaLabel?: string;
   responsive?: "card" | "list" | "compact" | "none" | null;
   mobileColumns?: string[];

@@ -269,6 +269,8 @@ export interface KjunProgressProps {
   /** Read by screen readers as the bar's description, e.g. "오늘 기준 53%". Put visible wording in subLabel. */
   markerLabel?: string;
   label?: ReactNode;
+  /** Names the bar for screen readers without showing text, e.g. "업로드 진행률"; takes the place of a label's name. */
+  ariaLabel?: string;
   subLabel?: ReactNode;
   shape?: "bar" | "circle";
 }
@@ -283,16 +285,17 @@ export function KjunProgress({
   marker,
   markerLabel,
   label,
+  ariaLabel,
   subLabel,
   shape = "bar",
 }: KjunProgressProps) {
   const m = useKjunMessages(), baseId = "kjun-progress-" + useId().replace(/:/g, ""), markerId = baseId + "-marker";
   // A label that is not plain text names the bar through aria-labelledby, so screen readers say what is shown.
-  const labelId = label && typeof label !== "string" ? baseId + "-label" : undefined, noDataId = baseId + "-nodata";
+  const labelId = !ariaLabel && label && typeof label !== "string" ? baseId + "-label" : undefined, noDataId = baseId + "-nodata";
   const state = progressState(value, max, indeterminate);
   const percentage = state === "determinate" ? progressPercent(value!, max) : 0;
   const text = state === "indeterminate" ? m.loadingEllipsis : state === "missing" ? "—" : valueText ?? `${percentage}%`;
-  const name = typeof label === "string" ? label : m.progress, color = role(progressColorRole(variant));
+  const name = ariaLabel || (typeof label === "string" ? label : m.progress), color = role(progressColorRole(variant));
   const accessibility = {
     role: state === "missing" ? "img" : "progressbar",
     "aria-label": labelId ? undefined : state === "missing" ? `${name}: ${m.noData}` : name,

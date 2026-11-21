@@ -228,7 +228,7 @@ export function KjunListRow({ title, description, badge, icon, leadingSize, icon
     {/* A disabled row disables its actions too, so the row never reads as partly available. */}
     {(hasContent(actions) || movable) && <View pointerEvents={disabled ? "none" : "auto"} {...(disabled && Platform.OS === "web" ? { inert: true } : {})} style={{ maxWidth: `${list.actionsMaxPercent}%`, flexDirection: "row", flexWrap: "wrap", gap: list.actionsGap, paddingRight: actionsPadding,
       // Like Web: with a description, actions center on the title and first description line instead of a long row's middle.
-      ...(description ? { alignSelf: "flex-start", alignItems: "center", alignContent: "center", minHeight: band, marginTop: paddingY + lift } : {}), opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}{movable && <ReorderControls value={value!} name={title} />}</View>}
+      ...(description ? { alignSelf: "flex-start", alignItems: "center", alignContent: "center", minHeight: band, marginTop: paddingY + lift } : {}), opacity: disabled ? tokens.states.opacity.disabled : 1 }}>{content(actions)}{movable && <ReorderControls value={value!} name={title || ariaLabel || ""} />}</View>}
   </>;
   const rule = divider && <Divider inset={inset} />;
   if (!expandable) return <View role={role} style={{ ...head, ...shape }}>{row}{rule}</View>;

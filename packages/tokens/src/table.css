@@ -58,6 +58,8 @@
   font-weight: var(--_kjun-type-body-weight);
   letter-spacing: var(--_kjun-type-body-tracking);
 }
+/* layout="fixed": columns keep the widths the app gave; content wraps or clips instead of widening them. */
+.kjun-table[data-layout="fixed"] { table-layout: fixed; }
 .kjun-table thead {
   background: var(--_kjun-color-table-header-bg);
 }
