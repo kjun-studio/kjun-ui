@@ -2,8 +2,16 @@
 
 KJUN UI 패키지(`@kjun-ui/icons`·`tokens`·`vue3`·`react`·`native`)는 같은 버전으로 함께 배포합니다. `@kjun-ui/vue2`는 0.5.x까지 함께 배포했습니다.
 
-## 미배포
+## 0.23.0 — 2026-11-21
 
+- **제목 역할 `sectionTitle`이 18px (호환성 변경)**: 화면 안 묶음 제목이 20px / 28에서 18px / 24로 작아졌습니다(굵기 700, 자간 -0.01em 그대로). 모바일 상세 화면에서 20px 제목이 그 아래 카드보다 무거워 보였습니다. `KjunModal`·`KjunDrawer`·`KjunFeedbackDialog` 제목도 같은 크기를 따라 레이어 제목이 한 크기로 맞습니다. 표 카드의 강조 값과 lg 아바타 이니셜, `KjunAvatarGroup`의 lg 개수·xl 세 글자 개수는 20px 숫자 단계(`numberLg`)를 그대로 씁니다. 바뀐 높이에 화면 배치를 맞춘 앱은 제목 줄이 4px 낮아진 것을 확인하세요(Vue 3·React·Native).
+- **`KjunSteps` 단계별 `status`와 `disabled`**: 항목에 `status`(`complete`·`current`·`error`·`upcoming`)를 주면 `current`로 정해지는 상태보다 우선합니다. 앞 단계를 다시 여는 동안 뒤 단계가 승인되는 것처럼 순서대로 끝나지 않는 흐름에 씁니다. 이때 `current`는 생략할 수 있고, `current`나 `error`로 표시한 첫 단계가 현재 단계가 됩니다. `disabled`인 단계는 버튼이 되지 않습니다. 연결선은 양쪽 단계가 모두 도달했을 때만 도달 색이 되어, 아직 오지 않은 단계로 색 선이 이어지지 않습니다(Vue 3·React·Native).
+- **`KjunProgress variant="neutral"`**: 오래된 값이나 참고용 수치를 3차 글자색으로 채웁니다(Vue 3·React·Native).
+- **다른 Tabs 패널 안의 Tabs 모양 (수정)**: 패널 안에 넣은 Tabs가 바깥 Tabs의 `variant`·밀도·`fullWidth` 규칙을 물려받아, underline Tabs 안의 pills 칩이 시작 여백을 잃던 문제를 고쳤습니다. 규칙이 자기 머리줄에서 멈춥니다(Vue 3·React). `KjunFormGroup`의 아래 20px 간격이 어디로 가는지(`KjunStack`·`KjunInline` 안이나 `data-kjun-layout="form"` 부모 안에서는 사라짐)도 API 설명에 적었습니다.
+- **`KjunListSection bleed`**: 섹션이 담긴 곳의 내용 가장자리를 넘어 그 바깥 가장자리까지 닿습니다. `KjunCard` 안에서는 카드 본문 여백(sm 12, md 16, lg 24), 그 밖에서는 행 여백 16만큼 넓어지고, 행·제목·빈 상태·바닥글·구분선·행 스켈레톤은 같은 만큼 안쪽에서 시작합니다. 글자는 카드나 페이지 제목과 같은 줄에 남고 행 채움과 구분선만 끝까지 갑니다. bleed 섹션은 면이 없고 제목이 행과 붙어 있습니다(Vue 3·React·Native).
+- **`KjunAlert` 검토 반영**: 제목·본문 안의 앱 링크와 목록이 자기 스타일을 지키고(`data-kjun-content`), 앱 CSS가 없으면 글자색 밑줄 링크와 4px 아래·20px 들여쓴 목록으로 맞춥니다. React는 ref와 그 밖의 HTML 속성(`id`·`style`·`tabIndex`·`aria-*`·`data-*`)을 루트에 넘겨 오류 요약처럼 포커스를 옮길 수 있고, Native는 `ref`·`style`·`testID`를 받습니다. 제목이 없으면 아이콘·닫기 버튼·옆 동작이 본문 첫 줄(sm 16, md·lg 20)의 가운데에 맞춰, 제목 없는 lg 알림이 64px에서 60px이 됩니다(Vue 3·React·Native).
+- **`KjunSideNavigationLayout` 검토 반영**: 페이지와 함께 스크롤하는 공간 띠(`sticky={false}`)가 메뉴 아래에서 끝나지 않고 페이지 높이 전체에 이어집니다(Native와 같음). 터치 화면에서 메뉴·패널 접기 버튼이 최소 터치 영역을 갖고, Native 패널 버튼은 메뉴와 같은 hover 채움을 쓰며, 빈 `spacesTitle`은 웹처럼 아무것도 그리지 않습니다(Vue 3·React·Native).
+- **Vue 3 툴팁이 Escape 뒤 다시 열리던 문제 (수정)**: 마우스를 트리거에 둔 채 Escape로 닫은 툴팁이, 기다리던 hover 지연이나 브라우저가 다시 보낸 `pointerenter`로 다시 열리던 문제를 고쳤습니다. React(react-aria)처럼 포인터가 나갔다 다시 들어와야 열립니다.
 - **`KjunListSection surface="muted"`**: 행 패널을 `KjunCard` muted와 같은 `secondary` 면으로 채웁니다(Vue 3·React·Native). 흰 카드나 모달 안에서 행을 회색으로 채운 둥근 상자로 구분할 때 씁니다. 테두리는 없고, 그 위의 구분선은 `border` 역할, 배지와 open 행의 아이콘 사각형은 표면색으로 그립니다. `true`·`false`는 그대로입니다.
 - **`KjunFormGroup as="fieldset"`**: 체크박스·라디오·스위치 여러 개나 `KjunFilterGroup`·`KjunButtonGroup`을 한 이름으로 묶습니다(Vue 3·React·Native). 웹은 `fieldset`과 `legend`로 그리고 도움말·오류를 `aria-describedby`로 연결하며, FormGroup의 `id`는 처음 등록된 활성 선택지가 받아 `getElementById(id)?.focus()`로 첫 선택지에 포커스를 옮길 수 있습니다. legend 아래 간격은 일반 라벨과 같습니다. Native는 `role="group"`과 라벨 이름을 줍니다. 기본값 `"div"`는 이전과 같습니다.
 - **하단 바 `sticky`**: `KjunBottomNavigation`·`KjunFloatingNavigation`·`KjunBottomActionBar`가 페이지 흐름 끝에서 자기 자리를 차지한 채 화면 아래 가장자리에 붙습니다(`position: sticky`). 높이를 재거나 본문 아래 여백을 따로 주지 않아도 마지막 내용이 가리지 않고, 라벨·안전 영역·설명 줄 수가 바뀌거나 키보드로 숨어도 맞습니다. 바와 페이지 스크롤 사이의 조상은 overflow를 visible(또는 clip)로 두고, 바 아래에는 여백을 두지 않습니다(여백은 바 앞의 본문에 줍니다). Native는 RN Web에서만 적용되며, iOS·Android에서는 바가 이미 내용 아래에 놓이므로 효과가 없습니다.
