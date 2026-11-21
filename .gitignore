@@ -35,3 +35,7 @@ docs/superpowers/
 
 # Local review captures, logs and scratch output
 output/
+
+# Works resource previews and immutable proposal media stay on the device.
+outputs/previews/
+outputs/proposals/
